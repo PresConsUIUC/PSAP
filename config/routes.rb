@@ -53,4 +53,14 @@ Psap::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  root 'static#landing'
+  match '/about', to: 'static#about', via: 'get'
+  resources :collections
+  get 'institution' => 'institution#index'
+  match '/login', to: 'users#login', via: 'get'
+  match '/register', to: 'users#register', via: 'get'
+  get 'report' => 'report#index'
+  get 'settings' => 'settings#settings'
+
 end
