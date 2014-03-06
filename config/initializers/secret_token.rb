@@ -9,4 +9,19 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Psap::Application.config.secret_key_base = '749f4012a3b6583b70a67f00c108e591e5a764e4709f79877271c5676ed9e38314720f6801beea414d17860313944b704f79317c1b20688844385bf7c30a990b'
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
+Psap::Application.config.secret_key_base = secure_token
