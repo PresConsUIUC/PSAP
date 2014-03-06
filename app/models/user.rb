@@ -1,23 +1,30 @@
+require 'bcrypt'
+require 'SecureRandom'
+
 class User < ActiveRecord::Base
+  include BCrypt
+
   belongs_to :institution
 
-  attr_accessor :email, :first_name, :last_name, :password_bcrypt,
-                :password_salt, :username
+  has_secure_password
 
-  # TODO: validate email
-  validates :first_name, length: { minimum: 1, maximum: 255 }
-  validates :last_name, length: { minimum: 1, maximum: 255 }
-  validates :username, length: { minimum: 2, maximum: 20 }
+  # TODO: improve email validation
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
+            uniqueness: { case_sensitive: false }
+  validates :first_name, presence: true, length: { minimum: 1, maximum: 255 }
+  validates :last_name, presence: true, length: { minimum: 1, maximum: 255 }
+  validates :password, length: { minimum: 6 } # TODO: externalize this
+  validates :username, presence: true, length: { minimum: 2, maximum: 20 },
+            uniqueness: { case_sensitive: false }
+
+  before_save { self.email = email.downcase }
 
   def full_name
     @first_name + ' ' + @last_name
   end
 
   def has_permission(permission_key)
-    # TODO: write this
-  end
-
-  def set_password(password)
     # TODO: write this
   end
 
