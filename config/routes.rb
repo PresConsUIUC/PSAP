@@ -59,8 +59,14 @@ Psap::Application.routes.draw do
   resources :collections
   get 'institution' => 'institution#index'
   match '/login', to: 'users#login', via: 'get'
-  match '/register', to: 'users#register', via: 'get'
   get 'report' => 'report#index'
+
+  # These rules will provide the /users resource, but with /users/new mapped
+  # to /register.
+  get '/users/register' => redirect('/register')
+  resources :users, path_names: { new: 'register' }
+  match '/register', to: 'users#new', via: 'get'
+
   get 'settings' => 'settings#settings'
 
 end

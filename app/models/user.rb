@@ -1,9 +1,4 @@
-require 'bcrypt'
-require 'SecureRandom'
-
 class User < ActiveRecord::Base
-  include BCrypt
-
   belongs_to :institution
 
   has_secure_password
@@ -21,7 +16,7 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
 
   def full_name
-    @first_name + ' ' + @last_name
+    "#{first_name} #{last_name}"
   end
 
   def has_permission(permission_key)
