@@ -58,14 +58,17 @@ Psap::Application.routes.draw do
   match '/about', to: 'static#about', via: 'get'
   resources :collections
   get 'institution' => 'institution#index'
-  match '/login', to: 'users#login', via: 'get'
   get 'report' => 'report#index'
 
-  # These rules will provide the /users resource, but with /users/new mapped
-  # to /register.
+  # These rules will provide the /users resource, but with /users/new replaced
+  # by /register.
   get '/users/register' => redirect('/register')
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
+
+  resources :sessions, only: [:new, :create, :destroy]
+  match '/login', to: 'sessions#new', via: 'get'
+  match '/logout', to: 'sessions#destroy', via: 'delete'
 
   get 'settings' => 'settings#settings'
 
