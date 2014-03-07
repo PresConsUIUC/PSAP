@@ -10,8 +10,6 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { minimum: 1, maximum: 255 }
   validates :last_name, presence: true, length: { minimum: 1, maximum: 255 }
   validates :password, length: { minimum: 6 } # TODO: externalize this
-  validates :username, presence: true, length: { minimum: 2, maximum: 20 },
-            uniqueness: { case_sensitive: false }
 
   before_save { self.email = email.downcase }
 
