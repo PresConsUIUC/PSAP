@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
   end
 
   def show
-
+    @collection = Resource.find(params[:id]) # TODO: only collections
   end
 
   def update
