@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140306201021) do
+ActiveRecord::Schema.define(version: 20140310200911) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -23,7 +23,10 @@ ActiveRecord::Schema.define(version: 20140306201021) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "resource_id"
   end
+
+  add_index "assessments", ["resource_id"], name: "index_assessments_on_resource_id"
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -33,11 +36,16 @@ ActiveRecord::Schema.define(version: 20140306201021) do
 
   create_table "locations", force: true do |t|
     t.string   "name"
+    t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "repository_id"
   end
 
+  add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"
+
   create_table "repositories", force: true do |t|
+    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,13 +53,19 @@ ActiveRecord::Schema.define(version: 20140306201021) do
   create_table "resources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "location_id"
+    t.integer  "resource_id"
   end
+
+  add_index "resources", ["location_id"], name: "index_resources_on_location_id"
+  add_index "resources", ["resource_id"], name: "index_resources_on_resource_id"
 
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "password_digest"
+    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
