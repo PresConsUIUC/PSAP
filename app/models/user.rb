@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   belongs_to :institution, inverse_of: :users
+  belongs_to :role, inverse_of: :users
 
   has_secure_password
 

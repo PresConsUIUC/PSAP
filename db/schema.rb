@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310200911) do
+ActiveRecord::Schema.define(version: 20140310221816) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -44,6 +44,15 @@ ActiveRecord::Schema.define(version: 20140310200911) do
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"
 
+  create_table "permissions", force: true do |t|
+    t.string   "key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "role_id"
+  end
+
+  add_index "permissions", ["role_id"], name: "index_permissions_on_role_id"
+
   create_table "repositories", force: true do |t|
     t.integer  "institution_id"
     t.datetime "created_at"
@@ -60,6 +69,13 @@ ActiveRecord::Schema.define(version: 20140310200911) do
   add_index "resources", ["location_id"], name: "index_resources_on_location_id"
   add_index "resources", ["resource_id"], name: "index_resources_on_resource_id"
 
+  create_table "roles", force: true do |t|
+    t.string   "key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_admin",   default: false
+  end
+
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "first_name"
@@ -68,6 +84,9 @@ ActiveRecord::Schema.define(version: 20140310200911) do
     t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "role_id"
   end
+
+  add_index "users", ["role_id"], name: "index_users_on_role_id"
 
 end
