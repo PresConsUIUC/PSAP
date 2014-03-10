@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
-  before_action :signed_in_user, only: [:index, :edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update]
+  before_action :admin_user, only: :destroy
 
   def create
     @user = User.new(user_params)
@@ -12,6 +13,14 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def destroy
+    user = User.find(params[:id])
+    name = user.full_name
+    user.destroy
+    flash[:success] = "#{name} deleted."
+    redirect_to users_url
   end
 
   def edit
@@ -43,6 +52,10 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :password,
                                  :password_confirmation)
+  end
+
+  def admin_user
+    redirect_to(root_url) unless current_user.role.is_admin?
   end
 
   def signed_in_user
