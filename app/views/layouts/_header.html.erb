@@ -1,22 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to 'PSAP', '#', id: 'logo' %>
-      <nav>
-        <ul class="nav pull-right">
-          <li><%= link_to 'Home', '#' %></li>
-          <li><%= link_to 'Help', '#' %></li>
-          <li><%= link_to 'Sign in', login_path %></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</header>
-
-
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
       <%= link_to 'PSAP', root_path, id: 'logo' %>
       <nav>
         <ul class="nav pull-right">
@@ -30,7 +14,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><%= link_to 'Profile', current_user %></li>
-                  <li><%= link_to 'Settings', '#' %></li>
+                  <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
                   <li class="divider"></li>
                   <li>
                     <%= link_to 'Sign out', logout_path, method: 'delete' %>
