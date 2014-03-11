@@ -1,28 +1,55 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to 'PSAP', root_path, id: 'logo' %>
+      <!--
+      <a href="">Format ID Guide</a>
+      | <a href="">Glossary</a> -->
       <nav>
         <ul class="nav pull-right">
-          <li><%= link_to 'Home', root_path %></li>
-          <li><%= link_to 'About', about_path %></li>
           <% if signed_in? %>
-              <li><%= link_to 'Users', users_path %></li>
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Tools <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="">Dashboard</a></li>
+                <li><a href="">Format ID Guide</a></li>
+                <li><a href="">Glossary</a></li>
+                <li><a href="">Bibliography</a></li>
+              </ul>
+            </li>
+
+            <% if current_user.is_admin? %>
               <li id="fat-menu" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Account <b class="caret"></b>
+                  Administration <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to 'Profile', current_user %></li>
-                  <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
-                  <li class="divider"></li>
-                  <li>
-                    <%= link_to 'Sign out', logout_path, method: 'delete' %>
-                  </li>
+                  <li><a href="">Manage Users</a></li>
+                  <li><a href="">Manage Database</a></li>
+                  <li><a href="">Modification Log</a></li>
+                  <li><a href="">Global Search &amp; Replace</a></li>
                 </ul>
               </li>
+            <% end %>
+
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.username %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Profile', current_user %></li>
+                <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to 'Sign out', logout_path, method: 'delete' %>
+                </li>
+              </ul>
+            </li>
+
+            <li><%= link_to 'Help', help_path %></li>
           <% else %>
-              <li><%= link_to 'Sign in', login_path %></li>
+            <li><%= link_to 'Sign in', login_path %></li>
           <% end %>
         </ul>
       </nav>

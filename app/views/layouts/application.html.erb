@@ -18,9 +18,38 @@
     <%= render 'layouts/header' %>
 
     <div class="container">
+      <header>
+        <%= image_tag('psap.png', size:'120x120', alt:'PSAP logo',
+                      id:'title_logo') %>
+        <h1 id="title">PSAP <span id="subtitle">Preservation Self-Assessment
+          Program</span></h1>
+      </header>
+
+        <% if signed_in? %>
+          <ul>
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.institution.name %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="">Repositories</a></li>
+                <li><a href="">Locations</a></li>
+              </ul>
+            </li>
+          </ul>
+        <% end %>
+
         <% flash.each do |key, value| %>
             <div class="alert alert-<%= key %>"><%= value %></div>
         <% end %>
+
+        <!--
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="">Collections</a></li>
+          <li><a href="">Perform Assessment</a></li>
+          <li><a href="">View Report</a></li>
+        </ul>
+        -->
 
         <%= yield %>
 
