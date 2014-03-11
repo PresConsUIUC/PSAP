@@ -20,8 +20,12 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def has_permission(permission_key)
-    # TODO: write this
+  def has_permission?(key)
+    self.role.has_permission?(key)
+  end
+
+  def is_admin?
+    self.role.is_admin?
   end
 
 end

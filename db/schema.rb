@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140311142504) do
+ActiveRecord::Schema.define(version: 20140311195720) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -48,15 +48,18 @@ ActiveRecord::Schema.define(version: 20140311142504) do
     t.string   "key"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "role_id"
   end
 
-  add_index "permissions", ["role_id"], name: "index_permissions_on_role_id"
+  create_table "permissions_roles", force: true do |t|
+    t.integer "permission_id"
+    t.integer "role_id"
+  end
 
   create_table "repositories", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "institution_id"
+    t.string   "name"
   end
 
   add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id"
@@ -72,15 +75,10 @@ ActiveRecord::Schema.define(version: 20140311142504) do
   add_index "resources", ["resource_id"], name: "index_resources_on_resource_id"
 
   create_table "roles", force: true do |t|
-    t.string   "key"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_admin",   default: false
-  end
-
-  create_table "roles_permissions", force: true do |t|
-    t.integer "role_id"
-    t.integer "permission_id"
+    t.string   "name"
   end
 
   create_table "users", force: true do |t|
@@ -92,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140311142504) do
     t.datetime "updated_at"
     t.integer  "role_id"
     t.integer  "institution_id"
+    t.string   "username"
   end
 
   add_index "users", ["institution_id"], name: "index_users_on_institution_id"
