@@ -23,25 +23,25 @@
                       id:'title_logo') %>
         <h1 id="title">PSAP <span id="subtitle">Preservation Self-Assessment
           Program</span></h1>
-      </header>
 
         <% if signed_in? %>
-          <ul>
-            <li id="fat-menu" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.institution.name %> <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="">Repositories</a></li>
-                <li><a href="">Locations</a></li>
-              </ul>
-            </li>
-          </ul>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                    data-toggle="dropdown">
+              <%= current_user.institution.name %> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <% @user_institution_repositories.each do |repo| %>
+                <li><%= link_to repo.name, repo %></a></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
+      </header>
 
-        <% flash.each do |key, value| %>
-            <div class="alert alert-<%= key %>"><%= value %></div>
-        <% end %>
+      <% flash.each do |key, value| %>
+          <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
 
         <!--
         <ul class="nav nav-tabs">
@@ -50,6 +50,8 @@
           <li><a href="">View Report</a></li>
         </ul>
         -->
+
+        <div style="clear:both"></div>
 
         <%= yield %>
 

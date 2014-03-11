@@ -34,9 +34,11 @@ h4 { font-size:1em }
 h5 { font-size:0.9em }
 h6 { font-size:0.8em }
 
+/* header */
+
 header h1#title {
   font-weight:normal;
-  margin:0.8em 0em 0.8em 0em;
+  margin:0.8em 0em 0em 0em;
 }
 
 header h1#title span#subtitle {
@@ -50,6 +52,11 @@ header img#title_logo {
   float:left;
   margin-right:1em;
 }
+
+header div.btn-group {
+  margin:0px;
+}
+
 
 /* sidebar */
 
