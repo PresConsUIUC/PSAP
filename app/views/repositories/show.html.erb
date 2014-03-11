@@ -1,0 +1,30 @@
+<% provide(:title, @repository.name) %>
+
+<h1><%= @repository.name %></h1>
+
+<table>
+  <caption>Locations</caption>
+  <thead>
+  <th></th>
+  <th></th>
+  <th></th>
+  </thead>
+  <tbody>
+  <% @repository.locations.each do |location| %>
+      <tr>
+        <td>
+          <% if current_user.has_permission?('repositories.edit_own') %>
+              <%= link_to 'Edit', edit_location_path(location) %>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.has_permission?('repositories.delete_own') %>
+              <%= link_to 'Delete', location, method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+        <td><%= link_to location.name, location %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

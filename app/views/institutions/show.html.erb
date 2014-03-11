@@ -1,0 +1,30 @@
+<% provide(:title, @institution.name) %>
+
+<h1><%= @institution.name %></h1>
+
+<table>
+  <caption>Repositories</caption>
+  <thead>
+    <th></th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @institution.repositories.each do |repository| %>
+      <tr>
+        <td>
+          <% if current_user.has_permission?('repositories.edit_own') %>
+              <%= link_to 'Edit', edit_repository_path(repository) %>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.has_permission?('repositories.delete_own') %>
+              <%= link_to 'Delete', repository, method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+        <td><%= link_to repository.name, repository %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

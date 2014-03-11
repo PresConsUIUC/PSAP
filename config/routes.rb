@@ -57,8 +57,11 @@ Psap::Application.routes.draw do
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get'
   resources :collections
-  get 'institution' => 'institution#index'
+  match '/help', to: 'static#help', via: 'get'
+  resources :institutions
+  resources :locations
   get 'report' => 'report#index'
+  resources :repositories
 
   # These rules will provide the /users resource, but with /users/new replaced
   # by /register.
@@ -66,6 +69,7 @@ Psap::Application.routes.draw do
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
 
+  resources :roles
   resources :sessions, only: [:new, :create, :destroy]
   match '/login', to: 'sessions#new', via: 'get'
   match '/logout', to: 'sessions#destroy', via: 'delete'

@@ -1,0 +1,23 @@
+<% provide(:title, 'All Institutions') %>
+<h1>All Institutions</h1>
+
+<%= will_paginate %>
+
+<table class="institutions">
+  <thead>
+    <th>Institution</th>
+    <th>Repositories</th>
+    <th>Users</th>
+  </thead>
+  <tbody>
+    <% @institutions.each do |institution| %>
+      <tr>
+        <td><%= link_to institution.name, institution %></td>
+        <td class="center"><%= institution.repositories.count %></td>
+        <td class="center"><%= institution.users.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate %>

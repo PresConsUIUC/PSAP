@@ -1,0 +1,21 @@
+<% provide(:title, 'All Roles') %>
+<h1>All Roles</h1>
+
+<%= will_paginate %>
+
+<table class="roles">
+  <thead>
+    <th style="width:25%">Role</th>
+    <th>Permissions</th>
+  </thead>
+  <tbody>
+  <% @roles.each do |role| %>
+      <tr>
+        <td><%= link_to role.name, role %></td>
+        <td><%= human_readable_permissions_for_role(role) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate %>
