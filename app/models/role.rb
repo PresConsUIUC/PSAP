@@ -1,5 +1,5 @@
 class Role < ActiveRecord::Base
-  has_many :permissions, inverse_of: :role
+  has_and_belongs_to_many :permissions
   has_many :users, inverse_of: :role
 
   def has_permission?(key)

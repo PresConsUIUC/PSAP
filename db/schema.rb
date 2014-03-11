@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310221816) do
+ActiveRecord::Schema.define(version: 20140311142504) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -36,10 +36,10 @@ ActiveRecord::Schema.define(version: 20140310221816) do
 
   create_table "locations", force: true do |t|
     t.string   "name"
-    t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "repository_id"
+    t.boolean  "is_default"
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"
@@ -54,10 +54,12 @@ ActiveRecord::Schema.define(version: 20140310221816) do
   add_index "permissions", ["role_id"], name: "index_permissions_on_role_id"
 
   create_table "repositories", force: true do |t|
-    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "institution_id"
   end
+
+  add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id"
 
   create_table "resources", force: true do |t|
     t.datetime "created_at"
@@ -76,17 +78,23 @@ ActiveRecord::Schema.define(version: 20140310221816) do
     t.boolean  "is_admin",   default: false
   end
 
+  create_table "roles_permissions", force: true do |t|
+    t.integer "role_id"
+    t.integer "permission_id"
+  end
+
   create_table "users", force: true do |t|
-    t.string   "email"
     t.string   "first_name"
+    t.string   "email"
     t.string   "last_name"
     t.string   "password_digest"
-    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "role_id"
+    t.integer  "institution_id"
   end
 
+  add_index "users", ["institution_id"], name: "index_users_on_institution_id"
   add_index "users", ["role_id"], name: "index_users_on_role_id"
 
 end

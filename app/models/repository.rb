@@ -7,8 +7,7 @@ class Repository < ActiveRecord::Base
   def setup
     # associate a default location
     if self.locations.empty?
-      @location = Location.new(name: 'Default Location', is_default: true)
-      self.locations << @location
+      self.locations << Location.new(name: 'Default Location', is_default: true)
     end
   end
 
