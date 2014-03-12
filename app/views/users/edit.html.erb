@@ -2,30 +2,38 @@
 
 <h1>Update your profile</h1>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@user) do |f| %>
-        <%= render 'shared/error_messages' %>
+<div id="registration_form">
+  <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages' %>
 
+      <div class="form-group">
         <%= f.label :first_name %>
-        <%= f.text_field :first_name %>
+        <%= f.text_field :first_name, class: 'form-control' %>
+      </div>
 
+      <div class="form-group">
         <%= f.label :last_name %>
-        <%= f.text_field :last_name %>
+        <%= f.text_field :last_name, class: 'form-control' %>
+      </div>
 
+      <div class="form-group">
         <%= f.label :email %>
-        <%= f.text_field :email %>
+        <%= f.text_field :email, class: 'form-control' %>
+      </div>
 
+      <div class="form-group">
         <%= f.label :password %>
-        <%= f.password_field :password %>
+        <%= f.password_field :password, class: 'form-control' %>
+      </div>
 
-        <%= f.label :password_confirmation, 'Confirmation' %>
-        <%= f.password_field :password_confirmation %>
+      <div class="form-group">
+        <%= f.label :password_confirmation, 'Confirm Password' %>
+        <%= f.password_field :password_confirmation, class: 'form-control' %>
+      </div>
 
-        <%= f.submit 'Save Changes', class: 'btn btn-large btn-primary' %>
-    <% end %>
+      <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+  <% end %>
 
-    <%= gravatar_for @user %>
-    <a href="http://gravatar.com/emails">Change</a>
-  </div>
+  <%= gravatar_for @user %>
+  <a href="http://gravatar.com/emails">Change</a>
 </div>
