@@ -14,7 +14,14 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 } # TODO: externalize this
   validates :role_id, presence: true
 
+  after_initialize :setup, if: :new_record?
   before_save { self.email = email.downcase }
+
+  def setup
+    # generate a confirmation code
+    require 'securerandom'
+    self.confirmation_code ||= SecureRandom.hex
+  end
 
   def full_name
     "#{first_name} #{last_name}"
