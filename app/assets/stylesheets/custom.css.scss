@@ -8,7 +8,7 @@ html {
 
 body {
   font-family:Calibri, sans-serif;
-  padding-top: 60px;
+  padding-top: 50px;
 }
 
 section {
@@ -23,10 +23,6 @@ textarea {
   text-align: center;
 }
 
-.center h1 {
-  margin-bottom: 10px;
-}
-
 h1 { font-size:2em }
 h2 { font-size:1.66em  }
 h3 { font-size:1.33em }
@@ -36,12 +32,20 @@ h6 { font-size:0.8em }
 
 /* header */
 
-header h1#title {
-  font-weight:normal;
-  margin:0.8em 0em 0em 0em;
+header {
+  border-bottom:1px solid $gray-lighter;
+  margin-bottom:20px;
+  padding-bottom:25px;
 }
 
-header h1#title span#subtitle {
+header h1#title a {
+  color:black;
+  font-weight:normal;
+  margin:0em;
+  text-decoration:none;
+}
+
+header h1#title span#subtitle a {
   color:#808080;
   font-size:0.4em;
   font-style:italic;
@@ -63,7 +67,7 @@ header div.btn-group {
 aside {
   section {
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
+    border-top: 1px solid $gray-lighter;
     &:first-child {
       border: 0;
       padding-top: 0;
@@ -91,11 +95,16 @@ aside {
 
 /* forms */
 
+@mixin box_sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 100%;
   margin-bottom: 15px;
-  //@include box_sizing;
+  @include box_sizing;
 }
 
 input {
@@ -123,9 +132,9 @@ input {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
+    border-top: 1px solid $gray-lighter;
     &:last-child {
-      border-bottom: 1px solid $grayLighter;
+      border-bottom: 1px solid $gray-lighter;
     }
   }
 }

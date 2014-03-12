@@ -1,12 +1,13 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <!--
-      <a href="">Format ID Guide</a>
-      | <a href="">Glossary</a> -->
-      <nav>
-        <ul class="nav pull-right">
-          <% if signed_in? %>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!--
+    <a href="">Format ID Guide</a>
+    | <a href="">Glossary</a> -->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <% if signed_in? %>
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Tools <b class="caret"></b>
@@ -20,17 +21,17 @@
             </li>
 
             <% if current_user.is_admin? %>
-              <li id="fat-menu" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Administration <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="">Manage Users</a></li>
-                  <li><a href="">Manage Database</a></li>
-                  <li><a href="">Modification Log</a></li>
-                  <li><a href="">Global Search &amp; Replace</a></li>
-                </ul>
-              </li>
+                <li id="fat-menu" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Administration <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="">Manage Users</a></li>
+                    <li><a href="">Manage Database</a></li>
+                    <li><a href="">Modification Log</a></li>
+                    <li><a href="">Global Search &amp; Replace</a></li>
+                  </ul>
+                </li>
             <% end %>
 
             <li id="fat-menu" class="dropdown">
@@ -48,11 +49,10 @@
             </li>
 
             <li><%= link_to 'Help', help_path %></li>
-          <% else %>
+        <% else %>
             <li><%= link_to 'Sign in', login_path %></li>
-          <% end %>
-        </ul>
-      </nav>
+        <% end %>
+      </ul>
     </div>
   </div>
-</header>
+</nav>

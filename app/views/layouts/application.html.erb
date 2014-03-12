@@ -15,51 +15,54 @@
   <![endif]-->
 </head>
 <body>
-    <%= render 'layouts/header' %>
+<%= render 'layouts/header' %>
 
-    <div class="container">
-      <header>
-        <%= image_tag('psap.png', size:'120x120', alt:'PSAP logo',
-                      id:'title_logo') %>
-        <h1 id="title">PSAP <span id="subtitle">Preservation Self-Assessment
-          Program</span></h1>
+<div class="container">
+  <header>
+    <%= link_to image_tag('psap.png', size:'80x80', alt:'PSAP logo',
+                          id:'title_logo'), root_path %>
+    <h1 id="title">
+      <%= link_to 'PSAP', root_path %>
+      <span id="subtitle"><%= link_to 'Preservation Self-Assessment
+          Program', root_path %></span>
+    </h1>
 
-        <% if signed_in? %>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                    data-toggle="dropdown">
-              <%= current_user.institution.name %> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <% @user_institution_repositories.each do |repo| %>
+    <% if signed_in? %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                  data-toggle="dropdown">
+            <%= current_user.institution.name %> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <% @user_institution_repositories.each do |repo| %>
                 <li><%= link_to repo.name, repo %></a></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
-      </header>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+  </header>
 
-      <% flash.each do |key, value| %>
-          <div class="alert alert-<%= key %>"><%= value %></div>
-      <% end %>
+  <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
 
-        <!--
-        <ul class="nav nav-tabs">
-          <li class="active"><a href="">Collections</a></li>
-          <li><a href="">Perform Assessment</a></li>
-          <li><a href="">View Report</a></li>
-        </ul>
-        -->
+  <!--
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="">Collections</a></li>
+    <li><a href="">Perform Assessment</a></li>
+    <li><a href="">View Report</a></li>
+  </ul>
+  -->
 
-        <div style="clear:both"></div>
+  <div style="clear:both"></div>
 
-        <%= yield %>
+  <%= yield %>
 
-        <%= render 'layouts/footer' %>
+  <%= render 'layouts/footer' %>
 
-        <%= debug(params) if Rails.env.development? %>
-    </div>
+  <%= debug(params) if Rails.env.development? %>
+</div>
 
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>
