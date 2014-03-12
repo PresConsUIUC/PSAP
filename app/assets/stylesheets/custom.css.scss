@@ -95,6 +95,15 @@ aside {
 
 /* forms */
 
+div.login_form {
+  margin:0 auto;
+  width:30%;
+}
+
+div#registration_form {
+  width:30%
+}
+
 #error_explanation {
   color: #f00;
   ul {

@@ -42,8 +42,10 @@
     <% end %>
   </header>
 
-  <% flash.each do |key, value| %>
-      <div class="alert alert-<%= key %>"><%= value %></div>
+  <% flash.each do |type, message| %>
+      <div class="alert <%= bootstrap_class_for(type) %>">
+        <%= message %>
+      </div>
   <% end %>
 
   <!--
