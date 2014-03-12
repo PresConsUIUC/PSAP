@@ -27,19 +27,22 @@ case Rails.env
     admin_user = User.create!(username: 'admin', email: 'admin@example.org',
                               first_name: 'System', last_name: 'Administrator',
                               password: 'admin!', password_confirmation: 'admin!',
-                              institution: institution1, role: admin_role)
+                              institution: institution1, role: admin_role,
+                              confirmed: true)
 
     # Institution admin user
     inst_admin_user = User.create!(username: 'inst', email: 'inst_admin@example.org',
                                    first_name: 'Institution', last_name: 'Administrator',
                                    password: 'inst_admin', password_confirmation: 'inst_admin',
-                                   institution: institution1, role: inst_admin_role)
+                                   institution: institution1, role: inst_admin_role,
+                                   confirmed: true)
 
     # Normal user
     normal_user = User.create!(username: 'normal', email: 'normal@example.org',
                                first_name: 'Normal', last_name: 'User',
                                password: 'normal', password_confirmation: 'normal',
-                               institution: institution1, role: normal_role)
+                               institution: institution1, role: normal_role,
+                               confirmed: true)
 
     repository = Repository.create!(institution: institution1,
                                     name: 'First Repository')
