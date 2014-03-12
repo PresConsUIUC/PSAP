@@ -4,13 +4,7 @@
     <h1>PSAP Main Page</h1>
 
     <p>This is a placeholder page.</p>
-    <ul>
-      <li>To make changes to it, edit app/views/landing/index.html.erb.</li>
-      <li>To make changes to the layout, edit app/views/layouts/application.html.erb.</li>
-      <li>To make changes to global CSS, edit app/assets/stylesheets/custom.css.scss.</li>
-    </ul>
-    <%= link_to "Some link", '#', class: 'btn btn-large btn-primary' %>
+
+    <%= link_to "Sign in", login_path, class: 'btn btn-large btn-primary' %>
     <%= link_to "Sign up now!", register_path, class: "btn btn-large btn-primary" %>
 </div>
-
-<%= image_tag('psap.png', alt: 'PSAP logo') %>

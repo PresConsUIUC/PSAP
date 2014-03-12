@@ -34,8 +34,8 @@ h6 { font-size:0.8em }
 
 header {
   border-bottom:1px solid $gray-lighter;
+  height:100px;
   margin-bottom:20px;
-  padding-bottom:25px;
 }
 
 header h1#title a {
@@ -94,22 +94,6 @@ aside {
 
 
 /* forms */
-
-@mixin box_sizing {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
-  margin-bottom: 15px;
-  @include box_sizing;
-}
-
-input {
-  height: auto !important;
-}
 
 #error_explanation {
   color: #f00;
@@ -173,8 +157,6 @@ footer ul li {
 
 
 /* mixins, variables, etc. */
-
-$grayMediumLight: #eaeaea;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;

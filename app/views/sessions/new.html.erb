@@ -1,19 +1,28 @@
 <% provide(:title, 'Sign in') %>
 <h1>Sign in</h1>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(:session, url: sessions_path) do |f| %>
+<%= form_for(:session, url: sessions_path, html: { class: 'form-horizontal' }) do |f| %>
 
-        <%= f.label :username %>
-        <%= f.text_field :username %>
-
-        <%= f.label :password %>
-        <%= f.password_field :password %>
-
-        <%= f.submit 'Sign in', class: 'btn btn-large btn-primary' %>
-    <% end %>
-
-    <p>New user? <%= link_to 'Sign up now.', new_user_path %></p>
+  <div class="control-group">
+    <%= f.label :email, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :email %>
+    </div>
   </div>
-</div>
+
+  <div class="control-group">
+    <%= f.label :password, class: 'control-label' %>
+    <div class="controls">
+      <%= f.password_field :password %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Sign in', class: 'btn' %>
+    </div>
+  </div>
+
+<% end %>
+
+<p>New user? <%= link_to 'Sign up now.', new_user_path %></p>
