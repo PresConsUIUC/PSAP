@@ -11,9 +11,9 @@ case Rails.env
   when 'development'
     institution1 = Institution.create!(name: 'University of Illinois at Urbana-Champaign')
     institution2 = Institution.create!(name: 'West Southeast Directional State University')
-    institution3 = Institution.create!(name: 'North Northwest Directional State University')
-    institution4 = Institution.create!(name: 'East Southwest Directional State University')
-    institution5 = Institution.create!(name: 'East Northeast Directional State University')
+    institution3 = Institution.create!(name: 'Hamburger University')
+    institution4 = Institution.create!(name: 'Barnum & Bailey Circus Academy')
+    institution5 = Institution.create!(name: 'Hogwart\'s Academy')
 
     # Admin role
     admin_role = Role.create!(name: 'Administrator', is_admin: true)
@@ -44,18 +44,47 @@ case Rails.env
                                institution: institution1, role: normal_role,
                                confirmed: true)
 
+    # Alex
+    alex_user = User.create!(username: 'alexd', email: 'alexd@illinois.edu',
+                             first_name: 'Alex', last_name: 'Dolski',
+                             password: 'password', password_confirmation: 'password',
+                             institution: institution1, role: admin_role,
+                             confirmed: true)
+
+    # Ryan
+    ryan_user = User.create!(username: 'edge2', email: 'edge2@illinois.edu',
+                             first_name: 'Ryan', last_name: 'Edge',
+                             password: 'password', password_confirmation: 'password',
+                             institution: institution1, role: admin_role,
+                             confirmed: true)
+
     repository = Repository.create!(institution: institution1,
                                     name: 'First Repository')
 
-    location = Location.create!(repository: repository)
+    location = Location.create!(name: 'Secret Location', repository: repository)
+    location2 = Location.create!(name: 'Super-Secret Location', repository: repository)
+    location3 = Location.create!(name: 'Super-Duper-Secret Location', repository: repository)
+    location4 = Location.create!(name: 'Somewhat Secret Location', repository: repository)
 
     permission = Permission.create!(key: 'institutions.edit_own')
+    inst_admin_role.permissions << permission
+
+    permission = Permission.create!(key: 'repositories.create_own')
     inst_admin_role.permissions << permission
 
     permission = Permission.create!(key: 'repositories.edit_own')
     inst_admin_role.permissions << permission
 
     permission = Permission.create!(key: 'repositories.delete_own')
+    inst_admin_role.permissions << permission
+
+    permission = Permission.create!(key: 'resources.create_own')
+    inst_admin_role.permissions << permission
+
+    permission = Permission.create!(key: 'resources.edit_own')
+    inst_admin_role.permissions << permission
+
+    permission = Permission.create!(key: 'resources.delete_own')
     inst_admin_role.permissions << permission
 
     permission = Permission.create!(key: 'users.view_all')
