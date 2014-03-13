@@ -21,6 +21,7 @@ class LocationsController < ApplicationController
   end
 
   def edit
+    @user = current_user
     @location = Location.find(params[:id])
   end
 
