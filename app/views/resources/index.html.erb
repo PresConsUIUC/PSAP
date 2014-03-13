@@ -1,0 +1,28 @@
+<% provide(:title, 'All Resources') %>
+<h1>All Resources</h1>
+
+<% if @resources.any? %>
+    <%= will_paginate %>
+
+    <table class="table table-striped table-hover">
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Name</th>
+      </tr>
+      <% @resources.each do |resource| %>
+          <tr>
+            <td><%= link_to 'Edit', edit_resource_path(resource) %></td>
+            <td><%= link_to 'Delete', resource, method: :delete,
+                            data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to resource.name, resource %></td>
+          </tr>
+      <% end %>
+    </table>
+
+    <%= will_paginate %>
+<% else %>
+    <p>There are no resources.</p>
+<% end %>
+
+<p><%= link_to 'New Resource', new_resource_path %></p>

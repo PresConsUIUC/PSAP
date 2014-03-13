@@ -56,12 +56,12 @@ Psap::Application.routes.draw do
 
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get'
-  resources :collections
   match '/help', to: 'static#help', via: 'get'
   resources :institutions
   resources :locations
   get 'report' => 'report#index'
   resources :repositories
+  resources :resources
   resources :roles
   resources :sessions, only: [:new, :create, :destroy]
   get 'settings' => 'settings#settings'
