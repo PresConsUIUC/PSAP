@@ -18,17 +18,17 @@
 
 $(document).ready(function() {
     // Code for the user registration & user edit forms.
-    if ($('form#new_user')) {
+    if ($('form#new_user') || $('form.edit_user')) {
         UserForm.refreshInstitutionOption();
-        $('form#new_user select#user_institution_id').change(function() {
+        $('select#user_institution_id').change(function() {
             UserForm.refreshInstitutionOption();
         });
 
-        $('form#new_user input#user_password').bind('keyup input paste', function() {
+        $('input#user_password').bind('keyup input paste', function() {
             UserForm.refreshPasswordStatus();
             UserForm.refreshPasswordConfirmationStatus();
         });
-        $('form#new_user input#user_password_confirmation').bind('keyup input paste', function() {
+        $('input#user_password_confirmation').bind('keyup input paste', function() {
             UserForm.refreshPasswordConfirmationStatus();
         });
     }
@@ -38,6 +38,7 @@ var UserForm = {
 
     refreshInstitutionOption: function() {
         $('input#user_institution').hide();
+        $('input#user_institution').val('');
 
         if (!$('select#user_institution_id').val()) {
             $('input#user_institution').show();
