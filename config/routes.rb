@@ -56,6 +56,8 @@ Psap::Application.routes.draw do
 
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get'
+  match '/bibliography', to: 'static#bibliography', via: 'get'
+  match '/glossary', to: 'static#glossary', via: 'get'
   match '/help', to: 'static#help', via: 'get'
   # match '/settings', to: 'settings:settings', via: 'get'
 
