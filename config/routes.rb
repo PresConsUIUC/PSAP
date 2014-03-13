@@ -65,6 +65,7 @@ Psap::Application.routes.draw do
 
   # These rules will provide the /users resource, but with /users/new replaced
   # by /register.
+  match '/confirm', to: 'users#confirm', via: 'get'
   get '/users/register' => redirect('/register')
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'

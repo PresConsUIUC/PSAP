@@ -1,20 +1,32 @@
 class UsersController < ApplicationController
 
-  before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :show, :update]
-  before_action :admin_user, only: :destroy
+  before_action :admin_user, only: [:index, :destroy]
 
   def create
     @user = User.new(user_create_params)
     if @user.save
       UserMailer.welcome_email(@user).deliver
-      flash[:success] = 'You must confirm your account before you can log in.
-                        An email containing a confirmation link has been sent.
-                        Follow the link to confirm your account.'
-      redirect_to root_url
+      redirect_to action: 'confirm'
     else
       render 'new'
     end
+  end
+
+  # Mapped to GET /confirm
+  def confirm
+    # If the user has supplied username and confirmation_code parameters,
+    # check that they are correct and activate the user if so. Otherwise,
+    # silently redirect to the root URL.
+    @user = User.find_by_username params[:username]
+    if @user && !@user.confirmed &&
+        params[:confirmation_code] == @user.confirmation_code
+      @user.confirmed = true
+      @user.save!
+      flash[:success] = 'Your account has been confirmed. Please log in.'
+      redirect_to login_url
+    end
+    redirect_to root_url
   end
 
   def destroy
@@ -38,22 +50,6 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-
-    # If the user has not yet confirmed their account, AND a confirmation_code
-    # parameter is present in the URL query, confirm the user's account.
-    if !@user.confirmed
-      if params[:confirmation_code]
-        if params[:confirmation_code] == @user.confirmation_code
-          @user.confirmed = true
-          @user.save!
-          flash[:success] = 'Your account has been confirmed. Please log in.'
-          redirect_to login_url
-        else
-          flash[:error] = 'Invalid confirmation code.'
-          redirect_to root_url
-        end
-      end
-    end
   end
 
   def update
