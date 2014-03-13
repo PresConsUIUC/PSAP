@@ -1,6 +1,24 @@
 /* Twitter Bootstrap is the foundation of the style. */
 @import "bootstrap";
 
+/*
+Fix for Bootstrap menus appearing only once
+http://stackoverflow.com/questions/13036223/twitter-bootstrap-menu-only-opens-and-closes-once
+*/
+.collapse {
+  position:relative;
+  height:0;
+  overflow:hidden;
+  -webkit-transition:height 0.35s ease;
+  -moz-transition:height 0.35s ease;
+  -o-transition:height 0.35s ease;
+  transition:height 0.35s ease;
+}
+.collapse.in {
+  height:auto;
+}
+
+
 /* universal */
 
 html {
