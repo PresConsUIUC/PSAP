@@ -1,0 +1,34 @@
+<% provide(:title, @location.name) %>
+
+<h1><%= @location.name %></h1>
+
+<% if @location.resources.any? %>
+    <table class="table table-striped table-hover">
+      <caption>Resources</caption>
+      <thead>
+      <th></th>
+      <th></th>
+      <th></th>
+      </thead>
+      <tbody>
+      <% @location.resources.each do |resource| %>
+          <tr>
+            <td>
+              <% if current_user.has_permission?('resources.edit_own') %>
+                  <%= link_to 'Edit', edit_resource_path(resource) %>
+              <% end %>
+            </td>
+            <td>
+              <% if current_user.has_permission?('resources.delete_own') %>
+                  <%= link_to 'Delete', repository, method: :delete,
+                              data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </td>
+            <td><%= link_to repository.name, repository %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% else %>
+    <p>There are no resources in this location.</p>
+<% end %>
