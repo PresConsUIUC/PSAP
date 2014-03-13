@@ -60,6 +60,7 @@ var UserForm = {
         var value = $('input#user_password').val();
         var confirmation_value = $('input#user_password_confirmation').val();
         var status_p = $('p#password_confirmation_status');
+        var message;
 
         if (value == confirmation_value) {
             message = 'Passwords match!';
