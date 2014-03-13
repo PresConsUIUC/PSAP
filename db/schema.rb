@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140312143634) do
+ActiveRecord::Schema.define(version: 20140313161057) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 20140312143634) do
     t.string   "username"
     t.boolean  "confirmed"
     t.string   "confirmation_code"
+    t.string   "reset_password_key"
   end
 
   add_index "users", ["institution_id"], name: "index_users_on_institution_id"

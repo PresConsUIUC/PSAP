@@ -62,19 +62,30 @@ Psap::Application.routes.draw do
   resources :locations
   get 'report' => 'report#index'
   resources :repositories
+  resources :roles
+  resources :sessions, only: [:new, :create, :destroy]
+  get 'settings' => 'settings#settings'
 
   # These rules will provide the /users resource, but with /users/new replaced
   # by /register.
-  match '/confirm', to: 'users#confirm', via: 'get'
+  # TODO: this is sloppy:
+  # http://blog.teamtreehouse.com/creating-vanity-urls-in-rails
+  # http://blog.arkency.com/2014/01/short-urls-for-every-route-in-your-rails-app/
   get '/users/register' => redirect('/register')
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
 
-  resources :roles
-  resources :sessions, only: [:new, :create, :destroy]
+  match '/confirm', to: 'users#confirm', via: 'get'
   match '/login', to: 'sessions#new', via: 'get'
   match '/logout', to: 'sessions#destroy', via: 'delete'
 
-  get 'settings' => 'settings#settings'
+  # Password routes
+  # Step 1: "I forgot my password," click a button to POST to /reset_password_email
+  match '/forgot_password', to: 'password#forgot_password', via: 'get'
+  match '/forgot_password', to: 'password#send_email', via: 'post'
+  # Step 2: I click the link to /new_password in the email, then POST new
+  # password to /reset_password
+  match '/new_password', to: 'password#new_password', via: 'get'
+  match '/new_password', to: 'password#reset_password', via: 'post'
 
 end

@@ -2,3 +2,5 @@
 
 User-agent: *
 Disallow: /confirm
+Disallow: /forgot_password
+Disallow: /new_password

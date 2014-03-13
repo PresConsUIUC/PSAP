@@ -10,10 +10,13 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   private
+
   def init
+    # Enables url_for to generate full URLs when used in ActionMailer
+    ActionMailer::Base.default_url_options = { :host => request.host_with_port }
+
     # Array of all repositories associated with the current user, to appear in
     # the title menu.
-
     @user_institution_repositories = current_user ?
         current_user.institution.repositories.order(:name) : []
   end

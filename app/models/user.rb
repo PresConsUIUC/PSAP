@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { minimum: 1, maximum: 255 }
   validates :institution_id, presence: true
   validates :last_name, presence: true, length: { minimum: 1, maximum: 255 }
-  validates :password, length: { minimum: 6 } # TODO: externalize this
+  validates :password, length: { minimum: 6 }, if: :validate_password? # TODO: externalize this
   validates :role_id, presence: true
   validates :username, uniqueness: { case_sensitive: false }
 
@@ -34,6 +34,10 @@ class User < ActiveRecord::Base
 
   def is_admin?
     self.role.is_admin?
+  end
+
+  def validate_password?
+    password.present? || password_confirmation.present?
   end
 
 end
