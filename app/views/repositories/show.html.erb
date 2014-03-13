@@ -2,12 +2,12 @@
 
 <h1><%= @repository.name %></h1>
 
-<table>
+<table class="table table-striped table-hover">
   <caption>Locations</caption>
   <thead>
-  <th></th>
-  <th></th>
-  <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
   </thead>
   <tbody>
   <% @repository.locations.each do |location| %>
