@@ -5,6 +5,15 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_create_params)
+
+    # If the user has specified a new institution, create it and associate the
+    # user with it
+    if !@user.institution
+      institution = @user.institution.new
+      institution.name = params[:institution]
+      institution.save!
+    end
+
     if @user.save
       UserMailer.welcome_email(@user).deliver
       redirect_to action: 'confirm'
