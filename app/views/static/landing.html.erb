@@ -5,6 +5,9 @@
 
     <p>This is a placeholder page.</p>
 
-    <%= link_to "Sign in", login_path, class: 'btn btn-large btn-primary' %>
-    <%= link_to "Sign up now!", register_path, class: "btn btn-large btn-primary" %>
+    <% if !signed_in? %>
+      <%= link_to "Sign in", login_path, class: 'btn btn-large btn-primary' %>
+      <%= link_to "Sign up now!", register_path, class: "btn btn-large btn-primary" %>
+    <% end %>
+
 </div>
