@@ -20,6 +20,8 @@ class InstitutionsController < ApplicationController
   end
 
   def edit
+    @user = current_user
+    @institution = Institution.find(params[:id])
   end
 
   def index
@@ -46,6 +48,11 @@ class InstitutionsController < ApplicationController
   end
 
   private
+
+  def correct_user
+    institution = Institution.find(params[:id])
+    redirect_to(root_url) unless current_user.institution == current_user.institution
+  end
 
   def institution_params
     params.require(:institution).permit(:name)
