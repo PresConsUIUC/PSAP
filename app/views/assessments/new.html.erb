@@ -1,0 +1,9 @@
+<% provide(:title, 'New Assessment') %>
+
+<h1>New Assessment</h1>
+
+<%= form_for(@assessment) do |f| %>
+    <%= render 'shared/error_messages' %>
+
+    <%= f.submit 'Create', class: 'btn btn-primary' %>
+<% end %>

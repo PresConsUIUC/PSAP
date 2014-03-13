@@ -57,6 +57,13 @@ Psap::Application.routes.draw do
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get'
   match '/help', to: 'static#help', via: 'get'
+  # match '/settings', to: 'settings:settings', via: 'get'
+
+  match '/confirm', to: 'users#confirm', via: 'get'
+  match '/login', to: 'sessions#new', via: 'get'
+  match '/logout', to: 'sessions#destroy', via: 'delete'
+
+  resources :assessments
   resources :institutions
   resources :locations
   get 'report' => 'report#index'
@@ -64,7 +71,6 @@ Psap::Application.routes.draw do
   resources :resources
   resources :roles
   resources :sessions, only: [:new, :create, :destroy]
-  get 'settings' => 'settings#settings'
 
   # These rules will provide the /users resource, but with /users/new replaced
   # by /register.
@@ -75,16 +81,12 @@ Psap::Application.routes.draw do
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
 
-  match '/confirm', to: 'users#confirm', via: 'get'
-  match '/login', to: 'sessions#new', via: 'get'
-  match '/logout', to: 'sessions#destroy', via: 'delete'
-
   # Password routes
-  # Step 1: "I forgot my password," click a button to POST to /reset_password_email
+  # Step 1: "I forgot my password," click a button to POST to /forgot_password
   match '/forgot_password', to: 'password#forgot_password', via: 'get'
   match '/forgot_password', to: 'password#send_email', via: 'post'
   # Step 2: I click the link to /new_password in the email, then POST new
-  # password to /reset_password
+  # password to /new_password
   match '/new_password', to: 'password#new_password', via: 'get'
   match '/new_password', to: 'password#reset_password', via: 'post'
 

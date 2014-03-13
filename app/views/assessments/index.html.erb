@@ -1,0 +1,28 @@
+<% provide(:title, 'All Assessments') %>
+<h1>All Assessments</h1>
+
+<% if @assessments.any? %>
+    <%= will_paginate %>
+
+    <table class="table table-striped table-hover">
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Name</th>
+      </tr>
+      <% @assessments.each do |assessment| %>
+          <tr>
+            <td><%= link_to 'Edit', edit_assessment_path(assessment) %></td>
+            <td><%= link_to 'Delete', assessment, method: :delete,
+                            data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to assessment.name, assessment %></td>
+          </tr>
+      <% end %>
+    </table>
+
+    <%= will_paginate %>
+<% else %>
+    <p>There are no assessments.</p>
+<% end %>
+
+<p><%= link_to 'New Assessment', new_assessment_path %></p>
