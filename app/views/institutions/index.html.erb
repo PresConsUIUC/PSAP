@@ -5,13 +5,15 @@
 
 <table class="institutions table table-striped table-hover">
   <thead>
-    <th>Institution</th>
+    <th></th>
+    <th></th>
     <th>Repositories</th>
     <th>Users</th>
   </thead>
   <tbody>
     <% @institutions.each do |institution| %>
       <tr>
+        <td><%= link_to 'Edit', edit_institution_path(institution) %></td>
         <td><%= link_to institution.name, institution %></td>
         <td class="center"><%= institution.repositories.count %></td>
         <td class="center"><%= institution.users.count %></td>
