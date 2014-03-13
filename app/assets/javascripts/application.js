@@ -26,6 +26,7 @@ $(document).ready(function() {
 
         $('form#new_user input#user_password').bind('keyup input paste', function() {
             UserForm.refreshPasswordStatus();
+            UserForm.refreshPasswordConfirmationStatus();
         });
         $('form#new_user input#user_password_confirmation').bind('keyup input paste', function() {
             UserForm.refreshPasswordConfirmationStatus();
