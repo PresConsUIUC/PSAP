@@ -64,7 +64,32 @@ case Rails.env
     location = Location.create!(name: 'Secret Location', repository: repository)
     location2 = Location.create!(name: 'Super-Secret Location', repository: repository)
     location3 = Location.create!(name: 'Super-Duper-Secret Location', repository: repository)
-    location4 = Location.create!(name: 'Somewhat Secret Location', repository: repository)
+    location4 = Location.create!(name: 'Public Location', repository: repository)
+
+    resource = Resource.create(name: 'Magna Carta',
+                               resource_type: ResourceType::ITEM,
+                               location: location)
+    resource2 = Resource.create(name: 'Dead Sea Scrolls',
+                                resource_type: ResourceType::ITEM,
+                                location: location)
+    resource3 = Resource.create(name: 'Sears Catalog Collection',
+                                resource_type: ResourceType::COLLECTION,
+                                location: location2)
+    resource4 = Resource.create(name: 'JC Penney Catalog Collection',
+                                resource_type: ResourceType::COLLECTION,
+                                location: location2)
+    resource5 = Resource.create(name: 'U.S. Constitution',
+                                resource_type: ResourceType::ITEM,
+                                location: location3)
+    resource6 = Resource.create(name: 'Declaration of Independence',
+                                resource_type: ResourceType::ITEM,
+                                location: location3)
+    resource7 = Resource.create(name: 'Cat Fancy Collection',
+                                resource_type: ResourceType::COLLECTION,
+                                location: location4)
+    resource8 = Resource.create(name: 'Tiger Beat Collection',
+                                resource_type: ResourceType::COLLECTION,
+                                location: location4)
 
     permission = Permission.create!(key: 'institutions.edit_own')
     inst_admin_role.permissions << permission
