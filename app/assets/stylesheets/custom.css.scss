@@ -64,6 +64,9 @@ header {
   height:90px;
   margin:0px 0px 20px 0px;
   padding:0px;
+  @media print {
+    display:none;
+  }
 }
 
 header h1#title a {
@@ -129,6 +132,9 @@ footer {
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
   color: #999;
+  @media print {
+    display:none;
+  }
 }
 
 footer a {
