@@ -34,7 +34,7 @@
             <%= current_user.institution.name %> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to 'Edit', edit_polymorphic_url(current_user.institution) %></li>
+            <li><%= link_to 'Overview', polymorphic_url(current_user.institution) %></li>
             <li class="divider"></li>
             <% @user_institution_repositories.each do |repo| %>
                 <li><%= link_to repo.name, repo %></a></li>
