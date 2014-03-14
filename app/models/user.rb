@@ -16,7 +16,22 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: { case_sensitive: false }
 
   after_initialize :setup, if: :new_record?
+  after_create :log_create
+  after_update :log_update
   before_save { self.email = email.downcase }
+
+  @@_current_user = nil
+
+  # Used by this and other models to associate the current user with event log
+  # messages upon create/update/delete.
+  def self.current_user
+    @@_current_user
+  end
+
+  # Set by SessionsHelper.current_user
+  def self.current_user=(user)
+    @@_current_user = user
+  end
 
   def setup
     # generate a confirmation code
@@ -38,6 +53,16 @@ class User < ActiveRecord::Base
 
   def validate_password?
     password.present? || password_confirmation.present?
+  end
+
+  def log_create
+    Event.create(description: "Created account #{self.username}, affiliated with #{self.institution.name}",
+                 user: User.current_user)
+  end
+
+  def log_update
+    Event.create(description: "Edited user #{self.name}",
+                 user: User.current_user)
   end
 
 end
