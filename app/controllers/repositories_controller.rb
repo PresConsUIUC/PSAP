@@ -6,6 +6,7 @@ class RepositoriesController < ApplicationController
 
   def create
     @repository = Repository.new(repository_params)
+    @repository.institution = current_user.institution
     if @repository.save
       flash[:success] = 'Repository created.'
       redirect_to @repository
@@ -32,6 +33,7 @@ class RepositoriesController < ApplicationController
 
   def new
     @repository = Repository.new
+    @repository.institution = @user.institution
   end
 
   def show
@@ -50,8 +52,8 @@ class RepositoriesController < ApplicationController
 
   private
 
-  def user_params
-    params.require(:repository).permit(:name)
+  def repository_params
+    params.require(:repository).permit(:name, :institution)
   end
 
 end
