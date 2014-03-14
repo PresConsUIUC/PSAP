@@ -5,6 +5,7 @@ class Resource < ActiveRecord::Base
            inverse_of: :parent
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
 
+  validates :location, presence: true
   validates :name, length: { maximum: 255 }
   validates :resource_type, presence: true
 
