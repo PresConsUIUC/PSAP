@@ -154,6 +154,29 @@ footer ul li {
 }
 
 
+/* assessment report */
+
+div#assessment_report {
+  section#material_condition_overview {
+    ul {
+      margin-left:1em;
+      padding-left:0px;
+    }
+    table {
+      background-color:#d0e0ff;
+      width:200px;
+      td:first-child {
+        text-align:right;
+        width:30%;
+      }
+      td {
+        padding:0.1em 0.4em 0.1em 0.4em;
+      }
+    }
+  }
+}
+
+
 /* mixins, variables, etc. */
 
 @mixin box_sizing {
