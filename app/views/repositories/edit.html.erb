@@ -2,15 +2,11 @@
 
 <h1><%= @repository.name %></h1>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@repository) do |f| %>
-        <%= render 'shared/error_messages' %>
+<%= form_for(@repository) do |f| %>
+    <%= render 'shared/error_messages' %>
 
-        <%= f.label :name %>
-        <%= f.text_field :name %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
 
-        <%= f.submit 'Save Changes', class: 'btn btn-large btn-primary' %>
-    <% end %>
-  </div>
-</div>
+    <%= f.submit 'Save Changes', class: 'btn btn-large btn-primary' %>
+<% end %>
