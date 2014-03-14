@@ -1,3 +1,3 @@
-class Event < ActiveRecord::Base # TODO: rename to Event
+class Event < ActiveRecord::Base
   belongs_to :user
 end
