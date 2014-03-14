@@ -6,6 +6,15 @@ class Resource < ActiveRecord::Base
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
 
   validates :name, length: { maximum: 255 }
+  validates :resource_type, presence: true
 
-  # TODO: initialize type
+  def readable_resource_type
+    case resource_type
+      when 0
+        'Collection'
+      when 1
+        'Item'
+    end
+  end
+
 end
