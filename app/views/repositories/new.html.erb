@@ -1,0 +1,14 @@
+<% provide(:title, 'New Repository') %>
+
+<h1>New Repository</h1>
+
+<%= form_for(@repository) do |f| %>
+    <%= render 'shared/error_messages' %>
+
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <%= f.submit 'Create Repository', class: 'btn btn-primary' %>
+<% end %>
