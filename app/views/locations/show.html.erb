@@ -20,11 +20,11 @@
             </td>
             <td>
               <% if current_user.has_permission?('resources.delete_own') %>
-                  <%= link_to 'Delete', repository, method: :delete,
+                  <%= link_to 'Delete', resource, method: :delete,
                               data: { confirm: 'Are you sure?' } %>
               <% end %>
             </td>
-            <td><%= link_to repository.name, repository %></td>
+            <td><%= link_to resource.name, resource %></td>
           </tr>
       <% end %>
       </tbody>
