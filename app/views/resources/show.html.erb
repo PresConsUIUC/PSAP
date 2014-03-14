@@ -1,1 +1,6 @@
-<%= @resource.name %>
+<% provide(:title, @resource.name) %>
+
+<h1><%= @resource.name %> <%= link_to '(edit)', edit_resource_path(@resource) %></h1>
+
+<p><%= link_to "Back to #{@resource.location.name}",
+               polymorphic_path(@resource.location) %></p>
