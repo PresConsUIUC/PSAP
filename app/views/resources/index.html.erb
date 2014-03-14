@@ -1,5 +1,6 @@
-<% provide(:title, 'All Resources') %>
-<h1>All Resources</h1>
+<% provide(:title, 'Resources') %>
+
+<h1>Resources</h1>
 
 <% if @resources.any? %>
     <%= will_paginate %>
@@ -9,6 +10,9 @@
         <th></th>
         <th></th>
         <th>Name</th>
+        <th>Type</th>
+        <th>Repository</th>
+        <th>Location</th>
       </tr>
       <% @resources.each do |resource| %>
           <tr>
@@ -16,6 +20,9 @@
             <td><%= link_to 'Delete', resource, method: :delete,
                             data: { confirm: 'Are you sure?' } %></td>
             <td><%= link_to resource.name, resource %></td>
+            <td><%= resource.readable_resource_type %></td>
+            <td><%= resource.location.repository.name %></td>
+            <td><%= resource.location.name %></td>
           </tr>
       <% end %>
     </table>
