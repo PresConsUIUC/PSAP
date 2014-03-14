@@ -1,0 +1,23 @@
+<% provide(:title, "Edit #{@resource.name}") %>
+
+<h1>Edit <%= @resource.name %></h1>
+
+<%= form_for(@resource) do |f| %>
+    <%= render 'shared/error_messages' %>
+
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :resource_type %>
+      <%= select_tag(:resource_type, options_for_select([['Collection', ResourceType::COLLECTION],
+                                                         ['Item', ResourceType::ITEM]],
+                                                        ResourceType::ITEM),
+                     class: 'form-control') %>
+    </div>
+
+    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+
+<% end %>
