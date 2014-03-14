@@ -27,7 +27,6 @@ class AssessmentsController < ApplicationController
   end
 
   def new
-    @user = current_user
     @assessment = Assessment.new
   end
 

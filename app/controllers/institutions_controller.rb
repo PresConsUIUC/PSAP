@@ -20,7 +20,6 @@ class InstitutionsController < ApplicationController
   end
 
   def edit
-    @user = current_user
     @institution = Institution.find(params[:id])
   end
 

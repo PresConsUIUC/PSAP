@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     # the title menu.
     @user_institution_repositories = current_user ?
         current_user.institution.repositories.order(:name) : []
+    @user = current_user
   end
 
   def admin_user
