@@ -6,7 +6,8 @@ class Institution < ActiveRecord::Base
   after_update :log_update
   after_destroy :log_destroy
 
-  validates :name, length: { minimum: 2, maximum: 255 }
+  validates :name, length: { minimum: 2, maximum: 255 },
+            uniqueness: { case_sensitive: false }
 
   def log_update
     Event.create(description: "Edited institution #{self.name}",
