@@ -19,15 +19,14 @@
     <th></th>
     <th></th>
     <th></th>
+    <th># Resources</th>
   </thead>
   <tbody>
   <% @repository.locations.each do |location| %>
       <tr>
-        <td>
-          <% if current_user.has_permission?('repositories.edit_own') %>
-              <%= link_to 'Edit', edit_location_path(location) %>
-          <% end %>
-        </td>
+        <% if current_user.has_permission?('repositories.edit_own') %>
+            <td><%= link_to 'Edit', edit_location_path(location) %></td>
+        <% end %>
         <td>
           <% if current_user.has_permission?('repositories.delete_own') %>
               <%= link_to 'Delete', location, method: :delete,
@@ -35,6 +34,7 @@
           <% end %>
         </td>
         <td><%= link_to location.name, location %></td>
+        <td><%= location.resources.count %></td>
       </tr>
   <% end %>
   </tbody>
