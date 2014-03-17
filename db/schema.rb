@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140317192853) do
+ActiveRecord::Schema.define(version: 20140317203603) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -79,13 +79,13 @@ ActiveRecord::Schema.define(version: 20140317192853) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "location_id"
-    t.integer  "resource_id"
+    t.integer  "parent_id"
     t.integer  "resource_type"
     t.string   "name"
   end
 
   add_index "resources", ["location_id"], name: "index_resources_on_location_id"
-  add_index "resources", ["resource_id"], name: "index_resources_on_resource_id"
+  add_index "resources", ["parent_id"], name: "index_resources_on_parent_id"
 
   create_table "roles", force: true do |t|
     t.datetime "created_at"
