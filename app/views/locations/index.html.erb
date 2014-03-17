@@ -1,5 +1,21 @@
 <% provide(:title, 'All Locations') %>
-<h1>All Locations</h1>
+
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @repository.institution.name,
+                polymorphic_path(@repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @repository.name,
+                polymorphic_path(@repository) %>
+  </li>
+  <li class="active">Locations</li>
+</ol>
+
+<h1>Locations</h1>
 
 <%= will_paginate %>
 

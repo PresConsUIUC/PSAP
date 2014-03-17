@@ -1,5 +1,20 @@
 <% provide(:title, 'New Location') %>
 
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @location.repository.institution.name,
+                polymorphic_path(@location.repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @location.repository.name,
+                polymorphic_path(@location.repository) %>
+  </li>
+  <li class="active">New Location</li>
+</ol>
+
 <h1>New Location</h1>
 
 <%= form_for(@location, url: repository_locations_path(@repository)) do |f| %>
