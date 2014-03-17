@@ -1,7 +1,30 @@
 <% provide(:title, @user.full_name) %>
 
+<% if current_user.is_admin? %>
+    <ol class="breadcrumb">
+      <li><%= link_to 'Users', users_path %></li>
+      <li class="active"><%= @user.username %></li>
+    </ol>
+<% end %>
+
 <h1>
   <%= gravatar_for @user %>
   <%= @user.full_name %>
 </h1>
+
 <p><%= @user.institution.name %></p>
+
+<dl>
+  <dt>Email</dt>
+  <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+  <dt>Account Created</dt>
+  <dd><%= @user.created_at.strftime('%B %e, %Y') %></dd>
+  <dt>Last Login</dt>
+  <dd>
+    <% if @user.last_login %>
+      <%= @user.last_login.strftime('%B %e, %Y') %>
+    <% else %>
+      Never
+    <% end %>
+  </dd>
+</dl>
