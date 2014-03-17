@@ -14,7 +14,7 @@
   <% @events.each do |event| %>
       <tr>
         <td><%= event.description %></td>
-        <td><%= event.created_at.strftime('%B %e %Y @ %m:%M:%S %p') %></td>
+        <td><%= event.created_at.strftime('%B %e, %Y @ %l:%M:%S %p') %></td>
         <td>
           <% if event.user %>
               <%= link_to event.user.username, event.user,
