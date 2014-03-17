@@ -20,3 +20,35 @@
 </ol>
 
 <h1><%= @resource.name %> <%= link_to '(edit)', edit_resource_path(@resource) %></h1>
+
+<% if @resource.resource_type == ResourceType::COLLECTION &&
+        @resource.children.any? %>
+    <table class="table table-striped table-hover">
+      <caption>Contents</caption>
+      <thead>
+      <th></th>
+      <th></th>
+      <th>Title</th>
+      <th>Type</th>
+      </thead>
+      <tbody>
+      <% @resource.children.each do |child| %>
+          <tr>
+            <td>
+              <% if current_user.has_permission?('resources.edit_own') %>
+                  <%= link_to 'Edit', edit_resource_path(child) %>
+              <% end %>
+            </td>
+            <td>
+              <% if current_user.has_permission?('resources.delete_own') %>
+                  <%= link_to 'Delete', child, method: :delete,
+                              data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </td>
+            <td><%= link_to child.name, child %></td>
+            <td><%= child.readable_resource_type %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
