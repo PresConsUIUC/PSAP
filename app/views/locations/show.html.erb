@@ -21,9 +21,10 @@
     <table class="table table-striped table-hover">
       <caption>Resources</caption>
       <thead>
-      <th></th>
-      <th></th>
-      <th></th>
+        <th></th>
+        <th></th>
+        <th>Title</th>
+        <th>Type</th>
       </thead>
       <tbody>
       <% @location.resources.each do |resource| %>
@@ -40,6 +41,7 @@
               <% end %>
             </td>
             <td><%= link_to resource.name, resource %></td>
+            <td><%= resource.readable_resource_type %></td>
           </tr>
       <% end %>
       </tbody>
