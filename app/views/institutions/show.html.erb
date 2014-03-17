@@ -46,3 +46,35 @@
       <%= link_to '(Add one?)', new_institution_repository_path(@institution) %></p>
 
 <% end %>
+
+<% if @institution.assessments.any? %>
+
+    <table class="table table-striped table-hover">
+      <caption>Assessments</caption>
+      <thead>
+      <th></th>
+      <th></th>
+      <th></th>
+      </thead>
+      <tbody>
+      <% @institution.assessments.each do |assessment| %>
+          <tr>
+            <td>
+              <%= link_to 'Edit', edit_assessment_path(assessment) %>
+            </td>
+            <td>
+              <%= link_to 'Delete', assessment, method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+            </td>
+            <td><%= link_to assessment.name, assessment %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+<% else %>
+
+    <p>This institution has not completed any assessments.
+      <%= link_to '(Add one?)', new_assessment_path %></p>
+
+<% end %>
