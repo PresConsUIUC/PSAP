@@ -3,7 +3,8 @@ class ResourcesController < ApplicationController
   before_action :signed_in_user
 
   def create
-    @resource = Resource.new(resource_params)
+    @location = Location.find(params[:location_id])
+    @resource = @location.resources.build(resource_params)
     if @resource.save
       flash[:success] = 'Resource created.'
       redirect_to @resource
@@ -25,11 +26,13 @@ class ResourcesController < ApplicationController
   end
 
   def index
+    @location = Location.find(params[:location_id]) if params[:location_id]
     @resources = Resource.paginate(page: params[:page], per_page: 30)
   end
 
   def new
-    @resource = Resource.new
+    @location = Location.find(params[:location_id])
+    @resource = @location.resources.build
   end
 
   def show

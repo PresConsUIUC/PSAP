@@ -3,7 +3,8 @@ class LocationsController < ApplicationController
   before_action :signed_in_user
 
   def create
-    @location = Location.new(location_params)
+    @repository = Repository.find(params[:repository_id])
+    @location = @repository.locations.build(location_params)
     if @location.save
       flash[:success] = 'Location created.'
       redirect_to @location
@@ -25,11 +26,14 @@ class LocationsController < ApplicationController
   end
 
   def index
-    @locations = Location.paginate(page: params[:page], per_page: 30)
+    @repository = Repository.find(params[:repository_id])
+    @locations = @repository.locations.paginate(page: params[:page],
+                                                per_page: 30)
   end
 
   def new
-    @location = Location.new
+    @repository = Repository.find(params[:repository_id])
+    @location = @repository.locations.build
   end
 
   def show

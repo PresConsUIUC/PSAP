@@ -38,11 +38,11 @@
       </tbody>
     </table>
 
-    <p><%= link_to 'Add repository', new_repository_path %></p>
+    <p><%= link_to 'Add repository', new_institution_repository_path(@institution) %></p>
 
 <% else %>
 
     <p>This institution has no repositories.
-      <%= link_to '(Add one?)', new_repository_path %></p>
+      <%= link_to '(Add one?)', new_institution_repository_path(@institution) %></p>
 
 <% end %>

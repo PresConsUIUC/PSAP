@@ -67,12 +67,17 @@ Psap::Application.routes.draw do
   match '/logout', to: 'sessions#destroy', via: 'delete'
   match '/report', to: 'reports#index', via: 'get'
 
-  resources :assessments
-  resources :institutions
-  resources :locations
-  get 'report' => 'report#index'
-  resources :repositories
-  resources :resources
+  resources :institutions do
+    resources :repositories
+  end
+  resources :repositories, except: :index do
+    resources :locations
+  end
+  resources :locations, except: :index do
+    resources :resources
+  end
+  resources :resources, except: :index
+  resources :assessments, except: :index
   resources :roles
   resources :sessions, only: [:new, :create, :destroy]
 

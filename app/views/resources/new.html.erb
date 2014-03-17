@@ -2,7 +2,7 @@
 
 <h1>New Resource</h1>
 
-<%= form_for(@resource) do |f| %>
+<%= form_for(@resource, url: location_resources_path(@location)) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
     <div class="form-group">
