@@ -3,7 +3,7 @@
 <h1>New Assessment</h1>
 
 <%= form_for(@assessment) do |f| %>
-    <%= render 'shared/error_messages' %>
+    <%= render 'shared/error_messages', :object => f.object %>
 
     <%= f.submit 'Create', class: 'btn btn-primary' %>
 <% end %>
