@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140314170225) do
+ActiveRecord::Schema.define(version: 20140317162324) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -24,9 +24,20 @@ ActiveRecord::Schema.define(version: 20140314170225) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "resource_id"
+    t.integer  "user_id"
   end
 
   add_index "assessments", ["resource_id"], name: "index_assessments_on_resource_id"
+  add_index "assessments", ["user_id"], name: "index_assessments_on_user_id"
+
+  create_table "events", force: true do |t|
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -43,15 +54,6 @@ ActiveRecord::Schema.define(version: 20140314170225) do
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"
-
-  create_table "events", force: true do |t|
-    t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "user_id"
-  end
-
-  add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "permissions", force: true do |t|
     t.string   "key"
