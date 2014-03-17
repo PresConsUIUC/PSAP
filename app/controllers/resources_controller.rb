@@ -52,7 +52,7 @@ class ResourcesController < ApplicationController
   private
 
   def resource_params
-    params.require(:resource).permit(:name, :type)
+    params.require(:resource).permit(:name, :location, :resource_type)
   end
 
 end

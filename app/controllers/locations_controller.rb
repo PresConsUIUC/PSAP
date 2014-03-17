@@ -52,7 +52,7 @@ class LocationsController < ApplicationController
 
   private
 
-  def user_params
+  def location_params
     params.require(:location).permit(:name, :repository)
   end
 
