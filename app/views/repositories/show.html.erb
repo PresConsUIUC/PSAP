@@ -1,5 +1,16 @@
 <% provide(:title, @repository.name) %>
 
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @repository.institution.name,
+                polymorphic_path(@repository.institution) %>
+  </li>
+  <li class="active"><%= @repository.name %></li>
+</ol>
+
 <h1><%= @repository.name %></h1>
 
 <table class="table table-striped table-hover">

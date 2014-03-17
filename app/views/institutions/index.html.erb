@@ -1,4 +1,11 @@
 <% provide(:title, 'All Institutions') %>
+
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li class="active">Institutions</li>
+  <% end %>
+</ol>
+
 <h1>All Institutions</h1>
 
 <%= will_paginate %>

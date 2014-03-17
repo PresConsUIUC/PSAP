@@ -1,6 +1,22 @@
 <% provide(:title, @resource.name) %>
 
-<h1><%= @resource.name %> <%= link_to '(edit)', edit_resource_path(@resource) %></h1>
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @resource.location.repository.institution.name,
+                polymorphic_path(@resource.location.repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.repository.name,
+                polymorphic_path(@resource.location.repository) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.name,
+                polymorphic_path(@resource.location) %>
+  </li>
+  <li class="active"><%= @resource.name %></li>
+</ol>
 
-<p><%= link_to "Back to #{@resource.location.name}",
-               polymorphic_path(@resource.location) %></p>
+<h1><%= @resource.name %> <%= link_to '(edit)', edit_resource_path(@resource) %></h1>

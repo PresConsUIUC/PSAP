@@ -1,5 +1,20 @@
 <% provide(:title, @location.name) %>
 
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @location.repository.institution.name,
+                polymorphic_path(@location.repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @location.repository.name,
+                polymorphic_path(@location.repository) %>
+  </li>
+  <li class="active"><%= @location.name %></li>
+</ol>
+
 <h1><%= @location.name %></h1>
 
 <% if @location.resources.any? %>
