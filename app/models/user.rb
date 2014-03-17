@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
 
   @@_current_user = nil
+  @_log_update = true
 
   # Used by this and other models to associate the current user with event log
   # messages upon create/update/delete.
@@ -51,6 +52,11 @@ class User < ActiveRecord::Base
     self.role.is_admin?
   end
 
+  # If set to false, the next ActiveRecord save will not be logged.
+  def log_update?(boolean)
+    @_log_update = boolean
+  end
+
   def validate_password?
     password.present? || password_confirmation.present?
   end
@@ -61,8 +67,11 @@ class User < ActiveRecord::Base
   end
 
   def log_update
-    Event.create(description: "Edited user #{self.name}",
-                 user: User.current_user)
+    if @_log_update
+      Event.create(description: "Edited user #{self.username}",
+                   user: User.current_user)
+    end
+    @_log_update = true
   end
 
 end

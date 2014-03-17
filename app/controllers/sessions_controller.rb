@@ -12,6 +12,9 @@ class SessionsController < ApplicationController
       # Log the successful signin
       Event.create(description: "User #{user.username} signed in",
                    user: user)
+      user.last_login = Time.now
+      user.log_update?(false)
+      user.save
 
       redirect_back_or user
     else
