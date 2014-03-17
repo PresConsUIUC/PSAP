@@ -10,7 +10,7 @@ class Resource < ActiveRecord::Base
   after_destroy :log_destroy
 
   validates :location, presence: true
-  validates :name, length: { maximum: 255 }
+  validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true
 
   def readable_resource_type

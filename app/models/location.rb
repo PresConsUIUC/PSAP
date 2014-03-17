@@ -6,7 +6,7 @@ class Location < ActiveRecord::Base
   after_update :log_update
   after_destroy :log_destroy
 
-  validates :name, length: { maximum: 255 }
+  validates :name, presence: true, length: { maximum: 255 }
 
   def log_create
     Event.create(description: "Created location #{self.name} in repository #{self.repository.name}",
