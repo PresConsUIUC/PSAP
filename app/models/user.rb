@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
     @@_current_user
   end
 
-  # Set by SessionsHelper.current_user
+  # Set by ApplicationController.init
   def self.current_user=(user)
     @@_current_user = user
   end
