@@ -12,10 +12,11 @@
 
     <div class="form-group">
       <%= f.label :resource_type %>
-      <%= select_tag(:resource_type, options_for_select([['Collection', ResourceType::COLLECTION],
-                                                         ['Item', ResourceType::ITEM]],
-                                                        ResourceType::ITEM),
-                     class: 'form-control') %>
+      <%= select('resource', 'resource_type',
+                 options_for_select([['Collection', ResourceType::COLLECTION],
+                                     ['Item', ResourceType::ITEM]]),
+                 { include_blank: true },
+                 { class: 'form-control' }) %>
     </div>
 
     <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
