@@ -63,6 +63,21 @@ dl {
   }
 }
 
+/* top nav bar */
+
+nav.navbar {
+  li#help {
+    margin-right:10px;
+    a {
+      background: url(image_path('question.png')) CENTER CENTER NO-REPEAT;
+      content:url(image_path('1x1transparent.png'));
+      top:11px;
+      width:24px;
+      height:24px;
+    }
+  }
+}
+
 /* header */
 
 header {
