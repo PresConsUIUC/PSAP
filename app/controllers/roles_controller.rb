@@ -1,6 +1,6 @@
 class RolesController < ApplicationController
 
-  before_action :admin_user
+  before_action :signed_in_user, :admin_user
 
   def create
     @role = Role.new(role_params)
