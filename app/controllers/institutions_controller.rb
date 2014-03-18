@@ -16,8 +16,6 @@ class InstitutionsController < ApplicationController
   end
 
   def destroy
-    flash[:notice] = 'Institutions cannot be deleted.'
-    redirect_to institutions_url
   end
 
   def edit
