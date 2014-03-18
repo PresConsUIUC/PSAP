@@ -16,17 +16,21 @@
 <table class="table table-striped table-hover">
   <caption>Locations</caption>
   <thead>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th># Resources</th>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th># Resources</th>
+    </tr>
   </thead>
   <tbody>
   <% @repository.locations.each do |location| %>
       <tr>
-        <% if current_user.has_permission?('repositories.edit_own') %>
-            <td><%= link_to 'Edit', edit_location_path(location) %></td>
-        <% end %>
+        <td>
+          <% if current_user.has_permission?('repositories.edit_own') %>
+              <%= link_to 'Edit', edit_location_path(location) %>
+          <% end %>
+        </td>
         <td>
           <% if current_user.has_permission?('repositories.delete_own') %>
               <%= link_to 'Delete', location, method: :delete,

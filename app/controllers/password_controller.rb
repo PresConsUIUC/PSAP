@@ -27,7 +27,7 @@ class PasswordController < ApplicationController
     end
   end
 
-  # Responds to POST /reset_password
+  # Responds to POST /new_password
   def reset_password
     @user = User.find_by_username params[:username]
     if @user
