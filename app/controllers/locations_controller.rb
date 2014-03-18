@@ -1,6 +1,10 @@
 class LocationsController < ApplicationController
 
   before_action :signed_in_user
+  before_action :user_of_same_institution_or_admin, only: [:new, :create,
+                                                           :edit, :update,
+                                                           :index, :show,
+                                                           :destroy]
 
   def create
     @repository = Repository.find(params[:repository_id])
@@ -51,6 +55,20 @@ class LocationsController < ApplicationController
   end
 
   private
+
+  def user_of_same_institution_or_admin
+    # Normal users can only modify locations in their own institution.
+    # Administrators can edit any location.
+    if params[:id]
+      location = Location.find(params[:id])
+      repository = location.repository
+    else
+      repository = Repository.find(params[:repository_id])
+    end
+    redirect_to(locations_url) unless
+        repository.institution.users.include?(current_user) ||
+            current_user.is_admin?
+  end
 
   def location_params
     params.require(:location).permit(:name, :repository)

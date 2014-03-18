@@ -37,16 +37,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def signed_out_user
-    if signed_in?
-      store_location
-      redirect_to root_url, notice: 'You are already signed in.'
-    end
-  end
-
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to(root_url) unless current_user?(@user)
-  end
-
 end

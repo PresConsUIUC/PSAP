@@ -1,6 +1,10 @@
 class ResourcesController < ApplicationController
 
   before_action :signed_in_user
+  before_action :user_of_same_institution_or_admin, only: [:new, :create,
+                                                           :edit, :update,
+                                                           :index, :show,
+                                                           :destroy]
 
   def create
     @location = Location.find(params[:location_id])
@@ -50,6 +54,20 @@ class ResourcesController < ApplicationController
   end
 
   private
+
+  def user_of_same_institution_or_admin
+    # Normal users can only modify resources in their own institution.
+    # Administrators can edit any resource.
+    if params[:id]
+      resource = Resource.find(params[:id])
+      location = resource.location
+    else
+      location = Location.find(params[:location_id])
+    end
+    redirect_to(resources_url) unless
+        location.repository.institution.users.include?(current_user) ||
+            current_user.is_admin?
+  end
 
   def resource_params
     params.require(:resource).permit(:name, :location, :resource_type)

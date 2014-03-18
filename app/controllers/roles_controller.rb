@@ -1,8 +1,6 @@
 class RolesController < ApplicationController
 
-  before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update]
-  before_action :admin_user, only: :destroy
+  before_action :admin_user
 
   def create
     @role = Role.new(role_params)

@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
 
-  before_action :signed_out_user, only: :new
-  before_action :correct_user, only: [:edit, :show, :update]
+  before_action :signed_in_user, except: [:new, :create]
+  before_action :before_new_user, only: [:new, :create]
+  before_action :before_edit_user, only: [:edit, :update]
+  before_action :before_show_user, only: :show
   before_action :admin_user, only: [:index, :destroy]
 
   def create
@@ -72,6 +74,27 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def before_edit_user
+    # Normal users can only edit themselves. Administrators can edit anyone.
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless current_user?(@user) || current_user.is_admin?
+  end
+
+  def before_new_user
+    if signed_in?
+      store_location
+      redirect_to root_url, notice: 'You are already signed in.'
+    end
+  end
+
+  def before_show_user
+    # Normal users can only see other users from their own institution.
+    # Administrators can see everyone.
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless
+        @user.institution == current_user.institution || current_user.is_admin?
+  end
 
   def user_create_params
     params.require(:user).permit(:username, :email, :first_name, :last_name,
