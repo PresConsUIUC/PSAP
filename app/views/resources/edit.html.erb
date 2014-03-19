@@ -1,5 +1,25 @@
 <% provide(:title, "Edit #{@resource.name}") %>
 
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @resource.location.repository.institution.name,
+                polymorphic_path(@resource.location.repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.repository.name,
+                polymorphic_path(@resource.location.repository) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.name,
+                polymorphic_path(@resource.location) %>
+  </li>
+  <li><%= link_to @resource.name, polymorphic_path(@resource) %></li>
+  <li class="active">Edit</li>
+</ol>
+
 <h1>Edit <%= @resource.name %></h1>
 
 <%= form_for(@resource) do |f| %>

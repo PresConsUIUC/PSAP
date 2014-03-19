@@ -1,5 +1,20 @@
 <% provide(:title, "Edit #{@repository.name}") %>
 
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @repository.institution.name,
+                polymorphic_path(@repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @repository.name,
+                polymorphic_path(@repository) %>
+  </li>
+  <li class="active">Edit</li>
+</ol>
+
 <h1><%= @repository.name %></h1>
 
 <%= form_for(@repository) do |f| %>

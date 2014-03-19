@@ -1,7 +1,14 @@
 <% provide(:title, "Edit #{@institution.name}") %>
 
-<h1>Edit <%= @institution.name %></h1>
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li><%= link_to @institution.name, @institution %></li>
+  <li class="active">Edit</li>
+</ol>
 
+<h1>Edit <%= @institution.name %></h1>
 
 <%= form_for(@institution) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
