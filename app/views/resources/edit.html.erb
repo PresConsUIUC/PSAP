@@ -14,7 +14,8 @@
       <%= f.label :resource_type %>
       <%= select('resource', 'resource_type',
                  options_for_select([['Collection', ResourceType::COLLECTION],
-                                     ['Item', ResourceType::ITEM]]),
+                                     ['Item', ResourceType::ITEM]],
+                                    @resource.resource_type),
                  { include_blank: true },
                  { class: 'form-control' }) %>
     </div>
