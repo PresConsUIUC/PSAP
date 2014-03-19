@@ -7,7 +7,8 @@
   <li class="active"><%= @institution.name %></li>
 </ol>
 
-<h1><%= @institution.name %></h1>
+<h1><%= @institution.name %>
+  <%= link_to '(edit)', edit_institution_path(@institution) %></h1>
 
 <% if @institution.repositories.any? %>
 
