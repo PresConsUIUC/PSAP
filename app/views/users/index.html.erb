@@ -9,6 +9,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
     <th>Username</th>
     <th>Name</th>
     <th>Institution</th>
@@ -19,6 +20,15 @@
         <td>
           <% if current_user.is_admin? || current_user == user %>
               <%= link_to 'Edit', edit_user_path(user) %>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.is_admin? && !current_user?(user) %>
+              <% if user.enabled %>
+                  <%= link_to 'Disable', disable_user_path(user), method: :patch %>
+              <% else %>
+                  <%= link_to 'Enable', enable_user_path(user), method: :patch %>
+              <% end %>
           <% end %>
         </td>
         <td>

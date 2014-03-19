@@ -5,8 +5,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(username: params[:session][:username].downcase)
-    if user && user.confirmed && user.authenticate(params[:session][:password])
+    user = User.find_by(username: params[:session][:username].downcase,
+                        enabled: true,
+                        confirmed: true)
+    if user && user.authenticate(params[:session][:password])
       sign_in user
 
       # Log the successful signin

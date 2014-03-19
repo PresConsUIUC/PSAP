@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :before_new_user, only: [:new, :create]
   before_action :before_edit_user, only: [:edit, :update]
   before_action :before_show_user, only: :show
-  before_action :admin_user, only: [:index, :destroy]
+  before_action :admin_user, only: [:index, :destroy, :enable, :disable]
 
   def create
     @user = User.new(user_create_params)
@@ -34,6 +34,7 @@ class UsersController < ApplicationController
     if @user && !@user.confirmed &&
         params[:confirmation_code] == @user.confirmation_code
       @user.confirmed = true
+      @user.enabled = true
       @user.save!
       flash[:success] = 'Your account has been confirmed. Please log in.'
       redirect_to login_url
@@ -50,6 +51,24 @@ class UsersController < ApplicationController
   end
 
   def edit
+  end
+
+  # Responds to PATCH /users/:id/enable
+  def enable
+    user = User.find(params[:id])
+    user.enabled = true
+    user.save!
+    flash[:success] = "User #{user.username} enabled."
+    redirect_to users_url
+  end
+
+  # Responds to PATCH /users/:id/disable
+  def disable
+    user = User.find(params[:id])
+    user.enabled = false
+    user.save!
+    flash[:success] = "User #{user.username} disabled."
+    redirect_to users_url
   end
 
   def index
@@ -103,7 +122,8 @@ class UsersController < ApplicationController
 
   def user_update_params
     params.require(:user).permit(:email, :first_name, :last_name,
-                                 :password, :password_confirmation, :institution)
+                                 :password, :password_confirmation, :institution,
+                                 :enabled)
   end
 
 end

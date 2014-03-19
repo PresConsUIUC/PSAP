@@ -28,35 +28,35 @@ case Rails.env
                               first_name: 'System', last_name: 'Administrator',
                               password: 'admin!', password_confirmation: 'admin!',
                               institution: institution1, role: admin_role,
-                              confirmed: true)
+                              confirmed: true, enabled: true)
 
     # Institution admin user
     inst_admin_user = User.create!(username: 'inst', email: 'inst_admin@example.org',
                                    first_name: 'Institution', last_name: 'Administrator',
                                    password: 'inst_admin', password_confirmation: 'inst_admin',
                                    institution: institution1, role: inst_admin_role,
-                                   confirmed: true)
+                                   confirmed: true, enabled: true)
 
     # Normal user
     normal_user = User.create!(username: 'normal', email: 'normal@example.org',
                                first_name: 'Normal', last_name: 'User',
                                password: 'normal', password_confirmation: 'normal',
                                institution: institution1, role: normal_role,
-                               confirmed: true)
+                               confirmed: true, enabled: true)
 
     # Alex
     alex_user = User.create!(username: 'alexd', email: 'alexd@illinois.edu',
                              first_name: 'Alex', last_name: 'Dolski',
                              password: 'password', password_confirmation: 'password',
                              institution: institution1, role: admin_role,
-                             confirmed: true)
+                             confirmed: true, enabled: true)
 
     # Ryan
     ryan_user = User.create!(username: 'edge2', email: 'edge2@illinois.edu',
                              first_name: 'Ryan', last_name: 'Edge',
                              password: 'password', password_confirmation: 'password',
                              institution: institution1, role: admin_role,
-                             confirmed: true)
+                             confirmed: true, enabled: true)
 
     repository = Repository.create!(institution: institution1,
                                     name: 'First Repository')

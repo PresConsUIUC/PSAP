@@ -89,6 +89,8 @@ Psap::Application.routes.draw do
   get '/users/register' => redirect('/register')
   resources :users, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
+  match '/users/:id/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
+  match '/users/:id/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot_password

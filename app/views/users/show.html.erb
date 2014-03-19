@@ -17,6 +17,11 @@
 <dl>
   <dt>Email</dt>
   <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+  <dt>Account</dt>
+  <dd>
+    <%= @user.confirmed ? 'Confirmed' : 'Not Confirmed' %>,
+    <%= @user.enabled ? 'Enabled' : 'Disabled' %>
+  </dd>
   <dt>Account Created</dt>
   <dd><%= @user.created_at.strftime('%B %e, %Y') %></dd>
   <dt>Last Login</dt>
