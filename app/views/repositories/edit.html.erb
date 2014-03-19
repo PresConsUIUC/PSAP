@@ -20,8 +20,10 @@
 <%= form_for(@repository) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
 
-    <%= f.submit 'Save Changes', class: 'btn btn-large btn-primary' %>
+    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
 <% end %>
