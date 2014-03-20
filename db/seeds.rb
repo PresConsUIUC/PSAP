@@ -1,13 +1,20 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# Seed the database differently depending on the environment.
+# formats
+Format.create!(name: '35mm nitrate', score: 0, obsolete: true)
+Format.create!(name: '35mm acetate', score: 0.375, obsolete: true)
+Format.create!(name: '35mm polyester', score: 0.875, obsolete: true)
+Format.create!(name: '16mm acetate', score: 0.375, obsolete: true)
+Format.create!(name: '16mm polyester', score: 0.875, obsolete: true)
+Format.create!(name: '8mm', score: 0.375, obsolete: true)
+Format.create!(name: 'Super 8mm', score: 0.5, obsolete: true)
+Format.create!(name: '9.5mm', score: 0.25, obsolete: true)
+Format.create!(name: 'Other film gauges', score: 0, obsolete: true)
+
+# From here, we seed the database differently depending on the environment.
 case Rails.env
+
   when 'development'
     institution1 = Institution.create!(name: 'University of Illinois at Urbana-Champaign')
     institution2 = Institution.create!(name: 'West Southeast Directional State University')
