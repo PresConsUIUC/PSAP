@@ -44,7 +44,7 @@ class RepositoriesController < ApplicationController
 
   def update
     @repository = Repository.find(params[:id])
-    if @repository.update_attributes(user_params)
+    if @repository.update_attributes(repository_params)
       flash[:success] = 'Repository updated.'
       redirect_to @repository
     else
