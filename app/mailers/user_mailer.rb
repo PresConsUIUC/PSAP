@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
                                   action: 'new_password',
                                   only_path: false,
                                   username: @user.username,
-                                  key: @user.reset_password_key)
+                                  key: @user.password_reset_key)
     mail(to: @user.email, subject: 'Your request to reset your PSAP password')
   end
 

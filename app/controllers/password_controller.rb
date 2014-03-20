@@ -9,7 +9,7 @@ class PasswordController < ApplicationController
   def send_email
     @user = User.find_by_username params[:username]
     if @user
-      @user.reset_password_key = SecureRandom.urlsafe_base64(nil, false)
+      @user.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
       @user.save!
       UserMailer.welcome_email(@user).deliver
       flash[:success] = 'An email has been sent containing a link to reset
@@ -22,7 +22,7 @@ class PasswordController < ApplicationController
   # reset emails.
   def new_password
     @user = User.find_by_username params[:username]
-    if !@user || params[:key] != @user.reset_password_key
+    if !@user || params[:key] != @user.password_reset_key
       redirect_to root_url
     end
   end
@@ -31,7 +31,7 @@ class PasswordController < ApplicationController
   def reset_password
     @user = User.find_by_username params[:username]
     if @user
-      @user.reset_password_key = nil;
+      @user.password_reset_key = nil;
       @user.update_attributes(user_change_password_params)
       flash[:success] = 'Password reset successfully.'
       redirect_to login_url
