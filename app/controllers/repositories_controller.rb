@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new, :create,
+  before_action :user_of_same_institution_or_admin, only: [:new,
                                                            :edit, :update,
                                                            :index, :show,
                                                            :destroy]
@@ -60,7 +60,7 @@ class RepositoriesController < ApplicationController
     if params[:id]
       repository = Repository.find(params[:id])
       institution = repository.institution
-    else
+    elsif params[:institution_id]
       institution = Institution.find(params[:institution_id])
     end
     redirect_to(repositories_url) unless
