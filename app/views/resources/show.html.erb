@@ -32,7 +32,7 @@
       <th>Type</th>
       </thead>
       <tbody>
-      <% @resource.children.each do |child| %>
+      <% @resource.children.order(:name).each do |child| %>
           <tr>
             <td>
               <% if current_user.has_permission?('resources.edit_own') %>

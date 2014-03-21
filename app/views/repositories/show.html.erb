@@ -25,7 +25,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @repository.locations.each do |location| %>
+  <% @repository.locations.order(:name).each do |location| %>
       <tr>
         <td>
           <% if current_user.has_permission?('repositories.edit_own') %>

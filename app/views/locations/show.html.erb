@@ -27,7 +27,7 @@
         <th>Type</th>
       </thead>
       <tbody>
-      <% @location.resources.each do |resource| %>
+      <% @location.resources.order(:name).each do |resource| %>
           <tr>
             <td>
               <% if current_user.has_permission?('resources.edit_own') %>

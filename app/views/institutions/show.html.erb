@@ -20,7 +20,7 @@
         <th></th>
       </thead>
       <tbody>
-        <% @institution.repositories.each do |repository| %>
+        <% @institution.repositories.order(:name).each do |repository| %>
           <tr>
             <td>
               <% if current_user.has_permission?('repositories.edit_own') %>
