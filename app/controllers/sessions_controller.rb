@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
       user.log_update?(false)
       user.save
 
-      redirect_back_or user
+      redirect_back_or dashboard_path
     else
       sleep 2 # slow down brute-force attacks
       flash.now[:error] = 'Invalid username/password combination.'

@@ -8,12 +8,13 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if signed_in? %>
+            <li><%= link_to 'Dashboard', dashboard_path %></li>
+
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Tools <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="">Dashboard</a></li>
                 <li><a href="">Format ID Guide</a></li>
                 <li><%= link_to 'Glossary', glossary_path %></li>
                 <li><%= link_to 'Bibliography', bibliography_path %></li>
