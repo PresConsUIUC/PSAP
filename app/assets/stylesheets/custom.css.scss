@@ -74,6 +74,10 @@ nav.navbar {
       top:11px;
       width:24px;
       height:24px;
+      /* hide text more efficiently than with text-indent:-9999px */
+      text-indent:100%;
+      white-space:nowrap;
+      overflow:hidden;
     }
   }
 }
