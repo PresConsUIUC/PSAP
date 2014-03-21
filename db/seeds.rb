@@ -20,8 +20,10 @@ case Rails.env
     institution1 = Institution.create!(name: 'University of Illinois at Urbana-Champaign')
     institution2 = Institution.create!(name: 'West Southeast Directional State University')
     institution3 = Institution.create!(name: 'Hamburger University')
-    institution4 = Institution.create!(name: 'Barnum & Bailey Circus Academy')
-    institution5 = Institution.create!(name: 'Hogwart\'s Academy')
+    institution4 = Institution.create!(name: 'San Quentin Prison University')
+    institution5 = Institution.create!(name: 'Barnum & Bailey Clown College')
+    institution6 = Institution.create!(name: 'Hogwart\'s Academy')
+    institution7 = Institution.create!(name: 'University of Life')
 
     # Admin role
     admin_role = Role.create!(name: 'Administrator', is_admin: true)
@@ -31,13 +33,13 @@ case Rails.env
 
     # Admin user
     admin_user = User.create!(username: 'admin', email: 'admin@example.org',
-                              first_name: 'Addison', last_name: 'McAdmin',
+                              first_name: 'Adam', last_name: 'McAdmin',
                               password: 'password', password_confirmation: 'password',
                               institution: institution1, role: admin_role,
                               confirmed: true, enabled: true)
     # Normal user
     normal_user = User.create!(username: 'normal', email: 'normal@example.org',
-                               first_name: 'Norm', last_name: 'McNormalUser',
+                               first_name: 'Norm', last_name: 'McNormal',
                                password: 'password', password_confirmation: 'password',
                                institution: institution1, role: normal_role,
                                confirmed: true, enabled: true)
