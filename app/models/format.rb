@@ -1,4 +1,5 @@
 class Format < ActiveRecord::Base
+  has_many :resources, inverse_of: :format
 
   validates :name, presence: true
   validates :obsolete, presence: true

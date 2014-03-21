@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140320190040) do
+ActiveRecord::Schema.define(version: 20140321133624) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -89,8 +89,10 @@ ActiveRecord::Schema.define(version: 20140320190040) do
     t.integer  "parent_id"
     t.integer  "resource_type"
     t.string   "name"
+    t.integer  "format_id"
   end
 
+  add_index "resources", ["format_id"], name: "index_resources_on_format_id"
   add_index "resources", ["location_id"], name: "index_resources_on_location_id"
   add_index "resources", ["parent_id"], name: "index_resources_on_parent_id"
 
