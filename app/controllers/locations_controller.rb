@@ -19,10 +19,11 @@ class LocationsController < ApplicationController
 
   def destroy
     location = Location.find(params[:id])
+    repository = location.repository
     name = location.name
     location.destroy
     flash[:success] = "#{name} deleted."
-    redirect_to locations_url
+    redirect_to repository
   end
 
   def edit

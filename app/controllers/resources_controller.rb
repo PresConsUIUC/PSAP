@@ -19,10 +19,11 @@ class ResourcesController < ApplicationController
 
   def destroy
     resource = Resource.find(params[:id])
+    location = resource.location
     name = resource.name
     resource.destroy
     flash[:success] = "#{name} deleted."
-    redirect_to resources_url
+    redirect_to location
   end
 
   def edit

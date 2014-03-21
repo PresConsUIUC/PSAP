@@ -19,10 +19,11 @@ class RepositoriesController < ApplicationController
 
   def destroy
     repository = Repository.find(params[:id])
-    name = repository.full_name
+    institution = repository.institution
+    name = repository.name
     repository.destroy
     flash[:success] = "#{name} deleted."
-    redirect_to repositories_url
+    redirect_to institution
   end
 
   def edit
