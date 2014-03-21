@@ -130,7 +130,10 @@ div.login_form {
 }
 
 div#registration_form {
-  width:30%
+  width:30%;
+  p#gravatar {
+    margin:1.5em 0em 3.5em 0em;
+  }
 }
 
 #error_explanation {

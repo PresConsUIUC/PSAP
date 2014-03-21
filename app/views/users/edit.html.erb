@@ -3,6 +3,11 @@
 <h1>Update your profile</h1>
 
 <div id="registration_form">
+  <p id="gravatar">
+    <%= gravatar_for @user %>
+    <a href="http://gravatar.com/emails">Change</a>
+  </p>
+
   <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages', :object => f.object %>
 
@@ -35,7 +40,4 @@
 
       <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
   <% end %>
-
-  <%= gravatar_for @user %>
-  <a href="http://gravatar.com/emails">Change</a>
 </div>
