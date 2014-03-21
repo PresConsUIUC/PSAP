@@ -16,4 +16,4 @@
 /tmp
 
 .secret
-
+.smtp_dev_password

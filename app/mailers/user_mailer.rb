@@ -1,7 +1,5 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'alexd@illinois.edu' # TODO: fix
-
   def password_reset_email(user)
     @user = user
     @password_reset_url = url_for(controller: 'password',
