@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
   validates :first_name, presence: true, length: { maximum: 255 }
-  validates :institution_id, presence: true
   validates :last_name, presence: true, length: { maximum: 255 }
   validates :password, length: { minimum: 6 }, if: :validate_password? # TODO: externalize this
   validates :role_id, presence: true

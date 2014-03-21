@@ -19,11 +19,6 @@
 $(document).ready(function() {
     // Code for the user registration & user edit forms.
     if ($('form#new_user') || $('form.edit_user')) {
-        UserForm.refreshInstitutionOption();
-        $('select#user_institution_id').change(function() {
-            UserForm.refreshInstitutionOption();
-        });
-
         $('input#user_password').bind('keyup input paste', function() {
             UserForm.refreshPasswordStatus();
             UserForm.refreshPasswordConfirmationStatus();
@@ -35,15 +30,6 @@ $(document).ready(function() {
 });
 
 var UserForm = {
-
-    refreshInstitutionOption: function() {
-        $('input#user_institution').hide();
-        $('input#user_institution').val('');
-
-        if (!$('select#user_institution_id').val()) {
-            $('input#user_institution').show();
-        }
-    },
 
     refreshPasswordStatus: function() {
         // Update the password feedback text
@@ -62,10 +48,9 @@ var UserForm = {
         var value = $('input#user_password').val();
         var confirmation_value = $('input#user_password_confirmation').val();
         var status_p = $('p#password_confirmation_status');
-        var message;
+        var message = '';
 
         if (value == confirmation_value) {
-            message = 'Passwords match!';
             status_p.addClass('text-success');
             status_p.removeClass('text-warning');
         } else {

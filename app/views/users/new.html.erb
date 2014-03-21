@@ -22,14 +22,6 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :institution %>
-        <%= f.collection_select :institution_id, Institution.all, :id, :name,
-                                { include_blank: 'Not listed here (enter name below)' },
-                                { class: 'form-control' } %>
-        <%= f.text_field :institution, class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
         <%= f.label :username %>
         <%= f.text_field :username, class: 'form-control' %>
       </div>
