@@ -68,7 +68,7 @@ dl {
 nav.navbar {
   .navbar-left {
     a {
-      color:$gray-lighter;
+      color:$gray-light;
       font-size:0.8em;
       letter-spacing:1.2px;
     }
@@ -111,6 +111,9 @@ header {
     font-size:0.9em;
     font-style:italic;
     font-weight:200;
+  }
+  h1 a:hover {
+    text-decoration:none;
   }
   img#title_logo {
     float:left;
