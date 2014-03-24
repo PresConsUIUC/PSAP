@@ -74,7 +74,17 @@
   </section>
 
   <section id="preferences" class="col-md-9 form_view">
-    Various user preferences will go here.
+    <%= form_for(@user) do |f| %>
+        <%= render 'shared/error_messages', :object => f.object %>
+
+        <div class="form-group">
+          <%= f.label :time_zone %>
+          <%= f.collection_select :time_zone, ActiveSupport::TimeZone.all,
+                                  :name, :to_s %>
+        </div>
+
+        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+    <% end %>
   </section>
 
   <section id="change_password" class="col-md-9 form_view">

@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
     # generate a confirmation code
     require 'securerandom'
     self.confirmation_code ||= SecureRandom.hex
+    self.time_zone = Time.zone.name
   end
 
   def full_name
