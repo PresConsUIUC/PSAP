@@ -154,16 +154,24 @@ div.form_view {
 
 /* forms */
 
+div.progress {
+  height:10px;
+  margin-top:0.5em;
+}
+
 div.login_form {
   margin:0 auto;
   width:30%;
 }
 
 div#basic_info {
-  width:30%;
   div#gravatar {
     margin:0em 0em 1em 0em;
   }
+}
+
+div#basic_info, div#preferences, div#change_password {
+  width:30%;
 }
 
 #error_explanation {

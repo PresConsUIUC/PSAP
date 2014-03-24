@@ -59,16 +59,29 @@ var UserForm = {
     },
 
     refreshPasswordStatus: function() {
+        var MIN_LENGTH = 6;
+
         // Update the password feedback text
         var value = $('input#user_password').val();
         var message = '';
 
+        $('div.progress-bar').attr('aria-valuenow', value.length / MIN_LENGTH);
+        $('div.progress-bar').width(((value.length / MIN_LENGTH) * 100) + '%');
+
+        if (value.length > 5) {
+            $('div.progress-bar').removeClass('progress-bar-warning');
+            $('div.progress-bar').addClass('progress-bar-success');
+        } else {
+            $('div.progress-bar').addClass('progress-bar-warning');
+            $('div.progress-bar').removeClass('progress-bar-success');
+        }
+
         if (value.length == 5) {
             message = 'Needs 1 more character.';
-        } else if (value.length < 6) {
-            message = 'Needs ' + (6 - value.length) + ' more characters.';
+        } else if (value.length < MIN_LENGTH) {
+            message = 'Needs ' + (MIN_LENGTH - value.length) + ' more characters.';
         }
-        $('p#password_status').text(message)
+        //$('#password_status').text(message);
     },
 
     refreshPasswordConfirmationStatus: function() {

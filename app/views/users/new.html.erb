@@ -2,7 +2,7 @@
 
 <h1>Sign up</h1>
 
-<div id="registration_form">
+<div id="basic_info" class="center-block">
   <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages', :object => f.object %>
 
@@ -29,6 +29,13 @@
       <div class="form-group">
         <%= f.label :password %>
         <%= f.password_field :password, class: 'form-control' %>
+        <div class="progress">
+          <div class="progress-bar progress-bar-warning" role="progressbar"
+               aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
+               style="width: 0%">
+            <span class="sr-only"></span>
+          </div>
+        </div>
         <p id="password_status" class="text-warning"></p>
       </div>
 
