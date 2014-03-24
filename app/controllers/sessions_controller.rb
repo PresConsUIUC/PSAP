@@ -20,6 +20,8 @@ class SessionsController < ApplicationController
 
       redirect_back_or dashboard_path
     else
+      Event.create(description: "Login failed: #{params[:session][:username].downcase} (#{request.remote_ip})")
+
       sleep 2 # slow down brute-force attacks
       flash.now[:error] = 'Invalid username/password combination.'
       render 'new'
