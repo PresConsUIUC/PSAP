@@ -20,14 +20,16 @@
 <%= render 'layouts/header' %>
 
 <div class="container">
-  <header>
+  <header class="page-header">
     <%= link_to image_tag('psap.png', size:'70x70', alt:'PSAP logo',
                           id:'title_logo'), root_path %>
-    <h1 id="title">
-      <%= link_to 'PSAP', root_path %>
-      <span id="subtitle"><%= link_to 'Preservation Self-Assessment
-          Program', root_path %></span>
-    </h1>
+
+      <h1>
+        <%= link_to 'PSAP', root_path %>
+        <small><%= link_to 'Preservation Self-Assessment
+          Program', root_path %></small>
+      </h1>
+
 
     <% if signed_in? %>
         <div class="btn-group">

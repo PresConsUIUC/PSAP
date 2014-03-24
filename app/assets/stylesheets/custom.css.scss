@@ -92,29 +92,25 @@ header {
   @media print {
     display:none;
   }
-}
-
-header h1#title a {
-  color:black;
-  font-weight:normal;
-  margin:0em;
-  text-decoration:none;
-}
-
-header h1#title span#subtitle a {
-  color:#808080;
-  font-size:0.5em;
-  font-style:italic;
-  font-weight:normal;
-}
-
-header img#title_logo {
-  float:left;
-  margin-right:1em;
-}
-
-header div.btn-group {
-  margin:0px;
+  h1 a {
+    color:black;
+    font-weight:normal;
+    margin:0em;
+    text-decoration:none;
+  }
+  h1 small a {
+    color:#808080;
+    font-size:0.9em;
+    font-style:italic;
+    font-weight:200;
+  }
+  img#title_logo {
+    float:left;
+    margin-right:1em;
+  }
+  div.btn-group {
+    margin:0px;
+  }
 }
 
 
