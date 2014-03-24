@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :assessments
   belongs_to :institution, inverse_of: :users
   belongs_to :role, inverse_of: :users
 
