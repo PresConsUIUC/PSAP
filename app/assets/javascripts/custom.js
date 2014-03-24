@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     // Code for the user registration & user edit forms.
     if ($('form#new_user') || $('form.edit_user')) {
-        $('div#user_menu a').on('click', function() {
+        $('div.entity_menu a').on('click', function() {
             multiPageView.openView($(this).attr('data-open'));
             UserForm.attachPasswordEventListeners();
             return false;
@@ -19,28 +19,27 @@ $(document).ready(function() {
  * @constructor
  */
 function FauxMultiPageView() {
-
     // A place to put DOM trees when they have been temporarily removed from
-    // the DOM. Keyed by ID of the root element (typically a div).
+    // the DOM. Keyed by ID of the root element.
     var form_views = {};
 
     this.init = function() {
         var i = 0;
-        $('div.form_view').each(function() {
+        $('.form_view').each(function() {
             form_views[$(this).attr('id')] = $(this);
             if (i > 0) {
                 $(this).remove();
             }
             i++;
         });
-        $('div#user_menu li:first').addClass('active');
+        $('div.entity_menu li:first').addClass('active');
     };
 
     this.openView = function(view_id) {
-        $('div#user_menu li').removeClass('active');
-        $('div.form_view').remove();
+        $('.entity_menu li').removeClass('active');
+        $('.form_view').remove();
         var view = form_views[view_id];
-        $('div#user_menu a[data-open="' + view_id + '"]').parent().addClass('active');
+        $('.entity_menu a[data-open="' + view_id + '"]').parent().addClass('active');
         $('div.row').append(view);
     };
 

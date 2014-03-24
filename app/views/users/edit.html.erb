@@ -7,8 +7,8 @@
 <% end %>
 
 <div class="row">
-  <!-- left column -->
-  <div id="user_menu" class="entity_menu col-md-3">
+  <!-- left column menu -->
+  <div class="entity_menu col-md-3">
     <nav>
       <ul class="list-group">
         <li class="list-group-item">
@@ -24,7 +24,7 @@
     </nav>
   </div>
 
-  <div id="basic_info" class="col-md-9 form_view">
+  <section id="basic_info" class="col-md-9 form_view">
     <% if @user == current_user %>
         <div id="gravatar">
           <%= gravatar_for @user %>
@@ -71,13 +71,13 @@
 
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
     <% end %>
-  </div>
+  </section>
 
-  <div id="preferences" class="col-md-9 form_view">
+  <section id="preferences" class="col-md-9 form_view">
     Various user preferences will go here.
-  </div>
+  </section>
 
-  <div id="change_password" class="col-md-9 form_view">
+  <section id="change_password" class="col-md-9 form_view">
     <%= form_for(@user) do |f| %>
         <%= render 'shared/error_messages', :object => f.object %>
 
@@ -102,7 +102,6 @@
 
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
     <% end %>
-  </div>
-
+  </section>
 
 </div>
