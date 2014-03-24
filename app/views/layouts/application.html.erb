@@ -24,12 +24,10 @@
     <%= link_to image_tag('psap.png', size:'70x70', alt:'PSAP logo',
                           id:'title_logo'), root_path %>
 
-      <h1>
-        <%= link_to 'PSAP', root_path %>
-        <small><%= link_to 'Preservation Self-Assessment
-          Program', root_path %></small>
-      </h1>
-
+    <h1>
+      <%= link_to 'PSAP', root_path %>
+      <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
+    </h1>
 
     <% if signed_in? %>
         <div class="btn-group">

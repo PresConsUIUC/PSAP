@@ -66,6 +66,14 @@ dl {
 /* top nav bar */
 
 nav.navbar {
+  .navbar-left {
+    a {
+      color:$gray-lighter;
+      font-size:0.8em;
+      letter-spacing:1.2px;
+    }
+  }
+
   li#help {
     margin-right:10px;
     a {
