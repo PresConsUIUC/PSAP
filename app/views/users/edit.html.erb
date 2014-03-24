@@ -6,44 +6,89 @@
     <h1>Edit user <%= @user.username %></h1>
 <% end %>
 
-<div id="registration_form">
-  <% if @user == current_user %>
-      <p id="gravatar">
-        <%= gravatar_for @user %>
-        <a href="http://gravatar.com/emails" target="_blank">Change</a>
-      </p>
-  <% end %>
+<div class="row">
+  <!-- left column -->
+  <div id="user_menu" class="entity_menu col-md-3">
+    <nav>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a href="#" data-open="basic_info">Basic Information</a>
+        </li>
+        <li class="list-group-item">
+          <a href="#" data-open="preferences">Preferences</a>
+        </li>
+        <li class="list-group-item">
+          <a href="#" data-open="change_password">Change Password</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
-  <%= form_for(@user) do |f| %>
-      <%= render 'shared/error_messages', :object => f.object %>
+  <div id="basic_info" class="col-md-9 form_view">
+    <% if @user == current_user %>
+        <div id="gravatar">
+          <%= gravatar_for @user %>
+          <a href="http://gravatar.com/emails" target="_blank">Change</a>
+        </div>
+    <% end %>
 
-      <div class="form-group">
-        <%= f.label :first_name %>
-        <%= f.text_field :first_name, class: 'form-control' %>
-      </div>
+    <%= form_for(@user) do |f| %>
+        <%= render 'shared/error_messages', :object => f.object %>
 
-      <div class="form-group">
-        <%= f.label :last_name %>
-        <%= f.text_field :last_name, class: 'form-control' %>
-      </div>
+        <div class="form-group">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, class: 'form-control' %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.text_field :email, class: 'form-control' %>
-      </div>
+        <div class="form-group">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, class: 'form-control' %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, class: 'form-control' %>
-        <p id="password_status" class="text-warning"></p>
-      </div>
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.text_field :email, class: 'form-control' %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :password_confirmation, 'Confirm Password' %>
-        <%= f.password_field :password_confirmation, class: 'form-control' %>
-        <p id="password_confirmation_status"></p>
-      </div>
+        <div class="form-group">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'form-control' %>
+          <p id="password_status" class="text-warning"></p>
+        </div>
 
-      <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-  <% end %>
+        <div class="form-group">
+          <%= f.label :password_confirmation, 'Confirm Password' %>
+          <%= f.password_field :password_confirmation, class: 'form-control' %>
+          <p id="password_confirmation_status"></p>
+        </div>
+
+        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+
+  <div id="preferences" class="col-md-9 form_view">
+    Various user preferences will go here.
+  </div>
+
+  <div id="change_password" class="col-md-9 form_view">
+    <%= form_for(@user) do |f| %>
+        <%= render 'shared/error_messages', :object => f.object %>
+
+        <div class="form-group">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'form-control' %>
+          <p id="password_status" class="text-warning"></p>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, 'Confirm Password' %>
+          <%= f.password_field :password_confirmation, class: 'form-control' %>
+          <p id="password_confirmation_status"></p>
+        </div>
+
+        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+
+
 </div>

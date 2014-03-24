@@ -69,7 +69,7 @@ nav.navbar {
   li#help {
     margin-right:10px;
     a {
-      background: url(image_path('question.png')) CENTER CENTER NO-REPEAT;
+      background: url(image_path('question.png')) center center no-repeat;
       content:url(image_path('1x1transparent.png'));
       top:11px;
       width:24px;
@@ -118,10 +118,36 @@ header div.btn-group {
 }
 
 
+/* two-column views w/ menu on left */
+
+div.entity_menu {
+  margin-top:1em;
+  li {
+    background:url(image_path('arrow-right.png')) 95% 50% no-repeat;
+    line-height:60px;
+    height:80px;
+    a {
+      height:100%;
+      position:absolute;
+      width:100%;
+    }
+    a:hover {
+      text-decoration:none;
+    }
+  }
+  li.active {
+    background-color:#f0f0ff;
+  }
+}
+
+div.form_view {
+  margin-top:1em;
+}
+
+
 /* sidebar */
 
 .gravatar {
-  float: left;
   margin-right: 10px;
 }
 
@@ -133,10 +159,10 @@ div.login_form {
   width:30%;
 }
 
-div#registration_form {
+div#basic_info {
   width:30%;
-  p#gravatar {
-    margin:1.5em 0em 3.5em 0em;
+  div#gravatar {
+    margin:0em 0em 1em 0em;
   }
 }
 
