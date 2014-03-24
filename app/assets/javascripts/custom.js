@@ -36,11 +36,19 @@ function FauxMultiPageView() {
     };
 
     this.openView = function(view_id) {
+        var FADE_DURATION = 200;
+
         $('.entity_menu li').removeClass('active');
-        $('.form_view').remove();
-        var view = form_views[view_id];
         $('.entity_menu a[data-open="' + view_id + '"]').parent().addClass('active');
-        $('div.row').append(view);
+
+        $('.form_view').fadeOut(FADE_DURATION, function() {
+            $(this).remove();
+
+            var view = form_views[view_id];
+            view.hide();
+            $('div.row').append(view);
+            view.fadeIn();
+        });
     };
 
 }
