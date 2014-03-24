@@ -36,6 +36,10 @@ function FauxMultiPageView() {
     };
 
     this.openView = function(view_id) {
+        if ($('#' + view_id).is(':visible')) {
+            return;
+        }
+
         var FADE_DURATION = 200;
 
         $('.entity_menu li').removeClass('active');
