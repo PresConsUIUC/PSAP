@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       sign_in user
 
       # Log the successful signin
-      Event.create(description: "User #{user.username} signed in",
+      Event.create(description: "User #{user.username} signed in from #{request.remote_ip}",
                    user: user)
       user.last_login = Time.now
       user.log_update?(false)
