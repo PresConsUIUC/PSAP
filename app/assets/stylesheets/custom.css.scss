@@ -144,7 +144,7 @@ div.entity_menu {
   }
 }
 
-div.form_view {
+.form_view {
   margin-top:1em;
 }
 
@@ -168,10 +168,8 @@ div.login_form {
   width:30%;
 }
 
-div#basic_info {
-  div#gravatar {
-    margin:0em 0em 1em 0em;
-  }
+div#gravatar {
+  margin:0em 0em 1em 0em;
 }
 
 section#basic_info, section#preferences, section#change_password {
