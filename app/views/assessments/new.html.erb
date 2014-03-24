@@ -2,8 +2,52 @@
 
 <h1>New Assessment</h1>
 
-<%= form_for(@assessment) do |f| %>
-    <%= render 'shared/error_messages', :object => f.object %>
+<div class="row" id="assessment">
 
-    <%= f.submit 'Create', class: 'btn btn-primary' %>
-<% end %>
+  <!-- left column menu -->
+  <div class="entity_menu col-md-3">
+    <nav>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a href="#" data-open="general">General</a>
+        </li>
+        <li class="list-group-item">
+          <a href="#" data-open="use_access">Use/Access</a>
+        </li>
+        <li class="list-group-item">
+          <a href="#" data-open="storage_container">Storage/Container</a>
+        </li>
+        <li class="list-group-item">
+          <a href="#" data-open="condition">Condition</a>
+        </li>
+      </ul>
+    </nav>
+    <section>
+      <h4>Score</h4>
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning" role="progressbar"
+             aria-valuenow="0.4" aria-valuemin="0" aria-valuemax="1"
+             style="width: 40%">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+      <p>[Brief explanation of how this set of questions affects overall preservation score]</p>
+    </section>
+  </div>
+
+  <section id="general" class="col-md-9 form_view">
+    <p>This is the general section.</p>
+  </section>
+
+  <section id="use_access" class="col-md-9 form_view">
+    <p>This is the general section.</p>
+  </section>
+
+  <section id="storage_container" class="col-md-9 form_view">
+    <p>This is the storage/container section.</p>
+  </section>
+
+  <section id="condition" class="col-md-9 form_view">
+    <p>This is the condition section.</p>
+  </section>
+</div>
