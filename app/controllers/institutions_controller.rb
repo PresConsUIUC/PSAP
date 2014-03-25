@@ -1,9 +1,8 @@
 class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
-  before_action :before_new_action, only: [:new, :create]
-  before_action :before_edit_action, only: [:edit, :update]
-  before_action :admin_user, only: :destroy
+  before_action :admin_user, only: [:index, :new, :create, :destroy]
+  before_action :same_institution_user, only: [:show, :edit, :update]
 
   def create
     @institution = Institution.new(institution_params)
@@ -47,18 +46,12 @@ class InstitutionsController < ApplicationController
 
   private
 
-  def before_edit_action
+  def same_institution_user
     # Normal users can only edit their own institution. Administrators can edit
     # any institution.
     institution = Institution.find(params[:id])
     redirect_to(root_url) unless
         institution.users.include?(current_user) || current_user.is_admin?
-  end
-
-  def before_new_action
-    # Normal users can't create new institutions (this is done during the user
-    # signup phase), but administrators can.
-    redirect_to(root_url) unless current_user.is_admin?
   end
 
   def institution_params
