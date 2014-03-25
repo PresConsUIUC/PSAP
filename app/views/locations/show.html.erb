@@ -15,7 +15,13 @@
   <li class="active"><%= @location.name %></li>
 </ol>
 
-<h1><%= @location.name %> <%= link_to '(edit)', edit_location_path(@location) %></h1>
+<h1>
+  <%= @location.name %>
+  <%= link_to edit_location_path(@location), class: 'btn btn-default btn-sm' do %>
+      <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+      Edit
+  <% end %>
+</h1>
 
 <% if @location.resources.any? %>
     <table class="table table-striped table-hover">
@@ -50,4 +56,7 @@
     <p>There are no resources in this location.</p>
 <% end %>
 
-<p><%= link_to 'Add resource', new_location_resource_path(@location) %></p>
+<%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+    Add Resource
+<% end %>

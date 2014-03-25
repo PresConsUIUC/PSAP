@@ -10,6 +10,13 @@
 <h1>
   <%= gravatar_for @user %>
   <%= @user.full_name %>
+  <small><%= @user.username %></small>
+  <% if current_user.is_admin? %>
+      <%= link_to edit_user_path(@user), class: 'btn btn-default btn-sm' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit
+      <% end %>
+  <% end %>
 </h1>
 
 <p><%= @user.institution.name %></p>

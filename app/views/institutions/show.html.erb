@@ -7,8 +7,13 @@
   <li class="active"><%= @institution.name %></li>
 </ol>
 
-<h1><%= @institution.name %>
-  <%= link_to '(edit)', edit_institution_path(@institution) %></h1>
+<h1>
+  <%= @institution.name %>
+  <%= link_to edit_institution_path(@institution), class: 'btn btn-default btn-sm' do %>
+      <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+      Edit
+  <% end %>
+</h1>
 
 <% if @institution.repositories.any? %>
 
@@ -39,13 +44,15 @@
       </tbody>
     </table>
 
-    <p><%= link_to 'Add repository', new_institution_repository_path(@institution) %></p>
-
 <% else %>
 
-    <p>This institution has no repositories.
-      <%= link_to '(Add one?)', new_institution_repository_path(@institution) %></p>
+    <p>This institution has no repositories.</p>
 
+<% end %>
+
+<%= link_to new_institution_repository_path(@institution), class: 'btn btn-default' do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+    Add Repository
 <% end %>
 
 <% if @institution.assessments.any? %>
@@ -75,7 +82,6 @@
 
 <% else %>
 
-    <p>This institution has not completed any assessments.
-      <%= link_to '(Add one?)', new_assessment_path %></p>
+    <p>This institution has not completed any assessments.</p>
 
 <% end %>

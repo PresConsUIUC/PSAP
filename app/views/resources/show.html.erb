@@ -19,7 +19,13 @@
   <li class="active"><%= @resource.name %></li>
 </ol>
 
-<h1><%= @resource.name %> <%= link_to '(edit)', edit_resource_path(@resource) %></h1>
+<h1>
+  <%= @resource.name %>
+  <%= link_to edit_resource_path(@resource), class: 'btn btn-default btn-sm' do %>
+      <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+      Edit
+  <% end %>
+</h1>
 
 <% if @resource.resource_type == ResourceType::COLLECTION &&
         @resource.children.any? %>

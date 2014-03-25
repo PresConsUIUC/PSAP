@@ -11,8 +11,13 @@
   <li class="active"><%= @repository.name %></li>
 </ol>
 
-<h1><%= @repository.name %>
-  <%= link_to '(edit)', edit_repository_path(@repository) %></h1>
+<h1>
+  <%= @repository.name %>
+  <%= link_to edit_repository_path(@repository), class: 'btn btn-default btn-sm' do %>
+      <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+      Edit
+  <% end %>
+</h1>
 
 <table class="table table-striped table-hover">
   <caption>Locations</caption>
@@ -45,4 +50,7 @@
   </tbody>
 </table>
 
-<p><%= link_to 'Add location', new_repository_location_path(@repository) %></p>
+<%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+    Add Location
+<% end %>
