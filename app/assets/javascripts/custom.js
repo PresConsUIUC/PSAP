@@ -13,6 +13,10 @@ $(document).ready(function() {
     }
 });
 
+function attachEventListeners() {
+    UserForm.attachEventListeners();
+}
+
 /**
  * Enables a menu that uses JavaScript to show/hide different views.
  * See users/edit.html.erb and users/show.html.erb for markup examples.
@@ -54,6 +58,8 @@ function FauxMultiPageView() {
             view.hide();
             $('.entity_menu').parent().append(view);
             view.fadeIn();
+
+            attachEventListeners();
         });
     };
 
