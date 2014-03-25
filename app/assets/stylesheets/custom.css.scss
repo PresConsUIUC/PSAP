@@ -99,19 +99,18 @@ header {
   @media print {
     display:none;
   }
-  h1 a {
+  h1 a, h1 a:hover {
     color:black;
     font-weight:normal;
     margin:0em;
     text-decoration:none;
   }
-  h1 small a {
+  h1 small a, h1 small a:hover {
     color:#808080;
     font-size:0.9em;
     font-style:italic;
     font-weight:200;
   }
-  h1 a:active {}
   img#title_logo {
     float:left;
     margin-right:1em;
