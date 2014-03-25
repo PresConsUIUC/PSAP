@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, if: :validate_password? # TODO: externalize this
   validates :role_id, presence: true
   validates :username, presence: true, length: { maximum: 255 },
-            uniqueness: { case_sensitive: false }
+            uniqueness: { case_sensitive: false },
+            format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i,
+                      message: 'Only letters and numbers are allowed.' }
 
   after_initialize :setup, if: :new_record?
   after_create :log_create
