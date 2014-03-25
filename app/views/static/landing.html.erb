@@ -1,13 +1,10 @@
 <% provide(:title, 'Home') %>
 
-<div class="center hero-unit">
-    <h1>PSAP Main Page</h1>
-
-    <p>This is a placeholder page.</p>
-
-    <% if !signed_in? %>
-      <%= link_to "Sign in", login_path, class: 'btn btn-large btn-primary' %>
-      <%= link_to "Sign up now!", register_path, class: "btn btn-large btn-primary" %>
-    <% end %>
-
+<div id="main_panel" class="jumbotron">
+  <p>I already have an account.</p>
+  <%= link_to 'Sign in', login_path,
+              class: 'btn btn-lg btn-primary btn-block' %>
+  <p>I don't yet have an account.</p>
+  <%= link_to 'Sign up now!', register_path,
+              class: 'btn btn-md btn-primary btn-block' %>
 </div>
