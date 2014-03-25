@@ -1,5 +1,10 @@
 <% provide(:title, 'Register') %>
 
+<%= # pass the root URL to the username checker for ajax purposes
+    javascript_tag do %>
+    window.pageURL = '<%= root_url %>';
+<% end %>
+
 <h1>Sign up</h1>
 
 <section id="basic_info" class="center-block">
@@ -24,6 +29,7 @@
       <div class="form-group">
         <%= f.label :username %>
         <%= f.text_field :username, class: 'form-control' %>
+        <p id="username_status"></p>
       </div>
 
       <div class="form-group">

@@ -6,10 +6,10 @@ $(document).ready(function() {
     if ($('#new_user') || $('.edit_user') || $('#show_user')) {
         $('.entity_menu a').on('click', function() {
             multiPageView.openView($(this).attr('data-open'));
-            UserForm.attachPasswordEventListeners();
+            UserForm.attachEventListeners();
             return false;
         });
-        UserForm.attachPasswordEventListeners();
+        UserForm.attachEventListeners();
     }
 });
 
@@ -61,13 +61,47 @@ function FauxMultiPageView() {
 
 var UserForm = {
 
-    attachPasswordEventListeners: function() {
+    attachEventListeners: function() {
         $('input#user_password').bind('keyup input paste', function() {
             UserForm.refreshPasswordStatus();
             UserForm.refreshPasswordConfirmationStatus();
         });
         $('input#user_password_confirmation').bind('keyup input paste', function() {
             UserForm.refreshPasswordConfirmationStatus();
+        });
+        $('input#user_username').bind('keyup input paste', function() {
+            UserForm.checkUsername();
+        });
+    },
+
+    checkUsername: function() {
+        var msg_element = $('p#username_status');
+
+        var username = $('input#user_username').val().trim();
+        if (!username) {
+            msg_element.text('');
+            return;
+        }
+
+        var url = window.pageURL + 'users/' + username + '/exists';
+
+        $.ajax(url, {
+            type: 'GET',
+            data: null,
+            statusCode: {
+                200: function(response) {
+                    msg_element.removeClass('text-success');
+                    msg_element.addClass('text-danger');
+                    msg_element.text('Username is in use.');
+                },
+                404: function(response) {
+                    msg_element.addClass('text-success');
+                    msg_element.removeClass('text-danger');
+                    msg_element.text('Username is available.');
+                }
+            },
+            success: function() {
+            }
         });
     },
 

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :signed_in_user, except: [:new, :create]
+  before_action :signed_in_user, except: [:new, :create, :exists]
   before_action :before_new_user, only: [:new, :create]
   before_action :before_edit_user, only: [:edit, :update]
   before_action :before_show_user, only: :show
@@ -69,6 +69,17 @@ class UsersController < ApplicationController
     user.save!
     flash[:success] = "User #{user.username} disabled."
     redirect_to users_url
+  end
+
+  # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
+  # the purpose of checking whether a user with the given username exists
+  # from the registration form.
+  def exists
+    if User.find_by_username params[:username]
+      render text: nil, status: 200
+    else
+      render text: nil, status: 404
+    end
   end
 
   def index
