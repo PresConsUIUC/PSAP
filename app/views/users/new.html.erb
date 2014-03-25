@@ -2,7 +2,7 @@
 
 <h1>Sign up</h1>
 
-<div id="basic_info" class="center-block">
+<section id="basic_info" class="center-block">
   <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages', :object => f.object %>
 
@@ -47,4 +47,4 @@
 
       <%= f.submit 'Create Account', class: 'btn btn-primary' %>
   <% end %>
-</div>
+</section>

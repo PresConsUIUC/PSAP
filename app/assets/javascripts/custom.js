@@ -2,9 +2,9 @@ $(document).ready(function() {
     var multiPageView = new FauxMultiPageView();
     multiPageView.init();
 
-    // Code for the user registration & user edit forms.
-    if ($('form#new_user') || $('form.edit_user')) {
-        $('div.entity_menu a').on('click', function() {
+    // Code for the user registration, edit, and show forms.
+    if ($('#new_user') || $('.edit_user') || $('#show_user')) {
+        $('.entity_menu a').on('click', function() {
             multiPageView.openView($(this).attr('data-open'));
             UserForm.attachPasswordEventListeners();
             return false;
@@ -14,13 +14,14 @@ $(document).ready(function() {
 });
 
 /**
- * Enables a vertical menu, using JavaScript to show/hide different views.
- * See users/edit.html.erb for a markup example.
+ * Enables a menu that uses JavaScript to show/hide different views.
+ * See users/edit.html.erb and users/show.html.erb for markup examples.
  * @constructor
  */
 function FauxMultiPageView() {
-    // A place to put DOM trees when they have been temporarily removed from
-    // the DOM. Keyed by ID of the root element.
+    // Retain references to the views' DOM trees so they won't be garbage-
+    // collected when they have been temporarily removed from the DOM. Keyed
+    // by ID of the root element.
     var form_views = {};
 
     this.init = function() {
@@ -32,25 +33,26 @@ function FauxMultiPageView() {
             }
             i++;
         });
-        $('div.entity_menu li:first').addClass('active');
+        $('.entity_menu li:first').addClass('active');
     };
 
     this.openView = function(view_id) {
-        if ($('#' + view_id).is(':visible')) {
+        if ($('#' + view_id).is(':visible')) { // nothing to do
             return;
         }
 
-        var FADE_DURATION = 200;
+        var FADE_DURATION = 100;
 
         $('.entity_menu li').removeClass('active');
-        $('.entity_menu a[data-open="' + view_id + '"]').parent().addClass('active');
+        $('.entity_menu a[data-open="' + view_id + '"]').parent()
+            .addClass('active');
 
         $('.form_view').fadeOut(FADE_DURATION, function() {
             $(this).remove();
 
             var view = form_views[view_id];
             view.hide();
-            $('div.row').append(view);
+            $('.entity_menu').parent().append(view);
             view.fadeIn();
         });
     };

@@ -7,7 +7,7 @@
     </ol>
 <% end %>
 
-<h1>
+<h1 id="show_user">
   <%= gravatar_for @user %>
   <%= @user.full_name %>
   <small><%= @user.username %></small>
@@ -21,40 +21,55 @@
 
 <p><%= @user.institution.name %></p>
 
-<dl>
-  <dt>Email</dt>
-  <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
-  <dt>Account</dt>
-  <dd>
-    <%= @user.confirmed ? 'Confirmed' : 'Not Confirmed' %>,
-    <%= @user.enabled ? 'Enabled' : 'Disabled' %>
-  </dd>
-  <dt>Account Created</dt>
-  <dd><%= @user.created_at.strftime('%B %e, %Y') %></dd>
-  <dt>Last Login</dt>
-  <dd>
-    <% if @user.last_login %>
-      <%= @user.last_login.strftime('%B %e, %Y') %>
-    <% else %>
-      Never
-    <% end %>
-  </dd>
-</dl>
+<div>
+  <ul class="nav nav-tabs entity_menu">
+    <li><a href="#" data-open="info">Info</a></li>
+    <li><a href="#" data-open="assessments">Assessments</a></li>
+  </ul>
 
-<% if @user.assessments.any? %>
-    <table class="table table-striped table-hover">
-      <caption>Assessments</caption>
-      <thead>
-        <th></th>
-      </thead>
-      <tbody>
-      <% @user.assessments.order(:name).each do |asst| %>
-          <tr>
-            <td><%= link_to asst.name, asst %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-<% else %>
-    <p>This user has not begun any assessments.</p>
-<% end %>
+  <section id="info" class="form_view">
+    <dl>
+      <dt>Email</dt>
+      <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+      <dt>Account</dt>
+      <dd>
+        <%= @user.confirmed ? 'Confirmed' : 'Not Confirmed' %>,
+        <%= @user.enabled ? 'Enabled' : 'Disabled' %>
+      </dd>
+      <dt>Account Created</dt>
+      <dd><%= @user.created_at.strftime('%B %e, %Y') %></dd>
+      <dt>Last Login</dt>
+      <dd>
+        <% if @user.last_login %>
+            <%= @user.last_login.in_time_zone(@user.time_zone).
+                        strftime('%B %e, %Y @ %l:%M %p %Z') %>
+        <% else %>
+            Never
+        <% end %>
+      </dd>
+    </dl>
+  </section>
+
+  <section id="assessments" class="form_view">
+    <% if @user.assessments.any? %>
+        <table class="table table-striped table-hover">
+          <caption>Assessments</caption>
+          <thead>
+          <th></th>
+          <th>Completed</th>
+          </thead>
+          <tbody>
+          <% @user.assessments.order(:name).each do |asst| %>
+              <tr>
+                <td><%= link_to asst.name, asst %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p>This user has not begun any assessments.</p>
+    <% end %>
+  </section>
+
+</div>
