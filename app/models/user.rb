@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
   validates :first_name, presence: true, length: { maximum: 255 }
   validates :last_name, presence: true, length: { maximum: 255 }
-  validates :password, length: { minimum: 6 }, if: :validate_password? # TODO: externalize this
+  validates :password, presence: true, length: { minimum: 6 },
+            if: :validate_password?
   validates :role_id, presence: true
   validates :username, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false },
