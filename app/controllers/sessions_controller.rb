@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
 
-  def new
+  before_action :signed_out_user, only: [:new, :create]
 
+  def new
   end
 
   def create
@@ -38,6 +39,14 @@ class SessionsController < ApplicationController
                  user: user)
 
     redirect_to root_url
+  end
+
+  private
+
+  def signed_out_user
+    if signed_in?
+      redirect_to root_url
+    end
   end
 
 end
