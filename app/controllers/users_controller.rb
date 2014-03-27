@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :signed_in_user, except: [:new, :create, :exists]
+  before_action :signed_in_user, except: [:new, :confirm, :create, :exists]
   before_action :before_new_user, only: [:new, :create]
   before_action :before_edit_user, only: [:edit, :update]
   before_action :before_show_user, only: :show
@@ -8,22 +8,18 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_create_params)
-
-    # If the user has specified a new institution, create it and associate the
-    # user with it
-    if !@user.institution
-      institution = @user.institution.new
-      institution.name = params[:institution]
-      institution.save!
-    end
-
+    @user.role = Role.find_by_name 'User'
     if @user.save
       UserMailer.welcome_email(@user).deliver
-      redirect_to action: 'confirm'
+      flash[:success] = 'Thanks for registering for PSAP! An email has been
+        sent to the address you provided. Follow the link in the email to
+        confirm your account.'
+      redirect_to root_url
       return
     end
+    flash[:error] = 'There was a problem creating your account. This might
+      be a bug.' # TODO: handle this situation better
     render 'new'
-    return
   end
 
   # Mapped to GET /confirm
