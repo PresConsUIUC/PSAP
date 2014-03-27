@@ -235,7 +235,7 @@ var UserForm = {
         var status_p = $('p#password_confirmation_status');
         var message = '';
 
-        if (value == confirmation_value) {
+        if (value == confirmation_value && value.length > 0) {
             input.parent('div').addClass('has-success');
             input.next('span').addClass('glyphicon-ok');
             status_p.addClass('text-success');
