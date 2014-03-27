@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
                                 action: 'confirm',
                                 only_path: false,
                                 username: @user.username,
-                                confirmation_code: @user.confirmation_code)
+                                code: @user.confirmation_code)
     mail(to: @user.email, subject: 'Welcome to PSAP!')
   end
 end

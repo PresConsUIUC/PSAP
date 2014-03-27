@@ -31,8 +31,7 @@ class UsersController < ApplicationController
     # check that they are correct and activate the user if so. Otherwise,
     # silently redirect to the root URL.
     @user = User.find_by_username params[:username]
-    if @user && !@user.confirmed &&
-        params[:confirmation_code] == @user.confirmation_code
+    if @user && !@user.confirmed && params[:code] == @user.confirmation_code
       @user.confirmed = true
       @user.enabled = true
       @user.save!
