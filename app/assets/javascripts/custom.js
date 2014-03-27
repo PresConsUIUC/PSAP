@@ -45,7 +45,10 @@ function FauxMultiPageView() {
         if (location.hash) {
             self.openView(location.hash.substr(1, location.hash.length));
         } else {
-            location.hash = first_li.children('a:first').attr('data-open');
+            var first_view = first_li.children('a:first').attr('data-open');
+            if (first_view) {
+                self.openView(first_view);
+            }
         }
     };
 
@@ -61,6 +64,7 @@ function FauxMultiPageView() {
             .addClass('active');
 
         location.hash = view_id;
+        window.scrollTo(0, 0);
 
         $('.form_view').fadeOut(FADE_DURATION, function() {
             $(this).remove();
