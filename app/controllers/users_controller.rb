@@ -20,9 +20,10 @@ class UsersController < ApplicationController
     if @user.save
       UserMailer.welcome_email(@user).deliver
       redirect_to action: 'confirm'
-    else
-      render 'new'
+      return
     end
+    render 'new'
+    return
   end
 
   # Mapped to GET /confirm
@@ -35,10 +36,9 @@ class UsersController < ApplicationController
       @user.confirmed = true
       @user.enabled = true
       @user.save!
-      flash[:success] = 'Your account has been confirmed. Please log in.'
-      redirect_to login_url
     end
-    redirect_to root_url
+    flash[:success] = 'Your account has been confirmed. Please log in.'
+    redirect_to login_url
   end
 
   def destroy
@@ -97,9 +97,9 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_update_params)
       flash[:success] = 'Profile updated.'
       redirect_to edit_user_url(@user)
-    else
-      render 'edit'
+      return
     end
+    render 'edit'
   end
 
   private
