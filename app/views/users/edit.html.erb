@@ -25,6 +25,8 @@
   </div>
 
   <section id="basic_info" class="col-md-9 form_view">
+    <h2>Basic Information</h2>
+
     <% if @user == current_user %>
         <div id="gravatar">
           <%= gravatar_for @user %>
@@ -75,6 +77,8 @@
   </section>
 
   <section id="preferences" class="col-md-9 form_view">
+    <h2>Preferences</h2>
+
     <%= form_for(@user) do |f| %>
         <%= render 'shared/error_messages', :object => f.object %>
 
@@ -90,6 +94,8 @@
   </section>
 
   <section id="change_password" class="col-md-9 form_view">
+    <h2>Change Password</h2>
+
     <%= form_for(@user) do |f| %>
         <%= render 'shared/error_messages', :object => f.object %>
 
