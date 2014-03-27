@@ -28,6 +28,8 @@ function FauxMultiPageView() {
     // by ID of the root element.
     var form_views = {};
 
+    var self = this;
+
     this.init = function() {
         var i = 0;
         $('.form_view').each(function() {
@@ -37,7 +39,14 @@ function FauxMultiPageView() {
             }
             i++;
         });
-        $('.entity_menu li:first').addClass('active');
+        var first_li = $('.entity_menu li:first');
+        first_li.addClass('active');
+
+        if (location.hash) {
+            self.openView(location.hash.substr(1, location.hash.length));
+        } else {
+            location.hash = first_li.children('a:first').attr('data-open');
+        }
     };
 
     this.openView = function(view_id) {
@@ -50,6 +59,8 @@ function FauxMultiPageView() {
         $('.entity_menu li').removeClass('active');
         $('.entity_menu a[data-open="' + view_id + '"]').parent()
             .addClass('active');
+
+        location.hash = view_id;
 
         $('.form_view').fadeOut(FADE_DURATION, function() {
             $(this).remove();

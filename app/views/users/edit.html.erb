@@ -69,6 +69,7 @@
           <p id="password_confirmation_status"></p>
         </div>
 
+        <%= f.hidden_field :selected_tab, value: 'basic_info' %>
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
     <% end %>
   </section>
@@ -83,6 +84,7 @@
                                   :name, :to_s %>
         </div>
 
+        <%= f.hidden_field :selected_tab, value: 'preferences' %>
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
     <% end %>
   </section>
@@ -112,6 +114,7 @@
           <p id="password_confirmation_status"></p>
         </div>
 
+        <%= f.hidden_field :selected_tab, value: 'change_password' %>
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
     <% end %>
   </section>
