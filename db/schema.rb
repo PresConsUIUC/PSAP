@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324190439) do
+ActiveRecord::Schema.define(version: 20140327190745) do
 
   create_table "assessment_options", force: true do |t|
     t.string   "name"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20140324190439) do
     t.integer  "role_id"
     t.integer  "institution_id"
     t.string   "username"
-    t.boolean  "confirmed"
+    t.boolean  "confirmed",          default: false
     t.string   "confirmation_code"
     t.string   "password_reset_key"
     t.datetime "last_login"
