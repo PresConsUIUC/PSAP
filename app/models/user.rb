@@ -5,9 +5,10 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  # TODO: improve email validation
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
+  # This regex is very lenient, but at least forces the user to put in some
+  # effort. Strict email validation without rejecting valid addresses is
+  # difficult with regex, and pretty pointless anyway.
+  validates :email, presence: true, format: { with: /\S+@\S+\.\S+/ },
             uniqueness: { case_sensitive: false }
   validates :first_name, presence: true, length: { maximum: 255 }
   validates :last_name, presence: true, length: { maximum: 255 }
