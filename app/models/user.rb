@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def log_create
-    Event.create(description: "Created user account #{self.username}, affiliated with #{self.institution.name}",
+    Event.create(description: "Created account for user #{self.username}",
                  user: User.current_user)
   end
 

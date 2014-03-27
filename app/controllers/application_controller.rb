@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
     # Array of all repositories associated with the current user, to appear in
     # the title menu.
-    @user_institution_repositories = current_user ?
+    @user_institution_repositories = current_user && current_user.institution ?
         current_user.institution.repositories.order(:name) : []
     @user = current_user
     User.current_user = current_user

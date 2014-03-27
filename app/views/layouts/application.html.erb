@@ -29,7 +29,7 @@
       <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
     </h1>
 
-    <% if signed_in? %>
+    <% if signed_in? && current_user.institution %>
         <div class="btn-group">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                   data-toggle="dropdown">
