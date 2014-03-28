@@ -6,13 +6,12 @@
     <div class="form-group">
       <%= f.collection_select :institution_id,
                               Institution.all.order(:name), :id, :name,
-                              { selected: @user.institution_id,
-                                include_blank: false },
+                              { selected: @user.institution_id },
                               { class: 'form-control' } %>
     </div>
 
     <%= f.submit 'My institution is selected above',
                  class: 'btn btn-primary' %>
     <%= link_to 'My institution is not listed here', new_institution_path,
-                class: 'btn btn-md btn-default' %>
+                class: 'btn btn-default' %>
 <% end %>
