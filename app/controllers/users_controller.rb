@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     user.enabled = true
     user.save!
     flash[:success] = "User #{user.username} enabled."
-    redirect_to users_url
+    redirect_to :back
   end
 
   # Responds to PATCH /users/:id/disable
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     user.enabled = false
     user.save!
     flash[:success] = "User #{user.username} disabled."
-    redirect_to users_url
+    redirect_to :back
   end
 
   # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
