@@ -1,0 +1,15 @@
+<% provide(:title, 'New Institution') %>
+
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+      <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li class="active">New</li>
+</ol>
+
+<h1>New Institution</h1>
+
+<%= form_for(@institution) do |f| %>
+    <%= render 'form', :f => f %>
+    <%= f.submit 'Create and Join Institution', class: 'btn btn-primary' %>
+<% end %>

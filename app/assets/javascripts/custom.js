@@ -11,6 +11,14 @@ $(document).ready(function() {
         });
         UserForm.attachEventListeners();
     }
+
+    // Code for the dashboard "find my institution" modal panel.
+    // #find_institution_panel will only appear when the user is not
+    // affiliated with an institution (which will only be immediately after
+    // they have created an account).
+    if ($('#find_institution_panel')) {
+        Dashboard.showFindInstitutionPanel();
+    }
 });
 
 function attachEventListeners() {
@@ -79,6 +87,18 @@ function FauxMultiPageView() {
     };
 
 }
+
+var Dashboard = {
+
+    showFindInstitutionPanel: function() {
+        $('#find_institution_panel').modal('show');
+
+        $('#find_institution_button').on('click', function() {
+
+        });
+    }
+
+};
 
 var UserForm = {
 

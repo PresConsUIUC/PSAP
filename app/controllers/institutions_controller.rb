@@ -1,13 +1,16 @@
 class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
-  before_action :admin_user, only: [:index, :new, :create, :destroy]
+  before_action :admin_user, only: [:index, :destroy]
   before_action :same_institution_user, only: [:show, :edit, :update]
 
   def create
     @institution = Institution.new(institution_params)
+    @institution.users << current_user
+
     if @institution.save
-      flash[:success] = 'Institution created.'
+      flash[:success] = "The institution \"#{@institution.name}\" has been "\
+        "created, and you have automatically been added to it."
       redirect_to @institution
     else
       render 'new'

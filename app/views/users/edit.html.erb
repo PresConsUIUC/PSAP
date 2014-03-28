@@ -95,7 +95,12 @@
         </div>
 
         <%= f.hidden_field :selected_tab, value: 'institution' %>
-        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+
+        <%= f.submit 'My institution is selected above',
+                     class: 'btn btn-primary' %>
+        <%= link_to 'My institution is not listed', new_institution_path,
+                     class: 'btn btn-md btn-default' %>
+
     <% end %>
   </section>
 

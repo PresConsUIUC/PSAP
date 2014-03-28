@@ -2,49 +2,94 @@
 
 <h1>Dashboard</h1>
 
-<p>Hi, <%= @user.first_name %>! This is your dashboard. It will presumably, at
-  some point, display an overview of some information you might be interested
-  in.</p>
+<% if @user.institution %>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default dashboard">
+          <div class="panel-heading">
+            <h3 class="panel-title">Panel title</h3>
+          </div>
+          <div class="panel-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur. Fusce ac risus mi. Duis urna nibh, volutpat a turpis ut, gravida iaculis lectus. Mauris nec dui aliquet, dapibus nulla ut, viverra justo. Pellentesque tempus bibendum nunc vel aliquet. Maecenas blandit massa sed tellus hendrerit vulputate sit amet ac nibh.
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur. Fusce ac risus mi. Duis urna nibh, volutpat a turpis ut, gravida iaculis lectus. Mauris nec dui aliquet, dapibus nulla ut, viverra justo. Pellentesque tempus bibendum nunc vel aliquet. Maecenas blandit massa sed tellus hendrerit vulputate sit amet ac nibh.
+      <div class="col-md-6">
+        <div class="panel panel-default dashboard">
+          <div class="panel-heading">
+            <h3 class="panel-title">Panel title</h3>
+          </div>
+          <div class="panel-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie.
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
-      </div>
-      <div class="panel-body">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie.
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default dashboard">
+          <div class="panel-heading">
+            <h3 class="panel-title">Panel title</h3>
+          </div>
+          <div class="panel-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur.
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur.
+      <div class="col-md-6">
+        <div class="panel panel-default dashboard">
+          <div class="panel-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur. Fusce ac risus mi. Duis urna nibh, volutpat a turpis ut, gravida iaculis lectus. Mauris nec dui aliquet, dapibus nulla ut, viverra justo. Pellentesque tempus bibendum nunc vel aliquet. Maecenas blandit massa sed tellus hendrerit vulputate sit amet ac nibh.
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie. Vivamus arcu sem, viverra consectetur accumsan vehicula, gravida sed nisi. Praesent euismod tincidunt consectetur. Fusce ac risus mi. Duis urna nibh, volutpat a turpis ut, gravida iaculis lectus. Mauris nec dui aliquet, dapibus nulla ut, viverra justo. Pellentesque tempus bibendum nunc vel aliquet. Maecenas blandit massa sed tellus hendrerit vulputate sit amet ac nibh.
+
+<% else %>
+
+    <div class="modal fade" id="find_institution_panel" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Welcome to PSAP, <%= @user.first_name %>!</h2>
+          </div>
+          <div class="modal-body">
+            <p>This is your dashboard. You'll arrive here every time you sign in. You can always return by choosing &quot;Dashboard&quot; from the top menu.</p>
+            <p>Before you can perform any assessments, you'll need to associate your account with an institution. On your dashboard, you'll find a link to begin this process.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary"
+                    data-dismiss="modal">Got it</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default dashboard">
+          <div class="panel-heading">
+            <h3 class="panel-title">Associate with an institution</h3>
+          </div>
+          <div class="panel-body institution_association">
+            <p>To unlock all of PSAP's functionality, you will need to associate your account with an institution. Touch the appropriate button below.</p>
+            <%= form_for(@user) do |f| %>
+                <%= f.collection_select :institution_id,
+                                        Institution.all.order(:name), :id, :name,
+                                        { include_blank: false },
+                                        { class: 'form-control' } %>
+                <%= f.submit 'My institution is selected above',
+                             class: 'btn btn-default btn-block' %>
+            <% end %>
+            <%= link_to 'My institution is not listed', new_institution_path,
+                        class: 'btn btn-md btn-default btn-block' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<% end %>
