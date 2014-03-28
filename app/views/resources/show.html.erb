@@ -38,10 +38,12 @@
     <table class="table table-striped table-hover">
       <caption>Contents</caption>
       <thead>
-      <th></th>
-      <th></th>
-      <th>Title</th>
-      <th>Type</th>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Title</th>
+        <th>Type</th>
+      </tr>
       </thead>
       <tbody>
       <% @resource.children.order(:name).each do |child| %>
