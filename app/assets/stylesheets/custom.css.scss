@@ -38,6 +38,10 @@ textarea {
   resize: vertical;
 }
 
+a:focus {
+  outline: 0;
+}
+
 .center {
   text-align: center;
 }
