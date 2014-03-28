@@ -19,8 +19,6 @@
   <% end %>
 </h1>
 
-<p><%= @user.institution.name %></p>
-
 <div>
   <ul class="nav nav-tabs entity_menu">
     <li><a href="#" data-open="info">Info</a></li>
@@ -29,6 +27,8 @@
 
   <section id="info" class="form_view">
     <dl>
+      <dt>Institution</dt>
+      <dd><%= @user.institution ? @user.institution.name : 'Unaffiliated' %></dd>
       <dt>Email</dt>
       <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
       <dt>Account</dt>
