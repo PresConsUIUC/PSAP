@@ -90,12 +90,23 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(user_update_params)
+    success = @user.update_attributes(user_update_params)
+    if success
       flash[:success] = 'Your profile has been updated.'
-      redirect_to edit_user_url(@user, anchor: params[:user][:selected_tab])
-      return
+    else
+      flash[:error] = 'There was an error saving your profile.'
     end
-    render 'edit'
+
+    respond_to do |format|
+      format.html {
+        if success
+          redirect_to edit_user_url(@user)
+        else
+          render 'edit'
+        end
+      }
+      format.js { render 'edit' }
+    end
   end
 
   private

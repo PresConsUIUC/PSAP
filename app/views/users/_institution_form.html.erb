@@ -1,0 +1,18 @@
+<h2>Institution</h2>
+
+<%= form_for @user, remote: true do |f| %>
+    <%= render 'shared/error_messages', :object => f.object %>
+
+    <div class="form-group">
+      <%= f.collection_select :institution_id,
+                              Institution.all.order(:name), :id, :name,
+                              { selected: @user.institution_id,
+                                include_blank: false },
+                              { class: 'form-control' } %>
+    </div>
+
+    <%= f.submit 'My institution is selected above',
+                 class: 'btn btn-primary' %>
+    <%= link_to 'My institution is not listed here', new_institution_path,
+                class: 'btn btn-md btn-default' %>
+<% end %>

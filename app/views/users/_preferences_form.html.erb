@@ -1,0 +1,14 @@
+<h2>Preferences</h2>
+
+<%= form_for @user, remote: true do |f| %>
+    <%= render 'shared/error_messages', :object => f.object %>
+
+    <div class="form-group">
+      <%= f.label :time_zone %>
+      <%= f.collection_select :time_zone, ActiveSupport::TimeZone.all,
+                              :name, :to_s %>
+    </div>
+
+    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+
+<% end %>

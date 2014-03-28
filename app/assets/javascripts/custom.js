@@ -50,13 +50,10 @@ function FauxMultiPageView() {
         var first_li = $('.entity_menu li:first');
         first_li.addClass('active');
 
-        if (location.hash) {
-            self.openView(location.hash.substr(1, location.hash.length));
-        } else {
-            var first_view = first_li.children('a:first').attr('data-open');
-            if (first_view) {
-                self.openView(first_view);
-            }
+
+        var first_view = first_li.children('a:first').attr('data-open');
+        if (first_view) {
+            self.openView(first_view);
         }
     };
 
@@ -70,9 +67,6 @@ function FauxMultiPageView() {
         $('.entity_menu li').removeClass('active');
         $('.entity_menu a[data-open="' + view_id + '"]').parent()
             .addClass('active');
-
-        location.hash = view_id;
-        window.scrollTo(0, 0);
 
         $('.form_view').fadeOut(FADE_DURATION, function() {
             $(this).remove();

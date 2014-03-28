@@ -4,12 +4,25 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :init
+  after_filter :flash_in_response_headers
 
   layout 'application'
 
   include SessionsHelper
 
   private
+
+  # Stores the flash message and type in the response headers for ajax
+  # purposes.
+  def flash_in_response_headers
+    return unless request.xhr?
+    response.headers['X-Message-Type'] = 'error' unless flash[:error].blank?
+    response.headers['X-Message-Type'] = 'success' unless flash[:success].blank?
+    response.headers['X-Message'] = flash[:error] unless flash[:error].blank?
+    response.headers['X-Message'] = flash[:success] unless flash[:success].blank?
+
+    flash.discard # prevent the flash from appearing when the page is reloaded
+  end
 
   def init
     # Enables url_for to generate full URLs when used in ActionMailer

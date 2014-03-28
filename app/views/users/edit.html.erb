@@ -28,129 +28,19 @@
   </div>
 
   <section id="basic_info" class="col-md-9 form_view">
-    <h2>Basic Information</h2>
-
-    <% if @user == current_user %>
-        <div id="gravatar">
-          <%= gravatar_for @user %>
-          <a href="http://gravatar.com/emails" target="_blank">Change</a>
-        </div>
-    <% end %>
-
-    <%= form_for(@user) do |f| %>
-        <%= render 'shared/error_messages', :object => f.object %>
-
-        <div class="form-group">
-          <%= f.label :first_name %>
-          <%= f.text_field :first_name, class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :last_name %>
-          <%= f.text_field :last_name, class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :email %>
-          <%= f.text_field :email, class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control' %>
-          <div class="progress">
-            <div class="progress-bar progress-bar-warning" role="progressbar"
-                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-                 style="width: 0%">
-              <span class="sr-only"></span>
-            </div>
-          </div>
-          <p id="password_status" class="text-warning"></p>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password_confirmation, 'Confirm Password' %>
-          <%= f.password_field :password_confirmation, class: 'form-control' %>
-          <p id="password_confirmation_status"></p>
-        </div>
-
-        <%= f.hidden_field :selected_tab, value: 'basic_info' %>
-        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-    <% end %>
+    <%= render 'basic_info_form' %>
   </section>
 
   <section id="institution" class="col-md-9 form_view">
-    <h2>Institution</h2>
-
-    <%= form_for(@user) do |f| %>
-        <%= render 'shared/error_messages', :object => f.object %>
-
-        <div class="form-group">
-          <% # f.label :institution %>
-          <%= f.collection_select :institution_id,
-                                  Institution.all.order(:name), :id, :name,
-                                  { selected: @user.institution_id,
-                                    include_blank: false },
-                                  { class: 'form-control' } %>
-        </div>
-
-        <%= f.hidden_field :selected_tab, value: 'institution' %>
-
-        <%= f.submit 'My institution is selected above',
-                     class: 'btn btn-primary' %>
-        <%= link_to 'My institution is not listed', new_institution_path,
-                     class: 'btn btn-md btn-default' %>
-
-    <% end %>
+    <%= render 'institution_form' %>
   </section>
 
   <section id="preferences" class="col-md-9 form_view">
-    <h2>Preferences</h2>
-
-    <%= form_for(@user) do |f| %>
-        <%= render 'shared/error_messages', :object => f.object %>
-
-        <div class="form-group">
-          <%= f.label :time_zone %>
-          <%= f.collection_select :time_zone, ActiveSupport::TimeZone.all,
-                                  :name, :to_s %>
-        </div>
-
-        <%= f.hidden_field :selected_tab, value: 'preferences' %>
-        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-    <% end %>
+    <%= render 'preferences_form' %>
   </section>
 
   <section id="change_password" class="col-md-9 form_view">
-    <h2>Change Password</h2>
-
-    <%= form_for(@user) do |f| %>
-        <%= render 'shared/error_messages', :object => f.object %>
-
-        <div class="form-group has-feedback">
-          <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control' %>
-          <span class="glyphicon form-control-feedback"></span>
-          <div class="progress">
-            <div class="progress-bar progress-bar-warning" role="progressbar"
-                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-                 style="width: 0%">
-              <span class="sr-only"></span>
-            </div>
-          </div>
-          <p id="password_status" class="text-warning"></p>
-        </div>
-
-        <div class="form-group has-feedback">
-          <%= f.label :password_confirmation, 'Confirm Password' %>
-          <%= f.password_field :password_confirmation, class: 'form-control' %>
-          <span class="glyphicon form-control-feedback"></span>
-          <p id="password_confirmation_status"></p>
-        </div>
-
-        <%= f.hidden_field :selected_tab, value: 'change_password' %>
-        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-    <% end %>
+    <%= render 'change_password_form' %>
   </section>
 
 </div>
