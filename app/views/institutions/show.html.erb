@@ -25,69 +25,77 @@
   </div>
 </div>
 
+<ul class="nav nav-tabs">
+  <li class="active">
+    <%= link_to 'Repositories', '#repositories',
+                data: { :'data-toggle' => 'tab' } %>
+  </li>
+  <li>
+    <%= link_to 'Assessments', '#assessments',
+                data: { :'data-toggle' => 'tab' } %>
+  </li>
+</ul>
 
-<% if @institution.repositories.any? %>
+<div class="tab-content">
 
-    <table class="table table-striped table-hover">
-      <caption>Repositories</caption>
-      <thead>
-        <th></th>
-        <th></th>
-        <th></th>
-      </thead>
-      <tbody>
-        <% @institution.repositories.order(:name).each do |repository| %>
-          <tr>
-            <td>
-              <% if current_user.has_permission?('repositories.edit_own') %>
-                  <%= link_to 'Edit', edit_repository_path(repository) %>
-              <% end %>
-            </td>
-            <td>
-              <% if current_user.has_permission?('repositories.delete_own') %>
-                  <%= link_to 'Delete', repository, method: :delete,
+  <div class="tab-pane active" id="repositories">
+    <% if @institution.repositories.any? %>
+        <table class="table table-striped table-hover">
+          <thead>
+          <th></th>
+          <th></th>
+          <th></th>
+          </thead>
+          <tbody>
+          <% @institution.repositories.order(:name).each do |repository| %>
+              <tr>
+                <td>
+                  <% if current_user.has_permission?('repositories.edit_own') %>
+                      <%= link_to 'Edit', edit_repository_path(repository) %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if current_user.has_permission?('repositories.delete_own') %>
+                      <%= link_to 'Delete', repository, method: :delete,
+                                  data: { confirm: 'Are you sure?' } %>
+                  <% end %>
+                </td>
+                <td><%= link_to repository.name, repository %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+    <% else %>
+        <p>This institution has no repositories.</p>
+    <% end %>
+  </div>
+
+  <div class="tab-pane" id="assessments">
+    <% if @institution.assessments.any? %>
+        <table class="table table-striped table-hover">
+          <thead>
+          <th></th>
+          <th></th>
+          <th></th>
+          </thead>
+          <tbody>
+          <% @institution.assessments.each do |assessment| %>
+              <tr>
+                <td>
+                  <%= link_to 'Edit', edit_assessment_path(assessment) %>
+                </td>
+                <td>
+                  <%= link_to 'Delete', assessment, method: :delete,
                               data: { confirm: 'Are you sure?' } %>
-              <% end %>
-            </td>
-            <td><%= link_to repository.name, repository %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-<% else %>
-
-    <p>This institution has no repositories.</p>
-
-<% end %>
-
-<% if @institution.assessments.any? %>
-
-    <table class="table table-striped table-hover">
-      <caption>Assessments</caption>
-      <thead>
-      <th></th>
-      <th></th>
-      <th></th>
-      </thead>
-      <tbody>
-      <% @institution.assessments.each do |assessment| %>
-          <tr>
-            <td>
-              <%= link_to 'Edit', edit_assessment_path(assessment) %>
-            </td>
-            <td>
-              <%= link_to 'Delete', assessment, method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
-            </td>
-            <td><%= link_to assessment.name, assessment %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-
-<% else %>
-
-    <p>This institution has not completed any assessments.</p>
-
-<% end %>
+                </td>
+                <td><%= link_to assessment.name, assessment %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p>This institution has not completed any assessments.</p>
+    <% end %>
+  </div>
+</div>

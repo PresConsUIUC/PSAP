@@ -2,6 +2,13 @@ $(document).ready(function() {
     var multiPageView = new FauxMultiPageView();
     multiPageView.init();
 
+    // Used by the Bootstrap 3 tab bar
+    // http://getbootstrap.com/javascript/#tabs
+    $('ul.nav-tabs a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
     // Code for the user registration, edit, and show forms.
     if ($('#new_user') || $('.edit_user') || $('#show_user')) {
         $('.entity_menu a').on('click', function() {
