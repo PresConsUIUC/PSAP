@@ -68,7 +68,11 @@
           </tbody>
         </table>
     <% else %>
-        <p>This user has not begun any assessments.</p>
+        <% if @user == current_user %>
+            <p>You have not begun any assessments.</p>
+        <% else %>
+            <p>This user has not begun any assessments.</p>
+        <% end %>
     <% end %>
   </section>
 
