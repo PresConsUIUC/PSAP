@@ -1,7 +1,15 @@
 <% provide(:title, "Edit User #{@user.username}") %>
 
+<% if current_user.is_admin? %>
+    <ol class="breadcrumb">
+      <li><%= link_to 'Users', users_path %></li>
+      <li><%= link_to @user.username, @user %></li>
+      <li class="active">Edit</li>
+    </ol>
+<% end %>
+
 <% if @user == current_user %>
-    <h1>Update your profile</h1>
+    <h1>User Settings</h1>
 <% else %>
     <h1>Edit user <%= @user.username %></h1>
 <% end %>
