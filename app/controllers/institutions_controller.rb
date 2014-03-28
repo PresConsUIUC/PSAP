@@ -18,6 +18,11 @@ class InstitutionsController < ApplicationController
   end
 
   def destroy
+    institution = Institution.find(params[:id])
+    name = institution.name
+    institution.destroy
+    flash[:success] = "#{name} deleted."
+    redirect_to institutions_path
   end
 
   def edit
