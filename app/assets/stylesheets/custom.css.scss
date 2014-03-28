@@ -42,7 +42,7 @@ textarea {
   text-align: center;
 }
 
-h1 { font-size:2em }
+h1 { font-size:2em; margin:0em 0em 1em 0em }
 h2 { font-size:1.66em; margin:0em 0em 1em 0em  }
 h3 { font-size:1.33em }
 h4 { font-size:1em }
@@ -96,6 +96,9 @@ header {
   @media print {
     display:none;
   }
+  h1 {
+    margin-bottom:0.4em;
+  }
   h1 a, h1 a:hover {
     color:black;
     font-weight:normal;
@@ -126,8 +129,10 @@ div.entity_menu {
     background:url(image_path('arrow-right.png')) 95% 50% no-repeat;
     line-height:60px;
     height:80px;
+    padding:0px;
     a {
       height:100%;
+      padding:1em;
       position:absolute;
       width:100%;
     }
