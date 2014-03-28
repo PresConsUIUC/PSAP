@@ -6,7 +6,7 @@
     <div class="form-group">
       <%= f.label :time_zone %>
       <%= f.collection_select :time_zone, ActiveSupport::TimeZone.all,
-                              :name, :to_s %>
+                              :name, :to_s, {}, { class: 'form-control' } %>
     </div>
 
     <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
