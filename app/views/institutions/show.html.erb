@@ -7,13 +7,24 @@
   <li class="active"><%= @institution.name %></li>
 </ol>
 
-<h1>
-  <%= @institution.name %>
-  <%= link_to edit_institution_path(@institution), class: 'btn btn-default btn-sm' do %>
-      <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-      Edit
-  <% end %>
-</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1><%= @institution.name %></h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <div class="btn-group">
+      <%= link_to edit_institution_path(@institution), class: 'btn btn-default btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit
+      <% end %>
+      <%= link_to new_institution_repository_path(@institution), class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add Repository
+      <% end %>
+    </div>
+  </div>
+</div>
+
 
 <% if @institution.repositories.any? %>
 
@@ -48,11 +59,6 @@
 
     <p>This institution has no repositories.</p>
 
-<% end %>
-
-<%= link_to new_institution_repository_path(@institution), class: 'btn btn-default' do %>
-    <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-    Add Repository
 <% end %>
 
 <% if @institution.assessments.any? %>
