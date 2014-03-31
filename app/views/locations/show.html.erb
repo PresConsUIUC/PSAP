@@ -33,37 +33,48 @@
   </div>
 </div>
 
-<% if @location.resources.any? %>
-    <table class="table table-striped table-hover">
-      <caption>Resources</caption>
-      <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th>Title</th>
-        <th>Type</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @location.resources.order(:name).each do |resource| %>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a href="#resources" data-toggle="tab">Resources</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+
+  <div class="tab-pane active" id="resources">
+    <% if @location.resources.any? %>
+        <table class="table table-striped table-hover">
+          <thead>
           <tr>
-            <td>
-              <% if current_user.has_permission?('resources.edit_own') %>
-                  <%= link_to 'Edit', edit_resource_path(resource) %>
-              <% end %>
-            </td>
-            <td>
-              <% if current_user.has_permission?('resources.delete_own') %>
-                  <%= link_to 'Delete', resource, method: :delete,
-                              data: { confirm: 'Are you sure?' } %>
-              <% end %>
-            </td>
-            <td><%= link_to resource.name, resource %></td>
-            <td><%= resource.readable_resource_type %></td>
+            <th></th>
+            <th></th>
+            <th>Title</th>
+            <th>Type</th>
           </tr>
-      <% end %>
-      </tbody>
-    </table>
-<% else %>
-    <p>There are no resources in this location.</p>
-<% end %>
+          </thead>
+          <tbody>
+          <% @location.resources.order(:name).each do |resource| %>
+              <tr>
+                <td>
+                  <% if current_user.has_permission?('resources.edit_own') %>
+                      <%= link_to 'Edit', edit_resource_path(resource) %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if current_user.has_permission?('resources.delete_own') %>
+                      <%= link_to 'Delete', resource, method: :delete,
+                                  data: { confirm: 'Are you sure?' } %>
+                  <% end %>
+                </td>
+                <td><%= link_to resource.name, resource %></td>
+                <td><%= resource.readable_resource_type %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p>There are no resources in this location.</p>
+    <% end %>
+  </div>
+
+</div>
