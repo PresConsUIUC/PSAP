@@ -309,3 +309,24 @@ var UserForm = {
     }
 
 };
+
+var Form = {
+
+    validate: function(field_id, min_length, max_length) {
+        var elem = $('#' + field_id);
+        elem.parent('div').removeClass('has-success');
+        elem.parent('div').removeClass('has-error');
+        elem.next('span').removeClass('glyphicon-ok');
+        elem.next('span').removeClass('glyphicon-remove');
+
+        var value = elem.val().trim();
+        if (value.length >= min_length && value.length <= max_length) {
+            elem.parent('div').addClass('has-success');
+            elem.next('span').addClass('glyphicon-ok');
+        } else {
+            elem.parent('div').addClass('has-error');
+            elem.next('span').addClass('glyphicon-remove');
+        }
+    }
+
+}
