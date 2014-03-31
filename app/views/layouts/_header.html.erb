@@ -11,12 +11,12 @@
             <li><a href="">Format ID Guide</a></li>
             <li <%= 'class=active' if current_page?(glossary_path) %>>
               <%= link_to 'Glossary', glossary_path,
-                          id: 'glossaryLink',
+                          id: 'glossaryLink', class: 'modal_view',
                           data: { :open => '/glossary' }%>
             </li>
             <li <%= 'class=active' if current_page?(bibliography_path) %>>
               <%= link_to 'Bibliography', bibliography_path,
-                          id: 'bibliographyLink',
+                          id: 'bibliographyLink', class: 'modal_view',
                           data: { :open => '/bibliography' } %>
             </li>
           </ul>
@@ -53,7 +53,9 @@
               </ul>
             </li>
 
-            <li id="help"><%= link_to 'Help', help_path, title: 'Help' %></li>
+            <li id="help"><%= link_to 'Help', help_path, title: 'Help',
+                                      id: 'helpLink', class: 'modal_view',
+                                      data: { :open => '/help' } %></li>
         <% else %>
             <li><%= link_to 'Sign in', login_path %></li>
         <% end %>

@@ -21,7 +21,7 @@ $(document).ready(function() {
     });
 
     // Show the glossary & bibliography in a modal panel instead of a new page
-    $('a#bibliographyLink, a#glossaryLink').on('click', function() {
+    $('a.modal_view').on('click', function() {
         $('#appModal').modal('show');
 
         $.get($(this).attr('data-open'), function(data) {
