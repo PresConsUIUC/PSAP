@@ -61,7 +61,6 @@ Psap::Application.routes.draw do
   match '/events', to: 'events#index', via: 'get'
   match '/glossary', to: 'static#glossary', via: 'get'
   match '/help', to: 'static#help', via: 'get'
-  # match '/settings', to: 'settings:settings', via: 'get'
 
   match '/confirm', to: 'users#confirm', via: 'get'
   match '/login', to: 'sessions#new', via: 'get'
@@ -78,7 +77,6 @@ Psap::Application.routes.draw do
     resources :resources
   end
   resources :resources, except: :index
-  resources :assessments, except: :index
   resources :roles
   resources :sessions, only: [:new, :create, :destroy]
 

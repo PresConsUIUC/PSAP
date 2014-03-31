@@ -4,8 +4,6 @@ class Institution < ActiveRecord::Base
 
   has_many :locations, through: :repositories
   has_many :resources, through: :locations
-  has_many :assessments, through: :resources
-
 
   # Creation will be logged during user creation.
   after_update :log_update

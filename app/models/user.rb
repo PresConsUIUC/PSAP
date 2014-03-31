@@ -1,7 +1,10 @@
 class User < ActiveRecord::Base
-  has_many :assessments
   belongs_to :institution, inverse_of: :users
   belongs_to :role, inverse_of: :users
+
+  has_many :repositories, through: :institution
+  has_many :locations, through: :repositories
+  has_many :resources, through: :locations
 
   has_secure_password
 

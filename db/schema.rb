@@ -11,24 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140331135021) do
-
-  create_table "assessment_options", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "assessments", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "resource_id"
-    t.integer  "user_id"
-  end
-
-  add_index "assessments", ["resource_id"], name: "index_assessments_on_resource_id"
-  add_index "assessments", ["user_id"], name: "index_assessments_on_user_id"
+ActiveRecord::Schema.define(version: 20140331152030) do
 
   create_table "events", force: true do |t|
     t.string   "description"

@@ -57,11 +57,11 @@
       </div>
   <% end %>
 
-  <% if current_page?(new_assessment_path) || current_page?(report_path) %>
+  <% if current_page?(new_resource_path) || current_page?(report_path) # TODO this doesn't belong here %>
       <ul class="nav nav-tabs">
         <li><a href="">Collections</a></li>
-        <li <%= 'class=active' if current_page?(new_assessment_path) %>>
-          <%= link_to 'Perform Assessment', new_assessment_path %>
+        <li <%= 'class=active' if current_page?(new_resource_path) %>>
+          <%= link_to 'Perform Assessment', new_resource_path %>
         </li>
         <li <%= 'class=active' if current_page?(report_path) %>>
           <%= link_to 'View Report', report_path %>
