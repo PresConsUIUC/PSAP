@@ -10,10 +10,14 @@
             </li>
             <li><a href="">Format ID Guide</a></li>
             <li <%= 'class=active' if current_page?(glossary_path) %>>
-              <%= link_to 'Glossary', glossary_path %>
+              <%= link_to 'Glossary', glossary_path,
+                          id: 'glossaryLink',
+                          data: { :open => '/glossary' }%>
             </li>
             <li <%= 'class=active' if current_page?(bibliography_path) %>>
-              <%= link_to 'Bibliography', bibliography_path %>
+              <%= link_to 'Bibliography', bibliography_path,
+                          id: 'bibliographyLink',
+                          data: { :open => '/bibliography' } %>
             </li>
           </ul>
       <% end %>

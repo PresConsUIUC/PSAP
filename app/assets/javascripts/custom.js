@@ -16,6 +16,20 @@ $(document).ready(function() {
         $(this).tab('show');
     });
 
+    // Show the glossary & bibliography in a modal panel instead of a new page
+    $('a#bibliographyLink, a#glossaryLink').on('click', function() {
+        $('#appModal').modal('show');
+
+        $.get($(this).attr('data-open'), function(data) {
+            var content = $(data).find('div#page_content');
+
+            $('div.modal-body').html(content.html());
+            $('#appModalTitle').text($('div.modal-body h1').text());
+            $('div.modal-body h1').remove();
+        });
+        return false;
+    });
+
     // Code for the user registration, edit, and show forms.
     if ($('#new_user') || $('.edit_user') || $('#show_user')) {
         $('.entity_menu a').on('click', function() {
