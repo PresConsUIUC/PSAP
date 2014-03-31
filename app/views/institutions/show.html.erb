@@ -13,11 +13,17 @@
   </div>
   <div class="col-md-4" style="text-align:right">
     <div class="btn-group">
-      <%= link_to edit_institution_path(@institution), class: 'btn btn-default btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-          Edit
+      <!-- Edit -->
+      <% if current_user.is_admin? %>
+          <%= link_to edit_institution_path(@institution),
+                      class: 'btn btn-default btn-default' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+              Edit
+          <% end %>
       <% end %>
-      <%= link_to new_institution_repository_path(@institution), class: 'btn btn-default' do %>
+      <!-- Add Repository -->
+      <%= link_to new_institution_repository_path(@institution),
+                  class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add Repository
       <% end %>
@@ -62,6 +68,7 @@
           </tr>
           </thead>
           <tbody>
+          <!-- Edit -->
           <% @institution.repositories.order(:name).each do |repository| %>
               <tr>
                 <td>
@@ -112,7 +119,7 @@
           </tbody>
         </table>
     <% else %>
-        <p>This institution has not completed any assessments.</p>
+        <p>There are no completed assessments at this institution.</p>
     <% end %>
   </div>
 
