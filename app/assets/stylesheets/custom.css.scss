@@ -88,6 +88,10 @@ nav.navbar {
       height:24px;
       text-indent:-9999px;
     }
+    a:hover {
+      background: url(image_path('question-white-24.png')) center center no-repeat;
+      @include image-2x('question-white-24@2x.png', 48px, 48px);
+    }
   }
 }
 
