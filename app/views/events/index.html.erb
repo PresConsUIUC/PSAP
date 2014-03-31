@@ -2,7 +2,7 @@
 
 <h1>Event Log</h1>
 
-<%= will_paginate %>
+<%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 
 <table class="table">
   <thead>
@@ -28,4 +28,4 @@
   </tbody>
 </table>
 
-<%= will_paginate %>
+<%= will_paginate @events, renderer: BootstrapPagination::Rails %>

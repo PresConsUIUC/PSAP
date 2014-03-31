@@ -36,7 +36,8 @@ gem 'bootstrap-sass', '3.1.1.0'
 
 gem 'will_paginate', '3.0.4'
 
-gem 'bootstrap-will_paginate', '0.0.9'
+# gem 'bootstrap-will_paginate'
+gem 'will_paginate-bootstrap'
 
 # Fixes jQuery $(document).ready() not working with turbolinks; enabled in
 # application.js
