@@ -23,13 +23,38 @@ normal_role = Role.create!(name: 'User', is_admin: false)
 case Rails.env
 
   when 'development'
-    institution1 = Institution.create!(name: 'University of Illinois at Urbana-Champaign')
-    institution2 = Institution.create!(name: 'West Southeast Directional State University')
-    institution3 = Institution.create!(name: 'Hamburger University')
-    institution4 = Institution.create!(name: 'San Quentin Prison University')
-    institution5 = Institution.create!(name: 'Barnum & Bailey Clown College')
-    institution6 = Institution.create!(name: 'Hogwart\'s Academy')
-    institution7 = Institution.create!(name: 'University of Life')
+    institution1 = Institution.create!(name: 'University of Illinois at Urbana-Champaign',
+                                       address1: '1408 W. Gregory Dr.',
+                                       address2: nil, city: 'Urbana',
+                                       state: 'IL',
+                                       postal_code: 61801,
+                                       country: 'United States of America')
+    institution2 = Institution.create!(name: 'West Southeast Directional State University',
+                                       address1: '1 Directional Drive',
+                                       address2: nil, city: 'Podunk',
+                                       state: 'IL', postal_code: 12345,
+                                       country: 'United States of America')
+    institution3 = Institution.create!(name: 'Hamburger University',
+                                       address1: '21 Hamburger Place',
+                                       address2: nil, city: 'Des Moines',
+                                       state: 'IA', postal_code: 12345,
+                                       country: 'United States of America')
+    institution4 = Institution.create!(name: 'San Quentin Prison University',
+                                       address1: '5435 Prison Ct.',
+                                       address2: nil, city: 'San Quentin',
+                                       state: 'CA', postal_code: 90210,
+                                       country: 'United States of America')
+    institution5 = Institution.create!(name: 'Barnum & Bailey Clown College',
+                                       address1: 'Circus Tent C',
+                                       address2: '53 Trapeze Road',
+                                       city: 'Los Angeles',
+                                       state: 'CA', postal_code: 99999,
+                                       country: 'United States of America')
+    institution6 = Institution.create!(name: 'Hogwarts School of Witchcraft & Wizardry',
+                                       address1: '123 Magical St.',
+                                       address2: nil, city: 'Hogsmeade',
+                                       state: 'N/A', postal_code: 99999,
+                                       country: 'Hogsmeade')
 
     # Admin user
     admin_user = User.create!(username: 'admin', email: 'admin@example.org',
