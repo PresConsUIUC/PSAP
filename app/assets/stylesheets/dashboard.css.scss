@@ -1,0 +1,19 @@
+body#dashboard div#page_content {
+  .dashboard {
+    div.institution_association {
+      input[type=submit], a {
+        margin:1.8em auto;
+        width:80%;
+      }
+    }
+    div.institution_users {
+      ul {
+        margin:0px;
+        padding:0px;
+        li {
+          list-style-type:none;
+        }
+      }
+    }
+  }
+}
