@@ -96,33 +96,6 @@ case Rails.env
                                 resource_type: ResourceType::COLLECTION,
                                 location: location4)
 
-    permission = Permission.create!(key: 'institutions.edit_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'repositories.create_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'repositories.edit_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'repositories.delete_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'resources.create_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'resources.edit_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'resources.delete_own')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'users.view_all')
-    admin_role.permissions << permission
-
-    permission = Permission.create!(key: 'users.view_all_in_own_institution')
-    admin_role.permissions << permission
-
 end
 
 # Most of the above commands generated events, which we don't want.

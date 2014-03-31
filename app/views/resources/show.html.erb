@@ -49,15 +49,11 @@
       <% @resource.children.order(:name).each do |child| %>
           <tr>
             <td>
-              <% if current_user.has_permission?('resources.edit_own') %>
-                  <%= link_to 'Edit', edit_resource_path(child) %>
-              <% end %>
+              <%= link_to 'Edit', edit_resource_path(child) %>
             </td>
             <td>
-              <% if current_user.has_permission?('resources.delete_own') %>
-                  <%= link_to 'Delete', child, method: :delete,
-                              data: { confirm: 'Are you sure?' } %>
-              <% end %>
+              <%= link_to 'Delete', child, method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
             </td>
             <td><%= link_to child.name, child %></td>
             <td><%= child.readable_resource_type %></td>

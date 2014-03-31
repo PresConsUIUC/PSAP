@@ -56,15 +56,11 @@
           <% @location.resources.order(:name).each do |resource| %>
               <tr>
                 <td>
-                  <% if current_user.has_permission?('resources.edit_own') %>
-                      <%= link_to 'Edit', edit_resource_path(resource) %>
-                  <% end %>
+                  <%= link_to 'Edit', edit_resource_path(resource) %>
                 </td>
                 <td>
-                  <% if current_user.has_permission?('resources.delete_own') %>
-                      <%= link_to 'Delete', resource, method: :delete,
-                                  data: { confirm: 'Are you sure?' } %>
-                  <% end %>
+                  <%= link_to 'Delete', resource, method: :delete,
+                              data: { confirm: 'Are you sure?' } %>
                 </td>
                 <td><%= link_to resource.name, resource %></td>
                 <td><%= resource.readable_resource_type %></td>
