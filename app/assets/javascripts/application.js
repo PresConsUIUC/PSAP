@@ -17,4 +17,5 @@
 // the jquery-turbolinks gem
 //= require jquery.turbolinks
 //= require turbolinks
+//= require local_time
 //= require_tree .

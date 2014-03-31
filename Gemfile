@@ -46,6 +46,8 @@ gem 'jquery-turbolinks'
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.1.2'
 
+gem 'local_time'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 

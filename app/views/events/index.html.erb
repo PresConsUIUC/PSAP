@@ -16,7 +16,7 @@
   <% @events.each do |event| %>
       <tr>
         <td><%= event.description %></td>
-        <td><%= event.created_at.in_time_zone(@user.time_zone).strftime('%B %e, %Y @ %l:%M:%S %p %Z') %></td>
+        <td><%= local_time_ago(event.created_at) %></td>
         <td>
           <% if event.user %>
               <%= link_to event.user.username, event.user,

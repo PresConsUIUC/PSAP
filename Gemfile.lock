@@ -54,6 +54,8 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     json (1.8.1)
+    local_time (0.3.0)
+      coffee-rails
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -126,6 +128,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   jquery-turbolinks
+  local_time
   rails (= 4.0.3)
   sass-rails (~> 4.0.0)
   sdoc

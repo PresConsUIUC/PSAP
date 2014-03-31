@@ -80,12 +80,11 @@
         <%= @user.enabled ? 'Enabled' : 'Disabled' %>
       </dd>
       <dt>Account Created</dt>
-      <dd><%= @user.created_at.strftime('%B %e, %Y') %></dd>
+      <dd><%= local_time_ago(@user.created_at) %></dd>
       <dt>Last Login</dt>
       <dd>
         <% if @user.last_login %>
-            <%= @user.last_login.in_time_zone(@user.time_zone).
-                        strftime('%B %e, %Y @ %l:%M %p %Z') %>
+            <%= local_time_ago(@user.last_login) %>
         <% else %>
             Never
         <% end %>
