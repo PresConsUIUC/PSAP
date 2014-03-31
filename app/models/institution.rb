@@ -5,6 +5,13 @@ class Institution < ActiveRecord::Base
   has_many :locations, through: :repositories
   has_many :resources, through: :locations
 
+  validates :address1, presence: true, length: { maximum: 255 }
+  validates :address2, length: { maximum: 255 }
+  validates :city, presence: true, length: { maximum: 255 }
+  validates :state, presence: true, length: { maximum: 30 }
+  validates :postal_code, presence: true, length: { maximum: 30 }
+  validates :country, presence: true, length: { maximum: 255 }
+
   # Creation will be logged during user creation.
   after_update :log_update
   after_destroy :log_destroy
