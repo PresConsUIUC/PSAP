@@ -16,7 +16,8 @@
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
-<body>
+<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>>
+
 <%= render 'layouts/header' %>
 
 <div class="container">
