@@ -1,0 +1,15 @@
+body#glossary div#page_content {
+  ul {
+    margin:1em 0em 1em 0em;
+    padding:0px;
+    text-align:center;
+  }
+  li {
+    display:inline;
+  }
+  li + li::before {
+    color:lightgray; /* TODO: use $gray-light */
+    content:' | ';
+    padding: 0.5em;
+  }
+}
