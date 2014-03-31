@@ -2,6 +2,13 @@ $(document).ready(function() {
     var multiPageView = new FauxMultiPageView();
     multiPageView.init();
 
+    // Fade out flash messages after a delay. This will work only with
+    // server-rendered flash messages; the same thing is done with ajax-
+    // rendered flash messages in ajax.js.
+    setTimeout(function() {
+        $('div.alert').fadeOut(1000);
+    }, 5000);
+
     // Used by the Bootstrap 3 tab bar
     // http://getbootstrap.com/javascript/#tabs
     $('ul.nav-tabs a').click(function(e) {
