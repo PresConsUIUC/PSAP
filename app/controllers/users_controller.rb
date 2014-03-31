@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    user = User.find(params[:id])
+    user = User.find_by_username params[:username]
     name = user.full_name
     user.destroy
     flash[:success] = "#{name} deleted."
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   # Responds to PATCH /users/:id/enable
   def enable
-    user = User.find(params[:id])
+    user = User.find_by_username params[:username]
     user.enabled = true
     user.save!
     flash[:success] = "User #{user.username} enabled."
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
 
   # Responds to PATCH /users/:id/disable
   def disable
-    user = User.find(params[:id])
+    user = User.find_by_username params[:username]
     user.enabled = false
     user.save!
     flash[:success] = "User #{user.username} disabled."
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by_username params[:username]
   end
 
   def update
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
 
   def before_edit_user
     # Normal users can only edit themselves. Administrators can edit anyone.
-    @user = User.find(params[:id])
+    @user = User.find_by_username params[:username]
     redirect_to(root_url) unless current_user?(@user) || current_user.is_admin?
   end
 
@@ -127,7 +127,7 @@ class UsersController < ApplicationController
   def before_show_user
     # Normal users can only see other users from their own institution.
     # Administrators can see everyone.
-    @user = User.find(params[:id])
+    @user = User.find_by_username params[:username]
     redirect_to(root_url) unless
         @user.institution == current_user.institution || current_user.is_admin?
   end

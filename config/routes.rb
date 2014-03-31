@@ -88,10 +88,10 @@ Psap::Application.routes.draw do
   # http://blog.teamtreehouse.com/creating-vanity-urls-in-rails
   # http://blog.arkency.com/2014/01/short-urls-for-every-route-in-your-rails-app/
   get '/users/register' => redirect('/register')
-  resources :users, path_names: { new: 'register' }
+  resources :users, param: :username, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
-  match '/users/:id/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
-  match '/users/:id/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
+  match '/users/:username/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
+  match '/users/:username/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
   match '/users/:username/exists', to: 'users#exists', via: 'get', as: 'user_exists'
 
   # Password routes

@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   @@_current_user = nil
   @_log_update = true
 
+  def to_param
+    username
+  end
+
   # Used by this and other models to associate the current user with event log
   # messages upon create/update/delete.
   def self.current_user
