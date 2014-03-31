@@ -2,6 +2,12 @@
 
 <h1>Glossary</h1>
 
+<ul>
+  <% ('A'..'Z').each do |n| %>
+      <li><a href="#<%= n %>"><%= n %></a></li>
+  <% end %>
+</ul>
+
 <dl>
   <dt id="1-layer print">1-layer print</dt>
   <dd>An early era photographic print with no binder or baryta layer&mdash;simply image material on a paper support&mdash;is given this designation (popularized by James Reilly). Examples include the Salt Print, Cyanotype, and Platinum/Palladium Print.</dd>
@@ -11,6 +17,8 @@
 
   <dt id="3-layer print">3-layer print</dt>
   <dd>An early era photographic print with a baryta layer, binder, and image material on a paper support&mdash;is given this designation (popularized by James Reilly). Examples include the glossy Collodion Print, Matte Collodion Print, Gelatin POP Print, and Silver Gelatin Print.</dd>
+
+  <a id="A"></a>
 
   <dt id="Abrasion">Abrasion</dt>
   <dd>Surface damage caused by friction, resulting in a scrape or scuff mark. In some cases, this may lead to information loss.</dd>
