@@ -13,6 +13,12 @@ Format.create!(name: 'Super 8mm', score: 0.5, obsolete: true)
 Format.create!(name: '9.5mm', score: 0.25, obsolete: true)
 Format.create!(name: 'Other film gauges', score: 0, obsolete: true)
 
+# Admin role
+admin_role = Role.create!(name: 'Administrator', is_admin: true)
+
+# Normal role
+normal_role = Role.create!(name: 'User', is_admin: false)
+
 # From here, we seed the database differently depending on the environment.
 case Rails.env
 
@@ -24,12 +30,6 @@ case Rails.env
     institution5 = Institution.create!(name: 'Barnum & Bailey Clown College')
     institution6 = Institution.create!(name: 'Hogwart\'s Academy')
     institution7 = Institution.create!(name: 'University of Life')
-
-    # Admin role
-    admin_role = Role.create!(name: 'Administrator', is_admin: true)
-
-    # Normal role
-    normal_role = Role.create!(name: 'User', is_admin: false)
 
     # Admin user
     admin_user = User.create!(username: 'admin', email: 'admin@example.org',
