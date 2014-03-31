@@ -43,6 +43,24 @@ case Rails.env
                                password: 'password', password_confirmation: 'password',
                                institution: institution1, role: normal_role,
                                confirmed: true, enabled: true)
+    # Unaffiliated user
+    unaffiliated_user = User.create!(username: 'unaffiliated', email: 'unaffiliated@example.org',
+                                 first_name: 'Clara', last_name: 'NoInstitution',
+                                 password: 'password', password_confirmation: 'password',
+                                 institution: nil, role: normal_role,
+                                 confirmed: true, enabled: true)
+    # Unconfirmed user
+    unconfirmed_user = User.create!(username: 'unconfirmed', email: 'unconfirmed@example.org',
+                                    first_name: 'Sally', last_name: 'NoConfirmy',
+                                    password: 'password', password_confirmation: 'password',
+                                    institution: institution2, role: normal_role,
+                                    confirmed: false, enabled: false)
+    # Disabled user
+    disabled_user = User.create!(username: 'disabled', email: 'disabled@example.org',
+                                 first_name: 'Johnny', last_name: 'CantDoNothin',
+                                 password: 'password', password_confirmation: 'password',
+                                 institution: institution2, role: normal_role,
+                                 confirmed: true, enabled: false)
 
     repository = Repository.create!(institution: institution1,
                                     name: 'Sample Repository')
