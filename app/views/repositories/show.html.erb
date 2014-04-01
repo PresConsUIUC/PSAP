@@ -17,13 +17,24 @@
   </div>
   <div class="col-md-4" style="text-align:right">
     <div class="btn-group">
+      <!-- Edit -->
       <%= link_to edit_repository_path(@repository), class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
       <% end %>
+      <!-- Add Location -->
       <%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add Location
+      <% end %>
+      <!-- Delete -->
+      <%= link_to repository_path(@repository), method: 'delete',
+                  class: 'btn btn-default',
+                  data: { confirm: 'Deleting this repository will delete all '\
+                          'locations and resource assessments it contains. '\
+                          'Are you sure you want to delete this repository?' } do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+          Delete
       <% end %>
     </div>
   </div>

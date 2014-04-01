@@ -25,9 +25,18 @@
   </div>
   <div class="col-md-4" style="text-align:right">
     <div class="btn-group">
+      <!-- Edit -->
       <%= link_to edit_resource_path(@resource), class: 'btn btn-default btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
+      <% end %>
+      <!-- Delete -->
+      <%= link_to resource_path(@resource), method: 'delete',
+                  class: 'btn btn-default',
+                  data: { confirm: 'Are you sure you want to delete this '\
+                          'resource assessment?' } do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+          Delete
       <% end %>
     </div>
   </div>
