@@ -82,9 +82,7 @@ Psap::Application.routes.draw do
 
   # These rules will provide the /users resource, but with /users/new replaced
   # by /register.
-  # TODO: this is sloppy:
-  # http://blog.teamtreehouse.com/creating-vanity-urls-in-rails
-  # http://blog.arkency.com/2014/01/short-urls-for-every-route-in-your-rails-app/
+  # TODO: eliminate /users/register
   get '/users/register' => redirect('/register')
   resources :users, param: :username, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
