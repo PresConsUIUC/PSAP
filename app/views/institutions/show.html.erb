@@ -148,12 +148,11 @@
             <th></th>
             <th>Username</th>
             <th>Name</th>
-            <th>Confirmed</th>
             <th>Enabled</th>
           </tr>
           </thead>
           <tbody>
-          <% @institution.users.order(:last_name).each do |user| %>
+          <% @institution_users.each do |user| %>
               <tr>
                 <td>
                   <%= link_to user do %>
@@ -162,7 +161,6 @@
                 </td>
                 <td><%= link_to user.username, user %></td>
                 <td><%= link_to user.full_name, user %></td>
-                <td><%= user.confirmed ? 'Yes' : 'No' %></td>
                 <td><%= user.enabled ? 'Yes' : 'No' %></td>
               </tr>
           <% end %>

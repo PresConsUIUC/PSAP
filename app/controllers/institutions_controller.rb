@@ -40,6 +40,7 @@ class InstitutionsController < ApplicationController
 
   def show
     @institution = Institution.find(params[:id])
+    @institution_users = @institution.users.where(confirmed: true).order(:last_name)
   end
 
   def update
