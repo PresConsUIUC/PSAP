@@ -23,13 +23,24 @@
   <div class="col-md-8">
     <h1><%= @resource.name %></h1>
   </div>
-  <div class="col-md-4" style="text-align:right">
-    <div class="btn-group">
+  <div class="col-md-4">
+    <div class="btn-group" style="float:right">
       <!-- Edit -->
       <%= link_to edit_resource_path(@resource), class: 'btn btn-default btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
       <% end %>
+      <!-- Export -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-save"></span> Export
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Some Format</a></li>
+          <li><a href="#">Some Other Format</a></li>
+        </ul>
+      </div>
       <!-- Delete -->
       <%= link_to resource_path(@resource), method: 'delete',
                   class: 'btn btn-default',
