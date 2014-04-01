@@ -59,6 +59,7 @@ Psap::Application.routes.draw do
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
+  match '/format-id-guide', to: 'format_id_guide#index', via: 'get', as: 'format_id_guide'
   match '/glossary', to: 'static#glossary', via: 'get'
   match '/help', to: 'static#help', via: 'get'
 
