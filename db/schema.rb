@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140401144203) do
+ActiveRecord::Schema.define(version: 20140401164925) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -49,7 +49,6 @@ ActiveRecord::Schema.define(version: 20140401144203) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "repository_id"
-    t.boolean  "is_default"
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"

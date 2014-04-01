@@ -2,28 +2,12 @@ class Repository < ActiveRecord::Base
   belongs_to :institution, inverse_of: :repositories
   has_many :locations, inverse_of: :repository
 
-  after_initialize :setup, if: :new_record?
   after_create :log_create
   after_update :log_update
   after_destroy :log_destroy
 
   validates :institution, presence: true
   validates :name, presence: true, length: { minimum: 1, maximum: 255 }
-
-  def setup
-    # associate a default location
-    if self.locations.empty?
-      self.locations << Location.new(name: 'Default Location', is_default: true)
-    end
-  end
-
-  def default_location
-    @locations.each do |location|
-      if location.is_default
-        return location
-      end
-    end
-  end
 
   def log_create
     Event.create(description: "Created repository #{self.name} in institution #{self.institution.name}",
