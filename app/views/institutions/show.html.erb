@@ -16,7 +16,7 @@
       <!-- Edit -->
       <% if current_user.is_admin? %>
           <%= link_to edit_institution_path(@institution),
-                      class: 'btn btn-default btn-default' do %>
+                      class: 'btn btn-default' do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
               Edit
           <% end %>
@@ -177,6 +177,13 @@
   <div class="tab-pane" id="assessment_report">
 
     <p>(This is a mockup. It does not contain any dynamic content yet.)</p>
+
+    <!-- Export button -->
+    <%= link_to institution_report_path(@institution),
+                class: 'btn btn-default', style: 'float:right' do %>
+        <%= content_tag(:span, '', class: 'glyphicon glyphicon-save') %>
+        Export as PDF
+    <% end %>
 
     <section>
       <h2>Institutional Preservation Infrastructure</h2>

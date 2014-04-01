@@ -53,6 +53,11 @@ class InstitutionsController < ApplicationController
     end
   end
 
+  # Outputs a high-level assessment report as a PDF.
+  def report
+
+  end
+
   private
 
   def same_institution_user
