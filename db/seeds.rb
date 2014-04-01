@@ -2,16 +2,16 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
 # formats
-Format.create!(name: 'THESE FORMATS HAVE NOT BEEN FINALIZED', score: 1, obsolete: false)
-Format.create!(name: '35mm nitrate', score: 0, obsolete: true)
-Format.create!(name: '35mm acetate', score: 0.375, obsolete: true)
-Format.create!(name: '35mm polyester', score: 0.875, obsolete: true)
-Format.create!(name: '16mm acetate', score: 0.375, obsolete: true)
-Format.create!(name: '16mm polyester', score: 0.875, obsolete: true)
-Format.create!(name: '8mm', score: 0.375, obsolete: true)
-Format.create!(name: 'Super 8mm', score: 0.5, obsolete: true)
-Format.create!(name: '9.5mm', score: 0.25, obsolete: true)
-Format.create!(name: 'Other film gauges', score: 0, obsolete: true)
+format1 = Format.create!(name: '! THESE FORMATS HAVE NOT BEEN FINALIZED !', score: 1, obsolete: false)
+format2 = Format.create!(name: '35mm nitrate', score: 0, obsolete: true)
+format3 = Format.create!(name: '35mm acetate', score: 0.375, obsolete: true)
+format4 = Format.create!(name: '35mm polyester', score: 0.875, obsolete: true)
+format5 = Format.create!(name: '16mm acetate', score: 0.375, obsolete: true)
+format6 = Format.create!(name: '16mm polyester', score: 0.875, obsolete: true)
+format7 = Format.create!(name: '8mm', score: 0.375, obsolete: true)
+format8 = Format.create!(name: 'Super 8mm', score: 0.5, obsolete: true)
+format9 = Format.create!(name: '9.5mm', score: 0.25, obsolete: true)
+format10 = Format.create!(name: 'Other film gauges', score: 0, obsolete: true)
 
 # Admin role
 admin_role = Role.create!(name: 'Administrator', is_admin: true)
@@ -101,10 +101,10 @@ case Rails.env
 
     resource = Resource.create(name: 'Magna Carta',
                                resource_type: ResourceType::ITEM,
-                               location: location)
+                               format: format1, location: location)
     resource2 = Resource.create(name: 'Dead Sea Scrolls',
                                 resource_type: ResourceType::ITEM,
-                                location: location)
+                                format: format2, location: location)
     resource3 = Resource.create(name: 'Sears Catalog Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location2)
@@ -113,10 +113,10 @@ case Rails.env
                                 location: location2)
     resource5 = Resource.create(name: 'Treaty of Verdun',
                                 resource_type: ResourceType::ITEM,
-                                location: location3)
+                                format: format5, location: location3)
     resource6 = Resource.create(name: 'Declaration of Paris',
                                 resource_type: ResourceType::ITEM,
-                                location: location3)
+                                format: format6, location: location3)
     resource7 = Resource.create(name: 'Cat Fancy Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location4)
