@@ -1,5 +1,5 @@
 $(document).ajaxSend(function(event, request, options) {
-    // TODO: show a spinner
+    $('#modal_progress_view').show();
 });
 
 /**
@@ -7,7 +7,7 @@ $(document).ajaxSend(function(event, request, options) {
  X-Message-Type headers.
  */
 $(document).ajaxComplete(function(event, request, options) {
-    // TODO: stop the spinner
+    $('#modal_progress_view').hide();
 
     // These headers are set by an ApplicationController after_filter, to
     // support ajax requests.
@@ -37,7 +37,7 @@ $(document).ajaxComplete(function(event, request, options) {
         // construct the message
         var flash = $('<div class="alert ' + bootstrapClass + '"></div>');
         var button = $('<button type="button" class="close"' +
-            'data-dismiss="alert" aria-hidden="true">&times;</button>');
+            ' data-dismiss="alert" aria-hidden="true">&times;</button>');
         flash.append(button);
         button.after(msg);
 

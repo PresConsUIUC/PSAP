@@ -64,6 +64,24 @@ div.tab-content {
   padding-top:1em;
 }
 
+div#modal_progress_view {
+  background-color:rgba(0, 0, 0, 0.5);
+  display:none;
+  position:absolute;
+  height:100%;
+  width:100%;
+  z-index:9999;
+  img {
+    background-color:white;
+    display:block;
+    height:104px;
+    width:104px;
+    margin:0 auto;
+    margin-top:200px;
+    padding:20px;
+  }
+}
+
 /* top nav bar */
 
 nav.navbar {
