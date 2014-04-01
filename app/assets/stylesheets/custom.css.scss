@@ -129,6 +129,12 @@ header {
   }
 }
 
+div.btn-group {
+  @media print {
+    display:none;
+  }
+}
+
 
 /* two-column views w/ menu on left */
 
