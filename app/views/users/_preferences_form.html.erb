@@ -3,6 +3,11 @@
 <%= form_for @user, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
+    <div class="checkbox">
+      <%= f.check_box :show_contextual_help %>
+      <%= f.label :show_contextual_help %>
+    </div>
+
     <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
 
 <% end %>

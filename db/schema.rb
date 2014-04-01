@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140401164925) do
+ActiveRecord::Schema.define(version: 20140401214159) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -104,11 +104,12 @@ ActiveRecord::Schema.define(version: 20140401164925) do
     t.integer  "role_id"
     t.integer  "institution_id"
     t.string   "username"
-    t.boolean  "confirmed",          default: false
+    t.boolean  "confirmed",            default: false
     t.string   "confirmation_code"
     t.string   "password_reset_key"
     t.datetime "last_signin"
-    t.boolean  "enabled",            default: false
+    t.boolean  "enabled",              default: false
+    t.boolean  "show_contextual_help", default: true
   end
 
   add_index "users", ["institution_id"], name: "index_users_on_institution_id"

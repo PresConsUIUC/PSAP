@@ -146,7 +146,8 @@ class UsersController < ApplicationController
   def user_update_params
     params.require(:user).permit(:email, :first_name, :last_name,
                                  :password, :password_confirmation,
-                                 :institution_id, :enabled, :time_zone)
+                                 :institution_id, :enabled,
+                                 :show_contextual_help)
   end
 
 end
