@@ -34,7 +34,7 @@ class PasswordController < ApplicationController
       @user.password_reset_key = nil;
       @user.update_attributes(user_change_password_params)
       flash[:success] = 'Password reset successfully.'
-      redirect_to login_url
+      redirect_to signin_url
     end
     redirect_to root_url
   end

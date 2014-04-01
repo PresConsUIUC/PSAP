@@ -15,13 +15,13 @@ class SessionsController < ApplicationController
       # Log the successful signin
       Event.create(description: "User #{user.username} signed in from #{request.remote_ip}",
                    user: user)
-      user.last_login = Time.now
+      user.last_signin = Time.now
       user.log_update?(false)
       user.save
 
       redirect_back_or dashboard_path
     else
-      Event.create(description: "Login failed: #{params[:session][:username].downcase} (#{request.remote_ip})")
+      Event.create(description: "Sign-in failed: #{params[:session][:username].downcase} (#{request.remote_ip})")
 
       sleep 2 # slow down brute-force attacks
       flash.now[:error] = 'Invalid username/password combination.'

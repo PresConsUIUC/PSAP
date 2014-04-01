@@ -81,10 +81,10 @@
       </dd>
       <dt>Account Created</dt>
       <dd><%= local_time_ago(@user.created_at) %></dd>
-      <dt>Last Login</dt>
+      <dt>Last Sign-In</dt>
       <dd>
-        <% if @user.last_login %>
-            <%= local_time_ago(@user.last_login) %>
+        <% if @user.last_signin %>
+            <%= local_time_ago(@user.last_signin) %>
         <% else %>
             Never
         <% end %>

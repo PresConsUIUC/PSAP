@@ -33,8 +33,8 @@ class UsersController < ApplicationController
       @user.enabled = true
       @user.save!
     end
-    flash[:success] = 'Your account has been confirmed. Please log in.'
-    redirect_to login_url
+    flash[:success] = 'Your account has been confirmed. Please sign in.'
+    redirect_to signin_url
   end
 
   def destroy

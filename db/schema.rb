@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140331182640) do
+ActiveRecord::Schema.define(version: 20140401144203) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 20140331182640) do
     t.boolean  "confirmed",          default: false
     t.string   "confirmation_code"
     t.string   "password_reset_key"
-    t.datetime "last_login"
+    t.datetime "last_signin"
     t.boolean  "enabled",            default: false
   end
 

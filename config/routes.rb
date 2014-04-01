@@ -63,8 +63,8 @@ Psap::Application.routes.draw do
   match '/help', to: 'static#help', via: 'get'
 
   match '/confirm', to: 'users#confirm', via: 'get'
-  match '/login', to: 'sessions#new', via: 'get'
-  match '/logout', to: 'sessions#destroy', via: 'delete'
+  match '/signin', to: 'sessions#new', via: 'get'
+  match '/signout', to: 'sessions#destroy', via: 'delete'
   match '/report', to: 'reports#index', via: 'get'
 
   resources :formats
