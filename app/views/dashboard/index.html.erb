@@ -73,7 +73,7 @@
           </div>
           <div class="modal-body">
             <p>This is your dashboard. You'll arrive here every time you sign in. You can always return by choosing &quot;Dashboard&quot; from the top menu.</p>
-            <p>Before you can perform any assessments, you'll need to associate your account with an institution. On your dashboard, you'll find a link to begin this process.</p>
+            <p>Before you can perform any assessments, you'll need to associate your account with an institution. You'll find a link to begin this process on your dashboard.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary"
@@ -84,7 +84,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default dashboard">
           <div class="panel-heading">
             <h3 class="panel-title">Associate with an institution</h3>
@@ -97,7 +97,7 @@
                                         { include_blank: false },
                                         { class: 'form-control' } %>
                 <%= f.submit 'My institution is selected above',
-                             class: 'btn btn-default btn-block' %>
+                             class: 'btn btn-primary btn-block' %>
             <% end %>
             <%= link_to 'My institution is not listed', new_institution_path,
                         class: 'btn btn-md btn-default btn-block' %>
