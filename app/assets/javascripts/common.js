@@ -97,16 +97,11 @@ function FauxMultiPageView() {
         $('.entity_menu a[data-open="' + view_id + '"]').parent()
             .addClass('active');
 
-        $('.form_view').fadeOut(FADE_DURATION, function() {
-            $(this).remove();
-
-            var view = form_views[view_id];
-            view.hide();
-            $('.entity_menu').parent().append(view);
-            view.fadeIn();
-
-            //attachEventListeners();
-        });
+        $('.form_view').remove();
+        var view = form_views[view_id];
+        view.hide();
+        $('.entity_menu').parent().append(view);
+        view.show();
     };
 
 }
