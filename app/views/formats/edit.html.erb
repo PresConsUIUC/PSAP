@@ -1,0 +1,14 @@
+<% provide(:title, "Edit #{@format.name}") %>
+
+<ol class="breadcrumb">
+  <li><%= link_to 'Formats', formats_path %></li>
+  <li><%= link_to @format.name, @format %></li>
+  <li class="active">Edit</li>
+</ol>
+
+<h1>Edit <%= @format.name %></h1>
+
+<%= form_for @format do |f| %>
+    <%= render 'form', :f => f %>
+    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+<% end %>

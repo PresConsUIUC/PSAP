@@ -1,0 +1,37 @@
+<% provide(:title, @format.name) %>
+
+<ol class="breadcrumb">
+  <li><%= link_to 'Formats', formats_path %></li>
+  <li class="active"><%= @format.name %></li>
+</ol>
+
+<div class="row">
+  <div class="col-md-8">
+    <h1><%= @format.name %></h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <div class="btn-group">
+      <!-- Edit -->
+      <%= link_to edit_format_path(@format), class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit
+      <% end %>
+      <!-- Delete -->
+      <%= link_to format_path(@format), method: 'delete',
+                  class: 'btn btn-default',
+                  data: { confirm: 'Deleting this format make it '\
+                          'unavailable for new resource assessments. Are you '\
+                          'Are you sure you want to delete this format?' } do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+          Delete
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<dl>
+  <dt>Score</dt>
+  <dd><%= @format.score %> / 1</dd>
+  <dt>Obsolete</dt>
+  <dd><%= @format.obsolete ? 'Yes' : 'No' %></dd>
+</dl>

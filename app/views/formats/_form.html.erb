@@ -1,0 +1,22 @@
+<%= render 'shared/error_messages', :object => f.object %>
+
+<div class="form-group">
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+  <%= f.label :score, 'Score (0-1)' %>
+  <%= f.text_field :score, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+  <div class="radio">
+    <%= f.radio_button :obsolete, 0 %>
+    <%= f.label :obsolete_0, 'Not Obsolete' %>
+  </div>
+  <div class="radio">
+    <%= f.radio_button :obsolete, 1 %>
+    <%= f.label :obsolete_1, 'Obsolete' %>
+  </div>
+</div>

@@ -67,6 +67,7 @@ Psap::Application.routes.draw do
   match '/logout', to: 'sessions#destroy', via: 'delete'
   match '/report', to: 'reports#index', via: 'get'
 
+  resources :formats
   resources :institutions do
     resources :repositories
   end

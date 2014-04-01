@@ -1,0 +1,56 @@
+class FormatsController < ApplicationController
+
+  before_action :signed_in_user, :admin_user
+
+  def create
+    @format = Format.new(format_params)
+
+    if @format.save
+      flash[:success] = "The format \"#{@format.name}\" has been created."
+      redirect_to formats_url
+    else
+      render 'new'
+    end
+  end
+
+  def destroy
+    format = Format.find(params[:id])
+    name = format.name
+    format.destroy
+    flash[:success] = "#{name} deleted."
+    redirect_to formats_path
+  end
+
+  def edit
+    @format = Format.find(params[:id])
+  end
+
+  def index
+    @formats = Format.order(:name).paginate(page: params[:page], per_page: 30)
+  end
+
+  def new
+    @format = Format.new
+  end
+
+  def show
+    @format = Format.find(params[:id])
+  end
+
+  def update
+    @format = Format.find(params[:id])
+    if @format.update_attributes(format_params)
+      flash[:success] = 'Format updated.'
+      redirect_to @format
+    else
+      render 'edit'
+    end
+  end
+
+  private
+
+  def format_params
+    params.require(:format).permit(:name, :score, :obsolete)
+  end
+
+end

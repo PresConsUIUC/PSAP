@@ -1,0 +1,54 @@
+<% provide(:title, 'Formats') %>
+
+<ol class="breadcrumb">
+  <li class="active">Formats</li>
+</ol>
+
+<div class="row">
+  <div class="col-md-8">
+    <h1>Formats</h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <div class="btn-group">
+      <%= link_to new_format_path, class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add Format
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= will_paginate @formats, renderer: BootstrapPagination::Rails %>
+
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Name</th>
+    <th>Score / 1</th>
+    <th>Obsolete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @formats.each do |format| %>
+      <tr>
+        <td>
+          <% if current_user.is_admin? %>
+              <%= link_to 'Edit', edit_format_path(format) %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to 'Delete', format, method: :delete,
+                      data: { confirm: 'Are you sure?' } %>
+        </td>
+        <td><%= link_to format.name, format %></td>
+        <td><%= format.score %></td>
+        <td><%= format.obsolete ? 'Yes' : 'No' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @formats, renderer: BootstrapPagination::Rails %>
