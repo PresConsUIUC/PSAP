@@ -65,7 +65,6 @@ Psap::Application.routes.draw do
   match '/confirm', to: 'users#confirm', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
-  match '/report', to: 'reports#index', via: 'get'
 
   resources :formats
   resources :institutions do

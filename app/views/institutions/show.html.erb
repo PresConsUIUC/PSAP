@@ -48,13 +48,16 @@
     <a href="#info" data-toggle="tab">Info</a>
   </li>
   <li>
+    <a href="#users" data-toggle="tab">Users</a>
+  </li>
+  <li>
     <a href="#repositories" data-toggle="tab">Repositories</a>
   </li>
   <li>
     <a href="#assessments" data-toggle="tab">Resource Assessments</a>
   </li>
   <li>
-    <a href="#users" data-toggle="tab">Users</a>
+    <a href="#assessment_report" data-toggle="tab">Assessment Report</a>
   </li>
 </ul>
 
@@ -169,6 +172,170 @@
     <% else %>
         <p>There are no users affiliated with this institution.</p>
     <% end %>
+  </div>
+
+  <div class="tab-pane" id="assessment_report">
+
+    <p>(This is a mockup. It does not contain any dynamic content yet.)</p>
+
+    <section>
+      <h2>Institutional Preservation Infrastructure</h2>
+      <h4>Score: 68</h4>
+      <table cellspacing="0" cellpadding="0" border="0" class="table">
+        <tr>
+          <td class="bg-warning">Moderate</td>
+          <td>Policies and Procedures: 75</td>
+        </tr>
+        <tr>
+          <td class="bg-success">High</td>
+          <td>Use and Loans: 80</td>
+        </tr>
+        <tr>
+          <td class="bg-danger">Low</td>
+          <td>Disaster Planning: 50</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Storage Environments Overview</h2>
+
+      <h3>Annex</h3>
+      <h4>Score: 59</h4>
+      <table cellspacing="0" cellpadding="0" border="0" class="table">
+        <tr>
+          <td class="bg-warning">Moderate</td>
+          <td>Temperature: 70</td>
+        </tr>
+        <tr>
+          <td class="bg-warning">Moderate</td>
+          <td>Relative Humidity: 65</td>
+        </tr>
+        <tr>
+          <td class="bg-danger">Low</td>
+          <td>Fire and Water Detection and Fire Suppression: 50</td>
+        </tr>
+        <tr>
+          <td class="bg-danger">Low</td>
+          <td>Security: 50</td>
+        </tr>
+      </table>
+
+      <h3>Basement</h3>
+      <h4>Score: 51</h4>
+      <table cellspacing="0" cellpadding="0" border="0" class="table">
+        <tr>
+          <td class="bg-success">High</td>
+          <td>Temperature: 80</td>
+        </tr>
+        <tr>
+          <td class="bg-danger">Low</td>
+          <td>Relative Humidity: 50</td>
+        </tr>
+        <tr>
+          <td class="bg-warning">Moderate</td>
+          <td>Fire and Water Detection and Fire Suppression: 75</td>
+        </tr>
+        <tr>
+          <td class="bg-danger">Low</td>
+          <td>Security: 0</td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="material_condition_overview">
+      <h2>Material Condition Overview (Collections View)</h2>
+
+      <h3>Mandeville Collection (15/31/26)</h3>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <ul>
+              <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
+              <li>68 items assessed</li>
+              <li>Assessed by: RNE</li>
+              <li>Assessed on: 2/21/14</li>
+              <li>Formats present:
+                <ul>
+                  <li>Photographs</li>
+                  <li>Books</li>
+                  <li>Papers</li>
+                </ul>
+              </li>
+            </ul>
+
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>7.0</td>
+                <td>Average/Mean</td>
+              </tr>
+              <tr>
+                <td>5.8</td>
+                <td>Median</td>
+              </tr>
+              <tr>
+                <td>4.1</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td>9.3</td>
+                <td>High</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-xs-12 col-md-8">
+            <img src="" height="200" width="200" alt="">
+          </div>
+        </div>
+      </div>
+
+      <h3>Albertson, Samuel Collection (65/14/32)</h3>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <ul>
+              <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
+              <li>115 items assessed</li>
+              <li>Assessed by: JHT</li>
+              <li>Assessed on: 2/17/14</li>
+              <li>Formats present:
+                <ul>
+                  <li>Papers</li>
+                  <li>Books</li>
+                  <li>Office reprographics</li>
+                  <li>Photomechanical prints</li>
+                </ul>
+              </li>
+            </ul>
+
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>5.5</td>
+                <td>Average/Mean</td>
+              </tr>
+              <tr>
+                <td>5.7</td>
+                <td>Median</td>
+              </tr>
+              <tr>
+                <td>1.0</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td>9.6</td>
+                <td>High</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-xs-12 col-md-8">
+            <img src="" height="200" width="200" alt="">
+          </div>
+        </div>
+      </div>
+
+    </section>
   </div>
 
 </div>
