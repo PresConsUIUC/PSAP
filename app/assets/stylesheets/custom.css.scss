@@ -21,7 +21,6 @@ html {
 
 body {
   font-family:Calibri, sans-serif;
-  padding-top: 50px;
 }
 
 section {
@@ -79,18 +78,21 @@ nav.navbar {
 
   li#help {
     margin-right:10px;
-    a {
-      background: url(image_path('question-24.png')) center center no-repeat;
-      @include image-2x('question-24@2x.png', 48px, 48px);
-      content:url(image_path('1x1transparent.png'));
-      top:11px;
-      width:24px;
-      height:24px;
-      text-indent:-9999px;
-    }
-    a:hover {
-      background: url(image_path('question-white-24.png')) center center no-repeat;
-      @include image-2x('question-white-24@2x.png', 48px, 48px);
+    /* The help icon looks weird when the navbar collapses on narrow screens. */
+    @media screen and (min-width: 500px) {
+      a {
+        background: url(image_path('question-24.png')) center center no-repeat;
+        @include image-2x('question-24@2x.png', 24px, 24px);
+        content:url(image_path('1x1transparent.png'));
+        top:11px;
+        width:24px;
+        height:24px;
+        text-indent:-9999px;
+      }
+      a:hover {
+        background: url(image_path('question-white-24.png')) center center no-repeat;
+        @include image-2x('question-white-24@2x.png', 24px, 24px);
+      }
     }
   }
 }
@@ -142,7 +144,7 @@ div.entity_menu {
   margin-top:1em;
   li {
     background:url(image_path('arrow-right-16.png')) 95% 50% no-repeat;
-    @include image-2x('arrow-right-16@2x.png', 32px, 32px);
+    @include image-2x('arrow-right-16@2x.png', 16px, 16px);
     line-height:60px;
     height:80px;
     padding:0px;

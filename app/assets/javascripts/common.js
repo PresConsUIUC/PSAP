@@ -1,4 +1,23 @@
 $(document).ready(function() {
+    function adjustNavBar() {
+        var navBar = $('nav.navbar');
+        // Unfix the nav bar from the top on small screens; otherwise it will fill
+        // way too much of the screen.
+        if ($(window).width() < 500 || $(window).height() < 500) {
+            navBar.removeClass('navbar-fixed-top');
+            $('body').css('padding-top', '0px');
+        } else {
+            navBar.addClass('navbar-fixed-top');
+            $('body').css('padding-top', '50px');
+        }
+    }
+
+    $(window).on('resize', function() {
+        adjustNavBar();
+    });
+
+    adjustNavBar();
+
     var multiPageView = new FauxMultiPageView();
     multiPageView.init();
     $('.entity_menu a').on('click', function() {
