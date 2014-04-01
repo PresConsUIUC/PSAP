@@ -90,6 +90,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    # If the user is changing their email address, we need to notify the
+    # previous address, to inform them in case their account was hijacked.
+    old_email = @user.email
+    new_email = user_update_params[:email]
+    if old_email != new_email
+      UserMailer.change_email(@user, old_email, new_email).deliver
+    end
+
     success = @user.update_attributes(user_update_params)
     if success
       flash[:success] = 'Your profile has been updated.'

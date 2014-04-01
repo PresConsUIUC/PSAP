@@ -1,5 +1,12 @@
 class UserMailer < ActionMailer::Base
 
+  def change_email(user, old_email, new_email)
+    @user = user
+    @new_email = new_email
+    @psap_url = root_url
+    mail(to: old_email, subject: 'Your PSAP email has changed')
+  end
+
   def password_reset_email(user)
     @user = user
     @password_reset_url = url_for(controller: 'password',
