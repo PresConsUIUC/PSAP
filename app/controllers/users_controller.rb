@@ -17,16 +17,14 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    flash[:error] = 'There was a problem creating your account. This might
-      be a bug.' # TODO: handle this situation better
     render 'new'
   end
 
   # Mapped to GET /confirm
   def confirm
     # If the user has supplied username and confirmation_code parameters,
-    # check that they are correct and activate the user if so. Otherwise,
-    # silently redirect to the root URL.
+    # check that they are correct and activate the user if so. Then redirect
+    # to the signin URL.
     @user = User.find_by_username params[:username]
     if @user && !@user.confirmed && params[:code] == @user.confirmation_code
       @user.confirmed = true
