@@ -1,4 +1,4 @@
-<% provide(:title, 'All Institutions') %>
+<% provide(:title, 'Institutions') %>
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -6,7 +6,7 @@
   <% end %>
 </ol>
 
-<h1>Manage Institutions</h1>
+<h1>Institutions</h1>
 
 <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
 
