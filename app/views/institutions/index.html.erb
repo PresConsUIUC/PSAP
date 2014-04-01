@@ -6,7 +6,19 @@
   <% end %>
 </ol>
 
-<h1>Institutions</h1>
+<div class="row">
+  <div class="col-md-7">
+    <h1>Institutions</h1>
+  </div>
+  <div class="col-md-5" style="text-align:right">
+    <div class="btn-group">
+      <%= link_to new_institution_path, class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add Institution
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
 
