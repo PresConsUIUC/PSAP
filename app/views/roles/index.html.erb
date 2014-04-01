@@ -1,7 +1,7 @@
 <% provide(:title, 'All Roles') %>
 <h1>All Roles</h1>
 
-<%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+<%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
 
 <table class="roles table table-striped table-hover">
   <thead>
@@ -20,4 +20,4 @@
   </tbody>
 </table>
 
-<%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+<%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
