@@ -1,5 +1,6 @@
-$(document).ajaxSend(function(event, request, options) {
-    $('#modal_progress_view').show();
+$(document).ajaxStart(function(event, request, options) {
+    // TODO: fix
+    //$('#modal_progress_view').show();
 });
 
 /**
