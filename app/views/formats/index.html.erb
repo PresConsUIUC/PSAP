@@ -15,14 +15,14 @@
           Add Format
       <% end %>
     </div>
-
-    <%= form_tag formats_path, method: 'get', id: 'formats_search',
-        class: 'entity_search' do %>
-      <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                           class: 'form-control' %>
-    <% end %>
   </div>
 </div>
+
+<%= form_tag formats_path, method: 'get', id: 'formats_search',
+             class: 'entity_search', style: 'text-align:right' do %>
+    <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                         class: 'form-control' %>
+<% end %>
 
 <div id="formats">
   <%= render 'formats' %>
