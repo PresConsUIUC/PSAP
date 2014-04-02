@@ -90,6 +90,10 @@ div#modal_progress_view {
   content:'\25bc\0020';
 }
 
+.gravatar {
+  margin-right:0.5em;
+}
+
 
 /* top nav bar */
 
@@ -199,12 +203,12 @@ div.entity_menu {
   margin-top:1em;
 }
 
-/* the search field that appears above data tables */
+/* search field that appears above data tables */
 form.entity_search {
   input {
     display:inline;
     margin:0em 0em 1em 0em;
-    width:180px;
+    width:120px;
   }
 }
 
