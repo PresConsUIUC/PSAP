@@ -176,14 +176,21 @@
 
   <div class="tab-pane" id="assessment_report">
 
-    <p>(This is a mockup. It does not contain any dynamic content yet.)</p>
-
     <!-- Export button -->
-    <%= link_to institution_report_path(@institution),
-                class: 'btn btn-default', style: 'float:right' do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-save') %>
-        Export as PDF
-    <% end %>
+    <div class="btn-group" style="float:right">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-save"></span> Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Text (CSV)', institution_report_path(@institution) + '.csv',
+                        target: '_blank' %></li>
+        <li><%= link_to 'PDF', institution_report_path(@institution) + '.pdf',
+                        target: '_blank' %></li>
+      </ul>
+    </div>
+
+    <p>(This is a mockup. It does not contain any dynamic content yet.)</p>
 
     <section>
       <h2>Institutional Preservation Infrastructure</h2>
