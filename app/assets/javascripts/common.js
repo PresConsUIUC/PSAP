@@ -1,4 +1,23 @@
 $(document).ready(function() {
+    // Sorting and pagination links
+    // These don't work yet
+    //$('#formats th a, .pagination a').live('click', function() {
+    /*$(document).on('click', '.pagination a', function() {
+        $.getScript(this.href);
+        return false;
+    });*/
+
+    // Entity live-search forms
+    $('.entity_search').submit(function() {
+        $.get(this.action, $(this).serialize(), null, 'script');
+        return false;
+    });
+    $('.entity_search input').on('keyup', function() {
+        $.get($('.entity_search').attr('action'),
+            $('.entity_search').serialize(), null, 'script');
+        return false;
+    });
+
     function adjustNavBar() {
         var navBar = $('nav.navbar');
         // Unfix the nav bar from the top on small screens; otherwise it will fill

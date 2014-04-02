@@ -26,7 +26,7 @@ class FormatsController < ApplicationController
   end
 
   def index
-    @formats = Format.order(:name).paginate(page: params[:page], per_page: 30)
+    @formats = Format.where('name LIKE ?', "%#{params[:q]}%").order(:name)
   end
 
   def new

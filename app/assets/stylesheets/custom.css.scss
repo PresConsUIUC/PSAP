@@ -199,11 +199,13 @@ div.entity_menu {
   margin-top:1em;
 }
 
-
-/* sidebar */
-
-.gravatar {
-  margin-right: 10px;
+/* the search field that appears above data tables */
+form.entity_search {
+  input {
+    display:inline;
+    margin:1em 0em 1em 0em;
+    width:180px;
+  }
 }
 
 
