@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
 
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
   private
 
   # Stores the flash message and type in the response headers for ajax

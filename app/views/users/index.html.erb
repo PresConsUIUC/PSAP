@@ -16,11 +16,11 @@
     <th></th>
     <th></th>
     <th></th>
-    <th>Username</th>
-    <th>Name</th>
-    <th>Institution</th>
-    <th>Confirmed</th>
-    <th>Enabled</th>
+    <th><%= sortable 'username' %></th>
+    <th><%= sortable 'last_name', 'Name' %></th>
+    <th><%= sortable 'institutions.name', 'Institution' %></th>
+    <th><%= sortable 'confirmed' %></th>
+    <th><%= sortable 'enabled' %></th>
   </tr>
   </thead>
   <tbody>

@@ -82,6 +82,15 @@ div#modal_progress_view {
   }
 }
 
+.current.asc:before {
+  content:'\25b2\0020';
+}
+
+.current.desc:before {
+  content:'\25bc\0020';
+}
+
+
 /* top nav bar */
 
 nav.navbar {

@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   before_action :before_show_user, only: :show
   before_action :admin_user, only: [:index, :destroy, :enable, :disable]
 
+  helper_method :sort_column, :sort_direction
+
   def create
     @user = User.new(user_create_params)
     @user.role = Role.find_by_name 'User'
@@ -76,7 +78,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.order(:username).paginate(page: params[:page], per_page: 30)
+    @users = User.joins(:institution).
+        order("#{params[:sort]} #{params[:direction]}").
+        paginate(page: params[:page], per_page: 30)
   end
 
   def new
@@ -136,6 +140,11 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     redirect_to(root_url) unless
         @user.institution == current_user.institution || current_user.is_admin?
+  end
+
+  def sort_column
+    allowed_columns = User.column_names << 'institutions.name'
+    allowed_columns.include?(params[:sort]) ? params[:sort] : 'last_name'
   end
 
   def user_create_params
