@@ -37,8 +37,10 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a href="#">Text (CSV)</a></li>
-          <li><a href="#">XML</a></li>
+          <li><%= link_to 'Text (CSV)', resource_path(@resource) + '.csv',
+                          target: '_blank' %></li>
+          <li><%= link_to 'XML (EAD)', resource_path(@resource) + '.ead',
+                          target: '_blank' %></li>
         </ul>
       </div>
       <!-- Delete -->
