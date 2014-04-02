@@ -10,6 +10,9 @@ var InstitutionForm = {
         $('input#institution_name').bind('keyup input paste', function() {
             Form.validate('institution_name', 1, 255);
         });
+        $('input#institution_url').bind('keyup input paste', function() {
+            Form.validate('institution_url', 0, 0, Form.TYPE_URL);
+        });
         $('input#institution_address1').bind('keyup input paste', function() {
             Form.validate('institution_address1', 1, 255);
         });

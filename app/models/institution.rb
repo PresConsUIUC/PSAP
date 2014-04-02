@@ -11,6 +11,7 @@ class Institution < ActiveRecord::Base
   validates :state, presence: true, length: { maximum: 30 }
   validates :postal_code, presence: true, length: { maximum: 30 }
   validates :country, presence: true, length: { maximum: 255 }
+  validates :url, format: URI::regexp(%w(http https))
 
   # Creation will be logged during user creation.
   after_update :log_update

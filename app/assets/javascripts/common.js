@@ -127,20 +127,44 @@ function FauxMultiPageView() {
 
 var Form = {
 
-    validate: function(field_id, min_length, max_length) {
+    TYPE_URL: 0,
+
+    validate: function(field_id, min_length, max_length, type) {
         var elem = $('#' + field_id);
         elem.parent('div').removeClass('has-success');
         elem.parent('div').removeClass('has-error');
         elem.next('span').removeClass('glyphicon-ok');
         elem.next('span').removeClass('glyphicon-remove');
 
-        var value = elem.val().trim();
-        if (value.length >= min_length && value.length <= max_length) {
+        function passValidation(elem) {
             elem.parent('div').addClass('has-success');
             elem.next('span').addClass('glyphicon-ok');
-        } else {
+        }
+
+        function failValidation(elem) {
             elem.parent('div').addClass('has-error');
             elem.next('span').addClass('glyphicon-remove');
+        }
+
+        passValidation(elem);
+
+        var value = elem.val().trim();
+        if (min_length > 0 && max_length > 0) {
+            if (value.length >= min_length && value.length <= max_length) {
+                passValidation(elem);
+            } else {
+                failValidation(elem);
+            }
+        }
+        if (type == Form.TYPE_URL) {
+            // very crude checks here, but good enough, as the server will
+            // detect invalid URLs
+            if (value.substring(0, 7) == 'http://' && value.length > 7
+                || value.substring(0, 8) == 'https://' && value.length > 8) {
+                passValidation(elem);
+            } else {
+                failValidation(elem);
+            }
         }
     }
 

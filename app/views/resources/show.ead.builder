@@ -33,30 +33,28 @@ xml.ead(
   xml.archdesc('level' => @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection') {
     xml.did {
       xml.repository(
-          'label' => @resource.location.repository.institution.name,
-          'id' => "psap_repository_#{@resource.location.repository.institution.id}" # TODO: is this right?
+          'label' => @institution.name,
+          'id' => "psap_repository_#{@institution.id}" # TODO: is this right?
       ) {
-        xml.corpname(@resource.location.repository.institution.name)
-        if @resource.location.repository.institution.address1 &&
-            @resource.location.repository.institution.city &&
-            @resource.location.repository.institution.state
+        xml.corpname(@institution.name)
+        if @institution.address1 && @institution.city && @institution.state
           xml.address {
-            if @resource.location.repository.institution.address1
-              xml.addressline(@resource.location.repository.institution.address1)
+            if @institution.address1
+              xml.addressline(@institution.address1)
             end
-            if @resource.location.repository.institution.address2
-              xml.addressline(@resource.location.repository.institution.address2)
+            if @institution.address2
+              xml.addressline(@institution.address2)
             end
-            if @resource.location.repository.institution.city &&
-                @resource.location.repository.institution.state &&
-                @resource.location.repository.institution.postal_code
-              xml.addressline("#{@resource.location.repository.institution.city} "\
-                "#{@resource.location.repository.institution.state} "\
-                "#{@resource.location.repository.institution.postal_code}")
+            if @institution.city && @institution.state && @institution.postal_code
+              xml.addressline("#{@institution.city} "\
+                "#{@institution.state} #{@institution.postal_code}")
             end
           }
         end
-        xml.extref('http://example.org', 'xlink:href' => 'http://example.org') # TODO: put institution URL here
+        xml.extref(
+            @institution.url,
+            'xlink:href' => @institution.url
+        )
       }
       xml.langmaterial('label' => 'Language') {
         xml.language('English', 'langcode' => 'eng') # TODO: put institution language here

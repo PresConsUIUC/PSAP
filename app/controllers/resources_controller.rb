@@ -45,7 +45,10 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       format.html { @resource }
-      format.ead
+      format.ead {
+        @institution = @resource.location.repository.institution
+        @resource
+      }
     end
   end
 
