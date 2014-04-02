@@ -78,7 +78,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.joins(:institution).
+    q = "%#{params[:q]}%"
+    @users = User.joins(:institution).where(
+          'users.username LIKE ? OR users.first_name LIKE ? OR users.last_name LIKE ?', q, q, q).
         order("#{params[:sort]} #{params[:direction]}").
         paginate(page: params[:page], per_page: 30)
   end

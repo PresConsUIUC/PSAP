@@ -1,0 +1,45 @@
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th><%= sortable 'username' %></th>
+    <th><%= sortable 'last_name', 'Name' %></th>
+    <th><%= sortable 'institutions.name', 'Institution' %></th>
+    <th><%= sortable 'confirmed' %></th>
+    <th><%= sortable 'enabled' %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+      <tr>
+        <td>
+          <% if current_user.is_admin? || current_user == user %>
+              <%= link_to 'Edit', edit_user_path(user) %>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.is_admin? && !current_user?(user) %>
+              <% if user.enabled %>
+                  <%= link_to 'Disable', disable_user_path(user), method: :patch %>
+              <% else %>
+                  <%= link_to 'Enable', enable_user_path(user), method: :patch %>
+              <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to user do %>
+              <%= gravatar_for user, size: 52 %>
+          <% end %>
+        </td>
+        <td><%= link_to user.username, user %></td>
+        <td><%= link_to user.full_name, user %></td>
+        <td><%= user.institution ? user.institution.name : '' %></td>
+        <td><%= user.confirmed ? 'Yes' : 'No' %></td>
+        <td><%= user.enabled ? 'Yes' : 'No' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+
+</table>
