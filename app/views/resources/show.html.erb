@@ -71,6 +71,10 @@
 
   <div id="info" class="tab-pane active">
     <dl>
+      <% if @resource.parent %>
+          <dt>Parent Collection</dt>
+          <dd><%= link_to @resource.parent.name, @resource.parent %></dd>
+      <% end %>
       <% if @resource.format %>
           <dt>Format</dt>
           <dd><%= @resource.format.name %></dd>
