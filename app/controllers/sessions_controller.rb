@@ -19,6 +19,8 @@ class SessionsController < ApplicationController
       user.log_update?(false)
       user.save
 
+      cookies[:show_welcome_panel] = 1 if user.institution.nil?
+
       redirect_back_or dashboard_path
     else
       Event.create(description: "Sign-in failed: #{params[:session][:username].downcase} (#{request.remote_ip})")
