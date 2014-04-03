@@ -18,6 +18,8 @@ $(document).ready(function() {
         return false;
     });
 
+    updateResultsCount();
+
     function adjustNavBar() {
         var navBar = $('nav.navbar');
         // Unfix the nav bar from the top on small screens; otherwise it will fill
@@ -72,6 +74,23 @@ $(document).ready(function() {
         return false;
     });
 });
+
+/**
+ * Updates the results count text. Called on document ready and in index.js.erb
+ * files on ajax load.
+ */
+function updateResultsCount() {
+    var query_input = $('.entity_search input[name="q"]');
+    if (query_input.length) {
+        var query_length = query_input.val().length;
+        var count_elem = $('input[name="results_count"]');
+        if (count_elem.length) {
+            var count = count_elem.val();
+            $('#entity_count').text(count + ' '
+                + ((query_length > 0) ? ((count == 1) ? 'match' : 'matches') : 'total'));
+        }
+    }
+}
 
 /**
  * Enables a menu that uses JavaScript to show/hide different views.
