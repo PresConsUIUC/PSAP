@@ -1,8 +1,5 @@
 $(document).ajaxStart(function(event, request, options) {
     $('form.entity_search input').removeClass('active');
-
-    // TODO: fix
-    //$('#modal_progress_view').show();
 });
 
 /**

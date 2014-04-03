@@ -20,6 +20,13 @@ $(document).ready(function() {
         return false;
     });
 
+    // Show the modal progress view after submitting an ajax form
+    $(document).on('submit', 'form[data-remote="true"]', function() {
+        var view = $('#modal_progress_view');
+        view.height($(document).height());
+        view.show();
+    });
+
     updateResultsCount();
 
     function adjustNavBar() {
@@ -96,7 +103,7 @@ function updateResultsCount() {
 
 /**
  * Enables a menu that uses JavaScript to show/hide different views.
- * See users/edit.html.erb and users/show.html.erb for markup examples.
+ * See users/edit.html.erb for markup example.
  * @constructor
  */
 function FauxMultiPageView() {
