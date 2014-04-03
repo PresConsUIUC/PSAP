@@ -82,7 +82,7 @@ Psap::Application.routes.draw do
     resources :resources
   end
   resources :resources, except: :index
-  resources :roles
+  #resources :roles # not using this at the moment
   resources :sessions, only: [:new, :create, :destroy]
 
   # These rules will provide the /users resource, but with /users/new replaced
