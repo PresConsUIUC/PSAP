@@ -98,6 +98,7 @@
           <thead>
           <tr>
             <th>Name</th>
+            <th>Type</th>
             <th>Completed</th>
           </tr>
           </thead>
@@ -105,6 +106,7 @@
           <% @user.resources.order(:name).each do |asst| %>
               <tr>
                 <td><%= link_to asst.name, asst %></td>
+                <td><%= asst.readable_resource_type %></td>
                 <td><!-- TODO: fill this in --></td>
               </tr>
           <% end %>
