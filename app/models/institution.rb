@@ -2,6 +2,7 @@ class Institution < ActiveRecord::Base
   has_many :users, inverse_of: :institution, dependent: :restrict
   has_many :repositories, inverse_of: :institution, dependent: :destroy
 
+  belongs_to :language, inverse_of: :institutions
   has_many :locations, through: :repositories
   has_many :resources, through: :locations
 

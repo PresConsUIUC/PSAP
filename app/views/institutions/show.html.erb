@@ -76,6 +76,10 @@
           <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
           <br><%= @institution.country %>
       </dd>
+      <% if @institution.language %>
+          <dt>Language</dt>
+          <dd><%= @institution.language.english_name %></dd>
+      <% end %>
       <dt>Created</dt>
       <dd><%= local_time_ago(@institution.created_at) %></dd>
     </dl>

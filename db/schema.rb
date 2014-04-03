@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403193828) do
+ActiveRecord::Schema.define(version: 20140403201448) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -43,6 +43,15 @@ ActiveRecord::Schema.define(version: 20140403193828) do
     t.string   "postal_code"
     t.string   "country"
     t.string   "url"
+    t.integer  "language_id"
+  end
+
+  add_index "institutions", ["language_id"], name: "index_institutions_on_language_id"
+
+  create_table "languages", force: true do |t|
+    t.string "native_name"
+    t.string "english_name"
+    t.string "iso639_2_code"
   end
 
   create_table "locations", force: true do |t|

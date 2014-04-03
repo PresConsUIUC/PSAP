@@ -57,11 +57,12 @@ xml.ead(
             'xlink:href' => @institution.url
         )
       }
-      xml.langmaterial('label' => 'Language') {
-        xml.comment! 'TODO: (2) Is language a property of Institution or are all Institutions set to English?'
-        xml.comment! 'TODO: (3) Is this an ISO 639-2 code?'
-        xml.language('English', 'langcode' => 'eng')
-      }
+      if @institution.language
+        xml.langmaterial('label' => 'Language') {
+          xml.language(@institution.language.english_name,
+                       'langcode' => @institution.language.iso639_2_code)
+        }
+      end
       xml.unittitle(@resource.name, 'label' => 'Title')
       xml.comment! 'TODO: (4) Is this ID OK? (It\'s just the database ID)'
       xml.unitid('sample ID',
