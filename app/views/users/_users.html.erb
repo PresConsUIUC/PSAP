@@ -39,8 +39,8 @@
         <td><%= link_to user.username, user %></td>
         <td><%= link_to user.full_name, user %></td>
         <td><%= user.institution ? user.institution.name : '' %></td>
-        <td><%= user.confirmed ? 'Yes' : 'No' %></td>
-        <td><%= user.enabled ? 'Yes' : 'No' %></td>
+        <td><%= user.confirmed ? raw('&check;') : '' %></td>
+        <td><%= user.enabled ? raw('&check;') : '' %></td>
       </tr>
   <% end %>
   </tbody>

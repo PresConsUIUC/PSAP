@@ -55,7 +55,7 @@
           <tr>
             <th></th>
             <th>Name</th>
-            <th># Resources</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -65,7 +65,8 @@
                   <%= link_to 'Edit', edit_location_path(location) %>
                 </td>
                 <td><%= link_to location.name, location %></td>
-                <td><%= location.resources.count %></td>
+                <td><%= location.resources.count %>
+                  <%= location.resources.count == 1 ? 'resource' : 'resources' %></td>
               </tr>
           <% end %>
           </tbody>

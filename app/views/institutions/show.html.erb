@@ -92,7 +92,7 @@
           <tr>
             <th></th>
             <th>Name</th>
-            <th># Locations</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -103,7 +103,8 @@
                   <%= link_to 'Edit', edit_repository_path(repository) %>
                 </td>
                 <td><%= link_to repository.name, repository %></td>
-                <td><%= repository.locations.count %></td>
+                <td><%= repository.locations.count %>
+                  <%= repository.locations.count == 1 ? 'location' : 'locations' %></td>
               </tr>
           <% end %>
           </tbody>
@@ -130,7 +131,7 @@
             <th></th>
             <th>Username</th>
             <th>Name</th>
-            <th>Enabled</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -143,7 +144,7 @@
                 </td>
                 <td><%= link_to user.username, user %></td>
                 <td><%= link_to user.full_name, user %></td>
-                <td><%= user.enabled ? 'Yes' : 'No' %></td>
+                <td><%= user.enabled ? 'Enabled' : 'Disabled' %></td>
               </tr>
           <% end %>
           </tbody>
