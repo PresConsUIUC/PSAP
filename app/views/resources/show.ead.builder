@@ -32,9 +32,10 @@ xml.ead(
   }
   xml.archdesc('level' => @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection') {
     xml.did {
+      xml.comment! 'TODO: (1) Is this ID OK? (It\'s just the database ID)'
       xml.repository(
           'label' => @institution.name,
-          'id' => "psap_repository_#{@institution.id}" # TODO: is this right?
+          'id' => "psap_repository_#{@institution.id}"
       ) {
         xml.corpname(@institution.name)
         if @institution.address1 && @institution.city && @institution.state
@@ -57,30 +58,43 @@ xml.ead(
         )
       }
       xml.langmaterial('label' => 'Language') {
-        xml.language('English', 'langcode' => 'eng') # TODO: put institution language here
+        xml.comment! 'TODO: (2) Is language a property of Institution or are all Institutions set to English?'
+        xml.comment! 'TODO: (3) Is this an ISO 639-2 code?'
+        xml.language('English', 'langcode' => 'eng')
       }
       xml.unittitle(@resource.name, 'label' => 'Title')
-      xml.unitid('sample ID', # TODO: fix this
+      xml.comment! 'TODO: (4) Is this ID OK? (It\'s just the database ID)'
+      xml.unitid('sample ID',
           'id' => "psap_#{@resource.id}",
           'label' => 'Identifier, local'
       )
       xml.origination('label' => 'Creator') {
-        xml.corpname('Sample Source', 'source' => 'local') # TODO: fix this
+        xml.comment! 'TODO: (5) Are we going to distinguish between companies and people? i.e. Is the assessment going to have a "creator type" pulldown or somesuch?'
+        xml.corpname('Sample Company', 'source' => 'local')
+        xml.persname('Sample Person',
+                     'source' => 'local',
+                     'normal' => 'Sample Person'
+        )
       }
-      xml.unitdate( # TODO: type="bulk" or type="inclusive" as appropriate
-          'normal' => '9999/9999',
+      xml.comment! 'TODO: (6) type="bulk" or type="inclusive" as appropriate; how to determine?'
+      xml.comment! 'TODO: (7) Any special format to this date?'
+      xml.unitdate(
+          'normal' => '1889/1889',
           'type' => 'inclusive'
       )
       xml.physloc(@resource.location.name, 'label' => 'Location')
-      xml.abstract('Sample Description', 'label' => 'Abstract/Summary') # TODO: fix this
+      xml.comment! 'TODO: (8) What property of Resource does this correspond to? Description?'
+      xml.abstract('Sample Description', 'label' => 'Abstract/Summary')
       xml.physdesc {
-        xml.extent('Sample Extent', 'label' => 'Extent') # TODO: fix this
+        xml.comment! 'TODO: (9) Extent will be a property of Resource/Assessment for inclusion here, correct?'
+        xml.extent('Sample Extent', 'label' => 'Extent')
         xml.extent('Other Extent', 'label' => 'Extent')
       }
       # if physical description is split into parts then physdesc element will repeat
     }
     xml.controlaccess {
-      xml.subject('test', 'source' => 'local') # TODO: fix this
+      xml.comment! 'TODO: (10) tags: subjects, associated person [creator], etc. Will these be entered into the resource assessment for inclusion here?'
+      xml.subject('test', 'source' => 'local')
     }
     if @resource.parent
       xml.dsc {
@@ -90,9 +104,11 @@ xml.ead(
         ) {
           xml.did {
             xml.unittitle(@resource.parent.name)
-            xml.unitid('Sample') # TODO: fix this
+            xml.comment! 'TODO: (11) what is unitid?'
+            xml.unitid('Sample')
+            xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
             xml.unitdate(9999,
-                         'normal' => '9999/9999',
+                         'normal' => '1889/1889',
                          'type' => 'inclusive'
             )
           }
@@ -107,9 +123,11 @@ xml.ead(
           ) {
             xml.did {
               xml.unittitle(child.name)
-              xml.unitid('Sample') # TODO: fix this
+              xml.comment! 'TODO: (11) what is unitid?'
+              xml.unitid('Sample')
+              xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
               xml.unitdate(9999,
-                           'normal' => '9999/9999',
+                           'normal' => '1889/1889',
                            'type' => 'inclusive'
               )
             }
