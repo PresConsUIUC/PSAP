@@ -61,6 +61,7 @@
             <th></th>
             <th>Title</th>
             <th>Type</th>
+            <th>Completed</th>
           </tr>
           </thead>
           <tbody>
@@ -75,6 +76,7 @@
                 </td>
                 <td><%= link_to resource.name, resource %></td>
                 <td><%= resource.readable_resource_type %></td>
+                <td><!-- TODO: fill this in --></td>
               </tr>
               <%= render partial: 'resource_tree_rows',
                          locals: {children: resource.children, depth: 0} if resource.children.any? %>
