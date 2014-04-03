@@ -126,7 +126,24 @@ case Rails.env
     resource7 = Resource.create(name: 'Cat Fancy Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location4)
-
+    resource8 = Resource.create(name: 'Issue 1',
+                                resource_type: ResourceType::ITEM,
+                                location: location4, parent: resource7)
+    resource9 = Resource.create(name: 'Issue 2',
+                                resource_type: ResourceType::ITEM,
+                                location: location4, parent: resource7)
+    resource10 = Resource.create(name: 'Special Editions',
+                                 resource_type: ResourceType::COLLECTION,
+                                 location: location4, parent: resource7)
+    resource11 = Resource.create(name: '1972 Presidential Election Special Issue',
+                                 resource_type: ResourceType::ITEM,
+                                 location: location4, parent: resource10)
+    resource12 = Resource.create(name: 'Issue 3',
+                                 resource_type: ResourceType::ITEM,
+                                 location: location4, parent: resource7)
+    resource13 = Resource.create(name: 'Reader\'s Digest Collection',
+                                resource_type: ResourceType::COLLECTION,
+                                location: location4)
 end
 
 # Most of the above commands generated events, which we don't want.

@@ -43,6 +43,8 @@ class LocationsController < ApplicationController
 
   def show
     @location = Location.find(params[:id])
+    # show only top-level resources
+    @resources = @location.resources.where(parent_id: nil).order(:name) # TODO: pagination
   end
 
   def update

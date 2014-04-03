@@ -1,0 +1,17 @@
+<% children.each do |child| %>
+    <tr>
+      <td>
+        <%= link_to 'Edit', edit_resource_path(child) %>
+      </td>
+      <td>
+        <%= link_to 'Delete', child, method: :delete,
+                    data: { confirm: 'Are you sure?' } %>
+      </td>
+      <td class="depth-<%= depth %>">
+        &#8627; <%= link_to child.name, child %>
+      </td>
+      <td><%= child.readable_resource_type %></td>
+    </tr>
+    <%= render partial: 'resource_tree_rows',
+               locals: {children: child.children, depth: depth + 1} if child.children.any? %>
+<% end %>
