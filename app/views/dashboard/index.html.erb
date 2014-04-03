@@ -9,10 +9,16 @@
       <div class="col-md-6">
         <div class="panel panel-default dashboard">
           <div class="panel-heading">
-            <h3 class="panel-title">Assessments in progress</h3>
+            <h3 class="panel-title">My resource assessments in progress</h3>
           </div>
           <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie.
+            <% if @assessments.any? %>
+                <ul>
+                  <% for asst in @assessments %>
+                    <li><%= link_to asst.name, asst %></li>
+                  <% end %>
+                </ul>
+            <% end %>
           </div>
         </div>
       </div>
@@ -22,7 +28,15 @@
             <h3 class="panel-title">Recently added assessments</h3>
           </div>
           <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas viverra vitae nisi quis molestie.
+            <% if @recent_assessments.any? %>
+                <ul>
+                  <% for asst in @recent_assessments %>
+                      <li><%= link_to asst.name, asst %>
+                        <small><%= local_time_ago asst.created_at %> by
+                          <%= link_to asst.user.username, asst.user %></small></li>
+                  <% end %>
+                </ul>
+            <% end %>
           </div>
         </div>
       </div>
