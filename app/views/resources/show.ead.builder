@@ -32,7 +32,6 @@ xml.ead(
   }
   xml.archdesc('level' => @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection') {
     xml.did {
-      xml.comment! 'TODO: (1) Is this ID OK? (It\'s just the database ID)'
       xml.repository(
           'label' => @institution.name,
           'id' => "psap_repository_#{@institution.id}"
@@ -69,31 +68,27 @@ xml.ead(
           'label' => 'Identifier, local'
       )
       xml.origination('label' => 'Creator') {
-        xml.comment! 'TODO: (5) Are we going to distinguish between companies and people? i.e. Is the assessment going to have a "creator type" pulldown or somesuch?'
-        xml.corpname('Sample Company', 'source' => 'local')
+        xml.corpname('Sample Company', 'source' => 'local') # TODO: (5) item may have zero or more creators
         xml.persname('Sample Person',
                      'source' => 'local',
                      'normal' => 'Sample Person'
         )
       }
       xml.comment! 'TODO: (6) type="bulk" or type="inclusive" as appropriate; how to determine?'
-      xml.comment! 'TODO: (7) Any special format to this date?'
       xml.unitdate(
-          'normal' => '1889/1889',
-          'type' => 'inclusive'
+          'normal' => '1889/1889', # format is YYYY-YYYY or YYYY # TODO: fix
+          'type' => 'inclusive' # TODO: (6) users will select from "single date", "inclusive date", or "bulk date"
       )
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       xml.physdesc {
-        xml.comment! 'TODO: (9) Extent will be a property of Resource/Assessment for inclusion here, correct?'
-        xml.extent('Sample Extent', 'label' => 'Extent')
+        xml.extent('Sample Extent', 'label' => 'Extent') # TODO: (9) resources may have zero or more extents
         xml.extent('Other Extent', 'label' => 'Extent')
       }
       # if physical description is split into parts then physdesc element will repeat
     }
     xml.controlaccess {
-      xml.comment! 'TODO: (10) tags: subjects, associated person [creator], etc. Will these be entered into the resource assessment for inclusion here?'
-      xml.subject('test', 'source' => 'local')
+      xml.subject('test', 'source' => 'local') # TODO: (10) fix
     }
     if @resource.parent
       xml.dsc {
@@ -103,9 +98,8 @@ xml.ead(
         ) {
           xml.did {
             xml.unittitle(@resource.parent.name)
-            xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
-            xml.unitdate(9999,
             xml.unitid(@resource.local_identifier)
+            xml.unitdate(1889, # TODO: (12) same concept as /archdesc/did/unitdate above
                          'normal' => '1889/1889',
                          'type' => 'inclusive'
             )
@@ -121,9 +115,8 @@ xml.ead(
           ) {
             xml.did {
               xml.unittitle(child.name)
-              xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
-              xml.unitdate(9999,
               xml.unitid(@resource.local_identifier)
+              xml.unitdate(1889, # TODO: (12) same concept as /archdesc/did/unitdate above
                            'normal' => '1889/1889',
                            'type' => 'inclusive'
               )
