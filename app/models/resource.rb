@@ -4,6 +4,7 @@ class Resource < ActiveRecord::Base
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
            inverse_of: :parent
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
+  belongs_to :user, inverse_of: :resources
 
   after_create :log_create
   after_update :log_update
@@ -12,6 +13,7 @@ class Resource < ActiveRecord::Base
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true
+  validates :user, presence: true
 
   def readable_resource_type
     case resource_type

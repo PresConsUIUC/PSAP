@@ -80,7 +80,8 @@
           <dd><%= @resource.format.name %></dd>
       <% end %>
       <dt>Created</dt>
-      <dd><%= local_time_ago(@resource.created_at) %></dd>
+      <dd><%= local_time_ago(@resource.created_at) %> by
+        <%= link_to @resource.user.full_name, @resource.user %></dd>
       <dt>Last Updated</dt>
       <dd><%= local_time_ago(@resource.updated_at) %></dd>
     </dl>

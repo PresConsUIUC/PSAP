@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140402212620) do
+ActiveRecord::Schema.define(version: 20140403145723) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -82,11 +82,13 @@ ActiveRecord::Schema.define(version: 20140402212620) do
     t.integer  "resource_type"
     t.string   "name"
     t.integer  "format_id"
+    t.integer  "user_id"
   end
 
   add_index "resources", ["format_id"], name: "index_resources_on_format_id"
   add_index "resources", ["location_id"], name: "index_resources_on_location_id"
   add_index "resources", ["parent_id"], name: "index_resources_on_parent_id"
+  add_index "resources", ["user_id"], name: "index_resources_on_user_id"
 
   create_table "roles", force: true do |t|
     t.datetime "created_at"

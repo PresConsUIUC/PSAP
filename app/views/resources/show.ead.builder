@@ -15,7 +15,7 @@ xml.ead(
       xml.filedesc {
         xml.titlestmt {
           xml.titleproper(@resource.name)
-          xml.author('Joe Schmoe', 'id' => '1') # TODO: replace with @resource.user.full_name and @resource.user.username
+          xml.author(@resource.user.full_name, 'id' => @resource.user.username)
         }
       }
       xml.profiledesc {
