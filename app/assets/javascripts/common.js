@@ -88,7 +88,7 @@ function updateResultsCount() {
         var count_elem = $('input[name="results_count"]');
         if (count_elem.length) {
             var count = count_elem.val();
-            $('#entity_count').text(count + ' '
+            $('.entity_count').text(count + ' '
                 + ((query_length > 0) ? ((count == 1) ? 'match' : 'matches') : 'total'));
         }
     }
