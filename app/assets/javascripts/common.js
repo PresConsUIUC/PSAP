@@ -33,7 +33,7 @@ $(document).ready(function() {
         var navBar = $('nav.navbar');
         // Unfix the nav bar from the top on small screens; otherwise it will fill
         // way too much of the screen.
-        if ($(window).width() < 500 || $(window).height() < 500) {
+        if ($(window).width() < 500 || $(window).height() < 400) {
             navBar.removeClass('navbar-fixed-top');
             $('body').css('padding-top', '');
         } else {

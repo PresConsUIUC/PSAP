@@ -1,5 +1,9 @@
 body#dashboard div#page_content {
   .dashboard {
+    ul {
+      margin-left:1.5em;
+      padding-left:0px;
+    }
     div.institution_association {
       input[type=submit], a {
         margin:1.8em auto;
