@@ -64,8 +64,7 @@ xml.ead(
         }
       end
       xml.unittitle(@resource.name, 'label' => 'Title')
-      xml.comment! 'TODO: (4) Is this ID OK? (It\'s just the database ID)'
-      xml.unitid('sample ID',
+      xml.unitid(@resource.local_identifier,
           'id' => "psap_#{@resource.id}",
           'label' => 'Identifier, local'
       )
@@ -104,10 +103,9 @@ xml.ead(
         ) {
           xml.did {
             xml.unittitle(@resource.parent.name)
-            xml.comment! 'TODO: (11) what is unitid?'
-            xml.unitid('Sample')
             xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
             xml.unitdate(9999,
+            xml.unitid(@resource.local_identifier)
                          'normal' => '1889/1889',
                          'type' => 'inclusive'
             )
@@ -123,10 +121,9 @@ xml.ead(
           ) {
             xml.did {
               xml.unittitle(child.name)
-              xml.comment! 'TODO: (11) what is unitid?'
-              xml.unitid('Sample')
               xml.comment! 'TODO: (12) is this the same concept as /archdesc/did/unitdate above?'
               xml.unitdate(9999,
+              xml.unitid(@resource.local_identifier)
                            'normal' => '1889/1889',
                            'type' => 'inclusive'
               )

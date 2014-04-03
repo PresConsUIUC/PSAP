@@ -81,6 +81,8 @@
       <% end %>
       <dt>Description</dt>
       <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
+      <dt>Local Identifier</dt>
+      <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
       <dt>Created</dt>
       <dd><%= local_time_ago(@resource.created_at) %> by
         <%= link_to @resource.user.full_name, @resource.user %></dd>

@@ -600,63 +600,76 @@ case Rails.env
                                resource_type: ResourceType::ITEM,
                                format: format1, location: location,
                                user: normal_user,
-                               description: 'Lorem ipsum dolor sit amet')
+                               description: 'Lorem ipsum dolor sit amet',
+                               local_identifier: 'qwertyuiop')
     resource2 = Resource.create(name: 'Dead Sea Scrolls',
                                 resource_type: ResourceType::ITEM,
                                 format: format2, location: location,
                                 user: normal_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource3 = Resource.create(name: 'Sears Catalog Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location2, user: admin_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource4 = Resource.create(name: 'My Old Baseball Card Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location2, user: admin_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource5 = Resource.create(name: 'Treaty of Verdun',
                                 resource_type: ResourceType::ITEM,
                                 format: format5, location: location3,
                                 user: normal_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource6 = Resource.create(name: 'Declaration of Paris',
                                 resource_type: ResourceType::ITEM,
                                 format: format6, location: location3,
                                 user: disabled_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource7 = Resource.create(name: 'Cat Fancy Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location4, user: normal_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource8 = Resource.create(name: 'Issue 1',
                                 resource_type: ResourceType::ITEM,
                                 location: location4, parent: resource7,
                                 user: admin_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource9 = Resource.create(name: 'Issue 2',
                                 resource_type: ResourceType::ITEM,
                                 location: location4, parent: resource7,
                                 user: disabled_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
     resource10 = Resource.create(name: 'Special Editions',
                                  resource_type: ResourceType::COLLECTION,
                                  location: location4, parent: resource7,
                                  user: admin_user,
-                                 description: 'Lorem ipsum dolor sit amet')
+                                 description: 'Lorem ipsum dolor sit amet',
+                                 local_identifier: 'qwertyuiop')
     resource11 = Resource.create(name: '1972 Presidential Election Special Issue',
                                  resource_type: ResourceType::ITEM,
                                  location: location4, parent: resource10,
                                  user: normal_user,
-                                 description: 'Lorem ipsum dolor sit amet')
+                                 description: 'Lorem ipsum dolor sit amet',
+                                 local_identifier: 'qwertyuiop')
     resource12 = Resource.create(name: 'Issue 3',
                                  resource_type: ResourceType::ITEM,
                                  location: location4, parent: resource7,
                                  user: normal_user,
-                                 description: 'Lorem ipsum dolor sit amet')
+                                 description: 'Lorem ipsum dolor sit amet',
+                                 local_identifier: 'qwertyuiop')
     resource13 = Resource.create(name: 'Reader\'s Digest Collection',
                                 resource_type: ResourceType::COLLECTION,
                                 location: location4, user: normal_user,
-                                description: 'Lorem ipsum dolor sit amet')
+                                description: 'Lorem ipsum dolor sit amet',
+                                local_identifier: 'qwertyuiop')
 end
 
 # Most of the above commands generated events, which we don't want.
