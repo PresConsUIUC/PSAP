@@ -13,6 +13,6 @@
       <td><%= child.readable_resource_type %></td>
       <td><!-- TODO: fill this in --></td>
     </tr>
-    <%= render partial: 'resource_tree_rows',
+    <%= render partial: 'resources/resource_tree_rows',
                locals: {children: child.children, depth: depth + 1} if child.children.any? %>
 <% end %>

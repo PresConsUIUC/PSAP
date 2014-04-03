@@ -78,8 +78,8 @@
                 <td><%= resource.readable_resource_type %></td>
                 <td><!-- TODO: fill this in --></td>
               </tr>
-              <%= render partial: 'resource_tree_rows',
-                         locals: {children: resource.children, depth: 0} if resource.children.any? %>
+              <%= render partial: 'resources/resource_tree_rows',
+                         locals: {children: resource.children, depth: 1} if resource.children.any? %>
           <% end %>
           </tbody>
         </table>
