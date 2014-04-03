@@ -6,29 +6,31 @@
 <% if @user.institution %>
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="panel panel-default dashboard">
-          <div class="panel-heading">
-            <h3 class="panel-title">My resource assessments in progress</h3>
-          </div>
-          <div class="panel-body">
-            <% if @assessments.any? %>
+
+      <% if @assessments.any? %>
+          <div class="col-md-6">
+            <div class="panel panel-default dashboard">
+              <div class="panel-heading">
+                <h3 class="panel-title">My resource assessments in progress</h3>
+              </div>
+              <div class="panel-body">
                 <ul>
                   <% for asst in @assessments %>
                     <li><%= link_to asst.name, asst %></li>
                   <% end %>
                 </ul>
-            <% end %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="panel panel-default dashboard">
-          <div class="panel-heading">
-            <h3 class="panel-title">Recently added assessments</h3>
-          </div>
-          <div class="panel-body">
-            <% if @recent_assessments.any? %>
+      <% end %>
+
+      <% if @recent_assessments.any? %>
+          <div class="col-md-6">
+            <div class="panel panel-default dashboard">
+              <div class="panel-heading">
+                <h3 class="panel-title">Recently added assessments</h3>
+              </div>
+              <div class="panel-body">
                 <ul>
                   <% for asst in @recent_assessments %>
                       <li><%= link_to asst.name, asst %>
@@ -36,10 +38,10 @@
                           <%= link_to asst.user.username, asst.user %></small></li>
                   <% end %>
                 </ul>
-            <% end %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+      <% end %>
     </div>
 
     <div class="row">
