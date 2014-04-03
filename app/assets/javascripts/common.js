@@ -28,7 +28,7 @@ $(document).ready(function() {
         // way too much of the screen.
         if ($(window).width() < 500 || $(window).height() < 500) {
             navBar.removeClass('navbar-fixed-top');
-            $('body').css('padding-top', '0px');
+            $('body').css('padding-top', '');
         } else {
             navBar.addClass('navbar-fixed-top');
             $('body').css('padding-top', '50px');
