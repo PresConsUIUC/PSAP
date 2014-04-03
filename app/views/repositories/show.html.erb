@@ -49,30 +49,34 @@
 <div class="tab-content">
 
   <div class="tab-pane active" id="locations">
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th>Name</th>
-          <th># Resources</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @repository.locations.order(:name).each do |location| %>
+    <% if @repository.locations.any? %>
+        <table class="table table-striped table-hover">
+          <thead>
           <tr>
-            <td>
-              <%= link_to 'Edit', edit_location_path(location) %>
-            </td>
-            <td>
-              <%= link_to 'Delete', location, method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
-            </td>
-            <td><%= link_to location.name, location %></td>
-            <td><%= location.resources.count %></td>
+            <th></th>
+            <th></th>
+            <th>Name</th>
+            <th># Resources</th>
           </tr>
-      <% end %>
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+          <% @repository.locations.order(:name).each do |location| %>
+              <tr>
+                <td>
+                  <%= link_to 'Edit', edit_location_path(location) %>
+                </td>
+                <td>
+                  <%= link_to 'Delete', location, method: :delete,
+                              data: { confirm: 'Are you sure?' } %>
+                </td>
+                <td><%= link_to location.name, location %></td>
+                <td><%= location.resources.count %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p>This repository has no locations.</p>
+    <% end %>
   </div>
 </div>
