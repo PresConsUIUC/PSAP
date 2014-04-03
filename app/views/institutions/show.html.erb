@@ -178,8 +178,13 @@
 
   <div class="tab-pane" id="assessment_report">
 
-    <!-- Export button -->
     <div class="btn-group" style="float:right">
+      <!-- Print button -->
+      <%= link_to 'javascript:window.print()', class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-print') %>
+          Print
+      <% end %>
+      <!-- Export button -->
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-save"></span> Export
         <span class="caret"></span>
