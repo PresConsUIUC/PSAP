@@ -114,34 +114,10 @@
   </div>
 
   <div class="tab-pane" id="assessments">
-    <% if @institution.resources.any? %>
-        <table class="table table-striped table-hover">
-          <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>Title</th>
-            <th>Type</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @institution.resources.order(:name).each do |resource| %>
-              <tr>
-                <td>
-                  <%= link_to 'Edit', edit_resource_path(resource) %>
-                </td>
-                <td>
-                  <%= link_to 'Delete', resource, method: :delete,
-                              data: { confirm: 'Are you sure?' } %>
-                </td>
-                <td><%= link_to resource.name, resource %></td>
-                <td><%= resource.readable_resource_type %></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
+    <% if @resources.any? %>
+        <%= render partial: 'resources/resources', locals: {resources: @resources} %>
     <% else %>
-        <p>There are no completed assessments at this institution.</p>
+        <p>There are no resource assessments at this institution.</p>
     <% end %>
   </div>
 

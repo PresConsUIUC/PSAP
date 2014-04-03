@@ -41,6 +41,8 @@ class InstitutionsController < ApplicationController
   def show
     @institution = Institution.find(params[:id])
     @institution_users = @institution.users.where(confirmed: true).order(:last_name)
+    # show only top-level resources
+    @resources = @institution.resources.where(parent_id: nil).order(:name) # TODO: pagination
   end
 
   def update

@@ -54,35 +54,7 @@
 
   <div class="tab-pane active" id="resources">
     <% if @resources.any? %>
-        <table class="table table-striped table-hover">
-          <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Completed</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @resources.each do |resource| %>
-              <tr>
-                <td>
-                  <%= link_to 'Edit', edit_resource_path(resource) %>
-                </td>
-                <td>
-                  <%= link_to 'Delete', resource, method: :delete,
-                              data: { confirm: 'Are you sure?' } %>
-                </td>
-                <td><%= link_to resource.name, resource %></td>
-                <td><%= resource.readable_resource_type %></td>
-                <td><!-- TODO: fill this in --></td>
-              </tr>
-              <%= render partial: 'resources/resource_tree_rows',
-                         locals: {children: resource.children, depth: 1} if resource.children.any? %>
-          <% end %>
-          </tbody>
-        </table>
+        <%= render partial: 'resources/resources', locals: {resources: @resources} %>
     <% else %>
         <p>There are no resources in this location.</p>
     <% end %>
