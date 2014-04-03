@@ -108,51 +108,64 @@ case Rails.env
     resource = Resource.create(name: 'Magna Carta',
                                resource_type: ResourceType::ITEM,
                                format: format1, location: location,
-                               user: normal_user)
+                               user: normal_user,
+                               description: 'Lorem ipsum dolor sit amet')
     resource2 = Resource.create(name: 'Dead Sea Scrolls',
                                 resource_type: ResourceType::ITEM,
                                 format: format2, location: location,
-                                user: normal_user)
+                                user: normal_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource3 = Resource.create(name: 'Sears Catalog Collection',
                                 resource_type: ResourceType::COLLECTION,
-                                location: location2, user: admin_user)
+                                location: location2, user: admin_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource4 = Resource.create(name: 'My Old Baseball Card Collection',
                                 resource_type: ResourceType::COLLECTION,
-                                location: location2, user: admin_user)
+                                location: location2, user: admin_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource5 = Resource.create(name: 'Treaty of Verdun',
                                 resource_type: ResourceType::ITEM,
                                 format: format5, location: location3,
-                                user: normal_user)
+                                user: normal_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource6 = Resource.create(name: 'Declaration of Paris',
                                 resource_type: ResourceType::ITEM,
                                 format: format6, location: location3,
-                                user: disabled_user)
+                                user: disabled_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource7 = Resource.create(name: 'Cat Fancy Collection',
                                 resource_type: ResourceType::COLLECTION,
-                                location: location4, user: normal_user)
+                                location: location4, user: normal_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource8 = Resource.create(name: 'Issue 1',
                                 resource_type: ResourceType::ITEM,
                                 location: location4, parent: resource7,
-                                user: admin_user)
+                                user: admin_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource9 = Resource.create(name: 'Issue 2',
                                 resource_type: ResourceType::ITEM,
                                 location: location4, parent: resource7,
-                                user: disabled_user)
+                                user: disabled_user,
+                                description: 'Lorem ipsum dolor sit amet')
     resource10 = Resource.create(name: 'Special Editions',
                                  resource_type: ResourceType::COLLECTION,
                                  location: location4, parent: resource7,
-                                 user: admin_user)
+                                 user: admin_user,
+                                 description: 'Lorem ipsum dolor sit amet')
     resource11 = Resource.create(name: '1972 Presidential Election Special Issue',
                                  resource_type: ResourceType::ITEM,
                                  location: location4, parent: resource10,
-                                 user: normal_user)
+                                 user: normal_user,
+                                 description: 'Lorem ipsum dolor sit amet')
     resource12 = Resource.create(name: 'Issue 3',
                                  resource_type: ResourceType::ITEM,
                                  location: location4, parent: resource7,
-                                 user: normal_user)
+                                 user: normal_user,
+                                 description: 'Lorem ipsum dolor sit amet')
     resource13 = Resource.create(name: 'Reader\'s Digest Collection',
                                 resource_type: ResourceType::COLLECTION,
-                                location: location4, user: normal_user)
+                                location: location4, user: normal_user,
+                                description: 'Lorem ipsum dolor sit amet')
 end
 
 # Most of the above commands generated events, which we don't want.

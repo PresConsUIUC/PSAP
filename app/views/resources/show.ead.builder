@@ -83,8 +83,7 @@ xml.ead(
           'type' => 'inclusive'
       )
       xml.physloc(@resource.location.name, 'label' => 'Location')
-      xml.comment! 'TODO: (8) What property of Resource does this correspond to? Description?'
-      xml.abstract('Sample Description', 'label' => 'Abstract/Summary')
+      xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       xml.physdesc {
         xml.comment! 'TODO: (9) Extent will be a property of Resource/Assessment for inclusion here, correct?'
         xml.extent('Sample Extent', 'label' => 'Extent')
