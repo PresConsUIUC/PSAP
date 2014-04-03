@@ -93,20 +93,33 @@
   </div>
 
   <div id="assessments" class="tab-pane">
-    <% if @user.resources.any? %>
+    <% # This view unfortunately can't use the resources/resources partial
+       # because it displays resources hierarchically, which is problematic
+       # when the user doesn't own the entire hierarchy. So we will display
+       # all of the user's resources in a flat list. %>
+    <% if @resources.any? %>
         <table class="table table-striped table-hover">
           <thead>
           <tr>
-            <th>Name</th>
+            <th></th>
+            <th></th>
+            <th>Title</th>
             <th>Type</th>
             <th>Completed</th>
           </tr>
           </thead>
           <tbody>
-          <% @user.resources.order(:name).each do |asst| %>
+          <% @resources.each do |resource| %>
               <tr>
-                <td><%= link_to asst.name, asst %></td>
-                <td><%= asst.readable_resource_type %></td>
+                <td>
+                  <%= link_to 'Edit', edit_resource_path(resource) %>
+                </td>
+                <td>
+                  <%= link_to 'Delete', resource, method: :delete,
+                              data: { confirm: 'Are you sure?' } %>
+                </td>
+                <td><%= link_to resource.name, resource %></td>
+                <td><%= resource.readable_resource_type %></td>
                 <td><!-- TODO: fill this in --></td>
               </tr>
           <% end %>
