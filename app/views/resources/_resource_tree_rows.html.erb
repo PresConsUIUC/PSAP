@@ -14,5 +14,5 @@
       <td><!-- TODO: fill this in --></td>
     </tr>
     <%= render partial: 'resources/resource_tree_rows',
-               locals: {children: child.children, depth: depth + 1} if child.children.any? %>
+               locals: {children: child.children.order(:name), depth: depth + 1} if child.children.any? %>
 <% end %>
