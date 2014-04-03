@@ -3,10 +3,6 @@
       <td>
         <%= link_to 'Edit', edit_resource_path(child) %>
       </td>
-      <td>
-        <%= link_to 'Delete', child, method: :delete,
-                    data: { confirm: 'Are you sure?' } %>
-      </td>
       <td class="depth-<%= depth %>">
         &#8627; <%= link_to child.name, child %>
       </td>

@@ -2,7 +2,6 @@
   <thead>
   <tr>
     <th></th>
-    <th></th>
     <th>Title</th>
     <th>Type</th>
     <th>Completed</th>
@@ -13,10 +12,6 @@
       <tr>
         <td>
           <%= link_to 'Edit', edit_resource_path(resource) %>
-        </td>
-        <td>
-          <%= link_to 'Delete', resource, method: :delete,
-                      data: { confirm: 'Are you sure?' } %>
         </td>
         <td><%= link_to resource.name, resource %></td>
         <td><%= resource.readable_resource_type %></td>
