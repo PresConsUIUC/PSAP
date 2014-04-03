@@ -59,9 +59,11 @@
   <li class="active">
     <a href="#info" data-toggle="tab">Info</a>
   </li>
-  <li>
-    <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
-  </li>
+  <% if @resource.children.any? %>
+      <li>
+        <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
+      </li>
+  <% end %>
   <li>
     <a href="#assessment" data-toggle="tab">Assessment</a>
   </li>
@@ -91,8 +93,8 @@
     </dl>
   </div>
 
-  <div id="sub_resources" class="tab-pane">
-    <% if @resource.children.any? %>
+  <% if @resource.children.any? %>
+      <div id="sub_resources" class="tab-pane">
         <table class="table table-striped table-hover">
           <thead>
           <tr>
@@ -122,8 +124,8 @@
           <% end %>
           </tbody>
         </table>
-    <% end %>
-  </div>
+      </div>
+  <% end %>
 
   <div id="assessment" class="tab-pane">
   </div>
