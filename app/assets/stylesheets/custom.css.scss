@@ -210,6 +210,10 @@ form.entity_search {
     margin:0em 0em 1em 0em;
     width:120px;
   }
+  input.active {
+    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 96px 8px;
+    @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
+  }
 }
 
 

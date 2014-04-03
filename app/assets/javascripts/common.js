@@ -10,11 +10,13 @@ $(document).ready(function() {
     // Entity live-search forms
     $('.entity_search').submit(function() {
         $.get(this.action, $(this).serialize(), null, 'script');
+        $(this).nextAll('input').addClass('active');
         return false;
     });
     $('.entity_search input').on('keyup', function() {
         $.get($('.entity_search').attr('action'),
             $('.entity_search').serialize(), null, 'script');
+        $(this).addClass('active');
         return false;
     });
 

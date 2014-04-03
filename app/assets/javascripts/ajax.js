@@ -1,4 +1,6 @@
 $(document).ajaxStart(function(event, request, options) {
+    $('form.entity_search input').removeClass('active');
+
     // TODO: fix
     //$('#modal_progress_view').show();
 });
@@ -8,6 +10,8 @@ $(document).ajaxStart(function(event, request, options) {
  X-Message-Type headers.
  */
 $(document).ajaxComplete(function(event, request, options) {
+    $('form.entity_search input').removeClass('active');
+
     $('#modal_progress_view').hide();
 
     // These headers are set by an ApplicationController after_filter, to
