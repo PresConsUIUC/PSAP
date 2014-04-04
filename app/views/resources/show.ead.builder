@@ -81,10 +81,13 @@ xml.ead(
       )
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
-      xml.physdesc {
-        xml.extent('Sample Extent', 'label' => 'Extent') # TODO: (9) resources may have zero or more extents
-        xml.extent('Other Extent', 'label' => 'Extent')
-      }
+      if @resource.extents.any?
+        xml.physdesc {
+          for extent in @resource.extents
+            xml.extent(extent.name, 'label' => 'Extent')
+          end
+        }
+      end
       # if physical description is split into parts then physdesc element will repeat
     }
     xml.controlaccess {

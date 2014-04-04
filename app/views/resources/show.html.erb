@@ -89,6 +89,16 @@
       <% end %>
       <dt>Local Identifier</dt>
       <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
+      <% if @resource.extents.any? %>
+          <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
+          <dd>
+            <ul>
+              <% for extent in @resource.extents %>
+                  <li><%= extent.name %></li>
+              <% end %>
+            </ul>
+          </dd>
+      <% end %>
       <dt>Created</dt>
       <dd><%= local_time_ago(@resource.created_at) %> by
         <%= link_to @resource.user.full_name, @resource.user %></dd>

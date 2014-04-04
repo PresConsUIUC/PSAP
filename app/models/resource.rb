@@ -1,4 +1,5 @@
 class Resource < ActiveRecord::Base
+  has_many :extents, inverse_of: :resource
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
