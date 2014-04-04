@@ -11,6 +11,124 @@
 <h1>Edit <%= @institution.name %></h1>
 
 <%= form_for(@institution) do |f| %>
-    <%= render 'form', :f => f %>
+
+    <%= render 'shared/error_messages', :object => f.object %>
+
+    <div class="row" id="institution">
+
+      <!-- left column menu -->
+      <div class="entity_menu col-md-3">
+        <nav>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="#" data-open="general">General</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" data-open="preservation_planning">Preservation Planning</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" data-open="use_access">Use/Access</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" data-open="material_inspection">Material Inspection</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" data-open="playback_equipment">Playback Equipment</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" data-open="disaster_recovery">Disaster Recovery</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div id="general" class="col-md-9 form_view">
+        <h2>General</h2>
+
+        <div class="form-group has-feedback">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :description %>
+          <%= f.text_area :description, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :url, 'URL' %>
+          <%= f.url_field :url, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :address1, 'Address 1' %>
+          <%= f.text_field :address1, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :address2, 'Address 2' %>
+          <%= f.text_field :address2, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :city %>
+          <%= f.text_field :city, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :state %>
+          <%= f.text_field :state, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= f.label :postal_code %>
+          <%= f.text_field :postal_code, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :country %>
+          <%= select('institution', 'country', countries_for_select,
+                     { include_blank: false },
+                     { class: 'form-control' }) %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :language %>
+          <%= f.collection_select :language_id, Language.all, :id, :english_name,
+                                  { include_blank: true },
+                                  { class: 'form-control' } %>
+        </div>
+      </div>
+
+      <div id="preservation_planning" class="col-md-9 form_view">
+        <h2>Preservation Planning</h2>
+      </div>
+
+      <div id="use_access" class="col-md-9 form_view">
+        <h2>Use/Access</h2>
+      </div>
+
+      <div id="material_inspection" class="col-md-9 form_view">
+        <h2>Material Inspection</h2>
+      </div>
+
+      <div id="playback_equipment" class="col-md-9 form_view">
+        <h2>Playback Equipment</h2>
+      </div>
+
+      <div id="disaster_recovery" class="col-md-9 form_view">
+        <h2>Disaster Recovery</h2>
+      </div>
+
+    </div>
+
     <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
 <% end %>
