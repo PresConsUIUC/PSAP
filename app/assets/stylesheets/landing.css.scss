@@ -1,0 +1,13 @@
+/* landing page */
+
+div#main_panel {
+  margin:0 auto;
+  text-align:center;
+  width:50%;
+  p {
+    margin-top:3em;
+  }
+  p:first-child {
+    margin-top:0em;
+  }
+}

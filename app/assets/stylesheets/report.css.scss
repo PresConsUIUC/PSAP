@@ -1,0 +1,44 @@
+/* assessment report */
+
+div#assessment_report {
+  @media print {
+    h1 {
+      text-align:center;
+    }
+    section {
+      border:1px solid black;
+      margin-bottom:1em;
+      padding:1em;
+      h2 {
+        font-size:1.3em;
+        margin-top:0px;
+        padding-top:0px;
+      }
+      h3 {
+        font-size:1.15em;
+      }
+      h4 {
+        text-align:right;
+      }
+    }
+  }
+  @media screen {
+    section#material_condition_overview {
+      ul {
+        margin-left:1em;
+        padding-left:0px;
+      }
+      table {
+        background-color:#d0e0ff;
+        width:200px;
+        td:first-child {
+          text-align:right;
+          width:30%;
+        }
+        td {
+          padding:0.1em 0.4em 0.1em 0.4em;
+        }
+      }
+    }
+  }
+}
