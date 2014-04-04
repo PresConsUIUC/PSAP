@@ -106,11 +106,15 @@
       <% if @resource.extents.any? %>
           <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
           <dd>
-            <ul>
-              <% for extent in @resource.extents %>
-                  <li><%= extent.name %></li>
-              <% end %>
-            </ul>
+            <% if @resource.extents.length == 1 %>
+                <%= @resource.extents.first.name %>
+            <% else %>
+                <ul>
+                  <% for extent in @resource.extents %>
+                      <li><%= extent.name %></li>
+                  <% end %>
+                </ul>
+            <% end %>
           </dd>
       <% end %>
       <dt>Created</dt>
