@@ -89,6 +89,20 @@
       <% end %>
       <dt>Local Identifier</dt>
       <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
+      <% if @resource.creators.any? %>
+          <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
+          <dd>
+            <% if @resource.creators.length == 1 %>
+                <%= @resource.creators.first.name %>
+            <% else %>
+                <ul>
+                  <% for creator in @resource.creators %>
+                      <li><%= creator.name %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </dd>
+      <% end %>
       <% if @resource.extents.any? %>
           <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
           <dd>

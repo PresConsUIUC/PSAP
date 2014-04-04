@@ -1,4 +1,5 @@
 class Resource < ActiveRecord::Base
+  has_many :creators, inverse_of: :resource
   has_many :extents, inverse_of: :resource
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources

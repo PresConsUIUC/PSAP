@@ -514,6 +514,7 @@ normal_role = Role.create!(name: 'User', is_admin: false)
 case Rails.env
 
   when 'development'
+    # Institutions
     institutions = [
         Institution.create!(name: 'University of Illinois at Urbana-Champaign',
                             address1: '1408 W. Gregory Dr.',
@@ -603,6 +604,7 @@ case Rails.env
                                  institution: institutions[1], role: normal_role,
                                  confirmed: true, enabled: false)
 
+    # Repositories
     repositories = [
         Repository.create!(institution: institutions[0],
                            name: 'Sample Repository'),
@@ -610,6 +612,7 @@ case Rails.env
                            name: 'Another Sample Repository')
     ]
 
+    # Locations
     locations = [
         Location.create!(name: 'Secret Location',
                          repository: repositories[0]),
@@ -625,6 +628,7 @@ case Rails.env
                          repository: repositories[0])
     ]
 
+    # Resources
     resources = []
     resources << Resource.create(name: 'Magna Carta',
                                  resource_type: ResourceType::ITEM,
@@ -726,12 +730,23 @@ case Rails.env
                                  local_identifier: 'qwertyuiop',
                                  notes: 'Sample note')
 
+    # Extents
     extents = []
     for i in 0..resources.length / 2
-      extents << Extent.create!(name: 'Sample extent', resource: resources[i])
+      extents << Extent.create!(name: 'Sample extent',
+                                resource: resources[i])
     end
     for i in 0..resources.length / 3
-      extents << Extent.create!(name: 'Another sample extent', resource: resources[i])
+      extents << Extent.create!(name: 'Another sample extent',
+                                resource: resources[i])
+    end
+
+    # Creators
+    creators = []
+    for i in 0..resources.length - 1
+        creators << Creator.create!(name: 'Sample creator',
+                                    creator_type: i.odd? ? CreatorType::PERSON : CreatorType::COMPANY,
+                                    resource: resources[i])
     end
 
 end

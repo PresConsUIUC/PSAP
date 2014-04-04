@@ -67,13 +67,20 @@ xml.ead(
           'id' => "psap_#{@resource.id}",
           'label' => 'Identifier, local'
       )
-      xml.origination('label' => 'Creator') {
-        xml.corpname('Sample Company', 'source' => 'local') # TODO: (5) item may have zero or more creators
-        xml.persname('Sample Person',
-                     'source' => 'local',
-                     'normal' => 'Sample Person'
-        )
-      }
+      if @resource.creators.any?
+        xml.origination('label' => 'Creator') {
+          for creator in @resource.creators
+            if creator.creator_type == CreatorType::PERSON
+              xml.persname(creator.name,
+                           'source' => 'local',
+                           'normal' => creator.name
+              )
+            elsif creator.creator_type == CreatorType::COMPANY
+              xml.corpname(creator.name, 'source' => 'local')
+            end
+          end
+        }
+      end
       xml.comment! 'TODO: (6) type="bulk" or type="inclusive" as appropriate; how to determine?'
       xml.unitdate(
           'normal' => '1889/1889', # format is YYYY-YYYY or YYYY # TODO: fix

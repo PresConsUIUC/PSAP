@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140404154311) do
+ActiveRecord::Schema.define(version: 20140404164101) do
+
+  create_table "creators", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "resource_id"
+    t.integer  "creator_type", default: 0
+  end
+
+  add_index "creators", ["resource_id"], name: "index_creators_on_resource_id"
 
   create_table "events", force: true do |t|
     t.string   "description"
