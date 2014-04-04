@@ -19,9 +19,9 @@ class Resource < ActiveRecord::Base
 
   def readable_resource_type
     case resource_type
-      when 0
+      when ResourceType::COLLECTION
         'Collection'
-      when 1
+      when ResourceType::ITEM
         'Item'
     end
   end
