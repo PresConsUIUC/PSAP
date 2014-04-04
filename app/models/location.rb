@@ -1,6 +1,6 @@
 class Location < ActiveRecord::Base
   belongs_to :repository, inverse_of: :locations
-  has_many :resources, inverse_of: :location
+  has_many :resources, inverse_of: :location, dependent: :destroy
 
   after_create :log_create
   after_update :log_update

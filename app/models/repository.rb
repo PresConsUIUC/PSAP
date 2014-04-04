@@ -1,6 +1,6 @@
 class Repository < ActiveRecord::Base
   belongs_to :institution, inverse_of: :repositories
-  has_many :locations, inverse_of: :repository
+  has_many :locations, inverse_of: :repository, dependent: :destroy
 
   after_create :log_create
   after_update :log_update

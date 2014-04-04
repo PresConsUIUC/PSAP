@@ -1,10 +1,10 @@
 class Resource < ActiveRecord::Base
-  has_many :creators, inverse_of: :resource
-  has_many :extents, inverse_of: :resource
+  has_many :creators, inverse_of: :resource, dependent: :destroy
+  has_many :extents, inverse_of: :resource, dependent: :destroy
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
-           inverse_of: :parent
+           inverse_of: :parent, dependent: :destroy
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
   belongs_to :user, inverse_of: :resources
 
