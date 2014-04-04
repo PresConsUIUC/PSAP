@@ -83,6 +83,10 @@
       <% end %>
       <dt>Description</dt>
       <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
+      <% if @resource.notes %>
+          <dt>Notes</dt>
+          <dd><%= @resource.notes %></dd>
+      <% end %>
       <dt>Local Identifier</dt>
       <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
       <dt>Created</dt>
