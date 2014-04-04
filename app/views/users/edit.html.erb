@@ -15,40 +15,37 @@
 <% end %>
 
 <div class="row">
+
   <!-- left column menu -->
-  <div class="entity_menu col-md-3">
+  <div class="col-md-3">
     <nav>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <a href="#" data-open="basic_info">Basic Information</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="institution">Institution</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="preferences">Preferences</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="change_password">Change Password</a>
-        </li>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#basic_info">Basic Information</a></li>
+        <li><a href="#institution">Institution</a></li>
+        <li><a href="#preferences">Preferences</a></li>
+        <li><a href="#change_password">Change Password</a></li>
       </ul>
     </nav>
   </div>
 
-  <div id="basic_info" class="col-md-6 form_view">
-    <%= render 'basic_info_form' %>
-  </div>
+  <div class="col-md-9 tab-content">
 
-  <div id="institution" class="col-md-6 form_view">
-    <%= render 'institution_form' %>
-  </div>
+    <div id="basic_info" class="tab-pane active">
+      <%= render 'basic_info_form' %>
+    </div>
 
-  <div id="preferences" class="col-md-6 form_view">
-    <%= render 'preferences_form' %>
-  </div>
+    <div id="institution" class="tab-pane">
+      <%= render 'institution_form' %>
+    </div>
 
-  <div id="change_password" class="col-md-6 form_view">
-    <%= render 'change_password_form' %>
+    <div id="preferences" class="tab-pane">
+      <%= render 'preferences_form' %>
+    </div>
+
+    <div id="change_password" class="tab-pane">
+      <%= render 'change_password_form' %>
+    </div>
+
   </div>
 
 </div>

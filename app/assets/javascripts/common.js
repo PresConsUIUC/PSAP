@@ -48,13 +48,6 @@ $(document).ready(function() {
 
     adjustNavBar();
 
-    var multiPageView = new FauxMultiPageView();
-    multiPageView.init();
-    $('.entity_menu a').on('click', function() {
-        multiPageView.openView($(this).attr('data-open'));
-        return false;
-    });
-
     // Fade out flash messages after a delay. This will work only with
     // server-rendered flash messages; the same thing is done with ajax-
     // rendered flash messages in ajax.js.
@@ -64,7 +57,7 @@ $(document).ready(function() {
 
     // Used by the Bootstrap 3 tab bar
     // http://getbootstrap.com/javascript/#tabs
-    $('ul.nav-tabs a').click(function(e) {
+    $('ul.nav-tabs a, ul.nav-pills a').click(function(e) {
         e.preventDefault();
         $(this).tab('show');
     });
@@ -99,58 +92,6 @@ function updateResultsCount() {
                 + ((query_length > 0) ? ((count == 1) ? 'match' : 'matches') : 'total'));
         }
     }
-}
-
-/**
- * Enables a menu that uses JavaScript to show/hide different views.
- * See users/edit.html.erb for markup example.
- * @constructor
- */
-function FauxMultiPageView() {
-    // Retain references to the views' DOM trees so they won't be garbage-
-    // collected when they have been temporarily removed from the DOM. Keyed
-    // by ID of the root element.
-    var form_views = {};
-
-    var self = this;
-
-    this.init = function() {
-        var i = 0;
-        $('.form_view').each(function() {
-            form_views[$(this).attr('id')] = $(this);
-            if (i > 0) {
-                $(this).remove();
-            }
-            i++;
-        });
-        var first_li = $('.entity_menu li:first');
-        first_li.addClass('active');
-
-
-        var first_view = first_li.children('a:first').attr('data-open');
-        if (first_view) {
-            self.openView(first_view);
-        }
-    };
-
-    this.openView = function(view_id) {
-        if ($('#' + view_id).is(':visible')) { // nothing to do
-            return;
-        }
-
-        var FADE_DURATION = 100;
-
-        $('.entity_menu li').removeClass('active');
-        $('.entity_menu a[data-open="' + view_id + '"]').parent()
-            .addClass('active');
-
-        $('.form_view').remove();
-        var view = form_views[view_id];
-        view.hide();
-        $('.entity_menu').parent().append(view);
-        view.show();
-    };
-
 }
 
 var Form = {

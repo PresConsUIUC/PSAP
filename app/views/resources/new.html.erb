@@ -38,23 +38,16 @@
 <div class="row" id="assessment">
 
   <!-- left column menu -->
-  <div class="entity_menu col-md-3">
+  <div class="col-md-3">
     <nav>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <a href="#" data-open="general">General</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="use_access">Use/Access</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="storage_container">Storage/Container</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="condition">Condition</a>
-        </li>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#general">General</a></li>
+        <li><a href="#use_access">Use/Access</a></li>
+        <li><a href="#storage_container">Storage/Container</a></li>
+        <li><a href="#condition">Condition</a></li>
       </ul>
     </nav>
+
     <section>
       <div class="center">
         <h4>Score</h4>
@@ -73,44 +66,48 @@
     </section>
   </div>
 
-  <div id="general" class="col-md-9 form_view">
-    <h2>General</h2>
-    <%= form_for(@resource, url: location_resources_path(@location)) do |f| %>
-        <%= render 'form', :f => f %>
-        <%= f.submit 'Create Resource', class: 'btn btn-primary' %>
-    <% end %>
-  </div>
+  <div class="col-md-9 tab-content">
 
-  <div id="use_access" class="col-md-9 form_view">
-    <h2>Use/Access</h2>
-    <p>This is the use/access section.</p>
-  </div>
-
-  <div id="storage_container" class="col-md-9 form_view">
-    <h2>Storage/Container</h2>
-
-    <p>Is the item in an appropriate container in good condition?</p>
-    <div class="radio">
-      <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Yes
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">No
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">Unsure
-      </label>
+    <div id="general" class="tab-pane active">
+      <h2>General</h2>
+      <%= form_for(@resource, url: location_resources_path(@location)) do |f| %>
+          <%= render 'form', :f => f %>
+          <%= f.submit 'Create Resource', class: 'btn btn-primary' %>
+      <% end %>
     </div>
 
-  </div>
+    <div id="use_access" class="tab-pane">
+      <h2>Use/Access</h2>
+      <p>This is the use/access section.</p>
+    </div>
 
-  <div id="condition" class="col-md-9 form_view">
-    <h2>Condition</h2>
-    <p>This is the condition section.</p>
+    <div id="storage_container" class="tab-pane">
+      <h2>Storage/Container</h2>
+
+      <p>Is the item in an appropriate container in good condition?</p>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Yes
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">No
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">Unsure
+        </label>
+      </div>
+
+    </div>
+
+    <div id="condition" class="tab-pane">
+      <h2>Condition</h2>
+      <p>This is the condition section.</p>
+    </div>
+
   </div>
 
 </div>
