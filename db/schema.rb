@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403203504) do
+ActiveRecord::Schema.define(version: 20140404142615) do
 
   create_table "events", force: true do |t|
     t.string   "description"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140403203504) do
     t.string   "country"
     t.string   "url"
     t.integer  "language_id"
+    t.text     "description"
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id"

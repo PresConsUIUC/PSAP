@@ -67,6 +67,10 @@
     <dl>
       <dt>URL</dt>
       <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
+      <% if @institution.description %>
+          <dt>Description</dt>
+          <dd><%= @institution.description %></dd>
+      <% end %>
       <dt>Address</dt>
       <dd>
           <%= @institution.address1 %>

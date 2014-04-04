@@ -520,38 +520,44 @@ case Rails.env
                                        postal_code: 61801,
                                        country: 'United States of America',
                                        url: 'http://www.library.illinois.edu/',
-                                       language: lang123)
+                                       language: lang123,
+                                       description: 'Lorem ipsum dolor sit amet')
     institution2 = Institution.create!(name: 'West Southeast Directional State University',
                                        address1: '1 Directional Drive',
                                        address2: nil, city: 'Podunk',
                                        state: 'IL', postal_code: 12345,
                                        country: 'United States of America',
-                                       url: 'http://example.org/')
+                                       url: 'http://example.org/',
+                                       description: 'Lorem ipsum dolor sit amet')
     institution3 = Institution.create!(name: 'Hamburger University',
                                        address1: '21 Hamburger Place',
                                        address2: nil, city: 'Des Moines',
                                        state: 'IA', postal_code: 12345,
                                        country: 'United States of America',
-                                       url: 'http://example.org/')
+                                       url: 'http://example.org/',
+                                       description: 'Lorem ipsum dolor sit amet')
     institution4 = Institution.create!(name: 'San Quentin Prison University',
                                        address1: '5435 Prison Ct.',
                                        address2: nil, city: 'San Quentin',
                                        state: 'CA', postal_code: 90210,
                                        country: 'United States of America',
-                                       url: 'http://example.org/')
+                                       url: 'http://example.org/',
+                                       description: 'Lorem ipsum dolor sit amet')
     institution5 = Institution.create!(name: 'Barnum & Bailey Clown College',
                                        address1: 'Circus Tent C',
                                        address2: '53 Trapeze Road',
                                        city: 'Los Angeles',
                                        state: 'CA', postal_code: 99999,
                                        country: 'United States of America',
-                                       url: 'http://example.org/')
+                                       url: 'http://example.org/',
+                                       description: 'Lorem ipsum dolor sit amet')
     institution6 = Institution.create!(name: 'Hogwarts School of Witchcraft & Wizardry',
                                        address1: '123 Magical St.',
                                        address2: nil, city: 'Hogsmeade',
                                        state: 'N/A', postal_code: 99999,
                                        country: 'Hogsmeade',
-                                       url: 'http://example.org/')
+                                       url: 'http://example.org/',
+                                       description: 'Lorem ipsum dolor sit amet')
 
     # Admin user
     admin_user = User.create!(username: 'admin', email: 'admin@example.org',
