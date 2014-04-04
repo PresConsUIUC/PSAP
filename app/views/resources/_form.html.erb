@@ -16,7 +16,7 @@
 
 <div class="form-group">
   <%= f.label :format %>
-  <%= f.collection_select :format_id, Format.all, :id, :name,
+  <%= f.collection_select :format_id, Format.all.order(:name), :id, :name,
                           { include_blank: false },
                           { class: 'form-control' } %>
 </div>
