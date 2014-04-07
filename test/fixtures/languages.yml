@@ -3,9 +3,9 @@
 one:
   native_name: MyString
   english_name: MyString
-  iso639-2_code: MyString
+  iso639_2_code: MyString
 
 two:
   native_name: MyString
   english_name: MyString
-  iso639-2_code: MyString
+  iso639_2_code: MyString
