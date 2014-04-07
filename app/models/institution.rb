@@ -1,5 +1,5 @@
 class Institution < ActiveRecord::Base
-  has_many :users, inverse_of: :institution, dependent: :restrict
+  has_many :users, inverse_of: :institution, dependent: :restrict_with_exception
   has_many :repositories, inverse_of: :institution, dependent: :destroy
 
   belongs_to :language, inverse_of: :institutions
