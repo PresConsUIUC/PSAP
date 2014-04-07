@@ -26,8 +26,8 @@ class SessionsController < ApplicationController
       Event.create(description: "Sign-in failed: #{params[:session][:username].downcase} (#{request.remote_ip})")
 
       sleep 2 # slow down brute-force attacks
-      flash.now[:error] = 'Invalid username/password combination.'
-      render 'new'
+      flash[:error] = 'Invalid username/password combination.'
+      redirect_to signin_url
     end
   end
 
