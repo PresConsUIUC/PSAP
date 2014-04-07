@@ -1,7 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+admin_role:
+  name: admin
+  is_admin: true
 
-two:
-  name: MyString
+normal_role:
+  name: normal
+  is_admin: false
