@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407135717) do
+ActiveRecord::Schema.define(version: 20140407203055) do
 
   create_table "creators", force: true do |t|
     t.string   "name"
@@ -111,6 +111,10 @@ ActiveRecord::Schema.define(version: 20140407135717) do
     t.text     "description"
     t.string   "local_identifier"
     t.text     "notes"
+    t.integer  "date_type"
+    t.decimal  "year",             precision: 4, scale: 0
+    t.decimal  "begin_year",       precision: 4, scale: 0
+    t.decimal  "end_year",         precision: 4, scale: 0
   end
 
   add_index "resources", ["format_id"], name: "index_resources_on_format_id"

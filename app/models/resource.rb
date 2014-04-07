@@ -15,10 +15,23 @@ class Resource < ActiveRecord::Base
   after_update :log_update
   after_destroy :log_destroy
 
+  validates :date_type, allow_blank: true, inclusion: { in: DateType.all,
+                                     message: 'Must be a valid date type.' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true
   validates :user, presence: true
+
+  def readable_date_type
+    case date_type
+      when DateType::SINGLE
+        'Single'
+      when DateType::BULK
+        'Bulk'
+      when DateType::INCLUSIVE
+        'Inclusive'
+    end
+  end
 
   def readable_resource_type
     case resource_type

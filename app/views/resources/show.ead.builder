@@ -81,11 +81,17 @@ xml.ead(
           end
         }
       end
-      xml.comment! 'TODO: (6) type="bulk" or type="inclusive" as appropriate; how to determine?'
-      xml.unitdate(
-          'normal' => '1889/1889', # format is YYYY-YYYY or YYYY # TODO: fix
-          'type' => 'inclusive' # TODO: (6) users will select from "single date", "inclusive date", or "bulk date"
-      )
+      if @resource.year
+        xml.unitdate(@resource.year,
+            'normal' => "#{@resource.year}/#{@resource.year}",
+            'type' => @resource.readable_date_type.downcase
+        )
+      elsif @resource.begin_year && @resource.end_year
+        xml.unitdate("#{@resource.begin_year}/#{@resource.end_year}",
+            'normal' => "#{@resource.begin_year}/#{@resource.end_year}",
+            'type' => @resource.readable_date_type.downcase
+        )
+      end
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       if @resource.extents.any?
@@ -108,11 +114,18 @@ xml.ead(
         ) {
           xml.did {
             xml.unittitle(@resource.parent.name)
-            xml.unitid(@resource.local_identifier)
-            xml.unitdate(1889, # TODO: (12) same concept as /archdesc/did/unitdate above
-                         'normal' => '1889/1889',
-                         'type' => 'inclusive'
-            )
+            xml.unitid(@resource.parent.local_identifier)
+            if @resource.parent.year
+              xml.unitdate(@resource.parent.year,
+                  'normal' => "#{@resource.parent.year}/#{@resource.parent.year}",
+                  'type' => @resource.parent.readable_date_type.downcase
+              )
+            elsif @resource.parent.begin_year && @resource.parent.end_year
+              xml.unitdate("#{@resource.parent.begin_year}/#{@resource.parent.end_year}",
+                  'normal' => "#{@resource.parent.begin_year}/#{@resource.parent.end_year}",
+                  'type' => @resource.parent.readable_date_type.downcase
+              )
+            end
           }
         }
       }
@@ -125,11 +138,18 @@ xml.ead(
           ) {
             xml.did {
               xml.unittitle(child.name)
-              xml.unitid(@resource.local_identifier)
-              xml.unitdate(1889, # TODO: (12) same concept as /archdesc/did/unitdate above
-                           'normal' => '1889/1889',
-                           'type' => 'inclusive'
-              )
+              xml.unitid(child.local_identifier)
+              if child.year
+                xml.unitdate(child.year,
+                    'normal' => "#{child.year}/#{child.year}",
+                    'type' => child.readable_date_type.downcase
+                )
+              elsif child.begin_year && child.end_year
+                xml.unitdate("#{child.begin_year}/#{child.end_year}",
+                    'normal' => "#{child.begin_year}/#{child.end_year}",
+                    'type' => child.readable_date_type.downcase
+                )
+              end
             }
           }
         end

@@ -103,6 +103,17 @@
             <% end %>
           </dd>
       <% end %>
+      <% if @resource.year %>
+          <dt>Date Type</dt>
+          <dd><%= @resource.readable_date_type %></dd>
+          <dt>Date</dt>
+          <dd><%= @resource.year %></dd>
+      <% elsif @resource.begin_year && @resource.end_year %>
+          <dt>Date Type</dt>
+          <dd><%= @resource.readable_date_type %></dd>
+          <dt>Date Range</dt>
+          <dd><%= @resource.begin_year %>-<%= @resource.end_year %></dd>
+      <% end %>
       <% if @resource.extents.any? %>
           <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
           <dd>
