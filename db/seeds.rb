@@ -495,7 +495,6 @@ languages = [
 
 # Formats
 formats = [
-    Format.create!(name: '!! THESE ARE SAMPLE FORMATS !!', score: 1, obsolete: false),
     Format.create!(name: 'Used Napkin', score: 0, obsolete: true),
     Format.create!(name: 'Soiled Handkerchief', score: 0.375, obsolete: true),
     Format.create!(name: 'Dirty Bed Sheet', score: 0.875, obsolete: false),
@@ -615,16 +614,22 @@ case Rails.env
     # Locations
     locations = [
         Location.create!(name: 'Secret Location',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0]),
         Location.create!(name: 'Over there by the file cabinet',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0]),
         Location.create!(name: 'Back Room',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0]),
         Location.create!(name: 'Front Room',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0]),
         Location.create!(name: 'Side Room',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0]),
         Location.create!(name: 'Hidden Vault',
+                         description: 'Lorem ipsum dolor sit amet',
                          repository: repositories[0])
     ]
 
