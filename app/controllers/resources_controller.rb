@@ -38,6 +38,11 @@ class ResourcesController < ApplicationController
   def new
     @location = Location.find(params[:location_id])
     @resource = @location.resources.build
+
+    # New resources will get 1 of each dependent entity. Additional ones may be
+    # created in JavaScript.
+    creator = @resource.creators.build
+    extent = @resource.extents.build
   end
 
   def show

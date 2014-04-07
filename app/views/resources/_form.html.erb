@@ -21,6 +21,44 @@
                           { class: 'form-control' } %>
 </div>
 
+<div class="form-group addable_removable">
+  <%= f.label :extents, 'Creator(s)' %>
+
+  <div class="psap_input_group">
+    <%= f.fields_for :creators do |g| %>
+        <div class="input-group">
+          <%= g.text_field :name, class: 'form-control' %>
+          <span class="input-group-btn">
+            <button class="btn btn-default remove" type="button">Remove</button>
+          </span>
+        </div>
+        <!-- TODO: names are broken -->
+        <%= select('resource[creators_attributes][0]', 'creator_type',
+                   options_for_select([['Person', CreatorType::PERSON],
+                                       ['Company', CreatorType::COMPANY]]),
+                   { include_blank: false },
+                   { class: 'form-control' }) %>
+    <% end %>
+  </div>
+  <button class="btn btn-default add" type="button">Add Creator</button>
+</div>
+
+<div class="form-group addable_removable">
+  <%= f.label :extents, 'Extent(s)' %>
+
+  <div class="psap_input_group">
+    <%= f.fields_for :extents do |g| %>
+      <div class="input-group">
+        <%= g.text_field :name, class: 'form-control' %>
+        <span class="input-group-btn">
+          <button class="btn btn-default remove" type="button">Remove</button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+  <button class="btn btn-default add" type="button">Add Extent</button>
+</div>
+
 <div class="form-group">
   <%= f.label :local_identifier %>
   <%= f.text_field :local_identifier, class: 'form-control' %>

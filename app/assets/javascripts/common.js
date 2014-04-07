@@ -75,6 +75,40 @@ $(document).ready(function() {
         });
         return false;
     });
+
+    // enable certain form elements to be dynamically added and removed, as in
+    // the case of a nested form with a 0..n relationship to its nested
+    // object(s).
+    $('.addable_removable button.remove').on('click', function() {
+        // if there is only one field, hide it instead of removing it, as the
+        // add button will need to clone it
+        if ($(this).closest('.addable_removable').children('.psap_input_group').length <= 1) {
+            $(this).closest('.psap_input_group').hide();
+        } else {
+            $(this).closest('.psap_input_group').remove();
+        }
+    });
+    $('.addable_removable button.add').on('click', function() {
+        // prohibit adding more than 10 fields
+        if ($(this).closest('.addable_removable').children('.psap_input_group').length >= 10) {
+            return;
+        }
+        // if there is a hidden input group, show it instead of cloning it
+        if ($(this).prev('.psap_input_group:hidden').length) {
+            $(this).prev('.psap_input_group').show();
+        } else {
+            // clone the last input group and insert the clone into the DOM
+            var group = $(this).prev();
+            group.after(group.clone(true));
+
+            // update its elements' indexes within the form, for rails
+            $(this).prev('.psap_input_group').find('input, select, textarea').each(function() {
+                var index = parseInt($(this).attr('id').match(/\d+/)[0]);
+                $(this).attr('id', $(this).attr('id').replace(index, index + 1));
+                $(this).attr('name', $(this).attr('name').replace(index, index + 1));
+            });
+        }
+    });
 });
 
 /**
