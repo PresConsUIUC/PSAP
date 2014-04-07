@@ -9,17 +9,16 @@ class Institution < ActiveRecord::Base
   validates :address1, presence: true, length: { maximum: 255 }
   validates :address2, length: { maximum: 255 }
   validates :city, presence: true, length: { maximum: 255 }
+  validates :name, presence: true, length: { minimum: 4, maximum: 255 },
+            uniqueness: { case_sensitive: false }
   validates :state, presence: true, length: { maximum: 30 }
   validates :postal_code, presence: true, length: { maximum: 30 }
   validates :country, presence: true, length: { maximum: 255 }
-  validates :url, format: URI::regexp(%w(http https))
+  validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
   # Creation will be logged during user creation.
   after_update :log_update
   after_destroy :log_destroy
-
-  validates :name, length: { minimum: 2, maximum: 255 },
-            uniqueness: { case_sensitive: false }
 
   def log_update
     Event.create(description: "Edited institution #{self.name}",
