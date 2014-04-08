@@ -6,7 +6,7 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot view any resources' do
     get :show, id: 7
-    assert_response :redirect
+    assert_redirected_to signin_url
   end
 
   test 'signed-in users can view their own institutions\' resources' do
@@ -19,7 +19,7 @@ class ResourcesControllerTest < ActionController::TestCase
   test 'signed-in users cannot view other institutions\' resources' do
     signin_as(users(:normal_user))
     get :show, id: 3
-    assert_response :redirect
+    assert_redirected_to root_url
   end
 
   test 'admin users can view other institutions\' resources' do

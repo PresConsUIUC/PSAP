@@ -4,9 +4,9 @@ class DashboardControllerTest < ActionController::TestCase
 
   #### index ####
 
-  test 'signed-out users cannot view the dashboard' do
+  test 'signed-out users are redirected to sign-in url' do
     get :index
-    assert_response :redirect
+    assert_redirected_to signin_url
   end
 
   test 'signed-in users can view the dashboard' do

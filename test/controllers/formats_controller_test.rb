@@ -6,13 +6,13 @@ class FormatsControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot view the format list' do
     get :index
-    assert_response :redirect
+    assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot view the format list' do
     signin_as(users(:normal_user))
     get :index
-    assert_response :redirect
+    assert_redirected_to root_url
   end
 
   test 'admin users can view the format list' do
@@ -39,13 +39,13 @@ class FormatsControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot view any formats' do
     get :show, id: 1
-    assert_response :redirect
+    assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot view any formats' do
     signin_as(users(:normal_user))
     get :show, id: 1
-    assert_response :redirect
+    assert_redirected_to root_url
   end
 
   test 'admin users can view formats' do

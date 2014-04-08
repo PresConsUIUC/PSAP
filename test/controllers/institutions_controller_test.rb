@@ -20,7 +20,7 @@ class InstitutionsControllerTest < ActionController::TestCase
   test 'signed-in users cannot view other institutions' do
     signin_as(users(:normal_user))
     get :show, id: 3
-    assert_response :redirect
+    assert_redirected_to root_url
   end
 
   test 'admin users can view any institution' do
