@@ -28,6 +28,7 @@ class UsersController < ApplicationController
     # check that they are correct and activate the user if so. Then redirect
     # to the signin URL.
     @user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !@user
     if @user && !@user.confirmed && params[:code] == @user.confirmation_code
       @user.confirmed = true
       @user.confirmation_code = nil
@@ -40,6 +41,7 @@ class UsersController < ApplicationController
 
   def destroy
     user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
     name = user.full_name
     user.destroy
     flash[:success] = "#{name} deleted."
@@ -52,6 +54,7 @@ class UsersController < ApplicationController
   # Responds to PATCH /users/:id/enable
   def enable
     user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
     user.enabled = true
     user.save!
     flash[:success] = "User #{user.username} enabled."
@@ -61,6 +64,7 @@ class UsersController < ApplicationController
   # Responds to PATCH /users/:id/disable
   def disable
     user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
     user.enabled = false
     user.save!
     flash[:success] = "User #{user.username} disabled."
@@ -92,6 +96,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !@user
     @resources = @user.resources.order(:name) # TODO: pagination
   end
 
@@ -128,6 +133,7 @@ class UsersController < ApplicationController
   def before_edit_user
     # Normal users can only edit themselves. Administrators can edit anyone.
     @user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !@user
     redirect_to(root_url) unless current_user?(@user) || current_user.is_admin?
   end
 
@@ -142,6 +148,7 @@ class UsersController < ApplicationController
     # Normal users can only see other users from their own institution.
     # Administrators can see everyone.
     @user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !@user
     redirect_to(root_url) unless
         @user.institution == current_user.institution || current_user.is_admin?
   end
