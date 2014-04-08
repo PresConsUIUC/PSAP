@@ -1,11 +1,31 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+repository_one:
+  id: 1
+  institution_id: 1
+  name: 'Sample Repository 1'
+
+repository_two:
+  id: 2
+  institution_id: 2
+  name: 'Sample Repository 2'
+
+repository_three:
+  id: 3
+  institution_id: 3
+  name: 'Sample Repository 3'
+
+repository_four:
+  id: 4
+  institution_id: 4
+  name: 'Sample Repository 4'
+
+repository_five:
+  id: 5
+  institution_id: 5
+  name: 'Sample Repository 5'
+
+repository_six:
+  id: 6
+  institution_id: 6
+  name: 'Sample Repository 6'

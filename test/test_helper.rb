@@ -13,3 +13,20 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+class ActionController::TestCase
+
+  def signin_as(user)
+    @request.session[:user] = user ? user.id : nil
+    @current_user = user
+  end
+
+  def current_user
+    @current_user
+  end
+
+  def current_user?(user)
+    user == @current_user
+  end
+
+end

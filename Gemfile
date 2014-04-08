@@ -58,3 +58,6 @@ gem 'local_time'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+gem 'nokogiri'
+

@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 normal_user:
+  id: 1
   first_name: Norm
   email: normal@example.org
   last_name: McNormal
@@ -8,9 +9,11 @@ normal_user:
   username: normal
   confirmed: true
   enabled: true
+  institution_id: 1
   role: normal_role
 
 admin_user:
+  id: 2
   first_name: Adam
   email: admin@example.org
   last_name: McAdmin
@@ -18,4 +21,40 @@ admin_user:
   username: admin
   confirmed: true
   enabled: true
+  institution_id: 1
   role: admin_role
+
+unaffiliated_user:
+  id: 3
+  username: 'unaffiliated'
+  email: 'unaffiliated@example.org'
+  first_name: 'Clara'
+  last_name: 'NoInstitution'
+  password_digest: <%= BCrypt::Password.create('password') %>
+  role: normal_role
+  confirmed: true
+  enabled: true
+
+unconfirmed_user:
+  id: 4
+  username: 'unconfirmed'
+  email: 'unconfirmed@example.org'
+  first_name: 'Sally'
+  last_name: 'NoConfirmy'
+  password_digest: <%= BCrypt::Password.create('password') %>
+  institution_id: 2
+  role: normal_role
+  confirmed: false
+  enabled: false
+
+disabled_user:
+  id: 5
+  username: 'disabled'
+  email: 'disabled@example.org'
+  first_name: 'Johnny'
+  last_name: 'CantDoNothin'
+  password_digest: <%= BCrypt::Password.create('password') %>
+  institution_id: 3
+  role: normal_role
+  confirmed: true
+  enabled: false

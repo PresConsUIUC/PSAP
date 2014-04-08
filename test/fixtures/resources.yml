@@ -1,11 +1,170 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+resource_one:
+  id: 1
+  name: 'Magna Carta'
+  resource_type: <%= ResourceType::ITEM %>
+  format_id: 1
+  location_id: 1
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1215
+
+resource_two:
+  id: 2
+  name: 'Dead Sea Scrolls'
+  resource_type: <%= ResourceType::ITEM %>
+  format_id: 2
+  location_id: 2
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::BULK %>
+  begin_year: 30
+  end_year: 50
+
+resource_three:
+  id: 3
+  name: 'Sears Catalog Collection'
+  resource_type: <%= ResourceType::COLLECTION %>
+  location_id: 3
+  user_id: 2
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::INCLUSIVE %>
+  begin_year: 1920
+  end_year: 1990
+
+resource_four:
+  id: 4
+  name: 'My Old Baseball Card Collection'
+  resource_type: <%= ResourceType::COLLECTION %>
+  location_id: 4
+  user_id: 2
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::BULK %>
+  begin_year: 1980
+  end_year: 1992
+
+resource_five:
+  id: 5
+  name: 'Treaty of Verdun'
+  resource_type: <%= ResourceType::ITEM %>
+  format_id: 5
+  location_id: 3
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 843
+
+resource_six:
+  id: 6
+  name: 'Declaration of Paris'
+  resource_type: <%= ResourceType::ITEM %>
+  format_id: 6
+  location_id: 3
+  user_id: 5
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1856
+
+resource_seven:
+  id: 7
+  name: 'Cat Fancy Collection'
+  resource_type: <%= ResourceType::COLLECTION %>
+  location_id: 4
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::INCLUSIVE %>
+  begin_year: 1960
+  end_year: 2000
+
+resource_eight:
+  id: 8
+  name: 'Issue 1'
+  resource_type: <%= ResourceType::ITEM %>
+  location_id: 3
+  parent_id: 6
+  user_id: 2
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1960
+
+resource_nine:
+  id: 9
+  name: 'Issue 2'
+  resource_type: <%= ResourceType::ITEM %>
+  location_id: 3
+  parent_id: 6
+  user_id: 5
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  date_type: <%= DateType::SINGLE %>
+  year: 1961
+
+resource_ten:
+  id: 10
+  name: 'Special Editions'
+  resource_type: <%= ResourceType::COLLECTION %>
+  location_id: 3
+  parent_id: 6
+  user_id: 2
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::INCLUSIVE %>
+  begin_year: 1970
+  end_year: 1975
+
+resource_eleven:
+  id: 11
+  name: '1972 Presidential Election Special Issue'
+  resource_type: <%= ResourceType::ITEM %>
+  location_id: 3
+  parent_id: 9
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1972
+
+resource_twelve:
+  id: 12
+  name: 'Issue 3'
+  resource_type: <%= ResourceType::ITEM %>
+  location_id: 3
+  parent_id: 6
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1974
+
+resource_thirteen:
+  id: 13
+  name: 'Reader''s Digest Collection'
+  resource_type: <%= ResourceType::COLLECTION %>
+  location_id: 5
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+  notes: 'Sample note'
+  date_type: <%= DateType::SINGLE %>
+  year: 1985
