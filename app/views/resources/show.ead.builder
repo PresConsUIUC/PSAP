@@ -60,10 +60,12 @@ xml.ead(
             xml.addressline(@institution.email)
           }
         end
-        xml.extref(
-            @institution.url,
-            'xlink:href' => @institution.url
-        )
+        if @institution.url
+          xml.extref(
+              @institution.url,
+              'xlink:href' => @institution.url
+          )
+        end
       }
       if @institution.language
         xml.langmaterial('label' => 'Language') {
@@ -104,14 +106,15 @@ xml.ead(
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       if @resource.extents.any?
-        for extent in @resource.extents
-          xml.physdesc {
+        xml.physdesc {
+          for extent in @resource.extents
             xml.extent(extent.name, 'label' => 'Extent')
-          }
-        end
+          end
+        }
+        # TODO: if physical description is split (into parts) then physdesc element will repeat
       end
     }
-    if @resource.creators.any? || @resource.subjects.any?
+    if @resource.creators.any? || @resource.subjects.any? # TODO: controlled subject vocab from ArchivesSpace (see template EAD)
       xml.controlaccess {
         for creator in @resource.creators
           if creator.creator_type == CreatorType::PERSON
