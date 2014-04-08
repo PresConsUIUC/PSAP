@@ -30,11 +30,6 @@ class ResourcesController < ApplicationController
     @resource = Resource.find(params[:id])
   end
 
-  def index
-    @location = Location.find(params[:location_id]) if params[:location_id]
-    @resources = Resource.paginate(page: params[:page], per_page: 30)
-  end
-
   def new
     @location = Location.find(params[:location_id])
     @resource = @location.resources.build
