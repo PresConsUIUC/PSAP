@@ -30,6 +30,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     if @user && !@user.confirmed && params[:code] == @user.confirmation_code
       @user.confirmed = true
+      @user.confirmation_code = nil
       @user.enabled = true
       @user.save!
     end
