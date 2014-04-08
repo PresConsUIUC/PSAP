@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408161512) do
+ActiveRecord::Schema.define(version: 20140408172551) do
 
   create_table "creators", force: true do |t|
     t.string   "name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140408161512) do
     t.string   "url"
     t.integer  "language_id"
     t.text     "description"
+    t.string   "email"
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id"

@@ -523,6 +523,7 @@ case Rails.env
                             postal_code: 61801,
                             country: 'United States of America',
                             url: 'http://www.library.illinois.edu/',
+                            email: 'test@example.org',
                             language: languages[122],
                             description: 'Lorem ipsum dolor sit amet'),
         Institution.create!(name: 'West Southeast Directional State University',
@@ -533,6 +534,7 @@ case Rails.env
                             postal_code: 12345,
                             country: 'United States of America',
                             url: 'http://example.org/',
+                            email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet'),
         Institution.create!(name: 'Hamburger University',
                             address1: '21 Hamburger Place',
@@ -542,6 +544,7 @@ case Rails.env
                             postal_code: 12345,
                             country: 'United States of America',
                             url: 'http://example.org/',
+                            email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet'),
         Institution.create!(name: 'San Quentin Prison University',
                             address1: '5435 Prison Ct.',
@@ -551,6 +554,7 @@ case Rails.env
                             postal_code: 90210,
                             country: 'United States of America',
                             url: 'http://example.org/',
+                            email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet'),
         Institution.create!(name: 'Barnum & Bailey Clown College',
                             address1: 'Circus Tent C',
@@ -560,6 +564,7 @@ case Rails.env
                             postal_code: 99999,
                             country: 'United States of America',
                             url: 'http://example.org/',
+                            email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet'),
         Institution.create!(name: 'Hogwarts School of Witchcraft & Wizardry',
                             address1: '123 Magical St.',
@@ -569,6 +574,7 @@ case Rails.env
                             postal_code: 99999,
                             country: 'Hogsmeade',
                             url: 'http://example.org/',
+                            email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet')
     ]
 

@@ -51,6 +51,13 @@ xml.ead(
               xml.addressline("#{@institution.city} "\
                 "#{@institution.state} #{@institution.postal_code}")
             end
+            if @institution.email
+              xml.addressline(@institution.email)
+            end
+          }
+        elsif @institution.email
+          xml.address {
+            xml.addressline(@institution.email)
           }
         end
         xml.extref(
