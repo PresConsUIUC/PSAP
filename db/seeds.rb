@@ -780,6 +780,13 @@ case Rails.env
                                     resource: resources[i])
     end
 
+    # Subjects
+    subjects = []
+    for i in 0..resources.length - 1
+      subjects << Subject.create!(name: 'Sample subject',
+                                  resource: resources[i])
+    end
+
 end
 
 # Some of the above commands generated events, which we don't want.

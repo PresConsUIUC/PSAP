@@ -1,6 +1,7 @@
 class Resource < ActiveRecord::Base
   has_many :creators, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
+  has_many :subjects, inverse_of: :resource, dependent: :destroy
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
@@ -10,6 +11,7 @@ class Resource < ActiveRecord::Base
 
   accepts_nested_attributes_for :creators
   accepts_nested_attributes_for :extents
+  accepts_nested_attributes_for :subjects
 
   after_create :log_create
   after_update :log_update

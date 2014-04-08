@@ -38,6 +38,7 @@ class ResourcesController < ApplicationController
     # created in JavaScript.
     creator = @resource.creators.build
     extent = @resource.extents.build
+    subject = @resource.subjects.build
   end
 
   def show

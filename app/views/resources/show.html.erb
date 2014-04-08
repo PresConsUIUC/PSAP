@@ -114,6 +114,20 @@
           <dt>Date Range</dt>
           <dd><%= @resource.begin_year %>-<%= @resource.end_year %></dd>
       <% end %>
+      <% if @resource.subjects.any? %>
+          <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
+          <dd>
+            <% if @resource.subjects.length == 1 %>
+                <%= @resource.subjects.first.name %>
+            <% else %>
+                <ul>
+                  <% for subject in @resource.subjects %>
+                      <li><%= subject.name %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </dd>
+      <% end %>
       <% if @resource.extents.any? %>
           <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
           <dd>

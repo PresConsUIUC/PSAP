@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407203055) do
+ActiveRecord::Schema.define(version: 20140408161512) do
 
   create_table "creators", force: true do |t|
     t.string   "name"
@@ -128,6 +128,15 @@ ActiveRecord::Schema.define(version: 20140407203055) do
     t.boolean  "is_admin",   default: false
     t.string   "name"
   end
+
+  create_table "subjects", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "resource_id"
+  end
+
+  add_index "subjects", ["resource_id"], name: "index_subjects_on_resource_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"

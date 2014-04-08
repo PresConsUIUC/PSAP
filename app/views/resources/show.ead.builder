@@ -95,16 +95,27 @@ xml.ead(
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       if @resource.extents.any?
-        xml.physdesc {
+        xml.physdesc { # TODO: if physical description is split (into parts) then physdesc element will repeat
           for extent in @resource.extents
             xml.extent(extent.name, 'label' => 'Extent')
           end
         }
       end
-      # if physical description is split into parts then physdesc element will repeat
     }
     xml.controlaccess {
-      xml.subject('test', 'source' => 'local') # TODO: (10) fix
+      for creator in @resource.creators
+        if creator.creator_type == CreatorType::PERSON
+          xml.persname(creator.name,
+                       'source' => 'local',
+                       'normal' => creator.name
+          )
+        elsif creator.creator_type == CreatorType::COMPANY
+          xml.corpname(creator.name, 'source' => 'local')
+        end
+      end
+      for subject in @resource.subjects
+        xml.subject(subject.name, 'source' => 'local')
+      end
     }
     if @resource.parent
       xml.dsc {
