@@ -39,7 +39,7 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test 'EAD export representation is valid' do
     signin_as(users(:admin_user))
-    get :show, id: 7, format: :ead
+    get :show, id: 7, format: :xml
 
     require 'nokogiri'
     xsd = Nokogiri::XML::Schema(File.read('test/controllers/ead.xsd'))
