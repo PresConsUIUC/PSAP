@@ -1,3 +1,6 @@
+# Eliminates whitespace
+# xml = Builder::XmlMarkup.new
+
 xml.instruct!
 xml.ead(
     'xmlns' => 'urn:isbn:1-931666-22-9',
@@ -11,22 +14,21 @@ xml.ead(
       'countryencoding' => 'iso3166-1',
       'dateencoding' => 'iso8601'
   ) {
-    xml.eadid('countrycode' => 'US') {
-      xml.filedesc {
-        xml.titlestmt {
-          xml.titleproper(@resource.name)
-          xml.author(@resource.user.full_name, 'id' => @resource.user.username)
-        }
+    xml.eadid('countrycode' => 'US')
+    xml.filedesc {
+      xml.titlestmt {
+        xml.titleproper(@resource.name)
+        xml.author(@resource.user.full_name, 'id' => @resource.user.username)
       }
-      xml.profiledesc {
-        xml.creation {
-          xml.text! 'This profile was generated using the Preservation '\
-          'Self-Assessment Program (PSAP) on'; xml.date(
-              Time.now.strftime('%Y-%m-%d'),
-              'normal' => Time.now.strftime('%Y-%m-%d'),
-              'type' => 'source');
-          xml.text! '.'
-        }
+    }
+    xml.profiledesc {
+      xml.creation {
+        xml.text! 'This profile was generated using the Preservation '\
+        'Self-Assessment Program (PSAP) on '; xml.date(
+            Time.now.strftime('%Y-%m-%d'),
+            'normal' => Time.now.strftime('%Y-%m-%d'),
+            'type' => 'source');
+        xml.text! '.'
       }
     }
   }
@@ -84,7 +86,7 @@ xml.ead(
       if @resource.year
         xml.unitdate(@resource.year,
             'normal' => "#{@resource.year}/#{@resource.year}",
-            'type' => @resource.readable_date_type.downcase
+            'type' => 'inclusive'
         )
       elsif @resource.begin_year && @resource.end_year
         xml.unitdate("#{@resource.begin_year}/#{@resource.end_year}",
@@ -95,28 +97,30 @@ xml.ead(
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
       if @resource.extents.any?
-        xml.physdesc { # TODO: if physical description is split (into parts) then physdesc element will repeat
-          for extent in @resource.extents
+        for extent in @resource.extents
+          xml.physdesc {
             xml.extent(extent.name, 'label' => 'Extent')
-          end
-        }
-      end
-    }
-    xml.controlaccess {
-      for creator in @resource.creators
-        if creator.creator_type == CreatorType::PERSON
-          xml.persname(creator.name,
-                       'source' => 'local',
-                       'normal' => creator.name
-          )
-        elsif creator.creator_type == CreatorType::COMPANY
-          xml.corpname(creator.name, 'source' => 'local')
+          }
         end
       end
-      for subject in @resource.subjects
-        xml.subject(subject.name, 'source' => 'local')
-      end
     }
+    if @resource.creators.any? || @resource.subjects.any?
+      xml.controlaccess {
+        for creator in @resource.creators
+          if creator.creator_type == CreatorType::PERSON
+            xml.persname(creator.name,
+                         'source' => 'local',
+                         'normal' => creator.name
+            )
+          elsif creator.creator_type == CreatorType::COMPANY
+            xml.corpname(creator.name, 'source' => 'local')
+          end
+        end
+        for subject in @resource.subjects
+          xml.subject(subject.name, 'source' => 'local')
+        end
+      }
+    end
     if @resource.parent
       xml.dsc {
         xml.c(
@@ -129,7 +133,7 @@ xml.ead(
             if @resource.parent.year
               xml.unitdate(@resource.parent.year,
                   'normal' => "#{@resource.parent.year}/#{@resource.parent.year}",
-                  'type' => @resource.parent.readable_date_type.downcase
+                  'type' => 'inclusive'
               )
             elsif @resource.parent.begin_year && @resource.parent.end_year
               xml.unitdate("#{@resource.parent.begin_year}/#{@resource.parent.end_year}",
@@ -153,7 +157,7 @@ xml.ead(
               if child.year
                 xml.unitdate(child.year,
                     'normal' => "#{child.year}/#{child.year}",
-                    'type' => child.readable_date_type.downcase
+                    'type' => 'inclusive'
                 )
               elsif child.begin_year && child.end_year
                 xml.unitdate("#{child.begin_year}/#{child.end_year}",
