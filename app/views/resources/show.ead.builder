@@ -17,7 +17,7 @@ xml.ead(
     xml.eadid('countrycode' => 'US')
     xml.filedesc {
       xml.titlestmt {
-        xml.titleproper(@resource.name)
+        xml.titleproper("PSAP Resource Profile: #{@resource.name}")
         xml.author(@resource.user.full_name, 'id' => @resource.user.username)
       }
     }
@@ -35,7 +35,7 @@ xml.ead(
   xml.archdesc('level' => @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection') {
     xml.did {
       xml.repository(
-          'label' => @institution.name,
+          'label' => 'Institution/Subunit',
           'id' => "psap_repository_#{@institution.id}"
       ) {
         xml.corpname(@institution.name)
