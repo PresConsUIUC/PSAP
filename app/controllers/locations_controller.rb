@@ -68,7 +68,7 @@ class LocationsController < ApplicationController
     else
       repository = Repository.find(params[:repository_id])
     end
-    redirect_to(locations_url) unless
+    redirect_to(root_url) unless
         repository.institution.users.include?(current_user) ||
             current_user.is_admin?
   end

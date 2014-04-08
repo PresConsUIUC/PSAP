@@ -34,11 +34,11 @@ class ResourcesController < ApplicationController
     @location = Location.find(params[:location_id])
     @resource = @location.resources.build
 
-    # New resources will get 1 of each dependent entity. Additional ones may be
-    # created in JavaScript.
-    creator = @resource.creators.build
-    extent = @resource.extents.build
-    subject = @resource.subjects.build
+    # New resources will get 1 of each dependent entity, to populate the form.
+    # Additional ones may be created in JavaScript.
+    @resource.creators.build
+    @resource.extents.build
+    @resource.subjects.build
   end
 
   def show
@@ -74,7 +74,7 @@ class ResourcesController < ApplicationController
     else
       location = Location.find(params[:location_id])
     end
-    redirect_to(resources_url) unless
+    redirect_to(root_url) unless
         location.repository.institution.users.include?(current_user) ||
             current_user.is_admin?
   end

@@ -64,7 +64,7 @@ class RepositoriesController < ApplicationController
     elsif params[:institution_id]
       institution = Institution.find(params[:institution_id])
     end
-    redirect_to(repositories_url) unless
+    redirect_to(root_url) unless
         institution.users.include?(current_user) || current_user.is_admin?
   end
 
