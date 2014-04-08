@@ -9,6 +9,7 @@ class CreatorTest < ActiveSupport::TestCase
   def setup
     @default_values = {name: 'Test', creator_type: CreatorType::PERSON}
     @creator = Creator.new(@default_values)
+    @creator.resource = resources(:resource_one)
   end
 
   ############################ object tests #################################

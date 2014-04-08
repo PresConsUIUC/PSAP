@@ -9,6 +9,7 @@ class ExtentTest < ActiveSupport::TestCase
   def setup
     @default_values = {name: 'Test'}
     @extent = Extent.new(@default_values)
+    @extent.resource = resources(:resource_one)
   end
 
   ############################ object tests #################################

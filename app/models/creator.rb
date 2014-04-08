@@ -4,6 +4,7 @@ class Creator < ActiveRecord::Base
   validates :creator_type, presence: true,
             inclusion: { in: CreatorType.all,
                          message: 'Must be a valid creator type.' }
+  validates :name, presence: true
   validates :resource, presence: true
 
   def readable_creator_type

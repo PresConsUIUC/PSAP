@@ -9,6 +9,7 @@ class SubjectTest < ActiveSupport::TestCase
   def setup
     @default_values = {name: 'Test'}
     @subject = Subject.new(@default_values)
+    @subject.resource = resources(:resource_one)
   end
 
   ############################ object tests #################################

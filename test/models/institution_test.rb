@@ -17,12 +17,14 @@ class InstitutionTest < ActiveSupport::TestCase
   ############################ object tests #################################
 
   test 'editing generates an event log entry' do
+    @institution.save! # hasn't been saved yet
     @institution.name = 'blabla'
     @institution.save!
     assert_equal 'Edited institution blabla', Event.last.description
   end
 
   test 'deleting generates an event log entry' do
+    @institution.save! # hasn't been saved yet
     @institution.destroy!
     assert_equal 'Deleted institution Test', Event.last.description
   end
