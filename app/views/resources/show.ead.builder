@@ -111,7 +111,6 @@ xml.ead(
             xml.extent(extent.name, 'label' => 'Extent')
           end
         }
-        # TODO: if physical description is split (into parts) then physdesc element will repeat
       end
     }
     if @resource.creators.any? || @resource.subjects.any? # TODO: controlled subject vocab from ArchivesSpace (see template EAD)
