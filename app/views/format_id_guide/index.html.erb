@@ -4,26 +4,20 @@
 
 <div class="row">
   <!-- left column menu -->
-  <div class="entity_menu col-md-3">
+  <div class="col-md-3">
     <nav>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <a href="#" data-open="index">Index</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="audiovisual">Audiovisual</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="photo_image">Photo &amp; Image</a>
-        </li>
-        <li class="list-group-item">
-          <a href="#" data-open="book_paper">Book &amp; Paper</a>
-        </li>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#all_formats">All Formats</a></li>
+        <li><a href="#audiovisual">Audiovisual</a></li>
+        <li><a href="#photo_image">Photo &amp; Image</a></li>
+        <li><a href="#book_paper">Book &amp; Paper</a></li>
       </ul>
     </nav>
   </div>
 
-  <div id="index" class="col-md-9 form_view">
+  <div class="tab-content">
+
+  <div id="all_formats" class="col-md-9 tab-pane active">
     <h2>All Formats</h2>
     <h3>Audiovisual</h3>
     <ul>
@@ -35,10 +29,11 @@
     <h3>Book &amp; Paper</h3>
   </div>
 
-  <div id="audiovisual" class="col-md-9 form_view">
+  <div id="audiovisual" class="col-md-9 tab-pane">
+    <h2>Audiovisual</h2>
   </div>
 
-  <div id="photo_image" class="col-md-9 form_view">
+  <div id="photo_image" class="col-md-9 tab-pane">
     <h2>Photographic &amp; Image</h2>
 
     <ul class="nav nav-tabs">
@@ -95,8 +90,8 @@
           <li>Gelatin POP Print</li>
         </ul>
       </div>
-      <div id="photo_print" class="tab-pane">
-        Photo print
+      <div id="color_print" class="tab-pane">
+        Color print
       </div>
       <div id="transparency" class="tab-pane">
         Transparency
@@ -110,7 +105,9 @@
     </div>
   </div>
 
-  <div id="book_paper" class="col-md-9 form_view">
+  <div id="book_paper" class="col-md-9 tab-pane">
+    <h2>Book &amp; Paper</h2>
   </div>
 
+  </div>
 </div>
