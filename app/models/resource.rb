@@ -30,8 +30,8 @@ class Resource < ActiveRecord::Base
         'Single'
       when DateType::BULK
         'Bulk'
-      when DateType::INCLUSIVE
-        'Inclusive'
+      when DateType::SPAN
+        'Span'
     end
   end
 

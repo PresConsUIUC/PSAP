@@ -22,7 +22,7 @@ var ResourceForm = {
                     $('input#resource_begin_year').parent().show();
                     $('input#resource_end_year').parent().show();
                     break;
-                case 2: // inclusive
+                case 2: // inclusive/span
                     $('input#resource_year').val(null);
                     $('input#resource_year').parent().hide();
                     $('input#resource_begin_year').parent().show();

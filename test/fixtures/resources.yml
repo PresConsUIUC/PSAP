@@ -36,7 +36,7 @@ resource_three:
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
   notes: 'Sample note'
-  date_type: <%= DateType::INCLUSIVE %>
+  date_type: <%= DateType::SPAN %>
   begin_year: 1920
   end_year: 1990
 
@@ -88,7 +88,7 @@ resource_seven:
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
   notes: 'Sample note'
-  date_type: <%= DateType::INCLUSIVE %>
+  date_type: <%= DateType::SPAN %>
   begin_year: 1960
   end_year: 2000
 
@@ -127,7 +127,7 @@ resource_ten:
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
   notes: 'Sample note'
-  date_type: <%= DateType::INCLUSIVE %>
+  date_type: <%= DateType::SPAN %>
   begin_year: 1970
   end_year: 1975
 

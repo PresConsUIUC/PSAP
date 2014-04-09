@@ -98,7 +98,7 @@
   <%= f.label :date_type %>
   <%= select('resource', 'date_type',
              options_for_select([['Single', DateType::SINGLE],
-                                 ['Inclusive', DateType::INCLUSIVE],
+                                 ['Span', DateType::SPAN],
                                  ['Bulk', DateType::BULK]]),
              { include_blank: true },
              { class: 'form-control' }) %>

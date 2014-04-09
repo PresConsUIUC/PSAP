@@ -668,7 +668,7 @@ case Rails.env
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
                                   notes: 'Sample note',
-                                  date_type: DateType::INCLUSIVE,
+                                  date_type: DateType::SPAN,
                                   begin_year: 1920, end_year: 1990)
     resources << Resource.create!(name: 'My Old Baseball Card Collection',
                                   resource_type: ResourceType::COLLECTION,
@@ -706,7 +706,7 @@ case Rails.env
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
                                   notes: 'Sample note',
-                                  date_type: DateType::INCLUSIVE,
+                                  date_type: DateType::SPAN,
                                   begin_year: 1960, end_year: 2000)
     resources << Resource.create!(name: 'Issue 1',
                                   resource_type: ResourceType::ITEM,
@@ -735,7 +735,7 @@ case Rails.env
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
                                   notes: 'Sample note',
-                                  date_type: DateType::INCLUSIVE,
+                                  date_type: DateType::SPAN,
                                   begin_year: 1970, end_year: 1975)
     resources << Resource.create!(name: '1972 Presidential Election Special Issue',
                                   resource_type: ResourceType::ITEM,
