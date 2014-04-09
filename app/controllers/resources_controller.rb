@@ -38,6 +38,7 @@ class ResourcesController < ApplicationController
     # Additional ones may be created in JavaScript.
     @resource.creators.build
     @resource.extents.build
+    @resource.resource_dates.build
     @resource.subjects.build
   end
 

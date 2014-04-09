@@ -145,16 +145,19 @@
             <% end %>
           </dd>
       <% end %>
-      <% if @resource.year %>
-          <dt>Date Type</dt>
-          <dd><%= @resource.readable_date_type %></dd>
-          <dt>Date</dt>
-          <dd><%= @resource.year %></dd>
-      <% elsif @resource.begin_year && @resource.end_year %>
-          <dt>Date Type</dt>
-          <dd><%= @resource.readable_date_type %></dd>
-          <dt>Date Range</dt>
-          <dd><%= @resource.begin_year %>-<%= @resource.end_year %></dd>
+      <% if @resource.resource_dates.any? %>
+          <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
+          <dd>
+            <% if @resource.resource_dates.length == 1 %>
+                <%= human_readable_date(@resource.resource_dates[0]) %>
+            <% else %>
+                <ul>
+                  <% for date in @resource.resource_dates %>
+                    <li><%= human_readable_date(date) %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </dd>
       <% end %>
       <% if @resource.subjects.any? %>
           <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>

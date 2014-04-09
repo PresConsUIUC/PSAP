@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+bulk_date:
+  date_type: <%= DateType::BULK %>
+  begin_year: 1930
+  begin_month: 1
+  begin_day: 1
+  end_year: 1960
+  end_month: 1
+  end_day: 1
+
+span_date:
+  date_type: <%= DateType::SPAN %>
+  begin_year: 1930
+  begin_month: 1
+  begin_day: 1
+  end_year: 1960
+  end_month: 1
+  end_day: 1
+
+single_date:
+  date_type: <%= DateType::SINGLE %>
+  year: 1950
+  month: 1
+  day: 1

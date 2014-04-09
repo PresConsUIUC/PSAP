@@ -648,9 +648,7 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1215)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Dead Sea Scrolls',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[1],
@@ -658,27 +656,21 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::BULK,
-                                  begin_year: 30, end_year: 50)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Sears Catalog Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[1],
                                   user: admin_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SPAN,
-                                  begin_year: 1920, end_year: 1990)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'My Old Baseball Card Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[1],
                                   user: admin_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::BULK,
-                                  begin_year: 1980, end_year: 1992)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Treaty of Verdun',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[4],
@@ -686,9 +678,7 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 843)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Declaration of Paris',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[5],
@@ -696,18 +686,14 @@ case Rails.env
                                   user: disabled_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1856)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Cat Fancy Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SPAN,
-                                  begin_year: 1960, end_year: 2000)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Issue 1',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -715,18 +701,14 @@ case Rails.env
                                   user: admin_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1960)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Issue 2',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
                                   parent: resources[6],
                                   user: disabled_user,
                                   description: 'Lorem ipsum dolor sit amet',
-                                  local_identifier: 'qwertyuiop',
-                                  date_type: DateType::SINGLE,
-                                  year: 1961)
+                                  local_identifier: 'qwertyuiop')
     resources << Resource.create!(name: 'Special Editions',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
@@ -734,9 +716,7 @@ case Rails.env
                                   user: admin_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SPAN,
-                                  begin_year: 1970, end_year: 1975)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: '1972 Presidential Election Special Issue',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -744,9 +724,7 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1972)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Issue 3',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -754,18 +732,60 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1974)
+                                  notes: 'Sample note')
     resources << Resource.create!(name: 'Reader\'s Digest Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
                                   user: normal_user,
                                   description: 'Lorem ipsum dolor sit amet',
                                   local_identifier: 'qwertyuiop',
-                                  notes: 'Sample note',
-                                  date_type: DateType::SINGLE,
-                                  year: 1985)
+                                  notes: 'Sample note')
+
+    # Dates
+    ResourceDate.create!(resource: resources[0],
+                         date_type: DateType::SINGLE,
+                         year: 1215)
+    ResourceDate.create!(resource: resources[1],
+                         date_type: DateType::BULK,
+                         begin_year: 30,
+                         end_year: 50)
+    ResourceDate.create!(resource: resources[2],
+                         date_type: DateType::SPAN,
+                         begin_year: 1920,
+                         end_year: 1990)
+    ResourceDate.create!(resource: resources[3],
+                         date_type: DateType::BULK,
+                         begin_year: 1980,
+                         end_year: 1992)
+    ResourceDate.create!(resource: resources[4],
+                         date_type: DateType::SINGLE,
+                         year: 843)
+    ResourceDate.create!(resource: resources[5],
+                         date_type: DateType::SINGLE,
+                         year: 1856)
+    ResourceDate.create!(resource: resources[6],
+                         date_type: DateType::SPAN,
+                         begin_year: 1960,
+                         end_year: 2000)
+    ResourceDate.create!(resource: resources[7],
+                         date_type: DateType::SINGLE,
+                         year: 1960)
+    ResourceDate.create!(resource: resources[8],
+                         date_type: DateType::SINGLE,
+                         year: 1961)
+    ResourceDate.create!(resource: resources[9],
+                         date_type: DateType::SPAN,
+                         begin_year: 1970,
+                         end_year: 1975)
+    ResourceDate.create!(resource: resources[10],
+                         date_type: DateType::SINGLE,
+                         year: 1972)
+    ResourceDate.create!(resource: resources[11],
+                         date_type: DateType::SINGLE,
+                         year: 1974)
+    ResourceDate.create!(resource: resources[12],
+                         date_type: DateType::SINGLE,
+                         year: 1985)
 
     # Extents
     extents = []

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408172551) do
+ActiveRecord::Schema.define(version: 20140409155931) do
 
   create_table "creators", force: true do |t|
     t.string   "name"
@@ -100,6 +100,22 @@ ActiveRecord::Schema.define(version: 20140408172551) do
 
   add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id"
 
+  create_table "resource_dates", force: true do |t|
+    t.integer "date_type"
+    t.decimal "begin_year",  precision: 4, scale: 0
+    t.decimal "begin_month", precision: 2, scale: 0
+    t.decimal "begin_day",   precision: 2, scale: 0
+    t.decimal "end_year",    precision: 4, scale: 0
+    t.decimal "end_month",   precision: 2, scale: 0
+    t.decimal "end_day",     precision: 2, scale: 0
+    t.decimal "year",        precision: 4, scale: 0
+    t.decimal "month",       precision: 2, scale: 0
+    t.decimal "day",         precision: 2, scale: 0
+    t.integer "resource_id"
+  end
+
+  add_index "resource_dates", ["resource_id"], name: "index_resource_dates_on_resource_id"
+
   create_table "resources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -113,9 +129,6 @@ ActiveRecord::Schema.define(version: 20140408172551) do
     t.string   "local_identifier"
     t.text     "notes"
     t.integer  "date_type"
-    t.decimal  "year",             precision: 4, scale: 0
-    t.decimal  "begin_year",       precision: 4, scale: 0
-    t.decimal  "end_year",         precision: 4, scale: 0
   end
 
   add_index "resources", ["format_id"], name: "index_resources_on_format_id"

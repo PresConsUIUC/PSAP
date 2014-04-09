@@ -22,22 +22,93 @@
 </div>
 
 <div class="form-group addable_removable">
+  <%= f.label :resource_dates, 'Date(s)' %>
+
+  <div class="addable_removable_input_group well">
+    <%= f.fields_for :resource_dates do |g| %>
+        <%= f.label 'Type' %>
+        <%= select('resource[resource_dates_attributes][0]', 'date_type',
+                   options_for_select([['Single', DateType::SINGLE],
+                                       ['Span/Inclusive', DateType::SPAN],
+                                       ['Bulk', DateType::BULK]]),
+                   { include_blank: false },
+                   { class: 'form-control' }) %>
+        <div class="input-group">
+          <%= g.label 'Begin date' %>
+          <div class="row">
+            <div class="col-xs-4">
+              <%= g.text_field :begin_year, class: 'form-control', maxlength: 4,
+                               placeholder: 'YYYY' %>
+            </div>
+            <div class="col-xs-4">
+              <%= g.text_field :begin_month, class: 'form-control', maxlength: 2,
+                               placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+              </div>
+            <div class="col-xs-4">
+              <%= g.text_field :begin_day, class: 'form-control', maxlength: 2,
+                               placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group">
+          <%= g.label 'End date' %>
+          <div class="row">
+            <div class="col-xs-4">
+              <%= g.text_field :end_year, class: 'form-control', maxlength: 4,
+                               placeholder: 'YYYY' %>
+            </div>
+            <div class="col-xs-4">
+              <%= g.text_field :end_month, class: 'form-control', maxlength: 2,
+                               placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+            </div>
+            <div class="col-xs-4">
+              <%= g.text_field :end_day, class: 'form-control', maxlength: 2,
+                               placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group">
+          <%= g.label 'Date' %>
+          <div class="row">
+            <div class="col-xs-4">
+              <%= g.text_field :year, class: 'form-control', maxlength: 4,
+                               placeholder: 'YYYY' %>
+            </div>
+            <div class="col-xs-4">
+              <%= g.text_field :month, class: 'form-control', maxlength: 2,
+                               placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+            </div>
+            <div class="col-xs-4">
+              <%= g.text_field :day, class: 'form-control', maxlength: 2,
+                               placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <button class="btn btn-default remove" type="button">Remove</button>
+  </div>
+  <button class="btn btn-default add" type="button">Add Date</button>
+</div>
+
+<div class="form-group addable_removable">
   <%= f.label :extents, 'Creator(s)' %>
 
-  <div class="psap_input_group">
+  <div class="addable_removable_input_group well">
     <%= f.fields_for :creators do |g| %>
-        <div class="input-group">
-          <%= g.text_field :name, class: 'form-control' %>
-          <span class="input-group-btn">
-            <button class="btn btn-default remove" type="button">Remove</button>
-          </span>
-        </div>
         <%= select('resource[creators_attributes][0]', 'creator_type',
                    options_for_select([['Person', CreatorType::PERSON],
                                        ['Company', CreatorType::COMPANY]]),
                    { include_blank: false },
                    { class: 'form-control' }) %>
+        <%= g.text_field :name, class: 'form-control' %>
     <% end %>
+    <button class="btn btn-default remove" type="button">Remove</button>
   </div>
   <button class="btn btn-default add" type="button">Add Creator</button>
 </div>
@@ -45,7 +116,7 @@
 <div class="form-group addable_removable">
   <%= f.label :extents, 'Subject(s)' %>
 
-  <div class="psap_input_group">
+  <div class="addable_removable_input_group">
     <%= f.fields_for :subjects do |g| %>
         <div class="input-group">
           <%= g.text_field :name, class: 'form-control' %>
@@ -61,7 +132,7 @@
 <div class="form-group addable_removable">
   <%= f.label :extents, 'Extent(s)' %>
 
-  <div class="psap_input_group">
+  <div class="addable_removable_input_group">
     <%= f.fields_for :extents do |g| %>
       <div class="input-group">
         <%= g.text_field :name, class: 'form-control' %>
@@ -77,31 +148,6 @@
 <div class="form-group">
   <%= f.label :local_identifier %>
   <%= f.text_field :local_identifier, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-  <%= f.label :year %>
-  <%= f.text_field :year, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-  <%= f.label :begin_year %>
-  <%= f.text_field :begin_year, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-  <%= f.label :end_year %>
-  <%= f.text_field :end_year, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-  <%= f.label :date_type %>
-  <%= select('resource', 'date_type',
-             options_for_select([['Single', DateType::SINGLE],
-                                 ['Span', DateType::SPAN],
-                                 ['Bulk', DateType::BULK]]),
-             { include_blank: true },
-             { class: 'form-control' }) %>
 </div>
 
 <div class="form-group">
