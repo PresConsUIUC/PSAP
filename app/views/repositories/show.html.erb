@@ -22,11 +22,6 @@
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
       <% end %>
-      <!-- Add Location -->
-      <%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add Location
-      <% end %>
       <!-- Delete -->
       <%= link_to repository_path(@repository), method: 'delete',
                   class: 'btn btn-default',
@@ -49,6 +44,13 @@
 <div class="tab-content">
 
   <div class="tab-pane active" id="locations">
+    <div style="text-align:right">
+      <!-- Add Location button -->
+      <%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add Location
+      <% end %>
+    </div>
     <% if @repository.locations.any? %>
         <table class="table table-striped">
           <thead>
