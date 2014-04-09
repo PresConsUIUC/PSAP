@@ -25,6 +25,23 @@ var ResourceForm = {
                     break;
             }
         }).trigger('change');
+
+        $('input.year').on('keyup', function(event) {
+            if ($(this).val().length < 1) {
+                $(this).parent().parent().find('input.month').prop('disabled', true);
+                $(this).parent().parent().find('input.day').prop('disabled', true);
+            } else {
+                $(this).parent().parent().find('input.month').prop('disabled', false);
+            }
+        }).trigger('keyup');
+
+        $('input.month').on('keyup', function(event) {
+            if ($(this).val().length < 1) {
+                $(this).parent().parent().find('input.day').prop('disabled', true);
+            } else {
+                $(this).parent().parent().find('input.day').prop('disabled', false);
+            }
+        }).trigger('keyup');
     }
 
 };
