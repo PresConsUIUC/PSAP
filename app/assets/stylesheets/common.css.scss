@@ -97,7 +97,6 @@ div#modal_progress_view {
   margin-right:0.5em;
 }
 
-
 /* sortable tables */
 
 .current.asc:before {
@@ -195,6 +194,15 @@ form.entity_search {
   input.active {
     background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 96px 8px;
     @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
+  }
+}
+
+ul.users {
+  list-style-type:none;
+  margin-left:0px;
+  padding-left:0px;
+  li {
+    margin:1em 0em 1em 0em;
   }
 }
 

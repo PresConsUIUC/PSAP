@@ -107,30 +107,17 @@
 
           <div class="tab-pane" id="users">
             <% if @institution.users.any? %>
-                <table class="table table-striped">
-                  <thead>
-                  <tr>
-                    <th></th>
-                    <th>Username</th>
-                    <th>Name</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
+                <ul class="users">
                   <% @institution_users.each do |user| %>
-                      <tr>
-                        <td>
-                          <%= link_to user do %>
-                              <%= gravatar_for user, size: 52 %>
-                          <% end %>
-                        </td>
-                        <td><%= link_to user.username, user %></td>
-                        <td><%= link_to user.full_name, user %></td>
-                        <td><%= user.enabled ? 'Enabled' : 'Disabled' %></td>
-                      </tr>
+                      <li>
+                        <%= link_to user do %>
+                            <%= gravatar_for user, size: 52 %>
+                        <% end %>
+                        <%= link_to user.full_name, user %>
+                        <small><%= user.username %></small>
+                      </li>
                   <% end %>
-                  </tbody>
-                </table>
+                </ul>
             <% else %>
                 <p>There are no users affiliated with this institution.</p>
             <% end %>
