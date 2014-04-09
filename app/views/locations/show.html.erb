@@ -26,11 +26,6 @@
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
       <% end %>
-      <!-- Assess a Resource -->
-      <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Assess a Resource
-      <% end %>
       <!-- Delete -->
       <%= link_to location_path(@location), method: 'delete',
                   class: 'btn btn-default',
@@ -44,18 +39,39 @@
   </div>
 </div>
 
-<ul class="nav nav-tabs">
-  <li class="active">
-    <a href="#info" data-toggle="tab">Info</a>
-  </li>
-  <li>
-    <a href="#resources" data-toggle="tab">Resource Assessments</a>
-  </li>
-</ul>
+<div class="row">
 
-<div class="tab-content">
+  <div class="col-md-8">
 
-  <div class="tab-pane active" id="info">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#resources" data-toggle="tab">Resource Assessments</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="resources">
+        <div style="text-align:right">
+          <!-- Assess a Resource button -->
+          <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+              Assess a Resource
+          <% end %>
+        </div>
+
+        <% if @resources.any? %>
+            <%= render partial: 'resources/resources', locals: {resources: @resources} %>
+        <% else %>
+            <p>There are no resources in this location.</p>
+        <% end %>
+      </div>
+
+    </div>
+
+  </div> <!-- .col-md-8 -->
+
+  <div class="col-md-4 panel">
     <% if @location.description %>
         <dl>
           <dt>Description</dt>
@@ -64,12 +80,4 @@
     <% end %>
   </div>
 
-  <div class="tab-pane" id="resources">
-    <% if @resources.any? %>
-        <%= render partial: 'resources/resources', locals: {resources: @resources} %>
-    <% else %>
-        <p>There are no resources in this location.</p>
-    <% end %>
-  </div>
-
-</div>
+</div> <!-- .row -->
