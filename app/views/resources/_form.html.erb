@@ -32,8 +32,8 @@
                                        ['Span/Inclusive', DateType::SPAN],
                                        ['Bulk', DateType::BULK]]),
                    { include_blank: false },
-                   { class: 'form-control' }) %>
-        <div class="input-group">
+                   { class: 'form-control date_type' }) %>
+        <div class="input-group begin_date">
           <%= g.label 'Begin date' %>
           <div class="row">
             <div class="col-xs-4">
@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="input-group">
+        <div class="input-group end_date">
           <%= g.label 'End date' %>
           <div class="row">
             <div class="col-xs-4">
@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="input-group">
+        <div class="input-group date">
           <%= g.label 'Date' %>
           <div class="row">
             <div class="col-xs-4">

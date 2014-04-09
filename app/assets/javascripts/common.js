@@ -102,11 +102,19 @@ $(document).ready(function() {
             var group = $(this).prev();
             group.after(group.clone(true));
 
-            // update its elements' indexes within the form, for rails
+            // find all of its input elements
             $(this).prev('.addable_removable_input_group').find('input, select, textarea').each(function() {
+                // update the element's indexes within the form, for rails
                 var index = parseInt($(this).attr('id').match(/\d+/)[0]);
                 $(this).attr('id', $(this).attr('id').replace(index, index + 1));
                 $(this).attr('name', $(this).attr('name').replace(index, index + 1));
+
+                // reset its value
+                if ($(this).is('select')) {
+                    $(this).val($(this).parent().prev().find('select:first').val());
+                } else {
+                    $(this).val(null);
+                }
             });
         }
     });
