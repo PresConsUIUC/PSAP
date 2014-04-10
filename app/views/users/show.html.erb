@@ -58,17 +58,59 @@
   </div>
 </div>
 
-<ul class="nav nav-tabs">
-  <li class="active">
-    <a href="#info" data-toggle="tab">Info</a>
-  </li>
-  <li>
-    <a href="#assessments" data-toggle="tab">Assessments</a>
-  </li>
-</ul>
+<div class="row">
 
-<div class="tab-content">
-  <div id="info" class="tab-pane active">
+  <div class="col-md-8">
+
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#assessments" data-toggle="tab">Assessments</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="assessments" class="tab-pane active">
+        <% # This view unfortunately can't use the resources/resources partial
+           # because it displays resources hierarchically, which is problematic
+           # when the user doesn't own the entire hierarchy. So we will display
+           # all of the user's resources in a flat list. %>
+        <% if @resources.any? %>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Completed</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @resources.each do |resource| %>
+                  <tr>
+                    <td>
+                      <%= link_to 'Edit', edit_resource_path(resource) %>
+                    </td>
+                    <td><%= link_to resource.name, resource %></td>
+                    <td><%= resource.readable_resource_type %></td>
+                    <td><!-- TODO: fill this in --></td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+        <% else %>
+            <% if @user == current_user %>
+                <p>You have not begun any assessments.</p>
+            <% else %>
+                <p>This user has not begun any assessments.</p>
+            <% end %>
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="col-md-4">
     <dl>
       <dt>Institution</dt>
       <dd><%= @user.institution ? @user.institution.name : 'Unaffiliated' %></dd>
@@ -90,43 +132,6 @@
         <% end %>
       </dd>
     </dl>
-  </div>
-
-  <div id="assessments" class="tab-pane">
-    <% # This view unfortunately can't use the resources/resources partial
-       # because it displays resources hierarchically, which is problematic
-       # when the user doesn't own the entire hierarchy. So we will display
-       # all of the user's resources in a flat list. %>
-    <% if @resources.any? %>
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Completed</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @resources.each do |resource| %>
-              <tr>
-                <td>
-                  <%= link_to 'Edit', edit_resource_path(resource) %>
-                </td>
-                <td><%= link_to resource.name, resource %></td>
-                <td><%= resource.readable_resource_type %></td>
-                <td><!-- TODO: fill this in --></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-    <% else %>
-        <% if @user == current_user %>
-            <p>You have not begun any assessments.</p>
-        <% else %>
-            <p>This user has not begun any assessments.</p>
-        <% end %>
-    <% end %>
   </div>
 
 </div>
