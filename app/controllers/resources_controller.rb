@@ -3,8 +3,7 @@ class ResourcesController < ApplicationController
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin, only: [:new, :create,
                                                            :edit, :update,
-                                                           :index, :show,
-                                                           :destroy]
+                                                           :show, :destroy]
 
   def create
     @location = Location.find(params[:location_id])
