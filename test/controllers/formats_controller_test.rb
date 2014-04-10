@@ -182,30 +182,34 @@ class FormatsControllerTest < ActionController::TestCase
   #### update ####
 
   test 'signed-out users cannot update formats' do
-    patch :update, id: 1, format: { name: 'Test Format',
+    patch :update, id: 1, format: { name: 'New Name',
                                     score: 0.5, obsolete: 1 }
+    assert_not_equal 'New Name', Format.find(1).name
     assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot update formats' do
     signin_as(users(:normal_user))
-    patch :update, id: 1, format: { name: 'Test Format',
+    patch :update, id: 1, format: { name: 'New Name',
                                     score: 0.5, obsolete: 1 }
+    assert_not_equal 'New Name', Location.find(1).name
     assert_redirected_to root_url
   end
 
   test 'admin users can update formats' do
     signin_as(users(:admin_user))
-    patch :update, id: 1, format: { name: 'Test Format',
+    patch :update, id: 1, format: { name: 'New Name',
                                     score: 0.5, obsolete: 1 }
     assert_response :success
     assert_equal 'Format "Test Format" updated.', flash[:success]
+    assert_equal 'New Name', Location.find(1).name
     assert_redirected_to format_url(assigns(:format))
   end
 
   test 'updating a format with invalid parameters should render edit template' do
     signin_as(users(:admin_user))
     patch :update, id: 1, format: { score: 2.2 }
+    assert_not_equal 2.2, Location.find(1).score
     assert_template :edit
   end
 
