@@ -198,17 +198,20 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test 'EAD export representation is valid' do
     signin_as(users(:admin_user))
-    get :show, id: 7, format: :xml
 
-    require 'nokogiri'
-    xsd = Nokogiri::XML::Schema(File.read('test/controllers/ead.xsd'))
-    doc = Nokogiri::XML(@response.body)
+    resources.each do |res|
+      get :show, id: 7, format: :xml
 
-    xsd.validate(doc).each do |error|
-      puts error.message
+      require 'nokogiri'
+      xsd = Nokogiri::XML::Schema(File.read('test/controllers/ead.xsd'))
+      doc = Nokogiri::XML(@response.body)
+
+      xsd.validate(doc).each do |error|
+        puts "Resource ID #{res.id}: #{error.message}"
+      end
+
+      assert xsd.valid?(doc)
     end
-
-    assert xsd.valid?(doc)
   end
 
   #### update ####
