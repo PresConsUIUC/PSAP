@@ -21,7 +21,7 @@ class ResourcesController < ApplicationController
     location = resource.location
     name = resource.name
     resource.destroy
-    flash[:success] = "#{name} deleted."
+    flash[:success] = "Resource \"#{name}\" deleted."
     redirect_to location
   end
 
@@ -80,7 +80,9 @@ class ResourcesController < ApplicationController
   end
 
   def resource_params
-    params.require(:resource).permit(:name, :location, :resource_type)
+    params.require(:resource).permit(:description, :format, :local_identifier,
+                                     :location, :name, :notes, :resource_type,
+                                     :user)
   end
 
 end
