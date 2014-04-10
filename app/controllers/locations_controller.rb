@@ -10,7 +10,7 @@ class LocationsController < ApplicationController
     @repository = Repository.find(params[:repository_id])
     @location = @repository.locations.build(location_params)
     if @location.save
-      flash[:success] = 'Location created.'
+      flash[:success] = "Location \"#{@location.name}\" created."
       redirect_to @location
     else
       render 'new'
@@ -22,7 +22,7 @@ class LocationsController < ApplicationController
     repository = location.repository
     name = location.name
     location.destroy
-    flash[:success] = "#{name} deleted."
+    flash[:success] = "Location \"#{name}\" deleted."
     redirect_to repository
   end
 
