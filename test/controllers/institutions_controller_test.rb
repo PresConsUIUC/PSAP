@@ -204,7 +204,7 @@ class InstitutionsControllerTest < ActionController::TestCase
     inst = institutions(:institution_three).attributes
     inst[:id] = nil
     inst[:name] = 'New Name'
-    post :update, institution: inst, id: 1
+    patch :update, institution: inst, id: 1
     assert_equal 'New Name', Institution.find(1).name
     assert_redirected_to institution_url(assigns(:institution))
   end
@@ -214,7 +214,7 @@ class InstitutionsControllerTest < ActionController::TestCase
     inst = institutions(:institution_three).attributes
     inst[:id] = nil
     inst[:name] = 'New Name'
-    post :update, institution: inst, id: 3
+    patch :update, institution: inst, id: 3
     assert_equal 'New Name', Institution.find(3).name
     assert_redirected_to institution_url(assigns(:institution))
   end

@@ -27,6 +27,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       post :create, repository: { name: 'Test Repository' },
            institution_id: 1
     end
+    assert_equal 'Repository "Test Repository" created.', flash[:success]
     assert_redirected_to repository_url(assigns(:repository))
   end
 
@@ -36,6 +37,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       post :create, repository: { name: 'Test Repository' },
            institution_id: 5
     end
+    assert_equal 'Repository "Test Repository" created.', flash[:success]
     assert_redirected_to repository_url(assigns(:repository))
   end
 
@@ -96,7 +98,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
-  test 'signed-in users can view their own repositories\' edit pages' do
+  test 'signed-in users can view their own institution\'s repository edit pages' do
     signin_as(users(:normal_user))
     get :edit, id: 1
     assert_response :success
@@ -201,14 +203,14 @@ class RepositoriesControllerTest < ActionController::TestCase
 
   test 'normal users can update repositories in their own institutions' do
     signin_as(users(:normal_user))
-    post :update, repository: { name: 'New Name' }, id: 1
+    patch :update, repository: { name: 'New Name' }, id: 1
     assert_equal 'New Name', Repository.find(1).name
     assert_redirected_to repository_url(assigns(:repository))
   end
 
   test 'admin users can update repositories in any institution' do
     signin_as(users(:admin_user))
-    post :update, repository: { name: 'New Name' }, id: 5
+    patch :update, repository: { name: 'New Name' }, id: 5
     assert_equal 'New Name', Repository.find(5).name
     assert_redirected_to repository_url(assigns(:repository))
   end

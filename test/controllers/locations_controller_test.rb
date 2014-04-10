@@ -30,6 +30,7 @@ class LocationsControllerTest < ActionController::TestCase
                                 description: 'Test Description' },
            repository_id: 1
     end
+    assert_equal 'Location "Test Location" created.', flash[:success]
     assert_redirected_to location_url(assigns(:location))
   end
 
@@ -40,6 +41,7 @@ class LocationsControllerTest < ActionController::TestCase
                                 description: 'Test Description' },
            repository_id: 5
     end
+    assert_equal 'Location "Test Location" created.', flash[:success]
     assert_redirected_to location_url(assigns(:location))
   end
 
@@ -210,16 +212,16 @@ class LocationsControllerTest < ActionController::TestCase
 
   test 'normal users can update locations in their own institutions\' repositories' do
     signin_as(users(:normal_user))
-    post :update, location: { name: 'New Name',
-                              description: 'New Description' }, id: 1
+    patch :update, location: { name: 'New Name',
+                               description: 'New Description' }, id: 1
     assert_equal 'New Name', Location.find(1).name
     assert_redirected_to location_url(assigns(:location))
   end
 
   test 'admin users can update locations in any institutions\' repositories' do
     signin_as(users(:admin_user))
-    post :update, location: { name: 'New Name',
-                              description: 'New Description' }, id: 5
+    patch :update, location: { name: 'New Name',
+                               description: 'New Description' }, id: 5
     assert_equal 'New Name', Location.find(5).name
     assert_redirected_to location_url(assigns(:location))
   end
