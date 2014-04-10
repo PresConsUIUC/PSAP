@@ -20,9 +20,16 @@ class InstitutionsController < ApplicationController
   def destroy
     institution = Institution.find(params[:id])
     name = institution.name
-    institution.destroy
-    flash[:success] = "#{name} deleted."
-    redirect_to institutions_path
+    begin
+      institution.destroy
+    rescue ActiveRecord::DeleteRestrictionError => e
+      institution.errors.add(:base, e)
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution \"#{name}\" deleted."
+    ensure
+      redirect_to institutions_url
+    end
   end
 
   def edit
