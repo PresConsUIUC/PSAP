@@ -1,16 +1,16 @@
 class RepositoriesController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new,
+  before_action :user_of_same_institution_or_admin, only: [:new, :create,
                                                            :edit, :update,
                                                            :index, :show,
                                                            :destroy]
 
   def create
-    @repository = Repository.new(repository_params)
-    @repository.institution = current_user.institution
+    @institution = Institution.find(params[:institution_id])
+    @repository = @institution.repositories.build(repository_params)
     if @repository.save
-      flash[:success] = 'Repository created.'
+      flash[:success] = "Repository \"#{@repository.name}\" created."
       redirect_to @repository
     else
       render 'new'
@@ -22,7 +22,7 @@ class RepositoriesController < ApplicationController
     institution = repository.institution
     name = repository.name
     repository.destroy
-    flash[:success] = "#{name} deleted."
+    flash[:success] = "Repository \"#{name}\" deleted."
     redirect_to institution
   end
 
@@ -31,8 +31,8 @@ class RepositoriesController < ApplicationController
   end
 
   def new
-    @repository = Repository.new
-    @repository.institution = @user.institution
+    @institution = Institution.find(params[:institution_id])
+    @repository = @institution.repositories.build
   end
 
   def show
@@ -57,7 +57,7 @@ class RepositoriesController < ApplicationController
     if params[:id]
       repository = Repository.find(params[:id])
       institution = repository.institution
-    elsif params[:institution_id]
+    else
       institution = Institution.find(params[:institution_id])
     end
     redirect_to(root_url) unless
