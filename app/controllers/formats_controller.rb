@@ -17,7 +17,7 @@ class FormatsController < ApplicationController
     format = Format.find(params[:id])
     name = format.name
     format.destroy
-    flash[:success] = "#{name} deleted."
+    flash[:success] = "Format \"#{name}\" deleted."
     redirect_to formats_path
   end
 
@@ -40,7 +40,7 @@ class FormatsController < ApplicationController
   def update
     @format = Format.find(params[:id])
     if @format.update_attributes(format_params)
-      flash[:success] = 'Format updated.'
+      flash[:success] = "Format \"#{@format.name}\" updated."
       redirect_to @format
     else
       render 'edit'
