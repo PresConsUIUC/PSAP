@@ -30,12 +30,6 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
   end
 
-  def index
-    @repository = Repository.find(params[:repository_id])
-    @locations = @repository.locations.paginate(page: params[:page],
-                                                per_page: 30)
-  end
-
   def new
     @repository = Repository.find(params[:repository_id])
     @location = @repository.locations.build

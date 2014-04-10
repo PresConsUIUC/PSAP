@@ -30,10 +30,6 @@ class RepositoriesController < ApplicationController
     @repository = Repository.find(params[:id])
   end
 
-  def index
-    @repositories = Repository.paginate(page: params[:page], per_page: 30)
-  end
-
   def new
     @repository = Repository.new
     @repository.institution = @user.institution
