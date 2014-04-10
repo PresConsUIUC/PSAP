@@ -95,7 +95,7 @@ class LocationsControllerTest < ActionController::TestCase
     assert_redirected_to signin_url
   end
 
-  test 'signed-in users cannot view other institutions\' locations\' edit pages' do
+  test 'signed-in users cannot view other institutions\' location edit pages' do
     signin_as(users(:normal_user))
     get :edit, id: 3
     assert_redirected_to root_url
