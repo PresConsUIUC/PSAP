@@ -141,16 +141,18 @@ xml.ead(
           xml.did {
             xml.unittitle(@resource.parent.name)
             xml.unitid(@resource.parent.local_identifier)
-            if @resource.parent.year
-              xml.unitdate(@resource.parent.year,
-                  'normal' => "#{@resource.parent.year}/#{@resource.parent.year}",
-                  'type' => 'inclusive'
-              )
-            elsif @resource.parent.begin_year && @resource.parent.end_year
-              xml.unitdate("#{@resource.parent.begin_year}/#{@resource.parent.end_year}",
-                  'normal' => "#{@resource.parent.begin_year}/#{@resource.parent.end_year}",
-                  'type' => @resource.parent.readable_date_type.downcase
-              )
+            for date in @resource.parent.resource_dates
+              if date.year
+                xml.unitdate(date.year,
+                             'normal' => "#{date.year}/#{date.year}",
+                             'type' => 'inclusive'
+                )
+              elsif date.begin_year && date.end_year
+                xml.unitdate("#{date.begin_year}/#{date.end_year}",
+                             'normal' => "#{date.begin_year}/#{date.end_year}",
+                             'type' => date.readable_date_type.downcase
+                )
+              end
             end
           }
         }
@@ -165,16 +167,18 @@ xml.ead(
             xml.did {
               xml.unittitle(child.name)
               xml.unitid(child.local_identifier)
-              if child.year
-                xml.unitdate(child.year,
-                    'normal' => "#{child.year}/#{child.year}",
-                    'type' => 'inclusive'
-                )
-              elsif child.begin_year && child.end_year
-                xml.unitdate("#{child.begin_year}/#{child.end_year}",
-                    'normal' => "#{child.begin_year}/#{child.end_year}",
-                    'type' => child.readable_date_type.downcase
-                )
+              for date in child.resource_dates
+                if date.year
+                  xml.unitdate(date.year,
+                      'normal' => "#{date.year}/#{date.year}",
+                      'type' => 'inclusive'
+                  )
+                elsif date.begin_year && date.end_year
+                  xml.unitdate("#{date.begin_year}/#{date.end_year}",
+                      'normal' => "#{date.begin_year}/#{date.end_year}",
+                      'type' => date.readable_date_type.downcase
+                  )
+                end
               end
             }
           }
