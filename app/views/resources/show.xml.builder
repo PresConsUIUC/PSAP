@@ -92,16 +92,18 @@ xml.ead(
           end
         }
       end
-      if @resource.year
-        xml.unitdate(@resource.year,
-            'normal' => "#{@resource.year}/#{@resource.year}",
-            'type' => 'inclusive'
-        )
-      elsif @resource.begin_year && @resource.end_year
-        xml.unitdate("#{@resource.begin_year}/#{@resource.end_year}",
-            'normal' => "#{@resource.begin_year}/#{@resource.end_year}",
-            'type' => @resource.readable_date_type.downcase
-        )
+      for date in @resource.resource_dates
+        if date.year
+          xml.unitdate(date.year,
+                       'normal' => "#{date.year}/#{date.year}",
+                       'type' => 'inclusive'
+          )
+        elsif date.begin_year && date.end_year
+          xml.unitdate("#{date.begin_year}/#{date.end_year}",
+                       'normal' => "#{date.begin_year}/#{date.end_year}",
+                       'type' => date.readable_date_type.downcase
+          )
+        end
       end
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
