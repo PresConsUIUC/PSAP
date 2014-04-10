@@ -60,6 +60,30 @@
 
 <div class="row">
 
+  <div class="col-md-4">
+    <dl>
+      <dt>Institution</dt>
+      <dd><%= @user.institution ? @user.institution.name : 'Unaffiliated' %></dd>
+      <dt>Email</dt>
+      <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+      <dt>Account</dt>
+      <dd>
+        <%= @user.confirmed ? 'Confirmed' : 'Not Confirmed' %>,
+        <%= @user.enabled ? 'Enabled' : 'Disabled' %>
+      </dd>
+      <dt>Account Created</dt>
+      <dd><%= local_time_ago(@user.created_at) %></dd>
+      <dt>Last Sign-In</dt>
+      <dd>
+        <% if @user.last_signin %>
+            <%= local_time_ago(@user.last_signin) %>
+        <% else %>
+            Never
+        <% end %>
+      </dd>
+    </dl>
+  </div>
+
   <div class="col-md-8">
 
     <ul class="nav nav-tabs">
@@ -108,30 +132,6 @@
 
     </div>
 
-  </div>
-
-  <div class="col-md-4">
-    <dl>
-      <dt>Institution</dt>
-      <dd><%= @user.institution ? @user.institution.name : 'Unaffiliated' %></dd>
-      <dt>Email</dt>
-      <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
-      <dt>Account</dt>
-      <dd>
-        <%= @user.confirmed ? 'Confirmed' : 'Not Confirmed' %>,
-        <%= @user.enabled ? 'Enabled' : 'Disabled' %>
-      </dd>
-      <dt>Account Created</dt>
-      <dd><%= local_time_ago(@user.created_at) %></dd>
-      <dt>Last Sign-In</dt>
-      <dd>
-        <% if @user.last_signin %>
-            <%= local_time_ago(@user.last_signin) %>
-        <% else %>
-            Never
-        <% end %>
-      </dd>
-    </dl>
   </div>
 
 </div>
