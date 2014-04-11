@@ -38,7 +38,7 @@ class InstitutionsController < ApplicationController
 
   def index
     @institutions = Institution.order(:name).paginate(page: params[:page],
-                                                      per_page: 30)
+                                                      per_page: 50)
   end
 
   def new

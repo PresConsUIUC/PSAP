@@ -25,7 +25,7 @@ class RolesController < ApplicationController
   end
 
   def index
-    @roles = Role.paginate(page: params[:page], per_page: 30)
+    @roles = Role.paginate(page: params[:page], per_page: 50)
   end
 
   def new
