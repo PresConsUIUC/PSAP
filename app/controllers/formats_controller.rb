@@ -2,6 +2,8 @@ class FormatsController < ApplicationController
 
   before_action :signed_in_user, :admin_user
 
+  helper_method :sort_column, :sort_direction
+
   def create
     @format = Format.new(format_params)
 
@@ -26,7 +28,8 @@ class FormatsController < ApplicationController
   end
 
   def index
-    @formats = Format.where('name LIKE ?', "%#{params[:q]}%").order(:name)
+    @formats = Format.where('name LIKE ?', "%#{params[:q]}%").
+        order("#{sort_column} #{sort_direction}")
   end
 
   def new
@@ -51,6 +54,10 @@ class FormatsController < ApplicationController
 
   def format_params
     params.require(:format).permit(:name, :score, :obsolete)
+  end
+
+  def sort_column
+    Format.column_names.include?(params[:sort]) ? params[:sort] : 'name'
   end
 
 end

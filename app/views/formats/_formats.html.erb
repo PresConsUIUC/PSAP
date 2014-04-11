@@ -5,9 +5,9 @@
   <thead>
   <tr>
     <th></th>
-    <th>Name</th>
-    <th>Score / 1</th>
-    <th></th>
+    <th><%= sortable 'name' %></th>
+    <th><%= sortable 'score', 'Score / 1' %></th>
+    <th><%= sortable 'obsolete' %></th>
   </tr>
   </thead>
   <tbody>
@@ -18,7 +18,7 @@
         </td>
         <td><%= link_to format.name, format %></td>
         <td><%= format.score %></td>
-        <td><%= format.obsolete ? 'Obsolete' : '' %></td>
+        <td><%= format.obsolete ? raw('&check;') : '' %></td>
       </tr>
   <% end %>
   </tbody>
