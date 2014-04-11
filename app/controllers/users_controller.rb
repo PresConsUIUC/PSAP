@@ -109,17 +109,29 @@ class UsersController < ApplicationController
       UserMailer.change_email(@user, old_email, new_email).deliver
     end
 
+    was_unaffiliated = @user.institution.nil?
+
     success = @user.update_attributes(user_update_params)
     if success
-      flash[:success] = @user == current_user ?
-          'Your profile has been updated.' :
-          "#{@user.username}'s profile has been updated."
+      # If the user was not affiliated with an institution before the update,
+      # but now is, this implies that they have just joined an institution for
+      # the first time by following a link from their dashboard.
+      if was_unaffiliated && @user.institution
+        flash[:success] = @user == current_user ?
+            "You are now a member of #{@user.institution.name}." :
+            "#{@user.username} is now a member of #{@user.institution.name}."
+      else
+        flash[:success] = @user == current_user ?
+            'Your profile has been updated.' :
+            "#{@user.username}'s profile has been updated."
+      end
     end
 
     respond_to do |format|
       format.html {
         if success
-          redirect_to edit_user_url(@user)
+          redirect_to was_unaffiliated && @user.institution ?
+                          dashboard_url : edit_user_url(@user)
         else
           render 'edit'
         end
