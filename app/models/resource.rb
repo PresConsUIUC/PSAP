@@ -21,6 +21,8 @@ class Resource < ActiveRecord::Base
 
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
+  validates :percent_complete, presence: true, numericality: {
+      greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :resource_type, presence: true
   validates :user, presence: true
 

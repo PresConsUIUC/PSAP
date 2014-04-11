@@ -15,8 +15,10 @@
               </div>
               <div class="panel-body">
                 <ul>
-                  <% for asst in @assessments %>
-                    <li><%= link_to asst.name, asst %> <small>X% complete</small></li>
+                  <% for resource in @resources %>
+                    <li><%= link_to resource.name, resource %><br>
+                      <small><%= number_to_human resource.percent_complete %>% complete
+                        / updated <%= local_time_ago resource.updated_at %></small></li>
                   <% end %>
                 </ul>
               </div>
@@ -32,10 +34,10 @@
               </div>
               <div class="panel-body">
                 <ul>
-                  <% for asst in @recent_assessments %>
-                      <li><%= link_to asst.name, asst %>
-                        <small><%= local_time_ago asst.created_at %> by
-                          <%= link_to asst.user.username, asst.user %></small></li>
+                  <% for resource in @recent_assessments %>
+                      <li><%= link_to resource.name, resource %><br>
+                        <small><%= number_to_human resource.percent_complete %>% complete
+                          / updated <%= local_time_ago resource.updated_at %></small></li>
                   <% end %>
                 </ul>
               </div>

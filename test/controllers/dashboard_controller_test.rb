@@ -14,12 +14,14 @@ class DashboardControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:user)
-    assert_not_nil assigns(:assessments)
+    assert_not_nil assigns(:resources)
   end
 
   test 'affiliated users have necessary ivars set' do
     signin_as(users(:normal_user))
     get :index
+    assert_not_nil assigns(:user)
+    assert_not_nil assigns(:resources)
     assert_not_nil assigns(:institution_users)
     assert_not_nil assigns(:recent_assessments)
   end
@@ -27,6 +29,8 @@ class DashboardControllerTest < ActionController::TestCase
   test 'unaffiliated users\' necessary ivars are nil' do
     signin_as(users(:unaffiliated_user))
     get :index
+    assert_not_nil assigns(:user)
+    assert_not_nil assigns(:resources)
     assert_nil assigns(:institution_users)
     assert_nil assigns(:recent_assessments)
   end

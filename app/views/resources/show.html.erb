@@ -1,4 +1,5 @@
 <% provide(:title, @resource.name) %>
+<% provide(:body_id, 'show_resource') %>
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -101,7 +102,25 @@
           </div>
       <% end %>
 
-      <div id="assessment" class="tab-pane <%= @resource.children.any? ? '' : 'class=active' %>">
+      <div id="assessment" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+        <% if @resource.percent_complete < 1 %>
+          <h3><%= number_to_human @resource.percent_complete %>% complete</h3>
+
+          <div class="progress">
+            <div class="progress-bar" role="progressbar"
+                 aria-valuenow="<%= @resource.percent_complete %>"
+                 aria-valuemin="0" aria-valuemax="1"
+                 style="width:<%= @resource.percent_complete * 100 %>%;">
+              <span class="sr-only">
+                <%= number_to_human @resource.percent_complete %>% Complete</span>
+            </div>
+          </div>
+
+          <p><%= link_to 'Continue', edit_resource_path(@resource),
+                         class: 'btn btn-default btn-lg' %></p>
+        <% else %>
+          <!-- TODO: write this -->
+        <% end %>
       </div>
 
     </div> <!-- .tab-content -->

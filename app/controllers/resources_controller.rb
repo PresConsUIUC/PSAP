@@ -56,6 +56,7 @@ class ResourcesController < ApplicationController
   def update
     @resource = Resource.find(params[:id])
     if @resource.update_attributes(resource_params)
+      # TODO: update @resource.percent_complete
       flash[:success] = 'Resource updated.'
       redirect_to @resource
     else

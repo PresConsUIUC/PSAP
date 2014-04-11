@@ -10,3 +10,17 @@ div table {
   td.depth-8 { padding-left:12em; }
   td.depth-9 { padding-left:13.5em; }
 }
+
+body#show_resource div#assessment {
+  h3 {
+    margin:2em;
+    text-align:center;
+  }
+  div.progress {
+    height:20px;
+    margin:2em;
+  }
+  p {
+    text-align: center;
+  }
+}
