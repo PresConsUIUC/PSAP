@@ -6,6 +6,32 @@ class UsersControllerTest < ActionController::TestCase
     @request.env['HTTP_REFERER'] = 'http://localhost:3000/'
   end
 
+  #### create ####
+
+  test 'users can be created' do
+    assert_difference 'User.count' do
+      post :create, user: { username: 'newuser', email: 'newuser@example.org',
+                            first_name: 'New', last_name: 'User',
+                            password: 'password',
+                            password_confirmation: 'password' }
+    end
+    assert_equal 'Thanks for registering for PSAP! An email has been '\
+        'sent to the address you provided. Follow the link in the email to '\
+        'confirm your account.', flash[:success]
+    assert_equal 'User', assigns(:user).role.name
+    assert_redirected_to root_url
+  end
+
+  test 'creating an invalid user should render new template' do
+    assert_no_difference 'User.count' do
+      post :create, user: { first_name: 'New', email: '',
+                            last_name: 'User', password: 'password',
+                            password_confirmation: '',
+                            username: 'newuser' }
+    end
+    assert_template :new
+  end
+
   #### confirm ####
 
   test 'attempting to confirm a nonexistent user should return 404' do
@@ -49,6 +75,33 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 'Your account has been confirmed. Please sign in.',
                  flash[:success]
     assert_redirected_to signin_url
+  end
+
+  #### destroy ####
+
+  test 'signed-out users cannot destroy users' do
+    assert_no_difference 'User.count' do
+      delete :destroy, username: 'normal'
+    end
+    assert_redirected_to signin_url
+  end
+
+  test 'signed-in users cannot destroy users' do
+    signin_as(users(:normal_user))
+    assert_no_difference 'User.count' do
+      delete :destroy, username: 'normal'
+    end
+    assert_redirected_to root_url
+  end
+
+  test 'admin users can destroy users' do
+    signin_as(users(:admin_user))
+    assert_difference 'User.count', -1 do
+      delete :destroy, username: users(:normal_user).username
+    end
+    assert_equal "User #{users(:normal_user).username} deleted.",
+                 flash[:success]
+    assert_redirected_to users_url
   end
 
   #### edit ####
@@ -179,6 +232,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 0, assigns(:users).length
   end
 
+  #### new ####
+
+  test 'should get new user page' do
+    get :new
+    assert_not_nil assigns(:user)
+    assert_response :success
+  end
+
   #### show ####
 
   test 'signed-out users cannot view any users' do
@@ -214,6 +275,12 @@ class UsersControllerTest < ActionController::TestCase
       get :show, username: 'adsfasdfasfd'
       assert_response :missing
     end
+  end
+
+  #### update ####
+
+  test 'update' do
+    flunk 'TODO: write this'
   end
 
 end

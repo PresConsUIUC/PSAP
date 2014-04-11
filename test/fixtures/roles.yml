@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 admin_role:
-  name: admin
+  id: 1
+  name: Administrator
   is_admin: true
 
 normal_role:
-  name: normal
+  id: 2
+  name: User
   is_admin: false

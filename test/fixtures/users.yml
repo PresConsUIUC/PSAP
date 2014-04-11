@@ -10,7 +10,7 @@ normal_user:
   confirmed: true
   enabled: true
   institution_id: 1
-  role: normal_role
+  role_id: 2
 
 admin_user:
   id: 2
@@ -22,7 +22,7 @@ admin_user:
   confirmed: true
   enabled: true
   institution_id: 1
-  role: admin_role
+  role_id: 1
 
 unaffiliated_user:
   id: 3
@@ -31,7 +31,7 @@ unaffiliated_user:
   first_name: 'Clara'
   last_name: 'NoInstitution'
   password_digest: <%= BCrypt::Password.create('password') %>
-  role: normal_role
+  role_id: 2
   confirmed: true
   enabled: true
 
@@ -43,7 +43,7 @@ unconfirmed_user:
   last_name: 'NoConfirmy'
   password_digest: <%= BCrypt::Password.create('password') %>
   institution_id: 2
-  role: normal_role
+  role_id: 2
   confirmed: false
   enabled: false
 
@@ -55,6 +55,6 @@ disabled_user:
   last_name: 'CantDoNothin'
   password_digest: <%= BCrypt::Password.create('password') %>
   institution_id: 3
-  role: normal_role
+  role_id: 2
   confirmed: true
   enabled: false

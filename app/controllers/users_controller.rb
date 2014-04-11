@@ -13,9 +13,9 @@ class UsersController < ApplicationController
     @user.role = Role.find_by_name 'User'
     if @user.save
       UserMailer.welcome_email(@user).deliver
-      flash[:success] = 'Thanks for registering for PSAP! An email has been
-        sent to the address you provided. Follow the link in the email to
-        confirm your account.'
+      flash[:success] = 'Thanks for registering for PSAP! An email has been '\
+        'sent to the address you provided. Follow the link in the email to '\
+        'confirm your account.'
       redirect_to root_url
       return
     end
@@ -42,9 +42,9 @@ class UsersController < ApplicationController
   def destroy
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
-    name = user.full_name
+    username = user.username
     user.destroy
-    flash[:success] = "#{name} deleted."
+    flash[:success] = "User #{username} deleted."
     redirect_to users_url
   end
 
