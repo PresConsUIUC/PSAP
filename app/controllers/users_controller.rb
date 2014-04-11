@@ -111,9 +111,9 @@ class UsersController < ApplicationController
 
     success = @user.update_attributes(user_update_params)
     if success
-      flash[:success] = 'Your profile has been updated.'
-    else
-      flash[:error] = 'There was an error saving your profile.'
+      flash[:success] = @user == current_user ?
+          'Your profile has been updated.' :
+          "#{@user.username}'s profile has been updated."
     end
 
     respond_to do |format|
