@@ -16,7 +16,7 @@
               <div class="panel-body">
                 <ul>
                   <% for asst in @assessments %>
-                    <li><%= link_to asst.name, asst %></li>
+                    <li><%= link_to asst.name, asst %> <small>X% complete</small></li>
                   <% end %>
                 </ul>
               </div>
