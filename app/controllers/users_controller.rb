@@ -101,6 +101,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !@user
+
+    # admin users can change usernames. Non-admins cannot.
+    if !current_user.is_admin?
+      params[:user].delete(:username)
+    end
+
     # If the user is changing their email address, we need to notify the
     # previous address, to inform them in case their account was hijacked.
     old_email = @user.email
@@ -176,7 +184,7 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:user).permit(:email, :first_name, :last_name,
+    params.require(:user).permit(:username, :email, :first_name, :last_name,
                                  :password, :password_confirmation,
                                  :institution_id, :enabled,
                                  :show_contextual_help)

@@ -279,8 +279,112 @@ class UsersControllerTest < ActionController::TestCase
 
   #### update ####
 
-  test 'update' do
-    flunk 'TODO: write this'
+  test 'signed-out users cannot update users' do
+    patch :update, user: { username: 'newuser', email: 'newuser@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'normal'
+    assert_not_equal 'newuser', User.find(1).username
+    assert_redirected_to signin_url
+  end
+
+  test 'normal users cannot update other users' do
+    signin_as(users(:normal_user))
+    patch :update, user: { username: 'newuser', email: 'newuser@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'unaffiliated'
+    assert_not_equal 'newuser', User.find(1).username
+    assert_redirected_to root_url
+  end
+
+  test 'normal users can update themselves' do
+    signin_as(users(:normal_user))
+    patch :update, user: { username: 'normal', email: 'normal@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'normal'
+    assert_equal 'New', User.find(1).first_name
+    assert_equal 'Your profile has been updated.', flash[:success]
+    assert_redirected_to edit_user_url(assigns(:user))
+  end
+
+  test 'updating users with invalid data renders edit template' do
+    signin_as(users(:normal_user))
+    patch :update, user: { first_name: '', last_name: '',
+                           password: 'asfdasfdasfd',
+                           password_confirmation: 'zcvxcvzvx' },
+          username: 'normal'
+    assert_equal 'Norm', users(:normal_user).first_name
+    assert_template :edit
+  end
+
+  test 'users cannot change their username' do
+    signin_as(users(:normal_user))
+    patch :update, user: { username: 'newuser', email: 'normal@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'normal'
+    assert_nil User.find_by_username 'newuser'
+    assert_redirected_to edit_user_url(assigns(:user))
+  end
+
+  test 'changing email address sends an email confirmation' do
+    signin_as(users(:normal_user))
+    assert_difference('ActionMailer::Base.deliveries.size', 1) do
+      patch :update, user: { username: 'normal', email: 'newemail@example.org',
+                             first_name: 'New', last_name: 'User',
+                             password: 'password',
+                             password_confirmation: 'password' },
+            username: 'normal'
+    end
+  end
+
+  test 'admin users can update other users' do
+    signin_as(users(:admin_user))
+    patch :update, user: { username: 'unaffiliated', email: 'newuser@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'unaffiliated'
+    assert_equal 'New', User.find_by_username('unaffiliated').first_name
+    assert_equal 'unaffiliated\'s profile has been updated.', flash[:success]
+    assert_redirected_to edit_user_url(assigns(:user))
+  end
+
+  test 'admin users can change other users\' username' do
+    signin_as(users(:admin_user))
+    patch :update, user: { username: 'newusername', email: 'newuser@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'unaffiliated'
+    assert_not_nil User.find_by_username 'newusername'
+    assert_redirected_to edit_user_url(assigns(:user))
+  end
+
+  test 'admin users can change their own username' do
+    signin_as(users(:admin_user))
+    patch :update, user: { username: 'newusername', email: 'newuser@example.org',
+                           first_name: 'New', last_name: 'User',
+                           password: 'password',
+                           password_confirmation: 'password' },
+          username: 'admin'
+    assert_not_nil User.find_by_username 'newusername'
+    assert_redirected_to edit_user_url(assigns(:user))
+  end
+
+  test 'joining an institution for the first time should work' do
+    signin_as(users(:unaffiliated_user))
+    patch :update, user: { institution_id: 3 },
+          username: 'unaffiliated'
+    assert_equal 'You are now a member of Hamburger University.',
+                 flash[:success]
+    assert_redirected_to dashboard_url
   end
 
 end
