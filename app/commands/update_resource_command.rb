@@ -11,8 +11,8 @@ class UpdateResourceCommand < Command
     raise CommandError, 'Failed to update resource' unless
         @resource.update_attributes(@resource_params)
 
-    Event.create(description: "Updated resource #{@resource.name} in "\
-    "location #{@resource.location.name}",
+    Event.create(description: "Updated resource \"#{@resource.name}\" in "\
+    "location \"#{@resource.location.name}\"",
                  user: @user)
   end
 

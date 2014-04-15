@@ -10,8 +10,8 @@ class CreateResourceCommand < Command
     @resource = @location.resources.build(@resource_params)
     raise CommandError, 'Failed to save resource' unless @resource.save
 
-    Event.create(description: "Created resource #{@resource.name} in "\
-    "location #{@resource.location.name}",
+    Event.create(description: "Created resource \"#{@resource.name}\" in "\
+    "location \"#{@resource.location.name}\"",
                  user: @user)
   end
 

@@ -8,8 +8,8 @@ class DeleteResourceCommand < Command
   def execute
     raise CommandError, 'Failed to delete resource' unless @resource.destroy
 
-    Event.create(description: "Deleted resource #{@resource.name} from "\
-    "location #{@resource.location.name}",
+    Event.create(description: "Deleted resource \"#{@resource.name}\" from "\
+    "location \"#{@resource.location.name}\"",
                  user: @user)
   end
 
