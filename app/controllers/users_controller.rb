@@ -9,17 +9,16 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def create
-    @user = User.new(user_create_params)
-    @user.role = Role.find_by_name 'User'
-    if @user.save
-      UserMailer.welcome_email(@user).deliver
+    command = CreateUserCommand.new(user_create_params)
+    begin
+      command.execute
       flash[:success] = 'Thanks for registering for PSAP! An email has been '\
         'sent to the address you provided. Follow the link in the email to '\
         'confirm your account.'
       redirect_to root_url
-      return
+    rescue Exception
+      render 'new'
     end
-    render 'new'
   end
 
   # Mapped to GET /confirm
@@ -40,12 +39,17 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !user
-    username = user.username
-    user.destroy
-    flash[:success] = "User #{username} deleted."
-    redirect_to users_url
+    command = DeleteUserCommand.new(
+        User.find_by_username(params[:username]),
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "User #{command.object.username} deleted."
+    rescue Exception => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to users_url
+    end
   end
 
   def edit
@@ -104,23 +108,17 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !@user
 
+    was_unaffiliated = @user.institution.nil?
+
     # admin users can change usernames. Non-admins cannot.
     if !current_user.is_admin?
       params[:user].delete(:username)
     end
 
-    # If the user is changing their email address, we need to notify the
-    # previous address, to inform them in case their account was hijacked.
-    old_email = @user.email
-    new_email = user_update_params[:email]
-    if old_email != new_email
-      UserMailer.change_email(@user, old_email, new_email).deliver
-    end
+    command = UpdateUserCommand.new(@user, user_update_params, current_user)
+    begin
+      command.execute
 
-    was_unaffiliated = @user.institution.nil?
-
-    success = @user.update_attributes(user_update_params)
-    if success
       # If the user was not affiliated with an institution before the update,
       # but now is, this implies that they have just joined an institution for
       # the first time by following a link from their dashboard.
@@ -133,18 +131,16 @@ class UsersController < ApplicationController
             'Your profile has been updated.' :
             "#{@user.username}'s profile has been updated."
       end
-    end
 
-    respond_to do |format|
-      format.html {
-        if success
+      respond_to do |format|
+        format.html {
           redirect_to was_unaffiliated && @user.institution ?
                           dashboard_url : edit_user_url(@user)
-        else
-          render 'edit'
-        end
-      }
-      format.js { render 'edit' }
+        }
+        format.js { render 'edit' }
+      end
+    rescue Exception
+      render 'edit'
     end
   end
 

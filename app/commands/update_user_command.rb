@@ -1,0 +1,28 @@
+class UpdateUserCommand < Command
+
+  def initialize(user, user_params, doing_user)
+    @user = user
+    @user_params = user_params
+    @doing_user = doing_user
+  end
+
+  def execute
+    # If the user is changing their email address, we need to notify the
+    # previous address, to inform them in case their account was hijacked.
+    old_email = @user.email
+    new_email = @user_params[:email]
+    if old_email != new_email
+      UserMailer.change_email(@user, old_email, new_email).deliver
+    end
+
+    @user.update_attributes(@user_params)
+
+    Event.create(description: "Updated user #{@user.username}",
+                 user: @doing_user)
+  end
+
+  def object
+    @user
+  end
+
+end

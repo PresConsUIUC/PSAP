@@ -21,19 +21,15 @@ class User < ActiveRecord::Base
                       message: 'Only letters and numbers are allowed.' }
 
   after_initialize :setup, if: :new_record?
-  after_create :log_create
-  after_update :log_update
   before_save { self.email = email.downcase }
 
   @@_current_user = nil
-  @_log_update = true
 
   def to_param
     username
   end
 
-  # Used by this and other models to associate the current user with event log
-  # messages upon create/update/delete.
+  # Global getter used to associate the current user with event log messages.
   def self.current_user
     @@_current_user
   end
@@ -61,26 +57,8 @@ class User < ActiveRecord::Base
     self.role.is_admin?
   end
 
-  # If set to false, the next ActiveRecord save will not be logged.
-  def log_update?(boolean)
-    @_log_update = boolean
-  end
-
   def validate_password?
     password.present? || password_confirmation.present?
-  end
-
-  def log_create
-    Event.create(description: "Created account for user #{self.username}",
-                 user: User.current_user)
-  end
-
-  def log_update
-    if @_log_update
-      Event.create(description: "Edited user #{self.username}",
-                   user: User.current_user)
-    end
-    @_log_update = true
   end
 
 end

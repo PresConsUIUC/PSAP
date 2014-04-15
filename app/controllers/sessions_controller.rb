@@ -14,10 +14,10 @@ class SessionsController < ApplicationController
         sign_in user
 
         # Log the successful signin
-        Event.create(description: "User #{user.username} signed in from #{request.remote_ip}",
+        Event.create(description: "User #{user.username} signed in from "\
+        "#{request.remote_ip}",
                      user: user)
         user.last_signin = Time.now
-        user.log_update?(false)
         user.save
 
         cookies[:show_welcome_panel] = 1 if user.institution.nil?
@@ -29,7 +29,8 @@ class SessionsController < ApplicationController
 
     message = "Sign-in failed: (no username provided) (#{request.remote_ip})"
     if params[:session]
-      message = "Sign-in failed: #{params[:session][:username].downcase} (#{request.remote_ip})"
+      message = "Sign-in failed: #{params[:session][:username].downcase} "\
+      "(#{request.remote_ip})"
     end
     Event.create(description: message)
 
