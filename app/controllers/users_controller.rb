@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def create
     command = CreateUserCommand.new(user_create_params)
+    @user = command.object
     begin
       command.execute
       flash[:success] = 'Thanks for registering for PSAP! An email has been '\
