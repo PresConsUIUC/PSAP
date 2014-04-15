@@ -6,8 +6,7 @@ class DeleteLocationCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to delete location' unless @location.destroy
-
+    @location.destroy!
     Event.create(description: "Deleted location \"#{@location.name}\" from "\
     "repository \"#{@location.repository.name}\"",
                  user: @user)

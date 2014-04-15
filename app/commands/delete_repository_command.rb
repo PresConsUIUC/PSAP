@@ -6,8 +6,7 @@ class DeleteRepositoryCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to delete repository' unless @repository.destroy
-
+    @repository.destroy!
     Event.create(description: "Deleted repository \"#{@repository.name}\" from "\
     "institution \"#{@repository.institution.name}\"",
                  user: @user)

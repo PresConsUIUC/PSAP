@@ -8,8 +8,7 @@ class CreateLocationCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to save location' unless @location.save
-
+    @location.save!
     Event.create(description: "Created location \"#{@location.name}\" in "\
     "repository \"#{@repository.name}\"",
                  user: @user)

@@ -7,9 +7,7 @@ class UpdateRepositoryCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to update repository' unless
-        @repository.update_attributes(@repository_params)
-
+    @repository.update!(@repository_params)
     Event.create(description: "Updated repository \"#{@repository.name}\" in "\
     "institution \"#{@repository.institution.name}\"",
                  user: @user)

@@ -8,8 +8,7 @@ class CreateResourceCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to save resource' unless @resource.save
-
+    @resource.save!
     Event.create(description: "Created resource \"#{@resource.name}\" in "\
     "location \"#{@resource.location.name}\"",
                  user: @user)

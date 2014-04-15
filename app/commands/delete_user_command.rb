@@ -7,7 +7,7 @@ class DeleteUserCommand < Command
 
   def execute
     begin
-      @user.destroy
+      @user.destroy!
       Event.create(description: "Deleted user #{@user.username}",
                    user: @doing_user)
     rescue ActiveRecord::DeleteRestrictionError => e

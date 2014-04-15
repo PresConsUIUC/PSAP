@@ -15,7 +15,7 @@ class UpdateUserCommand < Command
       UserMailer.change_email(@user, old_email, new_email).deliver
     end
 
-    @user.update_attributes(@user_params)
+    @user.update!(@user_params)
 
     Event.create(description: "Updated user #{@user.username}",
                  user: @doing_user)

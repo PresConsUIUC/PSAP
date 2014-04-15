@@ -8,8 +8,7 @@ class CreateRepositoryCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to save repository' unless @repository.save
-
+    @repository.save!
     Event.create(description: "Created repository \"#{@repository.name}\" in "\
     "institution \"#{@repository.institution.name}\"",
                  user: @user)

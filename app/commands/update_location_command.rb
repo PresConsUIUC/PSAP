@@ -7,9 +7,7 @@ class UpdateLocationCommand < Command
   end
 
   def execute
-    raise CommandError, 'Failed to update location' unless
-        @location.update_attributes(@location_params)
-
+    @location.update!(@location_params)
     Event.create(description: "Updated location \"#{@location.name}\" in "\
     "repository \"#{@location.repository.name}\"",
                  user: @user)

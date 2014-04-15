@@ -7,8 +7,7 @@ class UpdateInstitutionCommand < Command
   end
 
   def execute
-    @institution.update_attributes(@institution_params)
-
+    @institution.update!(@institution_params)
     Event.create(description: "Updated institution \"#{@institution.name}\"",
                  user: @user)
   end

@@ -8,9 +8,7 @@ class UpdateResourceCommand < Command
 
   def execute
     # TODO: update @resource.percent_complete
-    raise CommandError, 'Failed to update resource' unless
-        @resource.update_attributes(@resource_params)
-
+    @resource.update!(@resource_params)
     Event.create(description: "Updated resource \"#{@resource.name}\" in "\
     "location \"#{@resource.location.name}\"",
                  user: @user)
