@@ -59,20 +59,32 @@ class UsersController < ApplicationController
   def enable
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
-    user.enabled = true
-    user.save!
-    flash[:success] = "User #{user.username} enabled."
-    redirect_to :back
+
+    command = EnableUserCommand.new(user, current_user)
+    begin
+      command.execute
+      flash[:success] = "User #{user.username} enabled."
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to :back
+    end
   end
 
   # Responds to PATCH /users/:id/disable
   def disable
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
-    user.enabled = false
-    user.save!
-    flash[:success] = "User #{user.username} disabled."
-    redirect_to :back
+
+    command = DisableUserCommand.new(user, current_user)
+    begin
+      command.execute
+      flash[:success] = "User #{user.username} disabled."
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to :back
+    end
   end
 
   # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
