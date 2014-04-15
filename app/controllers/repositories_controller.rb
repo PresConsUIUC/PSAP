@@ -6,14 +6,14 @@ class RepositoriesController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    command = CreateRepositoryCommand.new(
-        Institution.find(params[:institution_id]),
-        repository_params,
+    @institution = Institution.find(params[:institution_id])
+    command = CreateRepositoryCommand.new(@institution, repository_params,
         current_user)
+    @repository = command.object
     begin
       command.execute
-      flash[:success] = "Repository \"#{command.object.name}\" created."
-      redirect_to command.object
+      flash[:success] = "Repository \"#{@repository.name}\" created."
+      redirect_to @repository
     rescue
       render 'new'
     end

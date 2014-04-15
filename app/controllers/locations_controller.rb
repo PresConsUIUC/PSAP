@@ -6,14 +6,14 @@ class LocationsController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    command = CreateLocationCommand.new(
-        Repository.find(params[:repository_id]),
-        location_params,
-        current_user)
+    @repository = Repository.find(params[:repository_id])
+    command = CreateLocationCommand.new(@repository, location_params,
+                                        current_user)
+    @location = command.object
     begin
       command.execute
-      flash[:success] = "Location \"#{command.object.name}\" created."
-      redirect_to command.object
+      flash[:success] = "Location \"#{@location.name}\" created."
+      redirect_to @location
     rescue
       render 'new'
     end

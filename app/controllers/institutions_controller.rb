@@ -8,25 +8,25 @@ class InstitutionsController < ApplicationController
     command = CreateInstitutionCommand.new(
         institution_params,
         current_user)
+    @institution = command.object
     begin
       command.execute
-      flash[:success] = "The institution \"#{command.object.name}\" has been "\
+      flash[:success] = "The institution \"#{@institution.name}\" has been "\
         "created, and you have automatically been added to it."
-      redirect_to command.object
+      redirect_to @institution
     rescue
       render 'new'
     end
   end
 
   def destroy
-    command = DeleteInstitutionCommand.new(
-        Institution.find(params[:id]),
-        current_user)
+    @institution = Institution.find(params[:id])
+    command = DeleteInstitutionCommand.new(@institution, current_user)
     begin
       command.execute
-      flash[:success] = "Institution \"#{command.object.name}\" deleted."
+      flash[:success] = "Institution \"#{@institution.name}\" deleted."
     rescue => e
-        flash[:error] = "#{e}"
+      flash[:error] = "#{e}"
     ensure
       redirect_to institutions_url
     end
@@ -53,13 +53,14 @@ class InstitutionsController < ApplicationController
   end
 
   def update
-    @institution = Institution.find(params[:id])
-    command = UpdateInstitutionCommand.new(@institution, institution_params,
-                                           current_user)
+
+    command = UpdateInstitutionCommand.new(@institution,
+        institution_params,
+        current_user)
     begin
       command.execute
-      flash[:success] = "Institution \"#{@institution.name}\" updated."
-      redirect_to @institution
+      flash[:success] = "Institution \"#{command.object.name}\" updated."
+      redirect_to command.object
     rescue
       render 'edit'
     end

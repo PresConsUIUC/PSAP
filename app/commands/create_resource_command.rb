@@ -1,10 +1,8 @@
 class CreateResourceCommand < Command
 
   def initialize(location, resource_params, user)
-    @location = location
-    @resource_params = resource_params
     @user = user
-    @resource = @location.resources.build(@resource_params)
+    @resource = location.resources.build(resource_params)
   end
 
   def execute

@@ -6,29 +6,28 @@ class ResourcesController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    command = CreateResourceCommand.new(
-        Location.find(params[:location_id]),
-        resource_params,
-        current_user)
+    @location = Location.find(params[:location_id])
+    command = CreateResourceCommand.new(@location, resource_params,
+                                        current_user)
+    @resource = command.object
     begin
       command.execute
-      flash[:success] = "Resource \"#{command.object.name}\" created."
-      redirect_to command.object
+      flash[:success] = "Resource \"#{@resource.name}\" created."
+      redirect_to @resource
     rescue
       render 'new'
     end
   end
 
   def destroy
-    command = DeleteResourceCommand.new(
-        Resource.find(params[:id]),
-        current_user)
+    @resource = Resource.find(params[:id])
+    command = DeleteResourceCommand.new(@resource, current_user)
     begin
       command.execute
-      flash[:success] = "Resource \"#{command.object.name}\" deleted."
-      redirect_to command.object.location
+      flash[:success] = "Resource \"#{@resource.name}\" deleted."
+      redirect_to @resource.location
     rescue
-      redirect_to command.object
+      redirect_to @resource.object
     end
   end
 
