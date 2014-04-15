@@ -23,19 +23,18 @@ class UsersController < ApplicationController
 
   # Mapped to GET /confirm
   def confirm
-    # If the user has supplied username and confirmation_code parameters,
-    # check that they are correct and activate the user if so. Then redirect
-    # to the signin URL.
-    @user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !@user
-    if @user && !@user.confirmed && params[:code] == @user.confirmation_code
-      @user.confirmed = true
-      @user.confirmation_code = nil
-      @user.enabled = true
-      @user.save!
+    user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
+
+    command = ConfirmUserCommand.new(user, params[:code])
+    begin
+      command.execute
+      flash[:success] = 'Your account has been confirmed. Please sign in.'
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to signin_url
     end
-    flash[:success] = 'Your account has been confirmed. Please sign in.'
-    redirect_to signin_url
   end
 
   def destroy
