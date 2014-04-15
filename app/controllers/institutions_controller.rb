@@ -5,28 +5,28 @@ class InstitutionsController < ApplicationController
   before_action :same_institution_user, only: [:show, :edit, :update]
 
   def create
-    @institution = Institution.new(institution_params)
-    @institution.users << current_user
-
-    if @institution.save
-      flash[:success] = "The institution \"#{@institution.name}\" has been "\
+    command = CreateInstitutionCommand.new(
+        institution_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "The institution \"#{command.object.name}\" has been "\
         "created, and you have automatically been added to it."
-      redirect_to @institution
-    else
+      redirect_to command.object
+    rescue Exception
       render 'new'
     end
   end
 
   def destroy
-    institution = Institution.find(params[:id])
-    name = institution.name
+    command = DeleteInstitutionCommand.new(
+        Institution.find(params[:id]),
+        current_user)
     begin
-      institution.destroy
-    rescue ActiveRecord::DeleteRestrictionError => e
-      institution.errors.add(:base, e)
-      flash[:error] = "#{e}"
-    else
-      flash[:success] = "Institution \"#{name}\" deleted."
+      command.execute
+      flash[:success] = "Institution \"#{command.object.name}\" deleted."
+    rescue Exception => e
+        flash[:error] = "#{e}"
     ensure
       redirect_to institutions_url
     end
@@ -53,11 +53,15 @@ class InstitutionsController < ApplicationController
   end
 
   def update
-    @institution = Institution.find(params[:id])
-    if @institution.update_attributes(institution_params)
-      flash[:success] = 'Institution updated.'
-      redirect_to @institution
-    else
+    command = UpdateInstitutionCommand.new(
+        Institution.find(params[:id]),
+        institution_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Institution \"#{command.object.name}\" updated."
+      redirect_to command.object
+    rescue Exception
       render 'edit'
     end
   end

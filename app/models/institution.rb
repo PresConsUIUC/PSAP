@@ -16,18 +16,4 @@ class Institution < ActiveRecord::Base
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
-  # Creation will be logged during user creation.
-  after_update :log_update
-  after_destroy :log_destroy
-
-  def log_update
-    Event.create(description: "Edited institution #{self.name}",
-                 user: User.current_user)
-  end
-
-  def log_destroy
-    Event.create(description: "Deleted institution #{self.name}",
-                 user: User.current_user)
-  end
-
 end
