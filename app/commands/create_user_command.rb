@@ -2,10 +2,10 @@ class CreateUserCommand < Command
 
   def initialize(user_params)
     @user_params = user_params
+    @user = User.new(user_params)
   end
 
   def execute
-    @user = User.new(user_params)
     @user.role = Role.find_by_name 'User'
     if @user.save!
       UserMailer.welcome_email(@user).deliver

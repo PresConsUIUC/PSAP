@@ -4,10 +4,10 @@ class CreateLocationCommand < Command
     @repository = repository
     @location_params = location_params
     @user = user
+    @location = @repository.locations.build(@location_params)
   end
 
   def execute
-    @location = @repository.locations.build(@location_params)
     raise CommandError, 'Failed to save location' unless @location.save
 
     Event.create(description: "Created location \"#{@location.name}\" in "\

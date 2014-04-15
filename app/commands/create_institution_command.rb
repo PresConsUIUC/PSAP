@@ -3,10 +3,10 @@ class CreateInstitutionCommand < Command
   def initialize(institution_params, user)
     @institution_params = institution_params
     @user = user
+    @institution = Institution.new(@institution_params)
   end
 
   def execute
-    @institution = Institution.new(@institution_params)
     @institution.users << user
     @institution.save
 

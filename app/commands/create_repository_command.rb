@@ -4,10 +4,10 @@ class CreateRepositoryCommand < Command
     @institution = institution
     @repository_params = repository_params
     @user = user
+    @repository = @institution.repositories.build(@repository_params)
   end
 
   def execute
-    @repository = @institution.repositories.build(@repository_params)
     raise CommandError, 'Failed to save repository' unless @repository.save
 
     Event.create(description: "Created repository \"#{@repository.name}\" in "\
