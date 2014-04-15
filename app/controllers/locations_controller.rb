@@ -6,23 +6,30 @@ class LocationsController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    @repository = Repository.find(params[:repository_id])
-    @location = @repository.locations.build(location_params)
-    if @location.save
-      flash[:success] = "Location \"#{@location.name}\" created."
-      redirect_to @location
-    else
+    command = CreateLocationCommand.new(
+        Repository.find(params[:repository_id]),
+        location_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Location \"#{command.object.name}\" created."
+      redirect_to command.object
+    rescue CommandError
       render 'new'
     end
   end
 
   def destroy
-    location = Location.find(params[:id])
-    repository = location.repository
-    name = location.name
-    location.destroy
-    flash[:success] = "Location \"#{name}\" deleted."
-    redirect_to repository
+    command = DeleteLocationCommand.new(
+        Location.find(params[:id]),
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Location \"#{command.object.name}\" deleted."
+      redirect_to command.object.repository
+    rescue CommandError
+      redirect_to command.object
+    end
   end
 
   def edit
@@ -41,11 +48,15 @@ class LocationsController < ApplicationController
   end
 
   def update
-    @location = Location.find(params[:id])
-    if @location.update_attributes(location_params)
-      flash[:success] = 'Location updated.'
-      redirect_to @location
-    else
+    command = UpdateLocationCommand.new(
+        Location.find(params[:id]),
+        location_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Location \"#{command.object.name}\" updated."
+      redirect_to command.object
+    rescue CommandError
       render 'edit'
     end
   end
