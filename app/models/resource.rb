@@ -15,10 +15,6 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_dates
   accepts_nested_attributes_for :subjects
 
-  after_create :log_create
-  after_update :log_update
-  after_destroy :log_destroy
-
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :percent_complete, presence: true, numericality: {
@@ -33,21 +29,6 @@ class Resource < ActiveRecord::Base
       when ResourceType::ITEM
         'Item'
     end
-  end
-
-  def log_create
-    Event.create(description: "Created resource #{self.name} in location #{self.location.name}",
-                 user: User.current_user)
-  end
-
-  def log_update
-    Event.create(description: "Edited resource #{self.name} in location #{self.location.name}",
-                 user: User.current_user)
-  end
-
-  def log_destroy
-    Event.create(description: "Deleted resource #{self.name} from location #{self.location.name}",
-                 user: User.current_user)
   end
 
 end

@@ -6,23 +6,30 @@ class ResourcesController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    @location = Location.find(params[:location_id])
-    @resource = @location.resources.build(resource_params)
-    if @resource.save
-      flash[:success] = 'Resource created.'
-      redirect_to @resource
-    else
+    command = CreateResourceCommand.new(
+        Location.find(params[:location_id]),
+        resource_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Resource \"#{command.object.name}\" created."
+      redirect_to command.object
+    rescue CommandError
       render 'new'
     end
   end
 
   def destroy
-    resource = Resource.find(params[:id])
-    location = resource.location
-    name = resource.name
-    resource.destroy
-    flash[:success] = "Resource \"#{name}\" deleted."
-    redirect_to location
+    command = DeleteResourceCommand.new(
+        Resource.find(params[:id]),
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Resource \"#{command.object.name}\" deleted."
+      redirect_to command.object.location
+    rescue CommandError
+      redirect_to command.object
+    end
   end
 
   def edit
@@ -54,12 +61,15 @@ class ResourcesController < ApplicationController
   end
 
   def update
-    @resource = Resource.find(params[:id])
-    if @resource.update_attributes(resource_params)
-      # TODO: update @resource.percent_complete
-      flash[:success] = 'Resource updated.'
-      redirect_to @resource
-    else
+    command = UpdateResourceCommand.new(
+        Resource.find(params[:id]),
+        resource_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Resource \"#{command.object.name}\" updated."
+      redirect_to command.object
+    rescue CommandError
       render 'edit'
     end
   end
