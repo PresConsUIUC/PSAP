@@ -77,7 +77,7 @@ class LocationsController < ApplicationController
   end
 
   def location_params
-    params.require(:location).permit(:name, :repository)
+    params.require(:location).permit(:name, :description, :repository)
   end
 
 end
