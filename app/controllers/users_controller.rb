@@ -39,13 +39,14 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    command = DeleteUserCommand.new(
-        User.find_by_username(params[:username]),
-        current_user)
+    user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
+
+    command = DeleteUserCommand.new(user, current_user)
     begin
       command.execute
-      flash[:success] = "User #{command.object.username} deleted."
-    rescue Exception => e
+      flash[:success] = "User #{user.username} deleted."
+    rescue => e
       flash[:error] = "#{e}"
     ensure
       redirect_to users_url
