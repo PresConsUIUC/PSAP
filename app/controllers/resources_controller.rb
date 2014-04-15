@@ -14,7 +14,7 @@ class ResourcesController < ApplicationController
       command.execute
       flash[:success] = "Resource \"#{command.object.name}\" created."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'new'
     end
   end
@@ -27,7 +27,7 @@ class ResourcesController < ApplicationController
       command.execute
       flash[:success] = "Resource \"#{command.object.name}\" deleted."
       redirect_to command.object.location
-    rescue CommandError
+    rescue
       redirect_to command.object
     end
   end
@@ -69,7 +69,7 @@ class ResourcesController < ApplicationController
       command.execute
       flash[:success] = "Resource \"#{command.object.name}\" updated."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'edit'
     end
   end

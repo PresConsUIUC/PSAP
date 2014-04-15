@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         'sent to the address you provided. Follow the link in the email to '\
         'confirm your account.'
       redirect_to root_url
-    rescue Exception
+    rescue
       render 'new'
     end
   end
@@ -151,7 +151,7 @@ class UsersController < ApplicationController
         }
         format.js { render 'edit' }
       end
-    rescue Exception
+    rescue
       render 'edit'
     end
   end

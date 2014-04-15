@@ -14,7 +14,7 @@ class RepositoriesController < ApplicationController
       command.execute
       flash[:success] = "Repository \"#{command.object.name}\" created."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'new'
     end
   end
@@ -27,7 +27,7 @@ class RepositoriesController < ApplicationController
       command.execute
       flash[:success] = "Repository \"#{command.object.name}\" deleted."
       redirect_to command.object.institution
-    rescue CommandError
+    rescue
       redirect_to command.object
     end
   end
@@ -54,7 +54,7 @@ class RepositoriesController < ApplicationController
       command.execute
       flash[:success] = "Repository \"#{command.object.name}\" updated."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'edit'
     end
   end

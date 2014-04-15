@@ -13,7 +13,7 @@ class InstitutionsController < ApplicationController
       flash[:success] = "The institution \"#{command.object.name}\" has been "\
         "created, and you have automatically been added to it."
       redirect_to command.object
-    rescue Exception
+    rescue
       render 'new'
     end
   end
@@ -25,7 +25,7 @@ class InstitutionsController < ApplicationController
     begin
       command.execute
       flash[:success] = "Institution \"#{command.object.name}\" deleted."
-    rescue Exception => e
+    rescue => e
         flash[:error] = "#{e}"
     ensure
       redirect_to institutions_url
@@ -61,7 +61,7 @@ class InstitutionsController < ApplicationController
       command.execute
       flash[:success] = "Institution \"#{command.object.name}\" updated."
       redirect_to command.object
-    rescue Exception
+    rescue
       render 'edit'
     end
   end

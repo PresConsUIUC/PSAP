@@ -14,7 +14,7 @@ class LocationsController < ApplicationController
       command.execute
       flash[:success] = "Location \"#{command.object.name}\" created."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'new'
     end
   end
@@ -27,7 +27,7 @@ class LocationsController < ApplicationController
       command.execute
       flash[:success] = "Location \"#{command.object.name}\" deleted."
       redirect_to command.object.repository
-    rescue CommandError
+    rescue
       redirect_to command.object
     end
   end
@@ -56,7 +56,7 @@ class LocationsController < ApplicationController
       command.execute
       flash[:success] = "Location \"#{command.object.name}\" updated."
       redirect_to command.object
-    rescue CommandError
+    rescue
       render 'edit'
     end
   end
