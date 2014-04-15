@@ -1,0 +1,3 @@
+class CommandError < Exception
+
+end

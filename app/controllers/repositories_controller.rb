@@ -6,23 +6,30 @@ class RepositoriesController < ApplicationController
                                                            :show, :destroy]
 
   def create
-    @institution = Institution.find(params[:institution_id])
-    @repository = @institution.repositories.build(repository_params)
-    if @repository.save
-      flash[:success] = "Repository \"#{@repository.name}\" created."
-      redirect_to @repository
-    else
+    command = CreateRepositoryCommand.new(
+        Institution.find(params[:institution_id]),
+        repository_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Repository \"#{command.object.name}\" created."
+      redirect_to command.object
+    rescue CommandError
       render 'new'
     end
   end
 
   def destroy
-    repository = Repository.find(params[:id])
-    institution = repository.institution
-    name = repository.name
-    repository.destroy
-    flash[:success] = "Repository \"#{name}\" deleted."
-    redirect_to institution
+    command = DeleteRepositoryCommand.new(
+        Repository.find(params[:id]),
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Repository \"#{command.object.name}\" deleted."
+      redirect_to command.object.institution
+    rescue CommandError
+      redirect_to command.object
+    end
   end
 
   def edit
@@ -39,11 +46,15 @@ class RepositoriesController < ApplicationController
   end
 
   def update
-    @repository = Repository.find(params[:id])
-    if @repository.update_attributes(repository_params)
-      flash[:success] = 'Repository updated.'
-      redirect_to @repository
-    else
+    command = UpdateRepositoryCommand.new(
+        Repository.find(params[:id]),
+        repository_params,
+        current_user)
+    begin
+      command.execute
+      flash[:success] = "Repository \"#{command.object.name}\" updated."
+      redirect_to command.object
+    rescue CommandError
       render 'edit'
     end
   end
