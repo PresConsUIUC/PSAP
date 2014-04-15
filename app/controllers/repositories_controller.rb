@@ -46,14 +46,13 @@ class RepositoriesController < ApplicationController
   end
 
   def update
-    command = UpdateRepositoryCommand.new(
-        Repository.find(params[:id]),
-        repository_params,
-        current_user)
+    @repository = Repository.find(params[:id])
+    command = UpdateRepositoryCommand.new(@repository, repository_params,
+                                          current_user)
     begin
       command.execute
-      flash[:success] = "Repository \"#{command.object.name}\" updated."
-      redirect_to command.object
+      flash[:success] = "Repository \"#{@repository.name}\" updated."
+      redirect_to @repository
     rescue
       render 'edit'
     end

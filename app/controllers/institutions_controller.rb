@@ -53,14 +53,13 @@ class InstitutionsController < ApplicationController
   end
 
   def update
-    command = UpdateInstitutionCommand.new(
-        Institution.find(params[:id]),
-        institution_params,
-        current_user)
+    @institution = Institution.find(params[:id])
+    command = UpdateInstitutionCommand.new(@institution, institution_params,
+                                           current_user)
     begin
       command.execute
-      flash[:success] = "Institution \"#{command.object.name}\" updated."
-      redirect_to command.object
+      flash[:success] = "Institution \"#{@institution.name}\" updated."
+      redirect_to @institution
     rescue
       render 'edit'
     end

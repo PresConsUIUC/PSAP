@@ -48,14 +48,13 @@ class LocationsController < ApplicationController
   end
 
   def update
-    command = UpdateLocationCommand.new(
-        Location.find(params[:id]),
-        location_params,
-        current_user)
+    @location = Location.find(params[:id])
+    command = UpdateLocationCommand.new(@location, location_params,
+                                        current_user)
     begin
       command.execute
-      flash[:success] = "Location \"#{command.object.name}\" updated."
-      redirect_to command.object
+      flash[:success] = "Location \"#{@location.name}\" updated."
+      redirect_to @location
     rescue
       render 'edit'
     end

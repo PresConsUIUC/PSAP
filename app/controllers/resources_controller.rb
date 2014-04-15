@@ -61,14 +61,13 @@ class ResourcesController < ApplicationController
   end
 
   def update
-    command = UpdateResourceCommand.new(
-        Resource.find(params[:id]),
-        resource_params,
-        current_user)
+    @resource = Resource.find(params[:id])
+    command = UpdateResourceCommand.new(@resource, resource_params,
+                                        current_user)
     begin
       command.execute
-      flash[:success] = "Resource \"#{command.object.name}\" updated."
-      redirect_to command.object
+      flash[:success] = "Resource \"#{@resource.name}\" updated."
+      redirect_to @resource
     rescue
       render 'edit'
     end
