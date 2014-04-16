@@ -23,20 +23,8 @@ class User < ActiveRecord::Base
   after_initialize :setup, if: :new_record?
   before_save { self.email = email.downcase }
 
-  @@_current_user = nil
-
   def to_param
     username
-  end
-
-  # Global getter used to associate the current user with event log messages.
-  def self.current_user
-    @@_current_user
-  end
-
-  # Set by ApplicationController.init
-  def self.current_user=(user)
-    @@_current_user = user
   end
 
   def setup
