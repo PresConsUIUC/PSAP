@@ -49,6 +49,16 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_redirected_to resource_url(assigns(:resource))
   end
 
+  test 'creating resources should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      res = resources(:resource_three).attributes
+      res[:id] = nil
+      res[:name] = 'New Resource'
+      post :create, resource: res, location_id: 3
+    end
+  end
+
   test 'creating an invalid resource should render new template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Resource.count' do
@@ -93,6 +103,13 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_equal "Resource \"#{resources(:resource_two).name}\" deleted.",
                  flash[:success]
     assert_redirected_to location_url(resources(:resource_two).location_id)
+  end
+
+  test 'destroying resources should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      delete :destroy, id: resources(:resource_two).id
+    end
   end
 
   #### edit ####
@@ -241,6 +258,13 @@ class ResourcesControllerTest < ActionController::TestCase
     patch :update, resource: { name: 'New Name' }, id: 5
     assert_equal 'New Name', Resource.find(5).name
     assert_redirected_to resource_url(assigns(:resource))
+  end
+
+  test 'updating resources should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      patch :update, resource: { name: 'New Name' }, id: 5
+    end
   end
 
 end

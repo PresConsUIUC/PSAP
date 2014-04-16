@@ -36,6 +36,16 @@ class InstitutionsControllerTest < ActionController::TestCase
     assert_redirected_to institution_url(assigns(:institution))
   end
 
+  test 'creating an institution should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      inst = institutions(:institution_three).attributes
+      inst[:id] = nil
+      inst[:name] = 'New Institution'
+      post :create, institution: inst
+    end
+  end
+
   test 'creating an invalid institution should render new template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Institution.count' do
@@ -81,6 +91,13 @@ class InstitutionsControllerTest < ActionController::TestCase
     assert_equal "Institution \"#{institutions(:institution_five).name}\" deleted.",
                  flash[:success]
     assert_redirected_to institutions_path
+  end
+
+  test 'destroying an institution should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      delete :destroy, id: institutions(:institution_five).id
+    end
   end
 
   #### edit ####
@@ -217,6 +234,16 @@ class InstitutionsControllerTest < ActionController::TestCase
     patch :update, institution: inst, id: 3
     assert_equal 'New Name', Institution.find(3).name
     assert_redirected_to institution_url(assigns(:institution))
+  end
+
+  test 'updating an institution should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      inst = institutions(:institution_three).attributes
+      inst[:id] = nil
+      inst[:name] = 'New Name'
+      patch :update, institution: inst, id: 3
+    end
   end
 
 end

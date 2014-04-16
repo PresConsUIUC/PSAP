@@ -1,5 +1,7 @@
 require 'test_helper'
 
+# TODO: The post/patch methods don't seem to like posting "format" as a hash,
+# which causes some of these tests to fail.
 class FormatsControllerTest < ActionController::TestCase
 
   #### create ####
@@ -26,6 +28,13 @@ class FormatsControllerTest < ActionController::TestCase
     end
     assert_equal 'The format "Test Format" has been created.', flash[:success]
     assert_redirected_to formats_url
+  end
+
+  test 'creating a format should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      post :create, format: { name: 'Test Format', score: 0.5, obsolete: 1 }
+    end
   end
 
   test 'creating an invalid format should render new template' do
@@ -61,6 +70,13 @@ class FormatsControllerTest < ActionController::TestCase
     assert_equal "Format \"#{formats(:format_two).name}\" deleted.",
                  flash[:success]
     assert_redirected_to formats_url
+  end
+
+  test 'destroying a format should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      delete :destroy, id: formats(:format_two).id
+    end
   end
 
   #### edit ####
@@ -204,6 +220,14 @@ class FormatsControllerTest < ActionController::TestCase
     assert_equal 'Format "Test Format" updated.', flash[:success]
     assert_equal 'New Name', Location.find(1).name
     assert_redirected_to format_url(assigns(:format))
+  end
+
+  test 'updating a format should write to the event log' do
+    signin_as(users(:admin_user))
+    assert_difference 'Event.count' do
+      patch :update, id: 1, format: { name: 'New Name',
+                                      score: 0.5, obsolete: 1 }
+    end
   end
 
   test 'updating a format with invalid parameters should render edit template' do

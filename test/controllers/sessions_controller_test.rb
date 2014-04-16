@@ -7,35 +7,35 @@ class SessionsControllerTest < ActionController::TestCase
   test 'attempting to create a session with no username fails' do
     post :create
     assert_equal 'Invalid username/password combination.', flash[:error]
-    assert_equal 'Sign-in failed:', Event.last.description[0..14]
+    assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session with an invalid username fails' do
     post :create, session: { username: 'adsfasdfasfd', password: 'password' }
     assert_equal 'Invalid username/password combination.', flash[:error]
-    assert_equal 'Sign-in failed:', Event.last.description[0..14]
+    assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for a disabled user fails' do
     post :create, session: { username: 'disabled', password: 'password' }
     assert_equal 'Invalid username/password combination.', flash[:error]
-    assert_equal 'Sign-in failed:', Event.last.description[0..14]
+    assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for an unconfirmed user fails' do
     post :create, session: { username: 'unconfirmed', password: 'password' }
     assert_equal 'Invalid username/password combination.', flash[:error]
-    assert_equal 'Sign-in failed:', Event.last.description[0..14]
+    assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for an enabled, confirmed user with an invalid password fails' do
     post :create, session: { username: 'normal', password: 'adfafsafd' }
     assert_equal 'Invalid username/password combination.', flash[:error]
-    assert_equal 'Sign-in failed:', Event.last.description[0..14]
+    assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 

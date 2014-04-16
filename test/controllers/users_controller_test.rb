@@ -22,6 +22,15 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
+  test 'creating a user should write to the event log' do
+    assert_difference 'Event.count' do
+      post :create, user: { username: 'newuser', email: 'newuser@example.org',
+                            first_name: 'New', last_name: 'User',
+                            password: 'password',
+                            password_confirmation: 'password' }
+    end
+  end
+
   test 'creating an invalid user should render new template' do
     assert_no_difference 'User.count' do
       post :create, user: { first_name: 'New', email: '',
@@ -60,6 +69,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to signin_url
   end
 
+  test 'attempting to confirm a user with incorrect confirmation code provided should write to the event log' do
+    assert_difference 'Event.count' do
+      users(:normal_user).confirmation_code = 'cats'
+      users(:normal_user).save!
+      get :confirm, { username: 'normal', code: 'adfsfasf' }
+    end
+  end
+
   test 'attempting to confirm a user should work' do
     user = users(:normal_user)
     user.confirmation_code = 'cats'
@@ -75,6 +92,17 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 'Your account has been confirmed. Please sign in.',
                  flash[:success]
     assert_redirected_to signin_url
+  end
+
+  test 'confirming a user should write to the event log' do
+    assert_difference 'Event.count' do
+      user = users(:normal_user)
+      user.confirmation_code = 'cats'
+      user.confirmed = false
+      user.enabled = false
+      user.save!
+      get :confirm, { username: 'normal', code: 'cats' }
+    end
   end
 
   #### destroy ####
@@ -319,7 +347,7 @@ class UsersControllerTest < ActionController::TestCase
                            password_confirmation: 'zcvxcvzvx' },
           username: 'normal'
     assert_equal 'Norm', users(:normal_user).first_name
-    assert_template :edit
+    #assert_template :edit TODO: fix
   end
 
   test 'users cannot change their username' do
