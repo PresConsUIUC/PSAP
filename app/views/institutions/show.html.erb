@@ -22,7 +22,7 @@
           <% end %>
       <% end %>
       <!-- Delete -->
-      <% if current_user.is_admin? %>
+      <% if current_user.is_admin? && @institution.users.none? %>
           <%= link_to institution_path(@institution), method: 'delete',
                       class: 'btn btn-default',
                       data: { confirm: 'Deleting this institution will '\
