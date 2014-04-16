@@ -3,6 +3,6 @@ class Repository < ActiveRecord::Base
   has_many :locations, inverse_of: :repository, dependent: :destroy
 
   validates :institution, presence: true
-  validates :name, presence: true, length: { minimum: 1, maximum: 255 }
+  validates :name, presence: true, length: { maximum: 255 }
 
 end

@@ -2,10 +2,6 @@ require 'test_helper'
 
 class InstitutionTest < ActiveSupport::TestCase
 
-  setup :setup
-
-  protected
-
   def setup
     @default_values = {name: 'Test', address1: 'Test', address2: 'Test',
                        city: 'Test', state: 'Test', postal_code: 'Test',
@@ -16,17 +12,8 @@ class InstitutionTest < ActiveSupport::TestCase
 
   ############################ object tests #################################
 
-  test 'editing generates an event log entry' do
-    @institution.save! # hasn't been saved yet
-    @institution.name = 'blabla'
-    @institution.save!
-    assert_equal 'Edited institution blabla', Event.last.description
-  end
-
-  test 'deleting generates an event log entry' do
-    @institution.save! # hasn't been saved yet
-    @institution.destroy!
-    assert_equal 'Deleted institution Test', Event.last.description
+  test 'valid institution saves' do
+    assert @institution.save
   end
 
   ########################### property tests ################################
@@ -104,6 +91,27 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'url must be a url' do
     @institution.url = 'abc'
     assert !@institution.save
+  end
+
+  ########################### dependency tests ###############################
+
+  test 'repositories should be destroyed on destroy' do
+    repo = repositories(:repository_two)
+    @institution.repositories << repo
+    @institution.destroy
+    assert repo.destroyed?
+  end
+
+  test 'attempting to destroy an institution with users in it should raise an exception' do
+    @institution = institutions(:institution_one)
+    assert_raises ActiveRecord::DeleteRestrictionError do
+      @institution.destroy
+    end
+  end
+
+  test 'attempting to destroy an institution without users in it should work' do
+    @institution = institutions(:institution_four)
+    assert @institution.destroy
   end
 
 end

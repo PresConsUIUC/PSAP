@@ -1,7 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+creator_one:
+  name: Test Creator 1
+  creator_type: <%= CreatorType::PERSON %>
+  resource_id: 1
 
-two:
-  name: MyString
+creator_two:
+  name: Test Creator 2
+  creator_type: <%= CreatorType::COMPANY %>
+  resource_id: 2

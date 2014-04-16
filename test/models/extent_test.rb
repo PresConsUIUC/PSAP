@@ -2,12 +2,8 @@ require 'test_helper'
 
 class ExtentTest < ActiveSupport::TestCase
 
-  setup :setup
-
-  protected
-
   def setup
-    @default_values = {name: 'Test'}
+    @default_values = { name: 'Test' }
     @extent = Extent.new(@default_values)
     @extent.resource = resources(:resource_one)
   end
@@ -23,6 +19,12 @@ class ExtentTest < ActiveSupport::TestCase
   # name
   test 'name is required' do
     @extent.name = nil
+    assert !@extent.save
+  end
+
+  # resource
+  test 'resource is required' do
+    @extent.resource = nil
     assert !@extent.save
   end
 

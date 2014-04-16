@@ -26,4 +26,10 @@ class SubjectTest < ActiveSupport::TestCase
     assert !@subject.save
   end
 
+  # resource
+  test 'resource is required' do
+    @subject.resource = nil
+    assert !@subject.save
+  end
+
 end
