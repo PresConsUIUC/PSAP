@@ -1,15 +1,16 @@
 class DeleteRepositoryCommand < Command
 
-  def initialize(repository, user)
+  def initialize(repository, user, remote_ip)
     @repository = repository
     @user = user
+    @address = remote_ip
   end
 
   def execute
     @repository.destroy!
     Event.create(description: "Deleted repository \"#{@repository.name}\" from "\
     "institution \"#{@repository.institution.name}\"",
-                 user: @user)
+                 user: @user, address: @remote_ip)
   end
 
   def object

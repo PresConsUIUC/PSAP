@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
   def create
     @institution = Institution.find(params[:institution_id])
     command = CreateRepositoryCommand.new(@institution, repository_params,
-        current_user)
+        current_user, request.remote_ip)
     @repository = command.object
     begin
       command.execute
@@ -20,9 +20,8 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
-    command = DeleteRepositoryCommand.new(
-        Repository.find(params[:id]),
-        current_user)
+    command = DeleteRepositoryCommand.new(Repository.find(params[:id]),
+                                          current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Repository \"#{command.object.name}\" deleted."
@@ -48,7 +47,7 @@ class RepositoriesController < ApplicationController
   def update
     @repository = Repository.find(params[:id])
     command = UpdateRepositoryCommand.new(@repository, repository_params,
-                                          current_user)
+                                          current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Repository \"#{@repository.name}\" updated."

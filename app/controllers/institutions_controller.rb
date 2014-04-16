@@ -5,9 +5,8 @@ class InstitutionsController < ApplicationController
   before_action :same_institution_user, only: [:show, :edit, :update]
 
   def create
-    command = CreateInstitutionCommand.new(
-        institution_params,
-        current_user)
+    command = CreateInstitutionCommand.new(institution_params, current_user,
+                                           request.remote_ip)
     @institution = command.object
     begin
       command.execute
@@ -21,7 +20,8 @@ class InstitutionsController < ApplicationController
 
   def destroy
     @institution = Institution.find(params[:id])
-    command = DeleteInstitutionCommand.new(@institution, current_user)
+    command = DeleteInstitutionCommand.new(@institution, current_user,
+                                           request.remote_ip)
     begin
       command.execute
       flash[:success] = "Institution \"#{@institution.name}\" deleted."
@@ -55,7 +55,7 @@ class InstitutionsController < ApplicationController
   def update
     @institution = Institution.find(params[:id])
     command = UpdateInstitutionCommand.new(@institution, institution_params,
-                                           current_user)
+                                           current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Institution \"#{@institution.name}\" updated."

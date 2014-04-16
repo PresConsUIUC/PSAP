@@ -8,7 +8,7 @@ class ResourcesController < ApplicationController
   def create
     @location = Location.find(params[:location_id])
     command = CreateResourceCommand.new(@location, resource_params,
-                                        current_user)
+                                        current_user, request.remote_ip)
     @resource = command.object
     begin
       command.execute
@@ -21,7 +21,8 @@ class ResourcesController < ApplicationController
 
   def destroy
     @resource = Resource.find(params[:id])
-    command = DeleteResourceCommand.new(@resource, current_user)
+    command = DeleteResourceCommand.new(@resource, current_user,
+                                        request.remote_ip)
     begin
       command.execute
       flash[:success] = "Resource \"#{@resource.name}\" deleted."
@@ -62,7 +63,7 @@ class ResourcesController < ApplicationController
   def update
     @resource = Resource.find(params[:id])
     command = UpdateResourceCommand.new(@resource, resource_params,
-                                        current_user)
+                                        current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Resource \"#{@resource.name}\" updated."

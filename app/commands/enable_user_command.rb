@@ -1,8 +1,9 @@
 class EnableUserCommand < Command
 
-  def initialize(user, doing_user)
+  def initialize(user, doing_user, remote_ip)
     @user = user
     @doing_user = doing_user
+    @remote_ip = remote_ip
   end
 
   def execute
@@ -10,7 +11,7 @@ class EnableUserCommand < Command
     @user.save!
 
     Event.create(description: "Enabled user #{@user.username}",
-                 user: @doing_user)
+                 user: @doing_user, address: @remote_ip)
   end
 
   def object

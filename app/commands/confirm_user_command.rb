@@ -1,8 +1,9 @@
 class ConfirmUserCommand < Command
 
-  def initialize(user, confirmation_code)
+  def initialize(user, confirmation_code, remote_ip)
     @user = user
     @confirmation_code = confirmation_code
+    @remote_ip = remote_ip
   end
 
   def execute
@@ -13,7 +14,7 @@ class ConfirmUserCommand < Command
       @user.save!
 
       Event.create(description: "Confirmed user #{@user.username}",
-                   user: @user)
+                   user: @user, address: @remote_ip)
     end
   end
 

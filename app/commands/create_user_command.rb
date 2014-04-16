@@ -1,8 +1,9 @@
 class CreateUserCommand < Command
 
-  def initialize(user_params)
+  def initialize(user_params, remote_ip)
     @user_params = user_params
     @user = User.new(user_params)
+    @remote_ip = remote_ip
   end
 
   def execute
@@ -10,7 +11,7 @@ class CreateUserCommand < Command
     if @user.save!
       UserMailer.welcome_email(@user).deliver
       Event.create(description: "Created account for user #{@user.username}",
-                   user: @user)
+                   user: @user, address: @remote_ip)
     end
   end
 

@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def create
-    command = CreateUserCommand.new(user_create_params)
+    command = CreateUserCommand.new(user_create_params, request.remote_ip)
     @user = command.object
     begin
       command.execute
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
 
-    command = ConfirmUserCommand.new(user, params[:code])
+    command = ConfirmUserCommand.new(user, params[:code], request.remote_ip)
     begin
       command.execute
       flash[:success] = 'Your account has been confirmed. Please sign in.'
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
 
-    command = DeleteUserCommand.new(user, current_user)
+    command = DeleteUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "User #{user.username} deleted."
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
 
-    command = EnableUserCommand.new(user, current_user)
+    command = EnableUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "User #{user.username} enabled."
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !user
 
-    command = DisableUserCommand.new(user, current_user)
+    command = DisableUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "User #{user.username} disabled."
@@ -128,7 +128,8 @@ class UsersController < ApplicationController
       params[:user].delete(:username)
     end
 
-    command = UpdateUserCommand.new(@user, user_update_params, current_user)
+    command = UpdateUserCommand.new(@user, user_update_params, current_user,
+                                    request.remote_ip)
     begin
       command.execute
 

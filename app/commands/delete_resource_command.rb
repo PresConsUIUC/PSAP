@@ -1,15 +1,16 @@
 class DeleteResourceCommand < Command
 
-  def initialize(resource, user)
+  def initialize(resource, user, remote_ip)
     @resource = resource
     @user = user
+    @remote_ip = remote_ip
   end
 
   def execute
     @resource.destroy!
     Event.create(description: "Deleted resource \"#{@resource.name}\" from "\
     "location \"#{@resource.location.name}\"",
-                 user: @user)
+                 user: @user, address: @remote_ip)
   end
 
   def object

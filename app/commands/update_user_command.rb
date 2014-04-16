@@ -1,9 +1,10 @@
 class UpdateUserCommand < Command
 
-  def initialize(user, user_params, doing_user)
+  def initialize(user, user_params, doing_user, remote_ip)
     @user = user
     @user_params = user_params
     @doing_user = doing_user
+    @remote_ip = remote_ip
   end
 
   def execute
@@ -18,7 +19,7 @@ class UpdateUserCommand < Command
     @user.update!(@user_params)
 
     Event.create(description: "Updated user #{@user.username}",
-                 user: @doing_user)
+                 user: @doing_user, address: @remote_ip)
   end
 
   def object

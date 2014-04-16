@@ -8,7 +8,7 @@ class LocationsController < ApplicationController
   def create
     @repository = Repository.find(params[:repository_id])
     command = CreateLocationCommand.new(@repository, location_params,
-                                        current_user)
+                                        current_user, request.remote_ip)
     @location = command.object
     begin
       command.execute
@@ -20,9 +20,8 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    command = DeleteLocationCommand.new(
-        Location.find(params[:id]),
-        current_user)
+    command = DeleteLocationCommand.new(Location.find(params[:id]),
+        current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Location \"#{command.object.name}\" deleted."
@@ -50,7 +49,7 @@ class LocationsController < ApplicationController
   def update
     @location = Location.find(params[:id])
     command = UpdateLocationCommand.new(@location, location_params,
-                                        current_user)
+                                        current_user, request.remote_ip)
     begin
       command.execute
       flash[:success] = "Location \"#{@location.name}\" updated."
