@@ -7,7 +7,7 @@ class CreateInstitutionCommand < Command
   end
 
   def execute
-    @institution.users << user
+    @institution.users << @user
     @institution.save!
     Event.create(description: "Created institution \"#{@institution.name}\"",
                  user: @user)
