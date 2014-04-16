@@ -91,7 +91,7 @@ class ResourcesController < ApplicationController
   def resource_params
     params.require(:resource).permit(:description, :format, :local_identifier,
                                      :location, :name, :notes, :resource_type,
-                                     :user)
+                                     :user_id)
   end
 
 end
