@@ -5,22 +5,29 @@ class FormatsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def create
-    @format = Format.new(format_params)
-
-    if @format.save
-      flash[:success] = "The format \"#{@format.name}\" has been created."
+    command = CreateFormatCommand.new(format_params, current_user,
+                                      request.remote_ip)
+    @format = command.object
+    begin
+      command.execute
+      flash[:success] = "Format \"#{@format.name}\" created."
       redirect_to formats_url
-    else
+    rescue
       render 'new'
     end
   end
 
   def destroy
-    format = Format.find(params[:id])
-    name = format.name
-    format.destroy
-    flash[:success] = "Format \"#{name}\" deleted."
-    redirect_to formats_path
+    @format = Format.find(params[:id])
+    command = DeleteFormatCommand.new(@format, current_user, request.remote_ip)
+    begin
+      command.execute
+      flash[:success] = "Format \"#{@format.name}\" deleted."
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to formats_path
+    end
   end
 
   def edit
@@ -42,10 +49,13 @@ class FormatsController < ApplicationController
 
   def update
     @format = Format.find(params[:id])
-    if @format.update_attributes(format_params)
+    command = UpdateFormatCommand.new(@format, format_params, current_user,
+                                      request.remote_ip)
+    begin
+      command.execute
       flash[:success] = "Format \"#{@format.name}\" updated."
       redirect_to @format
-    else
+    rescue
       render 'edit'
     end
   end
