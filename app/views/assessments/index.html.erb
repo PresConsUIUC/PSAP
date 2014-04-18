@@ -1,0 +1,102 @@
+<% provide(:title, 'Assessment Template') %>
+
+<div class="row">
+  <div class="col-md-8">
+    <h1>Assessment Template</h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <div class="btn-group">
+      <!-- Edit -->
+      <%= link_to edit_assessment_path(@assessment), class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <!-- left column menu -->
+  <div class="col-md-3">
+    <nav>
+      <ul class="nav nav-pills nav-stacked">
+        <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
+          <li<%= i == 0 ? ' class=active' : '' %>>
+            <a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a>
+          </li>
+        <% i += 1 end %>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="col-md-9 tab-content">
+    <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
+        <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
+          <h2><%= section.name %></h2>
+
+          <ul>
+            <% for question in section.assessment_questions.order(:index) %>
+                <% options = question.assessment_question_options.order(:index) %>
+                <li>
+                  <dl>
+                    <dt><%= question.name %><br>
+                    Weight: <%= question.weight %>
+                    </dt>
+                    <dd>
+                      <div class="row">
+                        <div class="col-md-5">
+                          <% if options.any? %>
+                              <table class="table">
+                                <thead>
+                                <tr>
+                                  <th>Option</th>
+                                  <th>Score</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for option in options %>
+                                    <tr>
+                                      <td><%= option.name %></td>
+                                      <td><%= option.value %></td>
+                                    </tr>
+                                <% end %>
+                                </tbody>
+                              </table>
+                          <% end %>
+                        </div>
+                        <div class="col-md-7">
+                          <% case question.question_type %>
+                          <% when AssessmentQuestionType::RADIO %>
+                              <% for option in options %>
+                                  <label>
+                                    <input type="radio" name="<%= question.name %>">
+                                    <%= option.name %>
+                                  </label><br>
+                              <% end %>
+                          <% when AssessmentQuestionType::SELECT %>
+                              <select>
+                                <% for option in options %>
+                                    <option><%= option.name %></option>
+                                <% end %>
+                              </select>
+                          <% when AssessmentQuestionType::CHECKBOX %>
+                              <% for option in options %>
+                                  <label>
+                                    <input type="checkbox" name="<%= question.name %>">
+                                    <%= option.name %>
+                                  </label><br>
+                              <% end %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </dd>
+                  </dl>
+                </li>
+            <% end %>
+          </ul>
+        </div>
+    <% i += 1 end %>
+  </div>
+
+</div>

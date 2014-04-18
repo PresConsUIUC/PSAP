@@ -825,6 +825,89 @@ case Rails.env
                                  format: format)
     end
 
+    # Assessment
+    assessment = Assessment.create!
+
+    sections = [
+        AssessmentSection.create!(name: 'Section 1', index: 0,
+                                  assessment: assessment),
+        AssessmentSection.create!(name: 'Section 2', index: 1,
+                                  assessment: assessment),
+        AssessmentSection.create!(name: 'Section 3', index: 2,
+                                  assessment: assessment),
+        AssessmentSection.create!(name: 'Section 4', index: 3,
+                                  assessment: assessment)
+    ]
+
+    questions = [
+        AssessmentQuestion.create!(name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
+                                   index: 0,
+                                   question_type: AssessmentQuestionType::RADIO,
+                                   weight: 0.5,
+                                   assessment_section: sections[0]),
+        AssessmentQuestion.create!(name: 'To be or not to be?',
+                                   index: 1,
+                                   question_type: AssessmentQuestionType::SELECT,
+                                   weight: 0.25,
+                                   assessment_section: sections[0]),
+        AssessmentQuestion.create!(name: 'You talkin\' to me?',
+                                   index: 2,
+                                   question_type: AssessmentQuestionType::RADIO,
+                                   weight: 0.25,
+                                   assessment_section: sections[0]),
+        AssessmentQuestion.create!(name: 'Grocery list',
+                                   index: 0,
+                                   question_type: AssessmentQuestionType::CHECKBOX,
+                                   weight:0.5,
+                                   assessment_section: sections[1]),
+        AssessmentQuestion.create!(name: 'If a tree falls in the forest, does it make a sound?',
+                                   index: 1,
+                                   question_type: AssessmentQuestionType::RADIO,
+                                   weight: 0.25,
+                                   assessment_section: sections[1])
+    ]
+
+    options = [
+        AssessmentQuestionOption.create!(name: 'A lot', index: 0, value: 1,
+                                         assessment_question: questions[0]),
+        AssessmentQuestionOption.create!(name: 'A little', index: 1, value: 0.5,
+                                         assessment_question: questions[0]),
+        AssessmentQuestionOption.create!(name: 'None', index: 2, value: 0,
+                                         assessment_question: questions[0]),
+
+        AssessmentQuestionOption.create!(name: 'To be', index: 0, value: 1,
+                                         assessment_question: questions[1]),
+        AssessmentQuestionOption.create!(name: 'Not to be', index: 1, value: 0,
+                                         assessment_question: questions[1]),
+        AssessmentQuestionOption.create!(name: 'Reply hazy, try again', index: 2, value: 0.5,
+                                         assessment_question: questions[1]),
+
+        AssessmentQuestionOption.create!(name: 'Yea', index: 0, value: 1,
+                                         assessment_question: questions[2]),
+        AssessmentQuestionOption.create!(name: 'No', index: 1, value: 0,
+                                         assessment_question: questions[2]),
+        AssessmentQuestionOption.create!(name: 'You\'re the only one here', index: 3, value: 1,
+                                         assessment_question: questions[2]),
+
+        AssessmentQuestionOption.create!(name: 'Bananas', index: 0, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'Kale', index: 0, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'Mangoes', index: 0, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'More bananas', index: 0, value: 1,
+                                         assessment_question: questions[3]),
+
+        AssessmentQuestionOption.create!(name: 'Yes', index: 0, value: 1,
+                                         assessment_question: questions[4]),
+        AssessmentQuestionOption.create!(name: 'No', index: 1, value: 0,
+                                         assessment_question: questions[4]),
+    ]
+
+  when 'production'
+
+    # TODO: add assessment
+
 end
 
 # Some of the above commands generated events, which we don't want.

@@ -68,6 +68,9 @@ Psap::Application.routes.draw do
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
 
+  # There is only one assessment template. It can be edited but not deleted,
+  # and new ones cannot be created.
+  resources :assessments, only: [:edit, :index, :update], path: 'assessment'
   resources :formats
   resources :institutions do
     resources :repositories, except: :index

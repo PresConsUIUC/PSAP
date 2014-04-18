@@ -13,6 +13,50 @@
 
 ActiveRecord::Schema.define(version: 20140417190822) do
 
+  create_table "assessment_question_options", force: true do |t|
+    t.integer  "index"
+    t.string   "name"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "assessment_question_id"
+  end
+
+  add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id"
+
+  create_table "assessment_questions", force: true do |t|
+    t.integer  "index"
+    t.string   "name"
+    t.integer  "question_type"
+    t.float    "weight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "assessment_section_id"
+    t.integer  "assessment_question_id"
+    t.integer  "selected_option_id"
+  end
+
+  add_index "assessment_questions", ["assessment_question_id"], name: "index_assessment_questions_on_assessment_question_id"
+  add_index "assessment_questions", ["assessment_section_id"], name: "index_assessment_questions_on_assessment_section_id"
+  add_index "assessment_questions", ["selected_option_id"], name: "index_assessment_questions_on_selected_option_id"
+
+  create_table "assessment_sections", force: true do |t|
+    t.integer  "index"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "assessment_id"
+    t.integer  "assessment_question_option_id"
+  end
+
+  add_index "assessment_sections", ["assessment_id"], name: "index_assessment_sections_on_assessment_id"
+  add_index "assessment_sections", ["assessment_question_option_id"], name: "index_assessment_sections_on_assessment_question_option_id"
+
+  create_table "assessments", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "creators", force: true do |t|
     t.string   "name"
     t.datetime "created_at"

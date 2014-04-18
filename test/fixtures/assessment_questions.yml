@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  index: 1
+  name: MyString
+  question_type: 1
+  weight: 1.5
+
+two:
+  index: 1
+  name: MyString
+  question_type: 1
+  weight: 1.5
