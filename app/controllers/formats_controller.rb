@@ -63,7 +63,11 @@ class FormatsController < ApplicationController
   private
 
   def format_params
-    params.require(:format).permit(:name, :score, :obsolete)
+    params.require(:format).permit(:name, :score, :obsolete,
+                                   temperature_ranges_attributes: [:id,
+                                                                   :min_temp_f,
+                                                                   :max_temp_f,
+                                                                   :score])
   end
 
   def sort_column

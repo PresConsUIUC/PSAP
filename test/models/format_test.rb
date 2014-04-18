@@ -17,6 +17,10 @@ class FormatTest < ActiveSupport::TestCase
     assert @format.save
   end
 
+  test 'formats are initialized with a default temperature range' do
+    assert_equal 1, @format.temperature_ranges.length
+  end
+
   ########################### property tests ################################
 
   # name
@@ -46,6 +50,17 @@ class FormatTest < ActiveSupport::TestCase
 
   test 'score is <= 1' do
     @format.score = 1.1
+    assert !@format.save
+  end
+
+  # temperature_ranges
+  test 'temperature ranges should be sequential' do
+    @format.temperature_ranges << temperature_ranges(:temp_range_one)
+    @format.temperature_ranges << temperature_ranges(:temp_range_two)
+    @format.temperature_ranges << temperature_ranges(:temp_range_three)
+    assert @format.save
+
+    temperature_ranges(:temp_range_one).max_temp_f = 53
     assert !@format.save
   end
 

@@ -813,6 +813,18 @@ case Rails.env
                                   resource: resources[i])
     end
 
+    # Format temperature ranges
+    formats.each do |format|
+        TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
+                                 format: format)
+        TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
+                                 format: format)
+        TemperatureRange.create!(min_temp_f: 55, max_temp_f: 72, score: 0.33,
+                                 format: format)
+        TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
+                                 format: format)
+    end
+
 end
 
 # Some of the above commands generated events, which we don't want.

@@ -154,6 +154,15 @@ ActiveRecord::Schema.define(version: 20140416142715) do
 
   add_index "subjects", ["resource_id"], name: "index_subjects_on_resource_id"
 
+  create_table "temperature_ranges", force: true do |t|
+    t.decimal "min_temp_f", precision: 3, scale: 0
+    t.decimal "max_temp_f", precision: 3, scale: 0
+    t.float   "score"
+    t.integer "format_id"
+  end
+
+  add_index "temperature_ranges", ["format_id"], name: "index_temperature_ranges_on_format_id"
+
   create_table "users", force: true do |t|
     t.string   "first_name"
     t.string   "email"

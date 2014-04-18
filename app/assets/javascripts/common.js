@@ -99,11 +99,12 @@ $(document).ready(function() {
             $(this).prev('.addable_removable_input_group').show();
         } else {
             // clone the last input group and insert the clone into the DOM
-            var group = $(this).prev();
-            group.after(group.clone(true));
+            var group = $(this).prev().prev('.addable_removable_input_group');
+            var cloned_group = group.clone(true);
+            group.after(cloned_group);
 
             // find all of its input elements
-            $(this).prev('.addable_removable_input_group').find('input, select, textarea').each(function() {
+            cloned_group.find('input, select, textarea').each(function() {
                 // update the element's indexes within the form, for rails
                 var index = parseInt($(this).attr('id').match(/\d+/)[0]);
                 $(this).attr('id', $(this).attr('id').replace(index, index + 1));

@@ -32,6 +32,14 @@
 <dl>
   <dt>Score</dt>
   <dd><%= @format.score %> / 1</dd>
+  <dt>Temperature Range Scores (&deg;F)</dt>
+  <dd>
+    <ul>
+      <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
+          <li><%= range.min_temp_f %>&ndash;<%= range.max_temp_f %>: <%= range.score %></li>
+      <% end %>
+    </ul>
+  </dd>
   <dt>Obsolete</dt>
   <dd><%= @format.obsolete ? 'Yes' : 'No' %></dd>
 </dl>
