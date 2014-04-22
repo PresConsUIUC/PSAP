@@ -1,7 +1,12 @@
 class AssessmentQuestion < ActiveRecord::Base
   belongs_to :assessment_section, inverse_of: :assessment_questions
+  belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy
+  has_many :children, class_name: 'AssessmentQuestion',
+           foreign_key: 'parent_id', inverse_of: :parent, dependent: :destroy
+
+  accepts_nested_attributes_for :assessment_question_options
 
   def readable_question_type
     case question_type

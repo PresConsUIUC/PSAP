@@ -95,8 +95,8 @@ $(document).ready(function() {
             return;
         }
         // if there is a hidden input group, show it instead of cloning it
-        if ($(this).prev('.addable_removable_input_group:hidden').length) {
-            $(this).prev('.addable_removable_input_group').show();
+        if ($(this).prev().prev('.addable_removable_input_group:hidden').length) {
+            $(this).prev().prev('.addable_removable_input_group').show();
         } else {
             // clone the last input group and insert the clone into the DOM
             var group = $(this).prev().prev('.addable_removable_input_group');
