@@ -1,7 +1,22 @@
 <% provide(:title, 'Assessment Template') %>
 <% provide(:body_id, 'assessment_template') %>
 
-<h1>Assessment Template</h1>
+
+
+<div class="row">
+  <div class="col-md-8">
+    <h1>Assessment Template</h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <div class="btn-group">
+      <!-- Add Question button -->
+      <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add a Question
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <div class="row">
 

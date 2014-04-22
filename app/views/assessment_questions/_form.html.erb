@@ -1,0 +1,62 @@
+<%= render 'shared/error_messages', :object => f.object %>
+
+<div class="form-group has-feedback">
+  <%= f.label :name, 'Question' %>
+  <%= f.text_field :name, class: 'form-control' %>
+  <span class="glyphicon form-control-feedback"></span>
+</div>
+
+<div class="form-group has-feedback">
+  <%= f.label :assessment_section_id, 'Section' %>
+  <%= f.collection_select :assessment_section_id,
+                          AssessmentSection.order(:index), :id, :name,
+                          { include_blank: false },
+                          { class: 'form-control' } %>
+</div>
+
+<div class="form-group has-feedback">
+  <%= f.label :parent_id, 'Child Of' %>
+  <%= select('assessment_question', 'question_type',
+             assessment_question_options_for_select,
+             { include_blank: true },
+             { class: 'form-control' }) %>
+</div>
+
+<div class="form-group has-feedback">
+  <%= f.label :question_type, 'Type' %>
+  <%= select('assessment_question', 'question_type',
+             options_for_select([['Radio buttons', AssessmentQuestionType::RADIO],
+                                 ['Pull-down menu', AssessmentQuestionType::SELECT],
+                                 ['Checkboxes', AssessmentQuestionType::CHECKBOX]]),
+             { include_blank: false },
+             { class: 'form-control' }) %>
+</div>
+
+<div class="form-group has-feedback">
+  <%= f.label :weight, 'Weight' %>
+  <%= f.text_field :weight, class: 'form-control' %>
+  <span class="glyphicon form-control-feedback"></span>
+</div>
+
+<div class="form-group addable_removable">
+  <%= f.label :assessment_question_options, 'Options' %>
+  <%= f.fields_for :assessment_question_options do |g| %>
+      <div class="addable_removable_input_group well">
+
+        <div class="form-group has-feedback">
+          <%= g.label :name, 'Option' %>
+          <%= g.text_field :name, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <%= g.label :value, 'Value' %>
+          <%= g.text_field :value, class: 'form-control' %>
+          <span class="glyphicon form-control-feedback"></span>
+        </div>
+
+        <button class="btn btn-default remove" type="button">Remove</button>
+      </div>
+  <% end %>
+  <button class="btn btn-default add" type="button">Add Option</button>
+</div>
