@@ -38,6 +38,12 @@
   <span class="glyphicon form-control-feedback"></span>
 </div>
 
+<div class="form-group has-feedback">
+  <%= f.label :help_text %>
+  <%= f.text_field :help_text, class: 'form-control' %>
+  <span class="glyphicon form-control-feedback"></span>
+</div>
+
 <div class="form-group addable_removable">
   <%= f.label :assessment_question_options, 'Options' %>
   <%= f.fields_for :assessment_question_options do |g| %>

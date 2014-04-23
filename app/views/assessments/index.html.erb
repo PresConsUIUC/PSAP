@@ -43,30 +43,9 @@
 
               <div class="row">
                 <div class="col-md-8">
-                  <h3><%= question.name %>
-                  <small>Weight: <%= question.weight %> |
-                  <%= question.readable_question_type.downcase %></small></h3>
-
-                  <% if options.any? %>
-                      <table class="table">
-                        <thead>
-                        <tr>
-                          <th>Option</th>
-                          <th>Score</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for option in options %>
-                            <tr>
-                              <td><%= option.name %></td>
-                              <td><%= option.value %></td>
-                            </tr>
-                        <% end %>
-                        </tbody>
-                      </table>
-                  <% end %>
+                  <h3><%= question.name %></h3>
                 </div>
-                <div class="col-md-4" style="text-align:right">
+                <div class="col-md-4">
                   <div class="btn-group" style="float:right">
                     <!-- Edit -->
                     <%= link_to edit_assessment_question_path(question),
@@ -86,6 +65,41 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-md-5">
+                  <dl>
+                    <dt>Weight</dt>
+                    <dd><%= question.weight %></dd>
+                    <dt>Input Type</dt>
+                    <dd><%= question.readable_question_type %></dd>
+                    <dt>Help</dt>
+                    <dd><%= question.help_text %></dd>
+                  </dl>
+                </div>
+
+                <div class="col-md-7">
+                  <% if options.any? %>
+                      <table class="table">
+                        <thead>
+                        <tr>
+                          <th>Option</th>
+                          <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% for option in options %>
+                            <tr>
+                              <td><%= option.name %></td>
+                              <td><%= option.value %></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+                  <% end %>
+                </div>
+              </div>
+              <hr>
           <% end %>
         </div>
     <% i += 1 end %>
