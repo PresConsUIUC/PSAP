@@ -9,6 +9,9 @@ class DeleteAssessmentQuestionCommand < Command
   def execute
     begin
       @assessment_question.destroy!
+
+      CreateAssessmentQuestionCommand.updateQuestionIndexes
+
       Event.create(description: 'Deleted assessment question',
                    user: @user, address: @remote_ip)
     rescue ActiveRecord::DeleteRestrictionError => e

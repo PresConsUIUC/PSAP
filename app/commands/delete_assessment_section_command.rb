@@ -9,6 +9,9 @@ class DeleteAssessmentSectionCommand < Command
   def execute
     begin
       @assessment_section.destroy!
+
+      CreateAssessmentSectionCommand.updateSectionIndexes
+
       Event.create(description: "Deleted assessment section "\
       "\"#{@assessment_section.name}\"",
                    user: @user, address: @remote_ip)

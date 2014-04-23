@@ -1,12 +1,19 @@
 class CreateAssessmentSectionCommand < Command
 
-  def self.updateSectionIndexes(assessment_section)
-    # Update the other sections' indexes
-    sections = AssessmentSection.where.not(id: assessment_section.id).
-        where('"index" >= ?', assessment_section.index).order(:index)
-    sections.each do |section|
-      section.index = section.index + 1
-      section.save!
+  def self.updateSectionIndexes(assessment_section = nil)
+    if assessment_section
+      sections = AssessmentSection.where.not(id: assessment_section.id).
+          where('"index" >= ?', assessment_section.index).order(:index)
+      sections.each do |section|
+        section.index = section.index + 1
+        section.save!
+      end
+    else
+      sections = AssessmentSection.order(:index)
+      for i in 0..sections.length
+        sections[i].index = i
+        sections[i].save!
+      end
     end
   end
 
