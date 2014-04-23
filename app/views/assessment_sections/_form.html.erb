@@ -10,7 +10,7 @@
   <%= f.label :index, 'Appearing After' %>
   <%= f.collection_select :index,
                           AssessmentSection.order(:index), :index, :name,
-                          { include_blank: true, selected: f.object.index - 1 },
+                          { include_blank: true, selected: f.object.index.to_i - 1 },
                           { class: 'form-control' } %>
 </div>
 
