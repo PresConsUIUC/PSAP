@@ -10,7 +10,7 @@ class AssessmentQuestionsController < ApplicationController
     begin
       command.execute
       flash[:success] = 'Assessment question created.'
-      redirect_to @assessment_question
+      redirect_to assessments_url
     rescue
       render 'new'
     end
@@ -27,7 +27,7 @@ class AssessmentQuestionsController < ApplicationController
     rescue => e
       flash[:error] = "#{e}"
     ensure
-      redirect_to assessment_url
+      redirect_to assessments_url
     end
   end
 
