@@ -1,18 +1,27 @@
 <% provide(:title, 'Assessment Template') %>
 <% provide(:body_id, 'assessment_template') %>
 
-
-
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <h1>Assessment Template</h1>
   </div>
-  <div class="col-md-4" style="text-align:right">
+  <div class="col-md-6" style="text-align:right">
     <div class="btn-group">
+      <!-- Add Section button -->
+      <%= link_to new_assessment_section_path, class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+          Add a Section
+      <% end %>
       <!-- Add Question button -->
       <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add a Question
+      <% end %>
+      <!-- Edit Section button -->
+      <%= link_to '#',
+                  class: 'btn btn-default', id: 'edit_section_button' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit Section
       <% end %>
     </div>
   </div>
@@ -25,7 +34,7 @@
     <nav>
       <ul class="nav nav-pills nav-stacked">
         <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
-          <li<%= i == 0 ? ' class=active' : '' %>>
+          <li<%= i == 0 ? ' class=active' : '' %> data-open="<%= section.id %>">
             <a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a>
           </li>
         <% i += 1 end %>

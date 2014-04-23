@@ -8,6 +8,8 @@ class AssessmentQuestion < ActiveRecord::Base
 
   accepts_nested_attributes_for :assessment_question_options
 
+  validates :assessment_section, presence: true
+
   def readable_question_type
     case question_type
       when AssessmentQuestionType::RADIO
