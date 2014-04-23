@@ -8,6 +8,7 @@ class AssessmentQuestion < ActiveRecord::Base
 
   accepts_nested_attributes_for :assessment_question_options
 
+  after_initialize :setup, if: :new_record?
   validates :assessment_section, presence: true
 
   def readable_question_type
@@ -20,4 +21,10 @@ class AssessmentQuestion < ActiveRecord::Base
         'Checkboxes'
     end
   end
+
+  def setup
+    self.assessment_question_options << AssessmentQuestionOption.new(
+        name: 'Sample Option', index: 0, value: 1, assessment_question: self)
+  end
+
 end
