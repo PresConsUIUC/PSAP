@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424170222) do
+ActiveRecord::Schema.define(version: 20140424171647) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140424170222) do
     t.string   "name"
     t.string   "key"
     t.float    "percent_complete", default: 0.0
+    t.boolean  "is_template",      default: false
   end
 
   create_table "creators", force: true do |t|
