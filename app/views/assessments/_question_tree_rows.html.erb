@@ -5,6 +5,9 @@
     <div class="row depth-<%= depth %>">
       <div class="col-md-8">
         <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
+        <% if depth > 0 %>
+        <p><em>Only available if the value of the parent question is ____.</em></p>
+        <% end %>
       </div>
       <div class="col-md-4">
         <div class="btn-group" style="float:right">
