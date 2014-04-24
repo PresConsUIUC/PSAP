@@ -22,12 +22,6 @@
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add a Question
       <% end %>
-      <!-- Edit Section button -->
-      <%= link_to '#',
-                  class: 'btn btn-default', id: 'edit_section_button' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-          Edit Section
-      <% end %>
     </div>
   </div>
 </div>
@@ -56,7 +50,30 @@
   <div class="col-md-9 tab-content">
     <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
-          <h2><%= section.name %></h2>
+          <div class="row">
+            <div class="col-md-7">
+              <h2><%= section.name %></h2>
+            </div>
+            <div class="col-md-5" style="text-align:right">
+              <div class="btn-group">
+                <!-- Edit Section button -->
+                <%= link_to edit_assessment_section_path(section),
+                            class: 'btn btn-default', id: 'edit_section_button' do %>
+                    <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+                    Edit Section
+                <% end %>
+                <!-- Delete Section button -->
+                <%= link_to assessment_section_path(section), method: 'delete',
+                            class: 'btn btn-default',
+                            data: { confirm: 'Deleting this section will delete '\
+                  'all questions it contains. Are '\
+                  'you sure you want to delete this section?' } do %>
+                    <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+                    Delete Section
+                <% end %>
+              </div>
+            </div>
+          </div>
 
           <%= render partial: 'assessments/question_tree_rows',
                      locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>

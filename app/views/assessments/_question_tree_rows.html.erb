@@ -2,6 +2,8 @@
 
     <% options = question.assessment_question_options.order(:index) %>
 
+    <hr>
+
     <div class="row depth-<%= depth %>">
       <div class="col-md-8">
         <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
@@ -63,7 +65,7 @@
         <% end %>
       </div>
     </div>
-    <hr>
+
     <%= render partial: 'assessments/question_tree_rows',
                locals: {children: question.children.order(:index), depth: depth + 1} if question.children.any? %>
 <% end %>
