@@ -7,20 +7,15 @@
 </ol>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-10">
     <h1><%= @assessment.name %> Template</h1>
   </div>
-  <div class="col-md-6" style="text-align:right">
+  <div class="col-md-2" style="text-align:right">
     <div class="btn-group">
       <!-- Add Section button -->
       <%= link_to new_assessment_section_path, class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add a Section
-      <% end %>
-      <!-- Add Question button -->
-      <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add a Question
       <% end %>
     </div>
   </div>
@@ -51,16 +46,21 @@
     <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-5">
               <h2><%= section.name %></h2>
             </div>
-            <div class="col-md-5" style="text-align:right">
+            <div class="col-md-7" style="text-align:right">
               <div class="btn-group">
+                <!-- Add Question button -->
+                <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
+                    <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+                    Add a Question
+                <% end %>
                 <!-- Edit Section button -->
                 <%= link_to edit_assessment_section_path(section),
                             class: 'btn btn-default', id: 'edit_section_button' do %>
                     <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-                    Edit Section
+                    Edit
                 <% end %>
                 <!-- Delete Section button -->
                 <%= link_to assessment_section_path(section), method: 'delete',
@@ -69,7 +69,7 @@
                   'all questions it contains. Are '\
                   'you sure you want to delete this section?' } do %>
                     <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-                    Delete Section
+                    Delete
                 <% end %>
               </div>
             </div>
