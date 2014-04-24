@@ -52,7 +52,7 @@ $(document).ready(function() {
     // server-rendered flash messages; the same thing is done with ajax-
     // rendered flash messages in ajax.js.
     setTimeout(function() {
-        $('div.alert').fadeOut(1000);
+        $('div.alert-dismissable').fadeOut(1000);
     }, 5000);
 
     // Used by the Bootstrap 3 tab bar
