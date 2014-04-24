@@ -5,4 +5,14 @@ body#assessment_template {
   table {
     font-size:0.9em;
   }
+  div {
+    .depth-1 { margin-left:1em; }
+    .depth-2 { margin-left: 2em; }
+    .depth-3 { margin-left: 3em; }
+    .depth-4 { margin-left: 4em; }
+    .depth-5 { margin-left: 5em; }
+    .depth-6 { margin-left: 6em; }
+    .depth-7 { margin-left: 7em; }
+    .depth-8 { margin-left: 8em; }
+  }
 }

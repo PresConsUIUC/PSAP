@@ -1,0 +1,66 @@
+<% children.each do |question| %>
+
+    <% options = question.assessment_question_options.order(:index) %>
+
+    <div class="row depth-<%= depth %>">
+      <div class="col-md-8">
+        <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group" style="float:right">
+          <!-- Edit -->
+          <%= link_to edit_assessment_question_path(question),
+                      class: 'btn btn-default' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+              Edit
+          <% end %>
+          <!-- Delete -->
+          <%= link_to assessment_question_path(question),
+                      method: 'delete',
+                      class: 'btn btn-default',
+                      data: { confirm: 'Are you sure you want to '\
+                                'delete this question?' } do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+              Delete
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row depth-<%= depth %>">
+      <div class="col-md-5">
+        <dl>
+          <dt>Weight</dt>
+          <dd><%= question.weight %></dd>
+          <dt>Input Type</dt>
+          <dd><%= question.readable_question_type %></dd>
+          <dt>Help</dt>
+          <dd><%= question.help_text %></dd>
+        </dl>
+      </div>
+
+      <div class="col-md-7">
+        <% if options.any? %>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Option</th>
+                <th>Score</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% for option in options %>
+                  <tr>
+                    <td><%= option.name %></td>
+                    <td><%= option.value %></td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+        <% end %>
+      </div>
+    </div>
+    <hr>
+    <%= render partial: 'assessments/question_tree_rows',
+               locals: {children: question.children.order(:index), depth: depth + 1} if question.children.any? %>
+<% end %>

@@ -839,39 +839,53 @@ case Rails.env
                                   assessment: assessment)
     ]
 
-    questions = [
-        AssessmentQuestion.create!(name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-                                   index: 0,
-                                   question_type: AssessmentQuestionType::RADIO,
-                                   weight: 0.5,
-                                   help_text: 'Sample help text',
-                                   assessment_section: sections[0]),
-        AssessmentQuestion.create!(name: 'To be or not to be?',
-                                   index: 1,
-                                   question_type: AssessmentQuestionType::SELECT,
-                                   weight: 0.25,
-                                   help_text: 'Sample help text',
-                                   assessment_section: sections[0]),
-        AssessmentQuestion.create!(name: 'You talkin\' to me?',
-                                   index: 2,
-                                   question_type: AssessmentQuestionType::RADIO,
-                                   weight: 0.25,
-                                   help_text: 'Sample help text',
-                                   assessment_section: sections[0]),
-        AssessmentQuestion.create!(name: 'Grocery list',
-                                   index: 0,
-                                   question_type: AssessmentQuestionType::CHECKBOX,
-                                   weight:0.5,
-                                   help_text: 'Sample help text',
-                                   assessment_section: sections[1]),
-        AssessmentQuestion.create!(name: 'If a tree falls in the forest, does it make a sound?',
-                                   index: 1,
-                                   question_type: AssessmentQuestionType::RADIO,
-                                   weight: 0.25,
-                                   help_text: 'Sample help text',
-                                   assessment_section: sections[1])
-    ]
+    # Assessment questions
+    questions = []
+    questions << AssessmentQuestion.create!(
+        name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
+        index: 0,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.5,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'To be or not to be?',
+        index: 1,
+        question_type: AssessmentQuestionType::SELECT,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'You talkin\' to me?',
+        index: 2,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'Grocery list',
+        index: 0,
+        question_type: AssessmentQuestionType::CHECKBOX,
+        weight:0.5,
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
+    questions << AssessmentQuestion.create!(
+        name: 'If a tree falls in the forest, does it make a sound?',
+        index: 1,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
+    questions << AssessmentQuestion.create!(
+        name: 'Even if you\'re not around?',
+        index: 1,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        parent: questions[4],
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
 
+    # Assessment question options
     options = [
         AssessmentQuestionOption.create!(name: 'A lot', index: 0, value: 1,
                                          assessment_question: questions[0]),
@@ -907,6 +921,13 @@ case Rails.env
                                          assessment_question: questions[4]),
         AssessmentQuestionOption.create!(name: 'No', index: 1, value: 0,
                                          assessment_question: questions[4]),
+
+        AssessmentQuestionOption.create!(name: 'Yup', index: 0, value: 1,
+                                         assessment_question: questions[5]),
+        AssessmentQuestionOption.create!(name: 'Nope', index: 1, value: 0,
+                                         assessment_question: questions[5]),
+        AssessmentQuestionOption.create!(name: 'Maybe', index: 2, value: 0.5,
+                                         assessment_question: questions[5]),
     ]
 
   when 'production'
