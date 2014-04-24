@@ -11,7 +11,7 @@ class AssessmentSectionsController < ApplicationController
       command.execute
       flash[:success] = "Assessment section \"#{@assessment_section.name}\" "\
       "created."
-      redirect_to assessments_url
+      redirect_to @assessment_section.assessment
     rescue
       render 'new'
     end
@@ -29,7 +29,7 @@ class AssessmentSectionsController < ApplicationController
     rescue => e
       flash[:error] = "#{e}"
     ensure
-      redirect_to assessments_url
+      redirect_to @assessment_section.assessment
     end
   end
 
@@ -51,7 +51,7 @@ class AssessmentSectionsController < ApplicationController
       command.execute
       flash[:success] = "Assessment section \"#{@assessment_section.name}\" "\
       "updated."
-      redirect_to assessments_url
+      redirect_to @assessment_section.assessment
     rescue
       render 'edit'
     end
