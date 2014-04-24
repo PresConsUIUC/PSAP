@@ -11,6 +11,7 @@ class Resource < ActiveRecord::Base
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
   belongs_to :user, inverse_of: :resources
 
+  accepts_nested_attributes_for :assessment
   accepts_nested_attributes_for :creators
   accepts_nested_attributes_for :extents
   accepts_nested_attributes_for :resource_dates
