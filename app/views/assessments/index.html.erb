@@ -1,62 +1,13 @@
-<% provide(:title, 'Assessment Template') %>
-<% provide(:body_id, 'assessment_template') %>
+<% provide(:title, 'Assessment Templates') %>
 
-<div class="row">
-  <div class="col-md-6">
-    <h1>Assessment Template</h1>
-  </div>
-  <div class="col-md-6" style="text-align:right">
-    <div class="btn-group">
-      <!-- Add Section button -->
-      <%= link_to new_assessment_section_path, class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add a Section
-      <% end %>
-      <!-- Add Question button -->
-      <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add a Question
-      <% end %>
-      <!-- Edit Section button -->
-      <%= link_to '#',
-                  class: 'btn btn-default', id: 'edit_section_button' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-          Edit Section
-      <% end %>
-    </div>
-  </div>
-</div>
+<ol class="breadcrumb">
+  <li class="active">Assessment Templates</li>
+</ol>
 
-<div class="alert alert-info">
-  <p>This template contains the content for all new resource assessments.
-    Changes to will apply only to resource assessments begun in the future
-    &mdash; not any that already exist. (CONFIRM THIS)</p>
-</div>
+<h1>Assessment Templates</h1>
 
-<div class="row">
-
-  <!-- left column menu -->
-  <div class="col-md-3">
-    <nav>
-      <ul class="nav nav-pills nav-stacked">
-        <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
-          <li<%= i == 0 ? ' class=active' : '' %> data-open="<%= section.id %>">
-            <a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a>
-          </li>
-        <% i += 1 end %>
-      </ul>
-    </nav>
-  </div>
-
-  <div class="col-md-9 tab-content">
-    <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
-        <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
-          <h2><%= section.name %></h2>
-
-          <%= render partial: 'assessments/question_tree_rows',
-                     locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
-        </div>
-    <% i += 1 end %>
-  </div>
-
-</div>
+<ul>
+  <% @assessments.each do |assessment| %>
+      <li><%= link_to assessment.name, assessment %></li>
+  <% end %>
+</ul>

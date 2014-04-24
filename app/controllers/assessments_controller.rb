@@ -3,7 +3,11 @@ class AssessmentsController < ApplicationController
   before_action :signed_in_user, :admin_user
 
   def index
-    @assessment = Assessment.find(1)
+    @assessments = Assessment.all
+  end
+
+  def show
+    @assessment = Assessment.find(params[:id])
   end
 
 end

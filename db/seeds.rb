@@ -503,6 +503,13 @@ formats = [
     Format.create!(name: 'Post-It Note', score: 0.375, obsolete: false),
 ]
 
+# Assessments
+assessments = [
+    Assessment.create!(name: 'Resource Assessment', key: 'resource'),
+    Assessment.create!(name: 'Location Assessment', key: 'location'),
+    Assessment.create!(name: 'Institution Assessment', key: 'institution')
+]
+
 # Admin role
 admin_role = Role.create!(name: 'Administrator', is_admin: true)
 
@@ -825,18 +832,16 @@ case Rails.env
                                  format: format)
     end
 
-    # Assessment
-    assessment = Assessment.create!
-
+    # Assessment sections
     sections = [
         AssessmentSection.create!(name: 'Section 1', index: 0,
-                                  assessment: assessment),
+                                  assessment: assessments[0]),
         AssessmentSection.create!(name: 'Section 2', index: 1,
-                                  assessment: assessment),
+                                  assessment: assessments[0]),
         AssessmentSection.create!(name: 'Section 3', index: 2,
-                                  assessment: assessment),
+                                  assessment: assessments[0]),
         AssessmentSection.create!(name: 'Section 4', index: 3,
-                                  assessment: assessment)
+                                  assessment: assessments[0])
     ]
 
     # Assessment questions
