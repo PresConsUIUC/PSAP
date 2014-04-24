@@ -10,7 +10,7 @@ class CreateAssessmentSectionCommand < Command
       end
     else
       sections = AssessmentSection.order(:index)
-      for i in 0..sections.length
+      for i in 0..sections.length - 1
         sections[i].index = i
         sections[i].save!
       end
