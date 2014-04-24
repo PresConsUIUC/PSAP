@@ -3,4 +3,5 @@ class Location < ActiveRecord::Base
   has_many :resources, inverse_of: :location, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 255 }
+  validates :repository, presence: true
 end
