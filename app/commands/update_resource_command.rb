@@ -8,7 +8,6 @@ class UpdateResourceCommand < Command
   end
 
   def execute
-    # TODO: update @resource.percent_complete
     @resource.update!(@resource_params)
     Event.create(description: "Updated resource \"#{@resource.name}\" in "\
     "location \"#{@resource.location.name}\"",

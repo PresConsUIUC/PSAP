@@ -7,7 +7,7 @@
         &#8627; <%= link_to child.name, child %>
       </td>
       <td><%= child.readable_resource_type %></td>
-      <td class="center"><%= number_to_human child.percent_complete %>%</td>
+      <td class="center"><%= number_to_human child.assessment.percent_complete %>%</td>
     </tr>
     <%= render partial: 'resources/resource_tree_rows',
                locals: {children: child.children.order(:name), depth: depth + 1} if child.children.any? %>

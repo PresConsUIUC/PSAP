@@ -26,22 +26,6 @@ class ResourceTest < ActiveSupport::TestCase
     assert !@resource.save
   end
 
-  # percent_complete
-  test 'percent_complete is required' do
-    @resource.percent_complete = nil
-    assert !@resource.save
-  end
-
-  test 'percent_complete cannot be less than 0' do
-    @resource.percent_complete = -0.5
-    assert !@resource.save
-  end
-
-  test 'percent_complete cannot be greater than 1' do
-    @resource.percent_complete = 1.2
-    assert !@resource.save
-  end
-
   # resource_type
   test 'resource_type is required' do
     @resource.resource_type = nil

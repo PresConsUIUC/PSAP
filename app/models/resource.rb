@@ -5,6 +5,7 @@ class Resource < ActiveRecord::Base
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
+  belongs_to :assessment, inverse_of: :resource
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
@@ -17,10 +18,16 @@ class Resource < ActiveRecord::Base
 
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :percent_complete, presence: true, numericality: {
-      greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :resource_type, presence: true
   validates :user, presence: true
+
+  after_initialize :setup, if: :new_record?
+
+  def setup
+    # TODO: clone the resource assessment template instead
+    self.assessment = Assessment.new(key: 'resource',
+                                     name: 'Resource Assessment')
+  end
 
   def readable_resource_type
     case resource_type

@@ -8,6 +8,7 @@ class UpdateAssessmentCommand < Command
   end
 
   def execute
+    # TODO: update percent_complete
     @assessment.update!(@assessment_params)
     Event.create(description: 'Updated assessment template',
                  user: @user, address: @remote_ip)
