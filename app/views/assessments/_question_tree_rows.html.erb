@@ -15,14 +15,14 @@
         <div class="btn-group" style="float:right">
           <!-- Edit -->
           <%= link_to edit_assessment_question_path(question),
-                      class: 'btn btn-default' do %>
+                      class: 'btn btn-default btn-sm' do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
               Edit
           <% end %>
           <!-- Delete -->
           <%= link_to assessment_question_path(question),
                       method: 'delete',
-                      class: 'btn btn-default',
+                      class: 'btn btn-default btn-sm',
                       data: { confirm: 'Are you sure you want to '\
                                 'delete this question?' } do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
