@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140425163850) do
+ActiveRecord::Schema.define(version: 20140425203429) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20140425163850) do
     t.datetime "updated_at"
     t.integer  "assessment_id"
     t.integer  "assessment_question_option_id"
+    t.string   "description"
   end
 
   add_index "assessment_sections", ["assessment_id"], name: "index_assessment_sections_on_assessment_id"

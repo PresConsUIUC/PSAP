@@ -60,7 +60,6 @@
           </div>
         </div>
       </div>
-      <p>[Brief explanation of how this set of questions affects overall preservation score]</p>
       <div class="center">
         <button type="button" class="btn btn-primary">Save</button>
       </div>
@@ -79,6 +78,7 @@
     <% @assessment_sections.each do |section| %>
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
           <h2><%= section.name %></h2>
+          <p><%= section.description %></p>
           <%= render partial: 'resources/question_tree_rows',
                      locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
         </div>
