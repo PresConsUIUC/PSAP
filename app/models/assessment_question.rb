@@ -27,4 +27,12 @@ class AssessmentQuestion < ActiveRecord::Base
         name: 'Sample Option', index: 0, value: 1, assessment_question: self)
   end
 
+  def deep_clone
+    obj = self.dup
+    self.assessment_question_options.each do |option|
+      obj.assessment_question_options << option.dup
+    end
+    return obj
+  end
+
 end

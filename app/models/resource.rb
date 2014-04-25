@@ -25,9 +25,7 @@ class Resource < ActiveRecord::Base
   after_initialize :setup, if: :new_record?
 
   def setup
-    # TODO: clone the resource assessment template instead
-    self.assessment = Assessment.new(key: 'resource',
-                                     name: 'Resource Assessment')
+    self.assessment = Assessment.find_by_key('resource').deep_clone
   end
 
   def readable_resource_type
