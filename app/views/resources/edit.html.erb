@@ -23,7 +23,54 @@
 
 <h1>Assess <%= @resource.name %></h1>
 
-<%= form_for(@resource) do |f| %>
-    <%= render 'form', :f => f %>
-    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-<% end %>
+<div class="row">
+
+  <!-- left column menu -->
+  <div class="col-md-3">
+    <nav>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#general">General</a></li>
+        <% @assessment_sections.each do |section| %>
+            <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a></li>
+        <% end %>
+      </ul>
+    </nav>
+
+    <section>
+      <div class="center">
+        <h4>Score</h4>
+        <div class="progress">
+          <div class="progress-bar progress-bar-warning" role="progressbar"
+               aria-valuenow="0.4" aria-valuemin="0" aria-valuemax="1"
+               style="width: 40%">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+      <p>[Brief explanation of how this set of questions affects overall preservation score]</p>
+      <div class="center">
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="col-md-9 tab-content">
+
+    <div id="general" class="tab-pane active">
+      <h2>General</h2>
+      <%= form_for(@resource) do |f| %>
+          <%= render 'general_form', :f => f %>
+          <%= f.submit 'Create Resource Assessment', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+
+    <% @assessment_sections.each do |section| %>
+        <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
+          <h2><%= section.name %></h2>
+          <%= render partial: 'resources/question_tree_rows',
+                     locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
+        </div>
+    <% end %>
+
+  </div>
+</div>

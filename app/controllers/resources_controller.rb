@@ -34,6 +34,8 @@ class ResourcesController < ApplicationController
 
   def edit
     @resource = Resource.find(params[:id])
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
   end
 
   def new
@@ -46,6 +48,9 @@ class ResourcesController < ApplicationController
     @resource.extents.build
     @resource.resource_dates.build
     @resource.subjects.build
+
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
   end
 
   def show

@@ -1,0 +1,53 @@
+<% children.each do |question| %>
+
+    <% options = question.assessment_question_options.order(:index)
+    if options.any? %>
+
+        <hr>
+
+        <div class="row depth-<%= depth %>">
+          <div class="col-md-12">
+            <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
+          </div>
+        </div>
+
+        <div class="row depth-<%= depth %>">
+          <div class="col-md-12">
+            <% case question.question_type %>
+            <% when AssessmentQuestionType::RADIO %>
+                <% options.each do |option| %>
+                    <label>
+                      <input type="radio" name="<%= option.name %>"
+                             value="<%= option.value %>">
+                      <%= option.name %>
+                    </label>
+                    <br>
+                <% end %>
+            <% when AssessmentQuestionType::SELECT %>
+                <label>
+                  <select name="">
+                    <% options.each do |option| %>
+                        <option value="<%= option.value %>"><%= option.name %></option>
+                    <% end %>
+                  </select>
+                </label>
+            <% when AssessmentQuestionType::CHECKBOX %>
+                <% options.each do |option| %>
+                    <label>
+                      <input type="checkbox" name="<%= option.name %>"
+                             value="<%= option.value %>">
+                      <%= option.name %>
+                    </label>
+                    <br>
+                <% end %>
+            <% end %>
+
+            <%= question.help_text %>
+          </div>
+        </div>
+
+        <%= render partial: 'resources/question_tree_rows',
+                   locals: {children: question.children.order(:index), depth: depth + 1} if question.children.any? %>
+
+    <% end %>
+<% end %>

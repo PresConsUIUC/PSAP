@@ -43,9 +43,9 @@
     <nav>
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#general">General</a></li>
-        <li><a href="#use_access">Use/Access</a></li>
-        <li><a href="#storage_container">Storage/Container</a></li>
-        <li><a href="#condition">Condition</a></li>
+        <% @assessment_sections.each do |section| %>
+            <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a></li>
+        <% end %>
       </ul>
     </nav>
 
@@ -72,42 +72,17 @@
     <div id="general" class="tab-pane active">
       <h2>General</h2>
       <%= form_for(@resource, url: location_resources_path(@location)) do |f| %>
-          <%= render 'form', :f => f %>
-          <%= f.submit 'Create Resource Assessment', class: 'btn btn-primary' %>
+          <%= render 'general_form', :f => f %>
       <% end %>
     </div>
 
-    <div id="use_access" class="tab-pane">
-      <h2>Use/Access</h2>
-      <p>This is the use/access section.</p>
-    </div>
-
-    <div id="storage_container" class="tab-pane">
-      <h2>Storage/Container</h2>
-
-      <p>Is the item in an appropriate container in good condition?</p>
-      <div class="radio">
-        <label>
-          <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Yes
-        </label>
-      </div>
-      <div class="radio">
-        <label>
-          <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">No
-        </label>
-      </div>
-      <div class="radio">
-        <label>
-          <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">Unsure
-        </label>
-      </div>
-
-    </div>
-
-    <div id="condition" class="tab-pane">
-      <h2>Condition</h2>
-      <p>This is the condition section.</p>
-    </div>
+    <% @assessment_sections.each do |section| %>
+        <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
+          <h2><%= section.name %></h2>
+          <%= render partial: 'resources/question_tree_rows',
+                     locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
+        </div>
+    <% end %>
 
   </div>
 

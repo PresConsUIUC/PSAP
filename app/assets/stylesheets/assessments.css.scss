@@ -5,6 +5,9 @@ body#assessment_template {
   table {
     font-size:0.9em;
   }
+}
+
+body#assessment_template, body#new_resource, body#edit_resource {
   div {
     .depth-1 { margin-left:1em; }
     .depth-2 { margin-left: 2em; }
