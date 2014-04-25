@@ -1,4 +1,6 @@
 class Resource < ActiveRecord::Base
+  has_many :assessment_question_responses, inverse_of: :resource,
+           dependent: :destroy
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :creators, inverse_of: :resource, dependent: :destroy
@@ -22,10 +24,40 @@ class Resource < ActiveRecord::Base
   validates :resource_type, presence: true
   validates :user, presence: true
 
-  after_initialize :setup, if: :new_record?
+  def assessment_percent_complete
+    unless @assessment_percent_complete
+      # SELECT assessment_questions.id
+      # FROM assessment_questions
+      # LEFT JOIN assessment_sections
+      #     ON assessment_questions.assessment_section_id = assessment_sections.id
+      # LEFT JOIN assessments
+      #     ON assessment_sections.assessment_id = assessments.id
+      # WHERE assessments.key = 'resource'
+      questions = AssessmentQuestion.
+          select('assessment_questions.id').
+          joins('LEFT JOIN assessment_sections '\
+            'ON assessment_questions.assessment_section_id = assessment_sections.id').
+          joins('LEFT JOIN assessments '\
+            'ON assessment_sections.assessment_id = assessments.id').
+          where('assessments.key = \'resource\'')
 
-  def setup
-    self.assessment = Assessment.find_by_key('resource').deep_clone
+      # SELECT assessment_question_responses.id
+      # FROM assessment_question_responses
+      # LEFT JOIN assessment_question_options
+      #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
+      # GROUP BY assessment_question_options.assessment_question_id
+      responses = AssessmentQuestionResponse.
+          select('assessment_question_responses.id').
+          joins('LEFT JOIN assessment_question_options '\
+            'ON assessment_question_options.id '\
+              '= assessment_question_responses.assessment_question_option_id').
+          where('assessment_question_responses.resource_id = ?', self.id).
+          group('assessment_question_options.assessment_question_id')
+
+      @assessment_percent_complete = questions.length > 0 ?
+          responses.length.to_f / questions.length : 0
+    end
+    @assessment_percent_complete
   end
 
   def readable_resource_type

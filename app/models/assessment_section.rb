@@ -8,12 +8,4 @@ class AssessmentSection < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false }
 
-  def deep_clone
-    obj = self.dup
-    self.assessment_questions.each do |question|
-      obj.assessment_questions << question.deep_clone
-    end
-    return obj
-  end
-
 end

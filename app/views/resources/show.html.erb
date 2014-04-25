@@ -103,16 +103,16 @@
       <% end %>
 
       <div id="assessment" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
-        <% if @resource.assessment.percent_complete < 1 %>
-          <h3><%= number_to_human @resource.assessment.percent_complete %>% complete</h3>
+        <% if @resource.assessment_percent_complete < 1 %>
+          <h3><%= number_to_human @resource.assessment_percent_complete * 100 %>% complete</h3>
 
           <div class="progress">
             <div class="progress-bar" role="progressbar"
-                 aria-valuenow="<%= @resource.assessment.percent_complete %>"
+                 aria-valuenow="<%= @resource.assessment_percent_complete %>"
                  aria-valuemin="0" aria-valuemax="1"
-                 style="width:<%= @resource.assessment.percent_complete * 100 %>%;">
+                 style="width:<%= @resource.assessment_percent_complete * 100 %>%;">
               <span class="sr-only">
-                <%= number_to_human @resource.assessment.percent_complete %>% Complete</span>
+                <%= number_to_human @resource.assessment_percent_complete * 100 %>% Complete</span>
             </div>
           </div>
 

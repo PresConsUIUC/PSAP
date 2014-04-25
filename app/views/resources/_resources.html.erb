@@ -9,13 +9,14 @@
   </thead>
   <tbody>
   <% @resources.each do |resource| %>
+      <% # TODO: replace this with resources/resource_tree_rows partial %>
       <tr>
         <td>
           <%= link_to 'Edit', edit_resource_path(resource) %>
         </td>
         <td><%= link_to resource.name, resource %></td>
         <td><%= resource.readable_resource_type %></td>
-        <td class="center"><%= number_to_human resource.assessment.percent_complete %>%</td>
+        <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
       </tr>
       <%= render partial: 'resources/resource_tree_rows',
                  locals: {children: resource.children.order(:name), depth: 1} if resource.children.any? %>

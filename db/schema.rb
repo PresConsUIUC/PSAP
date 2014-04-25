@@ -11,18 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424171647) do
+ActiveRecord::Schema.define(version: 20140425163850) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index"
     t.string   "name"
-    t.string   "value"
+    t.float    "value",                  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assessment_question_id"
   end
 
   add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id"
+
+  create_table "assessment_question_responses", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "resource_id"
+    t.integer  "assessment_question_option_id"
+  end
+
+  add_index "assessment_question_responses", ["assessment_question_option_id"], name: "assessment_question_option_id"
+  add_index "assessment_question_responses", ["resource_id"], name: "index_assessment_question_responses_on_resource_id"
 
   create_table "assessment_questions", force: true do |t|
     t.integer  "index"

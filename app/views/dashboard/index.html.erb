@@ -17,7 +17,7 @@
                 <ul>
                   <% for resource in @resources %>
                     <li><%= link_to resource.name, resource %><br>
-                      <small><%= number_to_human resource.assessment.percent_complete %>% complete
+                      <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
                         / updated <%= local_time_ago resource.updated_at %></small></li>
                   <% end %>
                 </ul>
@@ -27,7 +27,6 @@
           </div>
         </div>
       </div>
-
 
       <div class="col-md-6">
         <div class="panel panel-default dashboard">
@@ -39,7 +38,7 @@
                 <ul>
                   <% for resource in @recent_assessments %>
                       <li><%= link_to resource.name, resource %><br>
-                        <small><%= number_to_human resource.assessment.percent_complete %>% complete
+                        <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
                           / updated <%= local_time_ago resource.updated_at %></small></li>
                   <% end %>
                 </ul>

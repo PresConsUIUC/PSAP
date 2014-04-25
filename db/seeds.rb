@@ -938,6 +938,20 @@ case Rails.env
                                          assessment_question: questions[5]),
     ]
 
+    # Assessment question responses
+    responses = [
+        AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question_option: options[1]),
+        AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question_option: options[3]),
+        AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question_option: options[8]),
+        AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question_option: options[9]),
+        AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question_option: options[12])
+    ]
+
   when 'production'
 
     # TODO: add assessment
