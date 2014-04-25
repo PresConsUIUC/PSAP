@@ -23,7 +23,7 @@ class UpdateAssessmentSectionCommand < Command
     end
 
     Event.create(description: "Updated assessment section "\
-    "\"#{@assessment_section.name}\"",
+    "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
                  user: @user, address: @remote_ip)
   end
 
