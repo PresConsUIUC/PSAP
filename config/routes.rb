@@ -88,7 +88,7 @@ Psap::Application.routes.draw do
   resources :locations, except: :index do
     resources :resources, except: :index
   end
-  resources :resources, except: :index
+  resources :resources, except: :index, path_names: { edit: 'assess' }
   #resources :roles # not using this at the moment
   resources :sessions, only: [:new, :create, :destroy]
 
