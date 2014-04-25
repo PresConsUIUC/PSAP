@@ -1,4 +1,4 @@
-<% provide(:title, 'New Resource Assessment') %>
+<% provide(:title, 'Assess a Resource') %>
 <% provide(:body_id, 'new_resource') %>
 
 <ol class="breadcrumb">
@@ -17,20 +17,18 @@
     <%= link_to @resource.location.name,
                 polymorphic_path(@resource.location) %>
   </li>
-  <li class="active">New Resource Assessment</li>
+  <li class="active">Assess a Resource</li>
 </ol>
 
 <div class="row">
   <div class="col-md-8">
-    <h1>New Resource Assessment</h1>
+    <h1>Assess a Resource</h1>
   </div>
   <div class="col-md-4">
     <div class="btn-group" style="float:right">
+      <!-- Save -->
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-cloud"></span> Save
-      </button>
-      <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-trash"></span> Delete
       </button>
     </div>
   </div>
@@ -54,13 +52,12 @@
         <h4>Score</h4>
         <div class="progress">
           <div class="progress-bar progress-bar-warning" role="progressbar"
-               aria-valuenow="0.4" aria-valuemin="0" aria-valuemax="1"
+               aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
                style="width: 40%">
             <span class="sr-only"></span>
           </div>
         </div>
       </div>
-      <p>[Brief explanation of how this set of questions affects overall preservation score]</p>
       <div class="center">
         <button type="button" class="btn btn-primary">Save</button>
       </div>
