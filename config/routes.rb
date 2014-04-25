@@ -70,7 +70,7 @@ Psap::Application.routes.draw do
 
   # There is only one assessment template. It can be edited but not deleted,
   # and new ones cannot be created.
-  resources :assessments, only: [:index, :show]
+  resources :assessments, param: :key, only: [:index, :show]
   resources :assessment_questions, except: [:index, :show],
             path: 'assessment-questions'
   resources :assessment_sections, except: [:index, :show],
