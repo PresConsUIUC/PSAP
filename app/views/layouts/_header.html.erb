@@ -2,27 +2,27 @@
 
   <div class="container-fluid">
 
-    <% if signed_in? %>
-        <ul class="nav navbar-nav navbar-left">
+    <ul class="nav navbar-nav navbar-left">
+      <% if signed_in? %>
           <li <%= 'class=active' if current_page?(dashboard_path) %>>
             <%= link_to 'Dashboard', dashboard_path %>
           </li>
-          <li <%= 'class=active' if current_page?(format_id_guide_path) %>>
-            <%= link_to 'Format ID Guide', format_id_guide_path,
-                        data: { :open => '/format-id-guide' }%>
-          </li>
-          <li <%= 'class=active' if current_page?(glossary_path) %>>
-            <%= link_to 'Glossary', glossary_path,
-                        id: 'glossaryLink', class: 'modal_view',
-                        data: { :open => '/glossary' }%>
-          </li>
-          <li <%= 'class=active' if current_page?(bibliography_path) %>>
-            <%= link_to 'Bibliography', bibliography_path,
-                        id: 'bibliographyLink', class: 'modal_view',
-                        data: { :open => '/bibliography' } %>
-          </li>
-        </ul>
-    <% end %>
+      <% end %>
+      <li <%= 'class=active' if current_page?(format_id_guide_path) %>>
+        <%= link_to 'Format ID Guide', format_id_guide_path,
+                    data: { :open => '/format-id-guide' }%>
+      </li>
+      <li <%= 'class=active' if current_page?(glossary_path) %>>
+        <%= link_to 'Glossary', glossary_path,
+                    id: 'glossaryLink', class: 'modal_view',
+                    data: { :open => '/glossary' }%>
+      </li>
+      <li <%= 'class=active' if current_page?(bibliography_path) %>>
+        <%= link_to 'Bibliography', bibliography_path,
+                    id: 'bibliographyLink', class: 'modal_view',
+                    data: { :open => '/bibliography' } %>
+      </li>
+    </ul>
 
     <ul class="nav navbar-nav navbar-right">
       <% if signed_in? %>
