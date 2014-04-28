@@ -1,33 +1,21 @@
 <% provide(:title, 'Event Log') %>
 
-<h1>Event Log</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1>Event Log <small class="entity_count"></small></h1>
+  </div>
+  <div class="col-md-4" style="text-align:right">
+    <%= form_tag events_path, method: 'get', class: 'entity_search' do %>
+        <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                             class: 'form-control' %>
+    <% end %>
+  </div>
+</div>
 
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Event</th>
-    <th>Occurred</th>
-    <th>User</th>
-    <th>IP Address</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @events.each do |event| %>
-      <tr>
-        <td><%= event.description %></td>
-        <td><%= local_time_ago(event.created_at) %></td>
-        <td>
-          <% if event.user %>
-              <%= link_to event.user.username, event.user,
-                          title: event.user.full_name %>
-          <% end %>
-        </td>
-        <td><%= event.address %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+<div id="events">
+  <%= render 'events' %>
+</div>
 
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
