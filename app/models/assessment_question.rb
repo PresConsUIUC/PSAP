@@ -3,6 +3,8 @@ class AssessmentQuestion < ActiveRecord::Base
   belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy
+  has_many :assessment_question_responses,
+           inverse_of: :assessment_question_response, dependent: :destroy
   has_many :children, class_name: 'AssessmentQuestion',
            foreign_key: 'parent_id', inverse_of: :parent, dependent: :destroy
 

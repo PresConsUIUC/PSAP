@@ -97,7 +97,9 @@ class ResourcesController < ApplicationController
   def resource_params
     params.require(:resource).permit(:description, :format, :local_identifier,
                                      :location, :name, :notes, :resource_type,
-                                     :user_id)
+                                     :user_id,
+                                     assessment_question_responses_attributes:
+            [:assessment_question_option_id])
   end
 
 end

@@ -945,14 +945,19 @@ case Rails.env
     # Assessment question responses
     responses = [
         AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question: questions[0],
                                            assessment_question_option: options[1]),
         AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question: questions[1],
                                            assessment_question_option: options[3]),
         AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question: questions[2],
                                            assessment_question_option: options[8]),
         AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question: questions[3],
                                            assessment_question_option: options[9]),
         AssessmentQuestionResponse.create!(resource: resources[0],
+                                           assessment_question: questions[4],
                                            assessment_question_option: options[12])
     ]
 
