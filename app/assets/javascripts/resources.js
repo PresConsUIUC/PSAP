@@ -48,17 +48,22 @@ var ResourceForm = {
         $('.question input, .question select').on('change', function(event) {
             ResourceForm.updateProgressBar();
             ResourceForm.updateScoreBar();
-        });
+        }).trigger('change');
     },
 
     updateScoreBar: function() {
-        $('.question input[name="weight"]').each(function() {
-            var weight = $(this).val();
-            var response_value = $(this).parent().find(
-                'input[type="radio"]:checked, input[type="checkbox"]:checked, select').val();
-            if (response_value !== undefined) {
-                var score = 0.4;
+        var score = 0;
+        var weight_elements = $('.question input[name="weight"]');
 
+        weight_elements.each(function() {
+            var weight = $(this).val();
+
+            var input_elem = $(this).parent().find(
+                'input[type="radio"]:checked, input[type="checkbox"]:checked, option:selected');
+            var response_value = input_elem.attr('data-option-score');
+
+            if (response_value !== undefined) {
+                score += (parseFloat(response_value) * weight) / weight_elements.length;
                 $('div.progress-bar.score').attr('style',
                         'width:' + score * 100 + '%');
             }
