@@ -78,7 +78,7 @@ $(document).ready(function() {
     });
 
     // enable certain form elements to be dynamically added and removed, as in
-    // the case of a nested form with a 0..n relationship to its nested
+    // the case of a nested form with a 1..n relationship to its child
     // object(s).
     $('.addable_removable button.remove').on('click', function() {
         // if there is only one field, hide it instead of removing it, as the
