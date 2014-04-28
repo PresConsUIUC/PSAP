@@ -4,4 +4,7 @@ class AssessmentQuestionOption < ActiveRecord::Base
            inverse_of: :assessment_question_option
 
   validates :assessment_question, presence: true
+  validates :index, presence: true
+  validates :name, presence: true
+  validates :value, presence: true
 end

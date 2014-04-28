@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140425203429) do
+ActiveRecord::Schema.define(version: 20140428151033) do
 
   create_table "assessment_question_options", force: true do |t|
-    t.integer  "index"
-    t.string   "name"
-    t.float    "value",                  limit: 255
+    t.integer  "index",                                          null: false
+    t.string   "name",                                           null: false
+    t.decimal  "value",                  precision: 4, scale: 3, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "assessment_question_id"
+    t.integer  "assessment_question_id",                         null: false
   end
 
   add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id"
@@ -27,21 +27,21 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   create_table "assessment_question_responses", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "resource_id"
-    t.integer  "assessment_question_option_id"
+    t.integer  "resource_id",                   null: false
+    t.integer  "assessment_question_option_id", null: false
   end
 
   add_index "assessment_question_responses", ["assessment_question_option_id"], name: "assessment_question_option_id"
   add_index "assessment_question_responses", ["resource_id"], name: "index_assessment_question_responses_on_resource_id"
 
   create_table "assessment_questions", force: true do |t|
-    t.integer  "index"
-    t.string   "name"
-    t.integer  "question_type"
-    t.float    "weight"
+    t.integer  "index",                                         null: false
+    t.string   "name",                                          null: false
+    t.integer  "question_type",                                 null: false
+    t.decimal  "weight",                precision: 4, scale: 3, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "assessment_section_id"
+    t.integer  "assessment_section_id",                         null: false
     t.integer  "parent_id"
     t.integer  "selected_option_id"
     t.string   "help_text"
@@ -52,11 +52,11 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   add_index "assessment_questions", ["selected_option_id"], name: "index_assessment_questions_on_selected_option_id"
 
   create_table "assessment_sections", force: true do |t|
-    t.integer  "index"
-    t.string   "name"
+    t.integer  "index",                         null: false
+    t.string   "name",                          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "assessment_id"
+    t.integer  "assessment_id",                 null: false
     t.integer  "assessment_question_option_id"
     t.string   "description"
   end
@@ -67,24 +67,24 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   create_table "assessments", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
-    t.string   "key"
-    t.float    "percent_complete", default: 0.0
+    t.string   "name",                             null: false
+    t.string   "key",                              null: false
+    t.float    "percent_complete", default: 0.0,   null: false
     t.boolean  "is_template",      default: false
   end
 
   create_table "creators", force: true do |t|
-    t.string   "name"
+    t.string   "name",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "resource_id"
-    t.integer  "creator_type", default: 0
+    t.integer  "resource_id",              null: false
+    t.integer  "creator_type", default: 0, null: false
   end
 
   add_index "creators", ["resource_id"], name: "index_creators_on_resource_id"
 
   create_table "events", force: true do |t|
-    t.string   "description"
+    t.string   "description",            null: false
     t.datetime "created_at"
     t.integer  "user_id"
     t.string   "address",     limit: 45
@@ -93,30 +93,30 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "extents", force: true do |t|
-    t.string  "name"
-    t.integer "resource_id"
+    t.string  "name",        null: false
+    t.integer "resource_id", null: false
   end
 
   add_index "extents", ["resource_id"], name: "index_extents_on_resource_id"
 
   create_table "formats", force: true do |t|
-    t.string   "name"
-    t.float    "score"
+    t.string   "name",                               null: false
+    t.decimal  "score",      precision: 4, scale: 3, null: false
     t.boolean  "obsolete"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "institutions", force: true do |t|
-    t.string   "name"
+    t.string   "name",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "address1"
+    t.string   "address1",    null: false
     t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "postal_code"
-    t.string   "country"
+    t.string   "city",        null: false
+    t.string   "state",       null: false
+    t.string   "postal_code", null: false
+    t.string   "country",     null: false
     t.string   "url"
     t.integer  "language_id"
     t.text     "description"
@@ -124,18 +124,22 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id"
+  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true
 
   create_table "languages", force: true do |t|
-    t.string "native_name"
-    t.string "english_name"
-    t.string "iso639_2_code"
+    t.string "native_name",   null: false
+    t.string "english_name",  null: false
+    t.string "iso639_2_code", null: false
   end
 
+  add_index "languages", ["english_name"], name: "index_languages_on_english_name", unique: true
+  add_index "languages", ["iso639_2_code"], name: "index_languages_on_iso639_2_code", unique: true
+
   create_table "locations", force: true do |t|
-    t.string   "name"
+    t.string   "name",          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repository_id"
+    t.integer  "repository_id", null: false
     t.text     "description"
   end
 
@@ -147,6 +151,8 @@ ActiveRecord::Schema.define(version: 20140425203429) do
     t.datetime "updated_at"
   end
 
+  add_index "permissions", ["key"], name: "index_permissions_on_key", unique: true
+
   create_table "permissions_roles", force: true do |t|
     t.integer "permission_id"
     t.integer "role_id"
@@ -155,24 +161,24 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   create_table "repositories", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "institution_id"
-    t.string   "name"
+    t.integer  "institution_id", null: false
+    t.string   "name",           null: false
   end
 
   add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id"
 
   create_table "resource_dates", force: true do |t|
-    t.integer "date_type"
-    t.decimal "begin_year",  precision: 4, scale: 0
-    t.decimal "begin_month", precision: 2, scale: 0
-    t.decimal "begin_day",   precision: 2, scale: 0
-    t.decimal "end_year",    precision: 4, scale: 0
-    t.decimal "end_month",   precision: 2, scale: 0
-    t.decimal "end_day",     precision: 2, scale: 0
-    t.decimal "year",        precision: 4, scale: 0
-    t.decimal "month",       precision: 2, scale: 0
-    t.decimal "day",         precision: 2, scale: 0
-    t.integer "resource_id"
+    t.integer "date_type",             null: false
+    t.integer "begin_year",  limit: 4
+    t.integer "begin_month", limit: 2
+    t.integer "begin_day",   limit: 2
+    t.integer "end_year",    limit: 4
+    t.integer "end_month",   limit: 2
+    t.integer "end_day",     limit: 2
+    t.integer "year",        limit: 4
+    t.integer "month",       limit: 2
+    t.integer "day",         limit: 2
+    t.integer "resource_id",           null: false
   end
 
   add_index "resource_dates", ["resource_id"], name: "index_resource_dates_on_resource_id"
@@ -180,12 +186,12 @@ ActiveRecord::Schema.define(version: 20140425203429) do
   create_table "resources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "location_id"
+    t.integer  "location_id",      null: false
     t.integer  "parent_id"
-    t.integer  "resource_type"
-    t.string   "name"
+    t.integer  "resource_type",    null: false
+    t.string   "name",             null: false
     t.integer  "format_id"
-    t.integer  "user_id"
+    t.integer  "user_id",          null: false
     t.text     "description"
     t.string   "local_identifier"
     t.text     "notes"
@@ -206,20 +212,22 @@ ActiveRecord::Schema.define(version: 20140425203429) do
     t.string   "name"
   end
 
+  add_index "roles", ["name"], name: "index_roles_on_name", unique: true
+
   create_table "subjects", force: true do |t|
-    t.string   "name"
+    t.string   "name",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "resource_id"
+    t.integer  "resource_id", null: false
   end
 
   add_index "subjects", ["resource_id"], name: "index_subjects_on_resource_id"
 
   create_table "temperature_ranges", force: true do |t|
-    t.decimal "min_temp_f", precision: 3, scale: 0
-    t.decimal "max_temp_f", precision: 3, scale: 0
-    t.float   "score"
-    t.integer "format_id"
+    t.integer "min_temp_f", limit: 3
+    t.integer "max_temp_f", limit: 3
+    t.decimal "score",                precision: 4, scale: 3
+    t.integer "format_id",                                    null: false
   end
 
   add_index "temperature_ranges", ["format_id"], name: "index_temperature_ranges_on_format_id"
@@ -242,7 +250,9 @@ ActiveRecord::Schema.define(version: 20140425203429) do
     t.boolean  "show_contextual_help", default: true
   end
 
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["institution_id"], name: "index_users_on_institution_id"
   add_index "users", ["role_id"], name: "index_users_on_role_id"
+  add_index "users", ["username"], name: "index_users_on_username", unique: true
 
 end
