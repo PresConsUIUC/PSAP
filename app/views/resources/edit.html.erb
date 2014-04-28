@@ -92,8 +92,10 @@
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
           <h2><%= section.name %></h2>
           <p><%= section.description %></p>
-          <%= render partial: 'resources/question_tree_rows',
-                     locals: {children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
+          <%= form_for(@resource) do |f| %>
+              <%= render partial: 'resources/question_tree_rows',
+                         locals: {f: f, children: section.assessment_questions.where(parent_id: nil).order(:index), depth: 0} %>
+          <% end %>
         </div>
     <% end %>
 

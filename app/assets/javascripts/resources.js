@@ -52,13 +52,25 @@ var ResourceForm = {
     },
 
     updateScoreBar: function() {
+        $('.question input[name="weight"]').each(function() {
+            var weight = $(this).val();
+            var response_value = $(this).parent().find(
+                'input[type="radio"]:checked, input[type="checkbox"]:checked, select').val();
+            if (response_value !== undefined) {
+                var score = 0.4;
+
+                $('div.progress-bar.score').attr('style',
+                        'width:' + score * 100 + '%');
+            }
+        });
     },
 
     updateProgressBar: function() {
         var numQuestions = $('.question').length;
         var numAnsweredQuestions = 0;
         $('.question').each(function() {
-            var numChecked = $(this).find('input:checked').length;
+            var numChecked = $(this).find(
+                'input[type="radio"]:checked, input[type="checkbox"]:checked').length;
             if (numChecked > 0 || $(this).find('select').val() !== undefined) {
                 numAnsweredQuestions++;
             }

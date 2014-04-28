@@ -43,11 +43,13 @@
             <% end %>
 
             <%= question.help_text %>
+
+            <input type="hidden" name="weight" value="<%= question.weight %>">
           </div>
         </div>
 
         <%= render partial: 'resources/question_tree_rows',
-                   locals: {children: question.children.order(:index), depth: depth + 1} if question.children.any? %>
+                   locals: {f: f, children: question.children.order(:index), depth: depth + 1} if question.children.any? %>
 
     <% end %>
 <% end %>
