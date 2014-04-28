@@ -12,7 +12,7 @@
         </div>
 
         <div class="row depth-<%= depth %>">
-          <div class="col-md-12">
+          <div class="col-md-12 question">
             <% case question.question_type %>
             <% when AssessmentQuestionType::RADIO %>
                 <% options.each do |option| %>
