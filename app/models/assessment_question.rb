@@ -4,7 +4,7 @@ class AssessmentQuestion < ActiveRecord::Base
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy
   has_many :assessment_question_responses,
-           inverse_of: :assessment_question_response, dependent: :destroy
+           inverse_of: :assessment_question, dependent: :destroy
   has_many :children, class_name: 'AssessmentQuestion',
            foreign_key: 'parent_id', inverse_of: :parent, dependent: :destroy
 

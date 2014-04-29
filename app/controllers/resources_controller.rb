@@ -72,7 +72,10 @@ class ResourcesController < ApplicationController
     begin
       command.execute
       flash[:success] = "Resource \"#{@resource.name}\" updated."
-      redirect_to @resource
+      # redirect_to edit_resource_url(@resource)
+      @assessment_sections = Assessment.find_by_key('resource').
+          assessment_sections.order(:index)
+      render 'edit'
     rescue
       render 'edit'
     end

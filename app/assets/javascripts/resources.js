@@ -10,6 +10,10 @@ var ResourceForm = {
         ResourceForm.attachEventListeners();
         ResourceForm.updateProgressBar();
         ResourceForm.updateScoreBar();
+
+        $('button.save').on('click', function(event) {
+            $('div.tab-pane.active form').submit();
+        });
     },
 
     attachEventListeners: function() {
@@ -52,6 +56,12 @@ var ResourceForm = {
     },
 
     updateScoreBar: function() {
+        // Formula:
+        //  (question 1 weight * question 1 value
+        // + question 2 weight * question 2 value
+        // + question 2a weight * question 2a value)
+        // / number of top-level questions
+
         var score = 0;
         var weight_elements = $('.question input[name="weight"]');
 
