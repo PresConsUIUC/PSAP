@@ -7,7 +7,15 @@ $(document).ready(function() {
         return false;
     });*/
 
-	$('button[data-toggle="popover"]').popover();
+    // enable bootstrap popovers
+    $('button[data-toggle="popover"]').popover();
+    // close popovers on outside clicks
+    $('body').on('click', function(e) {
+        if ($(e.target).data('toggle') !== 'popover'
+            && $(e.target).parents('.popover.in').length === 0) {
+            $('[data-toggle="popover"]').popover('hide');
+        }
+    });
 
     // Entity live-search forms
     $('.entity_search').submit(function() {
@@ -32,26 +40,26 @@ $(document).ready(function() {
     updateResultsCount();
 
     $(window).on('resize', function() {
-		var navBar = $('nav.navbar');
-		// Unfix the nav bar from the top on small screens; otherwise it will
-		// fill way too much of the screen.
-		if ($(window).width() < 500 || $(window).height() < 400) {
-			navBar.removeClass('navbar-fixed-top');
-			$('body').css('padding-top', '');
-		} else {
-			navBar.addClass('navbar-fixed-top');
-			$('body').css('padding-top', '50px');
-		}
+        var navBar = $('nav.navbar');
+        // Unfix the nav bar from the top on small screens; otherwise it will
+        // fill way too much of the screen.
+        if ($(window).width() < 500 || $(window).height() < 400) {
+            navBar.removeClass('navbar-fixed-top');
+            $('body').css('padding-top', '');
+        } else {
+            navBar.addClass('navbar-fixed-top');
+            $('body').css('padding-top', '50px');
+        }
     }).trigger('resize');
 
     // Fade out flash messages after a delay. This will work only with
     // server-rendered flash messages; the same thing is done with ajax-
     // rendered flash messages in ajax.js.
     /*
-    setTimeout(function() {
-        $('div.alert-dismissable').fadeOut(1000);
-    }, 5000);
-    */
+     setTimeout(function() {
+     $('div.alert-dismissable').fadeOut(1000);
+     }, 5000);
+     */
 
     // Used by the Bootstrap 3 tab bar
     // http://getbootstrap.com/javascript/#tabs
@@ -75,7 +83,7 @@ $(document).ready(function() {
         return false;
     });
 
-	Form.enableDynamicNestedEntities();
+    Form.enableDynamicNestedEntities();
 });
 
 /**
@@ -99,67 +107,67 @@ var Form = {
 
     TYPE_URL: 0,
 
-	enableDynamicNestedEntities: function() {
-		var updateIndexes = function() {
-			$('.addable_removable').each(function() {
-				$(this).find('.addable_removable_input_group input[type="hidden"].index').each(function(index) {
-					$(this).val(index);
-				});
-			});
-		};
+    enableDynamicNestedEntities: function() {
+        var updateIndexes = function() {
+            $('.addable_removable').each(function() {
+                $(this).find('.addable_removable_input_group input[type="hidden"].index').each(function(index) {
+                    $(this).val(index);
+                });
+            });
+        };
 
-		// enable certain form elements to be dynamically added and removed, as
-		// in the case of a nested form with a 1..n relationship to its child
-		// object(s).
-		$('.addable_removable button.remove').on('click', function() {
-			// Instead of removing it from the DOM, hide it and set its
-			// "_destroy" key to 1, so Rails knows to destroy its corresponding
-			// model.
-			var group = $(this).closest('.addable_removable_input_group');
-			group.hide();
-			group.find('input[type="hidden"].destroy').val(1);
+        // enable certain form elements to be dynamically added and removed, as
+        // in the case of a nested form with a 1..n relationship to its child
+        // object(s).
+        $('.addable_removable button.remove').on('click', function() {
+            // Instead of removing it from the DOM, hide it and set its
+            // "_destroy" key to 1, so Rails knows to destroy its corresponding
+            // model.
+            var group = $(this).closest('.addable_removable_input_group');
+            group.hide();
+            group.find('input[type="hidden"].destroy').val(1);
 
-			updateIndexes();
-		});
+            updateIndexes();
+        });
 
-		$('.addable_removable button.add').on('click', function() {
-			// prohibit adding more than 10 fields
-			if ($(this).closest('.addable_removable')
-				.children('.addable_removable_input_group').length >= 10) {
-				return;
-			}
+        $('.addable_removable button.add').on('click', function() {
+            // prohibit adding more than 10 fields
+            if ($(this).closest('.addable_removable')
+                .children('.addable_removable_input_group').length >= 10) {
+                return;
+            }
 
-			// clone the last input group and insert the clone into the DOM
-			var group = $(this).prevAll('.addable_removable_input_group:first');
-			var cloned_group = group.clone(true);
-			group.after(cloned_group);
-			cloned_group.show();
+            // clone the last input group and insert the clone into the DOM
+            var group = $(this).prevAll('.addable_removable_input_group:first');
+            var cloned_group = group.clone(true);
+            group.after(cloned_group);
+            cloned_group.show();
 
-			// find all of its input elements
-			cloned_group.find('input, select, textarea').each(function() {
-				// update the element's indexes within the form, for rails
-				var index = parseInt($(this).attr('id').match(/\d+/)[0]);
-				$(this).attr('id',
-					$(this).attr('id').replace(index, index + 1));
-				$(this).attr('name',
-					$(this).attr('name').replace(index, index + 1));
+            // find all of its input elements
+            cloned_group.find('input, select, textarea').each(function() {
+                // update the element's indexes within the form, for rails
+                var index = parseInt($(this).attr('id').match(/\d+/)[0]);
+                $(this).attr('id',
+                    $(this).attr('id').replace(index, index + 1));
+                $(this).attr('name',
+                    $(this).attr('name').replace(index, index + 1));
 
-				// reset its value
-				if ($(this).is('select')) {
-					$(this).val(
-						$(this).parent().prev().find('select:first').val());
-				} else if (!$(this).is('input[type="hidden"]')) {
-					$(this).val(null);
-				} else if ($(this).is('input[type="hidden"].destroy')) {
-					$(this).val(0);
-				}
-			});
+                // reset its value
+                if ($(this).is('select')) {
+                    $(this).val(
+                        $(this).parent().prev().find('select:first').val());
+                } else if (!$(this).is('input[type="hidden"]')) {
+                    $(this).val(null);
+                } else if ($(this).is('input[type="hidden"].destroy')) {
+                    $(this).val(0);
+                }
+            });
 
-			updateIndexes();
-		});
+            updateIndexes();
+        });
 
-		updateIndexes();
-	},
+        updateIndexes();
+    },
 
     validate: function(field_id, min_length, max_length, type) {
         var elem = $('#' + field_id);
