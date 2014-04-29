@@ -59,7 +59,11 @@ class AssessmentQuestionsController < ApplicationController
   def assessment_question_params
     params.require(:assessment_question).permit(:assessment_section_id, :index,
                                                 :name, :parent_id,
-                                                :question_type, :weight)
+                                                :question_type, :weight,
+                                                assessment_question_options_attributes: [
+                                                    :id, :name, :value, :index,
+                                                    :_destroy
+                                                ])
   end
 
 end

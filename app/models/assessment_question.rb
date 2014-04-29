@@ -14,7 +14,8 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :question_type, presence: true
   validates :weight, presence: true
 
-  accepts_nested_attributes_for :assessment_question_options
+  accepts_nested_attributes_for :assessment_question_options,
+                                allow_destroy: true
 
   after_initialize :setup, if: :new_record?
 

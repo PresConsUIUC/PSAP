@@ -1,9 +1,7 @@
 <% provide(:title, 'Edit Question') %>
 
 <ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-      <li><%= link_to 'Assessment Template', assessments_path %></li>
-  <% end %>
+  <li><%= link_to 'Assessment Template', assessments_path %></li>
   <li><%= @assessment_question.name %></li>
 </ol>
 
