@@ -7,6 +7,8 @@ $(document).ready(function() {
         return false;
     });*/
 
+	$('button[data-toggle="popover"]').popover();
+
     // Entity live-search forms
     $('.entity_search').submit(function() {
         $.get(this.action, $(this).serialize(), null, 'script');
