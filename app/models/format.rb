@@ -2,7 +2,7 @@ class Format < ActiveRecord::Base
   has_many :resources, inverse_of: :format
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
 
-  accepts_nested_attributes_for :temperature_ranges
+  accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 
   validates :name, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false }

@@ -14,10 +14,10 @@ class Resource < ActiveRecord::Base
   belongs_to :user, inverse_of: :resources
 
   accepts_nested_attributes_for :assessment_question_responses
-  accepts_nested_attributes_for :creators
-  accepts_nested_attributes_for :extents
-  accepts_nested_attributes_for :resource_dates
-  accepts_nested_attributes_for :subjects
+  accepts_nested_attributes_for :creators, allow_destroy: true
+  accepts_nested_attributes_for :extents, allow_destroy: true
+  accepts_nested_attributes_for :resource_dates, allow_destroy: true
+  accepts_nested_attributes_for :subjects, allow_destroy: true
 
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
