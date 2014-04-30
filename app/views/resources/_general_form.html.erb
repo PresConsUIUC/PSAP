@@ -94,11 +94,15 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-default remove" type="button">Remove</button>
+        <button class="btn btn-default btn-sm remove" type="button">
+          <span class="glyphicon glyphicon-minus"></span>
+        </button>
   <% end %>
 
   </div>
-  <button class="btn btn-default add" type="button">Add Date</button>
+  <button class="btn btn-default btn-sm add" type="button">
+    <span class="glyphicon glyphicon-plus"></span>
+  </button>
 </div>
 
 <div class="form-group addable_removable">
@@ -112,11 +116,15 @@
                    { include_blank: false },
                    { class: 'form-control' }) %>
         <%= g.text_field :name, class: 'form-control' %>
-        <button class="btn btn-default remove" type="button">Remove</button>
+        <button class="btn btn-default btn-sm remove" type="button">
+          <span class="glyphicon glyphicon-minus"></span>
+        </button>
   <% end %>
 
   </div>
-  <button class="btn btn-default add" type="button">Add Creator</button>
+  <button class="btn btn-default btn-sm add" type="button">
+    <span class="glyphicon glyphicon-plus"></span>
+  </button>
 </div>
 
 <div class="form-group addable_removable">
@@ -127,13 +135,17 @@
         <div class="input-group">
           <%= g.text_field :name, class: 'form-control' %>
           <span class="input-group-btn">
-          <button class="btn btn-default remove" type="button">Remove</button>
-        </span>
+            <button class="btn btn-default remove" type="button">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </span>
         </div>
       </div>
   <% end %>
 
-  <button class="btn btn-default add" type="button">Add Subject</button>
+  <button class="btn btn-default btn-sm add" type="button">
+    <span class="glyphicon glyphicon-plus"></span>
+  </button>
 </div>
 
 <div class="form-group addable_removable">
@@ -144,13 +156,17 @@
         <div class="input-group">
           <%= g.text_field :name, class: 'form-control' %>
           <span class="input-group-btn">
-          <button class="btn btn-default remove" type="button">Remove</button>
-        </span>
+            <button class="btn btn-default remove" type="button">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </span>
         </div>
       </div>
   <% end %>
 
-  <button class="btn btn-default add" type="button">Add Extent</button>
+  <button class="btn btn-default btn-sm add" type="button">
+    <span class="glyphicon glyphicon-plus"></span>
+  </button>
 </div>
 
 <div class="form-group">
