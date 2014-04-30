@@ -5,13 +5,13 @@
     <hr>
 
     <div class="row depth-<%= depth %>">
-      <div class="col-md-8">
+      <div class="col-sm-8">
         <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
         <% if depth > 0 %>
         <p><em>Only available if the value of the parent question is ____.</em></p>
         <% end %>
       </div>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <div class="btn-group" style="float:right">
           <!-- Edit -->
           <%= link_to edit_assessment_question_path(question),
@@ -33,7 +33,7 @@
     </div>
 
     <div class="row depth-<%= depth %>">
-      <div class="col-md-5">
+      <div class="col-sm-5">
         <dl>
           <dt>Weight</dt>
           <dd><%= question.weight %></dd>
@@ -44,7 +44,7 @@
         </dl>
       </div>
 
-      <div class="col-md-7">
+      <div class="col-sm-7">
         <% if options.any? %>
             <table class="table">
               <thead>

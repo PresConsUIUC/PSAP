@@ -1,10 +1,10 @@
 <% provide(:title, 'Event Log') %>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-sm-8">
     <h1>Event Log <small class="entity_count"></small></h1>
   </div>
-  <div class="col-md-4" style="text-align:right">
+  <div class="col-sm-4">
     <%= form_tag events_path, method: 'get', class: 'entity_search',
                  style: 'float:right' do %>
         <%= search_field_tag :q, params[:q], placeholder: 'Search',

@@ -8,10 +8,10 @@
     <hr>
 
     <div class="row depth-<%= depth %>">
-      <div class="col-md-11">
+      <div class="col-sm-11">
         <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
       </div>
-      <div class="col-md-1" style="text-align:right">
+      <div class="col-sm-1" style="text-align:right">
         <button type="button" class="btn btn-default btn-sm hovertip-fire"
                 data-container="body" data-toggle="popover"
                 data-placement="left"
@@ -22,7 +22,7 @@
     </div>
 
     <div class="row depth-<%= depth %>">
-      <div class="col-md-12 question">
+      <div class="col-sm-12 question">
         <% case question.question_type %>
         <% when AssessmentQuestionType::RADIO %>
             <% options.each do |option| %>

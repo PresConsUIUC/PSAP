@@ -37,17 +37,17 @@
         <div class="input-group begin_date">
           <%= g.label 'Begin date' %>
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :begin_year, class: 'form-control year',
                                  min: 1, max: Time.now.year, maxlength: 4,
                                  placeholder: 'YYYY' %>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :begin_month, class: 'form-control month',
                                  min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
               <span class="help-block">(optional)</span>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :begin_day, class: 'form-control day',
                                  min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
               <span class="help-block">(optional)</span>
@@ -57,17 +57,17 @@
         <div class="input-group end_date">
           <%= g.label 'End date' %>
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :end_year, class: 'form-control year',
                                  min: 1, max: Time.now.year, maxlength: 4,
                                  placeholder: 'YYYY' %>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :end_month, class: 'form-control month',
                                  min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
               <span class="help-block">(optional)</span>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :end_day, class: 'form-control day',
                                  min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
               <span class="help-block">(optional)</span>
@@ -77,17 +77,17 @@
         <div class="input-group date">
           <%= g.label 'Date' %>
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :year, class: 'form-control year',
                                  min: 1, max: Time.now.year, maxlength: 4,
                                  placeholder: 'YYYY' %>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :month, class: 'form-control month',
                                  min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
               <span class="help-block">(optional)</span>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
               <%= g.number_field :day, class: 'form-control day',
                                  min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
               <span class="help-block">(optional)</span>

@@ -8,10 +8,10 @@
 </ol>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-sm-8">
     <h1><%= @institution.name %> <small>Institution</small></h1>
   </div>
-  <div class="col-md-4" style="text-align:right">
+  <div class="col-sm-4" style="text-align:right">
     <div class="btn-group">
       <!-- Edit -->
       <% if current_user.is_admin? %>
@@ -39,7 +39,7 @@
 
 <div class="row">
 
-  <div class="col-md-8">
+  <div class="col-sm-8">
 
     <ul class="nav nav-tabs">
       <li class="active">
@@ -217,7 +217,7 @@
 
           <div class="container-fluid">
             <div class="row">
-              <div class="col-xs-6 col-md-4">
+              <div class="col-sm-6 col-sm-4">
                 <ul>
                   <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
                   <li>68 items assessed</li>
@@ -251,7 +251,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-xs-12 col-md-8">
+              <div class="col-sm-12 col-sm-8">
                 <img src="" height="200" width="200" alt="">
               </div>
             </div>
@@ -261,7 +261,7 @@
 
           <div class="container-fluid">
             <div class="row">
-              <div class="col-xs-6 col-md-4">
+              <div class="col-sm-6 col-sm-4">
                 <ul>
                   <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
                   <li>115 items assessed</li>
@@ -296,7 +296,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-xs-12 col-md-8">
+              <div class="col-sm-12 col-sm-8">
                 <img src="" height="200" width="200" alt="">
               </div>
             </div>
@@ -307,9 +307,9 @@
 
     </div> <!-- .tab-content -->
 
-  </div> <!-- .col-md-8 -->
+  </div> <!-- .col-sm-8 -->
 
-  <div class="col-md-4 panel">
+  <div class="col-sm-4 panel">
     <dl>
       <dt>URL</dt>
       <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>

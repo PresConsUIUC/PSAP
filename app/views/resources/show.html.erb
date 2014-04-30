@@ -21,10 +21,10 @@
 </ol>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-sm-8">
     <h1><%= @resource.name %> <small>Resource</small></h1>
   </div>
-  <div class="col-md-4">
+  <div class="col-sm-4">
     <div class="btn-group" style="float:right">
       <!-- Export -->
       <div class="btn-group">
@@ -58,7 +58,7 @@
 
 <div class="row">
 
-  <div class="col-md-8">
+  <div class="col-sm-8">
 
     <ul class="nav nav-tabs">
       <% if @resource.children.any? %>
@@ -132,9 +132,9 @@
       <% end %>
     </div> <!-- .tab-content -->
 
-  </div> <!-- .col-md-8 -->
+  </div> <!-- .col-sm-8 -->
 
-  <div class="col-md-4 panel">
+  <div class="col-sm-4 panel">
     <dl>
       <% if @resource.parent %>
           <dt>Parent Collection</dt>
@@ -215,6 +215,6 @@
       <dd><%= local_time_ago(@resource.updated_at) %></dd>
     </dl>
 
-  </div> <!-- .col-md-8 -->
+  </div> <!-- .col-sm-8 -->
 
 </div> <!-- .row -->

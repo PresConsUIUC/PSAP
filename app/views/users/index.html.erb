@@ -7,10 +7,10 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-sm-8">
     <h1>Users <small class="entity_count"></small></h1>
   </div>
-  <div class="col-md-4" style="text-align:right">
+  <div class="col-sm-4" style="text-align:right">
     <%= form_tag users_path, method: 'get', class: 'entity_search',
                  style: 'float:right' do %>
         <%= hidden_field_tag :direction, params[:direction] %>

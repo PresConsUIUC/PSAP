@@ -16,10 +16,10 @@
 </ol>
 
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-sm-7">
     <h1><%= @location.name %> <small>Location</small></h1>
   </div>
-  <div class="col-md-5" style="text-align:right">
+  <div class="col-sm-5" style="text-align:right">
     <div class="btn-group">
       <!-- Edit -->
       <%= link_to edit_location_path(@location), class: 'btn btn-default btn-default' do %>
@@ -41,7 +41,7 @@
 
 <div class="row">
 
-  <div class="col-md-8">
+  <div class="col-sm-8">
 
     <ul class="nav nav-tabs">
       <li class="active">
@@ -69,9 +69,9 @@
 
     </div>
 
-  </div> <!-- .col-md-8 -->
+  </div> <!-- .col-sm-8 -->
 
-  <div class="col-md-4 panel">
+  <div class="col-sm-4 panel">
     <% if @location.description %>
         <dl>
           <dt>Description</dt>

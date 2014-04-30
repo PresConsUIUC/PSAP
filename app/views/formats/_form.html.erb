@@ -27,19 +27,19 @@
   <%= f.fields_for :temperature_ranges do |g| %>
       <div class="addable_removable_input_group">
         <div class="row">
-          <div class="col-xs-2">
+          <div class="col-sm-2">
             <%= g.label :min_temp_f, 'Min' %>
             <%= g.text_field :min_temp_f, class: 'form-control' %>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2">
             <%= g.label :min_temp_f, 'Max' %>
             <%= g.text_field :max_temp_f, class: 'form-control' %>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2">
             <%= g.label :min_temp_f, 'Score' %>
             <%= g.text_field :score, class: 'form-control' %>
           </div>
-          <div class="col-xs-2">
+          <div class="col-sm-2">
             <button class="btn btn-default remove" type="button">Remove</button>
           </div>
         </div>

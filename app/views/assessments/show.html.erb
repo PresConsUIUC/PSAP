@@ -7,10 +7,10 @@
 </ol>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-sm-10">
     <h1><%= @assessment.name %> Template</h1>
   </div>
-  <div class="col-md-2" style="text-align:right">
+  <div class="col-sm-2" style="text-align:right">
     <div class="btn-group">
       <!-- Add Section button -->
       <%= link_to new_assessment_section_path, class: 'btn btn-default' do %>
@@ -29,7 +29,7 @@
 <div class="row">
 
   <!-- left column menu -->
-  <div class="col-md-3">
+  <div class="col-sm-3">
     <nav>
       <ul class="nav nav-pills nav-stacked">
         <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
@@ -41,15 +41,15 @@
     </nav>
   </div>
 
-  <div class="col-md-9 tab-content">
+  <div class="col-sm-9 tab-content">
     <% i = 0; for section in @assessment.assessment_sections.order(:index) %>
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <h2><%= section.name %> <small>weight: <%= number_to_human section.weight %></small></h2>
               <p><%= section.description %></p>
             </div>
-            <div class="col-md-7" style="text-align:right">
+            <div class="col-sm-7" style="text-align:right">
               <div class="btn-group">
                 <!-- Add Question button -->
                 <%= link_to new_assessment_question_path, class: 'btn btn-default' do %>
