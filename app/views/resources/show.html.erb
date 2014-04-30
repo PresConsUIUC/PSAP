@@ -79,28 +79,57 @@
           </div>
       <% end %>
 
-      <div id="assessment" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
-        <% if @resource.assessment_percent_complete < 1 %>
-          <h3><%= number_to_human @resource.assessment_percent_complete * 100 %>% complete</h3>
+      <% if @resource.assessment_percent_complete < 1 %>
+          <div class="assessment incomplete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
 
-          <div class="progress">
-            <div class="progress-bar" role="progressbar"
-                 aria-valuenow="<%= @resource.assessment_percent_complete %>"
-                 aria-valuemin="0" aria-valuemax="1"
-                 style="width:<%= @resource.assessment_percent_complete * 100 %>%;">
+            <h3><%= number_to_human @resource.assessment_percent_complete * 100 %>% complete</h3>
+
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"
+                   aria-valuenow="<%= @resource.assessment_percent_complete %>"
+                   aria-valuemin="0" aria-valuemax="1"
+                   style="width:<%= @resource.assessment_percent_complete * 100 %>%;">
               <span class="sr-only">
                 <%= number_to_human @resource.assessment_percent_complete * 100 %>% Complete</span>
+              </div>
             </div>
+
+            <p><%= link_to 'Continue', edit_resource_path(@resource),
+                           class: 'btn btn-default btn-lg' %></p>
           </div>
+      <% else %>
+          <div class="assessment complete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+            <% i = 0; @assessment_sections.each do |section| # TODO: sub-questions %>
 
-          <p><%= link_to 'Continue', edit_resource_path(@resource),
-                         class: 'btn btn-default btn-lg' %></p>
-        <% else %>
-          <!-- TODO: write this -->
-            <p>Assessment report will appear here</p>
-        <% end %>
-      </div>
+                <% if i != 0 %>
+                    <hr>
+                <% end %>
 
+                <h3><%= section.name %></h3>
+
+                <dl>
+                <% section.assessment_questions.order(:index).each do |question| %>
+                    <dt><%= question.name %></dt>
+
+                    <% response = @resource.assessment_question_responses.where(assessment_question_id: question.id).first %>
+
+                    <dd>
+                      <ul>
+                      <% question.assessment_question_options.each do |option| %>
+                          <li <%= option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
+                            <%= option.name %>
+                          </li>
+                      <% end %>
+                      </ul>
+                    </dd>
+                <% end %>
+                </dl>
+            <% i += 1; end %>
+
+            <% @resource.assessment_question_responses.each do |response| %>
+            <% end %>
+          </div>
+      <% end %>
     </div> <!-- .tab-content -->
 
   </div> <!-- .col-md-8 -->

@@ -55,6 +55,8 @@ class ResourcesController < ApplicationController
 
   def show
     @resource = Resource.find(params[:id])
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
 
     respond_to do |format|
       format.html { @resource }

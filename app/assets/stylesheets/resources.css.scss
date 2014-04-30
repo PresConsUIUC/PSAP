@@ -11,7 +11,7 @@ div table {
   td.depth-9 { padding-left:13.5em; }
 }
 
-body#show_resource div#assessment {
+body#show_resource div.assessment.incomplete {
   h3 {
     margin:2em;
     text-align:center;
@@ -22,5 +22,26 @@ body#show_resource div#assessment {
   }
   p {
     text-align: center;
+  }
+}
+
+body#show_resource div.assessment.complete {
+  ul {
+    list-style:none;
+    padding:0px;
+    li {
+      overflow: visible;
+      padding-left: 1.2em;
+      position: relative;
+    }
+    li.selected {
+      color:green;
+      font-weight:bold;
+    }
+    li.selected:before {
+      content: '\2713';
+      left:0;
+      position:absolute;
+    }
   }
 }

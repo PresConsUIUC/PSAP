@@ -858,6 +858,12 @@ case Rails.env
                                   local_identifier: 'sample_local_id',
                                   notes: 'Sample note')
 
+    resources[1].assessment_question_responses.each do |response|
+      response.assessment_question_option =
+        response.assessment_question.assessment_question_options[0]
+    end
+    resources[1].save!
+
     # Dates
     ResourceDate.create!(resource: resources[0],
                          date_type: DateType::SINGLE,
