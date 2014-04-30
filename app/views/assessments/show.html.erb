@@ -46,7 +46,7 @@
         <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane<%= i == 0 ? ' active' : '' %>">
           <div class="row">
             <div class="col-md-5">
-              <h2><%= section.name %></h2>
+              <h2><%= section.name %> <small>weight: <%= number_to_human section.weight %></small></h2>
               <p><%= section.description %></p>
             </div>
             <div class="col-md-7" style="text-align:right">

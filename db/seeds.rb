@@ -837,16 +837,16 @@ case Rails.env
 
     # Assessment sections
     sections = [
-        AssessmentSection.create!(name: 'Section 1', index: 0,
+        AssessmentSection.create!(name: 'Section 1', index: 0, weight: 0.2,
                                   description: 'A brief description of the section',
                                   assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 2', index: 1,
+        AssessmentSection.create!(name: 'Section 2', index: 1, weight: 0.3,
                                   description: 'A brief description of the section',
                                   assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 3', index: 2,
+        AssessmentSection.create!(name: 'Section 3', index: 2, weight: 0.4,
                                   description: 'A brief description of the section',
                                   assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 4', index: 3,
+        AssessmentSection.create!(name: 'Section 4', index: 3, weight: 0.1,
                                   description: 'A brief description of the section',
                                   assessment: assessments[0])
     ]
