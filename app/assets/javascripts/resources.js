@@ -56,7 +56,14 @@ var ResourceForm = {
     },
 
     updateScoreBar: function() {
-        // Formula:
+        // Formula (from SRS): TODO: this is broken
+        //
+        // climate control 70% + emergency preparedness 30% =
+        // environment (location)
+        //
+        // format (40%) + environment (location) (10%) + storage/container (5%)
+        // + use/access (5%) + condition (40%) = total
+        //
         //  (question 1 weight * question 1 value
         // + question 2 weight * question 2 value
         // + question 2a weight * question 2a value)
@@ -73,11 +80,12 @@ var ResourceForm = {
             var response_value = input_elem.attr('data-option-score');
 
             if (response_value !== undefined) {
-                score += (parseFloat(response_value) * weight) / weight_elements.length;
-                $('div.progress-bar.score').attr('style',
-                        'width:' + score * 100 + '%');
+                score += (parseFloat(response_value) * parseFloat(weight))
+                    / weight_elements.length;
             }
         });
+
+        $('div.progress-bar.score').attr('style', 'width:' + score * 100 + '%');
     },
 
     updateProgressBar: function() {

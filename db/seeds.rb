@@ -958,7 +958,7 @@ case Rails.env
                                            assessment_question_option: options[9]),
         AssessmentQuestionResponse.create!(resource: resources[0],
                                            assessment_question: questions[4],
-                                           assessment_question_option: options[12]),
+                                           assessment_question_option: options[13]),
         AssessmentQuestionResponse.create!(resource: resources[0],
                                            assessment_question: questions[5],
                                            assessment_question_option: options[16])

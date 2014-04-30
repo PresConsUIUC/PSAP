@@ -1,71 +1,69 @@
 <% children.each do |question| %>
 
-    <% options = question.assessment_question_options.order(:index)
-    if options.any? %>
+    <%
+    responses = question.assessment_question_responses.where(resource: @resource)
+    options = question.assessment_question_options.order(:index)
+    %>
 
-        <hr>
+    <hr>
 
-        <div class="row depth-<%= depth %>">
-          <div class="col-md-11">
-            <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
-          </div>
-          <div class="col-md-1" style="text-align:right">
-            <button type="button" class="btn btn-default btn-sm hovertip-fire"
-                    data-container="body" data-toggle="popover"
-                    data-placement="left"
-                    data-content="<%= question.help_text %>">
-              ?
-            </button>
-          </div>
-        </div>
+    <div class="row depth-<%= depth %>">
+      <div class="col-md-11">
+        <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
+      </div>
+      <div class="col-md-1" style="text-align:right">
+        <button type="button" class="btn btn-default btn-sm hovertip-fire"
+                data-container="body" data-toggle="popover"
+                data-placement="left"
+                data-content="<%= question.help_text %>">
+          ?
+        </button>
+      </div>
+    </div>
 
-        <div class="row depth-<%= depth %>">
-          <div class="col-md-12 question">
-            <% case question.question_type %>
-            <% when AssessmentQuestionType::RADIO %>
-                <% options.each do |option| %>
-                    <% response = question.assessment_question_responses.
-                            where(resource: @resource).first
-                    %>
-                    <label>
-                      <%= radio_button_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
-                                         option.id,
-                                         false, # TODO: fix
-                                         'data-option-score' => option.value %>
-                      <%= option.name %>
-                    </label>
-                    <br>
-                <% end %>
-            <% when AssessmentQuestionType::SELECT %>
+    <div class="row depth-<%= depth %>">
+      <div class="col-md-12 question">
+        <% case question.question_type %>
+        <% when AssessmentQuestionType::RADIO %>
+            <% options.each do |option| %>
+                <% response = responses.first %>
                 <label>
-                  <%= select_tag "resource[assessment_question_responses_attributes][#{0}][assessment_question_option_id]",
-                               options_for_select(options.map { |op|
-                                 [op.name, op.id, {
-                                         'data-option-score' => op.value }] }) %>
+                  <%= radio_button_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
+                                       option.id,
+                                       response.assessment_question_option.id == option.id,
+                                       'data-option-score' => option.value %>
+                  <%= option.name %>
                 </label>
-            <% when AssessmentQuestionType::CHECKBOX %>
-                <% options.each do |option| %>
-                    <% responses = question.assessment_question_responses.
-                            where(resource: @resource)
-                       response = responses.first %>
-                    <label>
-                      <%= check_box_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
-                                        option.id,
-                                        false, # TODO: fix
-                                        'data-option-score' => option.value %>
-                      <%= option.name %>
-                    </label>
-                    <br>
-                <% end %>
+                <br>
             <% end %>
+        <% when AssessmentQuestionType::SELECT %>
+            <label>
+              <% response = responses.first %>
+              <%= select_tag "resource[assessment_question_responses_attributes][#{0}][assessment_question_option_id]",
+                             options_for_select(options.map { |op|
+                               [op.name, op.id, { 'data-option-score' => op.value }] },
+                             selected: response.assessment_question_option.id) %>
+            </label>
+        <% when AssessmentQuestionType::CHECKBOX %>
+            <% options.each do |option| %>
+                <% response = responses.first %>
+                <label>
+                  <%= check_box_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
+                                    option.id,
+                                    response.assessment_question_option.id == option.id,
+                                    'data-option-score' => option.value %>
+                  <%= option.name %>
+                </label>
+                <br>
+            <% end %>
+        <% end %>
 
-            <input type="hidden" name="weight" value="<%= question.weight %>">
-          </div>
-        </div>
+        <input type="hidden" name="weight" value="<%= question.weight %>">
+      </div>
+    </div>
 
-        <%= render partial: 'resources/question_tree_rows',
-                   locals: {f: f,
-                            children: question.children.order(:index),
-                            depth: depth + 1} if question.children.any? %>
-    <% end %>
+    <%= render partial: 'resources/question_tree_rows',
+               locals: {f: f,
+                        children: question.children.order(:index),
+                        depth: depth + 1} if question.children.any? %>
 <% end %>

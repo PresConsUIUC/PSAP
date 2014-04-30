@@ -60,7 +60,8 @@ class AssessmentSectionsController < ApplicationController
   private
 
   def assessment_section_params
-    params.require(:assessment_section).permit(:assessment_id, :index, :name)
+    params.require(:assessment_section).permit(:assessment_id, :description,
+                                               :index, :name)
   end
 
 end
