@@ -12,7 +12,8 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :index, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :question_type, presence: true
-  validates :weight, presence: true
+  validates_numericality_of :weight, greater_than_or_equal_to: 0,
+                            less_than_or_equal_to: 1, presence: true
 
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true
