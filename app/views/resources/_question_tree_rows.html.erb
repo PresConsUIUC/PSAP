@@ -1,7 +1,13 @@
 <% children.each do |question| %>
 
     <%
-    responses = question.assessment_question_responses.where(resource: @resource)
+    # Can't do this because it will hit the database which won't work in the
+    # "new" route
+    # responses = question.assessment_question_responses.where(resource: @resource)
+    responses = [];
+    @resource.assessment_question_responses.each do |response|
+      responses << response if response.assessment_question.id == question.id
+    end
     options = question.assessment_question_options.order(:index)
     %>
 
