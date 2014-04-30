@@ -115,7 +115,7 @@
 
                     <dd>
                       <ul>
-                      <% question.assessment_question_options.each do |option| %>
+                      <% question.assessment_question_options.order(:index).each do |option| %>
                           <li <%= option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
                             <%= option.name %>
                           </li>

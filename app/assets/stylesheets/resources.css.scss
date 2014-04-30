@@ -28,11 +28,17 @@ body#show_resource div.assessment.incomplete {
 body#show_resource div.assessment.complete {
   ul {
     list-style:none;
+    margin-left:0.2em;
     padding:0px;
     li {
-      overflow: visible;
-      padding-left: 1.2em;
-      position: relative;
+      overflow:visible;
+      padding-left:1.2em;
+      position:relative;
+    }
+    li:before {
+      content: '\2022';
+      left:0;
+      position:absolute;
     }
     li.selected {
       color:green;
