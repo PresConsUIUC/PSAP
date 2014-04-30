@@ -94,7 +94,8 @@ var ResourceForm = {
         $('.question').each(function() {
             var numChecked = $(this).find(
                 'input[type="radio"]:checked, input[type="checkbox"]:checked').length;
-            if (numChecked > 0 || $(this).find('select').val() !== undefined) {
+            if (numChecked > 0 || ($(this).find('select').val() !== undefined
+                && $(this).find('select').val().length > 0)) {
                 numAnsweredQuestions++;
             }
         });
