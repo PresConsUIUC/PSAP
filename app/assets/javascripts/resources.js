@@ -7,7 +7,10 @@ $(document).ready(function() {
 var ResourceForm = {
 
     init: function() {
-        ResourceForm.attachEventListeners();
+        $(document).on('PSAPFormSectionAdded', function() {
+            ResourceForm.attachEventListeners();
+        }).trigger('PSAPFormSectionAdded');
+
         ResourceForm.updateProgressBar();
         ResourceForm.updateScoreBar();
 
@@ -30,26 +33,27 @@ var ResourceForm = {
                     $(this).nextAll('div.end_date:first').show();
                     break;
             }
+            $('input.year').trigger('change');
+            $('input.month').trigger('change');
+            $('input.day').trigger('change');
         }).trigger('change');
 
-        $('input.year').on('keyup', function(event) {
+        $('input.year').on('change keyup', function(event) {
             if ($(this).val().length < 1) {
-                $(this).parent().parent().find('input.month').prop('disabled', true);
-                $(this).parent().parent().find('input.day').prop('disabled', true);
+                $(this).closest('.input-group').find('input.month').prop('disabled', true);
+                $(this).closest('.input-group').find('input.day').prop('disabled', true);
             } else {
-                $(this).parent().parent().find('input.month').prop('disabled', false);
+                $(this).closest('.input-group').find('input.month').prop('disabled', false);
             }
         }).trigger('keyup');
 
-        $('input.month').on('keyup', function(event) {
-            if ($(this).val().length < 1) {
-                $(this).parent().parent().find('input.day').prop('disabled', true);
-            } else {
-                $(this).parent().parent().find('input.day').prop('disabled', false);
-            }
+        $('input.month').on('change keyup', function(event) {
+            $(this).closest('.input-group').find('input.day').prop('disabled',
+                ($(this).val().length < 1));
         }).trigger('keyup');
 
-        $('.question input, .question select').on('change', function(event) {
+        $('.question input, .question select').on('change',
+            function(event) {
             ResourceForm.updateProgressBar();
             ResourceForm.updateScoreBar();
         }).trigger('change');

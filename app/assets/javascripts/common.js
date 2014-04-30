@@ -164,6 +164,7 @@ var Form = {
             });
 
             updateIndexes();
+            $(document).trigger('PSAPFormSectionAdded');
         });
 
         updateIndexes();
