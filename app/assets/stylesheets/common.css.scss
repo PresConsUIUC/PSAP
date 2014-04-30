@@ -189,7 +189,7 @@ div.btn-group {
 }
 
 
-/* search field that appears above data tables */
+/* search field that appears above data tables, for filtering them */
 
 form.entity_search {
   input {
@@ -222,8 +222,8 @@ ul.users {
 /* forms */
 
 form {
-  @media screen and (min-width: 700px) {
-    /* TODO: fix or eliminate */
+  @media screen and (min-width: 768px) {
+    max-width:60%;
   }
 }
 
