@@ -1,14 +1,14 @@
-<% children.each do |child| %>
+<% resources.each do |resource| %>
     <tr>
       <td>
-        <%= link_to 'Assess', edit_resource_path(child) %>
+        <%= link_to 'Assess', edit_resource_path(resource) %>
       </td>
       <td class="depth-<%= depth %>">
-        &#8627; <%= link_to child.name, child %>
+        &#8627; <%= link_to resource.name, resource %>
       </td>
-      <td><%= child.readable_resource_type %></td>
-      <td><%= number_to_human child.assessment_percent_complete * 100 %>%</td>
+      <td><%= resource.readable_resource_type %></td>
+      <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
     </tr>
     <%= render partial: 'resources/resource_tree_rows',
-               locals: {children: child.children.order(:name), depth: depth + 1} if child.children.any? %>
+               locals: { resources: resource.children.order(:name), depth: depth + 1 } if resource.children.any? %>
 <% end %>
