@@ -88,7 +88,7 @@
               <% @resource.children.order(:name).each do |resource| %>
                   <tr>
                     <td>
-                      <%= link_to 'Edit', edit_resource_path(resource) %>
+                      <%= link_to 'Assess', edit_resource_path(resource) %>
                     </td>
                     <td><%= link_to resource.name, resource %></td>
                     <td><%= resource.readable_resource_type %></td>

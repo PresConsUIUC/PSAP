@@ -1,7 +1,7 @@
 <% children.each do |child| %>
     <tr>
       <td>
-        <%= link_to 'Edit', edit_resource_path(child) %>
+        <%= link_to 'Assess', edit_resource_path(child) %>
       </td>
       <td class="depth-<%= depth %>">
         &#8627; <%= link_to child.name, child %>
