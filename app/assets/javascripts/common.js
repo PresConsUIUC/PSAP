@@ -39,19 +39,6 @@ $(document).ready(function() {
 
     updateResultsCount();
 
-    $(window).on('resize', function() {
-        var navBar = $('nav.navbar');
-        // Unfix the nav bar from the top on small screens; otherwise it will
-        // fill way too much of the screen.
-        if ($(window).width() < 500 || $(window).height() < 400) {
-            navBar.removeClass('navbar-fixed-top');
-            $('body').css('padding-top', '');
-        } else {
-            navBar.addClass('navbar-fixed-top');
-            $('body').css('padding-top', '50px');
-        }
-    }).trigger('resize');
-
     // Fade out flash messages after a delay. This will work only with
     // server-rendered flash messages; the same thing is done with ajax-
     // rendered flash messages in ajax.js.

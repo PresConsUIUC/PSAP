@@ -129,7 +129,7 @@ nav.navbar {
   li#help {
     margin-right:10px;
     /* The help icon looks weird when the navbar collapses on narrow screens. */
-    @media screen and (min-width: 500px) {
+    @media screen and (min-width: 768px) {
       a {
         background: url(image_path('question-24.png')) center center no-repeat;
         @include image-2x('question-24@2x.png', 24px, 24px);
