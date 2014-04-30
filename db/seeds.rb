@@ -523,6 +523,113 @@ normal_role = Role.create!(name: 'User', is_admin: false)
 case Rails.env
 
   when 'development'
+    # Assessment sections
+    sections = [
+        AssessmentSection.create!(name: 'Section 1', index: 0, weight: 0.2,
+                                  description: 'A brief description of the section',
+                                  assessment: assessments[0]),
+        AssessmentSection.create!(name: 'Section 2', index: 1, weight: 0.3,
+                                  description: 'A brief description of the section',
+                                  assessment: assessments[0]),
+        AssessmentSection.create!(name: 'Section 3', index: 2, weight: 0.4,
+                                  description: 'A brief description of the section',
+                                  assessment: assessments[0]),
+        AssessmentSection.create!(name: 'Section 4', index: 3, weight: 0.1,
+                                  description: 'A brief description of the section',
+                                  assessment: assessments[0])
+    ]
+
+    # Assessment questions
+    questions = []
+    questions << AssessmentQuestion.create!(
+        name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
+        index: 0,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.5,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'To be or not to be?',
+        index: 1,
+        question_type: AssessmentQuestionType::SELECT,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'You talkin\' to me?',
+        index: 2,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[0])
+    questions << AssessmentQuestion.create!(
+        name: 'Grocery list',
+        index: 0,
+        question_type: AssessmentQuestionType::CHECKBOX,
+        weight:0.5,
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
+    questions << AssessmentQuestion.create!(
+        name: 'If a tree falls in the forest, does it make a sound?',
+        index: 1,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
+    questions << AssessmentQuestion.create!(
+        name: 'Even if you\'re not around?',
+        index: 1,
+        question_type: AssessmentQuestionType::RADIO,
+        weight: 0.25,
+        parent: questions[4],
+        help_text: 'Sample help text',
+        assessment_section: sections[1])
+
+    # Assessment question options
+    options = [
+        AssessmentQuestionOption.create!(name: 'A lot', index: 1, value: 1,
+                                         assessment_question: questions[0]),
+        AssessmentQuestionOption.create!(name: 'A little', index: 2, value: 0.5,
+                                         assessment_question: questions[0]),
+        AssessmentQuestionOption.create!(name: 'None', index: 3, value: 0,
+                                         assessment_question: questions[0]),
+
+        AssessmentQuestionOption.create!(name: 'To be', index: 1, value: 1,
+                                         assessment_question: questions[1]),
+        AssessmentQuestionOption.create!(name: 'Not to be', index: 2, value: 0,
+                                         assessment_question: questions[1]),
+        AssessmentQuestionOption.create!(name: 'Reply hazy, try again', index: 3, value: 0.5,
+                                         assessment_question: questions[1]),
+
+        AssessmentQuestionOption.create!(name: 'Yea', index: 1, value: 1,
+                                         assessment_question: questions[2]),
+        AssessmentQuestionOption.create!(name: 'No', index: 2, value: 0,
+                                         assessment_question: questions[2]),
+        AssessmentQuestionOption.create!(name: 'You\'re the only one here', index: 3, value: 1,
+                                         assessment_question: questions[2]),
+
+        AssessmentQuestionOption.create!(name: 'Bananas', index: 1, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'Kale', index: 2, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'Mangoes', index: 3, value: 1,
+                                         assessment_question: questions[3]),
+        AssessmentQuestionOption.create!(name: 'More bananas', index: 4, value: 1,
+                                         assessment_question: questions[3]),
+
+        AssessmentQuestionOption.create!(name: 'Yes', index: 1, value: 1,
+                                         assessment_question: questions[4]),
+        AssessmentQuestionOption.create!(name: 'No', index: 2, value: 0,
+                                         assessment_question: questions[4]),
+
+        AssessmentQuestionOption.create!(name: 'Yup', index: 1, value: 1,
+                                         assessment_question: questions[5]),
+        AssessmentQuestionOption.create!(name: 'Nope', index: 2, value: 0,
+                                         assessment_question: questions[5]),
+        AssessmentQuestionOption.create!(name: 'Maybe', index: 3, value: 0.5,
+                                         assessment_question: questions[5]),
+    ]
+
     # Institutions
     institutions = [
         Institution.create!(name: 'University of Illinois at Urbana-Champaign',
@@ -834,135 +941,6 @@ case Rails.env
         TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
                                  format: format)
     end
-
-    # Assessment sections
-    sections = [
-        AssessmentSection.create!(name: 'Section 1', index: 0, weight: 0.2,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 2', index: 1, weight: 0.3,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 3', index: 2, weight: 0.4,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 4', index: 3, weight: 0.1,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0])
-    ]
-
-    # Assessment questions
-    questions = []
-    questions << AssessmentQuestion.create!(
-        name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-        index: 0,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.5,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'To be or not to be?',
-        index: 1,
-        question_type: AssessmentQuestionType::SELECT,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'You talkin\' to me?',
-        index: 2,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'Grocery list',
-        index: 0,
-        question_type: AssessmentQuestionType::CHECKBOX,
-        weight:0.5,
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
-    questions << AssessmentQuestion.create!(
-        name: 'If a tree falls in the forest, does it make a sound?',
-        index: 1,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
-    questions << AssessmentQuestion.create!(
-        name: 'Even if you\'re not around?',
-        index: 1,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        parent: questions[4],
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
-
-    # Assessment question options
-    options = [
-        AssessmentQuestionOption.create!(name: 'A lot', index: 0, value: 1,
-                                         assessment_question: questions[0]),
-        AssessmentQuestionOption.create!(name: 'A little', index: 1, value: 0.5,
-                                         assessment_question: questions[0]),
-        AssessmentQuestionOption.create!(name: 'None', index: 2, value: 0,
-                                         assessment_question: questions[0]),
-
-        AssessmentQuestionOption.create!(name: 'To be', index: 0, value: 1,
-                                         assessment_question: questions[1]),
-        AssessmentQuestionOption.create!(name: 'Not to be', index: 1, value: 0,
-                                         assessment_question: questions[1]),
-        AssessmentQuestionOption.create!(name: 'Reply hazy, try again', index: 2, value: 0.5,
-                                         assessment_question: questions[1]),
-
-        AssessmentQuestionOption.create!(name: 'Yea', index: 0, value: 1,
-                                         assessment_question: questions[2]),
-        AssessmentQuestionOption.create!(name: 'No', index: 1, value: 0,
-                                         assessment_question: questions[2]),
-        AssessmentQuestionOption.create!(name: 'You\'re the only one here', index: 3, value: 1,
-                                         assessment_question: questions[2]),
-
-        AssessmentQuestionOption.create!(name: 'Bananas', index: 0, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'Kale', index: 0, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'Mangoes', index: 0, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'More bananas', index: 0, value: 1,
-                                         assessment_question: questions[3]),
-
-        AssessmentQuestionOption.create!(name: 'Yes', index: 0, value: 1,
-                                         assessment_question: questions[4]),
-        AssessmentQuestionOption.create!(name: 'No', index: 1, value: 0,
-                                         assessment_question: questions[4]),
-
-        AssessmentQuestionOption.create!(name: 'Yup', index: 0, value: 1,
-                                         assessment_question: questions[5]),
-        AssessmentQuestionOption.create!(name: 'Nope', index: 1, value: 0,
-                                         assessment_question: questions[5]),
-        AssessmentQuestionOption.create!(name: 'Maybe', index: 2, value: 0.5,
-                                         assessment_question: questions[5]),
-    ]
-
-    # Assessment question responses
-    responses = [
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[0],
-                                           assessment_question_option: options[1]),
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[1],
-                                           assessment_question_option: options[3]),
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[2],
-                                           assessment_question_option: options[8]),
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[3],
-                                           assessment_question_option: options[9]),
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[4],
-                                           assessment_question_option: options[13]),
-        AssessmentQuestionResponse.create!(resource: resources[0],
-                                           assessment_question: questions[5],
-                                           assessment_question_option: options[16])
-    ]
 
   when 'production'
 

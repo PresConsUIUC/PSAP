@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430144938) do
+ActiveRecord::Schema.define(version: 20140430154700) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20140430144938) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "resource_id",                   null: false
-    t.integer  "assessment_question_option_id", null: false
+    t.integer  "assessment_question_option_id"
     t.integer  "assessment_question_id",        null: false
   end
 
