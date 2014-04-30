@@ -81,7 +81,7 @@
                 <th></th>
                 <th>Title</th>
                 <th>Type</th>
-                <th>Completed</th>
+                <th>Complete</th>
               </tr>
               </thead>
               <tbody>
@@ -92,7 +92,7 @@
                     </td>
                     <td><%= link_to resource.name, resource %></td>
                     <td><%= resource.readable_resource_type %></td>
-                    <td><!-- TODO: fill this in --></td>
+                    <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
                   </tr>
                   <%= render partial: 'resources/resource_tree_rows',
                              locals: {children: resource.children, depth: 1} if resource.children.any? %>
@@ -120,6 +120,7 @@
                          class: 'btn btn-default btn-lg' %></p>
         <% else %>
           <!-- TODO: write this -->
+            <p>Assessment report will appear here</p>
         <% end %>
       </div>
 
