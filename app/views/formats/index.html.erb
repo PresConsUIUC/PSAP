@@ -19,7 +19,7 @@
 </div>
 
 <%= form_tag formats_path, method: 'get', class: 'entity_search',
-             style: 'text-align:right' do %>
+             style: 'float:right' do %>
     <%= search_field_tag :q, params[:q], placeholder: 'Search',
                          class: 'form-control' %>
 <% end %>
