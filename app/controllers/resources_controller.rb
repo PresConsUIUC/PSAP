@@ -15,6 +15,8 @@ class ResourcesController < ApplicationController
       flash[:success] = "Resource \"#{@resource.name}\" created."
       redirect_to @resource
     rescue
+      @assessment_sections = Assessment.find_by_key('resource').
+          assessment_sections.order(:index)
       render 'new'
     end
   end
