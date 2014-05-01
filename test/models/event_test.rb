@@ -13,6 +13,15 @@ class EventTest < ActiveSupport::TestCase
     assert @event.save
   end
 
+  test 'events are read-only once created' do
+    @event.save
+    @event.description = 'test2'
+    assert_raises ActiveRecord::ReadOnlyRecord do
+      assert !@event.save
+      assert !@event.destroy
+    end
+  end
+
   ########################### property tests ################################
 
   # description

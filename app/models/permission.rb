@@ -8,4 +8,8 @@ class Permission < ActiveRecord::Base
     # TODO: return localized name based on key
   end
 
+  def readonly?
+    !new_record?
+  end
+
 end

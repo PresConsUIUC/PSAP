@@ -8,8 +8,17 @@ class AssessmentTest < ActiveSupport::TestCase
 
   ############################ object tests #################################
 
-  test 'valid assessment saves' do
-    assert @assessment.save
+  test 'valid assessments can be created' do
+    assert Assessment.create(name: 'test', key: 'test')
+  end
+
+  test 'assessments are read-only once created' do
+    assessment = Assessment.create(name: 'test', key: 'test')
+    assessment.name = 'test2'
+    assert_raises ActiveRecord::ReadOnlyRecord do
+      assert !assessment.save
+      assert !assessment.destroy
+    end
   end
 
   ########################### property tests ################################
@@ -24,15 +33,6 @@ class AssessmentTest < ActiveSupport::TestCase
   test 'name is required' do
     @assessment.name = nil
     assert !@assessment.save
-  end
-
-  ########################### dependency tests ###############################
-
-  test 'dependent assessment sections should be destroyed on destroy' do
-    section = assessment_sections(:resource_assessment_section_one)
-    @assessment.assessment_sections << section
-    @assessment.destroy
-    assert section.destroyed?
   end
 
 end

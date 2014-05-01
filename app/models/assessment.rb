@@ -8,4 +8,8 @@ class Assessment < ActiveRecord::Base
     key
   end
 
+  def readonly?
+    !new_record?
+  end
+
 end
