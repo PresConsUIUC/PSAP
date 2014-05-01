@@ -7,7 +7,6 @@ class Resource < ActiveRecord::Base
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
-  belongs_to :assessment, inverse_of: :resource
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   belongs_to :parent, class_name: 'Resource', inverse_of: :children

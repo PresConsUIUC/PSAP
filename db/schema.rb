@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501160049) do
+ActiveRecord::Schema.define(version: 20140501161057) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -195,10 +195,8 @@ ActiveRecord::Schema.define(version: 20140501160049) do
     t.string   "local_identifier"
     t.text     "notes"
     t.integer  "date_type"
-    t.integer  "assessment_id"
   end
 
-  add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id"
   add_index "resources", ["format_id"], name: "index_resources_on_format_id"
   add_index "resources", ["location_id"], name: "index_resources_on_location_id"
   add_index "resources", ["parent_id"], name: "index_resources_on_parent_id"

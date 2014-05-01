@@ -1,5 +1,4 @@
 class Assessment < ActiveRecord::Base
-  has_one :resource, inverse_of: :assessment
   has_many :assessment_sections, inverse_of: :assessment, dependent: :destroy
 
   validates :key, presence: true, length: { maximum: 30 }
