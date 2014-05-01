@@ -58,6 +58,8 @@ class Resource < ActiveRecord::Base
       # FROM assessment_question_responses
       # LEFT JOIN assessment_question_options
       #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
+      # WHERE assessment_question_responses.resource_id = ?
+      #     AND assessment_question_responses.assessment_question_option_id IS NOT NULL
       # GROUP BY assessment_question_options.assessment_question_id
       responses = AssessmentQuestionResponse.
           select('assessment_question_responses.id').
@@ -65,6 +67,7 @@ class Resource < ActiveRecord::Base
             'ON assessment_question_options.id '\
               '= assessment_question_responses.assessment_question_option_id').
           where('assessment_question_responses.resource_id = ?', self.id).
+          where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
           group('assessment_question_options.assessment_question_id')
 
       @assessment_percent_complete = questions.length > 0 ?
