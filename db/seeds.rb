@@ -947,8 +947,6 @@ case Rails.env
 
   when 'production'
 
-    # TODO: add assessment
-
 end
 
 # Some of the above commands generated events, which we don't want.
