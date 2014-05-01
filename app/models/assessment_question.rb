@@ -18,8 +18,6 @@ class AssessmentQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true
 
-  after_initialize :setup, if: :new_record?
-
   def readable_question_type
     case question_type
       when AssessmentQuestionType::RADIO
@@ -29,11 +27,6 @@ class AssessmentQuestion < ActiveRecord::Base
       when AssessmentQuestionType::CHECKBOX
         'Checkboxes'
     end
-  end
-
-  def setup
-    self.assessment_question_options << AssessmentQuestionOption.new(
-        name: 'Sample Option', index: 0, value: 1, assessment_question: self)
   end
 
 end

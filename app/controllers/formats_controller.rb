@@ -41,6 +41,9 @@ class FormatsController < ApplicationController
 
   def new
     @format = Format.new
+    @format.temperature_ranges << TemperatureRange.create(min_temp_f: 0,
+                                                          max_temp_f: 100,
+                                                          score: 1)
   end
 
   def show

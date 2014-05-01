@@ -23,19 +23,6 @@ class Resource < ActiveRecord::Base
   validates :resource_type, presence: true
   validates :user, presence: true
 
-  after_initialize :setup, if: :new_record?
-
-  def setup
-    assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
-    assessment_sections.each do |section|
-      section.assessment_questions.each do |question|
-        self.assessment_question_responses <<
-            AssessmentQuestionResponse.new(assessment_question: question)
-      end
-    end
-  end
-
   def assessment_percent_complete
     unless @assessment_percent_complete
       # SELECT assessment_questions.id

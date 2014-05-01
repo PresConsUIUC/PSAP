@@ -53,6 +53,13 @@ class ResourcesController < ApplicationController
 
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
+
+    @assessment_sections.each do |section|
+      section.assessment_questions.each do |question|
+        @resource.assessment_question_responses <<
+            AssessmentQuestionResponse.new(assessment_question: question)
+      end
+    end
   end
 
   def show

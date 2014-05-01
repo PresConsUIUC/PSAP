@@ -11,16 +11,6 @@ class Format < ActiveRecord::Base
 
   validate :validates_ranges_are_sequential
 
-  after_initialize :after_initialize
-
-  def after_initialize
-    if self.new_record?
-      self.temperature_ranges << TemperatureRange.create(min_temp_f: 0,
-                                                         max_temp_f: 100,
-                                                         score: 1)
-    end
-  end
-
   def validates_ranges_are_sequential
     ranges = self.temperature_ranges.sort_by { |obj| obj.min_temp_f or 0 }
     prev_range = nil

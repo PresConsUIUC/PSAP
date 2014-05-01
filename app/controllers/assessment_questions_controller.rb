@@ -37,6 +37,9 @@ class AssessmentQuestionsController < ApplicationController
 
   def new
     @assessment_question = AssessmentQuestion.new
+    @assessment_question.assessment_question_options <<
+        AssessmentQuestionOption.new(name: 'Sample Option', index: 0, value: 1,
+                                     assessment_question: @assessment_question)
   end
 
   def update
