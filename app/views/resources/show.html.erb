@@ -142,7 +142,13 @@
       <% end %>
       <% if @resource.format %>
           <dt>Format</dt>
-          <dd><%= @resource.format.name %></dd>
+          <dd>
+            <% if current_user.is_admin? %>
+                <%= link_to @resource.format.name, @resource.format %>
+            <% else %>
+                <%= @resource.format.name %>
+            <% end %>
+          </dd>
       <% end %>
       <dt>Description</dt>
       <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
