@@ -4,43 +4,55 @@ class SessionsControllerTest < ActionController::TestCase
 
   #### create ####
 
-  test 'attempting to create a session with no username fails' do
-    post :create
+  test 'attempting to create a session with no username should fail' do
+    assert_difference 'Event.count' do
+      post :create
+    end
     assert_equal 'Invalid username/password combination.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session with an invalid username fails' do
-    post :create, session: { username: 'adsfasdfasfd', password: 'password' }
+    assert_difference 'Event.count' do
+      post :create, session: { username: 'adsfasdfasfd', password: 'password' }
+    end
     assert_equal 'Invalid username/password combination.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for a disabled user fails' do
-    post :create, session: { username: 'disabled', password: 'password' }
+    assert_difference 'Event.count' do
+      post :create, session: { username: 'disabled', password: 'password' }
+    end
     assert_equal 'Invalid username/password combination.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for an unconfirmed user fails' do
-    post :create, session: { username: 'unconfirmed', password: 'password' }
+    assert_difference 'Event.count' do
+      post :create, session: { username: 'unconfirmed', password: 'password' }
+    end
     assert_equal 'Invalid username/password combination.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for an enabled, confirmed user with an invalid password fails' do
-    post :create, session: { username: 'normal', password: 'adfafsafd' }
+    assert_difference 'Event.count' do
+      post :create, session: { username: 'normal', password: 'adfafsafd' }
+    end
     assert_equal 'Invalid username/password combination.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
 
   test 'attempting to create a session for an enabled, confirmed user succeeds' do
-    post :create, session: { username: 'normal', password: 'password' }
+    assert_difference 'Event.count' do
+      post :create, session: { username: 'normal', password: 'password' }
+    end
     assert_equal 'User normal signed in', Event.last.description[0..20]
     assert Time.now - User.find_by_username('normal').last_signin < 0.05
     assert_redirected_to dashboard_url

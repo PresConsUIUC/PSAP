@@ -14,7 +14,8 @@ class DeleteAssessmentSectionCommand < Command
 
       Event.create(description: "Deleted assessment section "\
       "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                   user: @user, address: @remote_ip)
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     rescue ActiveRecord::DeleteRestrictionError => e
       @assessment_section.errors.add(:base, e)
       raise e

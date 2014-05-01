@@ -11,7 +11,8 @@ class CreateUserCommand < Command
     if @user.save!
       UserMailer.welcome_email(@user).deliver
       Event.create(description: "Created account for user #{@user.username}",
-                   user: @user, address: @remote_ip)
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     end
   end
 

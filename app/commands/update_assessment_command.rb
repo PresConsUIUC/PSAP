@@ -10,7 +10,8 @@ class UpdateAssessmentCommand < Command
   def execute
     @assessment.update!(@assessment_params)
     Event.create(description: 'Updated assessment template',
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

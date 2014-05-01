@@ -17,7 +17,8 @@ class UpdateAssessmentQuestionCommand < Command
     end
 
     Event.create(description: 'Updated assessment question',
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

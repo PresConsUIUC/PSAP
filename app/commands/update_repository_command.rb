@@ -11,7 +11,8 @@ class UpdateRepositoryCommand < Command
     @repository.update!(@repository_params)
     Event.create(description: "Updated repository \"#{@repository.name}\" in "\
     "institution \"#{@repository.institution.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

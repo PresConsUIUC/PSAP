@@ -37,7 +37,8 @@ class CreateAssessmentSectionCommand < Command
 
     Event.create(description: "Created assessment section "\
     "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

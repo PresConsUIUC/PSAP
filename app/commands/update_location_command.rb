@@ -11,7 +11,8 @@ class UpdateLocationCommand < Command
     @location.update!(@location_params)
     Event.create(description: "Updated location \"#{@location.name}\" in "\
     "repository \"#{@location.repository.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

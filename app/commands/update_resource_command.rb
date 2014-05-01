@@ -11,7 +11,8 @@ class UpdateResourceCommand < Command
     @resource.update!(@resource_params)
     Event.create(description: "Updated resource \"#{@resource.name}\" in "\
     "location \"#{@resource.location.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

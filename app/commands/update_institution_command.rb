@@ -10,7 +10,8 @@ class UpdateInstitutionCommand < Command
   def execute
     @institution.update!(@institution_params)
     Event.create(description: "Updated institution \"#{@institution.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

@@ -10,7 +10,8 @@ class DeleteRepositoryCommand < Command
     @repository.destroy!
     Event.create(description: "Deleted repository \"#{@repository.name}\" from "\
     "institution \"#{@repository.institution.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

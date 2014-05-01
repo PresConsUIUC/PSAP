@@ -10,7 +10,8 @@ class CreateFormatCommand < Command
   def execute
     @format.save!
     Event.create(description: "Created format \"#{@format.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

@@ -9,7 +9,8 @@ class DeleteFormatCommand < Command
   def execute
     @format.destroy!
     Event.create(description: "Deleted format \"#{@format.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

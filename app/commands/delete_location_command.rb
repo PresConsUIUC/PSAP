@@ -10,7 +10,8 @@ class DeleteLocationCommand < Command
     @location.destroy!
     Event.create(description: "Deleted location \"#{@location.name}\" from "\
     "repository \"#{@location.repository.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

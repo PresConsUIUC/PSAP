@@ -10,7 +10,8 @@ class DeleteResourceCommand < Command
     @resource.destroy!
     Event.create(description: "Deleted resource \"#{@resource.name}\" from "\
     "location \"#{@resource.location.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

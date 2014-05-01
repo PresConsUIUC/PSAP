@@ -12,7 +12,11 @@
   </thead>
   <tbody>
   <% @events.each do |event| %>
-      <tr>
+      <% if event.event_status == EventStatus::FAILURE %>
+          <tr class="bg-danger">
+      <% else %>
+          <tr>
+      <% end %>
         <td><%= event.description %></td>
         <td><%= local_time_ago(event.created_at) %></td>
         <td>

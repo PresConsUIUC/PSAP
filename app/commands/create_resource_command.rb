@@ -10,7 +10,8 @@ class CreateResourceCommand < Command
     @resource.save!
     Event.create(description: "Created resource \"#{@resource.name}\" in "\
     "location \"#{@resource.location.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

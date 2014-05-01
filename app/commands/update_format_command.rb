@@ -10,7 +10,8 @@ class UpdateFormatCommand < Command
   def execute
     @format.update!(@format_params)
     Event.create(description: "Updated format \"#{@format.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

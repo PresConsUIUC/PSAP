@@ -14,11 +14,13 @@ class ConfirmUserCommand < Command
         @user.enabled = true
         @user.save!
         Event.create(description: "Confirmed user #{@user.username}",
-                     user: @user, address: @remote_ip)
+                     user: @user, address: @remote_ip,
+                     event_status: EventStatus::SUCCESS)
       elsif @confirmation_code != @user.confirmation_code
         Event.create(description: "Invalid confirmation code supplied for user "\
         "#{@user.username}",
-                     user: @user, address: @remote_ip)
+                     user: @user, address: @remote_ip,
+                     event_status: EventStatus::FAILURE)
       end
     end
   end

@@ -10,7 +10,8 @@ class DeleteInstitutionCommand < Command
     begin
       @institution.destroy!
       Event.create(description: "Deleted institution \"#{@institution.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     rescue ActiveRecord::DeleteRestrictionError => e
       @institution.errors.add(:base, e)
       raise e

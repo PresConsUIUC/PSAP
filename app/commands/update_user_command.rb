@@ -19,7 +19,8 @@ class UpdateUserCommand < Command
     @user.update!(@user_params)
 
     Event.create(description: "Updated user #{@user.username}",
-                 user: @doing_user, address: @remote_ip)
+                 user: @doing_user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object

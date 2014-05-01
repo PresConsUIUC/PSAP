@@ -12,7 +12,8 @@ class CreateLocationCommand < Command
     @location.save!
     Event.create(description: "Created location \"#{@location.name}\" in "\
     "repository \"#{@repository.name}\"",
-                 user: @user, address: @remote_ip)
+                 user: @user, address: @remote_ip,
+                 event_status: EventStatus::SUCCESS)
   end
 
   def object
