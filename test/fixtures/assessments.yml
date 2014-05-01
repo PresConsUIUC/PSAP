@@ -5,25 +5,21 @@ resource_assessment:
   name: Resource assessment
   key: resource
   percent_complete: 1
-  is_template: true
 
 institution_assessment:
   id: 2
   name: Institution assessment
   key: institution
   percent_complete: 1
-  is_template: true
 
 location_assessment:
   id: 3
   name: Location assessment
   key: location
   percent_complete: 1
-  is_template: true
 
 assessment_one:
   id: 4
   name: Sample assessment name
   key: sample_assessment_key
   percent_complete: 0.5
-  is_template: false

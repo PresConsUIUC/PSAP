@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501155540) do
+ActiveRecord::Schema.define(version: 20140501160049) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -68,9 +68,8 @@ ActiveRecord::Schema.define(version: 20140501155540) do
   create_table "assessments", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name",                        null: false
-    t.string   "key",                         null: false
-    t.boolean  "is_template", default: false
+    t.string   "name",       null: false
+    t.string   "key",        null: false
   end
 
   create_table "creators", force: true do |t|

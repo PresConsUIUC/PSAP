@@ -505,12 +505,9 @@ formats = [
 
 # Assessments
 assessments = [
-    Assessment.create!(name: 'Resource Assessment', key: 'resource',
-                       is_template: true),
-    Assessment.create!(name: 'Location Assessment', key: 'location',
-                       is_template: true),
-    Assessment.create!(name: 'Institution Assessment', key: 'institution',
-                       is_template: true)
+    Assessment.create!(name: 'Resource Assessment', key: 'resource'),
+    Assessment.create!(name: 'Location Assessment', key: 'location'),
+    Assessment.create!(name: 'Institution Assessment', key: 'institution')
 ]
 
 # Admin role
