@@ -8,3 +8,12 @@ body#new_format, body#edit_format {
     }
   }
 }
+
+body#show_format {
+  table {
+    width:200px;
+    th, td {
+      text-align:center;
+    }
+  }
+}

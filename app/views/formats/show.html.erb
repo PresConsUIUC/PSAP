@@ -1,4 +1,5 @@
 <% provide(:title, @format.name) %>
+<% provide(:body_id, 'show_format') %>
 
 <ol class="breadcrumb">
   <li><%= link_to 'Formats', formats_path %></li>
@@ -34,11 +35,24 @@
   <dd><%= @format.score %> / 1</dd>
   <dt>Temperature Range Scores (&deg;F)</dt>
   <dd>
-    <ul>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Min</th>
+        <th>Max</th>
+        <th>Score</th>
+      </tr>
+      </thead>
+      <tbody>
       <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
-          <li><%= range.min_temp_f %>&ndash;<%= range.max_temp_f %>: <%= range.score %></li>
+          <tr>
+            <td><%= range.min_temp_f %></td>
+            <td><%= range.max_temp_f %></td>
+            <td><%= range.score %></td>
+          </tr>
       <% end %>
-    </ul>
+      </tbody>
+    </table>
   </dd>
   <dt>Obsolete</dt>
   <dd><%= @format.obsolete ? 'Yes' : 'No' %></dd>
