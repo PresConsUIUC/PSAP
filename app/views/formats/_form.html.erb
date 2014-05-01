@@ -24,32 +24,39 @@
 <div class="form-group addable_removable">
   <%= f.label :temperature_ranges, 'Temperature Range Scores' %>
 
-  <%= f.fields_for :temperature_ranges do |g| %>
-      <div class="addable_removable_input_group">
-        <div class="row">
-          <div class="col-sm-2">
-            <%= g.label :min_temp_f, 'Min' %>
-            <%= g.number_field :min_temp_f, min: 0, max: 100, maxlength: 3,
+  <table cellpadding="0" cellspacing="0" border="0">
+    <thead>
+    <tr>
+      <th>Min</th>
+      <th>Max</th>
+      <th>Score</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <%= f.fields_for :temperature_ranges do |g| %>
+        <tr class="addable_removable_input_group">
+          <td>
+            <%= g.number_field :min_temp_f, min: 0, max: 100, maxlength: 4,
                                class: 'form-control' %>
-          </div>
-          <div class="col-sm-2">
-            <%= g.label :min_temp_f, 'Max' %>
-            <%= g.number_field :max_temp_f, min: 0, max: 100, maxlength: 3,
+          </td>
+          <td>
+            <%= g.number_field :max_temp_f, min: 0, max: 100, maxlength: 4,
                                class: 'form-control' %>
-          </div>
-          <div class="col-sm-2">
-            <%= g.label :min_temp_f, 'Score' %>
-            <%= g.number_field :score, min: 0, max: 100, maxlength: 3,
+          </td>
+          <td>
+            <%= g.number_field :score, min: 0, max: 100, maxlength: 4,
                                class: 'form-control' %>
-          </div>
-          <div class="col-sm-2">
+          </td>
+          <td>
             <button class="btn btn-default btn-sm remove" type="button">
               <span class="glyphicon glyphicon-minus"></span>
             </button>
-          </div>
-        </div>
-      </div>
-  <% end %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 
   <button class="btn btn-default btn-sm add" type="button">
     <span class="glyphicon glyphicon-plus"></span>

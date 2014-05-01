@@ -125,7 +125,12 @@ var Form = {
             }
 
             // clone the last input group and insert the clone into the DOM
+            // div input groups
             var group = $(this).prevAll('.addable_removable_input_group:first');
+            if (!group.length) {
+                // table input groups
+                group = $(this).prevAll('table:first').find('tr:last');
+            }
             var cloned_group = group.clone(true);
             group.after(cloned_group);
             cloned_group.show();
