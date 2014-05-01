@@ -7,11 +7,19 @@ class CreateResourceCommand < Command
   end
 
   def execute
-    @resource.save!
-    Event.create(description: "Created resource \"#{@resource.name}\" in "\
-    "location \"#{@resource.location.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @resource.save!
+    rescue => e
+      Event.create(description: "Failed to create resource: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created resource \"#{@resource.name}\" in "\
+      "location \"#{@resource.location.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

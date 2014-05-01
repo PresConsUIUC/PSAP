@@ -8,19 +8,27 @@ class UpdateUserCommand < Command
   end
 
   def execute
-    # If the user is changing their email address, we need to notify the
-    # previous address, to inform them in case their account was hijacked.
-    old_email = @user.email
-    new_email = @user_params[:email]
-    if old_email != new_email
-      UserMailer.change_email(@user, old_email, new_email).deliver
+    begin
+      # If the user is changing their email address, we need to notify the
+      # previous address, in case their account was hijacked.
+      old_email = @user.email
+      new_email = @user_params[:email]
+      if old_email != new_email
+        UserMailer.change_email(@user, old_email, new_email).deliver
+      end
+
+      @user.update!(@user_params)
+    rescue => e
+      Event.create(description: "Failed to update user "\
+      "\"#{@user.username}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated user #{@user.username}",
+                   user: @doing_user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     end
-
-    @user.update!(@user_params)
-
-    Event.create(description: "Updated user #{@user.username}",
-                 user: @doing_user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
   end
 
   def object

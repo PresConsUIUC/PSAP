@@ -31,14 +31,21 @@ class CreateAssessmentSectionCommand < Command
       @assessment_section.index += 1
     end
 
-    @assessment_section.save!
-
-    CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
-
-    Event.create(description: "Created assessment section "\
-    "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @assessment_section.save!
+      CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+    rescue => e
+      Event.create(description: "Failed to create assessment section: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created assessment section "\
+      "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

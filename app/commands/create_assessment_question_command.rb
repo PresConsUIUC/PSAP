@@ -31,13 +31,20 @@ class CreateAssessmentQuestionCommand < Command
       @assessment_question.index += 1
     end
 
-    @assessment_question.save!
-
-    CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
-
-    Event.create(description: 'Created assessment question',
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @assessment_question.save!
+      CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
+    rescue => e
+      Event.create(description: "Failed to create assessment question: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: 'Created assessment question',
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

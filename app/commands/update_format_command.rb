@@ -8,10 +8,19 @@ class UpdateFormatCommand < Command
   end
 
   def execute
-    @format.update!(@format_params)
-    Event.create(description: "Updated format \"#{@format.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @format.update!(@format_params)
+    rescue => e
+      Event.create(description: "Failed to update format "\
+      "\"#{@format.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated format \"#{@format.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

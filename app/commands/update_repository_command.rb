@@ -8,11 +8,20 @@ class UpdateRepositoryCommand < Command
   end
 
   def execute
-    @repository.update!(@repository_params)
-    Event.create(description: "Updated repository \"#{@repository.name}\" in "\
-    "institution \"#{@repository.institution.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @repository.update!(@repository_params)
+    rescue => e
+      Event.create(description: "Failed to update repository "\
+      "\"#{@repository.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated repository \"#{@repository.name}\" in "\
+      "institution \"#{@repository.institution.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

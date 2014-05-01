@@ -16,16 +16,24 @@ class UpdateAssessmentSectionCommand < Command
           @assessment_section_params[:index].to_i + 1
     end
 
-    @assessment_section.update!(@assessment_section_params)
+    begin
+      @assessment_section.update!(@assessment_section_params)
 
-    if @assessment_section.index != @assessment_section_params[:index]
-      CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+      if @assessment_section.index != @assessment_section_params[:index]
+        CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+      end
+    rescue => e
+      Event.create(description: "Failed to update assessment section "\
+      "\"#{@assessment_section.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated assessment section "\
+      "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     end
-
-    Event.create(description: "Updated assessment section "\
-    "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
   end
 
   def object

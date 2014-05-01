@@ -8,11 +8,19 @@ class CreateInstitutionCommand < Command
   end
 
   def execute
-    @institution.users << @user
-    @institution.save!
-    Event.create(description: "Created institution \"#{@institution.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @institution.users << @user
+      @institution.save!
+    rescue => e
+      Event.create(description: "Failed to create institution: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created institution \"#{@institution.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

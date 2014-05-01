@@ -8,11 +8,20 @@ class UpdateResourceCommand < Command
   end
 
   def execute
-    @resource.update!(@resource_params)
-    Event.create(description: "Updated resource \"#{@resource.name}\" in "\
-    "location \"#{@resource.location.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @resource.update!(@resource_params)
+    rescue => e
+      Event.create(description: "Failed to update resource "\
+      "\"#{@resource.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated resource \"#{@resource.name}\" in "\
+      "location \"#{@resource.location.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

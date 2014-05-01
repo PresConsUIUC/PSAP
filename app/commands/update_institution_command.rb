@@ -8,10 +8,19 @@ class UpdateInstitutionCommand < Command
   end
 
   def execute
-    @institution.update!(@institution_params)
-    Event.create(description: "Updated institution \"#{@institution.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @institution.update!(@institution_params)
+    rescue => e
+      Event.create(description: "Failed to update institution "\
+      "\"#{@institution.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated institution \"#{@institution.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

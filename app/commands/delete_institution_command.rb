@@ -9,12 +9,21 @@ class DeleteInstitutionCommand < Command
   def execute
     begin
       @institution.destroy!
+    rescue ActiveRecord::DeleteRestrictionError => e
+      @institution.errors.add(:base, e)
+      Event.create(description: "Failed to delete institution: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    rescue => e
+      Event.create(description: "Failed to delete institution: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
       Event.create(description: "Deleted institution \"#{@institution.name}\"",
                    user: @user, address: @remote_ip,
                    event_status: EventStatus::SUCCESS)
-    rescue ActiveRecord::DeleteRestrictionError => e
-      @institution.errors.add(:base, e)
-      raise e
     end
   end
 

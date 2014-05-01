@@ -8,10 +8,18 @@ class CreateFormatCommand < Command
   end
 
   def execute
-    @format.save!
-    Event.create(description: "Created format \"#{@format.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @format.save!
+    rescue => e
+      Event.create(description: "Failed to create format: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created format \"#{@format.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

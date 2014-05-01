@@ -9,11 +9,19 @@ class CreateLocationCommand < Command
   end
 
   def execute
-    @location.save!
-    Event.create(description: "Created location \"#{@location.name}\" in "\
-    "repository \"#{@repository.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @location.save!
+    rescue => e
+      Event.create(description: "Failed to create location: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created location \"#{@location.name}\" in "\
+      "repository \"#{@repository.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

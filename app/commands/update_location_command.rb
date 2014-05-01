@@ -8,11 +8,20 @@ class UpdateLocationCommand < Command
   end
 
   def execute
-    @location.update!(@location_params)
-    Event.create(description: "Updated location \"#{@location.name}\" in "\
-    "repository \"#{@location.repository.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @location.update!(@location_params)
+    rescue => e
+      Event.create(description: "Failed to update location "\
+      "\"#{@location.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Updated location \"#{@location.name}\" in "\
+      "repository \"#{@location.repository.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

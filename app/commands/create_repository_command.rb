@@ -9,11 +9,19 @@ class CreateRepositoryCommand < Command
   end
 
   def execute
-    @repository.save!
-    Event.create(description: "Created repository \"#{@repository.name}\" in "\
-    "institution \"#{@repository.institution.name}\"",
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @repository.save!
+    rescue => e
+      Event.create(description: "Failed to create repository: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Created repository \"#{@repository.name} "\
+      "in institution \"#{@repository.institution.name}\"",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object

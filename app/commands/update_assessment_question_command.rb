@@ -9,16 +9,24 @@ class UpdateAssessmentQuestionCommand < Command
   end
 
   def execute
-    @assessment_question.update!(@assessment_question_params)
+    begin
+      @assessment_question.update!(@assessment_question_params)
 
-    if @assessment_question.index != @assessment_question_params[:index]
-      CreateAssessmentQuestionCommand.updateQuestionIndexes(
-          @assessment_question)
+      if @assessment_question.index != @assessment_question_params[:index]
+        CreateAssessmentQuestionCommand.updateQuestionIndexes(
+            @assessment_question)
+      end
+    rescue => e
+      Event.create(description: "Failed to update assessment question "\
+      "\"#{@assessment_question.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: 'Updated assessment question',
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
     end
-
-    Event.create(description: 'Updated assessment question',
-                 user: @user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
   end
 
   def object

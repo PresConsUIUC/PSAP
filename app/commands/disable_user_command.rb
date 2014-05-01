@@ -7,12 +7,20 @@ class DisableUserCommand < Command
   end
 
   def execute
-    @user.enabled = false
-    @user.save!
-
-    Event.create(description: "Disabled user #{@user.username}",
-                 user: @doing_user, address: @remote_ip,
-                 event_status: EventStatus::SUCCESS)
+    begin
+      @user.enabled = false
+      @user.save!
+    rescue => e
+      Event.create(description: "Failed to disable user #{@user.username}: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
+    else
+      Event.create(description: "Disabled user #{@user.username}",
+                   user: @doing_user, address: @remote_ip,
+                   event_status: EventStatus::SUCCESS)
+    end
   end
 
   def object
