@@ -4,8 +4,6 @@ class Assessment < ActiveRecord::Base
 
   validates :key, presence: true, length: { maximum: 30 }
   validates :name, presence: true, length: { maximum: 255 }
-  validates :percent_complete, presence: true, numericality: {
-      greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
   def to_param
     key
