@@ -1,11 +1,29 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+resource_assessment:
+  id: 1
+  name: Resource assessment
+  key: resource
+  percent_complete: 1
+  is_template: true
+
+institution_assessment:
+  id: 2
+  name: Institution assessment
+  key: institution
+  percent_complete: 1
+  is_template: true
+
+location_assessment:
+  id: 3
+  name: Location assessment
+  key: location
+  percent_complete: 1
+  is_template: true
+
+assessment_one:
+  id: 4
+  name: Sample assessment name
+  key: sample_assessment_key
+  percent_complete: 0.5
+  is_template: false

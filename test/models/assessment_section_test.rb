@@ -1,7 +1,57 @@
 require 'test_helper'
 
 class AssessmentSectionTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  def setup
+    @section = assessment_sections(:resource_assessment_section_one)
+  end
+
+  ############################ object tests #################################
+
+  test 'valid assessment section saves' do
+    assert @section.save
+  end
+
+  ########################### property tests ################################
+
+  # assessment
+  test 'assessment is required' do
+    @section.assessment = nil
+    assert !@section.save
+  end
+
+  # index
+  test 'index is required' do
+    @section.index = nil
+    assert !@section.save
+  end
+
+  # name
+  test 'name is required' do
+    @section.name = nil
+    assert !@section.save
+  end
+
+  # weight
+  test 'weight is required' do
+    @section.weight = nil
+    assert !@section.save
+  end
+
+  test 'weight should be between 0 and 1' do
+    @section.weight = -0.5
+    assert !@section.save
+    @section.weight = 1.5
+    assert !@section.save
+  end
+
+  ########################### dependency tests ###############################
+
+  test 'dependent assessment questions should be destroyed on destroy' do
+    question = assessment_questions(:assessment_question_one)
+    @section.assessment_questions << question
+    @section.destroy
+    assert question.destroyed?
+  end
+
 end

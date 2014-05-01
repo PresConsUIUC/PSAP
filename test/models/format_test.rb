@@ -2,10 +2,6 @@ require 'test_helper'
 
 class FormatTest < ActiveSupport::TestCase
 
-  setup :setup
-
-  protected
-
   def setup
     @default_values = {name: 'Test', score:0.5}
     @format = Format.new(@default_values)

@@ -2,10 +2,6 @@ require 'test_helper'
 
 class CreatorTest < ActiveSupport::TestCase
 
-  setup :setup
-
-  protected
-
   def setup
     @default_values = {name: 'Test', creator_type: CreatorType::PERSON}
     @creator = Creator.new(@default_values)

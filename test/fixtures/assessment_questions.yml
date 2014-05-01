@@ -1,13 +1,20 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  index: 1
-  name: MyString
+assessment_question_one:
+  id: 1
+  index: 0
+  name: Sample question name
   question_type: 1
-  weight: 1.5
+  weight: 0.5
+  assessment_section_id: 1
+  help_text: Sample help text
 
-two:
+assessment_question_two:
+  id: 2
+  parent_id: 1
   index: 1
-  name: MyString
+  name: Sample question name
   question_type: 1
-  weight: 1.5
+  weight: 0.5
+  assessment_section_id: 1
+  help_text: Sample help text

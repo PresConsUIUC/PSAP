@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  index: 1
-  name: MyString
+resource_assessment_section_one:
+  id: 1
+  index: 0
+  name: Test section 1
+  description: Test section description
+  weight: 0.5
+  assessment_id: 1
 
-two:
+resource_assessment_section_two:
+  id: 2
   index: 1
-  name: MyString
+  name: Test section 2
+  description: Test section description
+  weight: 0.5
+  assessment_id: 1

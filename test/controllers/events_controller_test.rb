@@ -20,4 +20,17 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to signin_url
   end
 
+  test 'adding a query parameter should filter the event list' do
+    signin_as(users(:admin_user))
+
+    get :index
+    assert_operator assigns(:events).length, :>, 0
+
+    get :index, { q: 'signed in' }
+    assert_equal 1, assigns(:events).length
+
+    get :index, { q: 'dsfasdfasdfasdfasfd' }
+    assert_equal 0, assigns(:events).length
+  end
+
 end

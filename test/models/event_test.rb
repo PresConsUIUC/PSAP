@@ -2,10 +2,6 @@ require 'test_helper'
 
 class EventTest < ActiveSupport::TestCase
 
-  setup :setup
-
-  protected
-
   def setup
     @default_values = {description: 'Test'}
     @event = Event.new(@default_values)

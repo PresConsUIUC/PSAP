@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  index: 1
-  description: MyString
-  value: MyString
+assessment_question_option_one:
+  index: 0
+  name: Sample question name 1
+  value: Sample question value 1
+  assessment_question_id: 1
 
-two:
+assessment_question_option_two:
   index: 1
-  description: MyString
-  value: MyString
+  name: Sample question name 2
+  value: Sample question value 2
+  assessment_question_id: 1
