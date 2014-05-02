@@ -109,11 +109,18 @@ class ResourcesController < ApplicationController
   end
 
   def resource_params
-    params.require(:resource).permit(:description, :format, :local_identifier,
-                                     :location, :name, :notes, :resource_type,
-                                     :user_id,
+    params.require(:resource).permit(:description, :format_id,
+                                     :local_identifier, :location_id, :name,
+                                     :notes, :resource_type, :user_id,
                                      assessment_question_responses_attributes:
-            [:assessment_question_option_id])
+                                         [:assessment_question_option_id],
+                                     creators_attributes: [:creator_type, :name],
+                                     extents_attributes: [:name],
+                                     resource_dates_attributes:
+                                         [:date_type, :begin_year, :begin_month,
+                                          :begin_day, :end_year, :end_month,
+                                          :end_day, :year, :month, :day],
+                                     subjects_attributes: [:name])
   end
 
 end
