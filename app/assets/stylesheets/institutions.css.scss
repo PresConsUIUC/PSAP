@@ -1,0 +1,10 @@
+body#show_institution {
+  @media print {
+    div.col-sm-8 {
+      width:100%;
+    }
+    div.col-sm-4 {
+      display:none;
+    }
+  }
+}
