@@ -1,14 +1,11 @@
 <% children.each do |question| %>
 
     <%
-    # Can't do this because it will hit the database which won't work in the
-    # "new" route
-    # responses = question.assessment_question_responses.where(resource: @resource)
-    responses = [];
-    @resource.assessment_question_responses.each do |response|
-      responses << response if response.assessment_question.id == question.id
-    end
-    options = question.assessment_question_options.order(:index)
+       responses = [];
+       entity.assessment_question_responses.each do |response|
+         responses << response if response.assessment_question.id == question.id
+       end
+       options = question.assessment_question_options.order(:index)
     %>
 
     <hr>
@@ -52,7 +49,7 @@
               <%= select_tag "resource[assessment_question_responses_attributes][#{0}][assessment_question_option_id]",
                              options_for_select(options.map { |op|
                                [op.name, op.id, { 'data-option-score' => op.value }] },
-                             selected: selected),
+                                                selected: selected),
                              { include_blank: true } %>
             </label>
         <% when AssessmentQuestionType::CHECKBOX %>
@@ -75,8 +72,9 @@
       </div>
     </div>
 
-    <%= render partial: 'resources/question_tree_rows',
+    <%= render partial: 'shared/question_tree_rows',
                locals: {f: f,
+                        entity: entity,
                         children: question.children.order(:index),
                         depth: depth + 1} if question.children.any? %>
 <% end %>

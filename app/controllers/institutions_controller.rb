@@ -34,6 +34,8 @@ class InstitutionsController < ApplicationController
 
   def edit
     @institution = Institution.find(params[:id])
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
   end
 
   def index
@@ -43,6 +45,8 @@ class InstitutionsController < ApplicationController
 
   def new
     @institution = Institution.new
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
   end
 
   def show
