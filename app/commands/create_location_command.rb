@@ -11,6 +11,11 @@ class CreateLocationCommand < Command
   def execute
     begin
       @location.save!
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to create location: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to create location: #{e.message}",
                    user: @user, address: @remote_ip,

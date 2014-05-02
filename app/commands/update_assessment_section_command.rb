@@ -22,6 +22,12 @@ class UpdateAssessmentSectionCommand < Command
       if @assessment_section.index != @assessment_section_params[:index]
         CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
       end
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to update assessment section "\
+      "\"#{@assessment_section.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to update assessment section "\
       "\"#{@assessment_section.name}\": #{e.message}",

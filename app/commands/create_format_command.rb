@@ -10,6 +10,11 @@ class CreateFormatCommand < Command
   def execute
     begin
       @format.save!
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to create format: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to create format: #{e.message}",
                    user: @user, address: @remote_ip,

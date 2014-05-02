@@ -10,6 +10,12 @@ class UpdateInstitutionCommand < Command
   def execute
     begin
       @institution.update!(@institution_params)
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to update institution "\
+      "\"#{@institution.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to update institution "\
       "\"#{@institution.name}\": #{e.message}",

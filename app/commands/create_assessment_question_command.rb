@@ -34,6 +34,12 @@ class CreateAssessmentQuestionCommand < Command
     begin
       @assessment_question.save!
       CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to create assessment question: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to create assessment question: "\
       "#{e.message}",

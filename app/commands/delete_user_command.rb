@@ -14,7 +14,6 @@ class DeleteUserCommand < Command
       "#{e.message}",
                    user: @user, address: @remote_ip,
                    event_status: EventStatus::FAILURE)
-      @user.errors.add(:base, e)
       raise e
     rescue => e
       Event.create(description: "Failed to delete user #{@user.username}: "\

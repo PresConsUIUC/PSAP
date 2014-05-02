@@ -18,6 +18,12 @@ class UpdateUserCommand < Command
       end
 
       @user.update!(@user_params)
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to update user "\
+      "\"#{@user.username}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to update user "\
       "\"#{@user.username}\": #{e.message}",

@@ -12,6 +12,12 @@ class CreateUserCommand < Command
       if @user.save!
         UserMailer.welcome_email(@user).deliver
       end
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to create account for user: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to create account for user: "\
       "#{e.message}",

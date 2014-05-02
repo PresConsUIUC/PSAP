@@ -15,7 +15,12 @@ class DeleteAssessmentSectionCommand < Command
       "#{e.message}",
                    user: @user, address: @remote_ip,
                    event_status: EventStatus::FAILURE)
-      @assessment_section.errors.add(:base, e)
+      raise e
+    rescue => e
+      Event.create(description: "Failed to delete assessment section: "\
+      "#{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
       raise e
     else
       Event.create(description: "Deleted assessment section "\

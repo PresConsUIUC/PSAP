@@ -9,6 +9,11 @@ class CreateResourceCommand < Command
   def execute
     begin
       @resource.save!
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to create resource: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to create resource: #{e.message}",
                    user: @user, address: @remote_ip,

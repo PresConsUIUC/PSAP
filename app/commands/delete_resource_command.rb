@@ -9,6 +9,11 @@ class DeleteResourceCommand < Command
   def execute
     begin
       @resource.destroy!
+    rescue ActiveRecord::DeleteRestrictionError => e
+      Event.create(description: "Failed to delete resource: #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to delete resource: #{e.message}",
                    user: @user, address: @remote_ip,

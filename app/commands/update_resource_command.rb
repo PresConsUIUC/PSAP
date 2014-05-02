@@ -10,6 +10,12 @@ class UpdateResourceCommand < Command
   def execute
     begin
       @resource.update!(@resource_params)
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to update resource "\
+      "\"#{@resource.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to update resource "\
       "\"#{@resource.name}\": #{e.message}",

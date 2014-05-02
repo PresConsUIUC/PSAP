@@ -10,6 +10,12 @@ class UpdateLocationCommand < Command
   def execute
     begin
       @location.update!(@location_params)
+    rescue ActiveRecord::RecordInvalid => e
+      Event.create(description: "Failed to update location "\
+      "\"#{@location.name}\": #{e.message}",
+                   user: @user, address: @remote_ip,
+                   event_status: EventStatus::FAILURE)
+      raise e
     rescue => e
       Event.create(description: "Failed to update location "\
       "\"#{@location.name}\": #{e.message}",
