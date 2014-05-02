@@ -32,7 +32,8 @@ class SessionsController < ApplicationController
       message = "Sign-in failed for #{params[:session][:username].downcase}"
     end
     Event.create(description: message, address: request.remote_ip,
-                 event_status: EventStatus::FAILURE)
+                 event_status: EventStatus::FAILURE,
+                 event_level: EventLevel::NOTICE)
 
     flash[:error] = 'Invalid username/password combination.'
     redirect_to signin_url

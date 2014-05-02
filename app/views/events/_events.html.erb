@@ -4,19 +4,17 @@
 <table class="table">
   <thead>
   <tr>
+    <th>Level</th>
     <th>Event</th>
     <th>Occurred</th>
     <th>User</th>
-    <th>IP Address</th>
+    <th nowrap="true">IP Address</th>
   </tr>
   </thead>
   <tbody>
   <% @events.each do |event| %>
-      <% if event.event_status == EventStatus::FAILURE %>
-          <tr class="bg-danger">
-      <% else %>
-          <tr>
-      <% end %>
+      <tr <%= 'class=bg-danger' if event.event_status == EventStatus::FAILURE %>>
+        <td><%= EventLevel::name_for_level event.event_level %></td>
         <td><%= event.description %></td>
         <td><%= local_time_ago(event.created_at) %></td>
         <td>

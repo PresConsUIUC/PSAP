@@ -20,12 +20,14 @@ class ConfirmUserCommand < Command
         Event.create(description: "Invalid confirmation code supplied for user "\
         "#{@user.username}",
                      user: @user, address: @remote_ip,
-                     event_status: EventStatus::FAILURE)
+                     event_status: EventStatus::FAILURE,
+                     event_level: EventLevel::ERROR)
       else
         Event.create(description: "User #{@user.username} attempted to "\
         "confirm account, but was already confirmed.",
                      user: @user, address: @remote_ip,
-                     event_status: EventStatus::FAILURE)
+                     event_status: EventStatus::FAILURE,
+                     event_level: EventLevel::NOTICE)
       end
     end
   end

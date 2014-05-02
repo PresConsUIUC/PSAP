@@ -1,4 +1,5 @@
 <% provide(:title, 'Event Log') %>
+<% provide(:body_id, 'events') %>
 
 <div class="row">
   <div class="col-sm-8">
@@ -12,6 +13,10 @@
     <% end %>
   </div>
 </div>
+
+<p class="center">
+    <%= raw(level_buttons(@event_level)) %>
+</p>
 
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 

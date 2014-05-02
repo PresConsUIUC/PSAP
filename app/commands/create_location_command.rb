@@ -19,7 +19,8 @@ class CreateLocationCommand < Command
     rescue => e
       Event.create(description: "Failed to create location: #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Created location \"#{@location.name}\" in "\

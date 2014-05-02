@@ -22,7 +22,8 @@ class CreateUserCommand < Command
       Event.create(description: "Failed to create account for user: "\
       "#{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Created account for user #{@user.username}",

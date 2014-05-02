@@ -14,7 +14,8 @@ class DisableUserCommand < Command
       Event.create(description: "Failed to disable user #{@user.username}: "\
       "#{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ALERT)
       raise e
     else
       Event.create(description: "Disabled user #{@user.username}",

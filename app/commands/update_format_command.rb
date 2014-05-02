@@ -20,7 +20,8 @@ class UpdateFormatCommand < Command
       Event.create(description: "Failed to update format "\
       "\"#{@format.name}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Updated format \"#{@format.name}\"",

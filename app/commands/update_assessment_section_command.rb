@@ -32,7 +32,8 @@ class UpdateAssessmentSectionCommand < Command
       Event.create(description: "Failed to update assessment section "\
       "\"#{@assessment_section.name}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Updated assessment section "\

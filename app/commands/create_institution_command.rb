@@ -19,7 +19,8 @@ class CreateInstitutionCommand < Command
     rescue => e
       Event.create(description: "Failed to create institution: #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Created institution \"#{@institution.name}\"",

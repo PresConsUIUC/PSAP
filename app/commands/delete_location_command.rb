@@ -17,7 +17,8 @@ class DeleteLocationCommand < Command
     rescue => e
       Event.create(description: "Failed to delete location: #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Deleted location \"#{@location.name}\" from "\
