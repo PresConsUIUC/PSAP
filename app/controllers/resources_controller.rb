@@ -40,6 +40,9 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
   end
 
+  def import
+  end
+
   def new
     @location = Location.find(params[:location_id])
     @resource = @location.resources.build
