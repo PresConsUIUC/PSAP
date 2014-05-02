@@ -1,4 +1,17 @@
 $(document).ready(function() {
+    // if using a retina display, loop through all <img> tags and, if they have
+    // a "data-has-retina" attribute, replace the "[filename].[ext]" in their
+    // "src" attribute with "[filename]@2x.[ext]"
+    if (window.devicePixelRatio > 1) {
+        $('img').each(function() {
+            if ($(this).attr('data-has-retina')) {
+                var parts = $(this).attr('src').split('.');
+                parts[parts.length - 2] = parts[parts.length - 2] + '@2x';
+                $(this).attr('src', parts.join('.'));
+            }
+        });
+    }
+
     // Sorting and pagination links
     // These don't work yet
     //$('#formats th a, .pagination a').live('click', function() {
