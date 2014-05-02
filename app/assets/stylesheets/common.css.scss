@@ -123,11 +123,9 @@ div#modal_progress_view {
 nav.navbar {
   background-color:rgba(0, 0, 0, 0.8);
 
-  .navbar-left {
-    a {
+  .navbar-left a, a.dropdown-toggle {
       font-size:0.8em;
       letter-spacing:1.2px;
-    }
   }
 
   li#help {
