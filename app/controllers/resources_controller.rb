@@ -113,14 +113,16 @@ class ResourcesController < ApplicationController
                                      :local_identifier, :location_id, :name,
                                      :notes, :resource_type, :user_id,
                                      assessment_question_responses_attributes:
-                                         [:assessment_question_option_id],
-                                     creators_attributes: [:creator_type, :name],
-                                     extents_attributes: [:name],
+                                         [:id, :assessment_question_option_id],
+                                     creators_attributes: [:id, :creator_type,
+                                                           :name],
+                                     extents_attributes: [:id, :name],
                                      resource_dates_attributes:
-                                         [:date_type, :begin_year, :begin_month,
-                                          :begin_day, :end_year, :end_month,
-                                          :end_day, :year, :month, :day],
-                                     subjects_attributes: [:name])
+                                         [:id, :date_type, :begin_year,
+                                          :begin_month, :begin_day, :end_year,
+                                          :end_month, :end_day, :year, :month,
+                                          :day],
+                                     subjects_attributes: [:id, :name])
   end
 
 end
