@@ -1,7 +1,7 @@
 # Can't use AtomFeedHelper because it requires an entity with a "show" route.
 
 # Eliminate whitespace
-#xml = Builder::XmlMarkup.new
+xml = Builder::XmlMarkup.new
 
 xml.instruct!
 xml.feed(

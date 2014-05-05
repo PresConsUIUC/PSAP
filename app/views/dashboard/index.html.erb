@@ -6,8 +6,9 @@
     <h1>Dashboard</h1>
   </div>
   <div class="col-sm-1">
-    <%= link_to params.merge(format: :atom), class: 'event_feed_link',
-                title: 'Subscribe to your personal activity feed'do
+    <%= link_to params.merge(format: :atom, key: @user.feed_key),
+                class: 'feed_link',
+                title: 'Subscribe to your personal activity feed' do
       image_tag('feed.svg', height: 24, alt: 'Atom feed')
     end %>
   </div>
