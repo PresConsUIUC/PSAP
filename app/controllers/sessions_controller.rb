@@ -24,16 +24,9 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    user = current_user
-
+    command = SignOutCommand.new(current_user, request.remote_ip)
+    command.execute
     sign_out
-
-    # Log the signout
-    if user
-      Event.create(description: "User #{user.username} signed out",
-                   user: user, address: request.remote_ip)
-    end
-
     redirect_to root_url
   end
 
