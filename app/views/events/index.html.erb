@@ -8,6 +8,7 @@
   <div class="col-sm-4">
     <%= form_tag events_path, method: 'get', class: 'entity_search',
                  style: 'float:right' do %>
+        <input type="hidden" name="level" value="<%= params[:level] %>">
         <%= search_field_tag :q, params[:q], placeholder: 'Search',
                              class: 'form-control' %>
     <% end %>

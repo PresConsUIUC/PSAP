@@ -3,9 +3,11 @@ $(document).ready(function() {
         var updateFeedLink = function() {
             var new_url = document.createElement('a');
             new_url.href = $('.event_feed_link:first').attr('href');
-            new_url.search = 'level='
-                + $('.level_button.active').attr('data-level');
+            var new_level = $('.level_button.active').attr('data-level');
+            new_url.search = 'level=' + new_level;
             $('.event_feed_link:first').attr('href', new_url);
+
+            $('input[name="level"]').val(new_level);
         };
 
         $('.level_button').on('click', function () {
