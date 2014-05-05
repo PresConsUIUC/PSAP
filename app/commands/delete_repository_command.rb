@@ -12,7 +12,8 @@ class DeleteRepositoryCommand < Command
     rescue ActiveRecord::DeleteRestrictionError => e
       Event.create(description: "Failed to delete repository: #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to delete repository: #{e.message}",

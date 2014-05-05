@@ -14,7 +14,8 @@ class DeleteAssessmentQuestionCommand < Command
       Event.create(description: "Failed to delete assessment question: "\
       "#{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to delete assessment question: "\

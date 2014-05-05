@@ -14,7 +14,8 @@ class UpdateResourceCommand < Command
       Event.create(description: "Failed to update resource "\
       "\"#{@resource.name}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_status: EventStatus::FAILURE,
+                   event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to update resource "\
