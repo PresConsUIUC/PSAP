@@ -111,6 +111,22 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  # Responds to PATCH /users/:id/reset_feed_key
+  def reset_feed_key
+    user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound if !user
+
+    command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
+    begin
+      command.execute
+      flash[:success] = "Reset feed key for user #{user.username}."
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to :back
+    end
+  end
+
   def show
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound if !@user

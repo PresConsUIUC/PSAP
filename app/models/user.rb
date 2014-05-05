@@ -33,8 +33,7 @@ class User < ActiveRecord::Base
     require 'securerandom'
     self.confirmation_code ||= SecureRandom.hex
 
-    # generate a feed key
-    self.feed_key ||= SecureRandom.hex
+    self.reset_feed_key unless self.feed_key
   end
 
   def full_name
@@ -47,6 +46,10 @@ class User < ActiveRecord::Base
 
   def is_admin?
     self.role.is_admin?
+  end
+
+  def reset_feed_key
+    self.feed_key = SecureRandom.hex
   end
 
   def validate_password?
