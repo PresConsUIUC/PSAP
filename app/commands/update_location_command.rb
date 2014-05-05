@@ -14,21 +14,18 @@ class UpdateLocationCommand < Command
       Event.create(description: "Failed to update location "\
       "\"#{@location.name}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE,
                    event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to update location "\
       "\"#{@location.name}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE,
                    event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Updated location \"#{@location.name}\" in "\
       "repository \"#{@location.repository.name}\"",
-                   user: @user, address: @remote_ip,
-                   event_status: EventStatus::SUCCESS)
+                   user: @user, address: @remote_ip)
     end
   end
 

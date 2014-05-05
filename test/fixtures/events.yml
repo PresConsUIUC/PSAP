@@ -2,4 +2,3 @@
 
 event_one:
   description: Test event
-  event_status: <%= EventStatus::SUCCESS %>

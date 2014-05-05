@@ -35,7 +35,6 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
       "repository \"#{@repository.name}\"", event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
-    assert_equal EventStatus::SUCCESS, event.event_status
   end
 
   test 'execute method should write failure to event log if validation failed' do
@@ -50,7 +49,6 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
-    assert_equal EventStatus::FAILURE, event.event_status
   end
 
   # object

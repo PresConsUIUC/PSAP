@@ -15,8 +15,7 @@ class SessionsController < ApplicationController
 
         # Log the successful signin
         Event.create(description: "User #{user.username} signed in",
-                     user: user, address: request.remote_ip,
-                     event_status: EventStatus::SUCCESS)
+                     user: user, address: request.remote_ip)
         user.last_signin = Time.now
         user.save
 
@@ -32,7 +31,6 @@ class SessionsController < ApplicationController
       message = "Sign-in failed for #{params[:session][:username].downcase}"
     end
     Event.create(description: message, address: request.remote_ip,
-                 event_status: EventStatus::FAILURE,
                  event_level: EventLevel::NOTICE)
 
     flash[:error] = 'Invalid username/password combination.'
@@ -47,8 +45,7 @@ class SessionsController < ApplicationController
     # Log the signout
     if user
       Event.create(description: "User #{user.username} signed out",
-                   user: user, address: request.remote_ip,
-                   event_status: EventStatus::SUCCESS)
+                   user: user, address: request.remote_ip)
     end
 
     redirect_to root_url
