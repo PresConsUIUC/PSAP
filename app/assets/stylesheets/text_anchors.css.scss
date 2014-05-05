@@ -8,7 +8,7 @@ body#glossary div#page_content, div.modal-body {
     display:inline;
   }
   li + li::before {
-    color:lightgray; /* TODO: use $gray-light */
+    color:$gray-light;
     content:' | ';
     padding: 0.5em;
   }
