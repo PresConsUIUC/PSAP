@@ -1,11 +1,22 @@
 $(document).ready(function() {
     if ($('body#events').length) {
+        var updateFeedLink = function() {
+            var new_url = document.createElement('a');
+            new_url.href = $('#event_feed_link').attr('href');
+            new_url.search = 'level='
+                + $('.level_button.active').attr('data-level');
+            $('#event_feed_link').attr('href', new_url);
+        };
+
         $('.level_button').on('click', function () {
+            // update level button classes
+            $('.level_button').removeClass('active');
             $('.level_button').removeClass('btn-info');
             $('.level_button').removeClass('btn-warning');
             $('.level_button').removeClass('btn-danger');
             $('.level_button').addClass('btn-default');
             $(this).removeClass('btn-default');
+            $(this).addClass('active');
 
             var level = $(this).attr('data-level');
             if (level > 4) {
@@ -15,6 +26,10 @@ $(document).ready(function() {
             } else {
                 $(this).addClass('btn-danger');
             }
+
+            updateFeedLink();
         });
+
+        updateFeedLink();
     }
 });

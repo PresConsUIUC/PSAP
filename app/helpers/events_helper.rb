@@ -8,7 +8,7 @@ module EventsHelper
     links = ''
     levels.each do |level|
       cssClass = 'btn btn-sm level_button '
-      cssClass.concat (current_level.to_i == level) ? 'btn-info' : 'btn-default'
+      cssClass.concat (current_level.to_i == level) ? 'btn-info active' : 'btn-default'
       links << link_to(EventLevel::name_for_level(level), "?level=#{level}",
                   class: cssClass, remote: true, 'data-level' => level)
     end
