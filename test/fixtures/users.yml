@@ -9,6 +9,7 @@ normal_user:
   username: normal
   confirmed: true
   enabled: true
+  feed_key: sdfjasdfsdfsdf
   institution_id: 1
   role_id: 2
 
@@ -21,6 +22,7 @@ admin_user:
   username: admin
   confirmed: true
   enabled: true
+  feed_key: sdfjasdfsdfsdf
   institution_id: 1
   role_id: 1
 
@@ -31,6 +33,7 @@ unaffiliated_user:
   first_name: 'Clara'
   last_name: 'NoInstitution'
   password_digest: <%= BCrypt::Password.create('password') %>
+  feed_key: sdfjasdfsdfsdf
   role_id: 2
   confirmed: true
   enabled: true
@@ -42,6 +45,7 @@ unconfirmed_user:
   first_name: 'Sally'
   last_name: 'NoConfirmy'
   password_digest: <%= BCrypt::Password.create('password') %>
+  feed_key: sdfjasdfsdfsdf
   institution_id: 2
   role_id: 2
   confirmed: false
@@ -54,6 +58,7 @@ disabled_user:
   first_name: 'Johnny'
   last_name: 'CantDoNothin'
   password_digest: <%= BCrypt::Password.create('password') %>
+  feed_key: sdfjasdfsdfsdf
   institution_id: 3
   role_id: 2
   confirmed: true

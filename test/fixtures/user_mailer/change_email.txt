@@ -1,4 +1,5 @@
 You recently requested to change your PSAP account email address to
-new@example.org. If you didn't request this, please notify us.
+new@example.org. If you didn't request this, please notify us by replying
+to this message.
 
 Otherwise, no further action is required.
