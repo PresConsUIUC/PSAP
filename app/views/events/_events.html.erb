@@ -1,31 +1,34 @@
 <% # Will be read by updateResultsCount() in JS %>
 <input type="hidden" name="results_count" value="<%= @events.total_entries %>">
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Level</th>
-    <th>Event</th>
-    <th>Occurred</th>
-    <th>User</th>
-    <th nowrap="true">IP Address</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @events.each do |event| %>
-      <tr <%= 'class=bg-danger' if event.event_status == EventStatus::FAILURE %>>
-        <td><%= EventLevel::name_for_level event.event_level %></td>
-        <td><%= event.description %></td>
-        <td><%= local_time_ago(event.created_at) %></td>
-        <td>
-          <% if event.user %>
-              <%= link_to event.user.username, event.user,
-                          title: event.user.full_name %>
-          <% end %>
-        </td>
-        <td><%= event.address %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+<% if @events.any? %>
 
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Level</th>
+        <th>Event</th>
+        <th>Occurred</th>
+        <th>User</th>
+        <th nowrap="true">IP Address</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @events.each do |event| %>
+          <tr <%= 'class=bg-danger' if event.event_status == EventStatus::FAILURE %>>
+            <td><%= EventLevel::name_for_level event.event_level %></td>
+            <td><%= event.description %></td>
+            <td><%= local_time_ago(event.created_at) %></td>
+            <td>
+              <% if event.user %>
+                  <%= link_to event.user.username, event.user,
+                              title: event.user.full_name %>
+              <% end %>
+            </td>
+            <td><%= event.address %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+<% end %>

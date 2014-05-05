@@ -14,13 +14,13 @@
   </div>
 </div>
 
-<p class="center">
+<div class="center">
     <%= raw(level_buttons(@event_level)) %>
-</p>
+</div>
 
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 
-<div id="events">
+<div id="events_list">
   <%= render 'events' %>
 </div>
 
