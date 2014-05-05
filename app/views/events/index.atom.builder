@@ -14,7 +14,7 @@ xml.feed(
   end
   xml.link('href' => events_url)
   if @events.any?
-    xml.updated(@events[0].created_at)
+    xml.updated(@events[0].created_at.iso8601)
   end
   xml.author {
     xml.name('Preservation Self-Assessment Program (PSAP)')
@@ -24,7 +24,7 @@ xml.feed(
   xml.generator('uri' => root_url) {
     xml.text!('Preservation Self-Assessment Program (PSAP)')
   }
-  xml.id("tag:#{request.host}:#{request.fullpath.split('.')}")
+  xml.id("tag:#{request.host}:#{request.fullpath}")
 
   @events.each do |event|
     xml.entry {
@@ -37,8 +37,8 @@ xml.feed(
         }
       end
       xml.link('href' => events_url, 'rel' => 'via')
-      xml.id("tag:#{request.host}:#{request.fullpath.split('.')}:#{event.id}")
-      xml.updated(event.created_at)
+      xml.id("tag:#{request.host}:#{request.fullpath}:#{event.id}")
+      xml.updated(event.created_at.iso8601)
       xml.summary(event.description)
     }
   end
