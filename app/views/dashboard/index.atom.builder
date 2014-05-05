@@ -14,7 +14,7 @@ xml.feed(
   end
   xml.author {
     xml.name('Preservation Self-Assessment Program (PSAP)')
-    xml.email('') # TODO: PSAP email address
+    xml.email(Psap::Application.config.psap_email_address)
     xml.uri(root_url)
   }
   xml.generator('uri' => root_url) {

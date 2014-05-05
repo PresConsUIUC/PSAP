@@ -32,6 +32,8 @@ Psap::Application.configure do
         authentication: 'plain',
         enable_starttls_auto: true
     }
+
+    config.psap_email_address = config.action_mailer.smtp_settings[:user_name]
   end
 
   # Print deprecation notices to the Rails logger.
