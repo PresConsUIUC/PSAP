@@ -2,10 +2,10 @@ $(document).ready(function() {
     if ($('body#events').length) {
         var updateFeedLink = function() {
             var new_url = document.createElement('a');
-            new_url.href = $('#event_feed_link').attr('href');
+            new_url.href = $('.event_feed_link:first').attr('href');
             new_url.search = 'level='
                 + $('.level_button.active').attr('data-level');
-            $('#event_feed_link').attr('href', new_url);
+            $('.event_feed_link:first').attr('href', new_url);
         };
 
         $('.level_button').on('click', function () {

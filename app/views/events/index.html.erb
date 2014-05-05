@@ -16,7 +16,8 @@
 
 <div class="center">
     <%= raw(level_buttons(@event_level)) %>
-    <%= link_to params.merge(format: :atom), id: 'event_feed_link' do
+    <%= link_to params.merge(format: :atom), class: 'event_feed_link',
+                title: 'Subscribe to a feed of events of this or greater severity' do
       image_tag('feed.svg', height: 24, alt: 'Atom feed')
     end %>
 </div>
