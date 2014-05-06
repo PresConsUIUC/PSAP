@@ -12,6 +12,7 @@ class ResetUserFeedKeyCommand < Command
       @user.save!
 
       # TODO: send an email notifying the user that their feed key has changed
+      # (if @user != doing_user)
     rescue => e
       Event.create(description: "Failed to reset feed key for user "\
       "#{@user.username}: #{e.message}",

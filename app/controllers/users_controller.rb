@@ -90,7 +90,8 @@ class UsersController < ApplicationController
 
   # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
   # the purpose of checking whether a user with the given username exists
-  # from the registration form.
+  # from the registration form. (Can't do GET /users/:username because it
+  # requires being signed in.)
   def exists
     if User.find_by_username params[:username]
       render text: nil, status: 200
