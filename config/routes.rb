@@ -86,6 +86,10 @@ Psap::Application.routes.draw do
     resources :locations, except: :index
   end
   resources :locations, except: :index do
+    match '/resources/import', to: 'resources#import', via: 'get',
+          as: 'resource_import_get'
+    match '/resources/import', to: 'resources#import', via: 'post',
+          as: 'resource_import_post'
     resources :resources, except: :index
   end
   resources :resources, except: :index, path_names: { edit: 'assess' }

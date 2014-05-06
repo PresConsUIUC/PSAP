@@ -52,11 +52,17 @@
     <div class="tab-content">
 
       <div class="tab-pane active" id="resources">
-        <div style="text-align:right">
+
+        <div class="btn-group" style="float:right">
           <!-- Assess a Resource button -->
           <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
               Assess a Resource
+          <% end %>
+          <!-- Import from ArchivesSpace button -->
+          <%= link_to location_resource_import_get_path(@location), class: 'btn btn-default' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-import') %>
+              Import an ArchivesSpace Resource
           <% end %>
         </div>
 

@@ -2,8 +2,9 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin, only: [:new, :create,
-                                                           :edit, :update,
-                                                           :show, :destroy]
+                                                           :edit, :import,
+                                                           :update, :show,
+                                                           :destroy]
 
   def create
     @location = Location.find(params[:location_id])
@@ -40,7 +41,29 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
   end
 
+  # Responds to GET/POST /locations/:id/resources/import
   def import
+    @location = Location.find params[:location_id]
+
+    case request.method
+      when 'GET'
+        @import = ArchivesspaceImport.new
+        @import.port = 80
+        render 'import'
+      when 'POST'
+        command = ImportFromArchivesspaceEadCommand.new(
+            resource_import_params, current_user, request.remote_ip)
+        begin
+          command.execute
+        rescue => e
+          flash[:error] = "#{e}"
+          @import = command.object
+          render 'import'
+        else
+          flash[:success] = 'Successfully imported resource.'
+          redirect_to @location
+        end
+    end
   end
 
   def new
@@ -109,6 +132,11 @@ class ResourcesController < ApplicationController
     redirect_to(root_url) unless
         location.repository.institution.users.include?(current_user) ||
             current_user.is_admin?
+  end
+
+  def resource_import_params
+    params.require(:archivesspace_import).permit(:host, :password, :port,
+                                                 :resource_id, :username)
   end
 
   def resource_params

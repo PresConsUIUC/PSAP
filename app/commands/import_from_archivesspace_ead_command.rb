@@ -4,16 +4,10 @@ require 'rexml/document'
 
 class ImportFromArchivesspaceEadCommand < Command
 
-  def initialize(user, remote_host, remote_port, remote_username,
-      remote_password, remote_resource_id, user_ip)
+  def initialize(resource_import_params, user, user_ip)
     @user = user
-    @remote_host = remote_host
-    @remote_port = remote_port
-    @remote_username = remote_username
-    @remote_password = remote_password
-    @remote_resource_id = remote_resource_id
     @user_ip = user_ip
-    @resource = nil
+    @archivesspace_import = ArchivesspaceImport.new(resource_import_params)
   end
 
   def execute
@@ -21,27 +15,27 @@ class ImportFromArchivesspaceEadCommand < Command
       # Sandbox server (username/password: admin/admin):
       # POST http://sandbox.archivesspace.org/login
       # GET http://sandbox.archivesspace.org/resources/45/download_ead
-      remote_host = @remote_host.chomp.tr('/')
+      remote_host = @archivesspace_import.host.chomp.tr('/')
       session_cookie = get_session_cookie(remote_host)
       ead = get_ead(remote_host, session_cookie)
       attributes = resource_attributes_from_ead(ead)
-      @resource = Resource.create!(attributes)
+      #@resource = Resource.create!(attributes)
     rescue => e
-      Event.create(description: "Failed to import resource \"#{}\" from "\
-      "ArchivesSpace at #{@remote_host}: #{e.message}",
+      Event.create(description: "Failed to import resource from "\
+      "ArchivesSpace at #{@@archivesspace_import.host}: #{e.message}",
                    user: @user, address: @remote_ip,
                    event_status: EventStatus::FAILURE)
       raise e
     else
-      Event.create(description: "Imported resource \"#{}\" from ArchivesSpace "\
-        "at #{@remote_host}",
+      Event.create(description: "Imported resource \"#{@resource.name}\" "\
+      "from ArchivesSpace at #{@archivesspace_import.host}",
                    user: @user, address: @remote_ip,
                    event_status: EventStatus::SUCCESS)
     end
   end
 
   def object
-    @resource
+    @archivesspace_import
   end
 
   private
