@@ -3,27 +3,27 @@ module EventsHelper
   def bootstrap_class_for_event_level level
     case level
       when EventLevel::DEBUG
-        'text-muted'
+        'label label-default'
       when EventLevel::INFO
-        'text-info'
+        'label label-default'
       when EventLevel::NOTICE
-        'text-info'
+        'label label-info'
       when EventLevel::WARNING
-        'text-warning'
+        'label label-warning'
       when EventLevel::ERROR
-        'text-danger'
+        'label label-warning'
       when EventLevel::CRITICAL
-        'text-danger'
+        'label label-danger'
       when EventLevel::ALERT
-        'text-danger'
+        'label label-danger'
       when EventLevel::EMERGENCY
-        'text-danger'
+        'label label-danger'
       else
         flash_type.to_s
     end
   end
 
-  def level_buttons(current_level)
+  def level_buttons(current_level) # TODO: badge counts on these
     levels = EventLevel::all.sort do |a, b|
       b <=> a
     end

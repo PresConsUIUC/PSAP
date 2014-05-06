@@ -16,8 +16,9 @@
       <tbody>
       <% @events.each do |event| %>
           <tr>
-            <td class="<%= bootstrap_class_for_event_level event.event_level %>">
-              <%= EventLevel::name_for_level event.event_level %>
+            <td>
+              <span class="<%= bootstrap_class_for_event_level event.event_level %>">
+                <%= EventLevel::name_for_level event.event_level %></span>
             </td>
             <td><%= event.description %></td>
             <td><%= local_time_ago(event.created_at) %></td>
