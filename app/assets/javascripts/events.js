@@ -4,8 +4,9 @@ $(document).ready(function() {
             var new_url = document.createElement('a');
             new_url.href = $('.feed_link:first').attr('href');
 
+            var new_level = $('.level_button.active').attr('data-level');
             new_url = updateQueryStringParameter(new_url.toString(), 'level',
-                $('.level_button.active').attr('data-level'));
+                new_level);
 
             $('.feed_link:first').attr('href', new_url);
 
