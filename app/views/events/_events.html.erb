@@ -15,8 +15,10 @@
       </thead>
       <tbody>
       <% @events.each do |event| %>
-          <tr <%= 'class=bg-danger' if event.event_level < EventLevel::NOTICE %>>
-            <td><%= EventLevel::name_for_level event.event_level %></td>
+          <tr>
+            <td class="<%= bootstrap_class_for_event_level event.event_level %>">
+              <%= EventLevel::name_for_level event.event_level %>
+            </td>
             <td><%= event.description %></td>
             <td><%= local_time_ago(event.created_at) %></td>
             <td>
