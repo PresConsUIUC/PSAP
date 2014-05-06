@@ -26,6 +26,8 @@ class DashboardController < ApplicationController
           if @user.institution
             # array of generic event hashes
             @events = events_for_user @user
+          else
+            @events = []
           end
         else
           render status: :forbidden, text: 'Access denied.'
