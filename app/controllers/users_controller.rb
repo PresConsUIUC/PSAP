@@ -119,7 +119,12 @@ class UsersController < ApplicationController
     command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Reset feed key for user #{user.username}."
+      if user == current_user
+        flash[:success] = 'Your feed key has been reset. Click on a feed '\
+        'icon within the application to re-subscribe.'
+      else
+        flash[:success] = "Reset feed key for user #{user.username}."
+      end
     rescue => e
       flash[:error] = "#{e}"
     ensure

@@ -19,12 +19,12 @@
     <div class="btn-group" style="float:right">
       <div class="btn-group">
         <!-- Actions -->
-        <% if current_user.is_admin? %>
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown">
-              Actions <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
+        <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown">
+          Actions <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <% if current_user.is_admin? %>
               <li>
                 <!-- Enable/Disable -->
                 <% if @user.enabled %>
@@ -35,15 +35,27 @@
                                 method: :patch %>
                 <% end %>
               </li>
-              <li><%= link_to 'Reset Feed Key', reset_user_feed_key_path,
-                              method: :patch, confirm: 'Resetting the feed '\
-                              'key will break any links to application feeds '\
-                              'that the user may have. This should typically '\
-                              'only be done when a feed key has been or is '\
-                              'suspected to have been compromised. Are you '\
-                              'sure you want to do this?' %></li>
-            </ul>
-        <% end %>
+          <% end %>
+          <li>
+            <% if current_user == @user %>
+                <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
+                            method: :patch, confirm: 'Resetting the feed '\
+                          'key will break any links to application feeds '\
+                          'that you may have. This should typically '\
+                          'only be done when your feed key has been, or is '\
+                          'suspected of having been, compromised. Are you '\
+                          'sure you want to do this?' %>
+            <% else %>
+                <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
+                            method: :patch, confirm: 'Resetting the feed '\
+                          'key will break any links to application feeds '\
+                          'that this user may have. This should typically '\
+                          'only be done when a feed key has been, or is '\
+                          'suspected of having been, compromised. Are you '\
+                          'sure you want to do this?' %>
+            <% end %>
+          </li>
+        </ul>
       </div>
 
       <!-- Edit -->
