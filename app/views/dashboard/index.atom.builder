@@ -26,7 +26,7 @@ xml.feed(
     xml.entry {
       xml.title(event[:description])
       xml.author {
-        xml.name(event[:user].username)
+        xml.name("#{event[:user].full_name} (#{event[:user].username})")
         xml.email(event[:user].email)
         xml.uri(user_url(event[:user]))
       }
