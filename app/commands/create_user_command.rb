@@ -9,25 +9,22 @@ class CreateUserCommand < Command
   def execute
     @user.role = Role.find_by_name 'User'
     begin
-      if @user.save!
-        UserMailer.welcome_email(@user).deliver
-      end
+      UserMailer.welcome_email(@user).deliver if @user.save!
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Failed to create account for user: "\
       "#{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to create account for user: "\
       "#{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Created account for user #{@user.username}",
-                   user: @user, address: @remote_ip,
-                   event_status: EventStatus::SUCCESS)
+                   user: @user, address: @remote_ip)
     end
   end
 

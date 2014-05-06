@@ -101,6 +101,7 @@ Psap::Application.routes.draw do
   match '/users/:username/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
   match '/users/:username/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
   match '/users/:username/exists', to: 'users#exists', via: 'get', as: 'user_exists'
+  match '/users/:username/reset_feed_key', to: 'users#reset_feed_key', via: 'patch', as: 'reset_user_feed_key'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot_password

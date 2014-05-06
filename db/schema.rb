@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501173559) do
+ActiveRecord::Schema.define(version: 20140505201132) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -83,11 +83,11 @@ ActiveRecord::Schema.define(version: 20140501173559) do
   add_index "creators", ["resource_id"], name: "index_creators_on_resource_id"
 
   create_table "events", force: true do |t|
-    t.string   "description",                                     null: false
+    t.string   "description",                                                  null: false
     t.datetime "created_at"
     t.integer  "user_id"
-    t.string   "address",      limit: 45
-    t.decimal  "event_status",            precision: 1, scale: 1
+    t.string   "address",     limit: 45
+    t.decimal  "event_level",            precision: 1, scale: 1, default: 6.0, null: false
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 20140501173559) do
     t.datetime "last_signin"
     t.boolean  "enabled",              default: false
     t.boolean  "show_contextual_help", default: true
+    t.string   "feed_key",                             null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

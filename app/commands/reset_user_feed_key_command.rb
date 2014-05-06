@@ -1,4 +1,4 @@
-class EnableUserCommand < Command
+class ResetUserFeedKeyCommand < Command
 
   def initialize(user, doing_user, remote_ip)
     @user = user
@@ -8,16 +8,18 @@ class EnableUserCommand < Command
 
   def execute
     begin
-      @user.enabled = true
+      @user.reset_feed_key
       @user.save!
+
+      # TODO: send an email notifying the user that their feed key has changed
     rescue => e
-      Event.create(description: "Failed to enable user #{@user.username}: "\
-      "#{e.message}",
+      Event.create(description: "Failed to reset feed key for user "\
+      "#{@user.username}: #{e.message}",
                    user: @user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise e
     else
-      Event.create(description: "Enabled user #{@user.username}",
+      Event.create(description: "Reset feed key for user #{@user.username}",
                    user: @doing_user, address: @remote_ip)
     end
   end

@@ -1,4 +1,5 @@
 <% provide(:title, 'Event Log') %>
+<% provide(:body_id, 'events') %>
 
 <div class="row">
   <div class="col-sm-8">
@@ -7,15 +8,25 @@
   <div class="col-sm-4">
     <%= form_tag events_path, method: 'get', class: 'entity_search',
                  style: 'float:right' do %>
+        <input type="hidden" name="level" value="<%= @event_level %>">
         <%= search_field_tag :q, params[:q], placeholder: 'Search',
                              class: 'form-control' %>
     <% end %>
   </div>
 </div>
 
+<div class="center">
+    <%= raw(level_buttons(@event_level)) %>
+    <%= link_to params.merge(format: :atom, key: @user.feed_key),
+                class: 'feed_link',
+                title: 'Subscribe to a feed of events of this or greater severity' do
+      image_tag('feed.svg', height: 24, alt: 'Atom feed')
+    end %>
+</div>
+
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 
-<div id="events">
+<div id="events_list">
   <%= render 'events' %>
 </div>
 

@@ -22,18 +22,17 @@ class UpdateUserCommand < Command
       Event.create(description: "Failed to update user "\
       "\"#{@user.username}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to update user "\
       "\"#{@user.username}\": #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Updated user #{@user.username}",
-                   user: @doing_user, address: @remote_ip,
-                   event_status: EventStatus::SUCCESS)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

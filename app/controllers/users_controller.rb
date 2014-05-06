@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   # Mapped to GET /confirm
   def confirm
     user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !user
+    raise ActiveRecord::RecordNotFound unless user
 
     command = ConfirmUserCommand.new(user, params[:code], request.remote_ip)
     begin
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   def destroy
     user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !user
+    raise ActiveRecord::RecordNotFound unless user
 
     command = DeleteUserCommand.new(user, current_user, request.remote_ip)
     begin
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   # Responds to PATCH /users/:id/enable
   def enable
     user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !user
+    raise ActiveRecord::RecordNotFound unless user
 
     command = EnableUserCommand.new(user, current_user, request.remote_ip)
     begin
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
   # Responds to PATCH /users/:id/disable
   def disable
     user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !user
+    raise ActiveRecord::RecordNotFound unless user
 
     command = DisableUserCommand.new(user, current_user, request.remote_ip)
     begin
@@ -111,15 +111,31 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  # Responds to PATCH /users/:id/reset_feed_key
+  def reset_feed_key
+    user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
+    begin
+      command.execute
+      flash[:success] = "Reset feed key for user #{user.username}."
+    rescue => e
+      flash[:error] = "#{e}"
+    ensure
+      redirect_to :back
+    end
+  end
+
   def show
     @user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !@user
+    raise ActiveRecord::RecordNotFound unless @user
     @resources = @user.resources.order(:name) # TODO: pagination
   end
 
   def update
     @user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !@user
+    raise ActiveRecord::RecordNotFound unless @user
 
     was_unaffiliated = @user.institution.nil?
 
@@ -163,7 +179,7 @@ class UsersController < ApplicationController
   def before_edit_user
     # Normal users can only edit themselves. Administrators can edit anyone.
     @user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !@user
+    raise ActiveRecord::RecordNotFound unless @user
     redirect_to(root_url) unless current_user?(@user) || current_user.is_admin?
   end
 
@@ -178,7 +194,7 @@ class UsersController < ApplicationController
     # Normal users can only see other users from their own institution.
     # Administrators can see everyone.
     @user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound if !@user
+    raise ActiveRecord::RecordNotFound unless @user
     redirect_to(root_url) unless
         @user.institution == current_user.institution || current_user.is_admin?
   end

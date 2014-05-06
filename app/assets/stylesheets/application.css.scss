@@ -9,5 +9,16 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
  */
+
+@import "common.css.scss";
+
+@import "assessments.css.scss";
+@import "dashboard.css.scss";
+@import "events.css.scss";
+@import "formats.css.scss";
+@import "institutions.css.scss";
+@import "landing.css.scss";
+@import "report.css.scss";
+@import "resources.css.scss";
+@import "text_anchors.css.scss";

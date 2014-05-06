@@ -30,10 +30,4 @@ class EventTest < ActiveSupport::TestCase
     assert !@event.save
   end
 
-  # event_status
-  test 'event_status should be valid' do
-    @event.event_status = EventStatus.all.last + 1
-    assert !@event.save
-  end
-
 end

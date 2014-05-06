@@ -7,49 +7,26 @@ class SessionsController < ApplicationController
 
   def create
     if params[:session]
-      user = User.find_by(username: params[:session][:username].downcase,
-                          enabled: true,
-                          confirmed: true)
-      if user && user.authenticate(params[:session][:password])
-        sign_in user
-
-        # Log the successful signin
-        Event.create(description: "User #{user.username} signed in",
-                     user: user, address: request.remote_ip,
-                     event_status: EventStatus::SUCCESS)
-        user.last_signin = Time.now
-        user.save
-
-        cookies[:show_welcome_panel] = 1 if user.institution.nil?
-
+      command = SignInCommand.new(params[:session][:username],
+                                  params[:session][:password],
+                                  request.remote_ip)
+      begin
+        command.execute
+      rescue => e
+        flash[:error] = "#{e}"
+        redirect_to signin_url
+      else
+        sign_in command.object
+        cookies[:show_welcome_panel] = 1 if command.object.institution.nil?
         redirect_back_or dashboard_path
-        return
       end
     end
-
-    message = 'Sign-in failed (no username provided)'
-    if params[:session]
-      message = "Sign-in failed for #{params[:session][:username].downcase}"
-    end
-    Event.create(description: message, address: request.remote_ip,
-                 event_status: EventStatus::FAILURE)
-
-    flash[:error] = 'Invalid username/password combination.'
-    redirect_to signin_url
   end
 
   def destroy
-    user = current_user
-
+    command = SignOutCommand.new(current_user, request.remote_ip)
+    command.execute
     sign_out
-
-    # Log the signout
-    if user
-      Event.create(description: "User #{user.username} signed out",
-                   user: user, address: request.remote_ip,
-                   event_status: EventStatus::SUCCESS)
-    end
-
     redirect_to root_url
   end
 

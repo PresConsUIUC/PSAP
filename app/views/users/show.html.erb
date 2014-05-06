@@ -15,24 +15,37 @@
       <small><%= @user.username %></small>
     </h1>
   </div>
-  <div class="col-sm-4" style="text-align:right">
-    <div class="btn-group">
-      <!-- Enable/Disable -->
-      <% if current_user.is_admin? %>
-          <% if @user.enabled %>
-              <%= link_to disable_user_path(@user), method: :patch,
-                          class: 'btn btn-default' do %>
-                  <%= content_tag(:span, '', class: 'glyphicon glyphicon-remove') %>
-                  Disable
-              <% end %>
-          <% else %>
-              <%= link_to enable_user_path(@user), method: :patch,
-                          class: 'btn btn-default' do %>
-                  <%= content_tag(:span, '', class: 'glyphicon glyphicon-ok') %>
-                  Enable
-              <% end %>
-          <% end %>
-      <% end %>
+  <div class="col-sm-4">
+    <div class="btn-group" style="float:right">
+      <div class="btn-group">
+        <!-- Actions -->
+        <% if current_user.is_admin? %>
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <!-- Enable/Disable -->
+                <% if @user.enabled %>
+                    <%= link_to 'Disable User', disable_user_path(@user),
+                                method: :patch %>
+                <% else %>
+                    <%= link_to 'Enable User', enable_user_path(@user),
+                                method: :patch %>
+                <% end %>
+              </li>
+              <li><%= link_to 'Reset Feed Key', reset_user_feed_key_path,
+                              method: :patch, confirm: 'Resetting the feed '\
+                              'key will break any links to application feeds '\
+                              'that the user may have. This should typically '\
+                              'only be done when a feed key has been or is '\
+                              'suspected to have been compromised. Are you '\
+                              'sure you want to do this?' %></li>
+            </ul>
+        <% end %>
+      </div>
+
       <!-- Edit -->
       <% if current_user.is_admin? || current_user == @user %>
           <%= link_to edit_user_path(@user), class: 'btn btn-default' do %>

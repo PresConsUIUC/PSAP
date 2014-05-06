@@ -945,9 +945,48 @@ case Rails.env
                                  format: format)
     end
 
+    # Some of the above commands generated events, which we don't want.
+    Event.destroy_all
+
+    # Events
+    Event.create!(description: 'This event was just created',
+                  event_level: EventLevel::DEBUG,
+                  user: normal_user,
+                  address: '127.0.0.1',
+                  created_at: Time.mktime(2014, 4, 12))
+    Event.create!(description: 'Made queso dip, but ran out of chips before the queso was consumed, so had to buy more chips, but then didn\'t have enough queso',
+                  event_level: EventLevel::INFO,
+                  user: admin_user,
+                  address: '10.252.52.5',
+                  created_at: Time.mktime(2014, 2, 6))
+    Event.create!(description: 'Hot Pockets are ready',
+                  event_level: EventLevel::NOTICE,
+                  user: normal_user,
+                  address: '192.168.252.25',
+                  created_at: Time.mktime(2014, 1, 15))
+    Event.create!(description: 'Paul\'s dead, man, miss him, miss him, miss him',
+                  event_level: EventLevel::WARNING,
+                  user: disabled_user,
+                  address: '10.252.52.5',
+                  created_at: Time.mktime(2013, 11, 10))
+    Event.create!(description: 'Godzilla has appeared in Tokyo Harbor',
+                  event_level: EventLevel::ERROR,
+                  address: '127.0.0.1',
+                  created_at: Time.mktime(2014, 3, 26))
+    Event.create!(description: 'Skynet has become self-aware',
+                  event_level: EventLevel::CRITICAL,
+                  user: admin_user,
+                  address: '10.5.2.6',
+                  created_at: Time.mktime(1997, 8, 12))
+    Event.create!(description: 'Meta-Ambulation has pulled ahead in Pedometer Challenge',
+                  event_level: EventLevel::ALERT,
+                  address: '127.0.0.1',
+                  created_at: Time.mktime(2014, 5, 8))
+    Event.create!(description: 'Ran out of toilet paper',
+                  event_level: EventLevel::EMERGENCY,
+                  address: '127.0.0.1',
+                  created_at: Time.mktime(2013, 6, 19))
+
   when 'production'
 
 end
-
-# Some of the above commands generated events, which we don't want.
-Event.destroy_all
