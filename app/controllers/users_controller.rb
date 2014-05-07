@@ -137,6 +137,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
     @resources = @user.resources.order(:name) # TODO: pagination
+    @events = Event.where(user: @user).order(created_at: :desc).limit(20)
   end
 
   def update
