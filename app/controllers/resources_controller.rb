@@ -37,6 +37,14 @@ class ResourcesController < ApplicationController
 
   def edit
     @resource = Resource.find(params[:id])
+
+    # The form JavaScript needs at least 1 of each dependent entity. Empty
+    # ones will be stripped in update().
+    @resource.creators.build unless @resource.creators.any?
+    @resource.extents.build unless @resource.extents.any?
+    @resource.resource_dates.build unless @resource.resource_dates.any?
+    @resource.subjects.build unless @resource.subjects.any?
+
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
   end
