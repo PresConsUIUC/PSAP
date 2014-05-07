@@ -954,16 +954,16 @@ case Rails.env
                   user: normal_user,
                   address: '127.0.0.1',
                   created_at: Time.mktime(2014, 4, 12))
-    Event.create!(description: 'Made queso dip, but ran out of chips before the queso was consumed, so had to buy more chips, but then didn\'t have enough queso',
-                  event_level: EventLevel::INFO,
-                  user: admin_user,
-                  address: '10.252.52.5',
-                  created_at: Time.mktime(2014, 2, 6))
     Event.create!(description: 'Hot Pockets are ready',
-                  event_level: EventLevel::NOTICE,
+                  event_level: EventLevel::INFO,
                   user: normal_user,
                   address: '192.168.252.25',
                   created_at: Time.mktime(2014, 1, 15))
+    Event.create!(description: 'Made queso dip, but ran out of chips before the queso was consumed, so had to buy more chips, but then didn\'t have enough queso',
+                  event_level: EventLevel::NOTICE,
+                  user: admin_user,
+                  address: '10.252.52.5',
+                  created_at: Time.mktime(2014, 2, 6))
     Event.create!(description: 'Paul\'s dead, man, miss him, miss him, miss him',
                   event_level: EventLevel::WARNING,
                   user: disabled_user,

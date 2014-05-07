@@ -30,7 +30,9 @@
         <% when AssessmentQuestionType::RADIO %>
             <% options.each do |option| %>
                 <% response = responses.first
-                   selected = response.assessment_question_option ? response.assessment_question_option.id == option.id : false
+                   selected = response && response.assessment_question_option ?
+                           response.assessment_question_option.id == option.id :
+                           false
                 %>
                 <label>
                   <%= radio_button_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
@@ -44,7 +46,9 @@
         <% when AssessmentQuestionType::SELECT %>
             <label>
               <% response = responses.first
-                 selected = response.assessment_question_option ? response.assessment_question_option.id : false
+                 selected = response && response.assessment_question_option ?
+                         response.assessment_question_option.id :
+                         false
               %>
               <%= select_tag "resource[assessment_question_responses_attributes][#{0}][assessment_question_option_id]",
                              options_for_select(options.map { |op|
@@ -55,7 +59,9 @@
         <% when AssessmentQuestionType::CHECKBOX %>
             <% options.each do |option| %>
                 <% response = responses.first
-                   selected = response.assessment_question_option ? response.assessment_question_option.id == option.id : false
+                   selected = response && response.assessment_question_option ?
+                           response.assessment_question_option.id == option.id :
+                           false
                 %>
                 <label>
                   <%= check_box_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",

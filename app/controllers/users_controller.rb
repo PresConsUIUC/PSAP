@@ -90,7 +90,8 @@ class UsersController < ApplicationController
 
   # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
   # the purpose of checking whether a user with the given username exists
-  # from the registration form.
+  # from the registration form. (Can't do GET /users/:username because it
+  # requires being signed in.)
   def exists
     if User.find_by_username params[:username]
       render text: nil, status: 200
@@ -119,7 +120,12 @@ class UsersController < ApplicationController
     command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Reset feed key for user #{user.username}."
+      if user == current_user
+        flash[:success] = 'Your feed key has been reset. Click on a feed '\
+        'icon within the application to re-subscribe.'
+      else
+        flash[:success] = "Reset feed key for user #{user.username}."
+      end
     rescue => e
       flash[:error] = "#{e}"
     ensure
