@@ -3,10 +3,6 @@
 
 <% if @events.any? %>
 
-    <div class="text-center">
-      <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
-    </div>
-
     <table class="table">
       <thead>
       <tr>
