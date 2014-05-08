@@ -37,6 +37,8 @@ Psap::Application.configure do
       from: 'Preservation Self-Assessment Program <psapdev@yahoo.com>'
   }
 
+  config.psap_email_address = 'psapdev@yahoo.com'
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 

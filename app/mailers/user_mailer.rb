@@ -7,6 +7,12 @@ class UserMailer < ActionMailer::Base
     mail(to: old_email, subject: 'Your PSAP email has changed')
   end
 
+  def changed_feed_key_email(user)
+    @user = user
+    @psap_url = root_url
+    mail(to: @user.email, subject: 'Your PSAP feed key has been changed')
+  end
+
   def password_reset_email(user)
     @user = user
     @password_reset_url = url_for(controller: 'password',
