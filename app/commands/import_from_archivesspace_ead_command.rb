@@ -4,19 +4,10 @@ require 'rexml/document'
 
 class ImportFromArchivesspaceEadCommand < Command
 
-  def self.eadDateToYmdHash(date)
-    date = date.split('/')
-    parts = {}
-    parts[:day] = date[2] if date.length > 2
-    parts[:month] = date[1] if date.length > 1
-    parts[:year] = date[0] if date.length > 0
-    parts
-  end
-
-  def initialize(resource_import_params, user, user_ip)
+  def initialize(archivesspace_import_params, user, user_ip)
     @user = user
     @user_ip = user_ip
-    @archivesspace_import = ArchivesspaceImport.new(resource_import_params)
+    @archivesspace_import = ArchivesspaceImport.new(archivesspace_import_params)
     @resource = nil
   end
 
@@ -54,13 +45,12 @@ class ImportFromArchivesspaceEadCommand < Command
       Event.create(description: "Failed to import resource from "\
       "ArchivesSpace at #{@archivesspace_import.host}: #{e.message}",
                    user: @user, address: @remote_ip,
-                   event_status: EventStatus::FAILURE)
+                   event_level: EventLevel::ERROR)
       raise e
     else
       Event.create(description: "Imported resource \"#{@resource.name}\" "\
       "from ArchivesSpace at #{@archivesspace_import.host}",
-                   user: @user, address: @remote_ip,
-                   event_status: EventStatus::SUCCESS)
+                   user: @user, address: @remote_ip)
     end
   end
 
@@ -71,8 +61,6 @@ class ImportFromArchivesspaceEadCommand < Command
   def object
     @archivesspace_import
   end
-
-  private
 
   def get_session_token(host, port, username, password)
     login_uri = URI.parse("#{host}/login")
@@ -108,6 +96,12 @@ class ImportFromArchivesspaceEadCommand < Command
 
   def resource_attributes_from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
+
+    begin
+      User.find(user_id)
+    rescue ActiveRecord::RecordNotFound => e
+      raise 'Invalid user ID'
+    end
 
     attrs = {}
 
@@ -208,6 +202,17 @@ class ImportFromArchivesspaceEadCommand < Command
     # TODO: if a collection, import contents from archdesc/dsc element
 
     attrs
+  end
+
+  private
+
+  def eadDateToYmdHash(date)
+    date = date.split('/')
+    parts = {}
+    parts[:day] = date[2].to_i if date.length > 2
+    parts[:month] = date[1].to_i if date.length > 1
+    parts[:year] = date[0].to_i if date.length > 0
+    parts
   end
 
 end
