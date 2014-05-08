@@ -72,7 +72,8 @@ class ResourcesController < ApplicationController
           @import = command.object
           render 'import'
         else
-          flash[:success] = 'Successfully imported resource.'
+          flash[:success] = "Successfully imported resource "\
+          "\"#{command.created_resource.name}\"."
           redirect_to @location
         end
     end
