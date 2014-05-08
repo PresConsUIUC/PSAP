@@ -1,0 +1,5 @@
+$('#repositories').html('<%= escape_javascript(render 'repositories') %>');
+$('#assessments').html('<%= escape_javascript(render partial: 'resources/resources', locals: { resources: @resources }) %>');
+$('.pagination a').attr('data-remote', 'true');
+
+updateResultsCount();

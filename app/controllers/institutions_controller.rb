@@ -56,8 +56,13 @@ class InstitutionsController < ApplicationController
   def show
     @institution = Institution.find(params[:id])
     @institution_users = @institution.users.where(confirmed: true).order(:last_name)
+    @repositories = @institution.repositories.order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
     # show only top-level resources
-    @resources = @institution.resources.where(parent_id: nil).order(:name) # TODO: pagination
+    @resources = @institution.resources.where(parent_id: nil).order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
   end
 
   def update

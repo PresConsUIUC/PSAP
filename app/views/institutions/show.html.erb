@@ -44,22 +44,22 @@
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#repositories" data-toggle="tab">Repositories</a>
+        <a href="#repositories_tab" data-toggle="tab">Repositories</a>
       </li>
       <li>
-        <a href="#assessments" data-toggle="tab">Resource Assessments</a>
+        <a href="#assessments_tab" data-toggle="tab">Resource Assessments</a>
       </li>
       <li>
-        <a href="#users" data-toggle="tab">Users</a>
+        <a href="#users_tab" data-toggle="tab">Users</a>
       </li>
       <li>
-        <a href="#assessment_report" data-toggle="tab">Assessment Report</a>
+        <a href="#assessment_report_tab" data-toggle="tab">Assessment Report</a>
       </li>
     </ul>
 
     <div class="tab-content">
 
-      <div class="tab-pane active" id="repositories">
+      <div class="tab-pane active" id="repositories_tab">
         <!-- Add Repository button -->
         <div style="text-align:right">
           <%= link_to new_institution_repository_path(@institution),
@@ -69,43 +69,26 @@
           <% end %>
         </div>
 
-        <% if @institution.repositories.any? %>
-            <table class="table table-striped">
-              <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <!-- Edit -->
-              <% @institution.repositories.order(:name).each do |repository| %>
-                  <tr>
-                    <td>
-                      <%= link_to 'Edit', edit_repository_path(repository) %>
-                    </td>
-                    <td><%= link_to repository.name, repository %></td>
-                    <td><%= repository.locations.count %>
-                      <%= repository.locations.count == 1 ? 'location' : 'locations' %></td>
-                  </tr>
-              <% end %>
-              </tbody>
-            </table>
+        <% if @repositories.any? %>
+            <div id="repositories">
+              <%= render 'repositories' %>
+            </div>
         <% else %>
             <p>This institution has no repositories.</p>
         <% end %>
       </div>
 
-      <div class="tab-pane" id="assessments">
+      <div class="tab-pane" id="assessments_tab">
         <% if @resources.any? %>
+            <div id="assessments">
             <%= render partial: 'resources/resources', locals: {resources: @resources} %>
+            </div>
         <% else %>
             <p>There are no resource assessments at this institution.</p>
         <% end %>
       </div>
 
-      <div class="tab-pane" id="users">
+      <div class="tab-pane" id="users_tab">
         <% if @institution.users.any? %>
             <ul class="users">
               <% @institution_users.each do |user| %>
@@ -123,7 +106,7 @@
         <% end %>
       </div>
 
-      <div class="tab-pane" id="assessment_report">
+      <div class="tab-pane" id="assessment_report_tab">
 
         <div class="btn-group" style="float:right">
           <!-- Print button -->
