@@ -21,10 +21,14 @@
   </div>
 </div>
 
-<%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+</div>
 
 <div id="users">
   <%= render 'users' %>
 </div>
 
-<%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+</div>

@@ -24,10 +24,14 @@
     end %>
 </div>
 
-<%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+</div>
 
 <div id="events_list">
   <%= render 'events' %>
 </div>
 
-<%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
+</div>

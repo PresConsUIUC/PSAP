@@ -21,7 +21,9 @@
   </div>
 </div>
 
-<%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+</div>
 
 <table class="institutions table table-striped">
   <thead>
@@ -44,4 +46,6 @@
   </tbody>
 </table>
 
-<%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+</div>

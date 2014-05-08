@@ -1,7 +1,9 @@
 <% provide(:title, 'All Roles') %>
 <h1>All Roles</h1>
 
-<%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
+</div>
 
 <table class="roles table table-striped">
   <thead>
@@ -20,4 +22,6 @@
   </tbody>
 </table>
 
-<%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
+<div class="text-center">
+    <%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
+</div>
