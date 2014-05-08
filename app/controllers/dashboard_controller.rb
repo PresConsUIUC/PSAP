@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
 
         if @user.institution
           @institution_users = @user.institution.users.
-              where('id not in (?)', @user.id).order(:last_name)
+              where('id != ?', @user.id).order(:last_name)
           @recent_assessments = Resource.
               joins(:location => { :repository => :institution }).
               where(:institutions => { :id => @user.institution.id }).
@@ -23,12 +23,7 @@ class DashboardController < ApplicationController
       format.atom {
         @user = User.find_by_feed_key params[:key]
         if @user
-          if @user.institution
-            # array of generic event hashes
-            @events = events_for_user @user
-          else
-            @events = []
-          end
+          @events = @user.institution ? all_events_for_user(@user) : []
         else
           render status: :forbidden, text: 'Access denied.'
           return
@@ -43,16 +38,13 @@ class DashboardController < ApplicationController
     request.format.atom?
   end
 
-  def events_for_user(user)
-    limit = 20
+  def recent_assessments_by_user(user, limit)
     events = []
-
-    # user's recent assessments
-    recent_assessments = Resource.
+    assessments = Resource.
         joins(location: { repository: :institution }).
         where(institutions: { id: user.institution.id }).
         order(updated_at: :desc).limit(limit)
-    recent_assessments.each do |assessment|
+    assessments.each do |assessment|
       events << {
           id: "tag:#{request.host}:#{request.fullpath}:assessment:#{assessment.id}",
           description: "Updated resource assessment \"#{assessment.name}\"",
@@ -61,12 +53,33 @@ class DashboardController < ApplicationController
           user: user
       }
     end
+    events
+  end
 
-    # users who recently joined the same institution
-    recent_users = User.
+  def recent_assessments_in_same_institution(user, limit)
+    events = []
+    assessments = Resource.
+        joins(location: { repository: :institution }).
+        where(institutions: { id: user.institution.id }).
+        order(updated_at: :desc).limit(limit)
+    assessments.each do |assessment|
+      events << {
+          id: "tag:#{request.host}:#{request.fullpath}:assessment:#{assessment.id}",
+          description: "Updated resource assessment \"#{assessment.name}\"",
+          timestamp: assessment.updated_at,
+          summary: "Updated resource assessment \"#{assessment.name}\"",
+          user: user
+      }
+    end
+    events
+  end
+
+  def recent_users_in_same_institution(user, limit)
+    events = []
+    users = User.
         where(institution_id: @user.institution.id).
         order(created_at: :desc).limit(limit)
-    recent_users.each do |user|
+    users.each do |user|
       events << {
           id: "tag:#{request.host}:#{request.fullpath}:user:#{user.username}",
           description: "New user at #{user.institution.name}: "\
@@ -77,7 +90,16 @@ class DashboardController < ApplicationController
           user: user
       }
     end
+    events
+  end
 
+  # Returns an array of generic event hashes.
+  def all_events_for_user(user)
+    limit = 20
+    events = []
+    events.concat recent_assessments_in_same_institution(user, limit)
+    events.concat recent_assessments_by_user(user, limit)
+    events.concat recent_users_in_same_institution(user, limit)
     events.sort! { |a, b| b[:timestamp] <=> a[:timestamp] }
     events[0..limit]
   end
