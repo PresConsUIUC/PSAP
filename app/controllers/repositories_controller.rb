@@ -47,6 +47,9 @@ class RepositoriesController < ApplicationController
 
   def show
     @repository = Repository.find(params[:id])
+    @locations = @repository.locations.order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
   end
 
   def update

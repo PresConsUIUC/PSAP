@@ -1,0 +1,32 @@
+<% # Will be read by updateResultsCount() in JS %>
+<input type="hidden" name="results_count" value="<%= @locations.total_entries %>">
+
+<div class="text-center">
+  <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @locations.each do |location| %>
+      <tr>
+        <td>
+          <%= link_to 'Edit', edit_location_path(location) %>
+        </td>
+        <td><%= link_to location.name, location %></td>
+        <td><%= location.resources.count %>
+          <%= location.resources.count == 1 ? 'resource' : 'resources' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+</div>

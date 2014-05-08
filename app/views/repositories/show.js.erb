@@ -1,0 +1,4 @@
+$('#locations').html('<%= escape_javascript(render('locations')) %>');
+$('.pagination a').attr('data-remote', 'true');
+
+updateResultsCount();

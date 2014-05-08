@@ -37,13 +37,13 @@
 
 <ul class="nav nav-tabs">
   <li class="active">
-    <a href="#locations" data-toggle="tab">Locations</a>
+    <a href="#locations_tab" data-toggle="tab">Locations</a>
   </li>
 </ul>
 
 <div class="tab-content">
 
-  <div class="tab-pane active" id="locations">
+  <div class="tab-pane active" id="locations_tab">
     <div style="text-align:right">
       <!-- Add Location button -->
       <%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
@@ -52,27 +52,9 @@
       <% end %>
     </div>
     <% if @repository.locations.any? %>
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @repository.locations.order(:name).each do |location| %>
-              <tr>
-                <td>
-                  <%= link_to 'Edit', edit_location_path(location) %>
-                </td>
-                <td><%= link_to location.name, location %></td>
-                <td><%= location.resources.count %>
-                  <%= location.resources.count == 1 ? 'resource' : 'resources' %></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
+        <div id="locations">
+          <%= render 'locations' %>
+        </div>
     <% else %>
         <p>This repository has no locations.</p>
     <% end %>
