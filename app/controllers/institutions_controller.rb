@@ -42,8 +42,9 @@ class InstitutionsController < ApplicationController
   end
 
   def index
-    @institutions = Institution.order(:name).paginate(page: params[:page],
-                                                      per_page: 50)
+    @institutions = Institution.order(:name).paginate(
+        page: params[:page],
+        per_page: Psap::Application.config.results_per_page)
   end
 
   def new

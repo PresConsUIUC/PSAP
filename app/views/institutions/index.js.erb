@@ -1,0 +1,4 @@
+$('#institutions').html('<%= escape_javascript(render('institutions')) %>');
+$('.pagination a').attr('data-remote', 'true');
+
+updateResultsCount();

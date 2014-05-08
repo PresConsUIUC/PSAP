@@ -1,0 +1,31 @@
+<% # Will be read by updateResultsCount() in JS %>
+<input type="hidden" name="results_count" value="<%= @institutions.total_entries %>">
+
+<div class="text-center">
+  <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+</div>
+
+<table class="institutions table table-striped">
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Repositories</th>
+    <th>Users</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @institutions.each do |institution| %>
+      <tr>
+        <td><%= link_to 'Edit', edit_institution_path(institution) %></td>
+        <td><%= link_to institution.name, institution %></td>
+        <td class="center"><%= institution.repositories.count %></td>
+        <td class="center"><%= institution.users.count %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
+</div>
