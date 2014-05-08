@@ -347,7 +347,7 @@ class UsersControllerTest < ActionController::TestCase
                            password_confirmation: 'zcvxcvzvx' },
           username: 'normal'
     assert_equal 'Norm', users(:normal_user).first_name
-    #assert_template :edit TODO: fix
+    assert_template :edit
   end
 
   test 'users cannot change their username' do
