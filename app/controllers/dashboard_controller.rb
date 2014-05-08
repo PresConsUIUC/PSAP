@@ -8,21 +8,20 @@ class DashboardController < ApplicationController
         limit = 5
         @user = current_user
         @resources = current_user.resources.order(:name)
-        @user_events = Event.where(user: @user).order(created_at: :desc).
-            limit(limit)
+        @user_events = Event.where(user: @user).order(created_at: :desc).limit(limit)
 
         if @user.institution
           @institution_events = Event.
               joins('LEFT JOIN users ON users.id = events.user_id').
               joins('LEFT JOIN institutions ON users.institution_id = institutions.id').
               where('users.institution_id' => @user.id).
-              order(created_at: :desc).limit(limit)
+              order(created_at: :desc).limit(5)
           @institution_users = @user.institution.users.
               where('id != ?', @user.id).order(:last_name)
           @recent_assessments = Resource.
               joins(:location => { :repository => :institution }).
               where(:institutions => { :id => @user.institution.id }).
-              order(:updated_at => :desc).limit(limit)
+              order(:updated_at => :desc).limit(5)
         else
           @institution_events = []
           @institution_users = []
@@ -34,7 +33,7 @@ class DashboardController < ApplicationController
         limit = 20
         @user = User.find_by_feed_key params[:key]
         if @user
-          @events = @user.institution ? all_events_for_user(@user, limit) : []
+          @events = @user.institution ? all_events_for_user(@user limit) : []
         else
           render status: :forbidden, text: 'Access denied.'
           return
@@ -47,24 +46,6 @@ class DashboardController < ApplicationController
 
   def format_atom?
     request.format.atom?
-  end
-
-  def recent_assessments_by_user(user, limit)
-    events = []
-    assessments = Resource.
-        joins(location: { repository: :institution }).
-        where(institutions: { id: user.institution.id }).
-        order(updated_at: :desc).limit(limit)
-    assessments.each do |assessment|
-      events << {
-          id: "tag:#{request.host}:#{request.fullpath}:assessment:#{assessment.id}",
-          description: "Updated resource assessment \"#{assessment.name}\"",
-          timestamp: assessment.updated_at,
-          summary: "Updated resource assessment \"#{assessment.name}\"",
-          user: user
-      }
-    end
-    events
   end
 
   def recent_assessments_in_same_institution(user, limit)
@@ -107,8 +88,8 @@ class DashboardController < ApplicationController
   # Returns an array of generic event hashes.
   def all_events_for_user(user, limit)
     events = []
+    # TODO: institution event feed instead of these
     events.concat recent_assessments_in_same_institution(user, limit)
-    events.concat recent_assessments_by_user(user, limit)
     events.concat recent_users_in_same_institution(user, limit)
     events.sort! { |a, b| b[:timestamp] <=> a[:timestamp] }
     events[0..limit]
