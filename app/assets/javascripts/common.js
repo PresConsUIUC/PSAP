@@ -12,13 +12,8 @@ $(document).ready(function() {
         });
     }
 
-    // Sorting and pagination links
-    // These don't work yet
-    //$('#formats th a, .pagination a').live('click', function() {
-    /*$(document).on('click', '.pagination a', function() {
-        $.getScript(this.href);
-        return false;
-    });*/
+    // Pagination links
+    $('.pagination a').attr('data-remote', 'true');
 
     // enable bootstrap popovers
     $('button[data-toggle="popover"]').popover();

@@ -79,4 +79,9 @@ Psap::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.psap_email_address = null # TODO: fix
+
+  # Paginated views will show this many results per page. (Some views, like
+  # events index, may show more.)
+  config.results_per_page = 50
+
 end

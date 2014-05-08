@@ -1,6 +1,10 @@
 <% # Will be read by updateResultsCount() in JS %>
 <input type="hidden" name="results_count" value="<%= @users.total_entries %>">
 
+<div class="text-center">
+  <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+</div>
+
 <table class="table table-striped">
   <thead>
   <tr>
@@ -46,3 +50,7 @@
   </tbody>
 
 </table>
+
+<div class="text-center">
+  <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+</div>

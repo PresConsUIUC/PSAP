@@ -37,10 +37,15 @@ Psap::Application.configure do
       from: 'Preservation Self-Assessment Program <psapdev@yahoo.com>'
   }
 
-  config.psap_email_address = 'psapdev@yahoo.com'
-
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
   ActiveModel::SecurePassword.min_cost = true
+
+  config.psap_email_address = 'psapdev@yahoo.com'
+
+  # Paginated views will show this many results per page. (Some views, like
+  # events index, may show more.)
+  config.results_per_page = 50
+
 end

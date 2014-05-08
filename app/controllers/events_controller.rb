@@ -12,7 +12,9 @@ class EventsController < ApplicationController
     @events = Event.joins('LEFT JOIN users ON users.id = events.user_id').
         where('events.description LIKE ? OR users.username LIKE ? OR events.address LIKE ?', q, q, q).
         where('events.event_level <= ?', @event_level).
-        order(created_at: :desc).paginate(page: params[:page], per_page: 100)
+        order(created_at: :desc).
+        # intentionally not using Psap::Application.config.results_per_page
+        paginate(page: params[:page], per_page: 200)
     @user = current_user unless @user
   end
 

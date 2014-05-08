@@ -110,7 +110,8 @@ class UsersController < ApplicationController
     @users = User.joins(:institution).where(
           'users.username LIKE ? OR users.first_name LIKE ? OR users.last_name LIKE ?', q, q, q).
         order("#{sort_column} #{sort_direction}").
-        paginate(page: params[:page], per_page: 50)
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
   end
 
   def new
