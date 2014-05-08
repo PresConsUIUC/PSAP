@@ -5,25 +5,36 @@ class DashboardController < ApplicationController
   def index
     respond_to do |format|
       format.html {
+        limit = 5
         @user = current_user
         @resources = current_user.resources.order(:name)
+        @user_events = Event.where(user: @user).order(created_at: :desc).
+            limit(limit)
 
         if @user.institution
+          @institution_events = Event.
+              joins('LEFT JOIN users ON users.id = events.user_id').
+              joins('LEFT JOIN institutions ON users.institution_id = institutions.id').
+              where('users.institution_id' => @user.id).
+              order(created_at: :desc).limit(limit)
           @institution_users = @user.institution.users.
               where('id != ?', @user.id).order(:last_name)
           @recent_assessments = Resource.
               joins(:location => { :repository => :institution }).
               where(:institutions => { :id => @user.institution.id }).
-              order(:updated_at => :desc).limit(5)
+              order(:updated_at => :desc).limit(limit)
         else
-          @institution_users = nil
-          @recent_assessments = nil
+          @institution_events = []
+          @institution_users = []
+          @recent_assessments = []
+          render 'welcome'
         end
       }
       format.atom {
+        limit = 20
         @user = User.find_by_feed_key params[:key]
         if @user
-          @events = @user.institution ? all_events_for_user(@user) : []
+          @events = @user.institution ? all_events_for_user(@user, limit) : []
         else
           render status: :forbidden, text: 'Access denied.'
           return
@@ -94,8 +105,7 @@ class DashboardController < ApplicationController
   end
 
   # Returns an array of generic event hashes.
-  def all_events_for_user(user)
-    limit = 20
+  def all_events_for_user(user, limit)
     events = []
     events.concat recent_assessments_in_same_institution(user, limit)
     events.concat recent_assessments_by_user(user, limit)
