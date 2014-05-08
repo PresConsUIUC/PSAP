@@ -10,10 +10,12 @@ class FormatsController < ApplicationController
     @format = command.object
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = "Format \"#{@format.name}\" created."
       redirect_to formats_url
-    rescue
-      render 'new'
     end
   end
 
@@ -56,10 +58,12 @@ class FormatsController < ApplicationController
                                       request.remote_ip)
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'edit'
+    else
       flash[:success] = "Format \"#{@format.name}\" updated."
       redirect_to @format
-    rescue
-      render 'edit'
     end
   end
 

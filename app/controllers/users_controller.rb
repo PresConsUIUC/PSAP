@@ -13,12 +13,13 @@ class UsersController < ApplicationController
     @user = command.object
     begin
       command.execute
+    rescue
+      render 'new'
+    else
       flash[:success] = 'Thanks for registering for PSAP! An email has been '\
         'sent to the address you provided. Follow the link in the email to '\
         'confirm your account.'
       redirect_to root_url
-    rescue
-      render 'new'
     end
   end
 
@@ -30,9 +31,10 @@ class UsersController < ApplicationController
     command = ConfirmUserCommand.new(user, params[:code], request.remote_ip)
     begin
       command.execute
-      flash[:success] = 'Your account has been confirmed. Please sign in.'
     rescue => e
       flash[:error] = "#{e}"
+    else
+      flash[:success] = 'Your account has been confirmed. Please sign in.'
     ensure
       redirect_to signin_url
     end
@@ -45,9 +47,10 @@ class UsersController < ApplicationController
     command = DeleteUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "User #{user.username} deleted."
     rescue => e
       flash[:error] = "#{e}"
+    else
+      flash[:success] = "User #{user.username} deleted."
     ensure
       redirect_to users_url
     end
@@ -64,9 +67,10 @@ class UsersController < ApplicationController
     command = EnableUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "User #{user.username} enabled."
     rescue => e
       flash[:error] = "#{e}"
+    else
+      flash[:success] = "User #{user.username} enabled."
     ensure
       redirect_to :back
     end
@@ -80,9 +84,10 @@ class UsersController < ApplicationController
     command = DisableUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "User #{user.username} disabled."
     rescue => e
       flash[:error] = "#{e}"
+    else
+      flash[:success] = "User #{user.username} disabled."
     ensure
       redirect_to :back
     end
@@ -120,14 +125,15 @@ class UsersController < ApplicationController
     command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
       if user == current_user
         flash[:success] = 'Your feed key has been reset. Click on a feed '\
         'icon within the application to re-subscribe.'
       else
         flash[:success] = "Reset feed key for user #{user.username}."
       end
-    rescue => e
-      flash[:error] = "#{e}"
     ensure
       redirect_to :back
     end
@@ -155,7 +161,9 @@ class UsersController < ApplicationController
                                     request.remote_ip)
     begin
       command.execute
-
+    rescue
+      render 'edit'
+    else
       # If the user was not affiliated with an institution before the update,
       # but now is, this implies that they have just joined an institution for
       # the first time by following a link from their dashboard.
@@ -176,8 +184,6 @@ class UsersController < ApplicationController
         }
         format.js { render 'edit' }
       end
-    rescue
-      render 'edit'
     end
   end
 

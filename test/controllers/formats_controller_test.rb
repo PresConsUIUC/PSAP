@@ -1,7 +1,7 @@
 require 'test_helper'
 
-# TODO: The post/patch methods don't seem to like posting "format" as a hash,
-# which causes some of these tests to fail.
+# The post/patch methods don't like posting "format" as a hash, which causes
+# some of these tests to fail.
 class FormatsControllerTest < ActionController::TestCase
 
   #### create ####

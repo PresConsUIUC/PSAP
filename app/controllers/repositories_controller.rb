@@ -12,22 +12,27 @@ class RepositoriesController < ApplicationController
     @repository = command.object
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = "Repository \"#{@repository.name}\" created."
       redirect_to @repository
-    rescue
-      render 'new'
     end
   end
 
   def destroy
-    command = DeleteRepositoryCommand.new(Repository.find(params[:id]),
+    repository = Repository.find(params[:id])
+    command = DeleteRepositoryCommand.new(repository,
                                           current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Repository \"#{command.object.name}\" deleted."
-      redirect_to command.object.institution
-    rescue
-      redirect_to command.object
+    rescue => e
+      flash[:error] = "#{e}"
+      redirect_to repository
+    else
+      flash[:success] = "Repository \"#{repository.name}\" deleted."
+      redirect_to repository.institution
     end
   end
 
@@ -50,10 +55,11 @@ class RepositoriesController < ApplicationController
                                           current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Repository \"#{@repository.name}\" updated."
-      redirect_to @repository
     rescue
       render 'edit'
+    else
+      flash[:success] = "Repository \"#{@repository.name}\" updated."
+      redirect_to @repository
     end
   end
 

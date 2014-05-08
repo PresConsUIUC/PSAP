@@ -12,22 +12,27 @@ class LocationsController < ApplicationController
     @location = command.object
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = "Location \"#{@location.name}\" created."
       redirect_to @location
-    rescue
-      render 'new'
     end
   end
 
   def destroy
-    command = DeleteLocationCommand.new(Location.find(params[:id]),
-        current_user, request.remote_ip)
+    location = Location.find(params[:id])
+    command = DeleteLocationCommand.new(location, current_user,
+                                        request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Location \"#{command.object.name}\" deleted."
-      redirect_to command.object.repository
-    rescue
-      redirect_to command.object
+    rescue => e
+      flash[:error] = "#{e}"
+      redirect_to location
+    else
+      flash[:success] = "Location \"#{location.name}\" deleted."
+      redirect_to location.repository
     end
   end
 
@@ -52,10 +57,12 @@ class LocationsController < ApplicationController
                                         current_user, request.remote_ip)
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'edit'
+    else
       flash[:success] = "Location \"#{@location.name}\" updated."
       redirect_to @location
-    rescue
-      render 'edit'
     end
   end
 

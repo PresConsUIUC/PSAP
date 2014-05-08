@@ -10,11 +10,13 @@ class InstitutionsController < ApplicationController
     @institution = command.object
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = "The institution \"#{@institution.name}\" has been "\
         "created, and you have automatically been added to it."
       redirect_to @institution
-    rescue
-      render 'new'
     end
   end
 
@@ -24,9 +26,10 @@ class InstitutionsController < ApplicationController
                                            request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Institution \"#{@institution.name}\" deleted."
     rescue => e
       flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution \"#{@institution.name}\" deleted."
     ensure
       redirect_to institutions_url
     end
@@ -62,10 +65,12 @@ class InstitutionsController < ApplicationController
                                            current_user, request.remote_ip)
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'edit'
+    else
       flash[:success] = "Institution \"#{@institution.name}\" updated."
       redirect_to @institution
-    rescue
-      render 'edit'
     end
   end
 

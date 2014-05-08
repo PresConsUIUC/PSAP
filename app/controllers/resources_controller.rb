@@ -13,12 +13,14 @@ class ResourcesController < ApplicationController
     @resource = command.object
     begin
       command.execute
-      flash[:success] = "Resource \"#{@resource.name}\" created."
-      redirect_to @resource
-    rescue
+    rescue => e
+      flash[:error] = "#{e}"
       @assessment_sections = Assessment.find_by_key('resource').
           assessment_sections.order(:index)
       render 'new'
+    else
+      flash[:success] = "Resource \"#{@resource.name}\" created."
+      redirect_to @resource
     end
   end
 
@@ -28,10 +30,12 @@ class ResourcesController < ApplicationController
                                         request.remote_ip)
     begin
       command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      redirect_to @resource
+    else
       flash[:success] = "Resource \"#{@resource.name}\" deleted."
       redirect_to @resource.location
-    rescue
-      redirect_to @resource.object
     end
   end
 
@@ -102,11 +106,8 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
 
     respond_to do |format|
-      format.html { @resource }
-      format.xml {
-        @institution = @resource.location.repository.institution
-        @resource
-      }
+      format.html
+      format.xml { @institution = @resource.location.repository.institution }
     end
   end
 
@@ -116,13 +117,14 @@ class ResourcesController < ApplicationController
                                         current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Resource \"#{@resource.name}\" updated."
-      # redirect_to edit_resource_url(@resource)
+    rescue => e
       @assessment_sections = Assessment.find_by_key('resource').
           assessment_sections.order(:index)
+      flash[:error] = "#{e}"
       render 'edit'
-    rescue
-      render 'edit'
+    else
+      flash[:success] = "Resource \"#{@resource.name}\" updated."
+      redirect_to edit_resource_url(@resource)
     end
   end
 

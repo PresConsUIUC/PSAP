@@ -249,15 +249,17 @@ class ResourcesControllerTest < ActionController::TestCase
   test 'normal users can update resources in their own institution' do
     signin_as(users(:normal_user))
     patch :update, resource: { name: 'New Name' }, id: 1
-    assert_equal 'New Name', Resource.find(1).name
-    assert_response :success
+    resource = Resource.find(1)
+    assert_equal 'New Name', resource.name
+    assert_redirected_to edit_resource_url(resource)
   end
 
   test 'admin users can update repositories in any institution' do
     signin_as(users(:admin_user))
     patch :update, resource: { name: 'New Name' }, id: 5
-    assert_equal 'New Name', Resource.find(5).name
-    assert_response :success
+    resource = Resource.find(5)
+    assert_equal 'New Name', resource.name
+    assert_redirected_to edit_resource_url(resource)
   end
 
   test 'updating resources should write to the event log' do
