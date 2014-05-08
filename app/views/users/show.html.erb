@@ -40,20 +40,22 @@
               <li>
                 <% if current_user == @user %>
                     <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
-                                method: :patch, confirm: 'Resetting your feed '\
-                              'key will break any links to application feeds '\
-                              'that you may have. This should typically '\
-                              'only be done when your feed key has been, or is '\
-                              'suspected of having been, compromised. Are you '\
-                              'sure you want to do this?' %>
+                                method: :patch, data: { confirm: 'Resetting '\
+                                'your feed key will break any links to '\
+                                'application feeds that you may have. This '\
+                                'should typically only be done when your '\
+                                'feed key has been, or is suspected of having '\
+                                'been, compromised. Are you sure you want to '\
+                                'do this?' } %>
                 <% elsif current_user.is_admin? %>
                     <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
-                                method: :patch, confirm: 'Resetting the feed '\
-                              'key will break any links to application feeds '\
-                              'that this user may have. This should typically '\
-                              'only be done when a feed key has been, or is '\
-                              'suspected of having been, compromised. Are you '\
-                              'sure you want to do this?' %>
+                                method: :patch, data: { confirm: 'Resetting '\
+                                'the feed key will break any links to '\
+                                'application feeds that this user may have. '\
+                                'This should typically only be done when a '\
+                                'feed key has been, or is suspected of having '\
+                                'been, compromised. Are you sure you want to '\
+                                'do this?' } %>
                 <% end %>
               </li>
             </ul>
