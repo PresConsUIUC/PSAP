@@ -6,4 +6,12 @@ body#events {
     padding:0.3em;
     text-transform:uppercase;
   }
+  span.badge {
+    background-color:$gray-light;
+    margin-left:0.6em;
+    margin-top:0.1em;
+  }
+  a.active span.badge {
+    background-color:white;
+  }
 }

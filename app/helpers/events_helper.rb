@@ -23,17 +23,21 @@ module EventsHelper
     end
   end
 
-  def level_buttons(current_level) # TODO: badge counts on these
+  def level_buttons(current_level)
     levels = EventLevel::all.sort do |a, b|
       b <=> a
     end
 
     links = ''
     levels.each do |level|
+      count = Event.where(event_level: level).count
+
       cssClass = 'btn btn-sm level_button '
       cssClass.concat (current_level.to_i == level) ? 'btn-info active' : 'btn-default'
-      links << link_to(EventLevel::name_for_level(level), "?level=#{level}",
-                  class: cssClass, remote: true, 'data-level' => level)
+
+      links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge pull-right\">#{count}</span>"),
+                       "?level=#{level}", class: cssClass, remote: true,
+                       'data-level' => level)
     end
     links
   end
