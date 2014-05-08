@@ -982,6 +982,13 @@ case Rails.env
                   address: '127.0.0.1',
                   created_at: Time.mktime(2013, 6, 19))
 
+    (0..150).each do
+      Event.create!(description: 'Sample event',
+                    event_level: EventLevel::DEBUG,
+                    address: '127.0.0.1',
+                    created_at: Time.mktime(2012, 12, 12))
+    end
+
   when 'production'
 
 end
