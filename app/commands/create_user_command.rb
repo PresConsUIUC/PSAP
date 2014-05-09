@@ -7,8 +7,11 @@ class CreateUserCommand < Command
   end
 
   def execute
-    @user.role = Role.find_by_name 'User'
     begin
+      role = Role.find_by_name 'User'
+      raise 'Missing "User" role.' unless role
+      @user.role = role
+
       UserMailer.welcome_email(@user).deliver if @user.save!
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Attempted to create a user account, but "\
