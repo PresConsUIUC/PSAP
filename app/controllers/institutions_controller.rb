@@ -28,9 +28,9 @@ class InstitutionsController < ApplicationController
       command.execute
     rescue => e
       flash[:error] = "#{e}"
+      redirect_to institution_url(@institution)
     else
       flash[:success] = "Institution \"#{@institution.name}\" deleted."
-    ensure
       redirect_to institutions_url
     end
   end
