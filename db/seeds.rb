@@ -762,7 +762,8 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Dead Sea Scrolls',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[1],
@@ -770,21 +771,24 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Sears Catalog Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[1],
                                   user: admin_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Farmer\'s Almanac Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[1],
                                   user: admin_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Treaty of Verdun',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[4],
@@ -792,7 +796,8 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Declaration of Paris',
                                   resource_type: ResourceType::ITEM,
                                   format: formats[5],
@@ -800,14 +805,16 @@ case Rails.env
                                   user: disabled_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Cat Fancy Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Issue 1',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -815,14 +822,16 @@ case Rails.env
                                   user: admin_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Issue 2',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
                                   parent: resources[6],
                                   user: disabled_user,
                                   description: 'Sample description',
-                                  local_identifier: 'sample_local_id')
+                                  local_identifier: 'sample_local_id',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Special Editions',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
@@ -830,7 +839,8 @@ case Rails.env
                                   user: admin_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: '1972 Presidential Election Special Issue',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -838,7 +848,8 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Issue 3',
                                   resource_type: ResourceType::ITEM,
                                   location: locations[3],
@@ -846,14 +857,16 @@ case Rails.env
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
     resources << Resource.create!(name: 'Napoleon Bonaparte Letters Collection',
                                   resource_type: ResourceType::COLLECTION,
                                   location: locations[3],
                                   user: normal_user,
                                   description: 'Sample description',
                                   local_identifier: 'sample_local_id',
-                                  notes: 'Sample note')
+                                  notes: 'Sample note',
+                                  rights: 'Sample rights')
 
     resources[1].assessment_question_responses.each do |response|
       response.assessment_question_option =
