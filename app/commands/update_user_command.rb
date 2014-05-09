@@ -9,7 +9,7 @@ class UpdateUserCommand < Command
 
   def execute
     begin
-      # If the user is changing their email address, we need to notify the
+      # If the user is changing their email address, we should notify the
       # previous address, in case their account was hijacked.
       old_email = @user.email
       new_email = @user_params[:email]
@@ -19,17 +19,19 @@ class UpdateUserCommand < Command
 
       @user.update!(@user_params)
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to update user "\
-      "\"#{@user.username}\": #{e.message}",
+      Event.create(description: "Attempted to update user #{@user.username}, "\
+      "but failed: #{@user.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to update user #{@user.username}: "\
+      "#{@user.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to update user "\
-      "\"#{@user.username}\": #{e.message}",
+      Event.create(description: "Attempted to update user #{@user.username}, "\
+      "but failed: #{@user.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to update user #{@user.username}: "\
+      "#{@user.errors.full_messages[0]}"
     else
       Event.create(description: "Updated user #{@user.username}",
                    user: @doing_user, address: @remote_ip)

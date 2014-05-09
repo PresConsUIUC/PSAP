@@ -1,8 +1,8 @@
 class DeleteInstitutionCommand < Command
 
-  def initialize(institution, user, remote_ip)
+  def initialize(institution, doing_user, remote_ip)
     @institution = institution
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -10,19 +10,24 @@ class DeleteInstitutionCommand < Command
     begin
       @institution.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: 'This institution cannot be deleted, as '\
-      'there are one or more users affiliated with it.',
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete institution "\
+      "\"#{@institution.name},\" but failed as there are one or more users "\
+      "affiliated with it.",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "The institution \"#{@institution.name}\" "\
+      "cannot be deleted, as there are one or more users affiliated with it."
     rescue => e
-      Event.create(description: "Failed to delete institution: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete institution "\
+      "\"#{@institution.name},\" but failed: "\
+      "#{@institution.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to delete institution: "\
+      "#{@institution.errors.full_messages[0]}"
     else
       Event.create(description: "Deleted institution \"#{@institution.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

@@ -2,7 +2,7 @@ class CreateFormatCommand < Command
 
   def initialize(format_params, user, remote_ip)
     @format_params = format_params
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
     @format = Format.new(format_params)
   end
@@ -11,18 +11,20 @@ class CreateFormatCommand < Command
     begin
       @format.save!
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to create format: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create format, but failed: "\
+      "#{@format.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to create format: #{@format.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to create format: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create format, but failed: "\
+      "#{@format.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to create format: #{@format.errors.full_messages[0]}"
     else
       Event.create(description: "Created format \"#{@format.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

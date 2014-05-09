@@ -12,7 +12,7 @@ class DisableUserCommandTest < ActiveSupport::TestCase
   end
 
   # execute
-  test 'execute method should delete user' do
+  test 'execute method should disable user' do
     assert_nothing_raised do
       @command.execute
     end
@@ -42,7 +42,7 @@ class DisableUserCommandTest < ActiveSupport::TestCase
     end
     assert @user.enabled
     event = Event.order(:created_at).last
-    assert_equal "Failed to disable user #{@user.username}: "\
+    assert_equal "Attempted to disable user #{@user.username}, but failed: "\
     "#{@doing_user.username} has insufficient privileges to disable users.",
                  event.description
     assert_equal @doing_user, event.user

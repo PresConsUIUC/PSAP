@@ -1,8 +1,8 @@
 class DeleteLocationCommand < Command
 
-  def initialize(location, user, remote_ip)
+  def initialize(location, doing_user, remote_ip)
     @location = location
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -10,19 +10,17 @@ class DeleteLocationCommand < Command
     begin
       @location.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: "Failed to delete location: #{e.message}",
-                   user: @user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
-      raise e
+      raise e # this should never happen
     rescue => e
-      Event.create(description: "Failed to delete location: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete location "\
+      "\"#{@location.name},\" but failed: #{@location.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to delete location: #{@location.errors.full_messages[0]}"
     else
       Event.create(description: "Deleted location \"#{@location.name}\" from "\
       "repository \"#{@location.repository.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

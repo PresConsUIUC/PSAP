@@ -86,7 +86,7 @@ class ImportFromArchivesspaceEadCommand < Command
     response = http.request(request)
 
     unless response.code.to_i == 200
-      message = "Failed to retrieve EAD. HTTP response: "\
+      message = "Failed to retrieve EAD from ArchivesSpace. HTTP response: "\
         "#{response.code} #{response.message}"
       raise message
     end

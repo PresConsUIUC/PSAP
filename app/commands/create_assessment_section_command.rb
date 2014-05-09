@@ -21,9 +21,9 @@ class CreateAssessmentSectionCommand < Command
     end
   end
 
-  def initialize(assessment_section_params, user, remote_ip)
+  def initialize(assessment_section_params, doing_user, remote_ip)
     @assessment_section_params = assessment_section_params
-    @user = user
+    @doing_user = doing_user
     @assessment_section = AssessmentSection.new(@assessment_section_params)
     @remote_ip = remote_ip
   end
@@ -41,21 +41,21 @@ class CreateAssessmentSectionCommand < Command
         CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
       end
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to create assessment section: "\
-      "#{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create assessment section, but "\
+      "failed: #{@assessment_section.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to create assessment section: #{e.message}"
     rescue => e
-      Event.create(description: "Failed to create assessment section: "\
-      "#{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create assessment section, but "\
+      "failed: #{@assessment_section.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to create assessment section: #{e.message}"
     else
       Event.create(description: "Created assessment section "\
       "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

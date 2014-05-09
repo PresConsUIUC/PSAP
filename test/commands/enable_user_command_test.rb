@@ -42,7 +42,7 @@ class EnableUserCommandTest < ActiveSupport::TestCase
     end
     assert @user.enabled
     event = Event.order(:created_at).last
-    assert_equal "Failed to enable user #{@user.username}: "\
+    assert_equal "Attempted to enable user #{@user.username}, but failed: "\
     "#{@doing_user.username} has insufficient privileges to enable users.",
                  event.description
     assert_equal @doing_user, event.user

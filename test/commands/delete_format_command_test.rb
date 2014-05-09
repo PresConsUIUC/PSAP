@@ -35,14 +35,15 @@ class DeleteFormatCommandTest < ActiveSupport::TestCase
     @format = formats(:format_one)
     @command = DeleteFormatCommand.new(@format, @user, @remote_ip)
 
-    assert_raises ActiveRecord::DeleteRestrictionError do
+    assert_raises RuntimeError do
       assert_difference 'Event.count' do
         @command.execute
       end
     end
     assert !@format.destroyed?
     event = Event.order(:created_at).last
-    assert_equal 'This format cannot be deleted, as it is being used by one or more resource assessments.',
+    assert_equal 'Attempted to delete format "Used Napkin," but failed as it '\
+    'is being used by one or more resource assessments.',
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

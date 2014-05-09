@@ -1,29 +1,33 @@
 class CreateInstitutionCommand < Command
 
-  def initialize(institution_params, user, remote_ip)
+  def initialize(institution_params, doing_user, remote_ip)
     @institution_params = institution_params
-    @user = user
+    @doing_user = doing_user
     @institution = Institution.new(@institution_params)
     @remote_ip = remote_ip
   end
 
   def execute
     begin
-      @institution.users << @user
+      @institution.users << @doing_user
       @institution.save!
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to create institution: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create institution, but failed: "\
+      "#{@institution.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to create institution: "\
+      "#{@institution.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to create institution: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create institution, but failed: "\
+      "#{@institution.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to create institution: "\
+      "#{@institution.errors.full_messages[0]}"
     else
       Event.create(description: "Created institution \"#{@institution.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

@@ -1,10 +1,10 @@
 class UpdateAssessmentSectionCommand < Command
 
-  def initialize(assessment_section, assessment_section_params, user,
+  def initialize(assessment_section, assessment_section_params, doing_user,
       remote_ip)
     @assessment_section = assessment_section
     @assessment_section_params = assessment_section_params
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -24,21 +24,27 @@ class UpdateAssessmentSectionCommand < Command
         end
       end
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to update assessment section "\
-      "\"#{@assessment_section.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to update assessment section "\
+      "\"#{@assessment_section.name},\" but failed: "\
+      "#{@assessment_section.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to update assessment section "\
+      "\"#{@assessment_section.name}\": "\
+      "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to update assessment section "\
-      "\"#{@assessment_section.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to update assessment section "\
+      "\"#{@assessment_section.name},\" but failed: "\
+      "#{@assessment_section.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to update assessment section "\
+      "\"#{@assessment_section.name}\": "\
+      "#{@assessment_section.errors.full_messages[0]}"
     else
       Event.create(description: "Updated assessment section "\
       "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

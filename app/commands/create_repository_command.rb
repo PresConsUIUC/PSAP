@@ -1,9 +1,9 @@
 class CreateRepositoryCommand < Command
 
-  def initialize(institution, repository_params, user, remote_ip)
+  def initialize(institution, repository_params, doing_user, remote_ip)
     @institution = institution
     @repository_params = repository_params
-    @user = user
+    @doing_user = doing_user
     @repository = @institution.repositories.build(@repository_params)
     @remote_ip = remote_ip
   end
@@ -12,19 +12,23 @@ class CreateRepositoryCommand < Command
     begin
       @repository.save!
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to create repository: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create repository, but failed: "\
+      "#{@repository.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to create repository: "\
+      "#{@repository.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to create repository: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create repository, but failed: "\
+      "#{@repository.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to create repository: "\
+      "#{@repository.errors.full_messages[0]}"
     else
       Event.create(description: "Created repository \"#{@repository.name} "\
       "in institution \"#{@repository.institution.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

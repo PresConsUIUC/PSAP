@@ -1,8 +1,8 @@
 class DeleteAssessmentQuestionCommand < Command
 
-  def initialize(assessment_question, user, remote_ip)
+  def initialize(assessment_question, doing_user, remote_ip)
     @assessment_question = assessment_question
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -13,20 +13,17 @@ class DeleteAssessmentQuestionCommand < Command
         CreateAssessmentQuestionCommand.updateQuestionIndexes
       end
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: "Failed to delete assessment question: "\
-      "#{e.message}",
-                   user: @user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
-      raise e
+      raise e # this should never happen
     rescue => e
-      Event.create(description: "Failed to delete assessment question: "\
-      "#{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete an assessment question, "\
+      "but failed: #{@assessment_question.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to delete assessment question: "\
+      "#{@assessment_question.errors.full_messages[0]}"
     else
       Event.create(description: 'Deleted assessment question',
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

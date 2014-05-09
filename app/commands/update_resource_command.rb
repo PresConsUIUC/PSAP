@@ -1,9 +1,9 @@
 class UpdateResourceCommand < Command
 
-  def initialize(resource, resource_params, user, remote_ip)
+  def initialize(resource, resource_params, doing_user, remote_ip)
     @resource = resource
     @resource_params = resource_params
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -11,21 +11,23 @@ class UpdateResourceCommand < Command
     begin
       @resource.update!(@resource_params)
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to update resource "\
-      "\"#{@resource.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to update resource "\
+      "\"#{@resource.name},\" but failed: #{@resource.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to update resource \"#{@resource.name}\": "\
+      "#{@resource.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Failed to update resource "\
-      "\"#{@resource.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      "\"#{@resource.name},\" but failed:: #{@resource.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to update resource \"#{@resource.name}\": "\
+      "#{@resource.errors.full_messages[0]}"
     else
       Event.create(description: "Updated resource \"#{@resource.name}\" in "\
       "location \"#{@resource.location.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

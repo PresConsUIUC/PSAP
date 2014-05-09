@@ -38,14 +38,14 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write failure to event log if validation failed' do
-    assert_raises ActiveRecord::RecordInvalid do
+    assert_raises RuntimeError do
       assert_difference 'Event.count' do
         @invalid_command.execute
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Failed to create location: Validation failed: Name can't "\
-    "be blank",
+    assert_equal "Attempted to create location, but failed: Name can't be "\
+    "blank",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

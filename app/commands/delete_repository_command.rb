@@ -1,8 +1,8 @@
 class DeleteRepositoryCommand < Command
 
-  def initialize(repository, user, remote_ip)
+  def initialize(repository, doing_user, remote_ip)
     @repository = repository
-    @user = user
+    @doing_user = doing_user
     @address = remote_ip
   end
 
@@ -10,19 +10,19 @@ class DeleteRepositoryCommand < Command
     begin
       @repository.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: "Failed to delete repository: #{e.message}",
-                   user: @user, address: @address,
-                   event_level: EventLevel::DEBUG)
-      raise e
+      raise e # this should never happen
     rescue => e
-      Event.create(description: "Failed to delete repository: #{e.message}",
-                   user: @user, address: @address,
+      Event.create(description: "Attempted to delete repository "\
+      "\"#{@repository.name},\" but failed: "\
+      "#{@repository.errors.full_messages[0]}",
+                   user: @doing_user, address: @address,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to delete repository \"#{@repository.name}\": "\
+      "#{@location.errors.full_messages[0]}"
     else
       Event.create(description: "Deleted repository \"#{@repository.name}\" "\
       "from institution \"#{@repository.institution.name}\"",
-                   user: @user, address: @address)
+                   user: @doing_user, address: @address)
     end
   end
 

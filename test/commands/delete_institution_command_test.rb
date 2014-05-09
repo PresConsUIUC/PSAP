@@ -35,15 +35,16 @@ class DeleteInstitutionCommandTest < ActiveSupport::TestCase
     @institution = institutions(:institution_one)
     @command = DeleteInstitutionCommand.new(@institution, @user, @remote_ip)
 
-    assert_raises ActiveRecord::DeleteRestrictionError do
+    assert_raises RuntimeError do
       assert_difference 'Event.count' do
         @command.execute
       end
     end
     assert !@institution.destroyed?
     event = Event.order(:created_at).last
-    assert_equal 'This institution cannot be deleted, as there are one or '\
-    'more users affiliated with it.',
+    assert_equal 'Attempted to delete institution "University of Illinois '\
+    'at Urbana-Champaign," but failed as there are one or more users '\
+    'affiliated with it.',
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

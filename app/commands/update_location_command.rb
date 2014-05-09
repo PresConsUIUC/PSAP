@@ -1,9 +1,9 @@
 class UpdateLocationCommand < Command
 
-  def initialize(location, location_params, user, remote_ip)
+  def initialize(location, location_params, doing_user, remote_ip)
     @location = location
     @location_params = location_params
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -11,21 +11,23 @@ class UpdateLocationCommand < Command
     begin
       @location.update!(@location_params)
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to update location "\
-      "\"#{@location.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to update location "\
+      "\"#{@location.name},\" but failed: #{@location.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to update location \"#{@location.name}\": "\
+      "#{@location.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to update location "\
-      "\"#{@location.name}\": #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to update location "\
+      "\"#{@location.name},\" but failed: #{@location.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to update location \"#{@location.name}\": "\
+      "#{@location.errors.full_messages[0]}"
     else
       Event.create(description: "Updated location \"#{@location.name}\" in "\
       "repository \"#{@location.repository.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

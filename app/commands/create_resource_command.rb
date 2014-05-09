@@ -1,7 +1,7 @@
 class CreateResourceCommand < Command
 
-  def initialize(location, resource_params, user, remote_ip)
-    @user = user
+  def initialize(location, resource_params, doing_user, remote_ip)
+    @doing_user = doing_user
     @resource = location.resources.build(resource_params)
     @remote_ip = remote_ip
   end
@@ -10,19 +10,21 @@ class CreateResourceCommand < Command
     begin
       @resource.save!
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Failed to create resource: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create resource, but failed: "\
+      "#{@resource.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "Failed to create resource: #{@resource.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Failed to create resource: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to create resource, but failed: "\
+      "#{@resource.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to create resource: #{@resource.errors.full_messages[0]}"
     else
       Event.create(description: "Created resource \"#{@resource.name}\" in "\
       "location \"#{@resource.location.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 

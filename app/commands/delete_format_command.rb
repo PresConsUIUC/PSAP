@@ -1,8 +1,8 @@
 class DeleteFormatCommand < Command
 
-  def initialize(format, user, remote_ip)
+  def initialize(format, doing_user, remote_ip)
     @format = format
-    @user = user
+    @doing_user = doing_user
     @remote_ip = remote_ip
   end
 
@@ -10,19 +10,22 @@ class DeleteFormatCommand < Command
     begin
       @format.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: 'This format cannot be deleted, as it is '\
-      'being used by one or more resource assessments.',
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete format "\
+      "\"#{@format.name},\" but failed as it is being used by one or more "\
+      "resource assessments.",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise e
+      raise "The format \"#{@format.name}\" cannot be deleted, as it is "\
+      "being used by one or more resource assessments."
     rescue => e
-      Event.create(description: "Failed to delete format: #{e.message}",
-                   user: @user, address: @remote_ip,
+      Event.create(description: "Attempted to delete format "\
+      "\"#{@format.name},\" but failed: #{@format.errors.full_messages[0]}",
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise e
+      raise "Failed to delete format: #{@format.errors.full_messages[0]}"
     else
       Event.create(description: "Deleted format \"#{@format.name}\"",
-                   user: @user, address: @remote_ip)
+                   user: @doing_user, address: @remote_ip)
     end
   end
 
