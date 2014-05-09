@@ -8,12 +8,16 @@ class EnableUserCommand < Command
 
   def execute
     begin
+      unless @doing_user.is_admin?
+        raise "#{@doing_user.username} has insufficient privileges to "\
+        "enable users."
+      end
       @user.enabled = true
       @user.save!
     rescue => e
       Event.create(description: "Failed to enable user #{@user.username}: "\
       "#{e.message}",
-                   user: @user, address: @remote_ip,
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise e
     else
