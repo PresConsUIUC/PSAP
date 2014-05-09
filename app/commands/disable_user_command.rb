@@ -13,7 +13,7 @@ class DisableUserCommand < Command
     rescue => e
       Event.create(description: "Failed to disable user #{@user.username}: "\
       "#{e.message}",
-                   user: @user, address: @remote_ip,
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ALERT)
       raise e
     else

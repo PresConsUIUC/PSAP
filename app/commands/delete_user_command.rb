@@ -12,13 +12,13 @@ class DeleteUserCommand < Command
     rescue ActiveRecord::DeleteRestrictionError => e
       Event.create(description: "Failed to delete user #{@user.username}: "\
       "#{e.message}",
-                   user: @user, address: @remote_ip,
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
       raise e
     rescue => e
       Event.create(description: "Failed to delete user #{@user.username}: "\
       "#{e.message}",
-                   user: @user, address: @remote_ip,
+                   user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise e
     else
