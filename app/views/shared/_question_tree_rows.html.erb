@@ -1,12 +1,11 @@
 <% children.each do |question| %>
 
-    <%
-       responses = [];
+    <% responses = [];
        entity.assessment_question_responses.each do |response|
          responses << response if response.assessment_question.id == question.id
        end
-       options = question.assessment_question_options.order(:index)
-    %>
+       responses << AssessmentQuestionResponse.new(assessment_question: question) unless responses.any?
+       options = question.assessment_question_options.order(:index) %>
 
     <hr>
 
@@ -73,8 +72,6 @@
                 <br>
             <% end %>
         <% end %>
-
-        <input type="hidden" name="weight" value="<%= question.weight %>">
       </div>
     </div>
 
