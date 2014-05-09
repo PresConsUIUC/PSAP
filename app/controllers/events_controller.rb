@@ -7,7 +7,7 @@ class EventsController < ApplicationController
   def index
     q = "%#{params[:q]}%"
     @event_level = params[:level]
-    @event_level = EventLevel::INFO if @event_level.nil?
+    @event_level = EventLevel::NOTICE if @event_level.nil?
 
     @events = Event.joins('LEFT JOIN users ON users.id = events.user_id').
         where('events.description LIKE ? OR users.username LIKE ? OR events.address LIKE ?', q, q, q).
