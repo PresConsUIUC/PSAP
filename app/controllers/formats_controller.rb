@@ -24,11 +24,11 @@ class FormatsController < ApplicationController
     command = DeleteFormatCommand.new(@format, current_user, request.remote_ip)
     begin
       command.execute
-      flash[:success] = "Format \"#{@format.name}\" deleted."
     rescue => e
       flash[:error] = "#{e}"
       redirect_to format_path(@format)
     else
+      flash[:success] = "Format \"#{@format.name}\" deleted."
       redirect_to formats_path
     end
   end
