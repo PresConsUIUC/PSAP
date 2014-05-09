@@ -8,8 +8,10 @@ class DeleteAssessmentQuestionCommand < Command
 
   def execute
     begin
-      @assessment_question.destroy!
-      CreateAssessmentQuestionCommand.updateQuestionIndexes
+      ActiveRecord::Base.transaction do
+        @assessment_question.destroy!
+        CreateAssessmentQuestionCommand.updateQuestionIndexes
+      end
     rescue ActiveRecord::DeleteRestrictionError => e
       Event.create(description: "Failed to delete assessment question: "\
       "#{e.message}",

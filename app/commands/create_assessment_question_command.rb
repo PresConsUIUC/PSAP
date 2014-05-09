@@ -4,15 +4,19 @@ class CreateAssessmentQuestionCommand < Command
     if assessment_question
       questions = AssessmentQuestion.where.not(id: assessment_question.id).
           where('"index" >= ?', assessment_question.index).order(:index)
-      questions.each do |question|
-        question.index = question.index + 1
-        question.save!
+      ActiveRecord::Base.transaction do
+        questions.each do |question|
+          question.index = question.index + 1
+          question.save!
+        end
       end
     else
       questions = AssessmentQuestion.order(:index)
-      for i in 0..questions.length
-        questions[i].index = i
-        questions[i].save!
+      ActiveRecord::Base.transaction do
+        questions.each_with_index do |question, i|
+          question.index = i
+          question.save!
+        end
       end
     end
   end
@@ -32,8 +36,10 @@ class CreateAssessmentQuestionCommand < Command
     end
 
     begin
-      @assessment_question.save!
-      CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
+      ActiveRecord::Base.transaction do
+        @assessment_question.save!
+        CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
+      end
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Failed to create assessment question: "\
       "#{e.message}",

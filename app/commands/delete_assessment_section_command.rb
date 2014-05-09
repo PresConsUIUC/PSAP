@@ -8,8 +8,10 @@ class DeleteAssessmentSectionCommand < Command
 
   def execute
     begin
-      @assessment_section.destroy!
-      CreateAssessmentSectionCommand.updateSectionIndexes
+      ActiveRecord::Base.transaction do
+        @assessment_section.destroy!
+        CreateAssessmentSectionCommand.updateSectionIndexes
+      end
     rescue ActiveRecord::DeleteRestrictionError => e
       Event.create(description: "Failed to delete assessment section: "\
       "#{e.message}",

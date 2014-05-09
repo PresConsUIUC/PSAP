@@ -17,10 +17,11 @@ class UpdateAssessmentSectionCommand < Command
     end
 
     begin
-      @assessment_section.update!(@assessment_section_params)
-
-      if @assessment_section.index != @assessment_section_params[:index]
-        CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+      ActiveRecord::Base.transaction do
+        @assessment_section.update!(@assessment_section_params)
+        if @assessment_section.index != @assessment_section_params[:index]
+          CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+        end
       end
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Failed to update assessment section "\

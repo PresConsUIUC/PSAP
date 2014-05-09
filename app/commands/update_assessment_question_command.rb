@@ -10,11 +10,12 @@ class UpdateAssessmentQuestionCommand < Command
 
   def execute
     begin
-      @assessment_question.update!(@assessment_question_params)
-
-      if @assessment_question.index != @assessment_question_params[:index]
-        CreateAssessmentQuestionCommand.updateQuestionIndexes(
-            @assessment_question)
+      ActiveRecord::Base.transaction do
+        @assessment_question.update!(@assessment_question_params)
+        if @assessment_question.index != @assessment_question_params[:index]
+          CreateAssessmentQuestionCommand.updateQuestionIndexes(
+              @assessment_question)
+        end
       end
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Failed to update assessment question "\

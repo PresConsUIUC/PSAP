@@ -4,15 +4,19 @@ class CreateAssessmentSectionCommand < Command
     if assessment_section
       sections = AssessmentSection.where.not(id: assessment_section.id).
           where('"index" >= ?', assessment_section.index).order(:index)
-      sections.each do |section|
-        section.index = section.index + 1
-        section.save!
+      ActiveRecord::Base.transaction do
+        sections.each do |section|
+          section.index = section.index + 1
+          section.save!
+        end
       end
     else
       sections = AssessmentSection.order(:index)
-      for i in 0..sections.length - 1
-        sections[i].index = i
-        sections[i].save!
+      ActiveRecord::Base.transaction do
+        sections.each_with_index do |section, i|
+          section.index = i
+          section.save!
+        end
       end
     end
   end
@@ -32,8 +36,10 @@ class CreateAssessmentSectionCommand < Command
     end
 
     begin
-      @assessment_section.save!
-      CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+      ActiveRecord::Base.transaction do
+        @assessment_section.save!
+        CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
+      end
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Failed to create assessment section: "\
       "#{e.message}",
