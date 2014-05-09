@@ -10,7 +10,8 @@ class DeleteFormatCommand < Command
     begin
       @format.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: "Failed to delete format: #{e.message}",
+      Event.create(description: 'This format cannot be deleted, as it is '\
+      'being used by one or more resource assessments.',
                    user: @user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
       raise e

@@ -42,7 +42,7 @@ class DeleteFormatCommandTest < ActiveSupport::TestCase
     end
     assert !@format.destroyed?
     event = Event.order(:created_at).last
-    assert_equal 'Failed to delete format: Cannot delete record because of dependent resources',
+    assert_equal 'This format cannot be deleted, as it is being used by one or more resource assessments.',
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
