@@ -27,7 +27,8 @@ class FormatsController < ApplicationController
       flash[:success] = "Format \"#{@format.name}\" deleted."
     rescue => e
       flash[:error] = "#{e}"
-    ensure
+      redirect_to format_path(@format)
+    else
       redirect_to formats_path
     end
   end
