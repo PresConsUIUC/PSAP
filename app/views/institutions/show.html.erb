@@ -23,9 +23,11 @@
           <% end %>
       <% end %>
       <!-- Delete -->
-      <% if current_user.is_admin? && @institution.users.none? %>
+      <% disabled = @institution.users.any?
+         if current_user.is_admin? %>
           <%= link_to institution_path(@institution), method: 'delete',
                       class: 'btn btn-default',
+                      disabled: disabled,
                       data: { confirm: 'Deleting this institution will '\
                           'delete ALL of its repositories, locations, and '\
                           'assessments along with it. Are you sure you want '\
