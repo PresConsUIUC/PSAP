@@ -108,7 +108,20 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml { @institution = @resource.location.repository.institution }
+      format.dcxml {
+        filename = @resource.local_identifier ?
+            "#{@resource.local_identifier}.xml" : "#{@resource.id}.xml"
+        response.headers['Content-Disposition'] =
+            "attachment; filename=\"#{filename}\""
+        @institution = @resource.location.repository.institution
+      }
+      format.ead {
+        filename = @resource.local_identifier ?
+            "#{@resource.local_identifier}.xml" : "#{@resource.id}.xml"
+        response.headers['Content-Disposition'] =
+            "attachment; filename=\"#{filename}\""
+        @institution = @resource.location.repository.institution
+      }
     end
   end
 
