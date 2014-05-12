@@ -21,3 +21,15 @@ body#dashboard div#page_content {
     }
   }
 }
+
+body#dashboard_welcome {
+  div#associate {
+    form {
+      margin:0 auto;
+      width:70%;
+      input, a, select {
+        margin:1em 1em 1em 0em;
+      }
+    }
+  }
+}
