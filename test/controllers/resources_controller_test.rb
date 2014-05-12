@@ -213,6 +213,24 @@ class ResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test 'Dublin Core XML export representation is valid' do
+    signin_as(users(:admin_user))
+
+    require 'nokogiri'
+    xsd = Nokogiri::XML::Schema(File.read('test/controllers/oai_dc.xsd'))
+
+    resources.each do |res|
+      get :show, id: res.id, format: :xml
+
+      doc = Nokogiri::XML(@response.body)
+      xsd.validate(doc).each do |error|
+        puts "Resource ID #{res.id}: #{error.message}"
+      end
+
+      assert xsd.valid?(doc)
+    end
+  end
+
   test 'EAD export representation is valid' do
     signin_as(users(:admin_user))
 
@@ -220,7 +238,7 @@ class ResourcesControllerTest < ActionController::TestCase
     xsd = Nokogiri::XML::Schema(File.read('test/controllers/ead.xsd'))
 
     resources.each do |res|
-      get :show, id: 7, format: :xml
+      get :show, id: res.id, format: :xml
 
       doc = Nokogiri::XML(@response.body)
       xsd.validate(doc).each do |error|

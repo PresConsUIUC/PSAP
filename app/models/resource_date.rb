@@ -71,6 +71,16 @@ class ResourceDate < ActiveRecord::Base
   include ActiveModel::Validations
   validates_with DateRangeValidator
 
+  def as_dublin_core_string
+    if self.date_type == DateType::SINGLE
+      return join_date_parts(self.year, self.month, self.day)
+    end
+    begin_string = join_date_parts(self.begin_year, self.begin_month,
+                                   self.begin_day)
+    end_string = join_date_parts(self.end_year, self.end_month, self.end_day)
+    return "#{begin_string}/#{end_string}"
+  end
+
   def readable_date_type
     case date_type
       when DateType::SINGLE
@@ -80,6 +90,14 @@ class ResourceDate < ActiveRecord::Base
       when DateType::SPAN
         'Span'
     end
+  end
+
+  private
+
+  def join_date_parts(year, month, day)
+    parts = [year, month, day]
+    parts.reject! { |c| c.to_s.empty? }
+    return parts.join('-')
   end
 
 end
