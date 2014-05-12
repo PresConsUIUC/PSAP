@@ -70,9 +70,8 @@ $(document).ready(function() {
 
         $.get($(this).attr('data-open'), function(data) {
             var content = $(data).find('div#page_content');
-
             $('div.modal-body').html(content.html());
-            $('#appModalTitle').text($('div.modal-body h1').text());
+            $('#appModalTitle').text($('div.modal-body h1:first').text());
             $('div.modal-body h1').remove();
         });
         return false;
