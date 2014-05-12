@@ -190,9 +190,19 @@
       <% end %>
       <dt>Description</dt>
       <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
-      <% if @resource.notes %>
+      <% if @resource.resource_notes.any? %>
           <dt>Notes</dt>
-          <dd><%= @resource.notes %></dd>
+          <dd>
+            <% if @resource.resource_notes.length == 1 %>
+                <%= @resource.resource_notes[0].value %>
+            <% else %>
+                <ul>
+                  <% @resource.resource_notes.each do |note| %>
+                      <li><%= note.value %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </dd>
       <% end %>
       <% if @resource.resource_dates.any? %>
           <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>

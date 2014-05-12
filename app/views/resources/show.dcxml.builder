@@ -28,7 +28,9 @@ xml.tag!('oai_dc:dc',
     xml.tag!('dc:subject', subject.name)
   end
   xml.tag!('dc:description', @resource.description) if @resource.description
-  xml.tag!('dc:description', @resource.notes) if @resource.notes # TODO: support multiple notes
+  @resource.resource_notes.each do |note|
+    xml.tag!('dc:description', note.value)
+  end
   xml.tag!('dc:rights', @resource.rights) if @resource.rights
   if @resource.parent
     xml.tag!('dc:relation', "isPartOf #{@resource.parent.name} (#{@resource.parent.local_identifier})")

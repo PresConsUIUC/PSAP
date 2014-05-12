@@ -9,7 +9,6 @@ resource_one:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_two:
   id: 2
@@ -20,7 +19,6 @@ resource_two:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_three:
   id: 3
@@ -30,7 +28,6 @@ resource_three:
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_four:
   id: 4
@@ -40,7 +37,6 @@ resource_four:
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_five:
   id: 5
@@ -51,7 +47,6 @@ resource_five:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_six:
   id: 6
@@ -62,7 +57,6 @@ resource_six:
   user_id: 5
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_seven:
   id: 7
@@ -72,7 +66,6 @@ resource_seven:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_eight:
   id: 8
@@ -83,7 +76,6 @@ resource_eight:
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_nine:
   id: 9
@@ -104,7 +96,6 @@ resource_ten:
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_eleven:
   id: 11
@@ -115,7 +106,6 @@ resource_eleven:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_twelve:
   id: 12
@@ -126,7 +116,6 @@ resource_twelve:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'
 
 resource_thirteen:
   id: 13
@@ -136,4 +125,3 @@ resource_thirteen:
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
-  notes: 'Sample note'

@@ -4,8 +4,9 @@ class Resource < ActiveRecord::Base
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :creators, inverse_of: :resource, dependent: :destroy
-  has_many :resource_dates, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
+  has_many :resource_dates, inverse_of: :resource, dependent: :destroy
+  has_many :resource_notes, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
   belongs_to :format, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
@@ -16,6 +17,7 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :creators, allow_destroy: true
   accepts_nested_attributes_for :extents, allow_destroy: true
   accepts_nested_attributes_for :resource_dates, allow_destroy: true
+  accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
   validates :location, presence: true

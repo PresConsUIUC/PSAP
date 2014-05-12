@@ -54,6 +54,13 @@ class ResourceTest < ActiveSupport::TestCase
     assert creator.destroyed?
   end
 
+  test 'dependent extents should be destroyed on destroy' do
+    extent = extents(:extent_one)
+    @resource.extents << extent
+    @resource.destroy
+    assert extent.destroyed?
+  end
+
   test 'dependent resource dates should be destroyed on destroy' do
     date = resource_dates(:bulk_date)
     @resource.resource_dates << date
@@ -61,11 +68,11 @@ class ResourceTest < ActiveSupport::TestCase
     assert date.destroyed?
   end
 
-  test 'dependent extents should be destroyed on destroy' do
-    extent = extents(:extent_one)
-    @resource.extents << extent
+  test 'dependent resource notes should be destroyed on destroy' do
+    note = resource_notes(:resource_note_one)
+    @resource.resource_notes << note
     @resource.destroy
-    assert extent.destroyed?
+    assert note.destroyed?
   end
 
   test 'dependent subjects should be destroyed on destroy' do

@@ -184,7 +184,19 @@
   <%= f.text_area :description, class: 'form-control' %>
 </div>
 
-<div class="form-group">
-  <%= f.label :notes %>
-  <%= f.text_area :notes, class: 'form-control' %>
+<div class="form-group addable_removable">
+  <%= f.label :resource_notes, 'Note(s)' %>
+
+  <%= f.fields_for :resource_notes do |g| %>
+      <div class="addable_removable_input_group">
+          <%= g.text_area :value, class: 'form-control' %>
+          <button class="btn btn-default remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+      </div>
+  <% end %>
+
+  <button class="btn btn-default btn-sm add" type="button">
+    <span class="glyphicon glyphicon-plus"></span>
+  </button>
 </div>

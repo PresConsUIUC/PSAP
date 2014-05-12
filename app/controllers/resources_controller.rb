@@ -47,6 +47,7 @@ class ResourcesController < ApplicationController
     @resource.creators.build unless @resource.creators.any?
     @resource.extents.build unless @resource.extents.any?
     @resource.resource_dates.build unless @resource.resource_dates.any?
+    @resource.resource_notes.build unless @resource.resource_notes.any?
     @resource.subjects.build unless @resource.subjects.any?
 
     @assessment_sections = Assessment.find_by_key('resource').
@@ -88,6 +89,7 @@ class ResourcesController < ApplicationController
     @resource.creators.build
     @resource.extents.build
     @resource.resource_dates.build
+    @resource.resource_notes.build
     @resource.subjects.build
 
     @assessment_sections = Assessment.find_by_key('resource').
@@ -173,6 +175,7 @@ class ResourcesController < ApplicationController
                                           :begin_month, :begin_day, :end_year,
                                           :end_month, :end_day, :year, :month,
                                           :day],
+                                     resource_notes_attributes: [:id, :value],
                                      subjects_attributes: [:id, :name])
   end
 
