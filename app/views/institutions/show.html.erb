@@ -23,8 +23,8 @@
           <% end %>
       <% end %>
       <!-- Delete -->
-      <% disabled = @institution.users.any?
-         if current_user.is_admin? %>
+      <% if current_user.is_admin? %>
+          <% disabled = @institution.users.any? %>
           <%= link_to institution_path(@institution), method: 'delete',
                       class: 'btn btn-default',
                       disabled: disabled,
