@@ -62,6 +62,14 @@ class Resource < ActiveRecord::Base
     @assessment_percent_complete
   end
 
+  def dcxml_filename
+    self.local_identifier ? "#{self.local_identifier}.xml" : "#{self.id}.xml"
+  end
+
+  def ead_filename
+    self.local_identifier ? "#{self.local_identifier}.xml" : "#{self.id}.xml"
+  end
+
   def readable_resource_type
     case resource_type
       when ResourceType::COLLECTION

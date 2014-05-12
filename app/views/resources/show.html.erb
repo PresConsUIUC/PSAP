@@ -33,8 +33,10 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><%= link_to 'EAD', resource_path(@resource) + '.ead' %></li>
-          <li><%= link_to 'Dublin Core XML', resource_path(@resource) + '.dcxml' %></li>
+          <li><%= link_to 'EAD', resource_path(@resource) + '.ead',
+                          class: 'export', data: { filename: @resource.ead_filename } %></li>
+          <li><%= link_to 'Dublin Core XML', resource_path(@resource) + '.dcxml',
+                          class: 'export', data: { filename: @resource.dcxml_filename } %></li>
         </ul>
       </div>
       <!-- Edit -->
@@ -50,6 +52,25 @@
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
           Delete
       <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Export notification modal panel -->
+<div id="export_notification" class="modal fade"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Exporting <span class="format"></span>&hellip;</h4>
+      </div>
+      <div class="modal-body">
+          <p>Check your downloads folder for a file named
+            <strong id="filename"></strong>.</p>
+      </div>
     </div>
   </div>
 </div>
