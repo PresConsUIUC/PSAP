@@ -177,11 +177,6 @@ class UsersController < ApplicationController
     else
       was_unaffiliated = @user.institution.nil?
 
-      # admin users can change usernames; non-admins cannot.
-      if !current_user.is_admin?
-        params[:user].delete(:username)
-      end
-
       command = UpdateUserCommand.new(@user, user_update_params, current_user,
                                       request.remote_ip)
       begin

@@ -53,10 +53,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   # password
-  test 'password is required' do
+  test 'password is not required' do
     @user.password = nil
     @user.password_confirmation = nil
-    assert !@user.save
+    assert @user.save
   end
 
   test 'password should be a minimum of 6 characters' do
@@ -79,10 +79,20 @@ class UserTest < ActiveSupport::TestCase
 
   test 'username is case-insensitively unique' do
     @user.save
-
     user2 = users(:unaffiliated_user)
     user2.username = @user.username.upcase
     assert !user2.save
+  end
+
+  test 'normal users should not be able to change their username' do
+    @user.username = 'asdfasdf'
+    assert !@user.save
+  end
+
+  test 'admin users should be able to change their username' do
+    @user = users(:admin_user)
+    @user.username = 'asdfasdf'
+    assert @user.save
   end
 
   ############################ method tests #################################
