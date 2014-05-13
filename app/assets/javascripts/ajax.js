@@ -44,12 +44,12 @@ $(document).ajaxComplete(function(event, request, options) {
         button.after(msg);
 
         // append it to the DOM
-        $('div.container header').after(flash);
+        $('div.container header, div.container-fluid header').after(flash);
 
         // fade it out after a delay
-        setTimeout(function() {
-            $('div.alert').fadeOut(1000);
-        }, 5000);
+        //setTimeout(function() {
+        //    $('div.alert').fadeOut(1000);
+        //}, 5000);
     }
 });
 
