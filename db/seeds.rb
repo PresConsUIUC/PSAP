@@ -969,24 +969,29 @@ case Rails.env
                   user: admin_user,
                   address: '10.252.52.5',
                   created_at: Time.mktime(2014, 2, 6))
-    Event.create!(description: 'Paul\'s dead, man, miss him, miss him, miss him',
+    Event.create!(description: 'Gazed into the abyss',
                   event_level: EventLevel::NOTICE,
                   user: disabled_user,
                   address: '10.252.52.5',
-                  created_at: Time.mktime(2013, 11, 10))
-    Event.create!(description: 'Godzilla has appeared in Tokyo Harbor',
+                  created_at: Time.mktime(2013, 11, 10, 2, 5, 10))
+    Event.create!(description: 'Abyss gazed back',
+                  event_level: EventLevel::NOTICE,
+                  user: disabled_user,
+                  address: '10.252.52.5',
+                  created_at: Time.mktime(2013, 11, 10, 2, 5, 11))
+    Event.create!(description: 'Meta-Ambulation has pulled ahead in Pedometer Challenge',
                   event_level: EventLevel::WARNING,
                   address: '127.0.0.1',
                   created_at: Time.mktime(2014, 3, 26))
-    Event.create!(description: 'Skynet has become self-aware',
+    Event.create!(description: 'Godzilla has appeared in Tokyo Harbor',
                   event_level: EventLevel::ERROR,
                   user: admin_user,
                   address: '10.5.2.6',
-                  created_at: Time.mktime(1997, 8, 12))
-    Event.create!(description: 'Meta-Ambulation has pulled ahead in Pedometer Challenge',
+                  created_at: Time.mktime(2014, 5, 8))
+    Event.create!(description: 'Skynet has become self-aware',
                   event_level: EventLevel::CRITICAL,
                   address: '127.0.0.1',
-                  created_at: Time.mktime(2014, 5, 8))
+                  created_at: Time.mktime(1997, 8, 12))
     Event.create!(description: 'Ran out of toilet paper',
                   event_level: EventLevel::ALERT,
                   address: '127.0.0.1',
