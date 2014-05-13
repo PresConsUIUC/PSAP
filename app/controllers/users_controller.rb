@@ -151,39 +151,65 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
 
-    was_unaffiliated = @user.institution.nil?
-
-    # admin users can change usernames. Non-admins cannot.
-    if !current_user.is_admin?
-      params[:user].delete(:username)
-    end
-
-    command = UpdateUserCommand.new(@user, user_update_params, current_user,
-                                    request.remote_ip)
-    begin
-      command.execute
-    rescue
-      render 'edit'
-    else
-      # If the user was not affiliated with an institution before the update,
-      # but now is, this implies that they have just joined an institution for
-      # the first time by following a link from their dashboard.
-      if was_unaffiliated && @user.institution
-        flash[:success] = @user == current_user ?
-            "You are now a member of #{@user.institution.name}." :
-            "#{@user.username} is now a member of #{@user.institution.name}."
+    # If the user is changing their password
+    if params[:user][:current_password]
+      command = ChangePasswordCommand.new(
+          @user, params[:user][:current_password],
+          params[:user][:password],
+          params[:user][:password_confirmation],
+          current_user,
+          request.remote_ip)
+      begin
+        command.execute
+      rescue => e
+        flash[:error] = "#{e}"
+        render 'edit'
       else
         flash[:success] = @user == current_user ?
-            'Your profile has been updated.' :
-            "#{@user.username}'s profile has been updated."
+            'Your password has been changed.' :
+            "#{@user.username}'s password has been changed."
+
+        respond_to do |format|
+          format.html { redirect_to edit_user_url(@user) }
+          format.js { render 'edit' }
+        end
+      end
+    else
+      was_unaffiliated = @user.institution.nil?
+
+      # admin users can change usernames; non-admins cannot.
+      if !current_user.is_admin?
+        params[:user].delete(:username)
       end
 
-      respond_to do |format|
-        format.html {
-          redirect_to was_unaffiliated && @user.institution ?
-                          dashboard_url : edit_user_url(@user)
-        }
-        format.js { render 'edit' }
+      command = UpdateUserCommand.new(@user, user_update_params, current_user,
+                                      request.remote_ip)
+      begin
+        command.execute
+      rescue
+        flash[:error] = "#{e}"
+        render 'edit'
+      else
+        # If the user was not affiliated with an institution before the update,
+        # but now is, this implies that they have just joined an institution for
+        # the first time by following a link from their dashboard.
+        if was_unaffiliated && @user.institution
+          flash[:success] = @user == current_user ?
+              "You are now a member of #{@user.institution.name}." :
+              "#{@user.username} is now a member of #{@user.institution.name}."
+        else
+          flash[:success] = @user == current_user ?
+              'Your profile has been updated.' :
+              "#{@user.username}'s profile has been updated."
+        end
+
+        respond_to do |format|
+          format.html {
+            redirect_to was_unaffiliated && @user.institution ?
+                            dashboard_url : edit_user_url(@user)
+          }
+          format.js { render 'edit' }
+        end
       end
     end
   end
@@ -225,7 +251,6 @@ class UsersController < ApplicationController
 
   def user_update_params
     params.require(:user).permit(:username, :email, :first_name, :last_name,
-                                 :password, :password_confirmation,
                                  :institution_id, :enabled,
                                  :show_contextual_help)
   end
