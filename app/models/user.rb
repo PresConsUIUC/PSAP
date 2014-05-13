@@ -19,8 +19,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false },
             format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i,
-                      message: 'Only letters and numbers are allowed.' },
-            exclusion: { in: %w(admin) }
+                      message: 'Only letters and numbers are allowed.' }
   validate :forbid_changing_username
 
   def forbid_changing_username
