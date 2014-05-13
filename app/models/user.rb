@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   def forbid_changing_username
     errors[:username] = 'Username cannot be changed' if
-        self.username_changed? && !self.is_admin?
+        !self.new_record? && self.username_changed? && !self.is_admin?
   end
 
   after_initialize :setup, if: :new_record?
