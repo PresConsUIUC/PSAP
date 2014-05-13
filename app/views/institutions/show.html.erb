@@ -299,10 +299,8 @@
     <dl>
       <dt>URL</dt>
       <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
-      <% if @institution.description %>
-          <dt>Description</dt>
-          <dd><%= @institution.description %></dd>
-      <% end %>
+      <dt>Email</dt>
+      <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
       <dt>Address</dt>
       <dd>
         <%= @institution.address1 %>
@@ -312,8 +310,6 @@
         <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
         <br><%= @institution.country %>
       </dd>
-      <dt>Email</dt>
-      <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
       <% if @institution.description %>
           <dt>Description</dt>
           <dd><%= @institution.description %></dd>
@@ -324,6 +320,8 @@
       <% end %>
       <dt>Created</dt>
       <dd><%= local_time_ago(@institution.created_at) %></dd>
+      <dt>Last Updated</dt>
+      <dd><%= local_time_ago(@institution.updated_at) %></dd>
     </dl>
   </div>
 

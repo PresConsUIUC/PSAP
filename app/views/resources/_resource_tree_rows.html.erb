@@ -4,7 +4,7 @@
         <%= link_to 'Assess', edit_resource_path(resource) %>
       </td>
       <td class="depth-<%= depth %>">
-        &#8627; <%= link_to resource.name, resource %>
+        <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
       </td>
       <td><%= resource.readable_resource_type %></td>
       <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
