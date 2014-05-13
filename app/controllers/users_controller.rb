@@ -181,7 +181,7 @@ class UsersController < ApplicationController
                                       request.remote_ip)
       begin
         command.execute
-      rescue
+      rescue => e
         flash[:error] = "#{e}"
         render 'edit'
       else
