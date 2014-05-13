@@ -27,6 +27,10 @@ Things you may want to cover:
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
 
+This project uses the "Gitflow" git workflow, illustrated at:
+* http://nvie.com/posts/a-successful-git-branching-model/
+* https://www.atlassian.com/git/workflows#!workflow-gitflow
+
 In development, you will need to copy the SMTP server password to a file
 called ".smtp_dev_password" in the application root. Contact a project member
 to obtain this password.
