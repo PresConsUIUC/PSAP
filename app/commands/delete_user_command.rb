@@ -8,16 +8,20 @@ class DeleteUserCommand < Command
 
   def execute
     begin
+      raise 'Insufficient privileges' unless @doing_user.is_admin?
       @user.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
       raise e # should never happen
     rescue => e
       Event.create(description: "Attempted to delete user #{@user.username}, "\
-      "but failed: #{@user.errors.full_messages[0]}",
+      "but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to delete user #{@user.username}: "\
-      "#{@user.errors.full_messages[0]}"
+      if @user == @doing_user
+        raise "Failed to delete your account: #{e.message}"
+      else
+        raise "Failed to delete user #{@user.username}: #{e.message}"
+      end
     else
       Event.create(description: "Deleted user #{@user.username}",
                    user: @doing_user, address: @remote_ip)

@@ -44,15 +44,25 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
 
+    destroying_self = user == current_user
+
     command = DeleteUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash[:error] = "#{e}"
-    else
-      flash[:success] = "User #{user.username} deleted."
-    ensure
       redirect_to users_url
+    else
+      if destroying_self
+        flash[:success] = 'Your account has been deleted.'
+        command = SignOutCommand.new(user, request.remote_ip)
+        command.execute
+        sign_out
+        redirect_to root_url
+      else
+        flash[:success] = "User #{user.username} deleted."
+        redirect_to users_url
+      end
     end
   end
 

@@ -132,6 +132,15 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to users_url
   end
 
+  test 'admin users are redirected to root URL when they destroy themselves' do
+    signin_as(users(:admin_user))
+    assert_difference 'User.count', -1 do
+      delete :destroy, username: users(:admin_user).username
+    end
+    assert_equal 'Your account has been deleted.', flash[:success]
+    assert_redirected_to root_url
+  end
+
   #### edit ####
 
   test 'signed-out users cannot edit any users' do
