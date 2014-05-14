@@ -8,10 +8,9 @@ class DisableUserCommand < Command
 
   def execute
     begin
-      unless @doing_user.is_admin?
-        raise "#{@doing_user.username} has insufficient privileges to "\
-        "disable users."
-      end
+      raise "#{@doing_user.username} has insufficient privileges to "\
+      "disable users." unless @doing_user.is_admin?
+
       @user.enabled = false
       @user.save!
     rescue => e

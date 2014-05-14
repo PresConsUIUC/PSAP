@@ -13,11 +13,11 @@ class DeleteResourceCommand < Command
       raise e # this should never happen
     rescue => e
       Event.create(description: "Attempted to delete resource "\
-      "\"#{@resource.name}\", but failed: #{@resource.errors.full_messages[0]}",
+      "\"#{@resource.name}\", but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise "Failed to delete resource \"#{@resource.name}\": "\
-      "#{@resource.errors.full_messages[0]}"
+      "#{e.message}"
     else
       Event.create(description: "Deleted resource \"#{@resource.name}\" from "\
       "location \"#{@resource.location.name}\"",

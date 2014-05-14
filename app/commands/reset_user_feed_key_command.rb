@@ -13,11 +13,10 @@ class ResetUserFeedKeyCommand < Command
       UserMailer.changed_feed_key_email(@user).deliver if @user != doing_user
     rescue => e
       Event.create(description: "Attempted to reset feed key for user "\
-      "#{@user.username}, but failed: #{@user.errors.full_messages[0]}",
+      "#{@user.username}, but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to reset feed key for user #{@user.username}: "\
-      "#{@user.errors.full_messages[0]}"
+      raise "Failed to reset feed key for user #{@user.username}: #{e.message}"
     else
       Event.create(description: "Reset feed key for user #{@user.username}",
                    user: @doing_user, address: @remote_ip)

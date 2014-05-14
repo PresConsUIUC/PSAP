@@ -20,12 +20,10 @@ class UpdateInstitutionCommand < Command
       "#{@institution.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update institution "\
-      "\"#{@institution.name},\" but failed: "\
-      "#{@institution.errors.full_messages[0]}",
+      "\"#{@institution.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update institution \"#{@institution.name}\": "\
-      "#{@institution.errors.full_messages[0]}"
+      raise "Failed to update institution \"#{@institution.name}\": #{e.message}"
     else
       Event.create(description: "Updated institution \"#{@institution.name}\"",
                    user: @doing_user, address: @remote_ip)

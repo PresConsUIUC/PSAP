@@ -20,12 +20,10 @@ class UpdateRepositoryCommand < Command
       "#{@repository.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update repository "\
-      "\"#{@repository.name},\" but failed: "\
-      "#{@repository.errors.full_messages[0]}",
+      "\"#{@repository.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update repository \"#{@repository.name}\": "\
-      "#{@repository.errors.full_messages[0]}"
+      raise "Failed to update repository \"#{@repository.name}\": #{e.message}"
     else
       Event.create(description: "Updated repository \"#{@repository.name}\" in "\
       "institution \"#{@repository.institution.name}\"",

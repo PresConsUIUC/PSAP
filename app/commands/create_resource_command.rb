@@ -17,10 +17,10 @@ class CreateResourceCommand < Command
       raise "Failed to create resource: #{@resource.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create resource, but failed: "\
-      "#{@resource.errors.full_messages[0]}",
+      "#{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to create resource: #{@resource.errors.full_messages[0]}"
+      raise "Failed to create resource: #{e.message}"
     else
       Event.create(description: "Created resource \"#{@resource.name}\" in "\
       "location \"#{@resource.location.name}\"",

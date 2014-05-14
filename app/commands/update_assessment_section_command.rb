@@ -34,13 +34,11 @@ class UpdateAssessmentSectionCommand < Command
       "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update assessment section "\
-      "\"#{@assessment_section.name},\" but failed: "\
-      "#{@assessment_section.errors.full_messages[0]}",
+      "\"#{@assessment_section.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise "Failed to update assessment section "\
-      "\"#{@assessment_section.name}\": "\
-      "#{@assessment_section.errors.full_messages[0]}"
+      "\"#{@assessment_section.name}\": #{e.message}"
     else
       Event.create(description: "Updated assessment section "\
       "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",

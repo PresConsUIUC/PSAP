@@ -19,12 +19,10 @@ class DeleteInstitutionCommand < Command
       "cannot be deleted, as there are one or more users affiliated with it."
     rescue => e
       Event.create(description: "Attempted to delete institution "\
-      "\"#{@institution.name},\" but failed: "\
-      "#{@institution.errors.full_messages[0]}",
+      "\"#{@institution.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to delete institution: "\
-      "#{@institution.errors.full_messages[0]}"
+      raise "Failed to delete institution: #{e.message}"
     else
       Event.create(description: "Deleted institution \"#{@institution.name}\"",
                    user: @doing_user, address: @remote_ip)

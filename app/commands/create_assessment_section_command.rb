@@ -45,10 +45,11 @@ class CreateAssessmentSectionCommand < Command
       "failed: #{@assessment_section.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to create assessment section: #{e.message}"
+      raise "Failed to create assessment section: "\
+      "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create assessment section, but "\
-      "failed: #{@assessment_section.errors.full_messages[0]}",
+      "failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise "Failed to create assessment section: #{e.message}"

@@ -20,11 +20,10 @@ class CreateInstitutionCommand < Command
       "#{@institution.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create institution, but failed: "\
-      "#{@institution.errors.full_messages[0]}",
+      "#{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to create institution: "\
-      "#{@institution.errors.full_messages[0]}"
+      raise "Failed to create institution: #{e.message}"
     else
       Event.create(description: "Created institution \"#{@institution.name}\"",
                    user: @doing_user, address: @remote_ip)

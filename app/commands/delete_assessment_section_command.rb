@@ -16,13 +16,11 @@ class DeleteAssessmentSectionCommand < Command
       raise e # this should never happen
     rescue => e
       Event.create(description: "Attempted to delete assessment section "\
-      "\"#{@assessment_section.name},\" but failed: "\
-      "#{@assessment_section.errors.full_messages[0]}",
+      "\"#{@assessment_section.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise "Failed to delete assessment section "\
-      "\"#{@assessment_section.name}\": "\
-      "#{@assessment_section.errors.full_messages[0]}"
+      "\"#{@assessment_section.name}\": #{e.message}"
     else
       Event.create(description: "Deleted assessment section "\
       "\"#{@assessment_section.name}\" in "\

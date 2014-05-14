@@ -13,12 +13,10 @@ class DeleteRepositoryCommand < Command
       raise e # this should never happen
     rescue => e
       Event.create(description: "Attempted to delete repository "\
-      "\"#{@repository.name},\" but failed: "\
-      "#{@repository.errors.full_messages[0]}",
+      "\"#{@repository.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @address,
                    event_level: EventLevel::ERROR)
-      raise "Failed to delete repository \"#{@repository.name}\": "\
-      "#{@location.errors.full_messages[0]}"
+      raise "Failed to delete repository \"#{@repository.name}\": #{e.message}"
     else
       Event.create(description: "Deleted repository \"#{@repository.name}\" "\
       "from institution \"#{@repository.institution.name}\"",

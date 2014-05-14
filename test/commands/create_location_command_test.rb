@@ -22,17 +22,30 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should save location if valid' do
     assert_nothing_raised do
-      @valid_command.execute
-    end
-  end
-
-  test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      @valid_command.execute
+      assert_difference 'Event.count' do
+        @valid_command.execute
+      end
     end
     event = Event.order(:created_at).last
     assert_equal "Created location \"#{@valid_command.object.name}\" in "\
       "repository \"#{@repository.name}\"", event.description
+    assert_equal @user, event.user
+    assert_equal @remote_ip, event.address
+  end
+
+  test 'execute method should fail if user attempts to create a location in another institution' do
+    @repository = repositories(:repository_five)
+    @valid_command = CreateLocationCommand.new(@repository,
+                                               @valid_location_params, @user,
+                                               @remote_ip)
+    assert_raises RuntimeError do
+      assert_difference 'Event.count' do
+        @valid_command.execute
+      end
+    end
+    event = Event.order(:created_at).last
+    assert_equal "Attempted to create location, but failed: Insufficient "\
+    "privileges", event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
   end

@@ -21,10 +21,10 @@ class CreateUserCommand < Command
       raise "Failed to create user account: #{@user.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create a user account, but "\
-      "failed: #{@user.errors.full_messages[0]}",
+      "failed: #{e.message}",
                    user: @user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to create user account: #{@user.errors.full_messages[0]}"
+      raise "Failed to create user account: #{e.message}"
     else
       Event.create(description: "Created account for user #{@user.username}",
                    user: @user, address: @remote_ip)

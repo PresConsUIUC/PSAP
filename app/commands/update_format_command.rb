@@ -19,11 +19,10 @@ class UpdateFormatCommand < Command
       "#{@format.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update format "\
-      "\"#{@format.name},\" but failed: #{@format.errors.full_messages[0]}",
+      "\"#{@format.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update format \"#{@format.name}\": "\
-      "#{@format.errors.full_messages[0]}"
+      raise "Failed to update format \"#{@format.name}\": #{e.message}"
     else
       Event.create(description: "Updated format \"#{@format.name}\"",
                    user: @doing_user, address: @remote_ip)

@@ -19,11 +19,10 @@ class UpdateLocationCommand < Command
       "#{@location.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update location "\
-      "\"#{@location.name},\" but failed: #{@location.errors.full_messages[0]}",
+      "\"#{@location.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update location \"#{@location.name}\": "\
-      "#{@location.errors.full_messages[0]}"
+      raise "Failed to update location \"#{@location.name}\": #{e.message}"
     else
       Event.create(description: "Updated location \"#{@location.name}\" in "\
       "repository \"#{@location.repository.name}\"",

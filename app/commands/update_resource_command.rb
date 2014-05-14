@@ -19,11 +19,10 @@ class UpdateResourceCommand < Command
       "#{@resource.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Failed to update resource "\
-      "\"#{@resource.name},\" but failed:: #{@resource.errors.full_messages[0]}",
+      "\"#{@resource.name},\" but failed:: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update resource \"#{@resource.name}\": "\
-      "#{@resource.errors.full_messages[0]}"
+      raise "Failed to update resource \"#{@resource.name}\": #{e.message}"
     else
       Event.create(description: "Updated resource \"#{@resource.name}\" in "\
       "location \"#{@resource.location.name}\"",

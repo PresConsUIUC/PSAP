@@ -16,11 +16,10 @@ class DeleteAssessmentQuestionCommand < Command
       raise e # this should never happen
     rescue => e
       Event.create(description: "Attempted to delete an assessment question, "\
-      "but failed: #{@assessment_question.errors.full_messages[0]}",
+      "but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to delete assessment question: "\
-      "#{@assessment_question.errors.full_messages[0]}"
+      raise "Failed to delete assessment question: #{e.message}"
     else
       Event.create(description: 'Deleted assessment question',
                    user: @doing_user, address: @remote_ip)

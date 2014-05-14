@@ -19,10 +19,10 @@ class DeleteFormatCommand < Command
       "being used by one or more resource assessments."
     rescue => e
       Event.create(description: "Attempted to delete format "\
-      "\"#{@format.name},\" but failed: #{@format.errors.full_messages[0]}",
+      "\"#{@format.name},\" but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to delete format: #{@format.errors.full_messages[0]}"
+      raise "Failed to delete format: #{e.message}"
     else
       Event.create(description: "Deleted format \"#{@format.name}\"",
                    user: @doing_user, address: @remote_ip)

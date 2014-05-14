@@ -20,11 +20,10 @@ class CreateRepositoryCommand < Command
       "#{@repository.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create repository, but failed: "\
-      "#{@repository.errors.full_messages[0]}",
+      "#{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to create repository: "\
-      "#{@repository.errors.full_messages[0]}"
+      raise "Failed to create repository: #{e.message}"
     else
       Event.create(description: "Created repository \"#{@repository.name} "\
       "in institution \"#{@repository.institution.name}\"",
