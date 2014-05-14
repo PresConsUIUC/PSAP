@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-resource_assessment_section_one:
+assessment_section_one:
   id: 1
   index: 0
   name: Test section 1
@@ -8,7 +8,7 @@ resource_assessment_section_one:
   weight: 0.5
   assessment_id: 1
 
-resource_assessment_section_two:
+assessment_section_two:
   id: 2
   index: 1
   name: Test section 2
