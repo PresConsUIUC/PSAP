@@ -26,11 +26,10 @@
 
 <div class="container-fluid">
   <header class="page-header">
-    <%= link_to image_tag('psap.png', size:'70x70', alt:'PSAP logo',
-                          id:'title_logo'), root_path %>
+    <%= link_to image_tag('psap_logo.png', size:'156x70', alt:'PSAP logo',
+                          id:'title_logo', 'data-has-retina' => true), root_path %>
 
     <h1>
-      <%= link_to 'PSAP', root_path %>
       <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
     </h1>
 
