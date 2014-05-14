@@ -9,12 +9,19 @@ class UpdateUserCommand < Command
 
   def execute
     begin
-      # If the user is changing their email address, we should notify the
-      # previous address, in case their account was hijacked.
       old_email = @user.email
       new_email = @user_params[:email]
-      if old_email != new_email
-        UserMailer.change_email(@user, old_email, new_email).deliver
+
+      # non-admin users are not allowed to update other users
+      if !@doing_user.is_admin? && @doing_user != @user
+        raise 'Insufficient privileges'
+      end
+
+      # non-admin users are not allowed to change usernames (but they are
+      # allowed to set them for the first time)
+      if !@doing_user.is_admin? && @user.username && @user_params[:username] &&
+          @user.username != @user_params[:username]
+        raise 'Insufficient privileges'
       end
 
       @user.update!(@user_params)
@@ -23,18 +30,32 @@ class UpdateUserCommand < Command
       "but failed: #{@user.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to update user #{@user.username}: "\
-      "#{@user.errors.full_messages[0]}"
+      if @user == @doing_user
+        raise "Failed to update your account: "\
+        "#{@user.errors.full_messages[0]}"
+      else
+        raise "Failed to update user #{@user.username}: "\
+        "#{@user.errors.full_messages[0]}"
+      end
     rescue => e
       Event.create(description: "Attempted to update user #{@user.username}, "\
-      "but failed: #{@user.errors.full_messages[0]}",
+      "but failed: #{e.message}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::ERROR)
-      raise "Failed to update user #{@user.username}: "\
-      "#{@user.errors.full_messages[0]}"
+      if @user == @doing_user
+        raise "Failed to update your account: #{e.message}"
+      else
+        raise "Failed to update user #{@user.username}: #{e.message}"
+      end
     else
       Event.create(description: "Updated user #{@user.username}",
                    user: @doing_user, address: @remote_ip)
+
+      # If the user is changing their email address, we should notify the
+      # previous address, in case their account was hijacked.
+      if old_email != new_email
+        UserMailer.change_email(@user, old_email, new_email).deliver
+      end
     end
   end
 

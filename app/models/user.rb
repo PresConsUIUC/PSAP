@@ -20,12 +20,6 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false },
             format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i,
                       message: 'Only letters and numbers are allowed.' }
-  validate :forbid_changing_username
-
-  def forbid_changing_username
-    errors[:username] = 'Username cannot be changed' if
-        !self.new_record? && self.username_changed? && !self.is_admin?
-  end
 
   after_initialize :setup, if: :new_record?
   before_save { self.email = email.downcase }

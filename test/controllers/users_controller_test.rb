@@ -367,7 +367,7 @@ class UsersControllerTest < ActionController::TestCase
                            password_confirmation: 'password' },
           username: 'normal'
     assert_nil User.find_by_username 'newuser'
-    assert_redirected_to edit_user_url(assigns(:user))
+    assert_template :edit
   end
 
   test 'changing email address sends an email confirmation' do
@@ -396,9 +396,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'admin users can change other users\' username' do
     signin_as(users(:admin_user))
     patch :update, user: { username: 'newusername', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
+                           first_name: 'New', last_name: 'User' },
           username: 'unaffiliated'
     assert_not_nil User.find_by_username 'newusername'
     assert_redirected_to edit_user_url(assigns(:user))
