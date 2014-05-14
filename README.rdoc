@@ -1,8 +1,5 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
 Things you may want to cover:
 
 * Ruby version
@@ -17,20 +14,42 @@ Things you may want to cover:
 
 * How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+Roles and permissions
 
-* ...
+PSAP uses role-based authorization. Each user is assigned to a single role,
+which is associated with zero or more unique permissions, each of which enable
+users in the role to perform various actions. The system administrator role is
+an exception; although not explicitly associated with any permissions, it is
+able to do anything. PSAP comes with two different roles: system administrator,
+and normal user. The latter can be modified, and additional roles can be added.
 
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Development
 
 This project uses the "Gitflow" git workflow, illustrated at:
 * http://nvie.com/posts/a-successful-git-branching-model/
 * https://www.atlassian.com/git/workflows#!workflow-gitflow
 
+Coding Standards
+
+Indentation is two spaces. Spaces are used instead of tabs. 80-character
+margins are aimed for.
+
+Mail
+
 In development, you will need to copy the SMTP server password to a file
 called ".smtp_dev_password" in the application root. Contact a project member
 to obtain this password.
+
+Deployment
+
+You must change the secret key when you deploy. The command 'rake secret'
+generates a new random secret you can use. Copy it from the console output to
+a file called ".secret" in the application root.
+
+Configuration
+
+PSAP uses the standard Rails application configuration files in
+config/environments.
+
+The version number is set in app/helpers/application_helper.rb.
