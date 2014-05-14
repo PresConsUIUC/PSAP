@@ -1,6 +1,6 @@
 class CreateFormatCommand < Command
 
-  def initialize(format_params, user, remote_ip)
+  def initialize(format_params, doing_user, remote_ip)
     @format_params = format_params
     @doing_user = doing_user
     @remote_ip = remote_ip
