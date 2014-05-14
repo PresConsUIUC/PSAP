@@ -50,7 +50,7 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
     assert_equal @remote_ip, event.address
   end
 
-  test 'execute method should write failure to event log if validation failed' do
+  test 'execute method should fail if validation failed' do
     assert_raises RuntimeError do
       assert_difference 'Event.count' do
         @invalid_command.execute
