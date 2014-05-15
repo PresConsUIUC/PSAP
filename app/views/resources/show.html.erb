@@ -103,7 +103,7 @@
       <% end %>
 
       <% if @resource.assessment_percent_complete < 1 %>
-          <div class="assessment incomplete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+          <div id="assessment" class="assessment incomplete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
 
             <h3><%= number_to_human @resource.assessment_percent_complete * 100 %>% complete</h3>
 
@@ -123,7 +123,7 @@
 
           </div>
       <% else %>
-          <div class="assessment complete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+          <div id="assessment" class="assessment complete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
             <% i = 0; @assessment_sections.each do |section| # TODO: sub-questions %>
 
                 <% if i != 0 %>
