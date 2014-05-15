@@ -84,17 +84,6 @@ class UserTest < ActiveSupport::TestCase
     assert !user2.save
   end
 
-  test 'normal users should not be able to change their username' do
-    @user.username = 'asdfasdf'
-    assert !@user.save
-  end
-
-  test 'admin users should be able to change their username' do
-    @user = users(:admin_user)
-    @user.username = 'asdfasdf'
-    assert @user.save
-  end
-
   ############################ method tests #################################
 
   # full_name

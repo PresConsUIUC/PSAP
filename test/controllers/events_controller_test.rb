@@ -27,7 +27,7 @@ class EventsControllerTest < ActionController::TestCase
     get :index
     assert_operator assigns(:events).length, :>, 0
 
-    get :index, { q: 'signed in' }
+    get :index, { q: 'warning' }
     assert_equal 1, assigns(:events).length
 
     get :index, { q: 'dsfasdfasdfasdfasfd' }
@@ -36,30 +36,30 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot view the events feed' do
     get :index, format: :atom
-    assert_redirected_to signin_url
+    assert_response :forbidden
   end
 
   test 'non-admin users cannot view the events feed' do
     signin_as(users(:normal_user))
     get :index, format: :atom
-    assert_redirected_to root_url
+    assert_response :forbidden
   end
 
-  test 'admin users can view the dashboard feed' do
-    signin_as(users(:admin_user))
-    get :index, format: :atom
+  test 'admin users can view the events feed' do
+    feed_key = users(:admin_user).feed_key
+    get :index, format: :atom, key: feed_key
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:events)
     assert_not_nil assigns(:event_level)
   end
 
   test 'atom feed representation should be valid' do
-    signin_as(users(:admin_user))
+    feed_key = users(:admin_user).feed_key
 
     require 'nokogiri'
     xsd = Nokogiri::XML::Schema(File.read('test/controllers/atom.xsd'))
 
-    get :index, format: :atom
+    get :index, format: :atom, key: feed_key
 
     doc = Nokogiri::XML(@response.body)
     xsd.validate(doc).each do |error|

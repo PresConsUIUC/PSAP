@@ -8,7 +8,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create
     end
-    assert_equal 'Invalid username/password combination.', flash[:error]
+    assert_equal 'Sign-in failed.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -17,7 +17,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'adsfasdfasfd', password: 'password' }
     end
-    assert_equal 'Invalid username/password combination.', flash[:error]
+    assert_equal 'Sign-in failed.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -26,7 +26,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'disabled', password: 'password' }
     end
-    assert_equal 'Invalid username/password combination.', flash[:error]
+    assert_equal 'Sign-in failed.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -35,7 +35,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'unconfirmed', password: 'password' }
     end
-    assert_equal 'Invalid username/password combination.', flash[:error]
+    assert_equal 'Sign-in failed.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -44,7 +44,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'normal', password: 'adfafsafd' }
     end
-    assert_equal 'Invalid username/password combination.', flash[:error]
+    assert_equal 'Sign-in failed.', flash[:error]
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -53,7 +53,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'normal', password: 'password' }
     end
-    assert_equal 'User normal signed in', Event.last.description[0..20]
+    assert_equal 'User normal signed in', Event.last.description
     assert Time.now - User.find_by_username('normal').last_signin < 0.05
     assert_redirected_to dashboard_url
   end
@@ -63,7 +63,7 @@ class SessionsControllerTest < ActionController::TestCase
   test 'destroying a session works when signed in' do
     signin_as(users(:normal_user))
     delete :destroy
-    assert_equal 'User normal signed out', Event.last.description[0..21]
+    assert_equal 'User normal signed out', Event.last.description
     assert_redirected_to root_url
   end
 

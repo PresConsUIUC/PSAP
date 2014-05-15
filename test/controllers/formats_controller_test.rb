@@ -62,14 +62,27 @@ class FormatsControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
-  test 'admin users can destroy formats' do
+  test 'admin users can destroy unused formats' do
+    format = formats(:unused_format)
     signin_as(users(:admin_user))
     assert_difference 'Format.count', -1 do
-      delete :destroy, id: formats(:format_two).id
+      delete :destroy, id: format.id
     end
-    assert_equal "Format \"#{formats(:format_two).name}\" deleted.",
+    assert_equal "Format \"#{format.name}\" deleted.",
                  flash[:success]
     assert_redirected_to formats_url
+  end
+
+  test 'admin users cannot destroy used formats' do
+    format = formats(:format_one)
+    signin_as(users(:admin_user))
+    assert_no_difference 'Format.count' do
+      delete :destroy, id: format.id
+    end
+    assert_equal "The format \"#{format.name}\" cannot be deleted, as it is "\
+    "being used by one or more resource assessments.",
+                 flash[:error]
+    assert_redirected_to format
   end
 
   test 'destroying a format should write to the event log' do

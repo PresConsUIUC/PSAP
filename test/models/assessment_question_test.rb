@@ -8,11 +8,6 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
 
   ############################ object tests #################################
 
-  test 'new question should have a single option' do
-    question = AssessmentQuestion.new
-    assert_equal 1, question.assessment_question_options.length
-  end
-
   test 'valid question saves' do
     assert @question.save!
   end

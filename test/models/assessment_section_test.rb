@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentSectionTest < ActiveSupport::TestCase
 
   def setup
-    @section = assessment_sections(:resource_assessment_section_one)
+    @section = assessment_sections(:assessment_section_one)
   end
 
   ############################ object tests #################################

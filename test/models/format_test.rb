@@ -13,10 +13,6 @@ class FormatTest < ActiveSupport::TestCase
     assert @format.save
   end
 
-  test 'formats are initialized with a default temperature range' do
-    assert_equal 1, @format.temperature_ranges.length
-  end
-
   ########################### property tests ################################
 
   # name

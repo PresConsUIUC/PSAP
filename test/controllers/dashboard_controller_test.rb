@@ -26,34 +26,34 @@ class DashboardControllerTest < ActionController::TestCase
     assert_not_nil assigns(:recent_assessments)
   end
 
-  test 'unaffiliated users\' necessary ivars are nil' do
+  test 'unaffiliated users\' necessary ivars are set' do
     signin_as(users(:unaffiliated_user))
     get :index
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:resources)
-    assert_nil assigns(:institution_users)
-    assert_nil assigns(:recent_assessments)
+    assert_empty assigns(:institution_users)
+    assert_empty assigns(:recent_assessments)
   end
 
-  test 'signed-out users cannot view the dashboard feed' do
+  test 'users cannot view a dashboard feed without a key' do
     get :index, format: :atom
-    assert_redirected_to signin_url
+    assert_response :forbidden
   end
 
   test 'signed-in users can view the dashboard feed' do
-    signin_as(users(:normal_user))
-    get :index, format: :atom
+    feed_key = users(:normal_user).feed_key
+    get :index, format: :atom, key: feed_key
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:events)
   end
 
   test 'atom feed representation is valid' do
-    signin_as(users(:normal_user))
+    feed_key = users(:normal_user).feed_key
 
     require 'nokogiri'
     xsd = Nokogiri::XML::Schema(File.read('test/controllers/atom.xsd'))
 
-    get :index, format: :atom
+    get :index, format: :atom, key: feed_key
 
     doc = Nokogiri::XML(@response.body)
     xsd.validate(doc).each do |error|

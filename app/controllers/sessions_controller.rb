@@ -7,20 +7,19 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if params[:session]
-      command = SignInCommand.new(params[:session][:username],
-                                  params[:session][:password],
-                                  request.remote_ip)
-      begin
-        command.execute
-      rescue => e
-        flash[:error] = "#{e}"
-        redirect_to signin_url
-      else
-        sign_in command.object
-        cookies[:show_welcome_panel] = 1 if command.object.institution.nil?
-        redirect_back_or dashboard_path
-      end
+    username = params[:session] ? params[:session][:username] : ''
+    password = params[:session] ? params[:session][:password] : ''
+
+    command = SignInCommand.new(username, password, request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      redirect_to signin_url
+    else
+      sign_in command.object
+      cookies[:show_welcome_panel] = 1 if command.object.institution.nil?
+      redirect_back_or dashboard_path
     end
   end
 

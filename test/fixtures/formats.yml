@@ -35,3 +35,9 @@ format_six:
   name: 'Post-It Note'
   score: 0.375
   obsolete: false
+
+unused_format:
+  id: 7
+  name: 'Unused Format'
+  score: 0.375
+  obsolete: false

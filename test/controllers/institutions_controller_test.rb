@@ -75,12 +75,15 @@ class InstitutionsControllerTest < ActionController::TestCase
   end
 
   test 'admin users cannot destroy institutions containing users' do
+    institution = institutions(:institution_one)
     signin_as(users(:admin_user))
     assert_no_difference 'Institution.count' do
-      delete :destroy, id: institutions(:institution_one).id
+      delete :destroy, id: institution.id
     end
-    assert_equal 'Cannot delete record because of dependent users', flash[:error]
-    assert_redirected_to institutions_path
+    assert_equal "The institution \"University of Illinois at "\
+    "Urbana-Champaign\" cannot be deleted, as there are one or more users "\
+    "affiliated with it.", flash[:error]
+    assert_redirected_to institution
   end
 
   test 'admin users can destroy institutions containing no users' do

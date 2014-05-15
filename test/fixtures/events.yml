@@ -1,4 +1,26 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-event_one:
-  description: Test event
+debug_event:
+  id: 1
+  description: Test debug event
+  event_level: <%= EventLevel::DEBUG %>
+
+info_event:
+  id: 2
+  description: Test info event
+  event_level: <%= EventLevel::INFO %>
+
+notice_event:
+  id: 3
+  description: Test notice event
+  event_level: <%= EventLevel::NOTICE %>
+
+warning_event:
+  id: 4
+  description: Test warning event
+  event_level: <%= EventLevel::WARNING %>
+
+error_event:
+  id: 5
+  description: Test error event
+  event_level: <%= EventLevel::ERROR %>
