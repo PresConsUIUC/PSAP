@@ -92,7 +92,9 @@ Psap::Application.routes.draw do
           as: 'resource_import_post'
     resources :resources, except: :index
   end
-  resources :resources, except: :index, path_names: { edit: 'assess' }
+  resources :resources, except: :index, path_names: { edit: 'assess' } do
+    resources :resources, only: [:new, :create]
+  end
   #resources :roles # not using this at the moment
   resources :sessions, only: [:new, :create, :destroy]
 

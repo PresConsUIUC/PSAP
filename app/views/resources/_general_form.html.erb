@@ -6,6 +6,14 @@
 </div>
 
 <div class="form-group">
+  <%= f.label :parent_id, 'Parent Resource' %>
+  <%= select('resource', 'parent_id',
+             resource_hierarchy_options_for_select(@resource.location),
+             { include_blank: 'None (Top-Level)' },
+             { class: 'form-control' }) %>
+</div>
+
+<div class="form-group">
   <%= f.label :resource_type %>
   <%= select('resource', 'resource_type',
              options_for_select([['Collection', ResourceType::COLLECTION],

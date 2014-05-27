@@ -81,8 +81,16 @@ class ResourcesController < ApplicationController
   end
 
   def new
-    @location = Location.find(params[:location_id])
-    @resource = @location.resources.build
+    # if we are creating a resource within a location (for top-level resources)
+    if params[:location_id]
+      @location = Location.find(params[:location_id])
+      @resource = @location.resources.build
+    elsif params[:resource_id]
+      parent_resource = Resource.find(params[:resource_id])
+      @location = parent_resource.location
+      @resource = @location.resources.build
+      @resource.parent = parent_resource
+    end
 
     # New resources will get 1 of each dependent entity, to populate the form.
     # Additional ones may be created in JavaScript.
@@ -150,8 +158,11 @@ class ResourcesController < ApplicationController
     if params[:id]
       resource = Resource.find(params[:id])
       location = resource.location
-    else
+    elsif params[:location_id]
       location = Location.find(params[:location_id])
+    elsif params[:resource_id]
+      parent_resource = Resource.find(params[:resource_id])
+      location = parent_resource.location
     end
     redirect_to(root_url) unless
         location.repository.institution.users.include?(current_user) ||
@@ -166,7 +177,8 @@ class ResourcesController < ApplicationController
   def resource_params
     params.require(:resource).permit(:description, :format_id,
                                      :local_identifier, :location_id, :name,
-                                     :notes, :resource_type, :user_id,
+                                     :notes, :parent_id, :resource_type,
+                                     :user_id,
                                      assessment_question_responses_attributes:
                                          [:id, :assessment_question_option_id],
                                      creators_attributes: [:id, :creator_type,
