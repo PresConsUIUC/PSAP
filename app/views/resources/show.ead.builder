@@ -67,7 +67,12 @@ xml.ead(
           )
         end
       }
-      if @institution.language
+      if @resource.language
+        xml.langmaterial('label' => 'Language') {
+          xml.language(@resource.language.english_name,
+                       'langcode' => @resource.language.iso639_2_code)
+        }
+      elsif @institution.language
         xml.langmaterial('label' => 'Language') {
           xml.language(@institution.language.english_name,
                        'langcode' => @institution.language.iso639_2_code)

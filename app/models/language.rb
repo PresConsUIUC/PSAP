@@ -1,5 +1,6 @@
 class Language < ActiveRecord::Base
   has_many :institutions, inverse_of: :language
+  has_many :resources, inverse_of: :language
 
   validates :english_name, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false }

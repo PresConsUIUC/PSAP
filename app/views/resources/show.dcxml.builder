@@ -19,8 +19,9 @@ xml.tag!('oai_dc:dc',
   end
   xml.tag!('dc:type',
            @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection')
-  xml.tag!('dc:language',
-           @resource.location.repository.institution.language.iso639_2_code)
+  xml.tag!('dc:language', @resource.language ?
+      @resource.language.iso639_2_code :
+      @resource.location.repository.institution.language.iso639_2_code)
   @resource.extents.each do |extent|
     xml.tag!('dc:format', extent.name)
   end

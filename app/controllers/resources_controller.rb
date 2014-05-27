@@ -92,6 +92,8 @@ class ResourcesController < ApplicationController
     @resource.resource_notes.build
     @resource.subjects.build
 
+    @resource.language = @resource.location.repository.institution.language
+
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
 

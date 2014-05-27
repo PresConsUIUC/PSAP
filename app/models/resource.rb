@@ -9,6 +9,7 @@ class Resource < ActiveRecord::Base
   has_many :resource_notes, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
   belongs_to :format, inverse_of: :resources
+  belongs_to :language, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
   belongs_to :user, inverse_of: :resources
