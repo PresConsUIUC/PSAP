@@ -10,6 +10,12 @@ class CreateRepositoryCommand < Command
 
   def execute
     begin
+      # Fail if a non-admin user is trying to create the repository in a
+      # different institution
+      if !@doing_user.is_admin? && @doing_user.institution != @institution
+        raise 'Insufficient privileges'
+      end
+
       @repository.save!
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Attempted to create repository, but failed: "\
@@ -25,7 +31,7 @@ class CreateRepositoryCommand < Command
                    event_level: EventLevel::ERROR)
       raise "Failed to create repository: #{e.message}"
     else
-      Event.create(description: "Created repository \"#{@repository.name} "\
+      Event.create(description: "Created repository \"#{@repository.name}\" "\
       "in institution \"#{@repository.institution.name}\"",
                    user: @doing_user, address: @remote_ip)
     end
