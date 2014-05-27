@@ -5,18 +5,15 @@ class EventsController < ApplicationController
   before_action :admin_user_with_key, if: :format_atom?
 
   def index
-    q = "%#{params[:q]}%"
     @event_level = params[:level]
     @event_level = EventLevel::NOTICE if @event_level.nil?
-
-    @events = Event.joins('LEFT JOIN users ON users.id = events.user_id').
-        where('events.description LIKE ? OR users.username LIKE ? OR events.address LIKE ?', q, q, q).
-        where('events.event_level <= ?', @event_level).
-        order(created_at: :desc).
+    @events = Event.matching_params(params).
         # intentionally not using Psap::Application.config.results_per_page
         paginate(page: params[:page], per_page: 200)
     @user = current_user unless @user
   end
+
+  private
 
   def admin_user_with_key
     @user = User.joins('INNER JOIN roles ON users.role_id = roles.id').

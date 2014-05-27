@@ -1,5 +1,14 @@
-<% # Will be read by updateResultsCount() in JS %>
+<% # Will be read by updateResultsCount() in common.js %>
 <input type="hidden" name="results_count" value="<%= @events.total_entries %>">
+
+<div class="center">
+  <%= raw(level_buttons(@event_level, params)) %>
+  <%= link_to params.merge(format: :atom, key: @user.feed_key),
+              class: 'feed_link',
+              title: 'Subscribe to a feed of events of this or greater severity' do
+    image_tag('feed.svg', height: 24, alt: 'Atom feed')
+  end %>
+</div>
 
 <% if @events.any? %>
 

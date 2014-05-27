@@ -2,26 +2,23 @@
 <% provide(:body_id, 'events') %>
 
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-5">
     <h1>Event Log <small class="entity_count"></small></h1>
   </div>
-  <div class="col-sm-4">
-    <%= form_tag events_path, method: 'get', class: 'entity_search',
-                 style: 'float:right' do %>
+  <div class="col-sm-7">
+    <%= form_tag events_path, method: 'get', class: 'entity_search form-inline',
+                 style: 'float:right; max-width:100%' do %>
         <input type="hidden" name="level" value="<%= @event_level %>">
         <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                             class: 'form-control' %>
+                             class: 'form-control', style: 'width:150px' %>
+        <label for="begin_date">From:</label>
+        <input type="text" id="begin_date" name="begin_date" class="form-control"
+               style="width:120px" placeholder="YYYY-MM-DD">
+        <label for="begin_date">To:</label>
+        <input type="text" id="end_date" name="end_date" class="form-control"
+               style="width:120px" placeholder="YYYY-MM-DD">
     <% end %>
   </div>
-</div>
-
-<div class="center">
-    <%= raw(level_buttons(@event_level)) %>
-    <%= link_to params.merge(format: :atom, key: @user.feed_key),
-                class: 'feed_link',
-                title: 'Subscribe to a feed of events of this or greater severity' do
-      image_tag('feed.svg', height: 24, alt: 'Atom feed')
-    end %>
 </div>
 
 <div id="events_list">

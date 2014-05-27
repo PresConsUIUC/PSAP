@@ -2,3 +2,5 @@ $('#events_list').html('<%= escape_javascript(render('events')) %>');
 $('.pagination a').attr('data-remote', 'true');
 
 updateResultsCount();
+
+$('input[name="level"]').val(<%= params[:level] %>);

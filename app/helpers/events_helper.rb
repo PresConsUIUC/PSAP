@@ -1,6 +1,6 @@
 module EventsHelper
 
-  def bootstrap_class_for_event_level level
+  def bootstrap_class_for_event_level(level)
     case level
       when EventLevel::DEBUG
         'label label-default'
@@ -23,23 +23,27 @@ module EventsHelper
     end
   end
 
-  def level_buttons(current_level)
+  def level_buttons(current_level, params)
     levels = EventLevel::all.sort do |a, b|
       b <=> a
     end
 
-    links = ''
+    links = []
     levels.each do |level|
-      count = Event.where(event_level: level).count
+      params = params.dup
+      link_params = params.merge({ level: level })
+      events = Event.matching_params(link_params)
+      level_count = events.where('event_level = ?', level).count
 
       cssClass = 'btn btn-sm level_button '
-      cssClass.concat (current_level.to_i == level) ? 'btn-info active' : 'btn-default'
+      cssClass.concat (current_level.to_i == level) ?
+                          'btn-info active' : 'btn-default'
 
-      links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge pull-right\">#{count}</span>"),
-                       "?level=#{level}", class: cssClass, remote: true,
+      links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge pull-right\">#{level_count}</span>"),
+                       link_params, class: cssClass, remote: true,
                        'data-level' => level)
     end
-    links
+    links.join
   end
 
 end
