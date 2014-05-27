@@ -16,13 +16,13 @@ class CreateUserCommand < Command
     rescue ActiveRecord::RecordInvalid => e
       Event.create(description: "Attempted to create a user account, but "\
       "failed: #{@user.errors.full_messages[0]}",
-                   user: @user, address: @remote_ip,
+                   user: nil, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
       raise "Failed to create user account: #{@user.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create a user account, but "\
       "failed: #{e.message}",
-                   user: @user, address: @remote_ip,
+                   user: nil, address: @remote_ip,
                    event_level: EventLevel::ERROR)
       raise "Failed to create user account: #{e.message}"
     else
