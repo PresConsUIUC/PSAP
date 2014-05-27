@@ -25,7 +25,7 @@
 <div class="form-group">
   <%= f.label :language %>
   <%= f.collection_select :language_id, Language.all, :id, :english_name,
-                          { include_blank: true },
+                          { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
                           { class: 'form-control' } %>
 </div>
 
