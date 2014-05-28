@@ -84,6 +84,16 @@ button.hovertip-fire {
   margin-bottom:1em;
 }
 
+.btn-primary, .btn-primary:hover {
+  background-color: rgb(78, 128, 83);
+  border-color: rgb(48, 98, 53);
+}
+
+.btn-primary:active {
+  background-color: rgb(48, 98, 53);
+  border-color: rgb(18, 68, 23);
+}
+
 /* right-side info panels */
 .panel.col-sm-4 {
   padding-top:1em;
@@ -235,6 +245,15 @@ ul.users {
   li {
     margin:1em 0em 1em 0em;
   }
+}
+
+.nav-stacked li.active a, .nav-stacked li.active a:hover {
+  background-color: rgb(78, 128, 83);
+}
+
+.nav-stacked li a:hover {
+  background-color: rgb(78, 128, 83);
+  color:white;
 }
 
 .nav-stacked li, .nav-stacked a {
