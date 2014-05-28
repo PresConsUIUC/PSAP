@@ -289,10 +289,10 @@ div#gravatar {
   margin:0em 0em 1em 0em;
 }
 
-#error_explanation {
-  color: #f00;
+.panel.submission-error {
   ul {
-    margin: 0 0 18px 18px;
+    margin:0em 0em 0em 1em;
+    padding-left:0px;
   }
 }
 
