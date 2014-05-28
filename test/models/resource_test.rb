@@ -14,6 +14,27 @@ class ResourceTest < ActiveSupport::TestCase
 
   ########################### property tests ################################
 
+  # assessment_percent_complete
+  test 'assessment_percent_complete should be within bounds' do
+    @resource.assessment_percent_complete = -0.5
+    assert !@resource.save
+
+    @resource.assessment_percent_complete = 1.1
+    assert !@resource.save
+
+    @resource.assessment_percent_complete = 0.8
+    assert @resource.save
+  end
+
+  test 'assessment_percent_complete should update properly' do
+    @resource.save
+    assert_equal 0.5, @resource.assessment_percent_complete
+
+    @resource.assessment_question_responses.destroy_all
+    @resource.save
+    assert_equal 0, @resource.assessment_percent_complete
+  end
+
   # location
   test 'location is required' do
     @resource.location = nil

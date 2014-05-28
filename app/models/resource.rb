@@ -21,13 +21,16 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
+  validates :assessment_percent_complete, allow_blank: true,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true
   validates :user, presence: true
 
-  def assessment_percent_complete
-    unless @assessment_percent_complete
+  before_save :update_assessment_percent_complete
+
+  def update_assessment_percent_complete
       # SELECT assessment_questions.id
       # FROM assessment_questions
       # LEFT JOIN assessment_sections
@@ -59,18 +62,16 @@ class Resource < ActiveRecord::Base
           where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
           group('assessment_question_options.assessment_question_id')
 
-      @assessment_percent_complete = questions.length > 0 ?
+      self.assessment_percent_complete = questions.length > 0 ?
           responses.length.to_f / questions.length : 0
-    end
-    @assessment_percent_complete
   end
 
   def dcxml_filename
-    self.local_identifier ? "#{self.local_identifier}.xml" : "#{self.id}.xml"
+    "#{self.local_identifier ? self.local_identifier : self.id}.xml"
   end
 
   def ead_filename
-    self.local_identifier ? "#{self.local_identifier}.xml" : "#{self.id}.xml"
+    "#{self.local_identifier ? self.local_identifier : self.id}.xml"
   end
 
   def readable_resource_type
