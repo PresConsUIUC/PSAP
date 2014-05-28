@@ -35,6 +35,7 @@ class SignInCommand < Command
             @user.last_signin = Time.now
             @user.save!
           else
+            @user = nil # could be an impostor
             public_message = 'Sign-in failed.'
             log_message = "Sign-in failed for #{@username}: invalid username "\
             "or password."
