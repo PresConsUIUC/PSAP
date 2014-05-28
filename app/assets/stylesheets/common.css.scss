@@ -32,8 +32,16 @@ textarea {
   resize: vertical;
 }
 
+a {
+  color: rgb(78, 128, 83);
+}
+
 a:focus {
   outline: 0;
+}
+
+a:hover {
+  color: rgb(38, 88, 43);
 }
 
 .center {
