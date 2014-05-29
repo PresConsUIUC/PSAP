@@ -47,7 +47,7 @@ class UpdateFormatCommandTest < ActiveSupport::TestCase
   end
 
   # object
-  test 'object method should return the created Format object' do
+  test 'object method should return the Format object' do
     assert_kind_of Format, @valid_command.object
   end
 
