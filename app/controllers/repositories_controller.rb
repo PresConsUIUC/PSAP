@@ -12,6 +12,8 @@ class RepositoriesController < ApplicationController
     @repository = command.object
     begin
       command.execute
+    rescue ValidationError
+      render 'new'
     rescue => e
       flash[:error] = "#{e}"
       render 'new'
@@ -58,7 +60,10 @@ class RepositoriesController < ApplicationController
                                           current_user, request.remote_ip)
     begin
       command.execute
-    rescue
+    rescue ValidationError
+      render 'edit'
+    rescue => e
+      flash[:error] = "#{e}"
       render 'edit'
     else
       flash[:success] = "Repository \"#{@repository.name}\" updated."

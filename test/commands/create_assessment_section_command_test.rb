@@ -85,7 +85,7 @@ class CreateAssessmentSectionCommandTest < ActiveSupport::TestCase
     @invalid_params = @valid_params.dup.except('name')
     @command = CreateAssessmentSectionCommand.new(@invalid_params, @user,
                                                   @remote_ip)
-    assert_raises RuntimeError do
+    assert_raises ValidationError do
       assert_difference 'Event.count' do
         @command.execute
       end

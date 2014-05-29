@@ -49,7 +49,7 @@ class CreateRepositoryCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should fail if validation failed' do
-    assert_raises RuntimeError do
+    assert_raises ValidationError do
       assert_difference 'Event.count' do
         @invalid_command.execute
       end

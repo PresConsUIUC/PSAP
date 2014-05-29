@@ -11,12 +11,12 @@ class CreateInstitutionCommand < Command
     begin
       @institution.users << @doing_user
       @institution.save!
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to create institution, but failed: "\
       "#{@institution.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to create institution: "\
+      raise ValidationError, "Failed to create institution: "\
       "#{@institution.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create institution, but failed: "\

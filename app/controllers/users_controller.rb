@@ -13,7 +13,10 @@ class UsersController < ApplicationController
     @user = command.object
     begin
       command.execute
-    rescue
+    rescue ValidationError
+      render 'new'
+    rescue => e
+      flash[:error] = "#{e}"
       render 'new'
     else
       flash[:success] = 'Thanks for registering for PSAP! An email has been '\
@@ -171,6 +174,8 @@ class UsersController < ApplicationController
           request.remote_ip)
       begin
         command.execute
+      rescue ValidationError
+        render 'edit'
       rescue => e
         flash[:error] = "#{e}"
         render 'edit'
@@ -191,6 +196,8 @@ class UsersController < ApplicationController
                                       request.remote_ip)
       begin
         command.execute
+      rescue ValidationError
+        render 'edit'
       rescue => e
         flash[:error] = "#{e}"
         render 'edit'

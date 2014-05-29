@@ -40,12 +40,12 @@ class CreateAssessmentSectionCommand < Command
         @assessment_section.save!
         CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
       end
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to create assessment section, but "\
       "failed: #{@assessment_section.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to create assessment section: "\
+      raise ValidationError, "Failed to create assessment section: "\
       "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create assessment section, but "\

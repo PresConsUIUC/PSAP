@@ -9,10 +9,14 @@ class AssessmentQuestionsController < ApplicationController
     @assessment_question = command.object
     begin
       command.execute
+    rescue ValidationError
+      render 'edit'
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = 'Assessment question created.'
       redirect_to assessments_url
-    rescue
-      render 'new'
     end
   end
 
@@ -50,10 +54,14 @@ class AssessmentQuestionsController < ApplicationController
                                                   request.remote_ip)
     begin
       command.execute
+    rescue ValidationError
+      render 'edit'
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'edit'
+    else
       flash[:success] = 'Assessment question updated.'
       redirect_to assessments_url
-    rescue
-      render 'edit'
     end
   end
 

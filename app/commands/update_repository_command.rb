@@ -10,14 +10,15 @@ class UpdateRepositoryCommand < Command
   def execute
     begin
       @repository.update!(@repository_params)
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update repository "\
       "\"#{@repository.name},\" but failed: "\
       "#{@repository.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to update repository \"#{@repository.name}\": "\
-      "#{@repository.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to update repository \"#{@repository.name}\": "\
+            "#{@repository.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update repository "\
       "\"#{@repository.name},\" but failed: #{e.message}",

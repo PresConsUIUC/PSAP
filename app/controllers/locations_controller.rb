@@ -12,6 +12,8 @@ class LocationsController < ApplicationController
     @location = command.object
     begin
       command.execute
+    rescue ValidationError
+      render 'new'
     rescue => e
       flash[:error] = "#{e}"
       render 'new'
@@ -59,6 +61,8 @@ class LocationsController < ApplicationController
                                         current_user, request.remote_ip)
     begin
       command.execute
+    rescue ValidationError
+      render 'edit'
     rescue => e
       flash[:error] = "#{e}"
       render 'edit'

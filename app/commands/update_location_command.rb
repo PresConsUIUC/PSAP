@@ -10,13 +10,14 @@ class UpdateLocationCommand < Command
   def execute
     begin
       @location.update!(@location_params)
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update location "\
       "\"#{@location.name},\" but failed: #{@location.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to update location \"#{@location.name}\": "\
-      "#{@location.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to update location \"#{@location.name}\": "\
+            "#{@location.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update location "\
       "\"#{@location.name},\" but failed: #{e.message}",

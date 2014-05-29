@@ -11,12 +11,14 @@ class ResourcesController < ApplicationController
     command = CreateResourceCommand.new(@location, resource_params,
                                         current_user, request.remote_ip)
     @resource = command.object
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
     begin
       command.execute
+    rescue ValidationError
+      render 'new'
     rescue => e
       flash[:error] = "#{e}"
-      @assessment_sections = Assessment.find_by_key('resource').
-          assessment_sections.order(:index)
       render 'new'
     else
       flash[:success] = "Resource \"#{@resource.name}\" created."
@@ -139,6 +141,8 @@ class ResourcesController < ApplicationController
                                         current_user, request.remote_ip)
     begin
       command.execute
+    rescue ValidationError
+      render 'edit'
     rescue => e
       @assessment_sections = Assessment.find_by_key('resource').
           assessment_sections.order(:index)

@@ -16,12 +16,13 @@ class CreateResourceCommand < Command
       end
 
       @resource.save!
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to create resource, but failed: "\
       "#{@resource.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to create resource: #{@resource.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to create resource: #{@resource.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create resource, but failed: "\
       "#{e.message}",

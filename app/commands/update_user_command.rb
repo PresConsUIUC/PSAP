@@ -25,17 +25,19 @@ class UpdateUserCommand < Command
       end
 
       @user.update!(@user_params)
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update user #{@user.username}, "\
       "but failed: #{@user.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
       if @user == @doing_user
-        raise "Failed to update your account: "\
-        "#{@user.errors.full_messages[0]}"
+        raise ValidationError,
+              "Failed to update your account: "\
+              "#{@user.errors.full_messages[0]}"
       else
-        raise "Failed to update user #{@user.username}: "\
-        "#{@user.errors.full_messages[0]}"
+        raise ValidationError,
+              "Failed to update user #{@user.username}: "\
+              "#{@user.errors.full_messages[0]}"
       end
     rescue => e
       Event.create(description: "Attempted to update user #{@user.username}, "\

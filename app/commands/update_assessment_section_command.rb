@@ -23,15 +23,16 @@ class UpdateAssessmentSectionCommand < Command
           CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
         end
       end
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update assessment section "\
       "\"#{@assessment_section.name},\" but failed: "\
       "#{@assessment_section.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to update assessment section "\
-      "\"#{@assessment_section.name}\": "\
-      "#{@assessment_section.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to update assessment section "\
+            "\"#{@assessment_section.name}\": "\
+            "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update assessment section "\
       "\"#{@assessment_section.name},\" but failed: #{e.message}",

@@ -17,13 +17,14 @@ class UpdateAssessmentQuestionCommand < Command
               @assessment_question)
         end
       end
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update assessment question, "\
       "but failed: #{@assessment_question.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to update assessment question: "\
-      "#{@assessment_question.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to update assessment question: "\
+            "#{@assessment_question.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to update assessment question, "\
       "but failed: #{e.message}",

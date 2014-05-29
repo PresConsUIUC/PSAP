@@ -18,12 +18,13 @@ class CreateLocationCommand < Command
       end
 
       @location.save!
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to create location, but failed: "\
       "#{@location.errors.full_messages[0]}",
                    user: @doing_user, address: @remote_ip,
                    event_level: EventLevel::DEBUG)
-      raise "Failed to create location: #{@location.errors.full_messages[0]}"
+      raise ValidationError,
+            "Failed to create location: #{@location.errors.full_messages[0]}"
     rescue => e
       Event.create(description: "Attempted to create location, but failed: "\
       "#{e.message}",

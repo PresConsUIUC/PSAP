@@ -9,11 +9,15 @@ class AssessmentSectionsController < ApplicationController
     @assessment_section = command.object
     begin
       command.execute
+    rescue ValidationError
+      render 'new'
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'new'
+    else
       flash[:success] = "Assessment section \"#{@assessment_section.name}\" "\
       "created."
       redirect_to @assessment_section.assessment
-    rescue
-      render 'new'
     end
   end
 
@@ -49,11 +53,15 @@ class AssessmentSectionsController < ApplicationController
                                                  request.remote_ip)
     begin
       command.execute
+    rescue ValidationError
+      render 'edit'
+    rescue => e
+      flash[:error] = "#{e}"
+      render 'edit'
+    else
       flash[:success] = "Assessment section \"#{@assessment_section.name}\" "\
       "updated."
       redirect_to @assessment_section.assessment
-    rescue
-      render 'edit'
     end
   end
 
