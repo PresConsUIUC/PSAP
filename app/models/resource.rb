@@ -30,6 +30,18 @@ class Resource < ActiveRecord::Base
 
   before_save :update_assessment_percent_complete
 
+  def associate_assessment_question_responses
+    Assessment.find_by_key('resource').assessment_sections.order(:index).
+        each do |section|
+      section.assessment_questions.each do |question|
+        unless self.assessment_question_responses.include?(question)
+          self.assessment_question_responses <<
+              AssessmentQuestionResponse.new(assessment_question: question)
+        end
+      end
+    end
+  end
+
   def update_assessment_percent_complete
       # SELECT assessment_questions.id
       # FROM assessment_questions

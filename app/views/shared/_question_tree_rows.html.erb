@@ -1,11 +1,10 @@
 <% children.each do |question| %>
 
-    <% responses = [];
-       entity.assessment_question_responses.each do |response|
-         responses << response if response.assessment_question.id == question.id
-       end
-       responses << AssessmentQuestionResponse.new(assessment_question: question) unless responses.any?
-       options = question.assessment_question_options.order(:index) %>
+    <% # Get this entity's responses to this question
+       responses = entity.assessment_question_responses.select{ |r|
+         r.assessment_question_id == question.id }
+       options = question.assessment_question_options.order(:index)
+    %>
 
     <hr>
 
@@ -29,7 +28,11 @@
         <% when AssessmentQuestionType::RADIO %>
             <% options.each do |option| %>
                 <% response = responses.first
-                   selected = response && response.assessment_question_option ?
+
+                   # TODO response doesn't have an ID yet,
+                   # because Resource.associate_assessment_question_responses
+                   # didn't save it
+                   selected = response.assessment_question_option ?
                            response.assessment_question_option.id == option.id :
                            false
                 %>
@@ -45,11 +48,11 @@
         <% when AssessmentQuestionType::SELECT %>
             <label>
               <% response = responses.first
-                 selected = response && response.assessment_question_option ?
+                 selected = response.assessment_question_option ?
                          response.assessment_question_option.id :
                          false
               %>
-              <%= select_tag "resource[assessment_question_responses_attributes][#{0}][assessment_question_option_id]",
+              <%= select_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
                              options_for_select(options.map { |op|
                                [op.name, op.id, { 'data-option-score' => op.value }] },
                                                 selected: selected),
@@ -58,7 +61,7 @@
         <% when AssessmentQuestionType::CHECKBOX %>
             <% options.each do |option| %>
                 <% response = responses.first
-                   selected = response && response.assessment_question_option ?
+                   selected = response.assessment_question_option ?
                            response.assessment_question_option.id == option.id :
                            false
                 %>

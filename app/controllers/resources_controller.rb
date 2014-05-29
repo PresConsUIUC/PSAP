@@ -54,6 +54,8 @@ class ResourcesController < ApplicationController
 
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
+
+    @resource.associate_assessment_question_responses
   end
 
   # Responds to GET/POST /locations/:id/resources/import
@@ -107,12 +109,7 @@ class ResourcesController < ApplicationController
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
 
-    @assessment_sections.each do |section|
-      section.assessment_questions.each do |question|
-        @resource.assessment_question_responses <<
-            AssessmentQuestionResponse.new(assessment_question: question)
-      end
-    end
+    @resource.associate_assessment_question_responses
   end
 
   def show
