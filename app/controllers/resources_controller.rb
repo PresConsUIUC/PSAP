@@ -41,6 +41,7 @@ class ResourcesController < ApplicationController
     end
   end
 
+  # Responds to /resources/:id/assess
   def edit
     @resource = Resource.find(params[:id])
 
@@ -136,13 +137,13 @@ class ResourcesController < ApplicationController
     @resource = Resource.find(params[:id])
     command = UpdateResourceCommand.new(@resource, resource_params,
                                         current_user, request.remote_ip)
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
       render 'edit'
     rescue => e
-      @assessment_sections = Assessment.find_by_key('resource').
-          assessment_sections.order(:index)
       flash[:error] = "#{e}"
       render 'edit'
     else
@@ -180,8 +181,6 @@ class ResourcesController < ApplicationController
                                      :local_identifier, :location_id, :name,
                                      :notes, :parent_id, :resource_type,
                                      :user_id,
-                                     assessment_question_responses_attributes:
-                                         [:id, :assessment_question_option_id],
                                      creators_attributes: [:id, :creator_type,
                                                            :name],
                                      extents_attributes: [:id, :name],
@@ -191,7 +190,11 @@ class ResourcesController < ApplicationController
                                           :end_month, :end_day, :year, :month,
                                           :day],
                                      resource_notes_attributes: [:id, :value],
-                                     subjects_attributes: [:id, :name])
+                                     subjects_attributes: [:id, :name]).tap do |whitelisted|
+      whitelisted[:assessment_question_responses_attributes] =
+          params[:resource][:assessment_question_responses_attributes] if
+          params[:resource][:assessment_question_responses_attributes]
+    end
   end
 
 end

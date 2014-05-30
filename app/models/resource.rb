@@ -34,7 +34,8 @@ class Resource < ActiveRecord::Base
     Assessment.find_by_key('resource').assessment_sections.order(:index).
         each do |section|
       section.assessment_questions.each do |question|
-        unless self.assessment_question_responses.include?(question)
+        unless self.assessment_question_responses.
+            select { |r| r.assessment_question == question }.any?
           self.assessment_question_responses <<
               AssessmentQuestionResponse.new(assessment_question: question)
         end

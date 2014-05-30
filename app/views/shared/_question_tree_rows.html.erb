@@ -36,6 +36,8 @@
                            response.assessment_question_option.id == option.id :
                            false
                 %>
+                <%= hidden_field_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_id]",
+                                     response.assessment_question.id %>
                 <label>
                   <%= radio_button_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
                                        option.id,
@@ -46,12 +48,14 @@
                 <br>
             <% end %>
         <% when AssessmentQuestionType::SELECT %>
+            <% response = responses.first
+               selected = response.assessment_question_option ?
+                       response.assessment_question_option.id :
+                       false
+            %>
+            <%= hidden_field_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_id]",
+                                 response.assessment_question.id %>
             <label>
-              <% response = responses.first
-                 selected = response.assessment_question_option ?
-                         response.assessment_question_option.id :
-                         false
-              %>
               <%= select_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
                              options_for_select(options.map { |op|
                                [op.name, op.id, { 'data-option-score' => op.value }] },
@@ -65,8 +69,10 @@
                            response.assessment_question_option.id == option.id :
                            false
                 %>
+                <%= hidden_field_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_id]",
+                                     response.assessment_question.id %>
                 <label>
-                  <%= check_box_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
+                  <%= check_box_tag "resource[assessment_question_responses_attributes][#{response.id}][][assessment_question_option_id]",
                                     option.id,
                                     selected,
                                     'data-option-score' => option.value %>
