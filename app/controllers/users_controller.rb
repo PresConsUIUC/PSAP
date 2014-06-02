@@ -19,9 +19,10 @@ class UsersController < ApplicationController
       flash[:error] = "#{e}"
       render 'new'
     else
-      flash[:success] = 'Thanks for registering for PSAP! An email has been '\
-        'sent to the address you provided. Follow the link in the email to '\
-        'confirm your account.'
+      flash[:success] = 'Thanks for registering for PSAP! Your account has '\
+      'been created, but you must confirm it before you can sign in. An email '\
+      'has been sent to the address you provided. Follow the link in the '\
+      'email to confirm your account.'
       redirect_to root_url
     end
   end
@@ -47,8 +48,6 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
 
-    destroying_self = user == current_user
-
     command = DeleteUserCommand.new(user, current_user, request.remote_ip)
     begin
       command.execute
@@ -56,7 +55,7 @@ class UsersController < ApplicationController
       flash[:error] = "#{e}"
       redirect_to users_url
     else
-      if destroying_self
+      if user == current_user
         flash[:success] = 'Your account has been deleted.'
         command = SignOutCommand.new(user, request.remote_ip)
         command.execute
@@ -111,11 +110,8 @@ class UsersController < ApplicationController
   # from the registration form. (Can't do GET /users/:username because it
   # requires being signed in.)
   def exists
-    if User.find_by_username params[:username]
-      render text: nil, status: 200
-    else
-      render text: nil, status: 404
-    end
+    render text: nil,
+           status: User.find_by_username(params[:username]) ? 200: 404
   end
 
   def index
