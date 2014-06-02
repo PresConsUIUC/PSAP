@@ -82,24 +82,11 @@
   <div class="col-sm-9 tab-content">
 
     <div id="general" class="tab-pane active">
-      <h2>General</h2>
-      <%= form_for(@resource) do |f| %>
-          <%= render 'general_form', :f => f %>
-      <% end %>
+      <%= render 'general_form', form_url: @resource %>
     </div>
 
     <% @assessment_sections.each do |section| %>
-        <div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
-          <h2><%= section.name %></h2>
-          <p><%= section.description %></p>
-          <%= form_for(@resource) do |f| %>
-              <%= render partial: 'shared/question_tree_rows',
-                         locals: {f: f,
-                                  entity: @resource,
-                                  children: section.assessment_questions.where(parent_id: nil).order(:index),
-                                  depth: 0} %>
-          <% end %>
-        </div>
+        <%= render 'section_form', section: section %>
     <% end %>
 
   </div>

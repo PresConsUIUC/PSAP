@@ -1,0 +1,6 @@
+$('div#general').html("<%= j render 'general_form', form_url: @resource %>");
+
+<% @assessment_sections.each do |section| %>
+  $('div#<%= section.name.gsub(' ', '_') %>').html(
+          "<%= j render 'section_form', section: section %>");
+<% end %>
