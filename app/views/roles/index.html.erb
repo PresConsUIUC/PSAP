@@ -13,7 +13,8 @@
   <% @roles.each do |role| %>
       <tr>
         <td><%= link_to role.name, role %></td>
-        <td><%= human_readable_permissions_for_role(role) %></td>
+        <td><%= role.permissions.empty? ? '(none)' :
+                        role.permissions.each.map{ |p| p.key }.join(', ') %></td>
       </tr>
   <% end %>
   </tbody>
