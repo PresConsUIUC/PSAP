@@ -9,7 +9,18 @@ class UpdateResourceCommand < Command
 
   def execute
     begin
-      @resource.update!(@resource_params)
+      # nested AQRs require some additional processing in order to update
+      # existing resource AQRs; otherwise they would be added as duplicates
+      @resource_params[:assessment_question_responses_attributes].each do |key, value|
+        responses = @resource.assessment_question_responses.select{ |r|
+          r.id == key.to_i }
+        responses.map{ |response|
+          response.assessment_question_id = value[:assessment_question_id]
+          response.assessment_question_option_id = value[:assessment_question_option_id] }
+      end
+
+      update_params = @resource_params.except('assessment_question_responses_attributes')
+      @resource.update!(update_params)
     rescue ActiveRecord::RecordInvalid
       Event.create(description: "Attempted to update resource "\
       "\"#{@resource.name},\" but failed: #{@resource.errors.full_messages[0]}",
