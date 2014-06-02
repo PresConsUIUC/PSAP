@@ -17,8 +17,8 @@ class UpdateUserCommand < Command
         raise 'Insufficient privileges'
       end
 
-      # non-admin users are not allowed to change usernames (but they are
-      # allowed to set them for the first time)
+      # non-admin users are not allowed to change usernames (though they are
+      # allowed to set them for the first time, in CreateUserCommand)
       if !@doing_user.is_admin? && @user.username && @user_params[:username] &&
           @user.username != @user_params[:username]
         raise 'Insufficient privileges'
