@@ -11,12 +11,14 @@ class UpdateResourceCommand < Command
     begin
       # nested AQRs require some additional processing in order to update
       # existing resource AQRs; otherwise they would be added as duplicates
-      @resource_params[:assessment_question_responses_attributes].each do |key, value|
-        responses = @resource.assessment_question_responses.select{ |r|
-          r.id == key.to_i }
-        responses.map{ |response|
-          response.assessment_question_id = value[:assessment_question_id]
-          response.assessment_question_option_id = value[:assessment_question_option_id] }
+      if @resource_params[:assessment_question_responses_attributes]
+        @resource_params[:assessment_question_responses_attributes].each do |key, value|
+          responses = @resource.assessment_question_responses.select{ |r|
+            r.id == key.to_i }
+          responses.map{ |response|
+            response.assessment_question_id = value[:assessment_question_id]
+            response.assessment_question_option_id = value[:assessment_question_option_id] }
+        end
       end
 
       update_params = @resource_params.except('assessment_question_responses_attributes')

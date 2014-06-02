@@ -47,6 +47,10 @@ class UpdateResourceCommandTest < ActiveSupport::TestCase
     assert_equal @remote_ip, event.address
   end
 
+  test 'execute method should update existing AQRs instead of creating new ones' do
+    flunk
+  end
+
   # object
   test 'object method should return the Resource object' do
     assert_kind_of Resource, @valid_command.object
