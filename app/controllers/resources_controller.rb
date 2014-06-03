@@ -90,11 +90,14 @@ class ResourcesController < ApplicationController
     if params[:location_id]
       @location = Location.find(params[:location_id])
       @resource = @location.resources.build
-    elsif params[:resource_id]
+    elsif params[:resource_id] # if we are creating a resource within a resource
       parent_resource = Resource.find(params[:resource_id])
       @location = parent_resource.location
       @resource = @location.resources.build
       @resource.parent = parent_resource
+
+      # TODO: the sub-resource needs to inherit values from its parent
+      # https://github.com/PresConsUIUC/PSAP/issues/39
     end
 
     # New resources will get 1 of each dependent entity, to populate the form.
