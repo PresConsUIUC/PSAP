@@ -2,8 +2,12 @@
 <% provide(:body_id, 'edit_assessment_question') %>
 
 <ol class="breadcrumb">
-  <li><%= link_to 'Assessment Template', assessments_path %></li>
-  <li><%= @assessment_question.name %></li>
+  <li><%= link_to 'Assessments', assessments_path %></li>
+  <li><%= link_to @assessment_question.assessment_section.assessment.name,
+                  @assessment_question.assessment_section.assessment %></li>
+  <li class="active">
+      <%= "Question #{(@assessment_question.index + 1).to_s}: #{@assessment_question.name}" %>
+  </li>
 </ol>
 
 <h1><%= @assessment_question.name %></h1>
