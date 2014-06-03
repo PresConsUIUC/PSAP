@@ -1,8 +1,5 @@
 <% resources.each do |resource| %>
     <tr>
-      <td>
-        <%= link_to 'Assess', edit_resource_path(resource) %>
-      </td>
       <td class="depth-<%= depth %>">
         <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
       </td>
