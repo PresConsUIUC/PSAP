@@ -1,5 +1,9 @@
 class AssessmentQuestion < ActiveRecord::Base
   belongs_to :assessment_section, inverse_of: :assessment_questions
+  belongs_to :enabling_assessment_question_option,
+             class_name: 'AssessmentQuestionOption',
+             foreign_key: 'enabling_assessment_question_option_id',
+             inverse_of: :dependent_assessment_question
   belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy

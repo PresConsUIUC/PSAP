@@ -8,7 +8,8 @@
       <div class="col-sm-8">
         <h3><%= depth > 0 ? raw('&#8627 ') : '' %><%= question.name %></h3>
         <% if depth > 0 %>
-        <p><em>Only available if the value of the parent question is ____.</em></p>
+          <p><em>Only available if the value of the parent question is
+              <%= question.enabling_assessment_question_option.name %>.</em></p>
         <% end %>
       </div>
       <div class="col-sm-4">

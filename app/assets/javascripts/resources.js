@@ -22,6 +22,7 @@ $(document).ready(function() {
         });
     } else if ($('body#new_resource').length
         || $('body#edit_resource').length) {
+
         var ResourceForm = {
 
             init: function() {
@@ -29,6 +30,7 @@ $(document).ready(function() {
                     ResourceForm.attachEventListeners();
                 }).trigger('PSAPFormSectionAdded');
 
+                ResourceForm.updateDependentQuestions();
                 ResourceForm.updateProgressBar();
                 ResourceForm.updateScoreBar();
 
@@ -72,9 +74,28 @@ $(document).ready(function() {
 
                 $('.question input, .question select').on('change',
                     function(event) {
+                        ResourceForm.updateDependentQuestions();
                         ResourceForm.updateProgressBar();
                         ResourceForm.updateScoreBar();
                     }).trigger('change');
+            },
+
+            updateDependentQuestions: function() {
+                $('div.assessment_question').each(function() {
+                    var show = true;
+                    var dependent_option_id = parseInt($(this).attr('data-dependent-option-id'));
+                    if (dependent_option_id > -1) {
+                        if (!$('input[data-option-id="' + dependent_option_id + '"]:checked').length
+                            && !$('input[data-option-id="' + dependent_option_id + '"]:selected').length) {
+                            show = false;
+                        }
+                    }
+                    if (show) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
             },
 
             updateScoreBar: function() {

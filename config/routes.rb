@@ -72,7 +72,9 @@ Psap::Application.routes.draw do
   # and new ones cannot be created.
   resources :assessments, param: :key, only: [:index, :show]
   resources :assessment_questions, except: [:index, :show],
-            path: 'assessment-questions'
+            path: 'assessment-questions' do
+    resources :assessment_question_options, only: :index, path: 'options'
+  end
   resources :assessment_sections, except: [:index, :show],
             path: 'assessment-sections'
   resources :formats

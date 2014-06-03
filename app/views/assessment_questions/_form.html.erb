@@ -15,11 +15,24 @@
 </div>
 
 <div class="form-group has-feedback">
-  <%= f.label :parent_id, 'Child Of' %>
-  <%= select('assessment_question', 'question_type',
-             assessment_question_options_for_select,
+  <%= f.label :parent_id, 'Sub-Question Of' %>
+  <%= select('assessment_question', 'parent_id',
+             assessment_question_options_for_select, # TODO: &nbsps appear
              { include_blank: true },
              { class: 'form-control' }) %>
+</div>
+
+<div class="form-group has-feedback">
+    <%= f.label :enabling_assessment_question_option_id, 'Enabling Value' %>
+    <%= select('assessment_question', 'enabling_assessment_question_option_id',
+               [],
+               { include_blank: true },
+               { 'class' => 'form-control',
+               'data-option-dependent' => true,
+               'data-option-observed' => 'assessment_question_parent_id',
+               'data-option-url' => '/assessment-questions/:id:/options.json', # TODO: fix
+               'data-option-key-method' => 'id',
+               'data-option-value-method' => 'name' }) %>
 </div>
 
 <% # TODO: make this changeable %>

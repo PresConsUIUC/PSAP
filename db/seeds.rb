@@ -628,6 +628,9 @@ case Rails.env
                                          assessment_question: questions[5]),
     ]
 
+    questions[5].enabling_assessment_question_option = options[13]
+    questions[5].save!
+
     # Institutions
     institutions = [
         Institution.create!(name: 'University of Illinois at Urbana-Champaign',
