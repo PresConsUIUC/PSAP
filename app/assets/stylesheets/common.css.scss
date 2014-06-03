@@ -266,9 +266,7 @@ ul.users {
 /* forms */
 
 form {
-  @media screen and (min-width: 768px) {
-    max-width:60%;
-  }
+  max-width:700px;
 }
 
 textarea.form-control {
