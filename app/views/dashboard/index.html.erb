@@ -10,123 +10,114 @@
                 class: 'feed_link',
                 title: 'Subscribe to your personal activity feed' do
       image_tag('feed.svg', height: 24, alt: 'Atom feed')
-    end %>
+  end %>
   </div>
 </div>
 
-<div class="row">
-
-  <div class="col-sm-6">
-    <div class="panel panel-default dashboard">
-      <div class="panel-heading">
-        <h3 class="panel-title">My resource assessments in progress</h3>
-      </div>
-      <div class="panel-body">
-        <% if @resources.any? %>
-            <ul>
-              <% for resource in @resources %>
-                  <li><%= link_to resource.name, resource %><br>
-                    <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
-                      / updated <%= local_time_ago resource.updated_at %></small></li>
-              <% end %>
-            </ul>
-        <% else %>
-            <p>No resource assessments in progress.</p>
-        <% end %>
-      </div>
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">My resource assessments in progress</h3>
     </div>
-  </div>
-
-  <div class="col-sm-6">
-    <div class="panel panel-default dashboard">
-      <div class="panel-heading">
-        <h3 class="panel-title">Recently updated resource assessments</h3>
-      </div>
-      <div class="panel-body">
-        <% if @recent_assessments.any? %>
-            <ul>
-              <% for resource in @recent_assessments %>
-                  <li><%= link_to resource.name, resource %><br>
-                    <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
-                      / updated <%= local_time_ago resource.updated_at %></small></li>
-              <% end %>
-            </ul>
-        <% else %>
-            <p>This institution hasn't yet begun any resource assessments.</p>
-        <% end %>
-      </div>
+    <div class="panel-body">
+      <% if @resources.any? %>
+        <ul>
+          <% for resource in @resources %>
+              <li><%= link_to resource.name, resource %><br>
+                <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
+                  / updated <%= local_time_ago resource.updated_at %></small></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>No resource assessments in progress.</p>
+      <% end %>
     </div>
   </div>
 </div>
 
-<div class="row">
-
-  <div class="col-sm-6">
-    <div class="panel panel-default dashboard">
-      <div class="panel-heading">
-        <h3 class="panel-title">My recent activity</h3>
-      </div>
-      <div class="panel-body">
-        <% if @user_events.any? %>
-            <ul>
-              <% @user_events.each do |event| %>
-                  <li><%= event.description %>
-                    <small>(<%= local_time_ago event.created_at %>)</small></li>
-              <% end %>
-            </ul>
-        <% else %>
-            <p>You haven't done anything yet&hellip;</p>
-        <% end %>
-      </div>
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">Recently updated resource assessments</h3>
     </div>
-  </div>
-
-  <div class="col-sm-6">
-    <div class="panel panel-default dashboard">
-      <div class="panel-heading">
-        <h3 class="panel-title">Other users at my institution</h3>
-      </div>
-      <div class="panel-body institution_users">
-        <% if @institution_users.any? %>
-            <ul>
-              <% @institution_users.each do |user| %>
-                  <li>
-                    <%= link_to user do %>
-                        <%= gravatar_for user, size: 52 %>
-                        <%= link_to user.full_name, user %>
-                    <% end %>
-                  </li>
-              <% end %>
-            </ul>
-        <% else %>
-            <p>You're the only one here&hellip;</p>
-        <% end %>
-      </div>
+    <div class="panel-body">
+      <% if @recent_assessments.any? %>
+        <ul>
+          <% for resource in @recent_assessments %>
+            <li><%= link_to resource.name, resource %><br>
+                <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
+                  / updated <%= local_time_ago resource.updated_at %></small></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>This institution hasn't yet begun any resource assessments.</p>
+      <% end %>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-sm-6">
-  </div>
-
-  <div class="col-sm-6">
-    <div class="panel panel-default dashboard">
-      <div class="panel-heading">
-        <h3 class="panel-title">Recent activity at my institution</h3>
-      </div>
-      <div class="panel-body">
-        <% if @institution_events.any? %>
-            <ul>
-              <% @institution_events.each do |event| %>
-                  <li><%= event.description %>
-                    <small>(<%= local_time_ago event.created_at %>)</small></li>
-              <% end %>
-            </ul>
-        <% else %>
-            <p>It's pretty quiet here&hellip;</p>
-        <% end %>
-      </div>
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">My recent activity</h3>
+    </div>
+    <div class="panel-body">
+      <% if @user_events.any? %>
+          <ul>
+            <% @user_events.each do |event| %>
+                <li><%= event.description %>
+                  <small>(<%= local_time_ago event.created_at %>)</small></li>
+            <% end %>
+          </ul>
+      <% else %>
+          <p>You haven't done anything yet&hellip;</p>
+      <% end %>
     </div>
   </div>
 </div>
+
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">Other users at my institution</h3>
+    </div>
+    <div class="panel-body institution_users">
+      <% if @institution_users.any? %>
+          <ul>
+            <% @institution_users.each do |user| %>
+                <li>
+                  <%= link_to user do %>
+                      <%= gravatar_for user, size: 52 %>
+                      <%= link_to user.full_name, user %>
+                  <% end %>
+                </li>
+            <% end %>
+          </ul>
+      <% else %>
+          <p>You're the only one here&hellip;</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">Recent activity at my institution</h3>
+    </div>
+    <div class="panel-body">
+      <% if @institution_events.any? %>
+        <ul>
+          <% @institution_events.each do |event| %>
+              <li><%= event.description %>
+                <small>(<%= local_time_ago event.created_at %>)</small></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>It's pretty quiet here&hellip;</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div style="clear:both"></div>
