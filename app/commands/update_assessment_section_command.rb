@@ -9,17 +9,13 @@ class UpdateAssessmentSectionCommand < Command
   end
 
   def execute
-    if @assessment_section_params[:index].length == 0
-      @assessment_section_params[:index] = '0'
-    else
-      @assessment_section_params[:index] =
-          @assessment_section_params[:index].to_i + 1
-    end
+    @assessment_section_params['index'] = @assessment_section_params['index'] ?
+        @assessment_section_params['index'].to_i + 1 : 0
 
     begin
       ActiveRecord::Base.transaction do
         @assessment_section.update!(@assessment_section_params)
-        if @assessment_section.index != @assessment_section_params[:index]
+        if @assessment_section.index != @assessment_section_params['index']
           CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
         end
       end
