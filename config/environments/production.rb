@@ -78,7 +78,7 @@ Psap::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.psap_email_address = null # TODO: fix
+  config.psap_email_address = 'psap@example.org' # TODO: fix
 
   # Paginated views will show this many results per page. (Some views, like
   # events index, may show more.)
