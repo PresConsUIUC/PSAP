@@ -53,11 +53,15 @@ gem 'local_time'
 # Use unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-rails', '~> 1.1.0'
+gem 'capistrano-bundler'
+gem 'capistrano-rbenv', '~> 2.0'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
 gem 'nokogiri'
 
+# PostgreSQL
+gem 'pg'

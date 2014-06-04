@@ -1,0 +1,14 @@
+server {
+  listen 80 default deferred;
+  root <%= fetch(:deploy_to) %>/current/public;
+  passenger_enabled on;
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  keepalive_timeout 10;
+}
