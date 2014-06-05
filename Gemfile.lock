@@ -65,9 +65,6 @@ GEM
     jquery-rails (3.1.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-turbolinks (2.0.2)
-      railties (>= 3.1.0)
-      turbolinks
     json (1.8.1)
     local_time (1.0.0)
       coffee-rails
@@ -157,7 +154,6 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-cookie-rails
   jquery-rails
-  jquery-turbolinks
   local_time
   nokogiri
   pg

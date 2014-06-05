@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var ready = function() {
     // Code for the user registration, edit, and show forms.
     if ($('#new_user') || $('.edit_user') || $('#show_user')) {
         $('.entity_menu a').on('click', function() {
@@ -7,7 +7,7 @@ $(document).ready(function() {
         });
         UserForm.attachEventListeners();
     }
-});
+};
 
 var UserForm = {
 
@@ -162,3 +162,6 @@ var UserForm = {
     }
 
 };
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

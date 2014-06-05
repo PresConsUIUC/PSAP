@@ -14,9 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require jquery.cookie
-// Fixes jQuery $(document).ready() not working with turbolinks; enabled by
-// the jquery-turbolinks gem
-//= require jquery.turbolinks
 //= require turbolinks
 //= require local_time
 //= require_tree .

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var ready = function() {
     if ($('body#new_assessment_question').length
         || $('body#edit_assessment_question').length) {
 
@@ -34,4 +34,7 @@ $(document).ready(function() {
             });
         });
     }
-});
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

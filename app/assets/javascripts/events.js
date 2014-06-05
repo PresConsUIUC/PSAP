@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var ready = function() {
     if ($('body#events').length) {
         var updateFeedLink = function() {
             var new_url = document.createElement('a');
@@ -48,4 +48,7 @@ $(document).ready(function() {
             }
         }
     }
-});
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

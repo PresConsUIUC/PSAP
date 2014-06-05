@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var ready = function() {
     if ($('body#show_resource').length) {
         // vertically center modal panels
         $('.modal').on('show.bs.modal', function() {
@@ -150,4 +150,7 @@ $(document).ready(function() {
 
         ResourceForm.init();
     }
-});
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

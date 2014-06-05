@@ -1,4 +1,4 @@
-$(document).ready(function() {
+var ready = function() {
     // if using a retina display, loop through all <img> tags and, if they have
     // a "data-has-retina" attribute, replace the "[filename].[ext]" in their
     // "src" attribute with "[filename]@2x.[ext]"
@@ -78,7 +78,7 @@ $(document).ready(function() {
     });
 
     Form.enableDynamicNestedEntities();
-});
+};
 
 /**
  * Updates the results count text. Called on document ready and in index.js.erb
@@ -208,3 +208,6 @@ var Form = {
     }
 
 };
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

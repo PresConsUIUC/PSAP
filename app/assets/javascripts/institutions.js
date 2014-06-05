@@ -1,8 +1,8 @@
-$(document).ready(function() {
+var ready = function() {
     if ($('body#new_institution')) {
         InstitutionForm.attachEventListeners();
     }
-});
+};
 
 var InstitutionForm = {
 
@@ -34,3 +34,6 @@ var InstitutionForm = {
     }
 
 };
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
