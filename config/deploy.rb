@@ -43,7 +43,7 @@ set :keep_releases, 5
 
 namespace :deploy do
 
-  before :deploy, 'deploy:check_revision'
+  #before :deploy, 'deploy:check_revision'
   after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :publishing, :restart
   after :finishing, 'deploy:cleanup'
@@ -52,7 +52,7 @@ namespace :deploy do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       within release_path do
-        execute :rake, 'cache:clear'
+        execute :rake, 'tmp:clear'
       end
     end
   end
