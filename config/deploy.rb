@@ -64,4 +64,26 @@ namespace :deploy do
     end
   end
 
+  desc 'Seed database'
+  task :seed do
+    on primary :db do
+      within current_path do
+        with rails_env: fetch(:stage) do
+          execute :rake, 'db:seed'
+        end
+      end
+    end
+  end
+
+  desc 'Setup database'
+  task :setup do
+    on primary :db do
+      within current_path do
+        with rails_env: fetch(:stage) do
+          execute :rake, 'db:setup'
+        end
+      end
+    end
+  end
+
 end
