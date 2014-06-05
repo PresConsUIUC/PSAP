@@ -521,8 +521,7 @@ normal_role = Role.create!(name: 'User', is_admin: false)
 admin_user = User.create!(username: 'admin', email: 'admin@example.org',
                           first_name: 'Admin', last_name: 'Admin',
                           password: 'password', password_confirmation: 'password',
-                          institution: institutions[0], role: admin_role,
-                          confirmed: true, enabled: true)
+                          role: admin_role, confirmed: true, enabled: true)
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
@@ -702,6 +701,9 @@ case Rails.env
                             email: 'test@example.org',
                             description: 'Lorem ipsum dolor sit amet')
     ]
+
+    admin_user = institutions[0]
+    admin_user.save!
 
     # Normal user
     normal_user = User.create!(username: 'normal', email: 'normal@example.org',
