@@ -1,3 +1,11 @@
+body#new_resource, body#edit_resource {
+  .affix {
+    margin: 0 10% 0 0;
+    width:21.5%;
+    top:70px;
+  }
+}
+
 body#show_resource div.assessment.incomplete {
   h3 {
     margin:2em;

@@ -23,6 +23,19 @@ var ready = function() {
     } else if ($('body#new_resource').length
         || $('body#edit_resource').length) {
 
+        $('#sections').affix({
+            offset: {
+                top: 220,
+                bottom: function() {
+                    return (this.bottom = $('footer').outerHeight(true))
+                }
+            }
+        });
+
+        $(document).bind('affix.bs.affix', function() {
+            //$('#sections').width($('.tab-pane.active').offset().left + 'px');
+        });
+
         var ResourceForm = {
 
             init: function() {
