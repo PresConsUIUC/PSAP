@@ -18,7 +18,7 @@ set :rails_env, 'production'
 # something that quacks like a hash can be used to set
 # extended properties on the server.
 #server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
-server 'dev.416.bike', user: fetch(:deploy_user), roles: %w{web app db},
+server 'psap.stage', user: fetch(:deploy_user), roles: %w{web app db},
        primary: true
 
 # you can set custom ssh options
