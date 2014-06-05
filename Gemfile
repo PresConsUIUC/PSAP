@@ -43,7 +43,7 @@ gem 'will_paginate-bootstrap'
 
 # Fixes jQuery $(document).ready() not working with turbolinks; enabled in
 # application.js
-gem 'jquery-turbolinks'
+gem 'jquery-turbolinks' # TODO: eliminate this
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.1.2'
