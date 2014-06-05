@@ -47,6 +47,10 @@ You must change the secret key when you deploy. The command 'rake secret'
 generates a new random secret you can use. Copy it from the console output to
 a file called ".secret" in the application root.
 
+Initially, only one user exists: an administrator with username of "admin" and
+password "password." Immediately after deploying, you should log in as this
+user and change the password.
+
 Configuration
 
 PSAP uses the standard Rails application configuration files in
