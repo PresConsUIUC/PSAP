@@ -19,6 +19,7 @@ class DashboardController < ApplicationController
               where(:institutions => { :id => @user.institution.id }).
               order(:updated_at => :desc).limit(5)
         else
+          @institutions = Institution.all.order(:name)
           @institution_events = []
           @institution_users = []
           @recent_assessments = []
