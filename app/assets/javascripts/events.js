@@ -1,41 +1,35 @@
 var ready = function() {
     if ($('body#events').length) {
-        var updateFeedLink = function() {
-            var new_url = document.createElement('a');
-            new_url.href = $('.feed_link:first').attr('href');
+        Events.initEventListeners();
+        Events.updateFeedLink();
+    }
+};
 
-            var new_level = $('.level_button.active').attr('data-level');
-            new_url = updateQueryStringParameter(new_url.toString(), 'level',
-                new_level);
+$(document).ajaxComplete(function(event, request, options) {
+    var level = $('input[name="level"]').val();
+    var button = $('.level_button[data-level="' + level + '"]');
+    Events.updateLevelButtons(button);
+});
 
-            $('.feed_link:first').attr('href', new_url);
+var Events = {
 
-            $('input[name="level"]').val(new_level);
-        };
-
+    initEventListeners: function() {
         $('.level_button').on('click', function () {
-            // update level button classes
-            $('.level_button').removeClass('active');
-            $('.level_button').removeClass('btn-info');
-            $('.level_button').removeClass('btn-warning');
-            $('.level_button').removeClass('btn-danger');
-            $('.level_button').addClass('btn-default');
-            $(this).removeClass('btn-default');
-            $(this).addClass('active');
-
-            var level = $(this).attr('data-level');
-            if (level > 4) {
-                $(this).addClass('btn-info');
-            } else if (level > 2) {
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-danger');
-            }
-
-            updateFeedLink();
+            Events.updateLevelButtons($(this));
         });
+    },
 
-        updateFeedLink();
+    updateFeedLink: function() {
+        var new_url = document.createElement('a');
+        new_url.href = $('.feed_link:first').attr('href');
+
+        var new_level = $('.level_button.active').attr('data-level');
+        new_url = updateQueryStringParameter(new_url.toString(), 'level',
+            new_level);
+
+        $('.feed_link:first').attr('href', new_url);
+
+        $('input[name="level"]').val(new_level);
 
         function updateQueryStringParameter(uri, key, value) {
             var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -46,6 +40,25 @@ var ready = function() {
             else {
                 return uri + separator + key + "=" + value;
             }
+        }
+    },
+
+    updateLevelButtons: function(selected_button) {
+        $('.level_button').removeClass('active');
+        $('.level_button').removeClass('btn-info');
+        $('.level_button').removeClass('btn-warning');
+        $('.level_button').removeClass('btn-danger');
+        $('.level_button').addClass('btn-default');
+        selected_button.removeClass('btn-default');
+        selected_button.addClass('active');
+
+        var level = selected_button.attr('data-level');
+        if (level > 4) {
+            selected_button.addClass('btn-info');
+        } else if (level > 2) {
+            selected_button.addClass('btn-warning');
+        } else {
+            selected_button.addClass('btn-danger');
         }
     }
 };
