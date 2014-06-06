@@ -30,30 +30,45 @@
   </div>
 </div>
 
-<dl>
-  <dt>Score</dt>
-  <dd><%= @format.score %> / 1</dd>
-  <dt>Temperature Range Scores</dt>
-  <dd>
-    <table class="table">
-      <thead>
-      <tr>
-        <th>Min (&deg;F)</th>
-        <th>Max (&deg;F)</th>
-        <th>Score</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
-          <tr>
-            <td><%= range.min_temp_f %></td>
-            <td><%= range.max_temp_f %></td>
-            <td><%= range.score %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </dd>
-  <dt>Obsolete</dt>
-  <dd><%= @format.obsolete ? 'Yes' : 'No' %></dd>
-</dl>
+<div class="row">
+
+    <div class="col-sm-4">
+        <dl>
+            <dt>Score</dt>
+            <dd><%= @format.score %> / 1</dd>
+            <dt>Temperature Range Scores</dt>
+            <dd>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Min (&deg;F)</th>
+                        <th>Max (&deg;F)</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
+                        <tr>
+                            <td><%= range.min_temp_f %></td>
+                            <td><%= range.max_temp_f %></td>
+                            <td><%= range.score %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </dd>
+            <dt>Obsolete</dt>
+            <dd><%= @format.obsolete ? 'Yes' : 'No' %></dd>
+        </dl>
+    </div>
+
+    <div class="col-sm-8">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#activity_tab" data-toggle="tab">Activity</a>
+            </li>
+        </ul>
+        <%= render 'shared/events', events: @events %>
+    </div>
+
+</div>

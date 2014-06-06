@@ -57,6 +57,9 @@
       <li>
         <a href="#assessment_report_tab" data-toggle="tab">Assessment Report</a>
       </li>
+      <li>
+        <a href="#activity_tab" data-toggle="tab">Activity</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -289,6 +292,10 @@
           </div>
 
         </section>
+      </div>
+
+      <div id="activity_tab" class="tab-pane">
+        <%= render 'shared/events', events: @events %>
       </div>
 
     </div> <!-- .tab-content -->

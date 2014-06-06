@@ -41,22 +41,25 @@ class CreateAssessmentSectionCommand < Command
         CreateAssessmentSectionCommand.updateSectionIndexes(@assessment_section)
       end
     rescue ActiveRecord::RecordInvalid
-      Event.create(description: "Attempted to create assessment section, but "\
-      "failed: #{@assessment_section.errors.full_messages[0]}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @assessment_section.events << Event.create(
+          description: "Attempted to create assessment section, but "\
+          "failed: #{@assessment_section.errors.full_messages[0]}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       raise ValidationError, "Failed to create assessment section: "\
       "#{@assessment_section.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Attempted to create assessment section, but "\
-      "failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @assessment_section.events << Event.create(
+          description: "Attempted to create assessment section, but "\
+          "failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to create assessment section: #{e.message}"
     else
-      Event.create(description: "Created assessment section "\
-      "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
-                   user: @doing_user, address: @remote_ip)
+      @assessment_section.events << Event.create(
+          description: "Created assessment section "\
+          "\"#{@assessment_section.name}\" in #{@assessment_section.assessment.name}",
+          user: @doing_user, address: @remote_ip)
     end
   end
 

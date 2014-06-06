@@ -8,6 +8,7 @@ class Resource < ActiveRecord::Base
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
   has_many :resource_notes, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
+  has_and_belongs_to_many :events
   belongs_to :format, inverse_of: :resources
   belongs_to :language, inverse_of: :resources
   belongs_to :location, inverse_of: :resources

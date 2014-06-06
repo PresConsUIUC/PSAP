@@ -121,7 +121,7 @@
       <li class="active">
         <a href="#assessments" data-toggle="tab">Assessments</a>
       </li>
-      <li><a href="#recent_activity" data-toggle="tab">Recent Activity</a></li>
+      <li><a href="#activity" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
@@ -161,25 +161,8 @@
             <% end %>
         <% end %>
       </div>
-      <div id="recent_activity" class="tab-pane">
-        <% if @events.any? %>
-            <table class="table">
-              <thead>
-              <tr>
-                <th>Event</th>
-                <th>Occurred</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% @events.each do |event| %>
-                  <tr>
-                    <td><%= event.description %></td>
-                    <td><%= local_time_ago(event.created_at) %></td>
-                  </tr>
-              <% end %>
-              </tbody>
-            </table>
-        <% end %>
+      <div id="activity" class="tab-pane">
+        <%= render 'shared/events', events: @events %>
       </div>
     </div>
 

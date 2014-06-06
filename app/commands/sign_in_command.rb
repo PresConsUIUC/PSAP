@@ -30,8 +30,9 @@ class SignInCommand < Command
                               enabled: true,
                               confirmed: true)
           if @user && @user.authenticate(@password)
-            Event.create(description: "User #{@user.username} signed in",
-                         user: @user, address: @remote_ip)
+            @user.events << Event.create(
+                description: "User #{@user.username} signed in",
+                user: @user, address: @remote_ip)
             @user.last_signin = Time.now
             @user.save!
           else
@@ -52,12 +53,14 @@ class SignInCommand < Command
         raise ex
       end
     rescue SignInFailure => e
-      Event.create(description: "#{e}", user: @user, address: @remote_ip,
-                   event_level: EventLevel::NOTICE)
+      @user.events << Event.create(description: "#{e}", user: @user,
+                                   address: @remote_ip,
+                                   event_level: EventLevel::NOTICE)
       raise "#{e.public_message}"
     rescue => e
-      Event.create(description: "#{e}", user: @user, address: @remote_ip,
-                   event_level: EventLevel::NOTICE)
+      @user.events << Event.create(description: "#{e}", user: @user,
+                                   address: @remote_ip,
+                                   event_level: EventLevel::NOTICE)
       raise e
     end
   end

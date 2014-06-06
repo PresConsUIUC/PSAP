@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603183041) do
+ActiveRecord::Schema.define(version: 20140606152108) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -92,6 +92,46 @@ ActiveRecord::Schema.define(version: 20140603183041) do
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
+
+  create_table "events_assessment_questions", id: false, force: true do |t|
+    t.integer "assessment_question_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_assessments", id: false, force: true do |t|
+    t.integer "assessment_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_formats", id: false, force: true do |t|
+    t.integer "format_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_institutions", id: false, force: true do |t|
+    t.integer "institution_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_locations", id: false, force: true do |t|
+    t.integer "location_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_repositories", id: false, force: true do |t|
+    t.integer "repository_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_resources", id: false, force: true do |t|
+    t.integer "resource_id"
+    t.integer "event_id"
+  end
+
+  create_table "events_users", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "event_id"
+  end
 
   create_table "extents", force: true do |t|
     t.string  "name",        null: false

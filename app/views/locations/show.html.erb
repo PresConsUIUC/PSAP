@@ -57,6 +57,7 @@
       <li class="active">
         <a href="#resources_tab" data-toggle="tab">Resource Assessments</a>
       </li>
+      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
@@ -70,6 +71,10 @@
         <% else %>
             <p>There are no resources in this location.</p>
         <% end %>
+      </div>
+
+      <div class="tab-pane" id="activity_tab">
+        <%= render 'shared/events', events: @events %>
       </div>
 
     </div>

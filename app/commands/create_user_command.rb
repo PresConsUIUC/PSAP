@@ -14,21 +14,23 @@ class CreateUserCommand < Command
 
       UserMailer.welcome_email(@user).deliver if @user.save!
     rescue ActiveRecord::RecordInvalid
-      Event.create(description: "Attempted to create a user account, but "\
-      "failed: #{@user.errors.full_messages[0]}",
-                   user: nil, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @user.events << Event.create(
+          description: "Attempted to create a user account, but "\
+          "failed: #{@user.errors.full_messages[0]}",
+          user: nil, address: @remote_ip, event_level: EventLevel::DEBUG)
       raise ValidationError,
             "Failed to create user account: #{@user.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Attempted to create a user account, but "\
-      "failed: #{e.message}",
-                   user: nil, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @user.events << Event.create(
+          description: "Attempted to create a user account, but "\
+          "failed: #{e.message}",
+          user: nil, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to create user account: #{e.message}"
     else
-      Event.create(description: "Created account for user #{@user.username}",
-                   user: @user, address: @remote_ip)
+      @user.events << Event.create(
+          description: "Created account for user #{@user.username}",
+          user: @user, address: @remote_ip)
     end
   end
 

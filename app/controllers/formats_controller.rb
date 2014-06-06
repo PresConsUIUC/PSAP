@@ -53,6 +53,7 @@ class FormatsController < ApplicationController
 
   def show
     @format = Format.find(params[:id])
+    @events = @format.events.order(created_at: :desc)
   end
 
   def update

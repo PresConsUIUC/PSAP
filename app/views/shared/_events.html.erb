@@ -1,0 +1,22 @@
+<% if events.any? %>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Event</th>
+            <th>Entity</th>
+            <th>User</th>
+            <th>Occurred</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% events.each do |event| %>
+            <tr>
+                <td><%= event.description %></td>
+                <td><%= link_to_event_entity(event) %></td>
+                <td><%= event.user ? link_to(event.user.full_name, event.user) : '' %></td>
+                <td><%= local_time_ago(event.created_at) %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+<% end %>

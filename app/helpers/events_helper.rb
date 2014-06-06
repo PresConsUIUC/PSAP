@@ -46,4 +46,29 @@ module EventsHelper
     links.join
   end
 
+  def link_to_event_entity(event)
+    if event.assessments.any?
+      return link_to event.assessments[0].name, event.assessments[0]
+    elsif event.assessment_questions.any?
+      return link_to event.assessment_questions[0].name,
+                     event.assessment_questions[0]
+    elsif event.formats.any?
+      return link_to event.formats[0].name, event.formats[0]
+    elsif event.institutions.any?
+      return link_to event.institutions[0].name,
+                     event.institutions[0]
+    elsif event.locations.any?
+      return link_to event.locations[0].name,
+                     event.locations[0]
+    elsif event.repositories.any?
+      return link_to event.repositories[0].name, event.repositories[0]
+    elsif event.resources.any?
+      return link_to event.resources[0].name,
+                     event.resources[0]
+    elsif event.users.any?
+      return link_to event.users[0].full_name, event.users[0]
+    end
+    ''
+  end
+
 end

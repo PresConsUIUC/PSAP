@@ -11,21 +11,24 @@ class CreateFormatCommand < Command
     begin
       @format.save!
     rescue ActiveRecord::RecordInvalid
-      Event.create(description: "Attempted to create format, but failed: "\
-      "#{@format.errors.full_messages[0]}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @format.events << Event.create(
+          description: "Attempted to create format, but failed: "\
+          "#{@format.errors.full_messages[0]}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       raise ValidationError,
             "Failed to create format: #{@format.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Attempted to create format, but failed: "\
-      "#{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @format.events << Event.create(
+          description: "Attempted to create format, but failed: "\
+          "#{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to create format: #{e.message}"
     else
-      Event.create(description: "Created format \"#{@format.name}\"",
-                   user: @doing_user, address: @remote_ip)
+      @format.events << Event.create(
+          description: "Created format \"#{@format.name}\"",
+          user: @doing_user, address: @remote_ip)
     end
   end
 

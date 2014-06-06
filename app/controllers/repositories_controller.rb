@@ -52,6 +52,17 @@ class RepositoriesController < ApplicationController
     @locations = @repository.locations.order(:name).
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
+
+    @events = Event.joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
+        joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
+        joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
+        where('events_repositories.repository_id = ? '\
+        'OR events_locations.location_id IN (?)'\
+        'OR events_resources.resource_id IN (?)',
+              @repository.id,
+              @repository.locations.map{ |loc| loc.id },
+              @repository.locations.map{ |loc| loc.resources.map{ |res| res.id } }.flatten.compact).
+        order(created_at: :desc)
   end
 
   def update

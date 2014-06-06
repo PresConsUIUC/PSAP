@@ -12,10 +12,11 @@ class DeleteResourceCommand < Command
     rescue ActiveRecord::DeleteRestrictionError => e
       raise e # this should never happen
     rescue => e
-      Event.create(description: "Attempted to delete resource "\
-      "\"#{@resource.name}\", but failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @resource.events << Event.create(
+          description: "Attempted to delete resource \"#{@resource.name}\", "\
+          "but failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to delete resource \"#{@resource.name}\": "\
       "#{e.message}"
     else

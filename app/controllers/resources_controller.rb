@@ -122,7 +122,9 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
 
     respond_to do |format|
-      format.html
+      format.html {
+        @events = @resource.events.order(created_at: :desc)
+      }
       format.dcxml {
         response.headers['Content-Disposition'] =
             "attachment; filename=\"#{@resource.dcxml_filename}\""

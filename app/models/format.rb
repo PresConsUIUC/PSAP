@@ -1,6 +1,7 @@
 class Format < ActiveRecord::Base
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
+  has_and_belongs_to_many :events
 
   accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 

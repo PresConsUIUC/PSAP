@@ -23,10 +23,11 @@ class ChangePasswordCommand < Command
       @user.password_confirmation = @password_confirmation
       @user.save!
     rescue ActiveRecord::RecordInvalid => e
-      Event.create(description: "Attempted to change the password for user "\
-      "#{@user.username}, but failed: #{@user.errors.full_messages[0]}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @user.events << Event.create(
+          description: "Attempted to change the password for user "\
+          "#{@user.username}, but failed: #{@user.errors.full_messages[0]}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise "Failed to change your password: #{@user.errors.full_messages[0]}"
       else
@@ -34,10 +35,11 @@ class ChangePasswordCommand < Command
       "#{@user.errors.full_messages[0]}"
       end
     rescue => e
-      Event.create(description: "Attempted to change the password for user "\
-      "#{@user.username}, but failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @user.events << Event.create(
+          description: "Attempted to change the password for user "\
+          "#{@user.username}, but failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise "Failed to change your password: #{e.message}"
       else
@@ -45,8 +47,9 @@ class ChangePasswordCommand < Command
       "#{e.message}"
       end
     else
-      Event.create(description: "Changed password for user #{@user.username}",
-                   user: @doing_user, address: @remote_ip)
+      @user.events << Event.create(
+          description: "Changed password for user #{@user.username}",
+          user: @doing_user, address: @remote_ip)
     end
   end
 

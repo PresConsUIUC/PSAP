@@ -41,21 +41,24 @@ class CreateAssessmentQuestionCommand < Command
         CreateAssessmentQuestionCommand.updateQuestionIndexes(@assessment_question)
       end
     rescue ActiveRecord::RecordInvalid
-      Event.create(description: "Attempted to create assessment question, but "\
-      "failed: #{@assessment_question.errors.full_messages[0]}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @assessment_question.events << Event.create(
+          description: "Attempted to create assessment question, but "\
+          "failed: #{@assessment_question.errors.full_messages[0]}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       raise ValidationError, "Failed to create assessment question: "\
       "#{@assessment_question.errors.full_messages[0]}"
     rescue => e
-      Event.create(description: "Attempted to create assessment question, but "\
-      "failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @assessment_question.events << Event.create(
+          description: "Attempted to create assessment question, but "\
+          "failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to create assessment question: #{e.message}"
     else
-      Event.create(description: 'Created assessment question',
-                   user: @doing_user, address: @remote_ip)
+      @assessment_question.events << Event.create(
+          description: 'Created assessment question', user: @doing_user,
+          address: @remote_ip)
     end
   end
 

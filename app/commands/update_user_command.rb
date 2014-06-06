@@ -26,10 +26,11 @@ class UpdateUserCommand < Command
 
       @user.update!(@user_params)
     rescue ActiveRecord::RecordInvalid
-      Event.create(description: "Attempted to update user #{@user.username}, "\
-      "but failed: #{@user.errors.full_messages[0]}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @user.events << Event.create(
+          description: "Attempted to update user #{@user.username}, "\
+          "but failed: #{@user.errors.full_messages[0]}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise ValidationError,
               "Failed to update your account: "\
@@ -40,18 +41,20 @@ class UpdateUserCommand < Command
               "#{@user.errors.full_messages[0]}"
       end
     rescue => e
-      Event.create(description: "Attempted to update user #{@user.username}, "\
-      "but failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @user.events << Event.create(
+          description: "Attempted to update user #{@user.username}, "\
+          "but failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       if @user == @doing_user
         raise "Failed to update your account: #{e.message}"
       else
         raise "Failed to update user #{@user.username}: #{e.message}"
       end
     else
-      Event.create(description: "Updated user #{@user.username}",
-                   user: @doing_user, address: @remote_ip)
+      @user.events << Event.create(
+          description: "Updated user #{@user.username}",
+          user: @doing_user, address: @remote_ip)
 
       # If the user is changing their email address, we should notify the
       # previous address, in case their account was hijacked.

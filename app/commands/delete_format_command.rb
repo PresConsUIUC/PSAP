@@ -10,11 +10,11 @@ class DeleteFormatCommand < Command
     begin
       @format.destroy!
     rescue ActiveRecord::DeleteRestrictionError => e
-      Event.create(description: "Attempted to delete format "\
-      "\"#{@format.name},\" but failed as it is being used by one or more "\
-      "resource assessments.",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::DEBUG)
+      @format.events << Event.create(
+          description: "Attempted to delete format \"#{@format.name},\" but "\
+          "failed as it is being used by one or more resource assessments.",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::DEBUG)
       raise "The format \"#{@format.name}\" cannot be deleted, as it is "\
       "being used by one or more resource assessments."
     rescue => e

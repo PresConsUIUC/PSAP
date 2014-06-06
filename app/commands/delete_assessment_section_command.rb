@@ -15,10 +15,11 @@ class DeleteAssessmentSectionCommand < Command
     rescue ActiveRecord::DeleteRestrictionError => e
       raise e # this should never happen
     rescue => e
-      Event.create(description: "Attempted to delete assessment section "\
-      "\"#{@assessment_section.name},\" but failed: #{e.message}",
-                   user: @doing_user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @assessment_section.events << Event.create(
+          description: "Attempted to delete assessment section "\
+          "\"#{@assessment_section.name},\" but failed: #{e.message}",
+          user: @doing_user, address: @remote_ip,
+          event_level: EventLevel::ERROR)
       raise "Failed to delete assessment section "\
       "\"#{@assessment_section.name}\": #{e.message}"
     else

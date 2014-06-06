@@ -17,6 +17,7 @@
       <tr>
         <th>Level</th>
         <th>Event</th>
+        <th>Entity</th>
         <th>Occurred</th>
         <th>User</th>
         <th nowrap="true">IP Address</th>
@@ -30,6 +31,7 @@
                 <%= EventLevel::name_for_level event.event_level %></span>
             </td>
             <td><%= event.description %></td>
+            <td><%= link_to_event_entity(event) %></td>
             <td><%= local_time_ago(event.created_at) %></td>
             <td>
               <% if event.user %>

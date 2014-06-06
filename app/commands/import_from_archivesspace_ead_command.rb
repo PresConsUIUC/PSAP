@@ -42,15 +42,16 @@ class ImportFromArchivesspaceEadCommand < Command
       attributes = resource_attributes_from_ead(ead, @user.id)
       @resource = Resource.create!(attributes)
     rescue => e
-      Event.create(description: "Failed to import resource from "\
-      "ArchivesSpace at #{@archivesspace_import.host}: #{e.message}",
-                   user: @user, address: @remote_ip,
-                   event_level: EventLevel::ERROR)
+      @resource.events << Event.create(
+          description: "Failed to import resource from "\
+          "ArchivesSpace at #{@archivesspace_import.host}: #{e.message}",
+          user: @user, address: @remote_ip, event_level: EventLevel::ERROR)
       raise e
     else
-      Event.create(description: "Imported resource \"#{@resource.name}\" "\
-      "from ArchivesSpace at #{@archivesspace_import.host}",
-                   user: @user, address: @remote_ip)
+      @resource.events << Event.create(
+          description: "Imported resource \"#{@resource.name}\" "\
+          "from ArchivesSpace at #{@archivesspace_import.host}",
+          user: @user, address: @remote_ip)
     end
   end
 

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :users
   has_many :resources, inverse_of: :user
   belongs_to :role, inverse_of: :users

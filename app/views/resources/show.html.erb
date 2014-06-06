@@ -101,6 +101,7 @@
       <li <%= @resource.children.any? ? '' : 'class=active' %>>
         <a href="#assessment" data-toggle="tab">Assessment</a>
       </li>
+      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
@@ -165,6 +166,9 @@
             <% end %>
           </div>
       <% end %>
+        <div id="activity_tab" class="tab-pane">
+          <%= render 'shared/events', events: @events %>
+        </div>
     </div> <!-- .tab-content -->
 
   </div> <!-- .col-sm-8 -->
