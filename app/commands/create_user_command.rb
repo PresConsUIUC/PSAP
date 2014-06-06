@@ -1,9 +1,10 @@
 class CreateUserCommand < Command
 
-  def initialize(user_params, remote_ip)
+  def initialize(user_params, remote_ip, send_email = true)
     @user_params = user_params
     @user = User.new(user_params)
     @remote_ip = remote_ip
+    @send_email = send_email
   end
 
   def execute
@@ -12,7 +13,7 @@ class CreateUserCommand < Command
       raise 'Missing "User" role.' unless role
       @user.role = role
 
-      UserMailer.welcome_email(@user).deliver if @user.save!
+      UserMailer.welcome_email(@user).deliver if @user.save! && @send_email
     rescue ActiveRecord::RecordInvalid
       @user.events << Event.create(
           description: "Attempted to create a user account, but "\
