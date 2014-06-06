@@ -12,7 +12,7 @@ class CreateRepositoryCommand < Command
     begin
       # Fail if a non-admin user is trying to create the repository in a
       # different institution
-      if !@doing_user.is_admin? && @doing_user.institution != @institution
+      if @doing_user && (!@doing_user.is_admin? && @doing_user.institution != @institution)
         raise 'Insufficient privileges'
       end
 

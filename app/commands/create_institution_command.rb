@@ -9,7 +9,7 @@ class CreateInstitutionCommand < Command
 
   def execute
     begin
-      @institution.users << @doing_user
+      @institution.users << @doing_user if @doing_user
       @institution.save!
     rescue ActiveRecord::RecordInvalid
       @institution.events << Event.create(

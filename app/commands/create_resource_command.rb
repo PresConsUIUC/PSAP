@@ -10,7 +10,7 @@ class CreateResourceCommand < Command
     begin
       # Fail if a non-admin user is trying to create the resource in a
       # different institution
-      if !@doing_user.is_admin? &&
+      if @doing_user && !@doing_user.is_admin? &&
           @doing_user.institution != @resource.location.repository.institution
         raise 'Insufficient privileges'
       end

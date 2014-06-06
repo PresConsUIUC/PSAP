@@ -12,7 +12,7 @@ class CreateLocationCommand < Command
     begin
       # Fail if a non-admin user is trying to create the location in a
       # different institution
-      if !@doing_user.is_admin? &&
+      if @doing_user && !@doing_user.is_admin? &&
           @doing_user.institution != @repository.institution
         raise 'Insufficient privileges'
       end
