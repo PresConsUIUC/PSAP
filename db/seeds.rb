@@ -702,7 +702,7 @@ case Rails.env
                             description: 'Lorem ipsum dolor sit amet')
     ]
 
-    admin_user = institutions[0]
+    admin_user.institution = institutions[0]
     admin_user.save!
 
     # Normal user
