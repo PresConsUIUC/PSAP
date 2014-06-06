@@ -526,76 +526,91 @@ admin_role = Role.create!(name: 'Administrator', is_admin: true)
 normal_role = Role.create!(name: 'User', is_admin: false)
 
 # Admin user
-admin_user = User.create!(username: 'admin', email: 'admin@example.org',
-                          first_name: 'Admin', last_name: 'Admin',
-                          password: 'password', password_confirmation: 'password',
-                          role: admin_role, confirmed: true, enabled: true)
+command = CreateUserCommand.new(
+    { username: 'admin', email: 'admin@example.org',
+      first_name: 'Admin', last_name: 'Admin',
+      password: 'password', password_confirmation: 'password',
+      confirmed: true, enabled: true }, '127.0.0.1', false)
+command.execute
+admin_user = command.object
+admin_user.role = admin_role
+admin_user.save!
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
 
   when 'development'
     # Assessment sections
-    sections = [
-        AssessmentSection.create!(name: 'Section 1', index: 0, weight: 0.2,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 2', index: 1, weight: 0.3,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 3', index: 2, weight: 0.4,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0]),
-        AssessmentSection.create!(name: 'Section 4', index: 3, weight: 0.1,
-                                  description: 'A brief description of the section',
-                                  assessment: assessments[0])
+    section_commands = [
+        CreateAssessmentSectionCommand.new(
+            { name: 'Section 1', index: 0, weight: 0.2,
+              description: 'A brief description of the section',
+              assessment: assessments[0] }, nil, '127.0.0.1'),
+        CreateAssessmentSectionCommand.new(
+            { name: 'Section 2', index: 1, weight: 0.3,
+              description: 'A brief description of the section',
+              assessment: assessments[0] }, nil, '127.0.0.1'),
+        CreateAssessmentSectionCommand.new(
+            { name: 'Section 3', index: 2, weight: 0.4,
+              description: 'A brief description of the section',
+              assessment: assessments[0] }, nil, '127.0.0.1'),
+        CreateAssessmentSectionCommand.new(
+            { name: 'Section 4', index: 3, weight: 0.1,
+              description: 'A brief description of the section',
+              assessment: assessments[0] }, nil, '127.0.0.1')
     ]
 
+    sections = section_commands.map{ |command| command.execute; command.object }
+
     # Assessment questions
-    questions = []
-    questions << AssessmentQuestion.create!(
-        name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-        index: 0,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.5,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'To be or not to be?',
-        index: 1,
-        question_type: AssessmentQuestionType::SELECT,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'You talkin\' to me?',
-        index: 2,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[0])
-    questions << AssessmentQuestion.create!(
-        name: 'Grocery list',
-        index: 0,
-        question_type: AssessmentQuestionType::CHECKBOX,
-        weight:0.5,
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
-    questions << AssessmentQuestion.create!(
-        name: 'If a tree falls in the forest, does it make a sound?',
-        index: 1,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
-    questions << AssessmentQuestion.create!(
-        name: 'Even if you\'re not around?',
-        index: 1,
-        question_type: AssessmentQuestionType::RADIO,
-        weight: 0.25,
-        parent: questions[4],
-        help_text: 'Sample help text',
-        assessment_section: sections[1])
+    question_commands = [
+        CreateAssessmentQuestionCommand.new(
+            {name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
+             index: 0,
+             question_type: AssessmentQuestionType::RADIO,
+             weight: 0.5,
+             help_text: 'Sample help text',
+             assessment_section: sections[0]}, nil, '127.0.0.1'),
+        CreateAssessmentQuestionCommand.new(
+            {name: 'To be or not to be?',
+             index: 1,
+             question_type: AssessmentQuestionType::SELECT,
+             weight: 0.25,
+             help_text: 'Sample help text',
+             assessment_section: sections[0]}, nil, '127.0.0.1'),
+        CreateAssessmentQuestionCommand.new(
+            {name: 'You talkin\' to me?',
+             index: 2,
+             question_type: AssessmentQuestionType::RADIO,
+             weight: 0.25,
+             help_text: 'Sample help text',
+             assessment_section: sections[0]}, nil, '127.0.0.1'),
+        CreateAssessmentQuestionCommand.new(
+            {name: 'Grocery list',
+             index: 0,
+             question_type: AssessmentQuestionType::CHECKBOX,
+             weight:0.5,
+             help_text: 'Sample help text',
+             assessment_section: sections[1]}, nil, '127.0.0.1'),
+        CreateAssessmentQuestionCommand.new(
+            {name: 'If a tree falls in the forest, does it make a sound?',
+             index: 1,
+             question_type: AssessmentQuestionType::RADIO,
+             weight: 0.25,
+             help_text: 'Sample help text',
+             assessment_section: sections[1]}, nil, '127.0.0.1'),
+        CreateAssessmentQuestionCommand.new(
+            {name: 'Even if you\'re not around?',
+             index: 1,
+             question_type: AssessmentQuestionType::RADIO,
+             weight: 0.25,
+             help_text: 'Sample help text',
+             assessment_section: sections[1]}, nil, '127.0.0.1')
+    ]
+
+    questions = question_commands.map{ |command| command.execute; command.object }
+    questions[5].parent = questions[4]
+    questions[5].save!
 
     # Assessment question options
     options = [
@@ -646,236 +661,265 @@ case Rails.env
     questions[5].save!
 
     # Institutions
-    institutions = [
-        Institution.create!(name: 'University of Illinois at Urbana-Champaign',
-                            address1: '1408 W. Gregory Dr.',
-                            address2: nil,
-                            city: 'Urbana',
-                            state: 'IL',
-                            postal_code: 61801,
-                            country: 'United States of America',
-                            url: 'http://www.library.illinois.edu/',
-                            email: 'test@example.org',
-                            language: languages[122],
-                            description: 'Lorem ipsum dolor sit amet'),
-        Institution.create!(name: 'West Southeast Directional State University',
-                            address1: '1 Directional Drive',
-                            address2: nil,
-                            city: 'Podunk',
-                            state: 'IL',
-                            postal_code: 12345,
-                            country: 'United States of America',
-                            url: 'http://example.org/',
-                            email: 'test@example.org',
-                            description: 'Lorem ipsum dolor sit amet'),
-        Institution.create!(name: 'Hamburger University',
-                            address1: '21 Hamburger Place',
-                            address2: nil,
-                            city: 'Des Moines',
-                            state: 'IA',
-                            postal_code: 12345,
-                            country: 'United States of America',
-                            url: 'http://example.org/',
-                            email: 'test@example.org',
-                            description: 'Lorem ipsum dolor sit amet'),
-        Institution.create!(name: 'San Quentin Prison University',
-                            address1: '5435 Prison Ct.',
-                            address2: nil,
-                            city: 'San Quentin',
-                            state: 'CA',
-                            postal_code: 90210,
-                            country: 'United States of America',
-                            url: 'http://example.org/',
-                            email: 'test@example.org',
-                            description: 'Lorem ipsum dolor sit amet'),
-        Institution.create!(name: 'Barnum & Bailey Clown College',
-                            address1: 'Circus Tent C',
-                            address2: '53 Trapeze Road',
-                            city: 'Los Angeles',
-                            state: 'CA',
-                            postal_code: 99999,
-                            country: 'United States of America',
-                            url: 'http://example.org/',
-                            email: 'test@example.org',
-                            description: 'Lorem ipsum dolor sit amet'),
-        Institution.create!(name: 'Hogwarts School of Witchcraft & Wizardry',
-                            address1: '123 Magical St.',
-                            address2: nil,
-                            city: 'Hogsmeade',
-                            state: 'N/A',
-                            postal_code: 99999,
-                            country: 'Hogsmeade',
-                            url: 'http://example.org/',
-                            email: 'test@example.org',
-                            description: 'Lorem ipsum dolor sit amet')
+    institution_commands = [
+        CreateInstitutionCommand.new(
+            { name: 'University of Illinois at Urbana-Champaign',
+              address1: '1408 W. Gregory Dr.',
+              address2: nil,
+              city: 'Urbana',
+              state: 'IL',
+              postal_code: 61801,
+              country: 'United States of America',
+              url: 'http://www.library.illinois.edu/',
+              email: 'test@example.org',
+              language: languages[122],
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
+        CreateInstitutionCommand.new(
+            { name: 'West Southeast Directional State University',
+              address1: '1 Directional Drive',
+              address2: nil,
+              city: 'Podunk',
+              state: 'IL',
+              postal_code: 12345,
+              country: 'United States of America',
+              url: 'http://example.org/',
+              email: 'test@example.org',
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
+        CreateInstitutionCommand.new(
+            { name: 'Hamburger University',
+              address1: '21 Hamburger Place',
+              address2: nil,
+              city: 'Des Moines',
+              state: 'IA',
+              postal_code: 12345,
+              country: 'United States of America',
+              url: 'http://example.org/',
+              email: 'test@example.org',
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
+        CreateInstitutionCommand.new(
+            { name: 'San Quentin Prison University',
+              address1: '5435 Prison Ct.',
+              address2: nil,
+              city: 'San Quentin',
+              state: 'CA',
+              postal_code: 90210,
+              country: 'United States of America',
+              url: 'http://example.org/',
+              email: 'test@example.org',
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
+        CreateInstitutionCommand.new(
+            { name: 'Barnum & Bailey Clown College',
+              address1: 'Circus Tent C',
+              address2: '53 Trapeze Road',
+              city: 'Los Angeles',
+              state: 'CA',
+              postal_code: 99999,
+              country: 'United States of America',
+              url: 'http://example.org/',
+              email: 'test@example.org',
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
+        CreateInstitutionCommand.new(
+            { name: 'Hogwarts School of Witchcraft & Wizardry',
+              address1: '123 Magical St.',
+              address2: nil,
+              city: 'Hogsmeade',
+              state: 'N/A',
+              postal_code: 99999,
+              country: 'Hogsmeade',
+              url: 'http://example.org/',
+              email: 'test@example.org',
+              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
     ]
 
+    institutions = institution_commands.map{ |command| command.execute; command.object }
     admin_user.institution = institutions[0]
     admin_user.save!
 
     # Normal user
-    normal_user = User.create!(username: 'normal', email: 'normal@example.org',
-                               first_name: 'Norm', last_name: 'McNormal',
-                               password: 'password', password_confirmation: 'password',
-                               institution: institutions[0], role: normal_role,
-                               confirmed: true, enabled: true)
+    command = CreateUserCommand.new(
+        { username: 'normal', email: 'normal@example.org',
+          first_name: 'Norm', last_name: 'McNormal',
+          password: 'password', password_confirmation: 'password',
+          institution: institutions[0], role: normal_role,
+          confirmed: true, enabled: true }, '127.0.0.1', false)
+    command.execute
+    normal_user = command.object
+
     # Unaffiliated user
-    unaffiliated_user = User.create!(username: 'unaffiliated', email: 'unaffiliated@example.org',
-                                 first_name: 'Clara', last_name: 'NoInstitution',
-                                 password: 'password', password_confirmation: 'password',
-                                 institution: nil, role: normal_role,
-                                 confirmed: true, enabled: true)
+    command = CreateUserCommand.new(
+        { username: 'unaffiliated', email: 'unaffiliated@example.org',
+          first_name: 'Clara', last_name: 'NoInstitution',
+          password: 'password', password_confirmation: 'password',
+          institution: nil, role: normal_role,
+          confirmed: true, enabled: true }, '127.0.0.1', false)
+    command.execute
+    unaffiliated_user = command.object
+
     # Unconfirmed user
-    unconfirmed_user = User.create!(username: 'unconfirmed', email: 'unconfirmed@example.org',
-                                    first_name: 'Sally', last_name: 'NoConfirmy',
-                                    password: 'password', password_confirmation: 'password',
-                                    institution: institutions[1], role: normal_role,
-                                    confirmed: false, enabled: false)
+    command = CreateUserCommand.new(
+        { username: 'unconfirmed', email: 'unconfirmed@example.org',
+          first_name: 'Sally', last_name: 'NoConfirmy',
+          password: 'password', password_confirmation: 'password',
+          institution: institutions[1], role: normal_role,
+          confirmed: false, enabled: false }, '127.0.0.1', false)
+    command.execute
+    unconfirmed_user = command.object
+
     # Disabled user
-    disabled_user = User.create!(username: 'disabled', email: 'disabled@example.org',
-                                 first_name: 'Johnny', last_name: 'CantDoNothin',
-                                 password: 'password', password_confirmation: 'password',
-                                 institution: institutions[1], role: normal_role,
-                                 confirmed: true, enabled: false)
+    command = CreateUserCommand.new(
+        { username: 'disabled', email: 'disabled@example.org',
+          first_name: 'Johnny', last_name: 'CantDoNothin',
+          password: 'password', password_confirmation: 'password',
+          institution: institutions[1], role: normal_role,
+          confirmed: true, enabled: false }, '127.0.0.1', false)
+    command.execute
+    disabled_user = command.object
 
     # Repositories
-    repositories = [
-        Repository.create!(institution: institutions[0],
-                           name: 'Sample Repository'),
-        Repository.create!(institution: institutions[0],
-                           name: 'Another Sample Repository')
+    repository_commands = [
+        CreateRepositoryCommand.new(institutions[0],
+            { name: 'Sample Repository' }, nil, '127.0.0.1'),
+        CreateRepositoryCommand.new(institutions[0],
+            { name: 'Another Sample Repository' }, nil, '127.0.0.1')
     ]
+
+    repositories = repository_commands.map{ |command| command.execute; command.object }
 
     # Locations
-    locations = [
-        Location.create!(name: 'Secret Location',
-                         description: 'Sample description',
-                         repository: repositories[0]),
-        Location.create!(name: 'Even More Secret Location',
-                         description: 'Sample description',
-                         repository: repositories[0]),
-        Location.create!(name: 'Back Room',
-                         description: 'Sample description',
-                         repository: repositories[0]),
-        Location.create!(name: 'Front Room',
-                         description: 'Sample description',
-                         repository: repositories[0]),
-        Location.create!(name: 'Side Room',
-                         description: 'Sample description',
-                         repository: repositories[0]),
-        Location.create!(name: 'Attic',
-                         description: 'Sample description',
-                         repository: repositories[0])
+    location_commands = [
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Secret Location',
+              description: 'Sample description' }, nil, '127.0.0.1'),
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Even More Secret Location',
+              description: 'Sample description' }, nil, '127.0.0.1'),
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Back Room',
+              description: 'Sample description' }, nil, '127.0.0.1'),
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Front Room',
+              description: 'Sample description' }, nil, '127.0.0.1'),
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Side Room',
+              description: 'Sample description' }, nil, '127.0.0.1'),
+        CreateLocationCommand.new(repositories[0],
+            { name: 'Attic',
+              description: 'Sample description' }, nil, '127.0.0.1'),
     ]
 
+    locations = location_commands.map{ |command| command.execute; command.object }
+
     # Resources
-    resources = []
-    resources << Resource.create!(name: 'Magna Carta',
-                                  resource_type: ResourceType::ITEM,
-                                  format: formats[0],
-                                  location: locations[0],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Dead Sea Scrolls',
-                                  resource_type: ResourceType::ITEM,
-                                  format: formats[1],
-                                  location: locations[0],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Sears Catalog Collection',
-                                  resource_type: ResourceType::COLLECTION,
-                                  location: locations[1],
-                                  user: admin_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Farmer\'s Almanac Collection',
-                                  resource_type: ResourceType::COLLECTION,
-                                  location: locations[1],
-                                  user: admin_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Treaty of Verdun',
-                                  resource_type: ResourceType::ITEM,
-                                  format: formats[4],
-                                  location: locations[2],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Declaration of Paris',
-                                  resource_type: ResourceType::ITEM,
-                                  format: formats[5],
-                                  location: locations[2],
-                                  user: disabled_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Cat Fancy Collection',
-                                  resource_type: ResourceType::COLLECTION,
-                                  location: locations[3],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Issue 1',
-                                  resource_type: ResourceType::ITEM,
-                                  location: locations[3],
-                                  parent: resources[6],
-                                  user: admin_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Issue 2',
-                                  resource_type: ResourceType::ITEM,
-                                  location: locations[3],
-                                  parent: resources[6],
-                                  user: disabled_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Special Editions',
-                                  resource_type: ResourceType::COLLECTION,
-                                  location: locations[3],
-                                  parent: resources[6],
-                                  user: admin_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: '1972 Presidential Election Special Issue',
-                                  resource_type: ResourceType::ITEM,
-                                  location: locations[3],
-                                  parent: resources[9],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Issue 3',
-                                  resource_type: ResourceType::ITEM,
-                                  location: locations[3],
-                                  parent: resources[6],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
-    resources << Resource.create!(name: 'Napoleon Bonaparte Letters Collection',
-                                  resource_type: ResourceType::COLLECTION,
-                                  location: locations[3],
-                                  user: normal_user,
-                                  description: 'Sample description',
-                                  local_identifier: 'sample_local_id',
-                                  rights: 'Sample rights')
+    resource_commands = []
+    resource_commands << CreateResourceCommand.new(locations[0],
+        { name: 'Magna Carta',
+          resource_type: ResourceType::ITEM,
+          format: formats[0],
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[0],
+        { name: 'Dead Sea Scrolls',
+          resource_type: ResourceType::ITEM,
+          format: formats[1],
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[1],
+        { name: 'Sears Catalog Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: admin_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[1],
+        { name: 'Farmer\'s Almanac Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: admin_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[2],
+        { name: 'Treaty of Verdun',
+          resource_type: ResourceType::ITEM,
+          format: formats[4],
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[2],
+        { name: 'Declaration of Paris',
+          resource_type: ResourceType::ITEM,
+          format: formats[5],
+          user: disabled_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Cat Fancy Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Issue 1',
+          resource_type: ResourceType::ITEM,
+          user: admin_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Issue 2',
+          resource_type: ResourceType::ITEM,
+          user: disabled_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Special Editions',
+          resource_type: ResourceType::COLLECTION,
+          user: admin_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: '1972 Presidential Election Special Issue',
+          resource_type: ResourceType::ITEM,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Issue 3',
+          resource_type: ResourceType::ITEM,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[3],
+        { name: 'Napoleon Bonaparte Letters Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+
+    resources = resource_commands.map{ |command| command.execute; command.object }
 
     resources[1].assessment_question_responses.each do |response|
       response.assessment_question_option =
         response.assessment_question.assessment_question_options[0]
     end
     resources[1].save!
+    resources[7].parent = resources[6]
+    resources[8].parent = resources[6]
+    resources[9].parent = resources[6]
+    resources[10].parent = resources[9]
+    resources[11].parent = resources[6]
+    resources.select{ |r| r.save! }
 
     # Dates
     ResourceDate.create!(resource: resources[0],
