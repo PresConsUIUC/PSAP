@@ -2,6 +2,7 @@ class AssessmentSection < ActiveRecord::Base
   belongs_to :assessment, inverse_of: :assessment_sections
   has_many :assessment_questions, inverse_of: :assessment_section,
            dependent: :destroy
+  has_and_belongs_to_many :events, join_table: 'events_assessment_sections'
 
   validates :assessment, presence: true
   validates :index, presence: true

@@ -52,6 +52,9 @@ module EventsHelper
     elsif event.assessment_questions.any?
       return link_to event.assessment_questions[0].name,
                      event.assessment_questions[0]
+    elsif event.assessment_sections.any?
+      return link_to event.assessment_sections[0].name,
+                     event.assessment_sections[0]
     elsif event.formats.any?
       return link_to event.formats[0].name, event.formats[0]
     elsif event.institutions.any?

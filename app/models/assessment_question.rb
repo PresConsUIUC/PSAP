@@ -5,7 +5,7 @@ class AssessmentQuestion < ActiveRecord::Base
              foreign_key: 'enabling_assessment_question_option_id',
              inverse_of: :dependent_assessment_question
   belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
-  has_and_belongs_to_many :events
+  has_and_belongs_to_many :events, join_table: 'events_assessment_questions'
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy
   has_many :assessment_question_responses,

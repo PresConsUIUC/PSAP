@@ -1,7 +1,10 @@
 class Event < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :assessments, join_table: 'events_assessments'
-  has_and_belongs_to_many :assessment_questions, join_table: 'events_assessment_questions'
+  has_and_belongs_to_many :assessment_questions,
+                          join_table: 'events_assessment_questions'
+  has_and_belongs_to_many :assessment_sections,
+                          join_table: 'events_assessment_sections'
   has_and_belongs_to_many :formats
   has_and_belongs_to_many :institutions
   has_and_belongs_to_many :locations

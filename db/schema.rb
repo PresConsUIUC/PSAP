@@ -98,6 +98,11 @@ ActiveRecord::Schema.define(version: 20140606152108) do
     t.integer "event_id"
   end
 
+  create_table "events_assessment_sections", id: false, force: true do |t|
+    t.integer "assessment_section_id"
+    t.integer "event_id"
+  end
+
   create_table "events_assessments", id: false, force: true do |t|
     t.integer "assessment_id"
     t.integer "event_id"

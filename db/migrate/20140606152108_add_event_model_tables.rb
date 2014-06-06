@@ -8,6 +8,10 @@ class AddEventModelTables < ActiveRecord::Migration
       t.belongs_to :assessment_question
       t.belongs_to :event
     end
+    create_table :events_assessment_sections, id: false do |t|
+      t.belongs_to :assessment_section
+      t.belongs_to :event
+    end
     create_table :events_formats, id: false do |t|
       t.belongs_to :format
       t.belongs_to :event
