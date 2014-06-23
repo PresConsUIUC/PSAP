@@ -55,12 +55,12 @@ class SignInCommand < Command
     rescue SignInFailure => e
       @user.events << Event.create(description: "#{e}", user: @user,
                                    address: @remote_ip,
-                                   event_level: EventLevel::NOTICE)
+                                   event_level: EventLevel::NOTICE) if @user
       raise "#{e.public_message}"
     rescue => e
       @user.events << Event.create(description: "#{e}", user: @user,
                                    address: @remote_ip,
-                                   event_level: EventLevel::NOTICE)
+                                   event_level: EventLevel::NOTICE) if @user
       raise e
     end
   end
