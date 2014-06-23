@@ -24,12 +24,14 @@ class Resource < ActiveRecord::Base
 
   validates :assessment_percent_complete, allow_blank: true,
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+  validates :assessment_score, allow_blank: true,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true
   validates :user, presence: true
 
-  before_save :update_assessment_percent_complete
+  before_save :update_assessment_percent_complete, :update_assessment_score
 
   def associate_assessment_question_responses
     Assessment.find_by_key('resource').assessment_sections.order(:index).
@@ -78,6 +80,11 @@ class Resource < ActiveRecord::Base
 
       self.assessment_percent_complete = questions.length > 0 ?
           responses.length.to_f / questions.length : 0
+  end
+
+  def update_assessment_score
+    # TODO: write this
+    self.assessment_score = 0
   end
 
   def dcxml_filename

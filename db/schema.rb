@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140606152108) do
+ActiveRecord::Schema.define(version: 20140623151140) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 20140606152108) do
     t.string   "rights"
     t.integer  "language_id"
     t.float    "assessment_percent_complete", default: 0.0
+    t.float    "assessment_score",            default: 0.0
   end
 
   add_index "resources", ["format_id"], name: "index_resources_on_format_id"
