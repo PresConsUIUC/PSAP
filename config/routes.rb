@@ -79,7 +79,9 @@ Psap::Application.routes.draw do
     resources :assessment_question_options, only: :index, path: 'options'
   end
   resources :assessment_sections, except: [:index, :show],
-            path: 'assessment-sections'
+            path: 'assessment-sections' do
+    resources :assessment_questions, only: :new, path: 'assessment-questions'
+  end
   resources :formats
   resources :institutions do
     resources :repositories, except: :index

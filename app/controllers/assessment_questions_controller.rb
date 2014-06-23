@@ -44,7 +44,11 @@ class AssessmentQuestionsController < ApplicationController
     @assessment_question.assessment_question_options <<
         AssessmentQuestionOption.new(name: 'Sample Option', index: 0, value: 1,
                                      assessment_question: @assessment_question)
-    @assessment = Assessment.find_by_key(params[:assessment_key])
+    if params[:assessment_key]
+      @assessment = Assessment.find_by_key(params[:assessment_key])
+    else
+      @assessment = AssessmentSection.find(params[:assessment_section_id]).assessment
+    end
   end
 
   def update
