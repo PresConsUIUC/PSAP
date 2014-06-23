@@ -61,6 +61,9 @@ class LocationsController < ApplicationController
               @location.id,
               @location.resources.map{ |res| res.id }).
         order(created_at: :desc)
+
+    @import = ArchivesspaceImport.new
+    @import.port = 80
   end
 
   def update

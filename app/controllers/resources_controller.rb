@@ -59,29 +59,22 @@ class ResourcesController < ApplicationController
     @resource.associate_assessment_question_responses
   end
 
-  # Responds to GET/POST /locations/:id/resources/import
+  # Responds to POST /locations/:id/resources/import
   def import
     @location = Location.find params[:location_id]
 
-    case request.method
-      when 'GET'
-        @import = ArchivesspaceImport.new
-        @import.port = 80
-        render 'import'
-      when 'POST'
-        command = ImportFromArchivesspaceEadCommand.new(
-            resource_import_params, current_user, request.remote_ip)
-        begin
-          command.execute
-        rescue => e
-          flash[:error] = "#{e}"
-          @import = command.object
-          render 'import'
-        else
-          flash[:success] = "Successfully imported resource "\
-          "\"#{command.created_resource.name}\"."
-          redirect_to @location
-        end
+    command = ImportFromArchivesspaceEadCommand.new(
+        resource_import_params, current_user, request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+      @import = command.object
+      render 'import'
+    else
+      flash[:success] = "Successfully imported resource "\
+      "\"#{command.created_resource.name}\"."
+      redirect_to @location
     end
   end
 
