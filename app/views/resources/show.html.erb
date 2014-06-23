@@ -88,192 +88,205 @@
   </div>
 </div>
 
-<div class="row">
+<ul class="nav nav-tabs">
+  <% if @resource.children.any? %>
+    <li class="active">
+      <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
+    </li>
+  <% end %>
+  <li <%= @resource.children.any? ? '' : 'class=active' %>>
+    <a href="#assessment_tab" data-toggle="tab">Assessment</a>
+  </li>
+  <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
+</ul>
 
-  <div class="col-sm-8">
+<div class="tab-content">
 
-    <ul class="nav nav-tabs">
-      <% if @resource.children.any? %>
-          <li class="active">
-            <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
-          </li>
-      <% end %>
-      <li <%= @resource.children.any? ? '' : 'class=active' %>>
-        <a href="#assessment" data-toggle="tab">Assessment</a>
-      </li>
-      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
-    </ul>
+  <% if @resource.children.any? %>
+    <div id="sub_resources" class="tab-pane active">
+      <%= render partial: 'resources/resources', locals: {
+              resources: @resource.children.paginate(page: 1, per_page: 9999999) } %>
+    </div>
+  <% end %>
 
-    <div class="tab-content">
+  <div id="assessment_tab" class="assessment tab-pane <%= @resource.children.any? ? '' : 'active' %>">
 
-      <% if @resource.children.any? %>
-          <div id="sub_resources" class="tab-pane active">
-            <%= render partial: 'resources/resources', locals: {
-                    resources: @resource.children.paginate(page: 1, per_page: 9999999) } %>
+    <div class="row">
+      <div class="col-sm-8">
+        <%= @resource.assessment_question_responses.length %> of
+          <%= Assessment.find_by_key('resource').question_count %> questions complete
+      </div>
+      <div class="col-sm-4" style="text-align:center">
+          Score: X <!-- TODO: -->
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar"
+               aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
           </div>
-      <% end %>
-
-      <% if @resource.assessment_percent_complete < 1 %>
-          <div id="assessment" class="assessment incomplete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
-
-            <h3><%= number_to_human @resource.assessment_percent_complete * 100 %>% complete</h3>
-
-            <div class="progress">
-              <div class="progress-bar" role="progressbar"
-                   aria-valuenow="<%= @resource.assessment_percent_complete %>"
-                   aria-valuemin="0" aria-valuemax="1"
-                   style="width:<%= @resource.assessment_percent_complete * 100 %>%;">
-              <span class="sr-only">
-                <%= number_to_human @resource.assessment_percent_complete * 100 %>% Complete</span>
-              </div>
-            </div>
-
-            <% button_text = @resource.assessment_percent_complete == 0 ? 'Begin' : 'Continue' %>
-            <p><%= link_to button_text, edit_resource_path(@resource),
-                           class: 'btn btn-default btn-lg' %></p>
-
-          </div>
-      <% else %>
-          <div id="assessment" class="assessment complete tab-pane <%= @resource.children.any? ? '' : 'active' %>">
-            <% i = 0; @assessment_sections.each do |section| # TODO: sub-questions %>
-
-                <% if i != 0 %>
-                    <hr>
-                <% end %>
-
-                <h3><%= section.name %></h3>
-
-                <dl>
-                <% section.assessment_questions.order(:index).each do |question| %>
-                    <dt><%= question.name %></dt>
-
-                    <% response = @resource.assessment_question_responses.where(assessment_question_id: question.id).first %>
-
-                    <dd>
-                      <ul>
-                      <% question.assessment_question_options.order(:index).each do |option| %>
-                          <li <%= option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
-                            <%= option.name %>
-                          </li>
-                      <% end %>
-                      </ul>
-                    </dd>
-                <% end %>
-                </dl>
-            <% i += 1; end %>
-
-            <% @resource.assessment_question_responses.each do |response| %>
-            <% end %>
-          </div>
-      <% end %>
-        <div id="activity_tab" class="tab-pane">
-          <%= render 'shared/events', events: @events %>
         </div>
-    </div> <!-- .tab-content -->
+      </div>
+    </div>
 
-  </div> <!-- .col-sm-8 -->
+    <div class="panel-group assessment" id="section-general">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#section-general" href="#general">
+              General
+            </a>
+          </h4>
+        </div>
+        <div id="general" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <div class="col-sm-4">
+              <dl>
+                <% if @resource.parent %>
+                  <dt>Parent Collection</dt>
+                  <dd><%= link_to @resource.parent.name, @resource.parent %></dd>
+                <% end %>
+                <dt>Local Identifier</dt>
+                <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
+                <% if @resource.creators.any? %>
+                  <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
+                  <dd>
+                    <% if @resource.creators.length == 1 %>
+                      <%= @resource.creators.first.name %>
+                    <% else %>
+                      <ul>
+                        <% for creator in @resource.creators %>
+                          <li><%= creator.name %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </dd>
+                <% end %>
+                <% if @resource.format %>
+                  <dt>Format</dt>
+                  <dd>
+                    <% if current_user.is_admin? %>
+                      <%= link_to @resource.format.name, @resource.format %>
+                    <% else %>
+                      <%= @resource.format.name %>
+                    <% end %>
+                  </dd>
+                <% end %>
+                <dt>Description</dt>
+                <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
+              </dl>
+            </div>
+            <div class="col-sm-4">
+              <dl>
+                <% if @resource.resource_notes.any? %>
+                  <dt>Notes</dt>
+                  <dd>
+                    <% if @resource.resource_notes.length == 1 %>
+                      <%= @resource.resource_notes[0].value %>
+                    <% else %>
+                      <ul>
+                        <% @resource.resource_notes.each do |note| %>
+                          <li><%= note.value %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </dd>
+                <% end %>
+                <% if @resource.resource_dates.any? %>
+                  <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
+                  <dd>
+                    <% if @resource.resource_dates.length == 1 %>
+                      <%= human_readable_date(@resource.resource_dates[0]) %>
+                    <% else %>
+                      <ul>
+                        <% for date in @resource.resource_dates %>
+                          <li><%= human_readable_date(date) %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </dd>
+                <% end %>
+                <% if @resource.subjects.any? %>
+                  <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
+                  <dd>
+                    <% if @resource.subjects.length == 1 %>
+                      <%= @resource.subjects.first.name %>
+                    <% else %>
+                      <ul>
+                        <% for subject in @resource.subjects %>
+                          <li><%= subject.name %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </dd>
+                <% end %>
+                <% if @resource.extents.any? %>
+                  <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
+                  <dd>
+                    <% if @resource.extents.length == 1 %>
+                      <%= @resource.extents.first.name %>
+                    <% else %>
+                      <ul>
+                        <% for extent in @resource.extents %>
+                          <li><%= extent.name %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </dd>
+                <% end %>
+              </dl>
+            </div>
+            <div class="col-sm-4">
+              <dl>
+                <% if @resource.rights %>
+                  <dt>Rights</dt>
+                  <dd><%= @resource.rights %></dd>
+                <% end %>
+                <dt>Created</dt>
+                <dd><%= local_time_ago(@resource.created_at) %> by
+                  <%= link_to @resource.user.full_name, @resource.user %></dd>
+                <dt>Last Updated</dt>
+                <dd><%= local_time_ago(@resource.updated_at) %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div class="col-sm-4 panel">
-    <dl>
-      <% if @resource.parent %>
-          <dt>Parent Collection</dt>
-          <dd><%= link_to @resource.parent.name, @resource.parent %></dd>
-      <% end %>
-      <dt>Local Identifier</dt>
-      <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
-      <% if @resource.creators.any? %>
-          <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
-          <dd>
-            <% if @resource.creators.length == 1 %>
-                <%= @resource.creators.first.name %>
-            <% else %>
-                <ul>
-                  <% for creator in @resource.creators %>
-                      <li><%= creator.name %></li>
-                  <% end %>
-                </ul>
-            <% end %>
-          </dd>
-      <% end %>
-      <% if @resource.format %>
-          <dt>Format</dt>
-          <dd>
-            <% if current_user.is_admin? %>
-                <%= link_to @resource.format.name, @resource.format %>
-            <% else %>
-                <%= @resource.format.name %>
-            <% end %>
-          </dd>
-      <% end %>
-      <dt>Description</dt>
-      <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
-      <% if @resource.resource_notes.any? %>
-          <dt>Notes</dt>
-          <dd>
-            <% if @resource.resource_notes.length == 1 %>
-                <%= @resource.resource_notes[0].value %>
-            <% else %>
-                <ul>
-                  <% @resource.resource_notes.each do |note| %>
-                      <li><%= note.value %></li>
-                  <% end %>
-                </ul>
-            <% end %>
-          </dd>
-      <% end %>
-      <% if @resource.resource_dates.any? %>
-          <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
-          <dd>
-            <% if @resource.resource_dates.length == 1 %>
-                <%= human_readable_date(@resource.resource_dates[0]) %>
-            <% else %>
-                <ul>
-                  <% for date in @resource.resource_dates %>
-                    <li><%= human_readable_date(date) %></li>
-                  <% end %>
-                </ul>
-            <% end %>
-          </dd>
-      <% end %>
-      <% if @resource.subjects.any? %>
-          <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
-          <dd>
-            <% if @resource.subjects.length == 1 %>
-                <%= @resource.subjects.first.name %>
-            <% else %>
-                <ul>
-                  <% for subject in @resource.subjects %>
-                      <li><%= subject.name %></li>
-                  <% end %>
-                </ul>
-            <% end %>
-          </dd>
-      <% end %>
-      <% if @resource.extents.any? %>
-          <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
-          <dd>
-            <% if @resource.extents.length == 1 %>
-                <%= @resource.extents.first.name %>
-            <% else %>
-                <ul>
-                  <% for extent in @resource.extents %>
-                      <li><%= extent.name %></li>
-                  <% end %>
-                </ul>
-            <% end %>
-          </dd>
-      <% end %>
-      <% if @resource.rights %>
-          <dt>Rights</dt>
-          <dd><%= @resource.rights %></dd>
-      <% end %>
-      <dt>Created</dt>
-      <dd><%= local_time_ago(@resource.created_at) %> by
-        <%= link_to @resource.user.full_name, @resource.user %></dd>
-      <dt>Last Updated</dt>
-      <dd><%= local_time_ago(@resource.updated_at) %></dd>
-    </dl>
+      <% i = 0; @assessment_sections.each do |section| # TODO: sub-questions %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#section-<%= section.id %>">
+                      <%= section.name %>
+                      <small>(<%= @resource.assessment_question_responses.
+                                          where('assessment_question_id IN (?)', section.assessment_questions.map{ |q| q.id }).
+                                          length %> of <%= section.assessment_questions.length %> complete)</small>
+                  </a>
+              </h4>
+          </div>
+          <div id="section-<%= section.id %>" class="panel-collapse collapse">
+            <div class="panel-body">
+              <% section.assessment_questions.order(:index).each do |question| %>
+                <dt><%= question.name %></dt>
 
-  </div> <!-- .col-sm-8 -->
+                <% response = @resource.assessment_question_responses.where(assessment_question_id: question.id).first %>
 
-</div> <!-- .row -->
+                <dd>
+                  <ul>
+                    <% question.assessment_question_options.order(:index).each do |option| %>
+                      <li <%= response && option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
+                        <%= option.name %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </dd>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% i += 1; end %>
+    </div>
+  </div>
+
+  <div id="activity_tab" class="tab-pane">
+    <%= render 'shared/events', events: @events %>
+  </div>
+</div> <!-- .tab-content -->

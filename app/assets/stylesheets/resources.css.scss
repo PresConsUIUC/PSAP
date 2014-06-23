@@ -6,21 +6,7 @@ body#new_resource, body#edit_resource {
   }
 }
 
-body#show_resource div.assessment.incomplete {
-  h3 {
-    margin:2em;
-    text-align:center;
-  }
-  div.progress {
-    height:20px;
-    margin:2em;
-  }
-  p {
-    text-align: center;
-  }
-}
-
-body#show_resource div.assessment.complete {
+body#show_resource div.assessment {
   ul {
     list-style:none;
     margin-left:0.2em;

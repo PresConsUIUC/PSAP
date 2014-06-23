@@ -13,4 +13,11 @@ class Assessment < ActiveRecord::Base
     !new_record?
   end
 
+  def question_count
+    count = 0
+    self.assessment_sections.select{ |s|
+      count += s.assessment_questions.length }
+    count
+  end
+
 end
