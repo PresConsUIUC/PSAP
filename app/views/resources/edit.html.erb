@@ -23,7 +23,7 @@
 
 <div class="row">
   <div class="col-sm-7">
-    <h1>Assess <%= @resource.name %></h1>
+    <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
   </div>
   <div class="col-sm-5">
     <span id="question_response_count"><%= @resource.assessment_question_responses.length %></span> of
