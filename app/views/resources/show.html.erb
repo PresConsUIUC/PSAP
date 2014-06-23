@@ -273,7 +273,8 @@
                 <dd>
                   <ul>
                     <% question.assessment_question_options.order(:index).each do |option| %>
-                      <li <%= response && option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
+                      <li <%= response && response.assessment_question_option &&
+                                      option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
                         <%= option.name %>
                       </li>
                     <% end %>
