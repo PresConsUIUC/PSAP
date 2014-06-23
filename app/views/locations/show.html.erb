@@ -2,7 +2,7 @@
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li>
     <%= link_to @location.repository.institution.name,
@@ -26,13 +26,18 @@
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Assess a Resource Here
       <% end %>
-      <!-- Import from ArchivesSpace button -->
-      <%= link_to location_resource_import_get_path(@location), class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-import') %>
-          Import an ArchivesSpace Resource
-      <% end %>
+      <!-- Import button -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-save"></span> Import
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><%= link_to 'From ArchivesSpace', location_resource_import_get_path(@location) %></li>
+        </ul>
+      </div>
       <!-- Edit -->
-      <%= link_to edit_location_path(@location), class: 'btn btn-default btn-default' do %>
+      <%= link_to edit_location_path(@location), class: 'btn btn-default' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
           Edit
       <% end %>
@@ -64,12 +69,12 @@
 
       <div class="tab-pane active" id="resources_tab">
         <% if @resources.any? %>
-            <div id="resources">
-              <%= render partial: 'resources/resources',
-                         locals: { resources: @resources } %>
-            </div>
+          <div id="resources">
+            <%= render partial: 'resources/resources',
+                       locals: { resources: @resources } %>
+          </div>
         <% else %>
-            <p>There are no resources in this location.</p>
+          <p>There are no resources in this location.</p>
         <% end %>
       </div>
 
@@ -83,10 +88,10 @@
 
   <div class="col-sm-4 panel">
     <% if @location.description %>
-        <dl>
-          <dt>Description</dt>
-          <dd><%= @location.description %></dd>
-        </dl>
+      <dl>
+        <dt>Description</dt>
+        <dd><%= @location.description %></dd>
+      </dl>
     <% end %>
   </div>
 
