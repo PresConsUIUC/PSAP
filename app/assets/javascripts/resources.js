@@ -44,7 +44,7 @@ var ready = function() {
                 }).trigger('PSAPFormSectionAdded');
 
                 ResourceForm.updateDependentQuestions();
-                ResourceForm.updateProgressBar();
+                ResourceForm.updateProgress();
                 ResourceForm.updateScoreBar();
 
                 $('button.save').on('click', function(event) {
@@ -88,7 +88,7 @@ var ready = function() {
                 $('.question input, .question select').on('change',
                     function(event) {
                         ResourceForm.updateDependentQuestions();
-                        ResourceForm.updateProgressBar();
+                        ResourceForm.updateProgress();
                         ResourceForm.updateScoreBar();
                     }).trigger('change');
             },
@@ -144,7 +144,7 @@ var ready = function() {
                 $('div.progress-bar.score').attr('style', 'width:' + score * 100 + '%');
             },
 
-            updateProgressBar: function() {
+            updateProgress: function() {
                 var numQuestions = $('.question').length;
                 var numAnsweredQuestions = 0;
                 $('.question').each(function() {
@@ -155,8 +155,9 @@ var ready = function() {
                         numAnsweredQuestions++;
                     }
                 });
-                $('div.progress-bar.psap-progress').attr('style',
-                        'width:' + numAnsweredQuestions / numQuestions * 100 + '%');
+                $('#question_response_count').text(numAnsweredQuestions);
+                //$('div.progress-bar.psap-progress').attr('style',
+                //        'width:' + numAnsweredQuestions / numQuestions * 100 + '%');
             }
 
         };
