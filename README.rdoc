@@ -1,29 +1,5 @@
 == README
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-
-Roles and permissions
-
-PSAP uses role-based authorization. Each user is assigned to a single role,
-which is associated with zero or more unique permissions, each of which enable
-users in the role to perform various actions. The system administrator role is
-an exception; although not explicitly associated with any permissions, it is
-able to do anything. PSAP comes with two different roles: system administrator,
-and normal user. The latter can be modified, and additional roles can be added.
-
 Development
 
 This project uses the "Gitflow" git workflow, illustrated at:
@@ -33,13 +9,14 @@ This project uses the "Gitflow" git workflow, illustrated at:
 Coding Standards
 
 Indentation is two spaces. Spaces are used instead of tabs. 80-character
-margins are aimed for.
+margins are aimed for but sometimes exceeded, especially in the view templates.
 
 Mail
 
 In development, you will need to copy the SMTP server password to a file
-called ".smtp_dev_password" in the application root. Contact a project member
-to obtain this password.
+called ".smtp_dev_password" in the application root. Either contact a project
+member to obtain this password, or use a different SMTP server in
+config/environments/development.rb.
 
 Deployment
 
