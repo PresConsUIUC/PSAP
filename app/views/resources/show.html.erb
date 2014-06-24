@@ -251,7 +251,7 @@
         </div>
       </div>
 
-      <% i = 0; @assessment_sections.each do |section| # TODO: sub-questions %>
+      <% i = 0; @assessment_sections.each do |section| %>
         <div class="panel panel-default">
           <div class="panel-heading">
               <h4 class="panel-title">
@@ -266,22 +266,10 @@
           </div>
           <div id="section-<%= section.id %>" class="panel-collapse collapse">
             <div class="panel-body">
-              <% section.assessment_questions.order(:index).each do |question| %>
-                <dt><%= question.name %></dt>
-
-                <% response = @resource.assessment_question_responses.where(assessment_question_id: question.id).first %>
-
-                <dd>
-                  <ul>
-                    <% question.assessment_question_options.order(:index).each do |option| %>
-                      <li <%= response && response.assessment_question_option &&
-                                      option.id == response.assessment_question_option.id ? 'class=selected' : '' %>>
-                        <%= option.name %>
-                      </li>
-                    <% end %>
-                  </ul>
-                </dd>
-              <% end %>
+              <%= render partial: 'assessment_questions', locals: {
+                      resource: @resource,
+                      assessment_questions: section.assessment_questions.where(parent_id: nil).order(:index),
+                      depth: 0 } %>
             </div>
           </div>
         </div>

@@ -7,6 +7,17 @@ body#new_resource, body#edit_resource {
 }
 
 body#show_resource div.assessment {
+
+  dt.depth-1, dd.depth-1 { padding-left:1.5em; }
+  dt.depth-2, dd.depth-2 { padding-left:3em; }
+  dt.depth-3, dd.depth-3 { padding-left:4.5em; }
+  dt.depth-4, dd.depth-4 { padding-left:6em; }
+  dt.depth-5, dd.depth-5 { padding-left:7.5em; }
+  dt.depth-6, dd.depth-6 { padding-left:9em; }
+  dt.depth-7, dd.depth-7 { padding-left:10.5em; }
+  dt.depth-8, dd.depth-8 { padding-left:12em; }
+  dt.depth-9, dd.depth-9 { padding-left:13.5em; }
+
   ul {
     list-style:none;
     margin-left:0.2em;
