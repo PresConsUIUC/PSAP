@@ -17,7 +17,7 @@
 <div class="form-group has-feedback">
   <%= f.label :parent_id, 'Sub-Question Of' %>
   <%= select('assessment_question', 'parent_id',
-             assessment_question_options_for_select, # TODO: &nbsps appear
+             assessment_question_options_for_select,
              { include_blank: true },
              { class: 'form-control' }) %>
 </div>

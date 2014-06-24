@@ -10,7 +10,7 @@ module AssessmentQuestionsHelper
   def values_for_select(questions, pairs = [], depth = 0)
     space = '&nbsp;&nbsp;&nbsp;&nbsp;' * depth
     questions.each do |question|
-      pairs << ["#{space}#{question.name}", question.id]
+      pairs << [raw("#{space}#{question.name}"), question.id]
       if question.children.any?
         values_for_select(question.children.order(:index), pairs, depth + 1)
       end
