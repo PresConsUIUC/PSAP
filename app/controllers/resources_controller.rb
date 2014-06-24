@@ -89,13 +89,14 @@ class ResourcesController < ApplicationController
       @resource = @location.resources.build
       @resource.parent = parent_resource
 
-      # TODO: the sub-resource needs to inherit values from its parent
+      # the sub-resource needs to inherit certain values from its parent
       # https://github.com/PresConsUIUC/PSAP/issues/39
+      @resource.creators = @resource.parent.creators.map{ |c| c.dup }
     end
 
     # New resources will get 1 of each dependent entity, to populate the form.
     # Additional ones may be created in JavaScript.
-    @resource.creators.build
+    @resource.creators.build unless params[:resource_id]
     @resource.extents.build
     @resource.resource_dates.build
     @resource.resource_notes.build
