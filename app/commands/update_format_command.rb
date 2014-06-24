@@ -9,23 +9,24 @@ class UpdateFormatCommand < Command
 
   def execute
     begin
+      original_name = @format.name
       @format.update!(@format_params)
-    rescue ActiveRecord::RecordInvalid # TODO: messages use new name (which may be changed/invalid)
+    rescue ActiveRecord::RecordInvalid
       @format.events << Event.create(
-          description: "Attempted to update format \"#{@format.name},\" but "\
+          description: "Attempted to update format \"#{original_name},\" but "\
           "failed: #{@format.errors.full_messages[0]}",
           user: @doing_user, address: @remote_ip,
           event_level: EventLevel::DEBUG)
       raise ValidationError,
-            "Failed to update format \"#{@format.name}\": "\
+            "Failed to update format \"#{original_name}\": "\
             "#{@format.errors.full_messages[0]}"
     rescue => e
       @format.events << Event.create(
           description: "Attempted to update format "\
-          "\"#{@format.name},\" but failed: #{e.message}",
+          "\"#{original_name},\" but failed: #{e.message}",
           user: @doing_user, address: @remote_ip,
           event_level: EventLevel::ERROR)
-      raise "Failed to update format \"#{@format.name}\": #{e.message}"
+      raise "Failed to update format \"#{original_name}\": #{e.message}"
     else
       @format.events << Event.create(
           description: "Updated format \"#{@format.name}\"",
