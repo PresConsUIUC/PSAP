@@ -48,11 +48,14 @@
               data-content="Is this an Item or Collection? Indicate the hierarchical level of the resource. REQUIRED.">
         ?
       </button>
-      <%= select('resource', 'resource_type',
-                 options_for_select([['Collection', ResourceType::COLLECTION],
-                                     ['Item', ResourceType::ITEM]]),
-                 { include_blank: false },
-                 { class: 'form-control' }) %>
+      <div class="radio">
+        <%= f.radio_button :resource_type, ResourceType::ITEM %>
+        <%= f.label :resource_type, 'Item', value: ResourceType::ITEM %>
+      </div>
+      <div class="radio">
+        <%= f.radio_button :resource_type, ResourceType::COLLECTION %>
+        <%= f.label :resource_type, 'Collection', value: ResourceType::COLLECTION %>
+      </div>
     </div>
 
     <div class="form-group">
