@@ -31,6 +31,8 @@ class Resource < ActiveRecord::Base
   validates :resource_type, presence: true
   validates :user, presence: true
 
+  validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
+
   before_save :update_assessment_percent_complete, :update_assessment_score
 
   def associate_assessment_question_responses
@@ -101,6 +103,17 @@ class Resource < ActiveRecord::Base
         'Collection'
       when ResourceType::ITEM
         'Item'
+    end
+  end
+
+  def readable_significance
+    case significance
+      when ResourceSignificance::LOW
+        'Low'
+      when ResourceSignificance::MODERATE
+        'Moderate'
+      when ResourceSignificance::HIGH
+        'High'
     end
   end
 

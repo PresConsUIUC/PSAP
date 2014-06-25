@@ -3,6 +3,28 @@
 <%= form_for @resource, url: form_url, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
+    <div class="form-group">
+      <%= f.label :significance %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="Here you may assign a level of significance of this item at your organization. You may want to differentiate between items of higher and lesser significance when apportioning funds for preservation. Choosing the level of significance here will not impact your preservation assessment score but can allow you to order your decision list by significance level. OPTIONAL.">
+        ?
+      </button>
+
+      <div class="radio">
+        <%= f.radio_button :significance, '0' %>
+        <%= f.label :significance, 'Low', value: '0' %>
+      </div>
+      <div class="radio">
+        <%= f.radio_button :significance, '0.5' %>
+        <%= f.label :significance, 'Moderate', value: '0.5' %>
+      </div>
+      <div class="radio">
+        <%= f.radio_button :significance, '1' %>
+        <%= f.label :significance, 'High', value: '1' %>
+      </div>
+    </div>
+
     <div class="form-group addable_removable">
       <%= f.label :creators, 'Creator(s)' %>
 

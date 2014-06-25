@@ -178,7 +178,7 @@ class ResourcesController < ApplicationController
     params.require(:resource).permit(:description, :format_id,
                                      :local_identifier, :location_id, :name,
                                      :notes, :parent_id, :resource_type,
-                                     :user_id,
+                                     :significance, :user_id,
                                      creators_attributes: [:id, :creator_type,
                                                            :name],
                                      extents_attributes: [:id, :name],

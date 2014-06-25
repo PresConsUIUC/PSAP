@@ -236,6 +236,10 @@
             </div>
             <div class="col-sm-4">
               <dl>
+                <% if @resource.significance %>
+                  <dt>Significance</dt>
+                  <dd><%= @resource.readable_significance %></dd>
+                <% end %>
                 <% if @resource.rights %>
                   <dt>Rights</dt>
                   <dd><%= @resource.rights %></dd>

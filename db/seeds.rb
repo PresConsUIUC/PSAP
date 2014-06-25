@@ -814,6 +814,7 @@ case Rails.env
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Dead Sea Scrolls',
@@ -822,6 +823,7 @@ case Rails.env
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[1],
         { name: 'Sears Catalog Collection',
@@ -829,6 +831,7 @@ case Rails.env
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[1],
         { name: 'Farmer\'s Almanac Collection',
@@ -836,6 +839,7 @@ case Rails.env
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Treaty of Verdun',
@@ -844,6 +848,7 @@ case Rails.env
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Declaration of Paris',
@@ -852,6 +857,7 @@ case Rails.env
           user: disabled_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
+          significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[3],
         { name: 'Cat Fancy Collection',
