@@ -5,8 +5,12 @@ body#new_resource, body#edit_resource {
     top:70px;
   }
   div.form-group .btn-default.help {
+    background-color:#c0c0ff;
     border:none;
+    color:white;
+    font-weight:bold;
     height:20px;
+    margin:0px 0px 5px 0.4em;
     padding:0px;
     width:20px;
   }
