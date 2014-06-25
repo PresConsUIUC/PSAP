@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140623151140) do
+ActiveRecord::Schema.define(version: 20140625182827) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -151,7 +151,10 @@ ActiveRecord::Schema.define(version: 20140623151140) do
     t.boolean  "obsolete"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
   end
+
+  add_index "formats", ["parent_id"], name: "index_formats_on_parent_id"
 
   create_table "institutions", force: true do |t|
     t.string   "name",        null: false

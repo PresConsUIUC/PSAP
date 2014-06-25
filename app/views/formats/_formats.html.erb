@@ -3,24 +3,13 @@
 
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th></th>
-    <th><%= sortable 'name' %></th>
-    <th><%= sortable 'score', 'Score / 1' %></th>
-    <th><%= sortable 'obsolete' %></th>
-  </tr>
+    <tr>
+      <th><%= sortable 'name' %></th>
+      <th><%= sortable 'score', 'Score / 1' %></th>
+      <th><%= sortable 'obsolete' %></th>
+    </tr>
   </thead>
   <tbody>
-  <% @formats.each do |format| %>
-      <tr>
-        <td>
-          <%= link_to 'Edit', edit_format_path(format) %>
-        </td>
-        <td><%= link_to format.name, format %></td>
-        <td><%= format.score %></td>
-        <td><%= format.obsolete ? raw('&check;') : '' %></td>
-      </tr>
-  <% end %>
+    <%= render partial: 'format_rows', locals: { formats: @formats, depth: 0 } %>
   </tbody>
-
 </table>

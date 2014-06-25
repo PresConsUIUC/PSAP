@@ -1,0 +1,12 @@
+<% formats.each do |format| %>
+  <tr>
+    <td class="depth-<%= depth %>">
+      <%= depth > 0 ? raw('&#8627; ') : '' %>
+      <%= link_to format.name, format %>
+    </td>
+    <td><%= format.score %></td>
+    <td><%= format.obsolete ? raw('&check;') : '' %></td>
+  </tr>
+  <%= render partial: 'format_rows',
+             locals: { formats: format.children.order(:name), depth: depth + 1 } if format.children.any? %>
+<% end %>

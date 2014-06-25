@@ -1,7 +1,10 @@
 class Format < ActiveRecord::Base
+  has_many :children, class_name: 'Format', foreign_key: 'parent_id',
+           inverse_of: :parent, dependent: :destroy
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
   has_and_belongs_to_many :events
+  belongs_to :parent, class_name: 'Format', inverse_of: :children
 
   accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 

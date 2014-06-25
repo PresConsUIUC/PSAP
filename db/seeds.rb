@@ -495,22 +495,18 @@ languages = [
 ]
 
 # Formats
-format_commands = [
-    CreateFormatCommand.new(
-        { name: 'Used Napkin', score: 0, obsolete: true }, nil, '127.0.0.1'),
-    CreateFormatCommand.new(
-        { name: 'Soiled Handkerchief', score: 0.375, obsolete: true }, nil, '127.0.0.1'),
-    CreateFormatCommand.new(
-        { name: 'Dirty Bed Sheet', score: 0.875, obsolete: false }, nil, '127.0.0.1'),
-    CreateFormatCommand.new(
-        { name: 'Wet Bath Towel', score: 0.375, obsolete: true }, nil, '127.0.0.1'),
-    CreateFormatCommand.new(
-        { name: 'Manila Envelope', score: 0.875, obsolete: false }, nil, '127.0.0.1'),
-    CreateFormatCommand.new(
-        { name: 'Post-It Note', score: 0.375, obsolete: false }, nil, '127.0.0.1'),
+formats = [
+    Format.create!(name: 'Used Napkin', score: 0, obsolete: true),
+    Format.create!(name: 'Soiled Handkerchief', score: 0.375, obsolete: true),
+    Format.create!(name: 'Dirty Bed Sheet', score: 0.875, obsolete: false),
+    Format.create!(name: 'Wet Bath Towel', score: 0.375, obsolete: true),
+    Format.create!(name: 'Manila Envelope', score: 0.875, obsolete: false),
+    Format.create!(name: 'Post-It Note', score: 0.375, obsolete: false)
 ]
 
-formats = format_commands.map{ |command| command.execute; command.object }
+Format.create!(name: 'Used Napkin With Barbecue Sauce', score: 0.375, obsolete: true, parent: formats[0])
+Format.create!(name: 'Slightly Damp Bath Towel', score: 0.375, obsolete: true, parent: formats[3])
+Format.create!(name: 'Soaking Wet Bath Towel', score: 0.375, obsolete: true, parent: formats[3])
 
 # Assessments
 assessments = [

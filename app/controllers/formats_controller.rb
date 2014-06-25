@@ -40,7 +40,7 @@ class FormatsController < ApplicationController
   end
 
   def index
-    @formats = Format.where('name LIKE ?', "%#{params[:q]}%").
+    @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
         order("#{sort_column} #{sort_direction}")
   end
 
@@ -76,7 +76,7 @@ class FormatsController < ApplicationController
   private
 
   def format_params
-    params.require(:format).permit(:name, :score, :obsolete,
+    params.require(:format).permit(:name, :score, :obsolete, :parent_id,
                                    temperature_ranges_attributes: [:id,
                                                                    :min_temp_f,
                                                                    :max_temp_f,
