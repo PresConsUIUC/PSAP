@@ -16,7 +16,7 @@ var ready = function() {
     $('.pagination a').attr('data-remote', 'true');
 
     // enable bootstrap popovers
-    $('button[data-toggle="popover"]').popover();
+    $('button[data-toggle="popover"]').popover({ html: true });
     // close popovers on outside clicks
     $('body').on('click', function(e) {
         if ($(e.target).data('toggle') !== 'popover'

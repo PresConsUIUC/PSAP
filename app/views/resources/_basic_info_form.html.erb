@@ -5,19 +5,49 @@
 
     <div class="form-group">
       <%= f.label :name %>
+      <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
+              data-content="<p>Name or title used to refer to this <b>resource</b>. REQUIRED.</p>
+            <p>Examples:</p>
+            <ul>
+                <li>William G. Hill Papers;</li>
+                <li>Crystal Lake Map, 1809;</li>
+                <li>Weyland-Yutani Collection;</li>
+                <li>3000 Miles from Finland;</li>
+                <li>Herald-Whig Photographic File;</li>
+                <li>Rotary International Center Proposal</li>
+            </ul>">
+        ?
+      </button>
       <%= f.text_field :name, class: 'form-control' %>
     </div>
 
     <div class="form-group">
-      <%= f.label :parent_id, 'Parent Resource' %>
-      <%= select('resource', 'parent_id',
-                 resource_hierarchy_options_for_select(@resource.location),
-                 { include_blank: 'None (Top-Level)' },
-                 { class: 'form-control' }) %>
+      <%= f.label :local_identifier %>
+      <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
+              data-content="<p>Identification number or code assigned to each resource at your organization. REQUIRED.</p>
+
+                <p>Identifiers are typically unique, and often sequential. But whatever works for your organization
+                and makes sense for your collections is valid. If this resource has none, assign a temporary or
+                placeholder ID.</p>
+
+                <p>Examples:</p>
+                <ul>
+                    <li>85.000  (First item accessioned in 1985)</li>
+                    <li>11/6/20  (Record group, series, item numbers)</li>
+                    <li>film187  (187th film in collection)</li>
+                    <li>PP-ER1  (Personal papers [PP] of Ellen Ripley [ER], the first [1] with these initials)</li>
+                </ul>">
+        ?
+      </button>
+      <%= f.text_field :local_identifier, class: 'form-control' %>
     </div>
 
     <div class="form-group">
       <%= f.label :resource_type %>
+      <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
+              data-content="Is this an Item or Collection? Indicate the hierarchical level of the resource. REQUIRED.">
+        ?
+      </button>
       <%= select('resource', 'resource_type',
                  options_for_select([['Collection', ResourceType::COLLECTION],
                                      ['Item', ResourceType::ITEM]]),
@@ -26,14 +56,23 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :language %>
-      <%= f.collection_select :language_id, Language.all, :id, :english_name,
-                              { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
-                              { class: 'form-control' } %>
+      <%= f.label :parent_id, 'Parent Resource' %>
+      <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
+              data-content="Indicate the parent collection or group in which the resource resides. If this resource is a collection at the top-level, or is unassociated with any established collection or group, select <em>None (Top-Level)</em>. REQUIRED.">
+        ?
+      </button>
+      <%= select('resource', 'parent_id',
+                 resource_hierarchy_options_for_select(@resource.location),
+                 { include_blank: 'None (Top-Level)' },
+                 { class: 'form-control' }) %>
     </div>
 
     <div class="form-group">
       <%= f.label :format %>
+      <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
+              data-content="Select the appropriate format of the resource (item or collection part) you are assessing. If you need help, select <em>Format ID Guide</em> from the top utility bar to determine what you have.">
+        ?
+      </button>
       <%= f.collection_select :format_id, Format.all.order(:name), :id, :name,
                               { include_blank: false },
                               { class: 'form-control' } %>
