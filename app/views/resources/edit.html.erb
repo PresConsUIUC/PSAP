@@ -44,7 +44,7 @@
     <div id="sections">
         <nav>
           <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#general">General</a></li>
+            <li class="active"><a href="#basic_info">Basic Info</a></li>
             <% @assessment_sections.each do |section| %>
                 <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %>
                     <small>(<%= section.assessment_questions.length %>)</small></a></li>
@@ -74,8 +74,8 @@
 
   <div class="col-sm-9 tab-content">
 
-    <div id="general" class="tab-pane active">
-      <%= render 'general_form', form_url: @resource %>
+    <div id="basic_info" class="tab-pane active">
+      <%= render 'basic_info_form', form_url: @resource %>
     </div>
 
     <% @assessment_sections.each do |section| %>

@@ -45,7 +45,7 @@
       <div id="sections" data-spy="affix">
         <nav>
           <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#general">General</a></li>
+            <li class="active"><a href="#basic_info">Basic Info</a></li>
             <% @assessment_sections.each do |section| %>
                 <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a></li>
             <% end %>
@@ -89,8 +89,8 @@
 
   <div class="col-sm-9 tab-content">
 
-    <div id="general" class="tab-pane active">
-      <%= render 'general_form', form_url: location_resources_path(@location) %>
+    <div id="basic_info" class="tab-pane active">
+      <%= render 'basic_info_form', form_url: location_resources_path(@location) %>
     </div>
 
     <% @assessment_sections.each do |section| %>
