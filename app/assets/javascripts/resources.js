@@ -23,12 +23,9 @@ var ready = function() {
     } else if ($('body#new_resource').length
         || $('body#edit_resource').length) {
 
-        $('#sections').affix({
+        $('#sections').affix({ // TODO: broken on narrow screens and glitchy on short screens
             offset: {
-                top: 220,
-                bottom: function() {
-                    return (this.bottom = $('footer').outerHeight(true))
-                }
+                top: 220
             }
         });
 
