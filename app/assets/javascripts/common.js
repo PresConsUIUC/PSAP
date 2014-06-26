@@ -28,6 +28,22 @@ var ready = function() {
         });
     });
 
+    // open & close popovers on hover-in & out
+    var should_open = true;
+    $('label').on('mouseover', function() {
+        should_open = true;
+        var label = $(this);
+        setTimeout(function() {
+            if (should_open) {
+                label.next('button[data-toggle="popover"]').popover('show');
+            }
+        }, 1000);
+    });
+    $('label').on('mouseout', function() {
+        should_open = false;
+        $(this).next('button[data-toggle="popover"]').popover('hide');
+    });
+
     // Entity live-search forms
     $('.entity_search').submit(function() {
         $.get(this.action, $(this).serialize(), null, 'script');
