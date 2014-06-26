@@ -40,6 +40,7 @@ var ready = function() {
                     ResourceForm.attachEventListeners();
                 }).trigger('PSAPFormSectionAdded');
 
+                ResourceForm.initSuggestions();
                 ResourceForm.updateDependentQuestions();
                 ResourceForm.updateProgress();
                 ResourceForm.updateScoreBar();
@@ -88,6 +89,19 @@ var ready = function() {
                         ResourceForm.updateProgress();
                         ResourceForm.updateScoreBar();
                     }).trigger('change');
+            },
+
+            initSuggestions: function() {
+                var institution_id = $('input[name="institution_id"]').val();
+                $('input#resource_name').typeahead({
+                    name: 'names',
+                    prefetch: '/institutions/' + institution_id + '/resources/names.json',
+                    limit: 10
+                });
+
+                // fix incompatibilities with bootstrap
+                $('.typeahead').parent().css('display', '');
+                $('.tt-hint').addClass('form-control');
             },
 
             updateDependentQuestions: function() {

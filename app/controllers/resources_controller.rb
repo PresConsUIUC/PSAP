@@ -1,10 +1,9 @@
 class ResourcesController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new, :create,
-                                                           :edit, :import,
-                                                           :update, :show,
-                                                           :destroy]
+  before_action :user_of_same_institution_or_admin,
+                only: [:new, :create, :edit, :import, :names, :update, :show,
+                       :destroy]
 
   def create
     @location = Location.find(params[:location_id])
@@ -76,6 +75,17 @@ class ResourcesController < ApplicationController
       "\"#{command.created_resource.name}\"."
       redirect_to @location
     end
+  end
+
+  ##
+  # Responds to /institutions/:id/resources/names
+  def names
+    render json: Resource.
+        joins('LEFT JOIN locations ON locations.id = resources.location_id').
+        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
+        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
+        where('institutions.id = ?', params[:institution_id]).
+        map{ |r| r.name }
   end
 
   def new
@@ -157,15 +167,16 @@ class ResourcesController < ApplicationController
     # Administrators can edit any resource.
     if params[:id]
       resource = Resource.find(params[:id])
-      location = resource.location
+      institution = resource.location.repository.institution
     elsif params[:location_id]
-      location = Location.find(params[:location_id])
+      institution = Location.find(params[:location_id]).repository.institution
     elsif params[:resource_id]
       parent_resource = Resource.find(params[:resource_id])
-      location = parent_resource.location
+      institution = parent_resource.location.repository.institution
+    elsif params[:institution_id]
+      institution = Institution.find(params[:institution_id])
     end
-    redirect_to(root_url) unless
-        location.repository.institution.users.include?(current_user) ||
+    redirect_to(root_url) unless institution.users.include?(current_user) ||
             current_user.is_admin?
   end
 

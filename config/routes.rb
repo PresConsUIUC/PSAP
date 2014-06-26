@@ -85,6 +85,7 @@ Psap::Application.routes.draw do
   resources :formats
   resources :institutions do
     resources :repositories, except: :index
+    match '/resources/names', to: 'resources#names', via: 'get'
   end
   match '/institutions/:id/report', to: 'institutions#report', via: 'get',
         as: 'institution_report'
