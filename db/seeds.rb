@@ -504,9 +504,12 @@ formats = [
     Format.create!(name: 'Post-It Note', score: 0.375, obsolete: false)
 ]
 
-Format.create!(name: 'Used Napkin With Barbecue Sauce', score: 0.375, obsolete: true, parent: formats[0])
-Format.create!(name: 'Slightly Damp Bath Towel', score: 0.375, obsolete: true, parent: formats[3])
-Format.create!(name: 'Soaking Wet Bath Towel', score: 0.375, obsolete: true, parent: formats[3])
+formats << Format.create!(name: 'Used Napkin With Barbecue Sauce', score: 0.375,
+                          obsolete: true, parent: formats[0])
+formats << Format.create!(name: 'Slightly Damp Bath Towel', score: 0.375,
+                          obsolete: true, parent: formats[3])
+formats << Format.create!(name: 'Soaking Wet Bath Towel', score: 0.375,
+                          obsolete: true, parent: formats[3])
 
 # Assessments
 assessments = [
