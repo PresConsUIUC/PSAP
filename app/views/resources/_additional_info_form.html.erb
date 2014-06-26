@@ -11,7 +11,11 @@
       <%= f.label :significance %>
       <button type="button" class="btn btn-default help" data-container="body"
               data-toggle="popover" data-placement="right"
-              data-content="Here you may assign a level of significance of this item at your organization. You may want to differentiate between items of higher and lesser significance when apportioning funds for preservation. Choosing the level of significance here will not impact your preservation assessment score but can allow you to order your decision list by significance level. OPTIONAL.">
+              data-content="<p>Select the significance of this resource to your organization. OPTIONAL.</p>
+              <p>Here you may assign a level of significance of this item at your organization. You may want
+              to differentiate between items of higher and lesser significance when apportioning funds for
+              preservation. Choosing the level of significance here will not impact your preservation
+              assessment score but can allow you to order your decision list by significance level.</p>">
         ?
       </button>
 
@@ -31,6 +35,22 @@
 
     <div class="form-group addable_removable">
       <%= f.label :creators, 'Creator(s)' %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Indicate the person(s) or organization(s) responsible for producing this resource. OPTIONAL.</p>
+
+                <p>For a collection, there are likely to be numerous creators. Consistency is most crucial.</p>
+
+                <p>Examples:</p>
+                <ul>
+                    <li>Remi, Georges, 1907-1983</li>
+                    <li>Casterman (Firm)</li>
+                    <li>Highsmith, Patricia, 1921-1995</li>
+                    <li>Missouri EPA. Pollution Prevention Section</li>
+                    <li>University of Illinois at Urbana-Champaign. College of Engineering</li>
+                </ul>">
+        ?
+      </button>
 
       <%= f.fields_for :creators do |g| %>
           <div class="addable_removable_input_group well">
@@ -52,6 +72,29 @@
 
     <div class="form-group addable_removable">
       <%= f.label :resource_dates, 'Date(s)' %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Enter date(s) associated with an event in the life
+              cycle of the resource. Date of creation or availability of the
+              resource is typically addressed here. OPTIONAL.</p>
+
+              <p>The date value follows the YYYY-MM-DD syntax, and comes in three different forms (types):</p>
+              <dl>
+                <dt>Single date</dt>
+                <dd>Resource falls within a single year or has an exact date (e.g.
+                &quot;1987&quot; or &quot;1987-02-27&quot;)</dd>
+                <dt>Span/Inclusive range</dt>
+                <dd>Resource spans across a range of dates: the earliest and latest
+                dates (e.g. Begin: &quot;1987&quot;; End: &quot;2014&quot;)</dd>
+                <dt>Bulk range</dt>
+                <dd>Resource has a predominant focus in this date range; may be
+                used to complement a span/inclusive date range (e.g. Begin:
+                &quot;1987&quot;; End: &quot;2014&quot;)</dd>
+              </dl>
+
+              <p>If the full date is unknown, month and year (YYYY-MM) or just year (YYYY) may be used.</p>">
+        ?
+      </button>
 
       <%= f.fields_for :resource_dates do |g| %>
           <div class="addable_removable_input_group well">
@@ -136,6 +179,13 @@
 
     <div class="form-group">
       <%= f.label :language %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Indicate the primary language of the resource. OPTIONAL.</p>
+
+              <p>The language of the institution carries down to resources by default, but this can be altered.</p>">
+        ?
+      </button>
       <%= f.collection_select :language_id, Language.all, :id, :english_name,
                               { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
                               { class: 'form-control' } %>
@@ -143,6 +193,27 @@
 
     <div class="form-group addable_removable">
       <%= f.label :subjects, 'Subject(s)' %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Topic(s) of the content of the resource. OPTIONAL.</p>
+
+              <p>Subjects are typically expressed as keywords, phrases, or classification
+              codes. Recommended best practice is to select values from a controlled
+              vocabulary or formal classification scheme (e.g. LC Subject Headings, Name
+              Authority File). You may also choose to include a term or name that is
+              especially relevant at your organization. Consistency is most crucial.</p>
+
+              <p>Examples:</p>
+	          <ul>
+	            <li>Dogs</li>
+                <li>Radio broadcasting</li>
+                <li>Sound on film</li>
+                <li>Tykociner, Joseph T. (Joseph Tykocinski), 1877-1969
+                    <em>(Personal names may also be used as subjects)</em></li>
+                <li>Universities and colleges</li>
+              </ul>">
+        ?
+      </button>
 
       <%= f.fields_for :subjects do |g| %>
           <div class="addable_removable_input_group">
@@ -164,6 +235,26 @@
 
     <div class="form-group addable_removable">
       <%= f.label :extents, 'Extent(s)' %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Indicate the size (extent) and physical nature of
+              the resource. OPTIONAL.</p>
+
+              <p>Extent is composed of two parts: quantity and an expression of
+              extent (i.e. unit) or material type. Units of measurement will
+              depend upon the type of resource (item, collection) and its format
+              type.</p>
+
+              <p>Examples:</p>
+	          <ul>
+	            <li>1 photograph</li>
+                <li>3 boxes (72 discs, 140 sheets)</li>
+                <li>12 linear feet</li>
+                <li>1 blueprint</li>
+                <li>78 folders</li>
+              </ul>">
+        ?
+      </button>
 
       <%= f.fields_for :extents do |g| %>
           <div class="addable_removable_input_group">
@@ -185,16 +276,43 @@
 
     <div class="form-group">
       <%= f.label :rights %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Document information about rights held in and
+              over this resource. OPTIONAL.</p>
+
+              <p>Include a rights management statement, or reference to another
+              document with such information. This will often comprise
+              Intellectual Property Rights (IPR), Copyright, and Property Rights.
+              If rights are not addressed, no assumptions can be made about
+              permissions and restrictions with respect to the resource.</p>">
+        ?
+      </button>
       <%= f.text_area :rights, class: 'form-control' %>
     </div>
 
     <div class="form-group">
       <%= f.label :description %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Describe the content of the resource. OPTIONAL.</p>
+
+              <p>Description may include but is not limited to: an abstract,
+              table of contents, reference to further documentation of the
+              resource’s content.</p>">
+        ?
+      </button>
       <%= f.text_area :description, class: 'form-control' %>
     </div>
 
     <div class="form-group addable_removable">
       <%= f.label :resource_notes, 'Note(s)' %>
+      <button type="button" class="btn btn-default help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="<p>Enter any additional notes about the resource
+              that you would like to store here. OPTIONAL.</p>">
+        ?
+      </button>
 
       <%= f.fields_for :resource_notes do |g| %>
           <div class="addable_removable_input_group">
