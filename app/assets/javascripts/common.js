@@ -145,20 +145,22 @@ var Form = {
             // find all of its input elements
             cloned_group.find('input, select, textarea').each(function() {
                 // update the element's indexes within the form, for rails
-                var index = parseInt($(this).attr('id').match(/\d+/)[0]);
-                $(this).attr('id',
-                    $(this).attr('id').replace(index, index + 1));
-                $(this).attr('name',
-                    $(this).attr('name').replace(index, index + 1));
+                if (typeof($(this).attr('id')) !== 'undefined') {
+                    var index = parseInt($(this).attr('id').match(/\d+/)[0]);
+                    $(this).attr('id',
+                        $(this).attr('id').replace(index, index + 1));
+                    $(this).attr('name',
+                        $(this).attr('name').replace(index, index + 1));
 
-                // reset its value
-                if ($(this).is('select')) {
-                    $(this).val(
-                        $(this).parent().prev().find('select:first').val());
-                } else if (!$(this).is('input[type="hidden"]')) {
-                    $(this).val(null);
-                } else if ($(this).is('input[type="hidden"].destroy')) {
-                    $(this).val(0);
+                    // reset its value
+                    if ($(this).is('select')) {
+                        $(this).val(
+                            $(this).parent().prev().find('select:first').val());
+                    } else if (!$(this).is('input[type="hidden"]')) {
+                        $(this).val(null);
+                    } else if ($(this).is('input[type="hidden"].destroy')) {
+                        $(this).val(0);
+                    }
                 }
             });
 
