@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require jquery.cookie
+//= require bootstrap-typeahead-rails
 //= require turbolinks
 //= require local_time
 //= require_tree .
