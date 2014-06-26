@@ -98,10 +98,19 @@ var ready = function() {
                     prefetch: '/institutions/' + institution_id + '/resources/names.json',
                     limit: 10
                 });
+                $('input.resource_subject').typeahead({
+                    name: 'subjects',
+                    prefetch: '/institutions/' + institution_id + '/resources/subjects.json',
+                    limit: 10
+                });
 
                 // fix incompatibilities with bootstrap
                 $('.typeahead').parent().css('display', '');
                 $('.tt-hint').addClass('form-control');
+
+                $(document).on('PSAPFormSectionAdded', function() {
+                    ResourceForm.initSuggestions();
+                });
             },
 
             updateDependentQuestions: function() {

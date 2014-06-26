@@ -1,6 +1,8 @@
 <h2>Basic Info</h2>
 
-<%= hidden_field :institution_id, @resource.location.repository.institution.id %>
+<% # required for autocompletion %>
+<input type="hidden" name="institution_id"
+       value="<%= @resource.location.repository.institution.id %>">
 
 <%= form_for @resource, url: form_url, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>

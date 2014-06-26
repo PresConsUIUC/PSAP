@@ -85,7 +85,9 @@ Psap::Application.routes.draw do
   resources :formats
   resources :institutions do
     resources :repositories, except: :index
+    # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: 'get'
+    match '/resources/subjects', to: 'resources#subjects', via: 'get'
   end
   match '/institutions/:id/report', to: 'institutions#report', via: 'get',
         as: 'institution_report'

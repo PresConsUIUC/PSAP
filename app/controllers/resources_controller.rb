@@ -2,8 +2,8 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:new, :create, :edit, :import, :names, :update, :show,
-                       :destroy]
+                only: [:create, :destroy, :edit, :import, :names, :new,
+                       :show, :subjects, :update]
 
   def create
     @location = Location.find(params[:location_id])
@@ -136,6 +136,18 @@ class ResourcesController < ApplicationController
         @institution = @resource.location.repository.institution
       }
     end
+  end
+
+  ##
+  # Responds to /institutions/:id/resources/subjects
+  def subjects
+    render json: Subject.
+        joins('LEFT JOIN resources ON subjects.resource_id = resources.id').
+        joins('LEFT JOIN locations ON locations.id = resources.location_id').
+        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
+        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
+        where('institutions.id = ?', params[:institution_id]).
+        map{ |s| s.name }.uniq # TODO: this could be more efficient
   end
 
   def update

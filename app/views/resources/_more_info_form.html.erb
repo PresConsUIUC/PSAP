@@ -1,5 +1,9 @@
 <h2>More Info</h2>
 
+<% # required for autocompletion %>
+<input type="hidden" name="institution_id"
+       value="<%= @resource.location.repository.institution.id %>">
+
 <%= form_for @resource, url: form_url, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
@@ -142,13 +146,13 @@
 
       <%= f.fields_for :subjects do |g| %>
           <div class="addable_removable_input_group">
-            <div class="input-group">
-              <%= g.text_field :name, class: 'form-control' %>
-              <span class="input-group-btn">
-                <button class="btn btn-default remove" type="button">
-                  <span class="glyphicon glyphicon-minus"></span>
-                </button>
-              </span>
+            <div class="col-sm-11">
+              <%= g.text_field :name, class: 'form-control typeahead resource_subject' %>
+            </div>
+            <div class="col-sm-1">
+              <button class="btn btn-default remove" type="button">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
             </div>
           </div>
       <% end %>
@@ -163,13 +167,13 @@
 
       <%= f.fields_for :extents do |g| %>
           <div class="addable_removable_input_group">
-            <div class="input-group">
+            <div class="col-sm-11">
               <%= g.text_field :name, class: 'form-control' %>
-              <span class="input-group-btn">
-                <button class="btn btn-default remove" type="button">
-                  <span class="glyphicon glyphicon-minus"></span>
-                </button>
-              </span>
+            </div>
+            <div class="col-sm-1">
+              <button class="btn btn-default remove" type="button">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
             </div>
           </div>
       <% end %>
