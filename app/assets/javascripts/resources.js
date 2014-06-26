@@ -92,15 +92,15 @@ var ready = function() {
             },
 
             initSuggestions: function() {
-                var institution_id = $('input[name="institution_id"]').val();
+                var institution_url = $('input[name="institution_url"]').val();
                 $('input#resource_name').typeahead({
                     name: 'names',
-                    prefetch: '/institutions/' + institution_id + '/resources/names.json',
+                    prefetch: institution_url + '/resources/names.json',
                     limit: 10
                 });
                 $('input.resource_subject').typeahead({
                     name: 'subjects',
-                    prefetch: '/institutions/' + institution_id + '/resources/subjects.json',
+                    prefetch: institution_url + '/resources/subjects.json',
                     limit: 10
                 });
 
