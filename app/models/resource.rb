@@ -35,6 +35,49 @@ class Resource < ActiveRecord::Base
 
   before_save :update_assessment_percent_complete, :update_assessment_score
 
+  def as_csv
+    # TODO: write this
+    require 'csv'
+    # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    CSV.generate do |csv|
+      csv << ['Local Identifier'] +
+          ['Title/Name'] +
+          ['PSAP Assessment Score'] +
+          ['Resource Type'] +
+          ['Parent Resource'] +
+          ['Format'] +
+          ['Significance'] +
+          (['Creator'] * self.creators.length) +
+          (['Date'] * self.resource_dates.length) +
+          ['Language'] +
+          (['Subject'] * self.subjects.length) +
+          (['Extent'] * self.extents.length) +
+          ['Rights'] +
+          ['Description'] +
+          (['Note'] * self.resource_notes.length) +
+          ['Created'] +
+          ['Updated']
+          # TODO: questions
+      csv << [self.local_identifier] +
+          [self.name] +
+          [self.assessment_score * 100] +
+          [self.readable_resource_type] +
+          [self.parent ? self.parent.title : nil] +
+          [self.format.name] +
+          [self.readable_significance] +
+          self.creators.map { |r| r.name } +
+          self.resource_dates.map { |r| r.as_dublin_core_string } +
+          [self.language ? self.language.english_name : nil] +
+          self.subjects.map { |s| s.name } +
+          self.extents.map { |e| e.name } +
+          [self.rights] +
+          [self.description] +
+          self.resource_notes.map { |n| n.value } +
+          [self.created_at.iso8601] +
+          [self.updated_at.iso8601]
+    end
+  end
+
   def associate_assessment_question_responses
     Assessment.find_by_key('resource').assessment_sections.order(:index).
         each do |section|
@@ -89,12 +132,17 @@ class Resource < ActiveRecord::Base
     self.assessment_score = 0
   end
 
+  # TODO: get rid of these filename methods
+  def csv_filename
+    "#{filename_minus_extension}.txt"
+  end
+
   def dcxml_filename
-    "#{self.local_identifier ? self.local_identifier : self.id}.xml"
+    "#{filename_minus_extension}.xml"
   end
 
   def ead_filename
-    "#{self.local_identifier ? self.local_identifier : self.id}.xml"
+    "#{filename_minus_extension}.xml"
   end
 
   def readable_resource_type
@@ -115,6 +163,12 @@ class Resource < ActiveRecord::Base
       when ResourceSignificance::HIGH
         'High'
     end
+  end
+
+  private
+
+  def filename_minus_extension
+    self.local_identifier ? self.local_identifier : self.id
   end
 
 end

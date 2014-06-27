@@ -122,6 +122,11 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
 
     respond_to do |format|
+      format.csv {
+        #response.headers['Content-Disposition'] =
+        #    "attachment; filename=\"#{@resource.csv_filename}\""
+        render text: @resource.as_csv
+      }
       format.html {
         @events = @resource.events.order(created_at: :desc)
       }
