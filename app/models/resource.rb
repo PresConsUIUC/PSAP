@@ -36,7 +36,13 @@ class Resource < ActiveRecord::Base
   before_save :update_assessment_percent_complete, :update_assessment_score
 
   def as_csv
-    # TODO: write this
+    questions = []
+    responses = []
+    self.assessment_question_responses.each_with_index do |response, index|
+      questions << "Q#{index + 1}: #{response.assessment_question.name}"
+      responses << response.assessment_question_option.name
+    end
+
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
     CSV.generate do |csv|
@@ -56,8 +62,8 @@ class Resource < ActiveRecord::Base
           ['Description'] +
           (['Note'] * self.resource_notes.length) +
           ['Created'] +
-          ['Updated']
-          # TODO: questions
+          ['Updated'] +
+          questions
       csv << [self.local_identifier] +
           [self.name] +
           [self.assessment_score * 100] +
@@ -74,7 +80,8 @@ class Resource < ActiveRecord::Base
           [self.description] +
           self.resource_notes.map { |n| n.value } +
           [self.created_at.iso8601] +
-          [self.updated_at.iso8601]
+          [self.updated_at.iso8601] +
+          responses
     end
   end
 
