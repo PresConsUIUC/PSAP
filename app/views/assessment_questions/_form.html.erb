@@ -30,7 +30,7 @@
                { 'class' => 'form-control',
                'data-option-dependent' => true,
                'data-option-observed' => 'assessment_question_parent_id',
-               'data-option-url' => '/assessment-questions/:id:/options.json', # TODO: fix
+               'data-option-url' => root_path.chomp('/') + '/assessment-questions/:id:/options.json',
                'data-option-key-method' => 'id',
                'data-option-value-method' => 'name' }) %>
 </div>
