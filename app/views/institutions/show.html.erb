@@ -12,8 +12,8 @@
   <div class="col-sm-8">
     <h1><%= @institution.name %> <small>Institution</small></h1>
   </div>
-  <div class="col-sm-4" style="text-align:right">
-    <div class="btn-group">
+  <div class="col-sm-4">
+    <div class="btn-group" style="float:right">
       <!-- Edit -->
       <% if current_user.is_admin? %>
           <%= link_to edit_institution_path(@institution),
@@ -22,6 +22,18 @@
               Edit
           <% end %>
       <% end %>
+      <!-- Export as CSV -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-save"></span> Export
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><%= link_to 'CSV', institution_path(@institution) + '.csv',
+                          class: 'export',
+                          data: { filename: "#{@institution.name.parameterize}.csv" } %></li>
+        </ul>
+      </div>
       <!-- Delete -->
       <% if current_user.is_admin? %>
           <% disabled = @institution.users.any? %>
@@ -125,10 +137,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to 'Text (CSV)', institution_report_path(@institution) + '.csv',
-                            target: '_blank' %></li>
-            <li><%= link_to 'PDF', institution_report_path(@institution) + '.pdf',
-                            target: '_blank' %></li>
+            <li><%= link_to 'PDF', institution_path(@institution) + '.pdf' %></li>
           </ul>
         </div>
 

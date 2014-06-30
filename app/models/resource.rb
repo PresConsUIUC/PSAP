@@ -98,6 +98,12 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  def response_to_question(assessment_question)
+    responses = self.assessment_question_responses.
+        where(assessment_question_id: assessment_question.id)
+    responses.any? ? responses[0] : nil
+  end
+
   def update_assessment_percent_complete
       # SELECT assessment_questions.id
       # FROM assessment_questions

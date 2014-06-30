@@ -57,30 +57,40 @@ class InstitutionsController < ApplicationController
 
   def show
     @institution = Institution.find(params[:id])
-    @institution_users = @institution.users.where(confirmed: true).order(:last_name)
-    @repositories = @institution.repositories.order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
-    # show only top-level resources
-    @resources = @institution.resources.where(parent_id: nil).order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
 
-    @events = Event.
-        joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
-        joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
-        joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
-        joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
-        where('events_institutions.institution_id = ? '\
+    respond_to do |format|
+      format.csv {
+        #response.headers['Content-Disposition'] =
+        #    "attachment; filename=\"#{@institution.name.parameterize}\""
+        render text: @institution.resources_as_csv
+      }
+      format.html {
+        @institution_users = @institution.users.where(confirmed: true).order(:last_name)
+        @repositories = @institution.repositories.order(:name).
+            paginate(page: params[:page],
+                     per_page: Psap::Application.config.results_per_page)
+        # show only top-level resources
+        @resources = @institution.resources.where(parent_id: nil).order(:name).
+            paginate(page: params[:page],
+                     per_page: Psap::Application.config.results_per_page)
+
+        @events = Event.
+            joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
+            joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
+            joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
+            joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
+            where('events_institutions.institution_id = ? '\
         'OR events_repositories.repository_id IN (?) '\
         'OR events_locations.location_id IN (?)'\
         'OR events_resources.resource_id IN (?)',
-              @institution.id,
-              @institution.repositories.map { |repo| repo.id },
-              @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
-              @institution.repositories.map { |repo| repo.locations.map {
-                  |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
-        order(created_at: :desc)
+                  @institution.id,
+                  @institution.repositories.map { |repo| repo.id },
+                  @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
+                  @institution.repositories.map { |repo| repo.locations.map {
+                      |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
+            order(created_at: :desc)
+      }
+    end
   end
 
   def update
