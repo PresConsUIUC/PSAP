@@ -68,8 +68,8 @@ class Resource < ActiveRecord::Base
           [self.name] +
           [self.assessment_score * 100] +
           [self.readable_resource_type] +
-          [self.parent ? self.parent.title : nil] +
-          [self.format.name] +
+          [self.parent ? self.parent.name : nil] +
+          [self.format ? self.format.name : nil] +
           [self.readable_significance] +
           self.creators.map { |r| r.name } +
           self.resource_dates.map { |r| r.as_dublin_core_string } +
