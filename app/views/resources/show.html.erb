@@ -34,11 +34,11 @@
         </button>
         <ul class="dropdown-menu">
           <li><%= link_to 'CSV', resource_path(@resource) + '.csv',
-                          class: 'export', data: { filename: @resource.csv_filename } %></li>
+                          class: 'export', data: { filename: "#{@resource.filename}.csv" } %></li>
           <li><%= link_to 'EAD', resource_path(@resource) + '.ead',
-                          class: 'export', data: { filename: @resource.ead_filename } %></li>
+                          class: 'export', data: { filename: "#{@resource.filename}.xml" } %></li>
           <li><%= link_to 'Dublin Core XML', resource_path(@resource) + '.dcxml',
-                          class: 'export', data: { filename: @resource.dcxml_filename } %></li>
+                          class: 'export', data: { filename: "#{@resource.filename}.xml" } %></li>
         </ul>
       </div>
 

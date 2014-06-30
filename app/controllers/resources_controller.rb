@@ -123,8 +123,8 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       format.csv {
-        #response.headers['Content-Disposition'] =
-        #    "attachment; filename=\"#{@resource.csv_filename}\""
+        response.headers['Content-Disposition'] =
+            "attachment; filename=\"#{@resource.filename}\""
         render text: @resource.as_csv
       }
       format.html {
@@ -132,12 +132,12 @@ class ResourcesController < ApplicationController
       }
       format.dcxml {
         response.headers['Content-Disposition'] =
-            "attachment; filename=\"#{@resource.dcxml_filename}\""
+            "attachment; filename=\"#{@resource.filename}\""
         @institution = @resource.location.repository.institution
       }
       format.ead {
         response.headers['Content-Disposition'] =
-            "attachment; filename=\"#{@resource.ead_filename}\""
+            "attachment; filename=\"#{@resource.filename}\""
         @institution = @resource.location.repository.institution
       }
     end

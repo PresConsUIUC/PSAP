@@ -139,17 +139,8 @@ class Resource < ActiveRecord::Base
     self.assessment_score = 0
   end
 
-  # TODO: get rid of these filename methods
-  def csv_filename
-    "#{filename_minus_extension}.txt"
-  end
-
-  def dcxml_filename
-    "#{filename_minus_extension}.xml"
-  end
-
-  def ead_filename
-    "#{filename_minus_extension}.xml"
+  def filename
+    self.local_identifier ? self.local_identifier : self.id
   end
 
   def readable_resource_type
@@ -170,12 +161,6 @@ class Resource < ActiveRecord::Base
       when ResourceSignificance::HIGH
         'High'
     end
-  end
-
-  private
-
-  def filename_minus_extension
-    self.local_identifier ? self.local_identifier : self.id
   end
 
 end
