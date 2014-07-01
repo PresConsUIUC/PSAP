@@ -8,6 +8,9 @@ class Format < ActiveRecord::Base
 
   accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 
+  validates :format_type, presence: true,
+            inclusion: { in: FormatType.all,
+                         message: 'Must be a valid format type.' }
   validates :name, presence: true, length: { maximum: 255 },
             uniqueness: { case_sensitive: false }
   validates :score, presence: true, numericality: {

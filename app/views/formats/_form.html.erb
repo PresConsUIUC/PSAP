@@ -14,6 +14,18 @@
 </div>
 
 <div class="form-group">
+  <%= f.label :format_type %>
+  <%= f.select('format_type',
+               options_for_select([['A/V', FormatType::AV],
+                                   ['Photo/Image', FormatType::PHOTO],
+                                   ['Paper-Unbound', FormatType::UNBOUND_PAPER],
+                                  ['Paper-Bound/Book', FormatType::BOUND_PAPER]],
+                                  selected: f.object.format_type),
+               { include_blank: false },
+               { class: 'form-control format_type' }) %>
+</div>
+
+<div class="form-group">
   <%= f.label :score, raw('Score (0&ndash;1)') %>
   <%= f.number_field :score, min: 0, max: 1, maxlength: 1, step: 0.1,
                      class: 'form-control' %>

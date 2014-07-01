@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625200051) do
+ActiveRecord::Schema.define(version: 20140701134017) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -146,12 +146,13 @@ ActiveRecord::Schema.define(version: 20140625200051) do
   add_index "extents", ["resource_id"], name: "index_extents_on_resource_id"
 
   create_table "formats", force: true do |t|
-    t.string   "name",                               null: false
-    t.decimal  "score",      precision: 4, scale: 3, null: false
+    t.string   "name",                                            null: false
+    t.decimal  "score",       precision: 4, scale: 3,             null: false
     t.boolean  "obsolete"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
+    t.integer  "format_type",                         default: 0, null: false
   end
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id"

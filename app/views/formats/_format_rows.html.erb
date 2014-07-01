@@ -4,6 +4,7 @@
       <%= depth > 0 ? raw('&#8627; ') : '' %>
       <%= link_to format.name, format %>
     </td>
+    <td><%= FormatType.name_for_type(format.format_type) %></td>
     <td><%= format.score %></td>
     <td><%= format.obsolete ? raw('&check;') : '' %></td>
   </tr>
