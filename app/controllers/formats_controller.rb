@@ -1,6 +1,7 @@
 class FormatsController < ApplicationController
 
-  before_action :signed_in_user, :admin_user
+  before_action :signed_in_user
+  before_action :admin_user, except: :index
 
   helper_method :sort_column, :sort_direction
 
@@ -40,8 +41,20 @@ class FormatsController < ApplicationController
   end
 
   def index
-    @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
-        order("#{sort_column} #{sort_direction}")
+    respond_to do |format|
+      format.json {
+        render json: Format.where(format_type: params[:format_type_id]).
+            order(:name) # TODO: hierarchy
+      }
+      format.html {
+        if params[:format_type_id]
+          render status: :not_found, text: '404 Not Found'
+        else
+          @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
+              order("#{sort_column} #{sort_direction}")
+        end
+      }
+    end
   end
 
   def new

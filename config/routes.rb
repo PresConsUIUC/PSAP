@@ -76,6 +76,7 @@ Psap::Application.routes.draw do
   end
   resources :assessment_questions, except: [:index, :show],
             path: 'assessment-questions' do
+    # used for dependent select menus in forms
     resources :assessment_question_options, only: :index, path: 'options'
   end
   resources :assessment_sections, except: [:index, :show],
@@ -83,6 +84,10 @@ Psap::Application.routes.draw do
     resources :assessment_questions, only: :new, path: 'assessment-questions'
   end
   resources :formats
+  # used for dependent select menus in forms
+  resources :format_types, only: [], path: 'format-types' do
+    resources :formats, only: :index, path: 'formats'
+  end
   resources :institutions do
     resources :repositories, except: :index
     # these are used for form autocompletion
