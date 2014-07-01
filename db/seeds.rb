@@ -495,21 +495,60 @@ languages = [
 ]
 
 # Formats
-formats = [
-    Format.create!(name: 'Used Napkin', score: 0, obsolete: true),
-    Format.create!(name: 'Soiled Handkerchief', score: 0.375, obsolete: true),
-    Format.create!(name: 'Dirty Bed Sheet', score: 0.875, obsolete: false),
-    Format.create!(name: 'Wet Bath Towel', score: 0.375, obsolete: true),
-    Format.create!(name: 'Manila Envelope', score: 0.875, obsolete: false),
-    Format.create!(name: 'Post-It Note', score: 0.375, obsolete: false)
-]
-
-formats << Format.create!(name: 'Used Napkin With Barbecue Sauce', score: 0.375,
-                          obsolete: true, parent: formats[0])
-formats << Format.create!(name: 'Slightly Damp Bath Towel', score: 0.375,
-                          obsolete: true, parent: formats[3])
-formats << Format.create!(name: 'Soaking Wet Bath Towel', score: 0.375,
-                          obsolete: true, parent: formats[3])
+formats = {}
+formats[:pop] = Format.create!(name: 'Positive Print on Paper', score: 0.5, obsolete: false)
+  formats[:salt_print] = Format.create!(name: 'Salt Print', score: 0, obsolete: true, parent: formats[:pop])
+  formats[:cyanotype] = Format.create!(name: 'Cyanotype', score: 0.375, obsolete: true, parent: formats[:pop])
+  formats[:platinum_palladium_print] = Format.create!(name: 'Platnium/Palladium Print', score: 0.875, obsolete: false, parent: formats[:pop])
+  formats[:albumen_print] = Format.create!(name: 'Albumen Print', score: 0.375, obsolete: true, parent: formats[:pop])
+  formats[:carbon_print] = Format.create!(name: 'Carbon Print', score: 0.875, obsolete: false, parent: formats[:pop])
+  formats[:collodion_print] = Format.create!(name: 'Collodion Print', score: 0.375, obsolete: false, parent: formats[:pop])
+  formats[:matte_collodion_print] = Format.create!(name: 'Matte Collodion Print', score: 0.375, obsolete: true, parent: formats[:pop])
+  formats[:gelatin_pop_print] = Format.create!(name: 'Gelatin POP Print', score: 0.375, obsolete: true, parent: formats[:pop])
+  formats[:silver_gelatin_print] = Format.create!(name: 'Silver Gelatin Print', score: 0.375, obsolete: true, parent: formats[:pop])
+  formats[:chromogenic_color_print] = Format.create!(name: 'Chromogenic Color Print', score: 0.5, obsolete: false, parent: formats[:pop])
+  formats[:silver_dye_bleach_print] = Format.create!(name: 'Silver Dye-Bleach Print', score: 0.5, obsolete: false, parent: formats[:pop])
+  formats[:dye_transfer_print] = Format.create!(name: 'Dye-Transfer Print', score: 0.5, obsolete: false, parent: formats[:pop])
+  formats[:color_carbro_print] = Format.create!(name: 'Color Carbro Print', score: 0.5, obsolete: false, parent: formats[:pop])
+  formats[:instant_photo_bw] = Format.create!(name: 'Instant Photo, B&W', score: 0.5, obsolete: false, parent: formats[:pop])
+  formats[:instant_photo_color] = Format.create!(name: 'Instant Photo, Color', score: 0.5, obsolete: false, parent: formats[:pop])
+formats[:cased_direct_photograph] = Format.create!(name: 'Cased/Direct Photograph', score: 0.5, obsolete: false)
+  formats[:daguerreotype] = Format.create!(name: 'Daguerreotype', score: 0.5, obsolete: true, parent: formats[:cased_direct_photograph])
+  formats[:ambrotype] = Format.create!(name: 'Ambrotype', score: 0.5, obsolete: false, parent: formats[:cased_direct_photograph])
+  formats[:tintype] = Format.create!(name: 'Tintype', score: 0.5, obsolete: true, parent: formats[:cased_direct_photograph])
+formats[:negative_glass_film] = Format.create!(name: 'Negative (Glass, Film)', score: 0.5, obsolete: false)
+  formats[:glass_negative] = Format.create!(name: 'Glass Negative', score: 0.5, obsolete: false, parent: formats[:negative_glass_film])
+  formats[:silver_gelatin_negative] = Format.create!(name: 'Silver Gelatin Negative', score: 0.5, obsolete: false, parent: formats[:negative_glass_film])
+    formats[:nitrate_silver_gelatin_negative] = Format.create!(name: 'Nitrate - Silver Gelatin Negative', score: 0.5, obsolete: false, parent: formats[:silver_gelatin_negative])
+    formats[:acetate_silver_gelatin_negative] = Format.create!(name: 'Acetate - Silver Gelatin Negative', score: 0.5, obsolete: false, parent: formats[:silver_gelatin_negative])
+    formats[:polyester_silver_gelatin_negative] = Format.create!(name: 'Polyester - Silver Gelatin Negative', score: 0.5, obsolete: false, parent: formats[:silver_gelatin_negative])
+    formats[:unknown_silver_gelatin_negative] = Format.create!(name: 'Unknown - Silver Gelatin Negative', score: 0.5, obsolete: false, parent: formats[:silver_gelatin_negative])
+  formats[:chromogenic_color_negative] = Format.create!(name: 'Chromogenic Color Negative', score: 0.5, obsolete: false, parent: formats[:negative_glass_film])
+    formats[:acetate_chromogenic_color_negative] = Format.create!(name: 'Acetate - Chromogenic Color Negative', score: 0.5, obsolete: false, parent: formats[:chromogenic_color_negative])
+    formats[:polyester_chromogenic_color_negative] = Format.create!(name: 'Polyester - Chromogenic Color Negative', score: 0.5, obsolete: false, parent: formats[:chromogenic_color_negative])
+    formats[:unknown_chromogenic_color_negative] = Format.create!(name: 'Unknown - Chromogenic Color Negative', score: 0.5, obsolete: false, parent: formats[:chromogenic_color_negative])
+formats[:slide_transparency] = Format.create!(name: 'Slide/Transparency (Glass, Film)', score: 0.5, obsolete: false)
+  formats[:glass_slide_bw] = Format.create!(name: 'Glass Slide, B&W', score: 0.5, obsolete: false, parent: formats[:slide_transparency])
+  formats[:autochrome] = Format.create!(name: 'Autochrome (additive color screen)', score: 0.5, obsolete: false, parent: formats[:slide_transparency])
+  formats[:bw_film_slide] = Format.create!(name: 'B&W Film Slide', score: 0.5, obsolete: false, parent: formats[:slide_transparency])
+  formats[:color_film_slide] = Format.create!(name: 'Color Film Slide', score: 0.5, obsolete: false, parent: formats[:slide_transparency])
+formats[:photomechanical_print] = Format.create!(name: 'Photomechanical Print', score: 0.5, obsolete: false)
+  formats[:letterpress_halftone] = Format.create!(name: 'Letterpress Halftone', score: 0.5, obsolete: false, parent: formats[:photomechanical_print])
+  formats[:offset_lithography] = Format.create!(name: 'Offset Lithography', score: 0.5, obsolete: false, parent: formats[:photomechanical_print])
+  formats[:gravure] = Format.create!(name: 'Gravure', score: 0.5, obsolete: false, parent: formats[:photomechanical_print])
+  formats[:collotype] = Format.create!(name: 'Collotype', score: 0.5, obsolete: false, parent: formats[:photomechanical_print])
+  formats[:woodburytype] = Format.create!(name: 'Woodburytype', score: 0.5, obsolete: false, parent: formats[:photomechanical_print])
+formats[:digital_print] = Format.create!(name: 'Digital Print', score: 0.5, obsolete: false)
+  formats[:inkjet_print] = Format.create!(name: 'Inkjet Print', score: 0.5, obsolete: false, parent: formats[:digital_print])
+formats[:microform] = Format.create!(name: 'Microform', score: 0.5, obsolete: false)
+  formats[:microfilm_microfiche] = Format.create!(name: 'Microfilm/Microfiche', score: 0.5, obsolete: false, parent: formats[:microform])
+    formats[:nitrate_microfilm_microfiche] = Format.create!(name: 'Nitrate - Microfilm/Microfiche', score: 0.5, obsolete: false, parent: formats[:microfilm_microfiche])
+    formats[:acetate_microfilm_microfiche] = Format.create!(name: 'Acetate - Microfilm/Microfiche', score: 0.5, obsolete: false, parent: formats[:microfilm_microfiche])
+    formats[:polyester_microfilm_microfiche] = Format.create!(name: 'Polyester - Microfilm/Microfiche', score: 0.5, obsolete: false, parent: formats[:microfilm_microfiche])
+    formats[:unknown_microfilm_microfiche] = Format.create!(name: 'Unknown - Microfilm/Microfiche', score: 0.5, obsolete: false, parent: formats[:microfilm_microfiche])
+  formats[:microcard] = Format.create!(name: 'Microcard', score: 0.5, obsolete: false, parent: formats[:microform])
+  formats[:microprint] = Format.create!(name: 'Microprint', score: 0.5, obsolete: false, parent: formats[:microform])
+  formats[:aperture_card] = Format.create!(name: 'Aperture Card', score: 0.5, obsolete: false, parent: formats[:microform])
 
 # Assessments
 assessments = [
@@ -813,7 +852,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Magna Carta',
           resource_type: ResourceType::ITEM,
-          format: formats[0],
+          format: formats[:cyanotype],
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -822,7 +861,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Dead Sea Scrolls',
           resource_type: ResourceType::ITEM,
-          format: formats[1],
+          format: formats[:instant_photo_bw],
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -847,7 +886,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Treaty of Verdun',
           resource_type: ResourceType::ITEM,
-          format: formats[4],
+          format: formats[:tintype],
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -856,7 +895,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Declaration of Paris',
           resource_type: ResourceType::ITEM,
-          format: formats[5],
+          format: formats[:negative_glass_film],
           user: disabled_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -1038,7 +1077,7 @@ case Rails.env
     resources[0].save!
 
     # Format temperature ranges
-    formats.each do |format|
+    formats.values.each do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
                                  format: format)
         TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
