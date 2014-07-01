@@ -42,6 +42,11 @@ class FormatsController < ApplicationController
 
   def index
     respond_to do |format|
+      format.js {
+        @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
+        @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
+            order("#{sort_column} #{sort_direction}")
+      }
       format.json {
         render json: Format.where(format_type: params[:format_type_id]).
             order(:name) # TODO: hierarchy
@@ -50,7 +55,8 @@ class FormatsController < ApplicationController
         if params[:format_type_id]
           render status: :not_found, text: '404 Not Found'
         else
-          @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
+          @format_count = Format.all.length
+          @formats = Format.where('parent_id IS NULL').
               order("#{sort_column} #{sort_direction}")
         end
       }
