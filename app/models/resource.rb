@@ -28,7 +28,9 @@ class Resource < ActiveRecord::Base
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :resource_type, presence: true
+  validates :resource_type, presence: true,
+            inclusion: { in: ResourceType.all,
+                         message: 'Must be a valid resource type.' }
   validates :user, presence: true
 
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true

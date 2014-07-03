@@ -16,7 +16,9 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :assessment_section, presence: true
   validates :index, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :question_type, presence: true
+  validates :question_type, presence: true,
+            inclusion: { in: AssessmentQuestionType.all,
+                         message: 'Must be a valid assessment question type.' }
   validates_numericality_of :weight, greater_than_or_equal_to: 0,
                             less_than_or_equal_to: 1, presence: true
 

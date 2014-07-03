@@ -4,4 +4,8 @@ class AssessmentQuestionType
   SELECT = 1
   CHECKBOX = 2
 
+  def self.all
+    (0..2)
+  end
+
 end
