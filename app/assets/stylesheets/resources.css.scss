@@ -33,6 +33,12 @@ body#new_resource, body#edit_resource {
       min-width:500px;
     }
   }
+  div#sections .question_response_count_container {
+    border-top:1px solid #cccccc;
+    border-bottom:1px solid #cccccc;
+    margin:1.5em 0em;
+    padding:1em 0em;
+  }
 }
 
 body#show_resource div.assessment {

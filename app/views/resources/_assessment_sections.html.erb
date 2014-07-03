@@ -10,6 +10,11 @@
   </nav>
 
   <div class="center">
+    <div class="question_response_count_container">
+      <span class="question_response_count"><%= @resource.assessment_question_responses.length %></span> of
+      <%= @assessment_sections[0].assessment.question_count %> questions complete
+    </div>
+
     <h4>Score</h4>
     <div class="progress">
       <div class="progress-bar progress-bar-info score" role="progressbar"

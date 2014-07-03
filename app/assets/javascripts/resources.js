@@ -244,7 +244,7 @@ var ready = function() {
                         numAnsweredQuestions++;
                     }
                 });
-                $('#question_response_count').text(numAnsweredQuestions);
+                $('.question_response_count').text(numAnsweredQuestions);
                 //$('div.progress-bar.psap-progress').attr('style',
                 //        'width:' + numAnsweredQuestions / numQuestions * 100 + '%');
             }
