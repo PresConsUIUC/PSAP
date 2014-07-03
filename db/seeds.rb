@@ -1127,15 +1127,6 @@ case Rails.env
             { name: 'Even More Secret Location',
               description: 'Sample description' }, nil, '127.0.0.1'),
         CreateLocationCommand.new(repositories[0],
-            { name: 'Back Room',
-              description: 'Sample description' }, nil, '127.0.0.1'),
-        CreateLocationCommand.new(repositories[0],
-            { name: 'Front Room',
-              description: 'Sample description' }, nil, '127.0.0.1'),
-        CreateLocationCommand.new(repositories[0],
-            { name: 'Side Room',
-              description: 'Sample description' }, nil, '127.0.0.1'),
-        CreateLocationCommand.new(repositories[0],
             { name: 'Attic',
               description: 'Sample description' }, nil, '127.0.0.1'),
     ]
@@ -1162,7 +1153,7 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[1],
+    resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Sears Catalog Collection',
           resource_type: ResourceType::COLLECTION,
           user: admin_user,
@@ -1170,75 +1161,49 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[1],
-        { name: 'Farmer\'s Almanac Collection',
-          resource_type: ResourceType::COLLECTION,
-          user: admin_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          significance: 0,
-          rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Treaty of Verdun',
-          resource_type: ResourceType::ITEM,
-          format: formats[:tintype],
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          significance: 1,
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Declaration of Paris',
-          resource_type: ResourceType::ITEM,
-          format: formats[:negative_glass_film],
-          user: disabled_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          significance: 1,
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
         { name: 'Cat Fancy Collection',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Issue 1',
           resource_type: ResourceType::ITEM,
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Issue 2',
           resource_type: ResourceType::ITEM,
           user: disabled_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Special Editions',
           resource_type: ResourceType::COLLECTION,
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: '1972 Presidential Election Special Issue',
           resource_type: ResourceType::ITEM,
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Issue 3',
           resource_type: ResourceType::ITEM,
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[3],
+    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Napoleon Bonaparte Letters Collection',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
@@ -1253,11 +1218,11 @@ case Rails.env
         response.assessment_question.assessment_question_options[0]
     end
     resources[1].save!
-    resources[7].parent = resources[6]
-    resources[8].parent = resources[6]
-    resources[9].parent = resources[6]
-    resources[10].parent = resources[9]
-    resources[11].parent = resources[6]
+    resources[4].parent = resources[3]
+    resources[5].parent = resources[3]
+    resources[6].parent = resources[3]
+    resources[7].parent = resources[7]
+    resources[8].parent = resources[3]
     resources.select{ |r| r.save! }
 
     # Dates
@@ -1292,19 +1257,6 @@ case Rails.env
     ResourceDate.create!(resource: resources[8],
                          date_type: DateType::SINGLE,
                          year: 1961)
-    ResourceDate.create!(resource: resources[9],
-                         date_type: DateType::SPAN,
-                         begin_year: 1970,
-                         end_year: 1975)
-    ResourceDate.create!(resource: resources[10],
-                         date_type: DateType::SINGLE,
-                         year: 1972)
-    ResourceDate.create!(resource: resources[11],
-                         date_type: DateType::SINGLE,
-                         year: 1974)
-    ResourceDate.create!(resource: resources[12],
-                         date_type: DateType::SINGLE,
-                         year: 1985)
 
     # Extents
     extents = []
