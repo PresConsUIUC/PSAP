@@ -3,8 +3,6 @@ class FormatsController < ApplicationController
   before_action :signed_in_user
   before_action :admin_user, except: :index
 
-  helper_method :sort_column, :sort_direction
-
   def create
     command = CreateFormatCommand.new(format_params, current_user,
                                       request.remote_ip)
@@ -45,7 +43,7 @@ class FormatsController < ApplicationController
       format.js {
         @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
         @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
-            order("#{sort_column} #{sort_direction}")
+            order(:name)
       }
       format.json {
         render json: Format.where(format_type: params[:format_type_id]).
@@ -57,8 +55,7 @@ class FormatsController < ApplicationController
           render status: :not_found, text: '404 Not Found'
         else
           @format_count = Format.all.length
-          @formats = Format.where('parent_id IS NULL').
-              order("#{sort_column} #{sort_direction}")
+          @formats = Format.where('parent_id IS NULL').order(:name)
         end
       }
     end
@@ -102,10 +99,6 @@ class FormatsController < ApplicationController
                                                                    :min_temp_f,
                                                                    :max_temp_f,
                                                                    :score])
-  end
-
-  def sort_column
-    Format.column_names.include?(params[:sort]) ? params[:sort] : 'name'
   end
 
 end
