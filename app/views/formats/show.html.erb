@@ -36,6 +36,8 @@
     <dl>
       <dt>Type</dt>
       <dd><%= FormatType.name_for_type @format.format_type %></dd>
+      <dt>Subtype</dt>
+      <dd><%= @format.format_subtype ? FormatSubtype.name_for_subtype(@format.format_subtype) : 'None' %></dd>
       <dt>Score</dt>
       <dd><%= @format.score %> / 1</dd>
       <dt>Temperature Range Scores</dt>

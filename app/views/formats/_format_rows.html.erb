@@ -5,6 +5,7 @@
       <%= link_to format.name, format %>
     </td>
     <td><%= FormatType.name_for_type(format.format_type) %></td>
+    <td><%= FormatSubtype.name_for_subtype(format.format_subtype) %></td>
     <td><%= format.score %></td>
     <td><%= format.obsolete ? raw('&check;') : '' %></td>
   </tr>

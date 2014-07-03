@@ -506,90 +506,105 @@ formats[:pop] = Format.create!(
       score: 0,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:cyanotype] = Format.create!(
       name: 'Cyanotype',
       score: 0.375,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:platinum_palladium_print] = Format.create!(
       name: 'Platnium/Palladium Print',
       score: 0.875,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:albumen_print] = Format.create!(
       name: 'Albumen Print',
       score: 0.375,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:carbon_print] = Format.create!(
       name: 'Carbon Print',
       score: 0.875,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:collodion_print] = Format.create!(
       name: 'Collodion Print',
       score: 0.375,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:matte_collodion_print] = Format.create!(
       name: 'Matte Collodion Print',
       score: 0.375,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:gelatin_pop_print] = Format.create!(
       name: 'Gelatin POP Print',
       score: 0.375,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:silver_gelatin_print] = Format.create!(
       name: 'Silver Gelatin Print',
       score: 0.375,
       obsolete: true,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MONOCHROME_PRINT,
       parent: formats[:pop])
   formats[:chromogenic_color_print] = Format.create!(
       name: 'Chromogenic Color Print',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::COLOR_PRINT,
       parent: formats[:pop])
   formats[:silver_dye_bleach_print] = Format.create!(
       name: 'Silver Dye-Bleach Print',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::COLOR_PRINT,
       parent: formats[:pop])
   formats[:dye_transfer_print] = Format.create!(
       name: 'Dye-Transfer Print',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::COLOR_PRINT,
       parent: formats[:pop])
   formats[:color_carbro_print] = Format.create!(
       name: 'Color Carbro Print',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::COLOR_PRINT,
       parent: formats[:pop])
   formats[:instant_photo_bw] = Format.create!(
       name: 'Instant Photo, B&W',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::INSTANT_PHOTO,
       parent: formats[:pop])
   formats[:instant_photo_color] = Format.create!(
       name: 'Instant Photo, Color',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::INSTANT_PHOTO,
       parent: formats[:pop])
 formats[:cased_direct_photograph] = Format.create!(
     name: 'Cased/Direct Photograph',
@@ -624,60 +639,70 @@ formats[:negative_glass_film] = Format.create!(
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::GLASS_NEGATIVE,
       parent: formats[:negative_glass_film])
   formats[:silver_gelatin_negative] = Format.create!(
       name: 'Silver Gelatin Negative',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
       parent: formats[:negative_glass_film])
     formats[:nitrate_silver_gelatin_negative] = Format.create!(
         name: 'Nitrate - Silver Gelatin Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:silver_gelatin_negative])
     formats[:acetate_silver_gelatin_negative] = Format.create!(
         name: 'Acetate - Silver Gelatin Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:silver_gelatin_negative])
     formats[:polyester_silver_gelatin_negative] = Format.create!(
         name: 'Polyester - Silver Gelatin Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:silver_gelatin_negative])
     formats[:unknown_silver_gelatin_negative] = Format.create!(
         name: 'Unknown - Silver Gelatin Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:silver_gelatin_negative])
   formats[:chromogenic_color_negative] = Format.create!(
       name: 'Chromogenic Color Negative',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
       parent: formats[:negative_glass_film])
     formats[:acetate_chromogenic_color_negative] = Format.create!(
         name: 'Acetate - Chromogenic Color Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:chromogenic_color_negative])
     formats[:polyester_chromogenic_color_negative] = Format.create!(
         name: 'Polyester - Chromogenic Color Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:chromogenic_color_negative])
     formats[:unknown_chromogenic_color_negative] = Format.create!(
         name: 'Unknown - Chromogenic Color Negative',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
         parent: formats[:chromogenic_color_negative])
 formats[:slide_transparency] = Format.create!(
     name: 'Slide/Transparency (Glass, Film)',
@@ -689,24 +714,28 @@ formats[:slide_transparency] = Format.create!(
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::GLASS_SLIDE,
       parent: formats[:slide_transparency])
   formats[:autochrome] = Format.create!(
       name: 'Autochrome (additive color screen)',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::GLASS_SLIDE,
       parent: formats[:slide_transparency])
   formats[:bw_film_slide] = Format.create!(
       name: 'B&W Film Slide',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PLASTIC_FILM_SLIDE,
       parent: formats[:slide_transparency])
   formats[:color_film_slide] = Format.create!(
       name: 'Color Film Slide',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PLASTIC_FILM_SLIDE,
       parent: formats[:slide_transparency])
 formats[:photomechanical_print] = Format.create!(
     name: 'Photomechanical Print',
@@ -764,48 +793,56 @@ formats[:microform] = Format.create!(
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PLASTIC_FILM,
       parent: formats[:microform])
     formats[:nitrate_microfilm_microfiche] = Format.create!(
         name: 'Nitrate - Microfilm/Microfiche',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM,
         parent: formats[:microfilm_microfiche])
     formats[:acetate_microfilm_microfiche] = Format.create!(
         name: 'Acetate - Microfilm/Microfiche',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM,
         parent: formats[:microfilm_microfiche])
     formats[:polyester_microfilm_microfiche] = Format.create!(
         name: 'Polyester - Microfilm/Microfiche',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM,
         parent: formats[:microfilm_microfiche])
     formats[:unknown_microfilm_microfiche] = Format.create!(
         name: 'Unknown - Microfilm/Microfiche',
         score: 0.5,
         obsolete: false,
         format_type: FormatType::PHOTO,
+        format_subtype: FormatSubtype::PLASTIC_FILM,
         parent: formats[:microfilm_microfiche])
   formats[:microcard] = Format.create!(
       name: 'Microcard',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PAPER,
       parent: formats[:microform])
   formats[:microprint] = Format.create!(
       name: 'Microprint',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::PAPER,
       parent: formats[:microform])
   formats[:aperture_card] = Format.create!(
       name: 'Aperture Card',
       score: 0.5,
       obsolete: false,
       format_type: FormatType::PHOTO,
+      format_subtype: FormatSubtype::MIXED,
       parent: formats[:microform])
 
 # Assessments

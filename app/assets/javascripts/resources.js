@@ -104,15 +104,35 @@ var ready = function() {
                     return select;
                 };
 
-                var populateSelect = function(selectNode, url) {
-                    selectNode.find('*').not(':first').remove();
+                var populateSelect = function(select, url) {
+                    // remove all options except "Select..."
+                    select.find('*').not(':first').remove();
                     $.getJSON(url, function (data) {
+                        var any_subtypes = false;
                         $.each(data, function (i, object) {
-                            selectNode.append($('<option>').attr('value',
-                                object['id']).text(object['name']));
+                            if (object['format_subtype']) {
+                                any_subtypes = true;
+                            }
                         });
-                        (selectNode.children().length < 2) ?
-                            selectNode.hide() : selectNode.show();
+                        $.each(data, function (i, object) {
+                            var option = $('<option>').attr('value',
+                                object['id']).text(object['name']);
+                            if (any_subtypes) {
+                                var optgroup = $('optgroup#format-subtype-' +
+                                    object['format_subtype']);
+                                if (optgroup.length < 1) {
+                                    optgroup = $('<optgroup id="format-subtype-' +
+                                        object['format_subtype'] + '" label="' +
+                                        object['readable_format_subtype'] + '"></optgroup>');
+                                    select.append(optgroup);
+                                }
+                                optgroup.append(option);
+                            } else {
+                                select.append(option);
+                            }
+                        });
+                        (select.find('option').length < 2) ?
+                            select.hide() : select.show();
                     });
                 };
 

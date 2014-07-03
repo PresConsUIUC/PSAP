@@ -30,4 +30,14 @@ class Format < ActiveRecord::Base
     end
   end
 
+  def as_json(options = { })
+    super((options || { }).merge({
+                                     :methods => [:format_subtype, :readable_format_subtype]
+                                 }))
+  end
+
+  def readable_format_subtype
+    FormatSubtype.name_for_subtype(format_subtype)
+  end
+
 end

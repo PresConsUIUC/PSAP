@@ -1,3 +1,7 @@
+##
+# Formats have a type and a subtype. The type is the main format category,
+# appearing in the resource assessment form as a set of radio buttons that
+# toggle the contents of the first format <select> menu.
 class FormatType
 
   AV = 0
