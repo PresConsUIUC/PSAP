@@ -8,7 +8,7 @@
     <%= render 'shared/error_messages', :object => f.object %>
 
     <div class="form-group">
-      <%= f.label :name %>
+      <%= f.label :name, 'Title/Name' %>
       <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
               data-content="<p>Name or title used to refer to this resource. REQUIRED.</p>
             <p>Examples:</p>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :local_identifier %>
+      <%= f.label :local_identifier, 'Local Identifier' %>
       <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
               data-content="<p>Identification number or code assigned to each resource at your organization. REQUIRED.</p>
 
@@ -48,7 +48,7 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :resource_type %>
+      <%= f.label :resource_type, 'Resource Type' %>
       <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
               data-content="Is this an Item or Collection? Indicate the hierarchical level of the resource. REQUIRED.">
         ?
@@ -76,7 +76,7 @@
     </div>
 
     <div class="form-group">
-      <%= f.label 'Format Type' %>
+      <label>Format Type</label>
       <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
               data-content="Select the appropriate format of the resource (item or collection part) you are assessing. If you need help, select <em>Format ID Guide</em> from the top utility bar to determine what you have.">
         ?
