@@ -41,9 +41,14 @@ class FormatsController < ApplicationController
   def index
     respond_to do |format|
       format.js { # ajax search field on /formats
-        @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
-        @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
-            order(:name)
+        if params[:q].length > 0
+          @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
+          @formats = Format.where('name LIKE ?', "%#{params[:q]}%").
+              order(:name)
+        else
+          @format_count = Format.all.length
+          @formats = Format.where('parent_id IS NULL').order(:name)
+        end
       }
       format.json { # dependent select menus in assessment form
         render json: Format.where(format_type: params[:format_type_id]).
