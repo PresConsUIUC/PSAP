@@ -40,17 +40,17 @@ class FormatsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.js {
+      format.js { # ajax search field on /formats
         @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
         @formats = Format.where('parent_id IS NULL AND name LIKE ?', "%#{params[:q]}%").
             order(:name)
       }
-      format.json {
+      format.json { # dependent select menus in assessment form
         render json: Format.where(format_type: params[:format_type_id]).
             where(parent_id: params[:parent_id]).
             order(:name) # TODO: hierarchy
       }
-      format.html {
+      format.html { # /formats
         if params[:format_type_id]
           render status: :not_found, text: '404 Not Found'
         else
