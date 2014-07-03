@@ -21,17 +21,19 @@
 </ol>
 
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-7">
     <% if @resource.parent %>
         <h1>Assess a Sub-Resource <small>of <%= @resource.parent.name %></small></h1>
     <% else %>
         <h1>Assess a Resource <small>in <%= @resource.location.name %></small></h1>
     <% end %>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-5">
+    <span id="question_response_count"><%= @resource.assessment_question_responses.length %></span> of
+    <%= @assessment_sections[0].assessment.question_count %> questions complete
     <div class="btn-group" style="float:right">
       <!-- Save -->
-      <button type="button" class="btn btn-default">
+      <button type="button" class="btn btn-default save">
         <span class="glyphicon glyphicon-cloud"></span> Save
       </button>
     </div>
@@ -42,49 +44,8 @@
 
   <!-- left column menu -->
   <div class="col-sm-3">
-      <div id="sections" data-spy="affix">
-        <nav>
-          <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#basic_info">Basic Info</a></li>
-            <% @assessment_sections.each do |section| %>
-                <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %></a></li>
-            <% end %>
-          </ul>
-        </nav>
-
-        <section>
-          <div class="center">
-            <h4>Progress</h4>
-            <div class="progress">
-              <div class="progress-bar progress-bar-info psap-progress" role="progressbar"
-                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-                   style="width:0%">
-                <span class="sr-only"></span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="center">
-            <h4>Score</h4>
-            <div class="progress">
-              <div class="progress-bar progress-bar-info score" role="progressbar"
-                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-                   style="width:0%">
-                <span class="sr-only"></span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Save button -->
-        <div class="center">
-          <button type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-cloud"></span> Save
-          </button>
-        </div>
-      </div>
+    <%= render partial: 'assessment_sections',
+               locals: { assessment_sections: @assessment_sections } %>
   </div>
 
   <div class="col-sm-9 tab-content">

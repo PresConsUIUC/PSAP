@@ -41,35 +41,8 @@
 
   <!-- left column menu -->
   <div class="col-sm-3">
-    <div id="sections">
-        <nav>
-          <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#basic_info">Basic Info</a></li>
-            <% @assessment_sections.each do |section| %>
-                <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %>
-                    <small>(<%= section.assessment_questions.length %>)</small></a></li>
-            <% end %>
-          </ul>
-        </nav>
-
-        <div class="center">
-          <h4>Score</h4>
-          <div class="progress">
-            <div class="progress-bar progress-bar-info score" role="progressbar"
-                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-                 style="width:0%">
-              <span class="sr-only"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Save button -->
-        <div class="center">
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-cloud"></span> Save
-            </button>
-        </div>
-    </div>
+    <%= render partial: 'assessment_sections',
+               locals: { assessment_sections: @assessment_sections } %>
   </div>
 
   <div class="col-sm-9 tab-content">
