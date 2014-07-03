@@ -77,25 +77,18 @@
 
     <div class="form-group">
       <%= f.label 'Format Type' %>
-      <br>
-      <% FormatType.all.each do |type| %>
-        <label class="radio-inline">
-          <input type="radio" name="format_type" value="<%= type %>"><%= FormatType.name_for_type(type) %>
-        </label>
-      <% end %>
       <button type="button" class="btn btn-default help" data-container="body" data-toggle="popover" data-placement="right"
               data-content="Select the appropriate format of the resource (item or collection part) you are assessing. If you need help, select <em>Format ID Guide</em> from the top utility bar to determine what you have.">
         ?
       </button>
-      <%= select('format', 'format_id',
-                 [],
-                 { include_blank: false },
-                 { 'class' => 'form-control',
-                   'data-option-dependent' => true,
-                   'data-option-observed' => 'format_type',
-                   'data-option-url' => root_path.chomp('/') + '/format-types/:id:/formats',
-                   'data-option-key-method' => 'id',
-                   'data-option-value-method' => 'name' }) %>
+      <br>
+      <% FormatType.all.each do |type| %>
+        <label class="radio-inline">
+          <input type="radio" name="format_type" class="format_type" value="<%= type %>">
+          <%= FormatType.name_for_type(type) %>
+        </label>
+      <% end %>
+      <!-- select menus will be appended here -->
     </div>
 
     <div class="panel-group" id="accordion" style="margin-top:2em">

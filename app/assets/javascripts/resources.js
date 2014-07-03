@@ -33,39 +33,6 @@ var ready = function() {
             //$('#sections').width($('.tab-pane.active').offset().left + 'px');
         });
 
-        // dependent format selects
-        $('select[data-option-dependent=true]').each(function() {
-            var observer_dom_id = $(this).attr('id');
-            var observed_dom_id = $(this).data('option-observed');
-            var url_mask = $(this).data('option-url');
-            var key_method = $(this).data('option-key-method');
-            var value_method = $(this).data('option-value-method');
-            var prompt = $(this).has('option[value=]').size() ?
-                $(this).find('option[value=]') :
-                $('<option value=\"\">').text('Select a specialization'); // TODO: fix
-            var regexp = /:[0-9a-zA-Z_]+:/g;
-            var observer = $('select#' + observer_dom_id);
-            var observed = $('input[name="' + observed_dom_id + '"]');
-
-            if (!observer.val() && observed.size() > 1) {
-                observer.attr('disabled', true);
-            }
-            observed.on('change', function() {
-                //observer.empty().append(prompt);
-                observer.empty();
-                if ($(this).val()) {
-                    url = url_mask.replace(regexp, $(this).val());
-                    $.getJSON(url, function (data) {
-                        $.each(data, function (i, object) {
-                            observer.append($('<option>').attr('value',
-                                object[key_method]).text(object[value_method]));
-                            observer.attr('disabled', false);
-                        });
-                    });
-                }
-            });
-        });
-
         var ResourceForm = {
 
             init: function() {
@@ -74,6 +41,7 @@ var ready = function() {
                 }).trigger('PSAPFormSectionAdded');
 
                 ResourceForm.initSuggestions();
+                ResourceForm.initDependentSelects();
                 ResourceForm.updateDependentQuestions();
                 ResourceForm.updateProgress();
                 ResourceForm.updateScoreBar();
@@ -122,6 +90,54 @@ var ready = function() {
                         ResourceForm.updateProgress();
                         ResourceForm.updateScoreBar();
                     }).trigger('change');
+            },
+
+            initDependentSelects: function() {
+                var appendSelectToNode = function(node) {
+                    var select = $('<select>').attr('name', 'resource[format_id]').
+                        attr('class', 'form-control');
+                    select.hide();
+                    node.append(select);
+                    var prompt = $('<option value=\"\">').text('Select...');
+                    select.append(prompt);
+                    select.prev().attr('name', 'noop');
+                    return select;
+                };
+
+                var populateSelect = function(selectNode, url) {
+                    selectNode.find('*').not(':first').remove();
+                    $.getJSON(url, function (data) {
+                        $.each(data, function (i, object) {
+                            selectNode.append($('<option>').attr('value',
+                                object['id']).text(object['name']));
+                        });
+                        (selectNode.children().length < 2) ?
+                            selectNode.hide() : selectNode.show();
+                    });
+                };
+
+                $('input[name="format_type"]').on('change', function() {
+                    // destroy all selects
+                    $(this).parent().nextAll('select').remove();
+
+                    var select = appendSelectToNode($(this).parent().parent());
+
+                    var url = '/format-types/' + $(this).val() + '/formats'; // TODO: root url
+                    populateSelect(select, url);
+
+                    var onSelectChanged = function() {
+                        // destroy all selects after the changed select
+                        $(this).nextAll('select').remove();
+                        // create a child select
+                        var childSelect = appendSelectToNode($(this).parent());
+                        var url = '/format-types/' +
+                            $('input[name="format_type"]:checked').val() +
+                            '/formats?parent_id=' + $(this).val(); // TODO: root url
+                        populateSelect(childSelect, url);
+                        childSelect.on('change', onSelectChanged);
+                    };
+                    select.on('change', onSelectChanged);
+                });
             },
 
             initSuggestions: function() {

@@ -49,6 +49,7 @@ class FormatsController < ApplicationController
       }
       format.json {
         render json: Format.where(format_type: params[:format_type_id]).
+            where(parent_id: params[:parent_id]).
             order(:name) # TODO: hierarchy
       }
       format.html {
