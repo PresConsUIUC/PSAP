@@ -2,7 +2,7 @@
     <tr>
       <% if show_checkboxes %>
         <td>
-          <input type="checkbox" name="resources" value="<%= resource.id %>">
+          <input type="checkbox" name="resources[]" value="<%= resource.id %>">
         </td>
       <% end %>
       <td class="depth-<%= depth %>">

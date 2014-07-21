@@ -58,6 +58,7 @@ class ResourcesController < ApplicationController
     @resource.associate_assessment_question_responses
   end
 
+  ##
   # Responds to POST /locations/:id/resources/import
   def import
     @location = Location.find params[:location_id]
@@ -75,6 +76,25 @@ class ResourcesController < ApplicationController
       "\"#{command.created_resource.name}\"."
       redirect_to @location
     end
+  end
+
+  ##
+  # Responds to /resources/move
+  def move
+    resources = Resource.where('id IN (?)', params[:resources])
+    location = Location.find(params[:location_id])
+
+    command = MoveResourcesCommand.new(resources, location, current_user,
+                                       request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Successfully moved resources to "\
+      "\"#{command.object.name}\"."
+    end
+    redirect_to :back
   end
 
   ##

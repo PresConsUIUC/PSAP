@@ -1,6 +1,6 @@
 var ready = function() {
     if ($('body#show_location')) {
-        var checkboxes = $('input[name="resources"]');
+        var checkboxes = $('input[name="resources[]"]');
 
         // hook up "check/uncheck all" buttons
         $('#psap-check-all').on('click', function() {
