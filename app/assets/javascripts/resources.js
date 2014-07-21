@@ -23,6 +23,13 @@ var ready = function() {
     } else if ($('body#new_resource').length
         || $('body#edit_resource').length) {
 
+        // override bootstrap nav-pills behavior
+        $('ul.nav-pills a').on('click', function() {
+            window.location.href = $(this).attr('href');
+        });
+
+        $('body').scrollspy({ target: '#sections' });
+
         $('#sections').affix({ // TODO: broken on narrow screens and glitchy on short screens
             offset: {
                 top: 220
@@ -38,6 +45,11 @@ var ready = function() {
             init: function() {
                 $(document).on('PSAPFormSectionAdded', function() {
                     ResourceForm.attachEventListeners();
+
+                    // this is necessary per http://getbootstrap.com/javascript/#scrollspy
+                    $('[data-spy="scroll"]').each(function () {
+                        var $spy = $(this).scrollspy('refresh')
+                    });
                 }).trigger('PSAPFormSectionAdded');
 
                 ResourceForm.initSuggestions();

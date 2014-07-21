@@ -1,4 +1,4 @@
-<div id="<%= section.name.gsub(' ', '_') %>" class="tab-pane">
+<div class="section" id="<%= section.name.gsub(' ', '_') %>">
   <h2><%= section.name %></h2>
   <p><%= section.description %></p>
   <%= form_for @resource, remote: true do |f| %>

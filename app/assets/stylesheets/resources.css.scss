@@ -1,4 +1,9 @@
 body#new_resource, body#edit_resource {
+  div.section {
+    border-top:1px solid #cccccc;
+    margin-top:1em;
+    padding-top:1em;
+  }
   .affix {
     margin: 0 10% 0 0;
     width:21.5%;
