@@ -99,7 +99,7 @@ class FormatsController < ApplicationController
 
   def format_params
     params.require(:format).permit(:format_type, :format_subtype, :name,
-                                   :score, :obsolete, :parent_id,
+                                   :score, :parent_id,
                                    temperature_ranges_attributes: [:id,
                                                                    :min_temp_f,
                                                                    :max_temp_f,

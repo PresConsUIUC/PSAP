@@ -4,40 +4,33 @@ format_one:
   id: 1
   name: 'Used Napkin'
   score: 0
-  obsolete: true
 
 format_two:
   id: 2
   name: 'Soiled Handkerchief'
   score: 0.375
-  obsolete: true
 
 format_three:
   id: 3
   name: 'Dirty Bed Sheet'
   score: 0.875
-  obsolete: false
 
 format_four:
   id: 4
   name: 'Wet Bath Towel'
   score: 0.375
-  obsolete: true
 
 format_five:
   id: 5
   name: 'Manila Envelope'
   score: 0.875
-  obsolete: false
 
 format_six:
   id: 6
   name: 'Post-It Note'
   score: 0.375
-  obsolete: false
 
 unused_format:
   id: 7
   name: 'Unused Format'
   score: 0.375
-  obsolete: false

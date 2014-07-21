@@ -37,17 +37,6 @@
                      class: 'form-control' %>
 </div>
 
-<div class="form-group">
-  <div class="radio">
-    <%= f.radio_button :obsolete, 0, checked: !@format.obsolete? %>
-    <%= f.label :obsolete_0, 'Not Obsolete' %>
-  </div>
-  <div class="radio">
-    <%= f.radio_button :obsolete, 1, checked: @format.obsolete? %>
-    <%= f.label :obsolete_1, 'Obsolete' %>
-  </div>
-</div>
-
 <div class="form-group addable_removable">
   <%= f.label :temperature_ranges, 'Temperature Range Scores' %>
 

@@ -8,7 +8,7 @@ class FormatsControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot create formats' do
     assert_no_difference 'Format.count' do
-      post :create, format: { name: 'Test Format', score: 0.5, obsolete: 1 }
+      post :create, format: { name: 'Test Format', score: 0.5 }
     end
     assert_redirected_to signin_url
   end
@@ -16,7 +16,7 @@ class FormatsControllerTest < ActionController::TestCase
   test 'signed-in users cannot create formats' do
     signin_as(users(:normal_user))
     assert_no_difference 'Format.count' do
-      post :create, format: { name: 'Test Format', score: 0.5, obsolete: 1 }
+      post :create, format: { name: 'Test Format', score: 0.5 }
     end
     assert_redirected_to root_url
   end
@@ -24,7 +24,7 @@ class FormatsControllerTest < ActionController::TestCase
   test 'admin users can create formats' do
     signin_as(users(:admin_user))
     assert_difference 'Format.count' do
-      post :create, format: { name: 'Test Format', score: 0.5, obsolete: 1 }
+      post :create, format: { name: 'Test Format', score: 0.5 }
     end
     assert_equal 'The format "Test Format" has been created.', flash[:success]
     assert_redirected_to formats_url
@@ -33,14 +33,14 @@ class FormatsControllerTest < ActionController::TestCase
   test 'creating a format should write to the event log' do
     signin_as(users(:admin_user))
     assert_difference 'Event.count' do
-      post :create, format: { name: 'Test Format', score: 0.5, obsolete: 1 }
+      post :create, format: { name: 'Test Format', score: 0.5 }
     end
   end
 
   test 'creating an invalid format should render new template' do
     signin_as(users(:admin_user))
     assert_no_difference 'Format.count' do
-      post :create, format: { name: 'Test Format', score: -5, obsolete: 1 }
+      post :create, format: { name: 'Test Format', score: -5 }
     end
     assert_template :new
   end
@@ -211,24 +211,21 @@ class FormatsControllerTest < ActionController::TestCase
   #### update ####
 
   test 'signed-out users cannot update formats' do
-    patch :update, id: 1, format: { name: 'New Name',
-                                    score: 0.5, obsolete: 1 }
+    patch :update, id: 1, format: { name: 'New Name', score: 0.5 }
     assert_not_equal 'New Name', Format.find(1).name
     assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot update formats' do
     signin_as(users(:normal_user))
-    patch :update, id: 1, format: { name: 'New Name',
-                                    score: 0.5, obsolete: 1 }
+    patch :update, id: 1, format: { name: 'New Name', score: 0.5 }
     assert_not_equal 'New Name', Location.find(1).name
     assert_redirected_to root_url
   end
 
   test 'admin users can update formats' do
     signin_as(users(:admin_user))
-    patch :update, id: 1, format: { name: 'New Name',
-                                    score: 0.5, obsolete: 1 }
+    patch :update, id: 1, format: { name: 'New Name', score: 0.5 }
     assert_response :success
     assert_equal 'Format "Test Format" updated.', flash[:success]
     assert_equal 'New Name', Location.find(1).name
@@ -238,8 +235,7 @@ class FormatsControllerTest < ActionController::TestCase
   test 'updating a format should write to the event log' do
     signin_as(users(:admin_user))
     assert_difference 'Event.count' do
-      patch :update, id: 1, format: { name: 'New Name',
-                                      score: 0.5, obsolete: 1 }
+      patch :update, id: 1, format: { name: 'New Name', score: 0.5 }
     end
   end
 

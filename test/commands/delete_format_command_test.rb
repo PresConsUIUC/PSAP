@@ -3,7 +3,7 @@ require 'test_helper'
 class DeleteFormatCommandTest < ActiveSupport::TestCase
 
   def setup
-    @format = Format.create!(name: 'test', score: 0, obsolete: false)
+    @format = Format.create!(name: 'test', score: 0)
 
     @user = users(:normal_user)
     @remote_ip = '10.0.0.1'
