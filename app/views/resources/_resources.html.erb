@@ -4,6 +4,9 @@
 <table class="table table-striped">
   <thead>
   <tr>
+    <% if show_checkboxes %>
+      <th></th>
+    <% end %>
     <th>Title</th>
     <th>Type</th>
     <th>Complete</th>
@@ -11,7 +14,9 @@
   </thead>
   <tbody>
   <%= render partial: 'resources/resource_tree_rows',
-             locals: { resources: resources.order(:name), depth: 0 } if resources.any? %>
+             locals: { resources: resources.order(:name),
+                       depth: 0,
+                       show_checkboxes: show_checkboxes } if resources.any? %>
   </tbody>
 </table>
 

@@ -98,7 +98,8 @@
       <div class="tab-pane" id="assessments_tab">
         <% if @resources.any? %>
             <div id="assessments">
-            <%= render partial: 'resources/resources', locals: {resources: @resources} %>
+            <%= render partial: 'resources/resources',
+                       locals: { resources: @resources, show_checkboxes: false } %>
             </div>
         <% else %>
             <p>There are no resource assessments at this institution.</p>

@@ -1,0 +1,19 @@
+body#show_location {
+  #psap-uncheck-all {
+    display:none;
+  }
+  div#moveModal div.modal-body {
+    ul {
+      font-weight:bold;
+      list-style:none;
+      margin-left:0px;
+      padding-left:0px;
+      ul {
+        margin-left:1.5em;
+        label {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}

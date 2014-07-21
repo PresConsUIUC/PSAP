@@ -106,8 +106,9 @@
 
   <% if @resource.children.any? %>
     <div id="sub_resources" class="tab-pane active">
-      <%= render partial: 'resources/resources', locals: {
-              resources: @resource.children.paginate(page: 1, per_page: 9999999) } %>
+      <%= render partial: 'resources/resources',
+                 locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
+                           show_checkboxes: false } %>
     </div>
   <% end %>
 

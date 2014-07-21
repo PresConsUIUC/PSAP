@@ -1,5 +1,10 @@
 <% resources.each do |resource| %>
     <tr>
+      <% if show_checkboxes %>
+        <td>
+          <input type="checkbox" name="resources" value="<%= resource.id %>">
+        </td>
+      <% end %>
       <td class="depth-<%= depth %>">
         <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
       </td>
@@ -7,5 +12,7 @@
       <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
     </tr>
     <%= render partial: 'resources/resource_tree_rows',
-               locals: { resources: resource.children.order(:name), depth: depth + 1 } if resource.children.any? %>
+               locals: { resources: resource.children.order(:name),
+                         depth: depth + 1,
+                         show_checkboxes: show_checkboxes } if resource.children.any? %>
 <% end %>
