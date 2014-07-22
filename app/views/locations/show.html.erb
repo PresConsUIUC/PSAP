@@ -88,7 +88,7 @@
           </button>
         </div>
 
-        <%= form_tag(resource_move_path) %>
+        <%= form_tag(resource_move_path) do %>
 
           <% if @resources.any? %>
             <div id="resources">
@@ -134,7 +134,7 @@
             </div>
           </div>
 
-        </form>
+        <% end %>
 
       </div>
 
