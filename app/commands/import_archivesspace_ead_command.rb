@@ -2,9 +2,10 @@ require 'rexml/document'
 
 class ImportArchivesspaceEadCommand < Command
 
-  def initialize(files, location, user, remote_ip)
+  def initialize(files, location, parent_resource, user, remote_ip)
     @files = files
     @location = location
+    @parent_resource = parent_resource
     @user = user
     @remote_ip = remote_ip
     @resources = []
@@ -18,6 +19,7 @@ class ImportArchivesspaceEadCommand < Command
             attrs = resource_attributes_from_ead(io.read, @user.id)
             resource = Resource.new(attrs)
             resource.location = @location
+            resource.parent = @parent_resource
             resource.save!
             @resources << resource
           end

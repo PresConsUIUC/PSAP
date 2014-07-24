@@ -61,10 +61,16 @@ class ResourcesController < ApplicationController
   ##
   # Responds to POST /locations/:id/resources/import
   def import
-    @location = Location.find params[:location_id]
+    if params[:location_id]
+      @location = Location.find(params[:location_id])
+    elsif params[:resource_id]
+      @parent_resource = Resource.find(params[:resource_id])
+      @location = @parent_resource.location
+    end
 
-    command = ImportArchivesspaceEadCommand.new(params[:files], @location,
-                                                current_user, request.remote_ip)
+    command = ImportArchivesspaceEadCommand.new(
+        params[:files], @location, @parent_resource, current_user,
+        request.remote_ip)
     begin
       command.execute
     rescue => e
