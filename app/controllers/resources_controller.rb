@@ -63,18 +63,22 @@ class ResourcesController < ApplicationController
   def import
     @location = Location.find params[:location_id]
 
-    command = ImportFromArchivesspaceEadCommand.new(
-        resource_import_params, current_user, request.remote_ip)
+    command = ImportArchivesspaceEadCommand.new(params[:files], @location,
+                                                current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash[:error] = "#{e}"
-      @import = command.object
-      render 'import'
+      redirect_to :back
     else
-      flash[:success] = "Successfully imported resource "\
-      "\"#{command.created_resource.name}\"."
-      redirect_to @location
+      if command.object.length > 0
+        flash[:success] = "Successfully imported #{command.object.length} "\
+        "resource(s)."
+      else
+        flash[:notice] = 'Unable to detect an ArchivesSpace EAD XML file in '\
+        'any of the uploaded files.'
+      end
+      redirect_to :back
     end
   end
 
@@ -215,11 +219,6 @@ class ResourcesController < ApplicationController
     end
     redirect_to(root_url) unless institution.users.include?(current_user) ||
             current_user.is_admin?
-  end
-
-  def resource_import_params
-    params.require(:archivesspace_import).permit(:host, :password, :port,
-                                                 :resource_id, :username)
   end
 
   def resource_params

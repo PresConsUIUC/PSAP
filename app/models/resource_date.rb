@@ -20,17 +20,13 @@ class DateRangeValidator < ActiveModel::Validator
         end_time = Time.new(record.end_year)
       end
 
-      if begin_time >= end_time
+      if begin_time > end_time
         record.errors[:name] << 'Begin date must be earlier than end date.'
       end
     end
 
     if record.date_type == DateType::SINGLE && !record.year
       record.errors[:name] << 'Year is required for single dates.'
-    end
-
-    if record.date_type != DateType::SINGLE && (!record.begin_year || !record.end_year)
-      record.errors[:name] << 'Begin and end years are required for date ranges.'
     end
   end
 

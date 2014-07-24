@@ -86,7 +86,7 @@ class ImportFromArchivesspaceEadCommandTest < ActiveSupport::TestCase
 
   # object
   test 'object method should return the created ArchivesspaceImport object' do
-    assert_kind_of ArchivesspaceImport, @valid_command.object
+    flunk
   end
 
   # created_resource
