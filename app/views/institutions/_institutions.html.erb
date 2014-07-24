@@ -10,7 +10,7 @@
   <tr>
     <th></th>
     <th></th>
-    <th>Repositories</th>
+    <th>Resources</th>
     <th>Users</th>
   </tr>
   </thead>
@@ -19,7 +19,7 @@
       <tr>
         <td><%= link_to 'Edit', edit_institution_path(institution) %></td>
         <td><%= link_to institution.name, institution %></td>
-        <td class="center"><%= institution.repositories.count %></td>
+        <td class="center"><%= institution.resources.count %></td>
         <td class="center"><%= institution.users.count %></td>
       </tr>
   <% end %>
