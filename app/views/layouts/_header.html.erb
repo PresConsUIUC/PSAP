@@ -21,17 +21,17 @@
         <% end %>
         <li <%= 'class=active' if current_page?(format_id_guide_path) %>>
           <%= link_to 'Format ID Guide', format_id_guide_path,
-                      data: { :open => '/format-id-guide' }%>
+                      data: { open: format_id_guide_path } %>
         </li>
         <li <%= 'class=active' if current_page?(glossary_path) %>>
           <%= link_to 'Glossary', glossary_path,
                       id: 'glossaryLink', class: 'modal_view',
-                      data: { :open => '/glossary' }%>
+                      data: { open: glossary_path } %>
         </li>
         <li <%= 'class=active' if current_page?(bibliography_path) %>>
           <%= link_to 'Bibliography', bibliography_path,
                       id: 'bibliographyLink', class: 'modal_view',
-                      data: { :open => '/bibliography' } %>
+                      data: { open: bibliography_path } %>
         </li>
       </ul>
 
