@@ -8,7 +8,7 @@ class PasswordController < ApplicationController
   # Responds to POST /forgot_password
   def send_email
     if params[:user]
-      @user = User.find_by_username params[:user][:username]
+      @user = User.find_by_email params[:user][:email]
       if @user
         @user.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
         @user.save!
