@@ -151,6 +151,10 @@
       <dl>
         <dt>Description</dt>
         <dd><%= @location.description %></dd>
+        <dt>Temperature Range</dt>
+        <dd>
+          <%= @location.temperature_range.min_temp_f %>&deg;F-<%= @location.temperature_range.max_temp_f %>&deg;F
+        </dd>
       </dl>
     <% end %>
   </div>

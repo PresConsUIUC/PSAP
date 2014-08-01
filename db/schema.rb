@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721142026) do
+ActiveRecord::Schema.define(version: 20140801161425) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -186,11 +186,12 @@ ActiveRecord::Schema.define(version: 20140721142026) do
   add_index "languages", ["iso639_2_code"], name: "index_languages_on_iso639_2_code", unique: true
 
   create_table "locations", force: true do |t|
-    t.string   "name",          null: false
+    t.string   "name",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repository_id", null: false
+    t.integer  "repository_id",        null: false
     t.text     "description"
+    t.integer  "temperature_range_id"
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id"
@@ -288,7 +289,7 @@ ActiveRecord::Schema.define(version: 20140721142026) do
     t.integer "min_temp_f", limit: 3
     t.integer "max_temp_f", limit: 3
     t.decimal "score",                precision: 4, scale: 3
-    t.integer "format_id",                                    null: false
+    t.integer "format_id"
   end
 
   add_index "temperature_ranges", ["format_id"], name: "index_temperature_ranges_on_format_id"

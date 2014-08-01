@@ -1080,6 +1080,12 @@ case Rails.env
 
     locations = location_commands.map{ |command| command.execute; command.object }
 
+    locations.each do |location|
+      location.temperature_range = TemperatureRange.create!(
+          min_temp_f: 0, max_temp_f: 100, score: 1)
+      location.save!
+    end
+
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],

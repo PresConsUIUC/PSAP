@@ -1,7 +1,7 @@
 class TemperatureRange < ActiveRecord::Base
   belongs_to :format, inverse_of: :temperature_ranges
+  has_one :location, inverse_of: :temperature_range
 
-  validates :format, presence: true
   validates_numericality_of :score, greater_than_or_equal_to: 0,
                             less_than_or_equal_to: 1, presence: true
   validate :validate_min_or_max_range_required
