@@ -2,10 +2,9 @@
 # should inherit.
 class Command
 
-  # Executes the command, checking all relevant preconditions and raising an
-  # exception if anything goes wrong. Raised exception messages should be
-  # suitable for public consumption. Success/failure should be written to the
-  # event log.
+  # Executes the command, checking all necessary preconditions and raising an
+  # error if anything goes wrong. Error messages should be suitable for
+  # public consumption. Success/failure should be written to the event log.
   def execute
     raise NotImplementedError, 'Command must override execute method'
   end
