@@ -154,7 +154,8 @@ var ready = function() {
 
                     var select = appendSelectToNode($(this).parent().parent());
 
-                    var url = '/format-types/' + $(this).val() + '/formats'; // TODO: root url
+                    var url = $('input[name="root-url"]').val() +
+                        '/format-types/' + $(this).val() + '/formats';
                     populateSelect(select, url);
 
                     var onSelectChanged = function() {
@@ -162,9 +163,10 @@ var ready = function() {
                         $(this).nextAll('select').remove();
                         // create a child select
                         var childSelect = appendSelectToNode($(this).parent());
-                        var url = '/format-types/' +
+                        var url = $('input[name="root-url"]').val() +
+                            '/format-types/' +
                             $('input[name="format_type"]:checked').val() +
-                            '/formats?parent_id=' + $(this).val(); // TODO: root url
+                            '/formats?parent_id=' + $(this).val();
                         populateSelect(childSelect, url);
                         childSelect.on('change', onSelectChanged);
                     };

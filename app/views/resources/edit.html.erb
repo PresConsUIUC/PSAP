@@ -1,6 +1,8 @@
 <% provide(:title, "Edit #{@resource.name}") %>
 <% provide(:body_id, 'edit_resource') %>
 
+<input type="hidden" name="root-url" value="<%= root_url %>">
+
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
       <li><%= link_to 'Institutions', institutions_path %></li>
