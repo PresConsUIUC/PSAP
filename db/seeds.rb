@@ -2343,7 +2343,9 @@ params = {
     "Like chromogenic prints, negatives prior to the 1980s may discolor as a "\
     "result of severe thermal fading of the cyan dye and poor storage in "\
     "high temperatures.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option:
+        command.object.assessment_question_options[0]
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -4681,7 +4683,9 @@ params = {
     "traditional photo paper. Porous paper (the more popular type) typically "\
     "is not as glossy as swellable paper, and is manufactured with or without "\
     "a resin layer.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option:
+        command.object.assessment_question_options[1]
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -7235,6 +7239,9 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 3, value: 0.4)
 command.object.save!
 
+acetate = command.object.assessment_question_options[1]
+rc_paper = command.object.assessment_question_options[2]
+
 # qid 257
 params = {
     name: 'What is the level of breakdown of the acetate base?',
@@ -7245,7 +7252,8 @@ params = {
     help_text: "Acetate films will show its degradation in several stages. "\
     "Click through for more information on the levels of acetate film base "\
     "decay.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: acetate
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -7274,7 +7282,8 @@ params = {
     "to embrittle and crack from exposure to light and fluctuating humidity. "\
     "Discoloration is usually more apparent on the back. If both yellowed "\
     "and brittle, this support is likely in an advanced stage of degradation.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: rc_paper
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -7957,6 +7966,9 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 2, value: 0.4)
 command.object.save!
 
+peel_apart = command.object.assessment_question_options[0]
+integral = command.object.assessment_question_options[1]
+
 # qid 286
 params = {
     name: 'Does the image appear to be distorted or cracking?',
@@ -7967,7 +7979,8 @@ params = {
     help_text: "Distortion results from silver image migration (likely due to "\
     "poor storage orientation); cracking typically results from the photo's "\
     "exposure to fluctuating relative humidity.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: integral
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -7992,7 +8005,8 @@ params = {
     "up first along the edges. Discoloration is usually more apparent on the "\
     "back. If both yellowed and brittle, this support is likely in an "\
     "advanced stage of degradation.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: peel_apart
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -8233,6 +8247,9 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 2, value: 0.4)
 command.object.save!
 
+peel_apart = command.object.assessment_question_options[0]
+integral = command.object.assessment_question_options[1]
+
 # qid 297
 params = {
     name: 'Does the image appear to be distorted or cracking?',
@@ -8243,7 +8260,8 @@ params = {
     help_text: "Distortion results from silver and dye image migration "\
     "(likely due to poor storage orientation); cracking typically results "\
     "from the photo's exposure to fluctuating relative humidity.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: integral
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -8268,7 +8286,8 @@ params = {
     "up first along the edges. Discoloration is usually more apparent on the "\
     "back. If both yellowed and brittle, this support is likely in an "\
     "advanced stage of degradation.",
-    assessment_section: sections[:condition]
+    assessment_section: sections[:condition],
+    enabling_assessment_question_option: peel_apart
 }
 command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
 command.execute
@@ -8308,11 +8327,6 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
 command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 3, value: 0.4)
 command.object.save!
-
-# TODO: dependent questions
-
-#questions[5].enabling_assessment_question_option = options[13]
-#questions[5].save!
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
