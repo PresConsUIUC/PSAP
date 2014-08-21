@@ -31,8 +31,9 @@
     <% end %>
   </div>
   <div class="col-sm-5">
-    <span class="question_response_count"><%= @resource.assessment_question_responses.length %></span> of
-    <%= @assessment_sections[0].assessment.question_count %> questions complete
+    <span class="question_response_count">
+      <%= @resource.assessment_question_response_count %></span> of
+      <%= @assessment_sections[0].assessment.question_count %> questions complete
     <div class="btn-group" style="float:right">
       <!-- Save -->
       <button type="button" class="btn btn-default save">

@@ -87,6 +87,26 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  def assessment_question_response_count
+    # SELECT assessment_question_responses.id
+    # FROM assessment_question_responses
+    # LEFT JOIN assessment_question_options
+    #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
+    # WHERE assessment_question_responses.resource_id = ?
+    #     AND assessment_question_responses.assessment_question_option_id IS NOT NULL
+    # GROUP BY assessment_question_options.assessment_question_id
+    responses = AssessmentQuestionResponse.
+        select('assessment_question_responses.id').
+        joins('LEFT JOIN assessment_question_options '\
+            'ON assessment_question_options.id '\
+              '= assessment_question_responses.assessment_question_option_id').
+        where('assessment_question_responses.resource_id = ?', self.id).
+        where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
+        group('assessment_question_options.assessment_question_id')
+
+    responses.length
+  end
+
   def associate_assessment_question_responses
     Assessment.find_by_key('resource').assessment_sections.order(:index).
         each do |section|
@@ -122,24 +142,8 @@ class Resource < ActiveRecord::Base
             'ON assessment_sections.assessment_id = assessments.id').
           where('assessments.key = \'resource\'')
 
-      # SELECT assessment_question_responses.id
-      # FROM assessment_question_responses
-      # LEFT JOIN assessment_question_options
-      #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
-      # WHERE assessment_question_responses.resource_id = ?
-      #     AND assessment_question_responses.assessment_question_option_id IS NOT NULL
-      # GROUP BY assessment_question_options.assessment_question_id
-      responses = AssessmentQuestionResponse.
-          select('assessment_question_responses.id').
-          joins('LEFT JOIN assessment_question_options '\
-            'ON assessment_question_options.id '\
-              '= assessment_question_responses.assessment_question_option_id').
-          where('assessment_question_responses.resource_id = ?', self.id).
-          where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
-          group('assessment_question_options.assessment_question_id')
-
       self.assessment_percent_complete = questions.length > 0 ?
-          responses.length.to_f / questions.length : 0
+          self.assessment_question_response_count.to_f / questions.length : 0
   end
 
   def update_assessment_score
