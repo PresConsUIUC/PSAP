@@ -1,4 +1,5 @@
 class Format < ActiveRecord::Base
+  has_many :assessment_questions, inverse_of: :format
   has_many :children, class_name: 'Format', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception

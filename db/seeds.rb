@@ -816,133 +816,7511 @@ admin_user = command.object
 admin_user.role = admin_role
 admin_user.save!
 
+# Assessment sections
+sections = {}
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Use / Access', index: 0, weight: 0.2, # TODO
+      description: 'A brief description of the section', # TODO
+      assessment: assessments[0] }, nil, '127.0.0.1')
+command.execute
+sections[:use_access] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Storage / Container', index: 1, weight: 0.3, # TODO
+      description: 'A brief description of the section', # TODO
+      assessment: assessments[0] }, nil, '127.0.0.1')
+command.execute
+sections[:storage_container] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Condition', index: 2, weight: 0.4, # TODO
+      description: 'A brief description of the section', # TODO
+      assessment: assessments[0] }, nil, '127.0.0.1')
+command.execute
+sections[:condition] = command.object
+
+# Assessment questions
+
+# qid 1
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 0,
+    weight: 0.025,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Handling and use carry risk, especially for formats '\
+    'requiring machine-mediated access. Click "Yes" if patrons (or staff) '\
+    'often handle this item and click "No" if not.',
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 2
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 1,
+    weight: 0.025,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Select "Yes" if this content exists in another form at your '\
+    'institution; otherwise, select "No". Click through for more info about '\
+    'service copies.',
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 3
+params = {
+    name: 'Do you have appropriate viewing equipment for this item?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 2,
+    weight: 0.025,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Microfilm readers are required to fully access the '\
+    'information on the film or fiche. Without equipment your film/fiche may '\
+    'be at a higher preservation risk. Indicate whether you have the '\
+    'appropriate device for this particular microform.',
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 4
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 3,
+    weight: 0.018,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Each format has a preferred way of sitting in storage. If '\
+    'you are certain you know how your item should be oriented in storage '\
+    'and have stored it as such, select "Yes"; otherwise, select "No". Click '\
+    'through for more information of how best to orient this item in storage.',
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 5
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 4,
+    weight: 0.02,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Select "Yes" if this item is in a preservation appropriate '\
+    'container; otherwise, select "No". Click through to see examples of '\
+    'appropriate storage containers.',
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 6
+params = {
+    name: 'Does the container or film have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 5,
+    weight: 0.012,
+    format: formats[:microfilm_microfiche],
+    help_text: 'Select "Yes" if the film has any identifying labeling; '\
+    'otherwise, select "No".',
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 7
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 6,
+    weight: 0.16,
+    format: formats[:microfilm_microfiche],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the film or "\
+    "border area is scuffed without clear damage to the image/emulsion "\
+    "side, the image may be \"Good\" or even \"Excellent.\"\n\n" \
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable emulsion loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 8
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 7,
+    weight: 0.06,
+    format: formats[:microfilm_microfiche],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, gelatin emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 9
+params = {
+    name: 'If acetate or nitrate, what is the level of breakdown of the base? '\
+    'If polyester, select "No deterioration"',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 8,
+    weight: 0.08,
+    format: formats[:microfilm_microfiche],
+    help_text: "Acetate and nitrate films will decay in very different ways. "\
+    "Click through for more information on the levels of film base decay.\n\n"\
+    "If you think this film is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.save!
+
+# qid 10
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 9,
+    weight: 0.08,
+    format: formats[:microfilm_microfiche],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Common forms of surface staining for silver gelatin photographic images "\
+    "include silver mirroring (metallic, bluish cast) and orange-yellow "\
+    "spotting (redox blemishes). Click through for more info, including "\
+    "examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 11
+params = {
+    name: 'If microfilm, assess the integrity of the splices on this roll. '\
+    'If microfiche, select "No splices."',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 10,
+    weight: 0.02,
+    format: formats[:microfilm_microfiche],
+    help_text: "This question may involve unspooling the microfilm to "\
+    "answer. Unspooling is not without risk. If you are unable or unwilling "\
+    "to unspool the film and you have no supporting information which may "\
+    "answer this question, you may select \"Unsure\".\n\n"\
+    "If microfiche (film sheet), select \"No splices\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No splices', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Splices - good', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Splices - poor', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 12
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 11,
+    weight: 0.025,
+    format: formats[:microcard],
+    help_text: "Handling and use carry risk, especially for formats requiring "\
+    "machine-mediated access. Click \"Yes\" if patrons (or staff) often "\
+    "handle this item and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 13
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 12,
+    weight: 0.025,
+    format: formats[:microcard],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 14
+params = {
+    name: 'Do you have appropriate viewing equipment for this item?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 13,
+    weight: 0.025,
+    format: formats[:microcard],
+    help_text: "Microfilm readers are required to fully view the information "\
+    "on this microcard. Without equipment this format may be at a higher "\
+    "preservation risk. Indicate whether you have the appropriate device for "\
+    "this particular microform.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 15
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 14,
+    weight: 0.018,
+    format: formats[:microcard],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 16
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 15,
+    weight: 0.02,
+    format: formats[:microcard],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 17
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 16,
+    weight: 0.012,
+    format: formats[:microcard],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 18
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 17,
+    weight: 0.16,
+    format: formats[:microcard],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may yet be \"Excellent.\"\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 19
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 18,
+    weight: 0.06,
+    format: formats[:microcard],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, gelatin emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 20
+params = {
+    name: 'Is the support yellowed and/or brittle?  This will be most '\
+    'evident along the paper\'s edges or back side',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 19,
+    weight: 0.08,
+    format: formats[:microcard],
+    help_text: "Select the degree of the paper's acidic breakdown. "\
+    "Discoloration (i.e. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this paper support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 21
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 20,
+    weight: 0.1,
+    format: formats[:microcard],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "A microcard's Image/text tone may shift toward yellowish brown as it "\
+    "fades; silver mirroring (a metallic, bluish cast on the surface) is a "\
+    "common form of oxidative staining.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 22
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 21,
+    weight: 0.025,
+    format: formats[:microprint],
+    help_text: "Handling and use carry risk, especially for formats "\
+    "requiring machine-mediated access. Click \"Yes\" if patrons (or staff) "\
+    "often handle this item and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 23
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 22,
+    weight: 0.025,
+    format: formats[:microprint],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 24
+params = {
+    name: 'Do you have appropriate viewing equipment for this item?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 23,
+    weight: 0.025,
+    format: formats[:microprint],
+    help_text: "A microfilm reader or similar magnification device is "\
+    "required to fully view the information on this microprint. Without "\
+    "equipment this format may be at a higher preservation risk. Indicate "\
+    "whether you have the appropriate device for this particular microform.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 25
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 24,
+    weight: 0.025,
+    format: formats[:microprint],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 26
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 25,
+    weight: 0.02,
+    format: formats[:microprint],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 27
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 26,
+    weight: 0.012,
+    format: formats[:microprint],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 28
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 27,
+    weight: 0.16,
+    format: formats[:microprint],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/text, it may yet be \"Excellent.\"\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Image loss  (e.g. flaking, fragmenting) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 29
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 28,
+    weight: 0.06,
+    format: formats[:microprint],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, gelatin emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 30
+params = {
+    name: 'Is the support yellowed and/or brittle? This will be most evident '\
+    'along the paper\'s edges or back side',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 29,
+    weight: 0.08,
+    format: formats[:microprint],
+    help_text: "Select the degree of the paper's acidic breakdown. "\
+    "Discoloration (i.e. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this paper support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 31
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 30,
+    weight: 0.1,
+    format: formats[:microprint],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "A tonal shift of the microprint's image/text may not be clear in cases "\
+    "other than extreme fading. Furthermore, black ink is not given to "\
+    "fading; colored ink will, however. Other forms of surface staining may "\
+    "occur.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 32
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 31,
+    weight: 0.025,
+    format: formats[:aperture_card],
+    help_text: "Handling and use carry risk, especially for formats "\
+    "requiring machine-mediated access. Click \"Yes\" if patrons (or staff) "\
+    "often handle this item and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 33
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 32,
+    weight: 0.025,
+    format: formats[:aperture_card],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 34
+params = {
+    name: 'Do you have appropriate viewing equipment for this item?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 33,
+    weight: 0.025,
+    format: formats[:aperture_card],
+    help_text: "A microfilm reader or similar magnification device is "\
+    "required to view the information on the microfilm embedded in this "\
+    "aperture card. (One must assume the machine capable of reading the "\
+    "card's metadata is no longer operational.) Without equipment this "\
+    "format may be at a higher preservation risk. Indicate whether you have "\
+    "the appropriate device for this particular microform.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 35
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 34,
+    weight: 0.018,
+    format: formats[:aperture_card],
+    help_text: "Each format has a preferred way of sitting in storage. If "\
+    "you are certain you know how your item should be oriented in storage "\
+    "and have stored it as such, select \"Yes\"; otherwise, select \"No\". "\
+    "Click through for more information of how best to orient this item in "\
+    "storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 36
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 35,
+    weight: 0.02,
+    format: formats[:aperture_card],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples "\
+    "of appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 37
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 36,
+    weight: 0.012,
+    format: formats[:aperture_card],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 38
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 37,
+    weight: 0.16,
+    format: formats[:aperture_card],
+    help_text: "Be mindful of damage that places the microfilm image or "\
+    "card information at risk. If the non-image (shinier) side of the film "\
+    "is scuffed without clear damage to the image/emulsion side, the image "\
+    "may be \"Good\" or even \"Excellent.\"\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of scratches, abrasions, "\
+    "or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 39
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 38,
+    weight: 0.06,
+    format: formats[:aperture_card],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, gelatin emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 40
+params = {
+    name: 'If film cell is acetate or nitrate, what is the level of '\
+    'breakdown of the base?  If polyester, select "No deterioration"',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 39,
+    weight: 0.08,
+    format: formats[:aperture_card],
+    help_text: "Acetate and nitrate films will decay in very different ways. "\
+    "Click through for more information on the levels of film base decay.\n\n"\
+    "If you think this film is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.save!
+
+# qid 41
+params = {
+    name: 'Is the paper card yellowed and/or brittle?  This will be most '\
+    'evident along the edges or back side',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 40,
+    weight: 0.08,
+    format: formats[:aperture_card],
+    help_text: "Select the degree of the paper's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this paper support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 42
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 41,
+    weight: 0.06,
+    format: formats[:aperture_card],
+    help_text: "Determine the extent to which the film cell's image material "\
+    "has deteriorated, naturally or by external factors.\n\n"\
+    "Common forms of surface staining for silver gelatin photographic images "\
+    "include silver mirroring (metallic, bluish cast) and orange-yellow "\
+    "spotting (redox blemishes). Click through for more info, including "\
+    "examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 43
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 42,
+    weight: 0.025,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 44
+params = {
+    name: 'Are there additional copies of this image (negative or positive) '\
+    'in your collections?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 43,
+    weight: 0.025,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\".",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 45
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 44,
+    weight: 0.018,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Each format has a preferred way of sitting in storage. If "\
+    "you are certain you know how your item should be oriented in storage "\
+    "and have stored it as such, select \"Yes\"; otherwise, select \"No\". "\
+    "Click through for more information of how best to orient this item in "\
+    "storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 46
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 45,
+    weight: 0.02,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 47
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 46,
+    weight: 0.012,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 48
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 47,
+    weight: 0.16,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the film is "\
+    "scuffed without clear damage to the image/emulsion side, the image may "\
+    "be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable emulsion loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 49
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 48,
+    weight: 0.06,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 50
+params = {
+    name: 'If acetate or nitrate, what is the level of breakdown of the base? '\
+    'If polyester, select "No deterioration"',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 49,
+    weight: 0.08,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Acetate and nitrate films will decay in very different ways. "\
+    "Click through for more information on the levels of film base decay.\n\n"\
+    "If you think this is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively Deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 4, value: 0.4)
+command.object.save!
+
+# qid 51
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 50,
+    weight: 0.1,
+    format: formats[:silver_gelatin_negative],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Common forms of surface staining for silver gelatin photographic images "\
+    "include silver mirroring (metallic, bluish cast) and orange-yellow "\
+    "spotting (redox blemishes). Click through for more info, including "\
+    "examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 52
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 51,
+    weight: 0.025,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Handling and use carry damage risks, regardless of "\
+    "intention. Click \"Yes\" if patrons (or staff) often handle this item "\
+    "and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 53
+params = {
+    name: 'Are there additional copies of this image (negative or positive) '\
+    'in your collections?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 52,
+    weight: 0.025,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\".",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 54
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 53,
+    weight: 0.018,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Each format has a preferred way of sitting in storage. If "\
+    "you are certain you know how your item should be oriented in storage "\
+    "and have stored it as such, select \"Yes\"; otherwise, select \"No\". "\
+    "Click through for more information of how best to orient this item in "\
+    "storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 55
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 54,
+    weight: 0.02,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 56
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 55,
+    weight: 0.012,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 57
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 56,
+    weight: 0.16,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the film is "\
+    "scuffed without clear damage to the image/emulsion side, the image may "\
+    "be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable emulsion loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 58
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 57,
+    weight: 0.06,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 59
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 58,
+    weight: 0.08,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Acetate films will show its degradation in several stages. "\
+    "Click through for more information on the levels of acetate film base "\
+    "decay.\n\n"\
+    "If you think this is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 4, value: 0.4)
+command.object.save!
+
+# qid 60
+params = {
+    name: 'Is the image clearly comprised of yellow/magenta/cyan or is there '\
+    'an overall red-orange tint?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 59,
+    weight: 0.1,
+    format: formats[:chromogenic_color_negative],
+    help_text: "Chromogenic components and dye stability improved over time, "\
+    "most notably in 1947, when color stability and saturation was resolved "\
+    "by the addition of red-orange masking to the color negative. Up to that "\
+    "point, the negative image visibly comprised a complementary color set "\
+    "(yellow, magenta, and cyan).\n\n"\
+    "As a color negative's fading is nearly impossible to assess, we ask "\
+    "this question to determine the potential for image degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Red-orange tint', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellow/magenta/cyan', index: 1, value: 0.2)
+command.object.save!
+
+# qid 61
+params = {
+    name: 'Was this negative likely manufactured before the early 1980s?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 60,
+    weight: 0.1,
+    format: formats[:chromogenic_color_negative],
+    help_text: "To identify the manufacture era of the negative, consider "\
+    "both the content of the image as well as the markings/codes along the "\
+    "edge. Making an educated guess is fine for this particular question.\n\n"\
+    "Like chromogenic prints, negatives prior to the 1980s may discolor as a "\
+    "result of severe thermal fading of the cyan dye and poor storage in "\
+    "high temperatures.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 62
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 61,
+    weight: 0.1,
+    format: formats[:glass_negative],
+    help_text: "Handling and use carry damage risks, regardless of "\
+    "intention. Click \"Yes\" if patrons (or staff) often handle this item "\
+    "and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 63
+params = {
+    name: 'Are there additional copies of this image (negative or positive) '\
+    'in your collections?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 62,
+    weight: 0.025,
+    format: formats[:glass_negative],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 64
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 63,
+    weight: 0.018,
+    format: formats[:glass_negative],
+    help_text: "Each format has a preferred way of sitting in storage. If "\
+    "you are certain you know how your item should be oriented in storage "\
+    "and have stored it as such, select \"Yes\"; otherwise, select \"No\". "\
+    "Click through for more information of how best to orient this item in "\
+    "storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 65
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 64,
+    weight: 0.025,
+    format: formats[:glass_negative],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 66
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 65,
+    weight: 0.012,
+    format: formats[:glass_negative],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 67
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 66,
+    weight: 0.16,
+    format: formats[:glass_negative],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the glass is "\
+    "scuffed without clear damage to the image/emulsion side, the image may "\
+    "be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Emulsion delamination or broken glass (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 68
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 67,
+    weight: 0.06,
+    format: formats[:glass_negative],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 69
+params = {
+    name: 'Identify the binder material (gelatin, collodion, albumen), if '\
+    'possible',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 68,
+    weight: 0.04,
+    format: formats[:glass_negative],
+    help_text: "Albumen image tone ranges from ocher-orange to olive green, "\
+    "appearing creamy in dark areas, typically made with thick, irregularly "\
+    "sized rough-cut glass. Corners may not be coated with emulsion.\n\n"\
+    "Collodion image tone ranges from warm light brown to dark brown when "\
+    "viewed in reflected light. Uneven thickness of collodion is often "\
+    "apparent at the corners.\n\n"\
+    "Gelatin image tones range from neutral gray to black. Unlike the "\
+    "others, gelatin plates were made in standard sizes from factory-cut "\
+    "glass (< 2mm thick). Emulsion was machine-applied, resulting in a thin, "\
+    "smooth, even coating which also covered the edges.\n\n"\
+    "If you are uncertain, select \"Unsure\". However, remember that this "\
+    "will harm the accuracy of your score.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Gelatin', index: 0, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Collodion', index: 1, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Albumen', index: 2, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 70
+params = {
+    name: 'Does the emulsion side have a glass cover or is the emulsion '\
+    'exposed?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 69,
+    weight: 0.04,
+    format: formats[:glass_negative],
+    help_text: "A protective sheet of similar-sized glass will help to "\
+    "protect the emulsion from external threats—mechanical damage and "\
+    "environmental factors (e.g. scratches, pests). If the emulsion is "\
+    "cracking or delaminating, a glass cover will help to sandwich and "\
+    "protect the fleeing image material.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Glass cover', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No cover (emulsion exposed)', index: 1, value: 0)
+command.object.save!
+
+# qid 71
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 70,
+    weight: 0.1,
+    format: formats[:glass_negative],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Silver mirroring (metallic, bluish cast) and tarnishing are common "\
+    "forms of staining (via oxidation); emulsion discoloration (yellowing) "\
+    "is also common for many photographic images of this era. Click through "\
+    "for more info, including examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 72
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 71,
+    weight: 0.025,
+    format: formats[:glass_slide_bw],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 73
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 72,
+    weight: 0.025,
+    format: formats[:glass_slide_bw],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 74
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 73,
+    weight: 0.018,
+    format: formats[:glass_slide_bw],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 75
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 74,
+    weight: 0.02,
+    format: formats[:glass_slide_bw],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 76
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 75,
+    weight: 0.012,
+    format: formats[:glass_slide_bw],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 77
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 76,
+    weight: 0.16,
+    format: formats[:glass_slide_bw],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the glass is "\
+    "scuffed without clear damage to the image/emulsion side, the image may "\
+    "be \"Good\" or even \"Excellent\"\n\n."\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Emulsion delamination or broken glass (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 78
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 77,
+    weight: 0.06,
+    format: formats[:glass_slide_bw],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 79
+params = {
+    name: 'Identify the binder material (gelatin, collodion, albumen), if '\
+    'possible',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 78,
+    weight: 0.04,
+    format: formats[:glass_slide_bw],
+    help_text: "Albumen ranges from ocher-orange to olive green, appearing "\
+    "creamy in dark areas, typically made with thick, irregularly sized "\
+    "rough-cut glass.\n\n"\
+    "Collodion image tone ranges from warm light brown to dark brown when "\
+    "viewed in reflected light. Uneven thickness of collodion is often "\
+    "apparent at the corners.\n\n"\
+    "Gelatin image tones range from neutral gray to black. Unlike the "\
+    "others, gelatin plates were made in standard sizes from factory-cut "\
+    "glass less than 2mm thick. Gelatin emulsion was machine-applied, "\
+    "resulting in a thin, smooth, even coating which also covered the edges.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Gelatin', index: 0, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Collodion', index: 1, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Albumen', index: 2, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 80
+params = {
+    name: 'Does the emulsion side have a glass cover or is the emulsion '\
+    'exposed?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 79,
+    weight: 0.04,
+    format: formats[:glass_slide_bw],
+    help_text: "A protective sheet of similar-sized glass will help to "\
+    "protect the emulsion from external threats—mechanical damage and "\
+    "environmental factors (e.g. scratches, pests). If the emulsion is "\
+    "cracking or delaminating, a glass cover will help to sandwich and "\
+    "protect the fleeing image material.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Glass cover', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No cover (emulsion exposed)', index: 1, value: 0)
+command.object.save!
+
+# qid 81
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 80,
+    weight: 0.1,
+    format: formats[:glass_slide_bw],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Silver mirroring (metallic, bluish cast) and tarnishing are common "\
+    "forms of staining (via oxidation); emulsion discoloration (yellowing) "\
+    "is also common for many photographic images of this era. Click through "\
+    "for more info, including examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 82
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 81,
+    weight: 0.025,
+    format: formats[:autochrome],
+    help_text: "Handling and use carry damage risks, regardless of "\
+    "intention. Click \"Yes\" if patrons (or staff) often handle this item "\
+    "and click \"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 83
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 82,
+    weight: 0.025,
+    format: formats[:autochrome],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 84
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 83,
+    weight: 0.018,
+    format: formats[:autochrome],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 85
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 84,
+    weight: 0.02,
+    format: formats[:autochrome],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 86
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 85,
+    weight: 0.012,
+    format: formats[:autochrome],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 87
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 86,
+    weight: 0.16,
+    format: formats[:autochrome],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the glass is "\
+    "scuffed without clear damage to the image/emulsion side, the image may "\
+    "be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Emulsion delamination or broken glass (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 88
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 87,
+    weight: 0.06,
+    format: formats[:autochrome],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 89
+params = {
+    name: 'Does the emulsion side have a glass cover or is the emulsion '\
+    'exposed?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 88,
+    weight: 0.08,
+    format: formats[:autochrome],
+    help_text: "Autochrome's image material is extremely sensitive. A "\
+    "protective sheet of similar-sized glass is essential to protect the "\
+    "emulsion from external threats—mechanical damage and environmental "\
+    "factors (e.g. scratches, pests). If the emulsion is cracking or "\
+    "delaminating, a glass cover will help to sandwich and protect the "\
+    "fleeing image material.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Glass cover', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No cover (emulsion exposed)', index: 1, value: 0)
+command.object.save!
+
+# qid 90
+params = {
+    name: 'Does the emulsion side have a glass cover or is the emulsion '\
+    'exposed?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 89,
+    weight: 0.1,
+    format: formats[:autochrome],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Color fading common for Autochromes; streaking, smearing, and "\
+    "distortion of the dye granules is also common. Tarnishing of the silver "\
+    "image component can also happen (via oxidation), but seldom for images "\
+    "kept under glass. Click through for more info, including examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 91
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 90,
+    weight: 0.025,
+    format: formats[:bw_film_slide],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 92
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 91,
+    weight: 0.025,
+    format: formats[:bw_film_slide],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "service copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 93
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 92,
+    weight: 0.018,
+    format: formats[:bw_film_slide],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 94
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 93,
+    weight: 0.02,
+    format: formats[:bw_film_slide],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 95
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 94,
+    weight: 0.012,
+    format: formats[:bw_film_slide],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 96
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 95,
+    weight: 0.16,
+    format: formats[:bw_film_slide],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the film or "\
+    "slide mount is scuffed without clear damage to the image/emulsion side, "\
+    "the image may be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks."\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable emulsion loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 97
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 96,
+    weight: 0.06,
+    format: formats[:bw_film_slide],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 98
+params = {
+    name: 'If acetate or nitrate, what is the level of breakdown of the base? '\
+    'If polyester, select "No deterioration"',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 97,
+    weight: 0.08,
+    format: formats[:bw_film_slide],
+    help_text: "Acetate and nitrate films will decay in very different ways. "\
+    "Click through for more information on the levels of film base decay.\n\n"\
+    "If you think this is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 4, value: 0.4)
+command.object.save!
+
+# qid 99
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 98,
+    weight: 0.1,
+    format: formats[:bw_film_slide],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Common forms of surface staining for silver gelatin photographic images "\
+    "include silver mirroring (metallic, bluish cast) and orange-yellow "\
+    "spotting (redox blemishes). Click through for more info, including "\
+    "examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 100
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 99,
+    weight: 0.025,
+    format: formats[:color_film_slide],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 101
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 100,
+    weight: 0.025,
+    format: formats[:color_film_slide],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 102
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 101,
+    weight: 0.018,
+    format: formats[:color_film_slide],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 103
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 102,
+    weight: 0.02,
+    format: formats[:color_film_slide],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 104
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 103,
+    weight: 0.012,
+    format: formats[:color_film_slide],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 105
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 104,
+    weight: 0.16,
+    format: formats[:color_film_slide],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the non-image (shinier) side of the film or "\
+    "slide mount is scuffed without clear damage to the image/emulsion side, "\
+    "the image may be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable emulsion loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 106
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 105,
+    weight: 0.06,
+    format: formats[:color_film_slide],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 107
+params = {
+    name: 'If acetate, what is the level of breakdown of the base?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 106,
+    weight: 0.08,
+    format: formats[:color_film_slide],
+    help_text: "Acetate films will show its degradation in several stages. "\
+    "Click through for more information on the levels of acetate film base "\
+    "decay.\n\n"\
+    "If you think this is polyester, or it displays none of the typical "\
+    "acetate or nitrate decay characteristics, select \"No deterioration\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 4, value: 0.4)
+command.object.save!
+
+# qid 108
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 107,
+    weight: 0.1,
+    format: formats[:color_film_slide],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Many slides will discolor as a result of severe thermal fading of the "\
+    "cyan dye and poor storage in high temperatures. In addition to obvious "\
+    "shifts, the level of dye fading be such that it can be assessed by "\
+    "observing the border (w/ magnification).  As this \"black\" border is in "\
+    "fact a composite of the color dyes, its edges will lighten and shift "\
+    "toward magenta over time.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 109
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 108,
+    weight: 0.025,
+    format: formats[:daguerreotype],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 110
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 109,
+    weight: 0.025,
+    format: formats[:daguerreotype],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 111
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 110,
+    weight: 0.018,
+    format: formats[:daguerreotype],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 112
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 111,
+    weight: 0.02,
+    format: formats[:daguerreotype],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 113
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 112,
+    weight: 0.012,
+    format: formats[:daguerreotype],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 114
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 113,
+    weight: 0.16,
+    format: formats[:daguerreotype],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a case is damaged or glass cover even chipped "\
+    "without damage to the silver image, this may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination, silver flaking or loss (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 115
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 114,
+    weight: 0.06,
+    format: formats[:daguerreotype],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 116
+params = {
+    name: 'Is this daguerreotype in a hinged case (w/ glass cover) and/or '\
+    'sealed package?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 115,
+    weight: 0.08,
+    format: formats[:daguerreotype],
+    help_text: "The silver-mercury image material of the daguerreotype is "\
+    "extremely sensitive. Indicate whether this daguerreotype is in a package "\
+    "that effectively seals the plate surface off from external threats.\n\n"\
+    "A secure glass-and-case \"package\" is crucial to protect the image "\
+    "from external threats—mechanical damage and environmental factors (e.g. "\
+    "abrasion, tarnishing). A daguerreotype should remain enclosed in its "\
+    "original case or package; however, conservators may elect to repackage "\
+    "a compromised case if they deem it necessary.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 117
+params = {
+    name: 'Assess the degree of image tarnishing, darkening, and/or loss of '\
+    'contrast',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 116,
+    weight: 0.1,
+    format: formats[:daguerreotype],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Tarnishing typically results from exposure to atmosphere pollutants (an "\
+    "opened case packaging). This will begin as a light brown that "\
+    "progresses toward blue-black opaque staining along the outer edge. Over "\
+    "time, this staining can envelop the whole image.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'None/Slight', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate (at edges only)', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe (overall)', index: 2, value: 0)
+command.object.save!
+
+# qid 118
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 117,
+    weight: 0.025,
+    format: formats[:ambrotype],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 119
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 118,
+    weight: 0.025,
+    format: formats[:ambrotype],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 120
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 119,
+    weight: 0.018,
+    format: formats[:ambrotype],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 121
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 120,
+    weight: 0.02,
+    format: formats[:ambrotype],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 122
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 121,
+    weight: 0.012,
+    format: formats[:ambrotype],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 123
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 122,
+    weight: 0.16,
+    format: formats[:ambrotype],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If the case is damaged or non-image side of the "\
+    "glass is scuffed without clear damage to the image/emulsion side, the "\
+    "image may be \"Good\" or even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Emulsion delamination or broken glass (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 124
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 123,
+    weight: 0.06,
+    format: formats[:ambrotype],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 125
+params = {
+    name: 'Is this ambrotype in a hinged case (w/ glass cover) and/or sealed '\
+    'package?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 124,
+    weight: 0.08,
+    format: formats[:ambrotype],
+    help_text: "The silver image of an ambrotype is extremely sensitive, "\
+    "especially if it was not varnished. Indicate whether this ambrotype is "\
+    "in a package that effectively seals the emulsion-side's surface off from "\
+    "external threats.\n\n"\
+    "A secure case or package is crucial to protect the image from external "\
+    "threats—mechanical damage and environmental factors (e.g. abrasion, "\
+    "tarnishing). An ambrotype should remain enclosed in its original case "\
+    "or package; however, conservators may elect to repackage a compromised "\
+    "case if they deem it necessary.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 126
+params = {
+    name: 'Assess the degree of image tarnishing, darkening, and/or loss of '\
+    'contrast',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 125,
+    weight: 0.1,
+    format: formats[:ambrotype],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Tarnishing typically results from exposure to atmosphere pollutants (an "\
+    "opened case packaging). This will begin as a light brown that "\
+    "progresses toward blue-black opaque staining along the outer edge. Over "\
+    "time, this staining can envelop the whole image.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'None/Slight', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate (at edges only)', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe (overall)', index: 2, value: 0)
+command.object.save!
+
+# qid 127
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 126,
+    weight: 0.025,
+    format: formats[:tintype],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 128
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 127,
+    weight: 0.025,
+    format: formats[:tintype],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 129
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 128,
+    weight: 0.018,
+    format: formats[:tintype],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 130
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 129,
+    weight: 0.02,
+    format: formats[:tintype],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 131
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 130,
+    weight: 0.012,
+    format: formats[:tintype],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 132
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 131,
+    weight: 0.16,
+    format: formats[:tintype],
+    help_text: "Look closely along the edges for blistering and/or flaking of "\
+    "the emulsion. Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks."\
+    "Emulsion delamination or severe flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 133
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 132,
+    weight: 0.06,
+    format: formats[:tintype],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 134
+params = {
+    name: 'Is the tintype\'s back side exhibiting rust?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 133,
+    weight: 0.06,
+    format: formats[:tintype],
+    help_text: "Oxidation and rusting of the tinype's iron substrate can "\
+    "cause blistering, flaking, and total loss of the image emulsion "\
+    "layer—this is the primary threat to tintypes. Check for signs of rust "\
+    "across the plate's back side.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.save!
+
+# qid 135
+params = {
+    name: 'Is this tintype in a sealed package and/or hinged case?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 134,
+    weight: 0.02,
+    format: formats[:ambrotype],
+    help_text: "Indicate whether this tintype is in a package that "\
+    "effectively seals it off from external threats. The silver image is not "\
+    "as sensitive as that of a ambrotype or daguerreotype, but does benefit "\
+    "from the protection of an enclosure. Most tintypes stored loose are "\
+    "therefore dented, bent, or scratched up."\
+    "A rigid, secure case or package helps protect the image from external "\
+    "threats—mechanical damage and environmental factors (e.g. dents, "\
+    "scratches, rusting). Moisture and high humidity will lead to oxidation "\
+    "and rusting of the iron, especially if the lacquered surface has been "\
+    "cracked/chipped.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 136
+params = {
+    name: 'Assess the degree of image darkening, yellowing, and/or loss of '\
+    'contrast',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 135,
+    weight: 0.1,
+    format: formats[:tintype],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "The collodion binder and varnish layers are sensitive to light and will "\
+    "yellow under intense light exposure, which may eventually lead to "\
+    "delamination. The silver image may also lose contrast due to exposure "\
+    "to light and other atmospheric factors.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'None/Slight', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate (at edges only)', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe (overall)', index: 2, value: 0)
+command.object.save!
+
+# qid 137
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 136,
+    weight: 0.025,
+    format: formats[:photomechanical_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 138
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 137,
+    weight: 0.025,
+    format: formats[:photomechanical_print],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 139
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 138,
+    weight: 0.018,
+    format: formats[:photomechanical_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 140
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 139,
+    weight: 0.02,
+    format: formats[:photomechanical_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 141
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 140,
+    weight: 0.012,
+    format: formats[:photomechanical_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 142
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 141,
+    weight: 0.16,
+    format: formats[:photomechanical_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image, the image itself may yet be \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Image loss (e.g. ink flaking, paper fragmenting) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 143
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 142,
+    weight: 0.06,
+    format: formats[:photomechanical_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 144
+params = {
+    name: 'Is the paper yellowed and/or brittle? This will be most evident '\
+    'along the edges or back side',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 143,
+    weight: 0.08,
+    format: formats[:photomechanical_print],
+    help_text: "Select the degree of the paper's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this paper support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 145
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 144,
+    weight: 0.1,
+    format: formats[:photomechanical_print],
+    help_text: "Determine the extent to which the ink has deteriorated, "\
+    "naturally or through external factors.\n\n"\
+    "Fading/discoloration is most common for color inks (unless "\
+    "pigment-based); reddish-brown spot staining (foxing) is common for "\
+    "gravures and certain papers. Click through for more info, including "\
+    "examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 146
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 145,
+    weight: 0.025,
+    format: formats[:inkjet_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 147
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 146,
+    weight: 0.025,
+    format: formats[:inkjet_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 148
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 147,
+    weight: 0.018,
+    format: formats[:inkjet_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 149
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 148,
+    weight: 0.02,
+    format: formats[:inkjet_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 150
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 149,
+    weight: 0.012,
+    format: formats[:inkjet_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 151
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 150,
+    weight: 0.16,
+    format: formats[:inkjet_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image, the image may yet be \"Excellent.\"\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches or "\
+    "abrasions. Image loss (e.g. flaking, fragmenting) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparable "\
+    "image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 152
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 151,
+    weight: 0.06,
+    format: formats[:inkjet_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 153
+params = {
+    name: 'Is the paper yellowed and/or brittle? This will be most evident '\
+    'along the edges or back side',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 152,
+    weight: 0.06,
+    format: formats[:inkjet_print],
+    help_text: "Select the degree of the paper's acidic breakdown. "\
+    "Discoloration (i.e. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this paper support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 154
+params = {
+    name: 'Is this uncoated or coated paper?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 153,
+    weight: 0.04,
+    format: formats[:inkjet_print],
+    help_text: "Uncoated paper (copy paper) will appear rough and has a matte "\
+    "surface like any basic copy paper. Coated paper will have a plasticized "\
+    "backside and will have some degree of surface luster.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Uncoated (copy paper)', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Coated', index: 1, value: 1)
+command.object.save!
+
+# qid 155
+params = {
+    name: 'Does it appear to be a "porous" or "swellable" paper type?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 154,
+    weight: 0,
+    format: formats[:inkjet_print],
+    help_text: "Swellable paper typically has a glossy finish which mimics "\
+    "traditional photo paper. Porous paper (the more popular type) typically "\
+    "is not as glossy as swellable paper, and is manufactured with or without "\
+    "a resin layer.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Porous', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Swellable', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 156
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining.',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 155,
+    weight: 0.08,
+    format: formats[:inkjet_print],
+    help_text: "Determine the extent to which the ink has deteriorated, "\
+    "naturally or through external factors.\n\n"\
+    "Inkjet inks are prone to bleeding, streaking, and distortion; dye-based "\
+    "prints will discolor and fade soon after exposure to light—this includes "\
+    "black-and-white prints.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 157
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 156,
+    weight: 0.025,
+    format: formats[:carbon_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 158
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 157,
+    weight: 0.025,
+    format: formats[:carbon_print],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 159
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 158,
+    weight: 0.018,
+    format: formats[:carbon_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 160
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 159,
+    weight: 0.02,
+    format: formats[:carbon_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 161
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 160,
+    weight: 0.012,
+    format: formats[:carbon_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 162
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 161,
+    weight: 0.16,
+    format: formats[:carbon_print],
+    help_text: "Cracking is usually evident in the emulsion's dark image "\
+    "areas; lifting is prominent along image edges. Be mindful of damage that "\
+    "places the image or visual information at risk. If a support's corner is "\
+    "dented without clear damage to the image, the image may be \"Good\" or "\
+    "even \"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Image loss (e.g. flaking, fragmenting) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparable image loss.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 163
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 162,
+    weight: 0.06,
+    format: formats[:carbon_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 164
+params = {
+    name: 'Is the print mounted or unmounted?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 163,
+    weight: 0.04,
+    format: formats[:carbon_print],
+    help_text: "Carbon Prints and Woodburytypes are often on card mounts; "\
+    "unmounted prints are comparatively thin.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mounted', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unmounted', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 165
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 164,
+    weight: 0.06,
+    format: formats[:carbon_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration may "\
+    "sometimes be more obvious on the back. If both yellowed and brittle, "\
+    "this support (cardboard or paper) is likely in an advanced stage of "\
+    "degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 166
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 165,
+    weight: 0.08,
+    format: formats[:carbon_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading/discoloration is rare for both Carbon Prints and Woodburytypes.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 167
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 166,
+    weight: 0.025,
+    format: formats[:salt_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 168
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 167,
+    weight: 0.025,
+    format: formats[:salt_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 169
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 168,
+    weight: 0.018,
+    format: formats[:salt_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 170
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 169,
+    weight: 0.02,
+    format: formats[:salt_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 171
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 170,
+    weight: 0.012,
+    format: formats[:salt_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 172
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 171,
+    weight: 0.012,
+    format: formats[:salt_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 173
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 172,
+    weight: 0.06,
+    format: formats[:salt_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 174
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 173,
+    weight: 0.08,
+    format: formats[:salt_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 175
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining.',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 174,
+    weight: 0.1,
+    format: formats[:salt_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Salt Print images are often found faded. Highlights and edges will be "\
+    "first to exhibit fading; discoloration usually progresses from reddish "\
+    "or purplish (warm) brown (\"Slight/None\"), to pale yellow "\
+    "(\"Moderate\"), and finally to greenish yellow (\"Severe\"); "\
+    "reddish-brown spot staining (foxing) is also common.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 176
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 175,
+    weight: 0.025,
+    format: formats[:cyanotype],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 177
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 176,
+    weight: 0.025,
+    format: formats[:cyanotype],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 178
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 177,
+    weight: 0.018,
+    format: formats[:cyanotype],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 179
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 178,
+    weight: 0.02,
+    format: formats[:cyanotype],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 180
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 179,
+    weight: 0.012,
+    format: formats[:cyanotype],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 181
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 180,
+    weight: 0.16,
+    format: formats[:cyanotype],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Image loss (e.g. flaking, fragmenting) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 182
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 181,
+    weight: 0.06,
+    format: formats[:cyanotype],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 183
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 182,
+    weight: 0.08,
+    format: formats[:cyanotype],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 184
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 183,
+    weight: 0.1,
+    format: formats[:cyanotype],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "An unfaded Cyanotype will appear brilliant Prussian blue; however, "\
+    "fading is typical as the image is very light sensitive. Note that "\
+    "Cyanotypes usually lack contrast and sharpness in the first place. "\
+    "Reddish-brown spot staining (foxing) of the paper is also common. Click "\
+    "through for examples of Cyanotype fading.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.save!
+
+# qid 185
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 184,
+    weight: 0.025,
+    format: formats[:platinum_palladium_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 186
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 185,
+    weight: 0.025,
+    format: formats[:platinum_palladium_print],
+    help_text: "Select \"Yes\" if this content exists in another form at "\
+    "your institution; otherwise, select \"No\". Click through for more info "\
+    "about facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 187
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 186,
+    weight: 0.018,
+    format: formats[:platinum_palladium_print],
+    help_text: "Each format has a preferred way of sitting in storage. If "\
+    "you are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 188
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 187,
+    weight: 0.018,
+    format: formats[:platinum_palladium_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 189
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 188,
+    weight: 0.012,
+    format: formats[:platinum_palladium_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 190
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 189,
+    weight: 0.16,
+    format: formats[:platinum_palladium_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image material, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Platinum and palladium introduce even greater acidity to the paper "\
+    "support; image loss (by paper flaking, fragmenting) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of "\
+    "irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 191
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 190,
+    weight: 0.06,
+    format: formats[:platinum_palladium_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 192
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 191,
+    weight: 0.08,
+    format: formats[:platinum_palladium_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 193
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 192,
+    weight: 0.1,
+    format: formats[:platinum_palladium_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading and discoloration of the image is uncommon as the "\
+    "platinum/palladium is permanent. However, due to the high acidity of the "\
+    "metallic image, the support is placed at risk. Deterioration of the "\
+    "paper will often shift the image toward a warmer tone (evident in "\
+    "highlights). Some localized or spot staining is also possible.\n\n"\
+    "If the image surface has been stored in contact with other papers, there "\
+    "may be signs of catalytic degradation in the form of a mirror image "\
+    "\“burned\” into the facing paper. This staining is irreversible—do not "\
+    "house platinum prints in direct contact with other photographic "\
+    "materials.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 194
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 193,
+    weight: 0.025,
+    format: formats[:albumen_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 195
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 194,
+    weight: 0.025,
+    format: formats[:albumen_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 196
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 195,
+    weight: 0.018,
+    format: formats[:albumen_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 197
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 196,
+    weight: 0.02,
+    format: formats[:albumen_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 198
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 197,
+    weight: 0.012,
+    format: formats[:albumen_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 199
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 198,
+    weight: 0.16,
+    format: formats[:albumen_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or significant emulsion flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparability. "\
+    "Cracking, crazing, and flaking is most evident in the image's dark areas.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 200
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 199,
+    weight: 0.06,
+    format: formats[:albumen_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 201
+params = {
+    name: 'Is the print mounted or unmounted?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 200,
+    weight: 0.04,
+    format: formats[:albumen_print],
+    help_text: "Albumen Prints are often mounted on thick cardstock. "\
+    "Unmounted prints are comparatively thin and typically found tightly "\
+    "curled, in extreme cases, these will require remediation on the part of "\
+    "a trained conservator.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mounted', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unmounted', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 202
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges.',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 201,
+    weight: 0.06,
+    format: formats[:albumen_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 203
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining.',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 202,
+    weight: 0.08,
+    format: formats[:albumen_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Albumen prints will likely exhibit some yellowing and fading. Most "\
+    "exhibit distinct yellow or yellowish brown staining in the non-image and "\
+    "highlight areas. As the binder yellows, overall print discoloration "\
+    "follows. Highlights lose contrast and detail first.\n\n"\
+    "Reddish-brown blotches or spotty patch staining (foxing) is also common. "\
+    "Click through for examples of Albumen Print discoloration and staining.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 204
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 203,
+    weight: 0.025,
+    format: formats[:collodion_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 205
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 204,
+    weight: 0.025,
+    format: formats[:collodion_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 206
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 205,
+    weight: 0.018,
+    format: formats[:collodion_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 207
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 206,
+    weight: 0.02,
+    format: formats[:collodion_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 208
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 207,
+    weight: 0.012,
+    format: formats[:collodion_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 209
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 208,
+    weight: 0.16,
+    format: formats[:collodion_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Note that even a slight scratch or abrasion to the "\
+    "collodion image layer can expose the stark white baryta under layer.\n\n"\
+    "Delamination or significant emulsion flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 210
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 209,
+    weight: 0.06,
+    format: formats[:collodion_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 211
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 210,
+    weight: 0.08,
+    format: formats[:collodion_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 212
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 211,
+    weight: 0.1,
+    format: formats[:collodion_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Collodion Prints typically exhibit little image fading; if faded, it "\
+    "will be most evident in the image's highlights. Overall tonal shifts "\
+    "range from purple or purplish brown to yellowish or greenish brown; "\
+    "reddish-brown spot staining (foxing) is also common.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 213
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 212,
+    weight: 0.025,
+    format: formats[:gelatin_pop_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 214
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 213,
+    weight: 0.025,
+    format: formats[:gelatin_pop_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 215
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 214,
+    weight: 0.018,
+    format: formats[:gelatin_pop_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 216
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 215,
+    weight: 0.02,
+    format: formats[:gelatin_pop_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 217
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 216,
+    weight: 0.012,
+    format: formats[:gelatin_pop_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 218
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 217,
+    weight: 0.16,
+    format: formats[:gelatin_pop_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Note that even a slight scratch or abrasion to the "\
+    "gelatin image layer can expose the stark white baryta under layer.\n\n"\
+    "Delamination or significant emulsion flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 219
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 218,
+    weight: 0.06,
+    format: formats[:gelatin_pop_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 220
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 219,
+    weight: 0.08,
+    format: formats[:gelatin_pop_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 221
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 220,
+    weight: 0.1,
+    format: formats[:gelatin_pop_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Gelatin POP Prints are usually faded and yellowed; if faded, it will be "\
+    "most evident in the image's highlights. Overall tone can range from "\
+    "reddish-brown (unfaded, untoned) and purplish-brown (unfaded, toned) to "\
+    "light yellowish-brown and yellowish-green (faded, untoned). "\
+    "Reddish-brown spot staining (foxing) on the paper or mount is also "\
+    "possible.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 222
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 221,
+    weight: 0.025,
+    format: formats[:matte_collodion_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 223
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 222,
+    weight: 0.025,
+    format: formats[:matte_collodion_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 224
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 223,
+    weight: 0.018,
+    format: formats[:matte_collodion_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 225
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 224,
+    weight: 0.02,
+    format: formats[:matte_collodion_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 226
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 225,
+    weight: 0.012,
+    format: formats[:matte_collodion_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 227
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 226,
+    weight: 0.16,
+    format: formats[:matte_collodion_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Note that even a slight scratch or abrasion to the "\
+    "collodion image layer can expose the stark white baryta under layer.\n\n"\
+    "Delamination or significant emulsion flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 228
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 227,
+    weight: 0.06,
+    format: formats[:matte_collodion_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 229
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 228,
+    weight: 0.08,
+    format: formats[:matte_collodion_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 230
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 229,
+    weight: 0.1,
+    format: formats[:matte_collodion_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Matte Collodion Prints are generally more stable than their glossy "\
+    "counterparts. If faded or yellowed, it will be most evident in the "\
+    "image's highlights. Stable image tones will range from a purplish-brown, "\
+    "brown-black, or neutral gray-black (all treated with gold or platinum "\
+    "toning).\n\n"\
+    "Silver mirroring (metallic, bluish cast) is a common form of surface "\
+    "oxidation that can affect any silver image. Reddish-brown spot staining "\
+    "(foxing) on the paper or mount is also possible.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 231
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 230,
+    weight: 0.025,
+    format: formats[:silver_gelatin_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 232
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 231,
+    weight: 0.025,
+    format: formats[:silver_gelatin_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 233
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 232,
+    weight: 0.018,
+    format: formats[:silver_gelatin_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 234
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 233,
+    weight: 0.02,
+    format: formats[:silver_gelatin_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 235
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 234,
+    weight: 0.012,
+    format: formats[:silver_gelatin_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 236
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 235,
+    weight: 0.16,
+    format: formats[:silver_gelatin_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Surface cracking and flaking is usually exclusive "\
+    "to RC papers. Early era resin-coated (RC) papers (1968–late 1970s) are "\
+    "especially susceptible. RC prints will have a smooth, plasticized back "\
+    "side.\n\n"\
+    "Delamination or flaking (image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 237
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 236,
+    weight: 0.06,
+    format: formats[:silver_gelatin_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 238
+params = {
+    name: 'Is the support (card mount or paper) discolored and/or brittle? '\
+    'This will be most evident along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 237,
+    weight: 0.08,
+    format: formats[:silver_gelatin_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 239
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 238,
+    weight: 0.1,
+    format: formats[:silver_gelatin_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading is most evident in the image's highlights; tone shifts toward "\
+    "yellowish-brown as this occurs. Look at overall contrast when assessing "\
+    "the level of fading. Click through for examples of Silver Gelatin fading "\
+    "and discoloration.\n\n"\
+    "Silver mirroring (metallic, bluish cast) is a common form of surface "\
+    "oxidation that can affect any silver image. Orange-yellow spots (redox "\
+    "blemishes) in the image are a form of staining that affects only "\
+    "resin-coated (RC) Silver Gelatin Prints.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 240
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 239,
+    weight: 0.025,
+    format: formats[:chromogenic_color_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 241
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 240,
+    weight: 0.025,
+    format: formats[:chromogenic_color_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 242
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 241,
+    weight: 0.018,
+    format: formats[:chromogenic_color_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 243
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 242,
+    weight: 0.02,
+    format: formats[:chromogenic_color_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 244
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 243,
+    weight: 0.012,
+    format: formats[:chromogenic_color_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 245
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 244,
+    weight: 0.16,
+    format: formats[:chromogenic_color_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Surface cracking and flaking is usually exclusive "\
+    "to resin-coated (RC) papers; early era RC papers (1968–late 1970s) are "\
+    "especially susceptible. RC will have a smooth, plasticized back side; "\
+    "fiber-based color photo paper was produced 1942–1971.\n\n"\
+    "Delamination or flaking (i.e. image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 246
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 245,
+    weight: 0.06,
+    format: formats[:chromogenic_color_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 247
+params = {
+    name: 'Is the support discolored and/or brittle? This will be most '\
+    'evident along the paper\'s edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 246,
+    weight: 0.08,
+    format: formats[:chromogenic_color_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 248
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 247,
+    weight: 0.1,
+    format: formats[:chromogenic_color_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading is most evident in the image's highlights; yellowing in "\
+    "highlights and borders. Overall bluish or reddish tonal shifts are "\
+    "especially common in photo papers produced before the mid-1980s. Look at "\
+    "overall contrast when assessing the level of fading. Click through for "\
+    "examples of Chromogenic Color fading and discoloration.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 249
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 248,
+    weight: 0.025,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 250
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 249,
+    weight: 0.025,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 251
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 250,
+    weight: 0.018,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 252
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 251,
+    weight: 0.02,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 253
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 252,
+    weight: 0.012,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 254
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 253,
+    weight: 0.16,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "Silver Dye-Bleach Prints are highly susceptible to abrasion and "\
+    "fingerprints. \"Good\" to \"Critical\" can describe a range of image "\
+    "scratches, abrasions, or cracks. Resin-coated (RC) paper supports are "\
+    "known to develop surface cracks.\n\n"\
+    "Emulsion delamination or flaking (image loss) is inherently \"Serious\""\
+    "or \"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 255
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 254,
+    weight: 0.06,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 256
+params = {
+    name: 'Is this photo on polyester, acetate, or a resin-coated (RC) paper?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 255,
+    weight: 0.08,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Acetate: 1963–late 1970s;\n"\
+    "Polyester and RC paper: late 1970s–2011.\n\n"\
+    "Polyester film is by far more common as a Silver Dye-Bleach Print "\
+    "support than acetate film or RC paper. Polyester is also the most stable "\
+    "of the bunch.\n\n"\
+    "If uncertain about which plastic film support you have (acetate or "\
+    "polyester), make an educated guess based on the era (if you are "\
+    "incorrect and the support has not deteriorated, this will still score "\
+    "higher than answering \"Unsure\").",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Polyester', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Acetate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'RC paper', index: 2, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 257
+params = {
+    name: 'What is the level of breakdown of the acetate base?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 256,
+    weight: 0,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Acetate films will show its degradation in several stages. "\
+    "Click through for more information on the levels of acetate film base "\
+    "decay.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No deterioration', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Deterioration starting', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Actively deteriorating', index: 2, value: 0.33)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical deterioration', index: 3, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 4, value: 4)
+command.object.save!
+
+# qid 258
+params = {
+    name: 'Is the support discolored and/or brittle? This will be most '\
+    'evident along the paper\'s edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 257,
+    weight: 0,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Select the degree of the support's breakdown. Resin-coated "\
+    "(RC) papers (rather than polyester and acetate film supports) are known "\
+    "to embrittle and crack from exposure to light and fluctuating humidity. "\
+    "Discoloration is usually more apparent on the back. If both yellowed "\
+    "and brittle, this support is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 259
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 258,
+    weight: 0.1,
+    format: formats[:silver_dye_bleach_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading and discoloration is less common for Silver Dye-Bleach Prints "\
+    "than most color photo formats. However, dye migration and distortion "\
+    "(read: staining) is relatively common, especially if the print has ever "\
+    "been stored in a humid environment or has been exposed to water.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 260
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 259,
+    weight: 0.025,
+    format: formats[:dye_transfer_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 261
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 260,
+    weight: 0.025,
+    format: formats[:dye_transfer_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 262
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 261,
+    weight: 0.018,
+    format: formats[:dye_transfer_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 263
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 262,
+    weight: 0.02,
+    format: formats[:dye_transfer_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 264
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 263,
+    weight: 0.012,
+    format: formats[:dye_transfer_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 265
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 264,
+    weight: 0.16,
+    format: formats[:dye_transfer_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Delamination or flaking (i.e. image loss) is inherently \"Serious\" or "\
+    "\"Critical\", depending on the degree of irreparability.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 266
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 265,
+    weight: 0.06,
+    format: formats[:dye_transfer_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 267
+params = {
+    name: 'Is the support discolored and/or brittle? This will be most '\
+    'evident along the paper\'s edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 266,
+    weight: 0.08,
+    format: formats[:dye_transfer_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 268
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 267,
+    weight: 0.1,
+    format: formats[:dye_transfer_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Dye-Transfer Prints are sensitive to light, but will maintain their "\
+    "color very well if kept in dark storage. However, Dye-Transfer Prints'"\
+    "magenta and yellow dyes are known to distort, streak, or bleed from "\
+    "exposure to moisture (including high humidity).",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 269
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 268,
+    weight: 0.025,
+    format: formats[:color_carbro_print],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 270
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 269,
+    weight: 0.025,
+    format: formats[:color_carbro_print],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 271
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 270,
+    weight: 0.018,
+    format: formats[:color_carbro_print],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 272
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 271,
+    weight: 0.02,
+    format: formats[:color_carbro_print],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 273
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 272,
+    weight: 0.012,
+    format: formats[:color_carbro_print],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 274
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 273,
+    weight: 0.16,
+    format: formats[:color_carbro_print],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is dented without clear "\
+    "damage to the image/emulsion, the image may be \"Good\" or even "\
+    "\"Excellent\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks. Cracking will be most evident in dark image areas "\
+    "(where the pigmented gelatin is thickest).\n\n"\
+    "Emulsion delamination, lifting, or flaking (image loss) is inherently "\
+    "\"Serious\" or \"Critical\", depending on the degree of irreparability. "\
+    "These loss details will be most prominent along image edges.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 275
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 274,
+    weight: 0.06,
+    format: formats[:color_carbro_print],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 276
+params = {
+    name: 'Is the paper discolored and/or brittle? This will be most evident '\
+    'along the edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 275,
+    weight: 0.08,
+    format: formats[:color_carbro_print],
+    help_text: "Select the degree of the support's acidic breakdown. "\
+    "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
+    "properties, showing up first along the edges. Discoloration is usually "\
+    "more apparent on the back. If both yellowed and brittle, this support "\
+    "(cardboard or paper) is likely in an advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 277
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 276,
+    weight: 0.1,
+    format: formats[:color_carbro_print],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Color Carbro images are exceptionally stable (due to pigments used) and "\
+    "will typically show little to no image fading and no yellowing.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 278
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 277,
+    weight: 0.025,
+    format: formats[:instant_photo_bw],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 279
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 278,
+    weight: 0.025,
+    format: formats[:instant_photo_bw],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 280
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 279,
+    weight: 0.018,
+    format: formats[:instant_photo_bw],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 281
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 280,
+    weight: 0.02,
+    format: formats[:instant_photo_bw],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 282
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 281,
+    weight: 0.012,
+    format: formats[:instant_photo_bw],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 283
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 282,
+    weight: 0.16,
+    format: formats[:instant_photo_bw],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is slightly dented without "\
+    "clear damage to the image/emulsion, the image may be \"Good\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Punctured, cut, or severely creased photos (image or border) must be "\
+    "designated \"Serious\" or \"Critical\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 284
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 283,
+    weight: 0.06,
+    format: formats[:instant_photo_bw],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 285
+params = {
+    name: 'Is this a peel-apart or integral (e.g. type 600) instant photo?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 284,
+    weight: 0.08,
+    format: formats[:instant_photo_bw],
+    help_text: "Black-and-white instant photos are generally of the "\
+    "peel-apart (or pack film) variety, though B&W integral photos do exist "\
+    "(Polaroid type 600), but are relatively rare.\n\n"\
+    "Integral type film will have a characteristically thicker border along "\
+    "the lower half (where the photo development chemical pod is). Click "\
+    "through for examples.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Peel-apart', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Integral', index: 1, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 286
+params = {
+    name: 'Does the image appear to be distorted or cracking?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 285,
+    weight: 0,
+    format: formats[:instant_photo_bw],
+    help_text: "Distortion results from silver image migration (likely due to "\
+    "poor storage orientation); cracking typically results from the photo's "\
+    "exposure to fluctuating relative humidity.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 287
+params = {
+    name: 'Is the support discolored and/or brittle? This will be most '\
+    'evident along the paper\'s edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 286,
+    weight: 0,
+    format: formats[:instant_photo_bw],
+    help_text: "Select the degree of the support's breakdown. Discoloration "\
+    "(e.g. yellowing) typically precedes obvious brittle properties, showing "\
+    "up first along the edges. Discoloration is usually more apparent on the "\
+    "back. If both yellowed and brittle, this support is likely in an "\
+    "advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 288
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 287,
+    weight: 0.1,
+    format: formats[:instant_photo_bw],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Image fading is very common. Overall yellowing is common for integral "\
+    "photos manufactured from the 1970s–1980s. For peel-apart photos, "\
+    "localized staining/fading with a brushstroke-like appearance is often "\
+    "the result of an uneven application of the protective coating.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 289
+params = {
+    name: 'Is this item viewed/handled regularly?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 288,
+    weight: 0.025,
+    format: formats[:instant_photo_color],
+    help_text: "Handling and use carry damage risks, regardless of intention. "\
+    "Click \"Yes\" if patrons (or staff) often handle this item and click "\
+    "\"No\" if not.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 290
+params = {
+    name: 'Are there additional copies, facsimiles, and/or access copies of '\
+    'this image?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 289,
+    weight: 0.025,
+    format: formats[:instant_photo_color],
+    help_text: "Select \"Yes\" if this content exists in another form at your "\
+    "institution; otherwise, select \"No\". Click through for more info about "\
+    "facsimiles and access/reference copies.",
+    assessment_section: sections[:use_access]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 291
+params = {
+    name: 'Is this item properly supported in storage?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 290,
+    weight: 0.018,
+    format: formats[:instant_photo_color],
+    help_text: "Each format has a preferred way of sitting in storage. If you "\
+    "are certain you know how your item should be oriented in storage and "\
+    "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
+    "through for more information of how best to orient this item in storage.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 292
+params = {
+    name: 'Does this item have an appropriate container in good condition?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 291,
+    weight: 0.02,
+    format: formats[:instant_photo_color],
+    help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
+    "container; otherwise, select \"No\". Click through to see examples of "\
+    "appropriate storage containers.",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 293
+params = {
+    name: 'Does the container or item have any meaningful labeling?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 292,
+    weight: 0.012,
+    format: formats[:instant_photo_color],
+    help_text: "Select \"Yes\" if the item or its container have any "\
+    "identifying labeling; otherwise, select \"No\".",
+    assessment_section: sections[:storage_container]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 0)
+command.object.save!
+
+# qid 294
+params = {
+    name: 'What is the state of the image, in terms of physical damage '\
+    'sustained?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 293,
+    weight: 0.16,
+    format: formats[:instant_photo_color],
+    help_text: "Be mindful of damage that places the image or visual "\
+    "information at risk. If a support's corner is slightly dented without "\
+    "clear damage to the image/emulsion, the image may be \"Good\".\n\n"\
+    "\"Good\" to \"Critical\" can describe a range of image scratches, "\
+    "abrasions, or cracks.\n\n"\
+    "Punctured, cut, or severely creased photos (image or border) must be "\
+    "designated \"Serious\" or \"Critical\".",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Excellent', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Good', index: 1, value: 0.75)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Fair', index: 2, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Serious', index: 3, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Critical', index: 4, value: 0)
+command.object.save!
+
+# qid 295
+params = {
+    name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
+    'Check all that apply',
+    question_type: AssessmentQuestionType::CHECKBOX,
+    index: 294,
+    weight: 0.06,
+    format: formats[:instant_photo_color],
+    help_text: "Biological organisms such as mold, insects, and rodents can "\
+    "very easily damage collections, often irreversibly. If this item or its "\
+    "container seems to display pest damage or mold growth, select which "\
+    "(both if necessary). Click through for more information on pests and "\
+    "mold.\n"\
+    "Mold can stain and even weaken materials. Though mold growth can be "\
+    "halted, most staining is permanent. Mold will often appear as small "\
+    "spots, typically overlapping, patchy, and feathery at its edges.\n\n"\
+    "Pests will feed on a whole host of organic substances found in "\
+    "collections (i.e. cellulose, gelatin), eating through paper supports, "\
+    "media, emulsions, binding material, etc.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Mold', index: 0, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Pest damage', index: 1, value: 0.5)
+command.object.save!
+
+# qid 296
+params = {
+    name: 'Is this a peel-apart (e.g. Polacolor) or integral (e.g. SX-70) '\
+    'instant photo?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 295,
+    weight: 0.08,
+    format: formats[:instant_photo_color],
+    help_text: "Color instant photos may be of either the peel-apart (pack "\
+    "film) or integral film type. Color peel-apart photos were often packaged "\
+    "with self-adhesive mounts to curb curling; so these are typically rigid "\
+    "(and flat) or curling (and flexible), and will bear a \"Polacolor\" (or "\
+    "other manufacturer) and/or alphanumeric date code.\n\n"\
+    "Integral type film will have a characteristically thicker border along "\
+    "the lower half (where the photo development chemical pod is)—this is "\
+    "what many associate with Polaroid's SX-70 film. Click through for "\
+    "examples.\n\n"\
+    "Common format dimensions: 3¼” x 4¼” (peel-apart), 3¼” x 3⅜” "\
+    "(peel-apart), and 3½” x 4¼” (integral).",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Peel-apart', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Integral', index: 1, value: 0.25)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 297
+params = {
+    name: 'Does the image appear to be distorted or cracking?',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 296,
+    weight: 0,
+    format: formats[:instant_photo_color],
+    help_text: "Distortion results from silver and dye image migration "\
+    "(likely due to poor storage orientation); cracking typically results "\
+    "from the photo's exposure to fluctuating relative humidity.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yes', index: 0, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'No', index: 1, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 2, value: 0.4)
+command.object.save!
+
+# qid 298
+params = {
+    name: 'Is the support discolored and/or brittle? This will be most '\
+    'evident along the paper\'s edges',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 297,
+    weight: 0,
+    format: formats[:instant_photo_color],
+    help_text: "Select the degree of the support's breakdown. Discoloration "\
+    "(e.g. yellowing) typically precedes obvious brittle properties, showing "\
+    "up first along the edges. Discoloration is usually more apparent on the "\
+    "back. If both yellowed and brittle, this support is likely in an "\
+    "advanced stage of degradation.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Neither', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Yellowed, not brittle', index: 1, value: 0.67)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Brittle, yellowed', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# qid 299
+params = {
+    name: 'Assess the degree of image fading, discoloration, and/or staining',
+    question_type: AssessmentQuestionType::RADIO,
+    index: 298,
+    weight: 0.1,
+    format: formats[:instant_photo_color],
+    help_text: "Determine the extent to which the image material has "\
+    "deteriorated, naturally or by external factors.\n\n"\
+    "Fading and color shifting is very common. Overall yellowing is common "\
+    "for integral instant photos manufactured from the 1970s–1980s. For "\
+    "peel-apart photos, the potential for discoloration is lower than that of "\
+    "the integral variety.",
+    assessment_section: sections[:condition]
+}
+command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+command.execute
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Slight/None', index: 0, value: 1)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Moderate', index: 1, value: 0.5)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Severe', index: 2, value: 0)
+command.object.assessment_question_options << AssessmentQuestionOption.new(
+    name: 'Unsure', index: 3, value: 0.4)
+command.object.save!
+
+# TODO: dependent questions
+
+#questions[5].enabling_assessment_question_option = options[13]
+#questions[5].save!
+
 # From here, we seed the database differently depending on the environment.
 case Rails.env
 
   when 'development'
-    # Assessment sections
-    section_commands = [
-        CreateAssessmentSectionCommand.new(
-            { name: 'Section 1', index: 0, weight: 0.2,
-              description: 'A brief description of the section',
-              assessment: assessments[0] }, nil, '127.0.0.1'),
-        CreateAssessmentSectionCommand.new(
-            { name: 'Section 2', index: 1, weight: 0.3,
-              description: 'A brief description of the section',
-              assessment: assessments[0] }, nil, '127.0.0.1'),
-        CreateAssessmentSectionCommand.new(
-            { name: 'Section 3', index: 2, weight: 0.4,
-              description: 'A brief description of the section',
-              assessment: assessments[0] }, nil, '127.0.0.1'),
-        CreateAssessmentSectionCommand.new(
-            { name: 'Section 4', index: 3, weight: 0.1,
-              description: 'A brief description of the section',
-              assessment: assessments[0] }, nil, '127.0.0.1')
-    ]
-
-    sections = section_commands.map{ |command| command.execute; command.object }
-
-    # Assessment questions
-    question_commands = [
-        CreateAssessmentQuestionCommand.new(
-            {name: 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-             index: 0,
-             question_type: AssessmentQuestionType::RADIO,
-             weight: 0.5,
-             help_text: 'Sample help text',
-             assessment_section: sections[0]}, nil, '127.0.0.1'),
-        CreateAssessmentQuestionCommand.new(
-            {name: 'To be or not to be?',
-             index: 1,
-             question_type: AssessmentQuestionType::SELECT,
-             weight: 0.25,
-             help_text: 'Sample help text',
-             assessment_section: sections[0]}, nil, '127.0.0.1'),
-        CreateAssessmentQuestionCommand.new(
-            {name: 'You talkin\' to me?',
-             index: 2,
-             question_type: AssessmentQuestionType::RADIO,
-             weight: 0.25,
-             help_text: 'Sample help text',
-             assessment_section: sections[0]}, nil, '127.0.0.1'),
-        CreateAssessmentQuestionCommand.new(
-            {name: 'Grocery list',
-             index: 0,
-             question_type: AssessmentQuestionType::CHECKBOX,
-             weight:0.5,
-             help_text: 'Sample help text',
-             assessment_section: sections[1]}, nil, '127.0.0.1'),
-        CreateAssessmentQuestionCommand.new(
-            {name: 'If a tree falls in the forest, does it make a sound?',
-             index: 1,
-             question_type: AssessmentQuestionType::RADIO,
-             weight: 0.25,
-             help_text: 'Sample help text',
-             assessment_section: sections[1]}, nil, '127.0.0.1'),
-        CreateAssessmentQuestionCommand.new(
-            {name: 'Even if you\'re not around?',
-             index: 1,
-             question_type: AssessmentQuestionType::RADIO,
-             weight: 0.25,
-             help_text: 'Sample help text',
-             assessment_section: sections[1]}, nil, '127.0.0.1')
-    ]
-
-    questions = question_commands.map{ |command| command.execute; command.object }
-    questions[5].parent = questions[4]
-    questions[5].save!
-
-    # Assessment question options
-    options = [
-        AssessmentQuestionOption.create!(name: 'A lot', index: 1, value: 1,
-                                         assessment_question: questions[0]),
-        AssessmentQuestionOption.create!(name: 'A little', index: 2, value: 0.5,
-                                         assessment_question: questions[0]),
-        AssessmentQuestionOption.create!(name: 'None', index: 3, value: 0,
-                                         assessment_question: questions[0]),
-
-        AssessmentQuestionOption.create!(name: 'To be', index: 1, value: 1,
-                                         assessment_question: questions[1]),
-        AssessmentQuestionOption.create!(name: 'Not to be', index: 2, value: 0,
-                                         assessment_question: questions[1]),
-        AssessmentQuestionOption.create!(name: 'Reply hazy, try again', index: 3, value: 0.5,
-                                         assessment_question: questions[1]),
-
-        AssessmentQuestionOption.create!(name: 'Yea', index: 1, value: 1,
-                                         assessment_question: questions[2]),
-        AssessmentQuestionOption.create!(name: 'No', index: 2, value: 0,
-                                         assessment_question: questions[2]),
-        AssessmentQuestionOption.create!(name: 'You\'re the only one here', index: 3, value: 1,
-                                         assessment_question: questions[2]),
-
-        AssessmentQuestionOption.create!(name: 'Bananas', index: 1, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'Kale', index: 2, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'Mangoes', index: 3, value: 1,
-                                         assessment_question: questions[3]),
-        AssessmentQuestionOption.create!(name: 'More bananas', index: 4, value: 1,
-                                         assessment_question: questions[3]),
-
-        AssessmentQuestionOption.create!(name: 'Yes', index: 1, value: 1,
-                                         assessment_question: questions[4]),
-        AssessmentQuestionOption.create!(name: 'No', index: 2, value: 0,
-                                         assessment_question: questions[4]),
-
-        AssessmentQuestionOption.create!(name: 'Yup', index: 1, value: 1,
-                                         assessment_question: questions[5]),
-        AssessmentQuestionOption.create!(name: 'Nope', index: 2, value: 0,
-                                         assessment_question: questions[5]),
-        AssessmentQuestionOption.create!(name: 'Maybe', index: 3, value: 0.5,
-                                         assessment_question: questions[5]),
-    ]
-
-    questions[5].enabling_assessment_question_option = options[13]
-    questions[5].save!
-
     # Institutions
     institution_commands = [
-        CreateInstitutionCommand.new(
+        CreateInstitutionCommand.new( # TODO: add this to production seed data
             { name: 'University of Illinois at Urbana-Champaign',
               address1: '1408 W. Gregory Dr.',
               address2: nil,
@@ -1245,7 +8623,7 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-
+=begin
     # Assessment question responses
     responses = [
       AssessmentQuestionResponse.create!(
@@ -1275,7 +8653,7 @@ case Rails.env
     ]
     resources[0].assessment_percent_complete = 1
     resources[0].save!
-
+=end
     # Format temperature ranges
     formats.values.each do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
