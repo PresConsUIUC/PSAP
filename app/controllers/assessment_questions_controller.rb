@@ -1,6 +1,7 @@
 class AssessmentQuestionsController < ApplicationController
 
-  before_action :signed_in_user, :admin_user
+  before_action :signed_in_user
+  before_action :admin_user, except: :index
 
   def create
     command = CreateAssessmentQuestionCommand.new(assessment_question_params,
@@ -37,6 +38,16 @@ class AssessmentQuestionsController < ApplicationController
 
   def edit
     @assessment_question = AssessmentQuestion.find(params[:id])
+  end
+
+  ##
+  # Responds to /formats/:id/assessment_questions to show all assessment
+  # questions relevant to a format
+  def index
+    @assessment_questions = AssessmentQuestion.
+        where(format_id: params[:format_id]) # TODO: take a parent_id query parameter
+    render json: @assessment_questions.to_json(
+        include: :assessment_question_options)
   end
 
   def new

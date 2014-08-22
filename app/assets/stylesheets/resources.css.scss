@@ -9,7 +9,7 @@ body#new_resource, body#edit_resource {
     width:21.5%;
     top:70px;
   }
-  div.form-group .btn-default.help {
+  button.btn-sm.help {
     background-color:#c0c0c0;
     border:none;
     border-radius:9px;
@@ -20,6 +20,18 @@ body#new_resource, body#edit_resource {
     margin:0px 0px 5px 0.4em;
     padding:0px;
     width:18px;
+  }
+  button.btn-default.help {
+    background-color:#c0c0c0;
+    border:none;
+    border-radius:15px;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    height:23px;
+    margin:0px 0px 5px 0.4em;
+    padding:0px;
+    width:23px;
   }
   label.radio-inline {
     border:1px solid #cccccc;

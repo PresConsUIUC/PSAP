@@ -107,19 +107,6 @@ class Resource < ActiveRecord::Base
     responses.length
   end
 
-  def associate_assessment_question_responses
-    Assessment.find_by_key('resource').assessment_sections.order(:index).
-        each do |section|
-      section.assessment_questions.each do |question|
-        unless self.assessment_question_responses.
-            select { |r| r.assessment_question == question }.any?
-          self.assessment_question_responses <<
-              AssessmentQuestionResponse.new(assessment_question: question)
-        end
-      end
-    end
-  end
-
   def response_to_question(assessment_question)
     responses = self.assessment_question_responses.
         where(assessment_question_id: assessment_question.id)

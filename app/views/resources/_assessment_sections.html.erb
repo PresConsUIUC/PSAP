@@ -3,17 +3,18 @@
     <ul class="nav nav-pills nav-stacked">
       <li class="active"><a href="#basic_info">Basic Info</a></li>
       <% assessment_sections.each do |section| %>
-          <li><a href="#<%= section.name.gsub(' ', '_') %>"><%= section.name %>
-            <small>(<%= section.assessment_questions.length %>)</small></a></li>
+          <li data-section-id="<%= section.id %>">
+            <a href="#<%= section.name.gsub('/', '_').gsub(' ', '_') %>"><%= section.name %>
+            <small>(<span class="assessment-question-count">0</span>)</small></a>
+          </li>
       <% end %>
     </ul>
   </nav>
 
   <div class="center">
     <div class="question_response_count_container">
-      <span class="question_response_count">
-        <%= @resource.assessment_question_response_count %></span> of
-        <%= @assessment_sections[0].assessment.question_count %> questions complete
+      <span class="complete-assessment-question-count">0</span> of
+      <span class="total-assessment-question-count">0</span> questions complete
     </div>
 
     <h4>Score</h4>

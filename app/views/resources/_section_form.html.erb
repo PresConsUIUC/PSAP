@@ -1,11 +1,8 @@
-<div class="section" id="<%= section.name.gsub(' ', '_') %>">
+<div class="section" id="<%= section.name.gsub('/', '_').gsub(' ', '_') %>"
+     data-id="<%= section.id %>">
   <h2><%= section.name %></h2>
   <p><%= section.description %></p>
   <%= form_for @resource, remote: true do |f| %>
-      <%= render partial: 'shared/question_tree_rows',
-                 locals: {f: f,
-                          entity: @resource,
-                          children: section.assessment_questions.where(parent_id: nil).order(:index),
-                          depth: 0} %>
+    <% # content will be provided by javascript %>
   <% end %>
 </div>

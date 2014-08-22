@@ -1,5 +1,5 @@
 <% children.each do |question| %>
-
+<% # TODO: get rid of this file %>
     <% # Get this entity's responses to this question
        responses = entity.assessment_question_responses.select{ |r|
          r.assessment_question_id == question.id }
@@ -33,10 +33,6 @@
             <% when AssessmentQuestionType::RADIO %>
                 <% options.each do |option| %>
                     <% response = responses.first
-
-                       # TODO response doesn't have an ID yet,
-                       # because Resource.associate_assessment_question_responses
-                       # didn't save it
                        selected = response.assessment_question_option ?
                                response.assessment_question_option.id == option.id :
                                false
