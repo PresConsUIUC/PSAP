@@ -1008,7 +1008,7 @@ command.object.save!
 # qid 8
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 7,
     weight: 0.06,
@@ -1280,7 +1280,7 @@ command.object.save!
 # qid 19
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 18,
     weight: 0.06,
@@ -1309,7 +1309,7 @@ command.object.save!
 # qid 20
 params = {
     name: 'Is the support yellowed and/or brittle?  This will be most '\
-    'evident along the paper\'s edges or back side',
+    'evident along the paper\'s edges or back side.',
     question_type: AssessmentQuestionType::RADIO,
     index: 19,
     weight: 0.08,
@@ -1525,7 +1525,7 @@ command.object.save!
 # qid 29
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 28,
     weight: 0.06,
@@ -1554,7 +1554,7 @@ command.object.save!
 # qid 30
 params = {
     name: 'Is the support yellowed and/or brittle? This will be most evident '\
-    'along the paper\'s edges or back side',
+    'along the paper\'s edges or back side.',
     question_type: AssessmentQuestionType::RADIO,
     index: 29,
     weight: 0.08,
@@ -1775,7 +1775,7 @@ command.object.save!
 # qid 39
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 38,
     weight: 0.06,
@@ -1830,7 +1830,7 @@ command.object.save!
 # qid 41
 params = {
     name: 'Is the paper card yellowed and/or brittle?  This will be most '\
-    'evident along the edges or back side',
+    'evident along the edges or back side.',
     question_type: AssessmentQuestionType::RADIO,
     index: 40,
     weight: 0.08,
@@ -2025,7 +2025,7 @@ command.object.save!
 # qid 49
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 48,
     weight: 0.06,
@@ -2250,7 +2250,7 @@ command.object.save!
 # qid 58
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 57,
     weight: 0.06,
@@ -2279,7 +2279,7 @@ command.object.save!
 # qid 59
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::RADIO,
     index: 58,
     weight: 0.08,
@@ -2503,7 +2503,7 @@ command.object.save!
 # qid 68
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 67,
     weight: 0.06,
@@ -2758,7 +2758,7 @@ command.object.save!
 # qid 78
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 77,
     weight: 0.06,
@@ -3011,7 +3011,7 @@ command.object.save!
 # qid 88
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 87,
     weight: 0.06,
@@ -3233,7 +3233,7 @@ command.object.save!
 # qid 97
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 96,
     weight: 0.06,
@@ -3458,7 +3458,7 @@ command.object.save!
 # qid 106
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 105,
     weight: 0.06,
@@ -3685,7 +3685,7 @@ command.object.save!
 # qid 115
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 114,
     weight: 0.06,
@@ -3908,7 +3908,7 @@ command.object.save!
 # qid 124
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 123,
     weight: 0.06,
@@ -4132,7 +4132,7 @@ command.object.save!
 # qid 133
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 132,
     weight: 0.06,
@@ -4405,7 +4405,7 @@ command.object.save!
 # qid 144
 params = {
     name: 'Is the paper yellowed and/or brittle? This will be most evident '\
-    'along the edges or back side',
+    'along the edges or back side.',
     question_type: AssessmentQuestionType::RADIO,
     index: 143,
     weight: 0.08,
@@ -4599,7 +4599,7 @@ command.object.save!
 # qid 152
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 151,
     weight: 0.06,
@@ -4628,7 +4628,7 @@ command.object.save!
 # qid 153
 params = {
     name: 'Is the paper yellowed and/or brittle? This will be most evident '\
-    'along the edges or back side',
+    'along the edges or back side.',
     question_type: AssessmentQuestionType::RADIO,
     index: 152,
     weight: 0.06,
@@ -4868,7 +4868,7 @@ command.object.save!
 # qid 163
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 162,
     weight: 0.06,
@@ -5111,7 +5111,7 @@ command.object.save!
 # qid 173
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 172,
     weight: 0.06,
@@ -5336,7 +5336,7 @@ command.object.save!
 # qid 182
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 181,
     weight: 0.06,
@@ -5792,7 +5792,7 @@ command.object.save!
 # qid 200
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 199,
     weight: 0.06,
@@ -6042,7 +6042,7 @@ command.object.save!
 # qid 210
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 209,
     weight: 0.06,
@@ -6267,7 +6267,7 @@ command.object.save!
 # qid 219
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 218,
     weight: 0.06,
@@ -6494,7 +6494,7 @@ command.object.save!
 # qid 228
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 227,
     weight: 0.06,
@@ -6725,7 +6725,7 @@ command.object.save!
 # qid 237
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 236,
     weight: 0.06,
@@ -6956,7 +6956,7 @@ command.object.save!
 # qid 246
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 245,
     weight: 0.06,
@@ -7183,7 +7183,7 @@ command.object.save!
 # qid 255
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 254,
     weight: 0.06,
@@ -7468,7 +7468,7 @@ command.object.save!
 # qid 266
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 265,
     weight: 0.06,
@@ -7694,7 +7694,7 @@ command.object.save!
 # qid 275
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 274,
     weight: 0.06,
@@ -7915,7 +7915,7 @@ command.object.save!
 # qid 284
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 283,
     weight: 0.06,
@@ -8190,7 +8190,7 @@ command.object.save!
 # qid 295
 params = {
     name: 'Is this item exhibiting mold and/or pest (insect, rodent) damage? '\
-    'Check all that apply',
+    'Check all that apply.',
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 294,
     weight: 0.06,
