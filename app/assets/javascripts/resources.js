@@ -21,6 +21,13 @@ var ResourceForm = {
         $('button.save').on('click', function(event) {
             $('div.tab-pane.active form').submit();
         });
+
+        // hide all of the sections except Basic Info
+        $('div.section').each(function() {
+            if ($(this).attr('id') != 'basic_info') {
+                $(this).hide();
+            }
+        });
     },
 
     attachEventListeners: function() {
@@ -74,7 +81,9 @@ var ResourceForm = {
                         $('div[data-id="' + object['assessment_section_id'] + '"] form').
                             append(ResourceForm.htmlForQuestion(object));
                     });
-                    $(document).trigger('PSAPAssessmentQuestionsAdded');
+                    if (data.length > 0) {
+                        $(document).trigger('PSAPAssessmentQuestionsAdded');
+                    }
                     ResourceForm.updateProgress();
                 });
             }
@@ -85,7 +94,9 @@ var ResourceForm = {
                 on('change', function() {
                 ResourceForm.updateDependentQuestions();
                 ResourceForm.updateProgress();
+                // TODO: check for dependent questions
             });
+            $('div.section').show();
         });
     },
 
