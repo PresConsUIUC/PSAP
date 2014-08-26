@@ -240,9 +240,11 @@ class ResourcesController < ApplicationController
                                           :day],
                                      resource_notes_attributes: [:id, :value],
                                      subjects_attributes: [:id, :name]).tap do |whitelisted|
-      whitelisted[:assessment_question_responses_attributes] =
-          params[:resource][:assessment_question_responses_attributes] if
-          params[:resource][:assessment_question_responses_attributes]
+      # AQRs don't use Rails' nested params format, and will require additional
+      # processing
+      whitelisted[:assessment_question_responses] =
+          params[:resource][:assessment_question_responses] if
+          params[:resource][:assessment_question_responses]
     end
   end
 

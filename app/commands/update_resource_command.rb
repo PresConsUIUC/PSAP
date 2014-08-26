@@ -9,20 +9,25 @@ class UpdateResourceCommand < Command
 
   def execute
     begin
-      # nested AQRs require some additional processing in order to update
-      # existing resource AQRs; otherwise they would be added as duplicates
-      if @resource_params[:assessment_question_responses_attributes]
-        @resource_params[:assessment_question_responses_attributes].each do |key, value|
-          responses = @resource.assessment_question_responses.select{ |r|
-            r.id == key.to_i }
-          responses.map{ |response|
-            response.assessment_question_id = value[:assessment_question_id]
-            response.assessment_question_option_id = value[:assessment_question_option_id] }
-        end
+      # Fail if a non-admin user is trying to create the resource in a
+      # different institution
+      if @doing_user and !@doing_user.is_admin? and
+          @doing_user.institution != @resource.location.repository.institution
+        raise 'Insufficient privileges'
       end
 
-      update_params = @resource_params.except('assessment_question_responses_attributes')
-      @resource.update!(update_params)
+      # delete existing AQRs
+      @resource.assessment_question_responses.destroy_all!
+
+      # the AQR params from the form are not in a rails-compatible format
+      @resource_params[:assessment_question_responses].each do |option_id|
+        option = AssessmentQuestionOption.find(option_id)
+        @resource.assessment_question_responses << AssessmentQuestionResponse.new(
+            assessment_question_option: option,
+            assessment_question: option.assessment_question)
+      end
+
+      @resource.update!(@resource_params)
     rescue ActiveRecord::RecordInvalid
       @resource.events << Event.create(
           description: "Attempted to update resource \"#{@resource.name},\" "\

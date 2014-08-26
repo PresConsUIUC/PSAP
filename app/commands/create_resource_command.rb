@@ -4,6 +4,14 @@ class CreateResourceCommand < Command
     @doing_user = doing_user
     @resource = location.resources.build(resource_params)
     @remote_ip = remote_ip
+
+    # the AQR params from the form are not in a rails-compatible format
+    resource_params[:assessment_question_responses].each do |option_id|
+      option = AssessmentQuestionOption.find(option_id)
+      @resource.assessment_question_responses << AssessmentQuestionResponse.new(
+          assessment_question_option: option,
+          assessment_question: option.assessment_question)
+    end
   end
 
   def execute

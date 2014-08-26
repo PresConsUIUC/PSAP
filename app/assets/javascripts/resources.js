@@ -31,6 +31,14 @@ var ResourceForm = {
     },
 
     attachEventListeners: function() {
+        $('button.save').on('click', function(event) {
+            if ($('form#new_resource').length) {
+                $('form#new_resource').submit();
+            } else if ($('form#edit_resource').length) {
+                $('form#edit_resource').submit();
+            }
+        });
+
         $('select.date_type').on('change', function(event) {
             switch (parseInt(this.value)) {
                 case 0: // single
@@ -79,7 +87,7 @@ var ResourceForm = {
                 $.getJSON(url, function (data) {
                     $.each(data, function (i, object) {
                         $('div[data-id="' + object['assessment_section_id'] + '"] form').
-                            append(ResourceForm.htmlForQuestion(object));
+                            append(ResourceForm.htmlForQuestion(object, i));
                     });
                     if (data.length > 0) {
                         $(document).trigger('PSAPAssessmentQuestionsAdded');
@@ -107,7 +115,7 @@ var ResourceForm = {
                 attr('class', 'form-control');
             select.hide();
             node.append(select);
-            var prompt = $('<option value=\"\">').text('Select...');
+            var prompt = $('<option value=\"\">Select...</option>');
             select.append(prompt);
             return select;
         };
@@ -212,48 +220,48 @@ var ResourceForm = {
 
     // Transforms an assessment question into HTML for the
     // assessment form.
-    htmlForQuestion: function(object) {
+    htmlForQuestion: function(object, question_index) {
         var control = '';
 
         switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
             case 0: // radio
                 for (key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    control += '<label>' +
-                            '<input type="radio" ' + // TODO: class="form-control"
-                                'name="resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]" ' +
-                                'data-option-score="' + option['value'] + '" data-option-id="' +
-                                option['id'] +
-                                '"> ' +
-                            option['name'] +
-                        '</label>' +
-                        '<br>';
+                    control += '<div class="radio">' +
+                            '<label>' +
+                                '<input type="radio" ' +
+                                    'name="resource[assessment_question_responses][' + question_index + ']" ' +
+                                    'data-option-score="' + option['value'] + '" data-option-id="' +
+                                    option['id'] + '" value="' + option['id'] + '"> ' +
+                                option['name'] +
+                            '</label>' +
+                        '</div>';
                 }
                 break;
             case 1: // select
-                control += '<label>' +
-                        '<select name="resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]">';
+                control += '<select class="form-control" ' +
+                            'name="resource[assessment_question_responses][' + question_index + ']">';
                 for (key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     control += '<option value="' + option['id'] + '" data-option-score="' +
-                        option['value'] + '" data-option-id="' + option['id'] + '">' +
-                            option['name']
-                        + '</option>';
+                            option['value'] + '" data-option-id="' + option['id'] + '">' +
+                            option['name'] +
+                        '</option>';
                 }
-                control += '</label>';
+                control += '</select>';
                 break;
             case 2: // checkbox
                 for (key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    control += '<label>' +
-                        '<input type="checkbox" ' +
-                        'name="resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]" ' +
-                        'data-option-score="' + option['value'] + '" data-option-id="' +
-                        option['id'] +
-                        '"> ' +
-                        option['name'] +
-                        '</label>' +
-                        '<br>';
+                    control += '<div class="checkbox">' +
+                            '<label>' +
+                                '<input type="checkbox" ' +
+                                    'name="resource[assessment_question_responses][' + question_index + ']" ' +
+                                    'data-option-score="' + option['value'] + '" data-option-id="' +
+                                    option['id'] + '" value="' + option['id'] + '"> ' +
+                                    option['name'] +
+                            '</label>' +
+                        '</div>';
                 }
                 break;
         }
@@ -335,11 +343,6 @@ var ResourceForm = {
         //
         // format (40%) + environment (location) (10%) + storage/container (5%)
         // + use/access (5%) + condition (40%) = total
-        //
-        //  (question 1 weight * question 1 value
-        // + question 2 weight * question 2 value
-        // + question 2a weight * question 2a value)
-        // / number of top-level questions
 
         var score = 0;
         var weight_elements = $('.question input[name="weight"]');
