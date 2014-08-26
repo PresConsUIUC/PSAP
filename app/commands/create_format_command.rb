@@ -9,6 +9,8 @@ class CreateFormatCommand < Command
 
   def execute
     begin
+      raise 'Insufficient privileges' if @doing_user && !@doing_user.is_admin?
+
       @format.save!
 
       unless @format.temperature_ranges.any?

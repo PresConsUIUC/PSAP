@@ -78,7 +78,19 @@ Psap::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.psap_email_address = 'psap@example.org' # TODO: fix
+  # Set up ActionMailer
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default_options = {
+      from: 'Preservation Self-Assessment Program <psap@library.illinois.edu>'
+  }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      address: 'express-smtp.cites.uiuc.edu',
+      port: 25,
+      enable_starttls_auto: false
+  }
+
+  config.psap_email_address = 'psap@library.illinois.edu'
 
   # Paginated views will show this many results per page. (Some views, like
   # events index, may show more.)
