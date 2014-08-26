@@ -1,4 +1,7 @@
 body#new_resource, body#edit_resource {
+  div#sections {
+    display:none;
+  }
   div.section {
     border-top:1px solid #cccccc;
     margin-top:1em;

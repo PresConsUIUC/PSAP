@@ -97,6 +97,7 @@ var ResourceForm = {
                 // TODO: check for dependent questions
             });
             $('div.section').show();
+            $('div#sections').show();
         });
     },
 
