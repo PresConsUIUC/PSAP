@@ -23,11 +23,7 @@ var ResourceForm = {
         });
 
         // hide all of the sections except Basic Info
-        $('div.section').each(function() {
-            if ($(this).attr('id') != 'basic_info') {
-                $(this).hide();
-            }
-        });
+        ResourceForm.hideSections();
     },
 
     attachEventListeners: function() {
@@ -74,6 +70,7 @@ var ResourceForm = {
         // Format type is one of the radio buttons: A/V, Photo/Image...
         $(document).on('PSAPResourceFormatTypeChanged', function() {
             ResourceForm.clearAssessmentQuestions();
+            ResourceForm.hideSections();
         });
 
         // Populates the form with assessment questions. Triggered
@@ -82,6 +79,7 @@ var ResourceForm = {
             ResourceForm.clearAssessmentQuestions();
             var format_id = $('select[name="resource[format_id]"]').val();
             if (format_id) {
+                ResourceForm.hideSections();
                 var url = $('input[name="root-url"]').val() +
                     'formats/' + format_id + '/assessment_questions';
                 $.getJSON(url, function (data) {
@@ -90,10 +88,15 @@ var ResourceForm = {
                             append(ResourceForm.htmlForQuestion(object, i));
                     });
                     if (data.length > 0) {
+                        ResourceForm.showSections();
                         $(document).trigger('PSAPAssessmentQuestionsAdded');
+                    } else {
+                        ResourceForm.hideSections();
                     }
                     ResourceForm.updateProgress();
                 });
+            } else {
+                ResourceForm.hideSections();
             }
         });
 
@@ -104,8 +107,7 @@ var ResourceForm = {
                 ResourceForm.updateProgress();
                 // TODO: check for dependent questions
             });
-            $('div.section').show();
-            $('div#sections').show();
+            ResourceForm.showSections();
         });
     },
 
@@ -155,11 +157,9 @@ var ResourceForm = {
                 });
                 (select.find('option').length < 2) ?
                     select.hide() : select.show();
-                if (select.attr('name') == 'resource[format_id]') {
-                    select.on('change', function() {
-                        $(document).trigger('PSAPResourceFormatChanged');
-                    });
-                }
+                select.on('change', function() {
+                    $(document).trigger('PSAPResourceFormatChanged');
+                });
             });
         };
 
@@ -287,6 +287,20 @@ var ResourceForm = {
                     '</div>' +
                 '</div>' +
             '</div>';
+    },
+
+    hideSections: function() {
+        $('div#sections').hide();
+        $('div.section').each(function() {
+            if ($(this).attr('id') != 'basic_info') {
+                $(this).hide();
+            }
+        });
+    },
+
+    showSections: function() {
+        $('div#sections').show();
+        $('div.section').show();
     },
 
     updateDependentQuestions: function() {
