@@ -130,8 +130,6 @@
 
     <div class="row">
       <div class="col-sm-8">
-        <%= @resource.assessment_question_responses.select{ |r| r.assessment_question_option_id }.length %> of
-          <%= Assessment.find_by_key('resource').question_count %> questions complete
       </div>
       <div class="col-sm-4" style="text-align:center">
           Score: <%= number_to_human(@resource.assessment_score * 100) %>
@@ -278,10 +276,6 @@
               <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#section-<%= section.id %>">
                       <%= section.name %>
-                      <small>(<%= @resource.assessment_question_responses.
-                                          where('assessment_question_id IN (?) AND assessment_question_option_id IS NOT NULL',
-                                                section.assessment_questions.map{ |q| q.id }).
-                                          length %> of <%= section.assessment_questions.length %> complete)</small>
                   </a>
               </h4>
           </div>
