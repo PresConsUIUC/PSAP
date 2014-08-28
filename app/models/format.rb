@@ -15,8 +15,6 @@ class Format < ActiveRecord::Base
   validates :format_type, presence: true,
             inclusion: { in: FormatType.all,
                          message: 'Must be a valid format type.' }
-  validates :name, presence: true, length: { maximum: 255 },
-            uniqueness: { case_sensitive: false }
   validates :score, presence: true, numericality: {
       greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 

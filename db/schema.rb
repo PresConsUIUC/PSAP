@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821160707) do
+ActiveRecord::Schema.define(version: 20140828142559) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(version: 20140821160707) do
   end
 
   add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id"
+
+  create_table "assessment_question_options_questions", force: true do |t|
+    t.integer "assessment_question_id"
+    t.integer "assessment_question_option_id"
+  end
 
   create_table "assessment_question_responses", force: true do |t|
     t.datetime "created_at"
@@ -37,17 +42,16 @@ ActiveRecord::Schema.define(version: 20140821160707) do
   add_index "assessment_question_responses", ["resource_id"], name: "index_assessment_question_responses_on_resource_id"
 
   create_table "assessment_questions", force: true do |t|
-    t.integer  "index",                                                          null: false
-    t.string   "name",                                                           null: false
-    t.integer  "question_type",                                                  null: false
-    t.decimal  "weight",                                 precision: 4, scale: 3, null: false
+    t.integer  "index",                                         null: false
+    t.string   "name",                                          null: false
+    t.integer  "question_type",                                 null: false
+    t.decimal  "weight",                precision: 4, scale: 3, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "assessment_section_id",                                          null: false
+    t.integer  "assessment_section_id",                         null: false
     t.integer  "parent_id"
     t.integer  "selected_option_id"
     t.string   "help_text"
-    t.integer  "enabling_assessment_question_option_id"
     t.integer  "format_id"
   end
 

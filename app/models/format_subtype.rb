@@ -14,12 +14,18 @@ class FormatSubtype
   PAPER = 8
   MIXED = 9
 
+  ARCH_DRAWING_REPRODUCTION = 10
+  OFFICE_COPY_PRINT = 11
+  ORIGINAL_DOCUMENT = 12
+
   def self.all
-    return (0..9)
+    return (0..12)
   end
 
   def self.name_for_subtype(type)
     case type
+      when FormatSubtype::ARCH_DRAWING_REPRODUCTION
+        'Architectural Drawing Reproduction'
       when FormatSubtype::COLOR_PRINT
         'Color Print'
       when FormatSubtype::GLASS_NEGATIVE
@@ -32,6 +38,10 @@ class FormatSubtype
         'Mixed'
       when FormatSubtype::MONOCHROME_PRINT
         'Monochrome Print'
+      when FormatSubtype::OFFICE_COPY_PRINT
+        'Office Copy/Print'
+      when FormatSubtype::ORIGINAL_DOCUMENT
+        'Original Document'
       when FormatSubtype::PAPER
         'Paper'
       when FormatSubtype::PLASTIC_FILM
