@@ -2,7 +2,5 @@
      data-id="<%= section.id %>">
   <h2><%= section.name %></h2>
   <p><%= section.description %></p>
-  <%= form_for @resource, remote: true do |f| %>
-    <% # content will be provided by javascript %>
-  <% end %>
+  <div class="section-questions"></div>
 </div>

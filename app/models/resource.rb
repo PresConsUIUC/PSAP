@@ -30,11 +30,12 @@ class Resource < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true,
             inclusion: { in: ResourceType.all,
-                         message: 'Must be a valid resource type.' }
+                         message: 'must be a valid resource type.' }
   validates :user, presence: true
 
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
+  before_validation :prune_empty_submodels
   before_save :update_assessment_percent_complete, :update_assessment_score
 
   def as_csv
@@ -105,6 +106,18 @@ class Resource < ActiveRecord::Base
         group('assessment_question_options.assessment_question_id')
 
     responses.length
+  end
+
+  ##
+  # Submitted assessment forms will often have empty submodels such as creator,
+  # extent, etc. This method will remove them.
+  #
+  def prune_empty_submodels
+    self.creators = self.creators.select{ |c| c.name.length > 0 }
+    self.extents = self.extents.select{ |e| e.name.length > 0 }
+    self.resource_dates = self.resource_dates.select{ |r| r.year }
+    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
+    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
   end
 
   def response_to_question(assessment_question)

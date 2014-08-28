@@ -19,7 +19,7 @@ var ResourceForm = {
         ResourceForm.updateProgress();
 
         $('button.save').on('click', function(event) {
-            $('div.tab-pane.active form').submit();
+            $('form').submit();
         });
 
         // hide all of the sections except Basic Info
@@ -84,7 +84,7 @@ var ResourceForm = {
                     'formats/' + format_id + '/assessment_questions';
                 $.getJSON(url, function (data) {
                     $.each(data, function (i, object) {
-                        $('div[data-id="' + object['assessment_section_id'] + '"] form').
+                        $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
                             append(ResourceForm.htmlForQuestion(object, i));
                     });
                     if (data.length > 0) {

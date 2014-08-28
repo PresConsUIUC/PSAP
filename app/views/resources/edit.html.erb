@@ -49,12 +49,20 @@
 
   <div class="col-sm-9">
 
-    <div id="basic_info" class="section">
-      <%= render 'basic_info_form', form_url: @resource %>
-    </div>
+    <%= form_for(@resource) do |f| %>
 
-    <% @assessment_sections.each do |section| %>
+      <div id="basic_info" class="section">
+        <%= render 'basic_info_form', f: f %>
+      </div>
+
+      <% @resource.assessment_question_responses.each do |response| %>
+        <input type="hidden" name="selected_option_ids" value="<%= response.id %>">
+      <% end %>
+
+      <% @assessment_sections.each do |section| %>
         <%= render 'section_form', section: section %>
+      <% end %>
+
     <% end %>
 
   </div>

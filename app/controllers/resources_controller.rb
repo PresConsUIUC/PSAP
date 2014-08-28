@@ -221,8 +221,10 @@ class ResourcesController < ApplicationController
     elsif params[:institution_id]
       institution = Institution.find(params[:institution_id])
     end
-    redirect_to(root_url) unless institution.users.include?(current_user) ||
-            current_user.is_admin?
+    if institution
+      redirect_to(root_url) unless institution.users.include?(current_user) ||
+              current_user.is_admin?
+    end
   end
 
   def resource_params
