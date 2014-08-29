@@ -60,10 +60,6 @@
         <%= render 'basic_info_form', f: f %>
       </div>
 
-      <% @resource.assessment_question_responses.each do |response| %>
-        <input type="hidden" name="selected_option_ids" value="<%= response.id %>">
-      <% end %>
-
       <% @assessment_sections.each do |section| %>
         <%= render 'section_form', section: section %>
       <% end %>

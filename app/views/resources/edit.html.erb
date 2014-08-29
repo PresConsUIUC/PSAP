@@ -55,8 +55,20 @@
         <%= render 'basic_info_form', f: f %>
       </div>
 
+      <% # read by JS to select the relevant inputs %>
+      <input type="hidden" name="selected_format_type"
+             value="<%= @resource.format.format_type %>">
+
+      <% format = @resource.format
+      while format do %>
+        <input type="hidden" name="selected_format_ids"
+               value="<%= format.id %>">
+        <% format = format.parent
+      end %>
+
       <% @resource.assessment_question_responses.each do |response| %>
-        <input type="hidden" name="selected_option_ids" value="<%= response.id %>">
+        <input type="hidden" name="selected_option_ids"
+               value="<%= response.assessment_question_option.id %>">
       <% end %>
 
       <% @assessment_sections.each do |section| %>

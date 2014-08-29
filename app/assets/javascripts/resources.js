@@ -14,19 +14,24 @@ var ResourceForm = {
         }).trigger('PSAPFormSectionAdded');
 
         ResourceForm.initSuggestions();
-        ResourceForm.initDependentSelects();
         ResourceForm.updateDependentQuestions();
         ResourceForm.updateProgress();
 
-        $('button.save').on('click', function(event) {
-            $('form').submit();
-        });
+        $('button.save').on('click', function() { $('form').submit(); });
 
         // hide all of the sections except Basic Info
         ResourceForm.hideSections();
+
+        if ($('body#edit_resource').length) {
+            ResourceForm.initInitialSelections();
+        }
     },
 
     attachEventListeners: function() {
+        $('input[name="format_type"]').on('change', function() {
+            ResourceForm.selectFormatType();
+        });
+
         $('button.save').on('click', function(event) {
             if ($('form#new_resource').length) {
                 $('form#new_resource').submit();
@@ -67,39 +72,6 @@ var ResourceForm = {
                 ($(this).val().length < 1));
         }).trigger('keyup');
 
-        // Format type is one of the radio buttons: A/V, Photo/Image...
-        $(document).on('PSAPResourceFormatTypeChanged', function() {
-            ResourceForm.clearAssessmentQuestions();
-            ResourceForm.hideSections();
-        });
-
-        // Populates the form with assessment questions. Triggered
-        // when the resource format is changed.
-        $(document).on('PSAPResourceFormatChanged', function() {
-            ResourceForm.clearAssessmentQuestions();
-            var format_id = $('select[name="resource[format_id]"]').val();
-            if (format_id) {
-                ResourceForm.hideSections();
-                var url = $('input[name="root-url"]').val() +
-                    'formats/' + format_id + '/assessment_questions';
-                $.getJSON(url, function (data) {
-                    $.each(data, function (i, object) {
-                        $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
-                            append(ResourceForm.htmlForQuestion(object, i));
-                    });
-                    if (data.length > 0) {
-                        ResourceForm.showSections();
-                        $(document).trigger('PSAPAssessmentQuestionsAdded');
-                    } else {
-                        ResourceForm.hideSections();
-                    }
-                    ResourceForm.updateProgress();
-                });
-            } else {
-                ResourceForm.hideSections();
-            }
-        });
-
         $(document).on('PSAPAssessmentQuestionsAdded', function() {
             $('.assessment_question input, .assessment_question select').
                 on('change', function() {
@@ -111,84 +83,50 @@ var ResourceForm = {
         });
     },
 
-    initDependentSelects: function() {
-        var appendSelectToNode = function(node) {
-            var select = $('<select>').attr('name', 'resource[format_id]').
-                attr('class', 'form-control');
-            select.hide();
-            node.append(select);
-            var prompt = $('<option value=\"\">Select...</option>');
-            select.append(prompt);
-            return select;
-        };
-
-        var populateSelect = function(select, url) {
-            // remove all options except "Select..."
-            select.find('*').not(':first').remove();
-            $.getJSON(url, function (data) {
-                if (data.length == 0) {
-                    select.remove();
-                } else {
-                    select.prev().attr('name', 'noop');
-                }
-
-                var any_subtypes = false;
-                $.each(data, function (i, object) {
-                    if (object['format_subtype']) {
-                        any_subtypes = true;
-                    }
-                });
-                $.each(data, function (i, object) {
-                    var option = $('<option>').attr('value',
-                        object['id']).text(object['name']);
-                    if (any_subtypes) {
-                        var optgroup = $('optgroup#format-subtype-' +
-                            object['format_subtype']);
-                        if (optgroup.length < 1) {
-                            optgroup = $('<optgroup id="format-subtype-' +
-                                object['format_subtype'] + '" label="' +
-                                object['readable_format_subtype'] + '"></optgroup>');
-                            select.append(optgroup);
+    initInitialSelections: function() {
+        var onFormatSelected = function() {
+            // select the question response options
+            $('input[name="selected_option_ids"]').each(function() {
+                var selected_id = $(this).val();
+                $('[data-type="option"]').each(function() {
+                    var form_option_id = $(this).val();
+                    if (form_option_id == selected_id) {
+                        if ($(this).prop('tagName') == 'SELECT') {
+                            $(this).val(form_option_id);
+                        } else {
+                            $(this).attr('checked', true);
                         }
-                        optgroup.append(option);
-                    } else {
-                        select.append(option);
                     }
-                });
-                (select.find('option').length < 2) ?
-                    select.hide() : select.show();
-                select.on('change', function() {
-                    $(document).trigger('PSAPResourceFormatChanged');
                 });
             });
         };
 
-        $('input[name="format_type"]').on('change', function() {
-            $(document).trigger('PSAPResourceFormatTypeChanged');
+        var onFormatCategorySelected = function() {
+            $('input[name="selected_format_ids"]').each(function() {
+                var id = $(this).val();
+                $('select[name="resource[format_id]"] option').each(function() {
+                    if ($(this).val() == id) {
+                        ResourceForm.selectFormat(id, onFormatSelected);
+                    }
+                });
+            });
+        };
 
-            // destroy all selects
-            $(this).parent().nextAll('select').remove();
+        var onFormatTypeSelected = function() {
+            $('input[name="selected_format_ids"]').each(function() {
+                var id = $(this).val();
+                $('select[name="resource[format_id]"] option').each(function() {
+                    if ($(this).val() == id) {
+                        ResourceForm.selectFormatCategory(id,
+                            onFormatCategorySelected);
+                    }
+                });
+            });
+        };
 
-            var select = appendSelectToNode($(this).parent().parent());
-
-            var url = $('input[name="root-url"]').val() +
-                '/format-types/' + $(this).val() + '/formats';
-            populateSelect(select, url);
-
-            var onSelectChanged = function() {
-                // destroy all selects after the changed select
-                $(this).nextAll('select').remove();
-                // create a child select
-                var childSelect = appendSelectToNode($(this).parent());
-                var url = $('input[name="root-url"]').val() +
-                    '/format-types/' +
-                    $('input[name="format_type"]:checked').val() +
-                    '/formats?parent_id=' + $(this).val();
-                populateSelect(childSelect, url);
-                childSelect.on('change', onSelectChanged);
-            };
-            select.on('change', onSelectChanged);
-        });
+        ResourceForm.selectFormatType(
+            $('input[name="selected_format_type"]').val(),
+            onFormatTypeSelected);
     },
 
     initSuggestions: function() {
@@ -213,6 +151,16 @@ var ResourceForm = {
         });
     },
 
+    appendSelectToNode: function(node) {
+        var select = $('<select>').attr('name', 'resource[format_id]').
+            attr('class', 'form-control');
+        select.hide();
+        node.append(select);
+        var prompt = $('<option value=\"\">Select...</option>');
+        select.append(prompt);
+        return select;
+    },
+
     clearAssessmentQuestions: function() {
         $('div.assessment_question').remove();
         ResourceForm.updateProgress();
@@ -231,6 +179,7 @@ var ResourceForm = {
                             '<label>' +
                                 '<input type="radio" ' +
                                     'name="resource[assessment_question_responses][' + question_index + ']" ' +
+                                    'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
                                 option['name'] +
@@ -239,7 +188,7 @@ var ResourceForm = {
                 }
                 break;
             case 1: // select
-                control += '<select class="form-control" ' +
+                control += '<select class="form-control" data-type="option" ' +
                             'name="resource[assessment_question_responses][' + question_index + ']">';
                 for (key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
@@ -257,6 +206,7 @@ var ResourceForm = {
                             '<label>' +
                                 '<input type="checkbox" ' +
                                     'name="resource[assessment_question_responses][' + question_index + ']" ' +
+                                    'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
                                     option['name'] +
@@ -298,9 +248,136 @@ var ResourceForm = {
         });
     },
 
+    populateSelect: function(select, url, onCompleteCallback) {
+        // remove all options except "Select..."
+        select.find('*').not(':first').remove();
+        $.getJSON(url, function (data) {
+            if (data.length == 0) {
+                select.remove();
+            } else {
+                select.prev().attr('name', 'noop');
+            }
+
+            var any_subtypes = false;
+            $.each(data, function (i, object) {
+                if (object['format_subtype']) {
+                    any_subtypes = true;
+                }
+            });
+            $.each(data, function (i, object) {
+                var option = $('<option>').attr('value',
+                    object['id']).text(object['name']);
+                if (any_subtypes) {
+                    var optgroup = $('optgroup#format-subtype-' +
+                        object['format_subtype']);
+                    if (optgroup.length < 1) {
+                        optgroup = $('<optgroup id="format-subtype-' +
+                            object['format_subtype'] + '" label="' +
+                            object['readable_format_subtype'] + '"></optgroup>');
+                        select.append(optgroup);
+                    }
+                    optgroup.append(option);
+                } else {
+                    select.append(option);
+                }
+            });
+            (select.find('option').length < 2) ?
+                select.hide() : select.show();
+
+            if (onCompleteCallback) {
+                onCompleteCallback();
+            }
+        });
+    },
+
+    selectFormat: function(id, onCompleteCallback) {
+        ResourceForm.clearAssessmentQuestions();
+        ResourceForm.hideSections();
+        if (id) {
+            $('select[name="resource[format_id]"]').val(id);
+
+            var url = $('input[name="root-url"]').val() +
+                'formats/' + id + '/assessment_questions';
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, object) {
+                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
+                        append(ResourceForm.htmlForQuestion(object, i));
+                });
+                if (data.length > 0) {
+                    ResourceForm.showSections();
+                    $(document).trigger('PSAPAssessmentQuestionsAdded');
+                } else {
+                    ResourceForm.hideSections();
+                }
+                ResourceForm.updateProgress();
+
+                if (onCompleteCallback) {
+                    onCompleteCallback();
+                }
+            });
+        } else {
+            ResourceForm.hideSections();
+        }
+    },
+
+    selectFormatCategory: function(id, onCompleteCallback) {
+        $('select[name="resource[format_id]"] option').each(function() {
+            if ($(this).val() == id) {
+                $(this).parent().val(id);
+
+                var childSelect = ResourceForm.appendSelectToNode(
+                    $(this).parent().parent());
+                var url = $('input[name="root-url"]').val() +
+                    '/format-types/' +
+                    $('input[name="format_type"]:checked').val() +
+                    '/formats?parent_id=' + $(this).val();
+                ResourceForm.populateSelect(childSelect, url,
+                    onCompleteCallback);
+            }
+        });
+    },
+
+    // Format type is one of the radio buttons: A/V, Photo/Image...
+    selectFormatType: function(id, onCompleteCallback) {
+        if (id) {
+            $('input[name="format_type"]').each(function() {
+                if ($(this).val() == id) {
+                    $(this).attr('checked', true);
+                }
+            });
+        }
+
+        ResourceForm.clearAssessmentQuestions();
+        ResourceForm.hideSections();
+
+        // destroy all selects
+        $('div.format').find('select').remove();
+
+        var select = ResourceForm.appendSelectToNode($('div.format'));
+        var onSelectChanged = function() {
+            // destroy all selects after the changed select
+            $(this).nextAll('select').remove();
+            // create a child select
+            var childSelect = ResourceForm.appendSelectToNode(
+                $(this).parent());
+            var url = $('input[name="root-url"]').val() +
+                '/format-types/' +
+                $('input[name="format_type"]:checked').val() +
+                '/formats?parent_id=' + $(this).val();
+            ResourceForm.populateSelect(childSelect, url);
+            $(this).on('change', onSelectChanged);
+            $(document).trigger('PSAPResourceFormatChanged');
+        };
+        select.on('change', onSelectChanged);
+
+        var url = $('input[name="root-url"]').val() + '/format-types/' +
+            $('input[name="format_type"]:checked').val() + '/formats';
+        ResourceForm.populateSelect(select, url, onCompleteCallback);
+    },
+
     showSections: function() {
         $('div#sections').show();
-        $('div.section').show();
+        $('div.section').fadeIn();
     },
 
     updateDependentQuestions: function() {
@@ -427,3 +504,4 @@ var ready = function() {
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
+// TODO: destroy event listeners
