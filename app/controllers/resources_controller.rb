@@ -54,8 +54,6 @@ class ResourcesController < ApplicationController
 
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
-
-    @resource.associate_assessment_question_responses
   end
 
   ##

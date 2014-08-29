@@ -28,8 +28,10 @@
     <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
   </div>
   <div class="col-sm-5">
-    <span class="complete-assessment-question-count">0</span> of
-    <span class="total-assessment-question-count">0</span> questions complete
+    <div class="question_response_count_container">
+      <span class="complete-assessment-question-count">0</span> of
+      <span class="total-assessment-question-count">0</span> questions complete
+    </div>
     <div class="btn-group" style="float:right">
       <!-- Save -->
       <button type="button" class="btn btn-default save">
