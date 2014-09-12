@@ -19,14 +19,14 @@ test:
   timeout: 5000
 
 staging:
-  adapter: mysql
+  adapter: mysql2
   database: <%= begin IO.read("/home/psap/.db_staging_name") rescue "" end %>
   encoding: utf8
   username: <%= begin IO.read("/home/psap/.db_staging_username") rescue "" end %>
   password: <%= begin IO.read("/home/psap/.db_staging_password") rescue "" end %>
 
 production:
-  adapter: mysql
+  adapter: mysql2
   database: <%= begin IO.read("/home/psap/.db_production_name") rescue "" end %>
   encoding: utf8
   username: <%= begin IO.read("/home/psap/.db_production_username") rescue "" end %>
