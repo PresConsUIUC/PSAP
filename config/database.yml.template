@@ -18,8 +18,16 @@ test:
   pool: 5
   timeout: 5000
 
+staging:
+  adapter: mysql
+  database: <%= begin IO.read("/home/psap/.db_staging_name") rescue "" end %>
+  encoding: utf8
+  username: <%= begin IO.read("/home/psap/.db_staging_username") rescue "" end %>
+  password: <%= begin IO.read("/home/psap/.db_staging_password") rescue "" end %>
+
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql
+  database: <%= begin IO.read("/home/psap/.db_production_name") rescue "" end %>
+  encoding: utf8
+  username: <%= begin IO.read("/home/psap/.db_production_username") rescue "" end %>
+  password: <%= begin IO.read("/home/psap/.db_production_password") rescue "" end %>
