@@ -13,9 +13,10 @@ margins are aimed for but sometimes exceeded, especially in the view templates.
 
 Mail
 
-In development, you will need to copy the SMTP server password to a file
-called ".smtp_dev_password" in the application root. Either contact a project
-member to obtain this password, or use a different SMTP server in
+In development, if you want outgoing email to work, you will need to copy the
+SMTP server password to a file called ".smtp_dev_password" in the application
+root. Either contact a project member to obtain this password by emailing
+psap@library.illinois.edu, or use a different SMTP server in
 config/environments/development.rb.
 
 Deployment
@@ -33,4 +34,4 @@ Configuration
 PSAP uses the standard Rails application configuration files in
 config/environments.
 
-The version number is set in app/helpers/application_helper.rb.
+The application version number is set in app/helpers/application_helper.rb.
