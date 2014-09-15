@@ -14913,7 +14913,7 @@ case Rails.env
   when 'development'
     # Institutions
     institution_commands = [
-        CreateInstitutionCommand.new( # TODO: add this to production seed data
+        CreateInstitutionCommand.new(
             { name: 'University of Illinois at Urbana-Champaign',
               address1: '1408 W. Gregory Dr.',
               address2: nil,
