@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828142559) do
+ActiveRecord::Schema.define(version: 20140915135703) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20140828142559) do
     t.datetime "created_at"
     t.integer  "user_id"
     t.string   "address",     limit: 45
-    t.decimal  "event_level",            precision: 1, scale: 1, default: 6.0, null: false
+    t.decimal  "event_level",            precision: 2, scale: 1, default: 6.0, null: false
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
