@@ -15142,10 +15142,11 @@ case Rails.env
         response.assessment_question.assessment_question_options[0]
     end
     resources[1].save!
+
     resources[4].parent = resources[3]
     resources[5].parent = resources[3]
     resources[6].parent = resources[3]
-    resources[7].parent = resources[7]
+    resources[7].parent = resources[3]
     resources[8].parent = resources[3]
     resources.select{ |r| r.save! }
 
