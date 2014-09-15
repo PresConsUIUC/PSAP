@@ -1,7 +1,89 @@
 <% provide(:title, 'About') %>
+<% provide(:body_id, 'about') %>
 
-<h1>About</h1>
-<p>Find me in app/views/static/about.html.erb</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sapien urna, ultrices ac nunc non, bibendum tempus ligula. Integer ante velit, condimentum eu purus non, pharetra dignissim mauris. Suspendisse sed massa eu orci convallis facilisis. Cras ut cursus dui. Phasellus quis nulla et nisl fringilla pellentesque at in sapien. Donec sit amet porttitor est, sit amet hendrerit metus. Maecenas dignissim, odio sed ultrices suscipit, sem ante molestie orci, sed placerat metus sem eu nisi. Nulla interdum est enim, id consectetur odio viverra vel.</p>
-<p>Duis dui urna, convallis laoreet lacus et, consectetur pharetra mi. Suspendisse vestibulum tortor sed lacus fermentum, ac cursus neque rhoncus. Aenean quis vehicula leo. Aliquam velit nibh, condimentum sed rhoncus sed, malesuada et sem. Curabitur felis nibh, gravida a pretium at, commodo bibendum massa. Vivamus iaculis, dolor eu luctus ultricies, est ligula vestibulum urna, vitae pellentesque enim metus nec dui. Nam feugiat nibh in aliquam consequat.</p>
-<p>Cras ac congue arcu. Etiam sollicitudin dignissim porttitor. Curabitur vitae ligula vitae nisi pulvinar porta non a arcu. Nullam metus metus, consequat nec sodales sit amet, porta at turpis. Pellentesque ac convallis lacus, nec sagittis ipsum. Phasellus ut tempor augue, semper porttitor leo. Duis laoreet erat vel augue ultrices, a auctor sem semper. Integer lacinia neque justo. Cras euismod diam ut venenatis egestas. Nam ante leo, pulvinar eu gravida vitae, interdum ac leo. Vestibulum in quam sed velit auctor egestas. Fusce ut sapien at elit suscipit imperdiet a eu diam. Mauris egestas lectus sapien, et vulputate augue vulputate a.</p>
+<h1>About the PSAP</h1>
+<p class="largest">The <strong>Preservation Self-Assessment Program (PSAP)</strong> is a free online tool that helps collection managers prioritize efforts to improve conditions of collections. Through guided evaluation of materials, storage/exhibit environments, and institutional policies, the PSAP produces reports on the factors that impact the health of cultural heritage materials, and defines the points from which to begin care. </p>
+
+<p class="larger">In short, the PSAP...</p>
+<ul class="larger">
+  <li>Supports targeted preservation assessments of paper documents, books and bound items, photographic and image materials, and audiovisual media.</li>
+  <li>Performs item- and collection-level assessments.</li>
+  <li>Provides textual and image-based educational resources to aid in the identification of different types of materials and their preservation challenges (see the Format ID Guide).</li> <!-- NEEDS: link to Format ID Guide -->
+  <li>Addresses factors of both storage and display, applicable from open exhibitions to closed archives.</li>
+</ul>
+
+<!-- Both the first paragraph and this shortlist above are to be presented larger.  I suspect that it would look best if the first paragraph is largest (but a bit smaller than <h1>), and then the shortlist is a step down but still much larger than other <p> -->
+
+<h2>Who is the PSAP for?</h2>
+<p>Any organization that collects paper documents, photographic and image materials, and audiovisual media could benefit from the PSAP, including library special collections, archives, museums, and historical societies. Like the Audiovisual Self-Assessment Program (AvSAP) which preceded it, the PSAP is designed to assist in organizations where little to no prior preservation training exists.</p> <!-- NEEDS: link to AvSAP project page -->
+
+<h2>The Focus</h2>
+<p>Our goal is to help collections managers develop a prioritized preservation plan as well as to educate them on the “health risks” posed to their collections and what they can do to mitigate them with the resources at hand. The scope of formats and materials currently covered are:</p>
+<ul>
+  <li><strong>Audiovisual Media</strong>: Film, Videotape (open-reel, cartridge-based; analog, digital), Audiotape (open-reel, cartridge-based; analog, digital), Phonograph Records, Optical Media (CD, DVD), Grooved Cylinders, and Wire Recordings.</li>
+  <li><strong>Photographic and Image Materials</strong>: Photo Prints (B&W, color, Polaroids), Negatives (glass, film), Slides/Transparencies (glass, film), Daguerreotypes, Ambrotypes, Tintypes, Photomechanical Prints, Digital Prints, and Microform.</li>
+  <li><strong>Paper (Bound, Unbound)</strong>: Various ink/media on various paper types including Documents, Books, Pamphlets, Manuscript, Typescript, Office Copies/Prints (Xeroxes, carbon copies, etc.), Architectural Drawing Reproduction (Blueprints, Photostats, etc.), and more.</li>
+</ul>
+
+<h2>What is a Preservation Assessment? </h2>
+<p>Preservation assessments (and surveys) are a key element of good collection stewardship as they allow collections managers and curators to become more familiar with the condition of their collections and derive useful and accurate data about collections. These data help managers to then establish and articulate preservation needs. In general, a preservation assessment considers many different facets of preservation need, ranging from the condition of specific materials to understanding how the building, environment, policies, and use all affect the health of the materials overall. See Preservation Assessments and Surveys for more.</p> <!-- NEEDS: link to the Pres Assessments and Survey page (in the Format ID Guide) -->
+
+<h2>What do I need to get started?</h2>
+<p>The PSAP meets users on their level of experience and requires no prior knowledge about their preservation. The application guides you to answer direct questions about your resources and will provide additional help options to explain concepts and principles, and to show example images along the way. By answering questions regarding your materials, environments, and policies, you create a unique profile of your organization.</p>
+
+<h2>Technical Requirements</h2>
+<p>The application simply runs in your web browser. No installation is necessary. No limit is placed on the amount of items or collections you assess; all data is securely stored on University of Illinois servers. Also, for those interested, the project is open source; our code is <a href="https://github.com/PresConsUIUC/PSAP" target="_blank">hosted on GitHub</a>.</p>
+
+<h2>Contact</h2>
+<p>The PSAP team welcomes input and questions from the communities we serve. Please feel free to contact us at <a href="mailto:psap@illinois.library.edu">psap@illinois.library.edu</a> or via Twitter <a href="https://twitter.com/PresCons" target="_blank">@PresCons</a>.</p>
+
+<h2>Credits</h2>
+<p>The PSAP was developed by the <a href="http://www.library.illinois.edu/">University of Illinois Libraries</a> through the generous support of the <a href="http://www.imls.gov/">Institute of Museum and Library Services</a>.</p>
+
+<figure>
+  <a href="http://www.library.illinois.edu/" target="_blank">
+    <%= image_tag('logo-uiuc.gif', alt: 'UIUC logo', 'data-has-retina' => false) %></a>
+  <a href="http://www.imls.gov/" target="_blank">
+    <%= image_tag('logo-imls.jpg', alt: 'IMLS logo', 'data-has-retina' => false) %></a>
+</figure>
+
+<h3>Project Team</h3>
+<ul class="people">
+  <li>Jennifer Hain Teper, Project Lead</li>
+  <li>Ryan Edge, Project Manager</li>
+  <li>Alex Dolski, Programmer/Developer</li>
+</ul>
+
+
+<h3>IMLS Advisory Committee</h3>
+<ul class="people">
+  <li>Jenny Wiley Arena, Heritage Preservation</li>
+  <li>Christa Deacy-Quinn, The Spurlock Museum</li>
+  <li>Sandra Fritz, Illinois State Library</li>
+  <li>Bill Kemp, McLean County Museum of History</li>
+  <li>Russell Lewis, Chicago History Museum</li>
+  <li>Teresa Martinez, Heritage Preservation</li>
+  <li>Patricia Miller, Illinois Heritage Association</li>
+  <li>Anke Voss, The Urbana Free Library</li>
+</ul>
+
+<h3>Special Thanks</h3>
+<ul class="people">
+  <li>Penelope Yocum</li>
+  <li>Jamie Wittenberg</li>
+  <li>Emily Purcell</li>
+  <li>James M. Reilly</li>
+  <li>Alice Carver-Kubik</li>
+  <li>Alyssa Marzolf</li>
+  <li>Sarah Stauderman</li>
+  <li>Jimi Jones</li>
+  <li>Josh Harris</li>
+  <li>Jack Brighton</li>
+  <li>Ryan Boatright</li>
+  <li>Ian Batterham</li>
+  <li>Dana Lamparello</li>
+  <li>Mike Casey</li>
+  <li>Patrick Feaster</li>
+  <li>Kyle Rimkus</li>
+  <li>Chris Prom</li>
+</ul>
