@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140915145458) do
+ActiveRecord::Schema.define(version: 20140915150057) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20140915145458) do
   add_index "creators", ["resource_id"], name: "index_creators_on_resource_id"
 
   create_table "events", force: true do |t|
-    t.string   "description",                                                  null: false
+    t.text     "description",                                                  null: false
     t.datetime "created_at"
     t.integer  "user_id"
     t.string   "address",     limit: 45
