@@ -734,7 +734,7 @@ formats[:digital_print] = Format.create!(
     name: 'Digital Print',
     score: 0.5,
     format_type: FormatType::PHOTO)
-  formats[:inkjet_print] = Format.create!(
+  formats[:photo_inkjet_print] = Format.create!(
       name: 'Inkjet Print',
       score: 0.5,
       format_type: FormatType::PHOTO,
@@ -903,7 +903,7 @@ formats[:electrofax] = Format.create!(
     score: 0,
     format_type: FormatType::UNBOUND_PAPER,
     format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:inkjet_print] = Format.create!(
+formats[:paper_inkjet_print] = Format.create!(
     name: 'Inkjet Print',
     score: 0.5,
     format_type: FormatType::UNBOUND_PAPER,
@@ -4583,7 +4583,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 145,
     weight: 0.025,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Handling and use carry damage risks, regardless of intention. "\
     "Click \"Yes\" if patrons (or staff) often handle this item and click "\
     "\"No\" if not.",
@@ -4606,7 +4606,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 146,
     weight: 0.025,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Select \"Yes\" if this content exists in another form at your "\
     "institution; otherwise, select \"No\". Click through for more info about "\
     "facsimiles and access/reference copies.",
@@ -4628,7 +4628,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 147,
     weight: 0.018,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Each format has a preferred way of sitting in storage. If you "\
     "are certain you know how your item should be oriented in storage and "\
     "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
@@ -4651,7 +4651,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 148,
     weight: 0.02,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
     "container; otherwise, select \"No\". Click through to see examples of "\
     "appropriate storage containers.",
@@ -4673,7 +4673,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 149,
     weight: 0.012,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Select \"Yes\" if the item or its container have any "\
     "identifying labeling; otherwise, select \"No\".",
     assessment_section: sections[:storage_container]
@@ -4693,7 +4693,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 150,
     weight: 0.16,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If a support's corner is dented without clear "\
     "damage to the image, the image may yet be \"Excellent.\"\n\n"\
@@ -4724,7 +4724,7 @@ params = {
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 151,
     weight: 0.06,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Biological organisms such as mold, insects, and rodents can "\
     "very easily damage collections, often irreversibly. If this item or its "\
     "container seems to display pest damage or mold growth, select which "\
@@ -4753,7 +4753,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 152,
     weight: 0.06,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Select the degree of the paper's acidic breakdown. "\
     "Discoloration (i.e. yellowing) typically precedes obvious brittle "\
     "properties, showing up first along the edges. Discoloration may "\
@@ -4779,7 +4779,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 153,
     weight: 0.04,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Uncoated paper (copy paper) will appear rough and has a matte "\
     "surface like any basic copy paper. Coated paper will have a plasticized "\
     "backside and will have some degree of surface luster.",
@@ -4799,7 +4799,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 154,
     weight: 0,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Swellable paper typically has a glossy finish which mimics "\
     "traditional photo paper. Porous paper (the more popular type) typically "\
     "is not as glossy as swellable paper, and is manufactured with or without "\
@@ -4825,7 +4825,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 155,
     weight: 0.08,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Determine the extent to which the ink has deteriorated, "\
     "naturally or through external factors.\n\n"\
     "Inkjet inks are prone to bleeding, streaking, and distortion; dye-based "\
@@ -14659,7 +14659,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 241,
     weight: 0.025,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Handling and use carry damage risks, regardless of intention. "\
     "Click \"Yes\" if patrons (or staff) often handle this item and click "\
     "\"No\" if not.",
@@ -14682,7 +14682,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 242,
     weight: 0.025,
-    format: formats[:inkjet_print],
+    format: formats[:photo_inkjet_print],
     help_text: "Select \"Yes\" if this content exists in another form at your "\
     "institution; otherwise, select \"No\". Click through for more info about "\
     "facsimiles and access/reference copies.",
@@ -14704,7 +14704,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 243,
     weight: 0.018,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Each format has a preferred way of sitting in storage. If you "\
     "are certain you know how your item should be oriented in storage and "\
     "have stored it as such, select \"Yes\"; otherwise, select \"No\". Click "\
@@ -14727,7 +14727,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 244,
     weight: 0.02,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Select \"Yes\" if this item is in a preservation appropriate "\
     "container; otherwise, select \"No\". Click through to see examples of "\
     "appropriate storage containers.",
@@ -14749,7 +14749,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 245,
     weight: 0.012,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Select \"Yes\" if the item or its container have any "\
     "identifying labeling; otherwise, select \"No\".",
     assessment_section: sections[:storage_container]
@@ -14768,7 +14768,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 246,
     weight: 0.16,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Consider the condition of the whole object before making your "\
     "selection.\n\n"\
     "\"Excellent\" indicates that the paper has little to no mechanical "\
@@ -14801,7 +14801,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 247,
     weight: 0,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
     "without clear (or foreseeable) damage to the text/image, this would be "\
@@ -14834,7 +14834,7 @@ params = {
     question_type: AssessmentQuestionType::CHECKBOX,
     index: 248,
     weight: 0.06,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Biological organisms such as mold, insects, and rodents can "\
     "very easily damage collections, often irreversibly. If this item or its "\
     "container seems to display pest damage or mold growth, select which "\
@@ -14862,7 +14862,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 249,
     weight: 0.08,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "Select the degree of the paper's acidic breakdown. "\
     "Discoloration typically precedes obvious brittle properties, and will be "\
     "most evident along the edges. Discoloration may be best evaluated by "\
@@ -14886,7 +14886,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 250,
     weight: 0.1,
-    format: formats[:inkjet_print],
+    format: formats[:paper_inkjet_print],
     help_text: "These are very loosely defined levels of proportion, ripe for "\
     "subjective interpretation. Please examine the condition of the ink/media "\
     "closely before making your selection—and be consistent!\n\n"\
