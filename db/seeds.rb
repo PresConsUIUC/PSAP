@@ -14862,7 +14862,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 249,
     weight: 0.08,
-    format: formats[:paper_inkjet_print],
+    format: formats[:inkjet_print],
     help_text: "Select the degree of the paper's acidic breakdown. "\
     "Discoloration typically precedes obvious brittle properties, and will be "\
     "most evident along the edges. Discoloration may be best evaluated by "\
