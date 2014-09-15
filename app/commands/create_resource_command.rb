@@ -4,11 +4,9 @@ class CreateResourceCommand < Command
     @doing_user = doing_user
     @remote_ip = remote_ip
 
-    # prune empty sub-models
-    params = resource_params.except(:assessment_question_responses)
-
-    @resource = location.resources.build(params)
-    @resource.user = doing_user
+    @resource = location.resources.build(
+        resource_params.except(:assessment_question_responses))
+    @resource.user ||= doing_user
 
     # the AQR params from the form are not in a rails-compatible format
     if resource_params[:assessment_question_responses]
