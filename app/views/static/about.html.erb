@@ -38,12 +38,16 @@
   <h2>Credits</h2>
   <p>The PSAP was developed by the <a href="http://www.library.illinois.edu/">University of Illinois Libraries</a> through the generous support of the <a href="http://www.imls.gov/">Institute of Museum and Library Services</a>.</p>
 
-  <figure>
-    <a href="http://www.library.illinois.edu/" target="_blank">
-      <%= image_tag('logo-uiuc.gif', alt: 'UIUC logo', 'data-has-retina' => false) %></a>
-    <a href="http://www.imls.gov/" target="_blank">
-      <%= image_tag('logo-imls.jpg', alt: 'IMLS logo', 'data-has-retina' => false) %></a>
-  </figure>
+  <div class="row">
+    <div class="col-sm-6">
+      <a href="http://www.library.illinois.edu/" target="_blank">
+        <%= image_tag('logo-uiuc.gif', class: 'logo', alt: 'UIUC logo', 'data-has-retina' => false) %></a>
+    </div>
+    <div class="col-sm-6">
+      <a href="http://www.imls.gov/" target="_blank">
+        <%= image_tag('logo-imls.jpg', class: 'logo', alt: 'IMLS logo', 'data-has-retina' => false) %></a>
+    </div>
+  </div>
 
   <h3>Project Team</h3>
   <ul class="people">
