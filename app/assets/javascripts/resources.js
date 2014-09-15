@@ -366,7 +366,11 @@ var ResourceForm = {
                 '/formats?parent_id=' + $(this).val();
             ResourceForm.populateSelect(childSelect, url);
             childSelect.on('change', onSelectChanged);
-            ResourceForm.selectFormat($(this).val());
+            if ($(this).attr('name') == 'noop') {
+                ResourceForm.selectFormatCategory($(this).val());
+            } else {
+                ResourceForm.selectFormat($(this).val());
+            }
         };
         select.on('change', onSelectChanged);
 
