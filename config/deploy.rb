@@ -7,6 +7,7 @@ set :user, 'psap'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+set :branch, 'master'
 
 set :home, '/home/psap'
 set :bin, "#{fetch(:home)}/bin"
