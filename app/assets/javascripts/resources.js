@@ -365,8 +365,8 @@ var ResourceForm = {
                 $('input[name="format_type"]:checked').val() +
                 '/formats?parent_id=' + $(this).val();
             ResourceForm.populateSelect(childSelect, url);
-            $(this).on('change', onSelectChanged);
-            $(document).trigger('PSAPResourceFormatChanged');
+            childSelect.on('change', onSelectChanged);
+            ResourceForm.selectFormat($(this).val());
         };
         select.on('change', onSelectChanged);
 
