@@ -2456,6 +2456,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 60,
     weight: 0.1,
+    parent: command.object,
     format: formats[:chromogenic_color_negative],
     help_text: "To identify the manufacture era of the negative, consider "\
     "both the content of the image as well as the markings/codes along the "\
@@ -4799,6 +4800,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 154,
     weight: 0,
+    parent: command.object,
     format: formats[:photo_inkjet_print],
     help_text: "Swellable paper typically has a glossy finish which mimics "\
     "traditional photo paper. Porous paper (the more popular type) typically "\
@@ -7361,6 +7363,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 3, value: 0.4)
 command.object.save!
 
+qid256 = command.object
 acetate = command.object.assessment_question_options[1]
 rc_paper = command.object.assessment_question_options[2]
 
@@ -7370,6 +7373,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 256,
     weight: 0,
+    parent: qid256,
     format: formats[:silver_dye_bleach_print],
     help_text: "Acetate films will show its degradation in several stages. "\
     "Click through for more information on the levels of acetate film base "\
@@ -7398,6 +7402,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 257,
     weight: 0,
+    parent: qid256,
     format: formats[:silver_dye_bleach_print],
     help_text: "Select the degree of the support's breakdown. Resin-coated "\
     "(RC) papers (rather than polyester and acetate film supports) are known "\
@@ -8088,6 +8093,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 2, value: 0.4)
 command.object.save!
 
+qid285 = command.object
 peel_apart = command.object.assessment_question_options[0]
 integral = command.object.assessment_question_options[1]
 
@@ -8097,6 +8103,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 285,
     weight: 0,
+    parent: qid285,
     format: formats[:instant_photo_bw],
     help_text: "Distortion results from silver image migration (likely due to "\
     "poor storage orientation); cracking typically results from the photo's "\
@@ -8121,6 +8128,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 286,
     weight: 0,
+    parent: qid285,
     format: formats[:instant_photo_bw],
     help_text: "Select the degree of the support's breakdown. Discoloration "\
     "(e.g. yellowing) typically precedes obvious brittle properties, showing "\
@@ -8369,6 +8377,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Unsure', index: 2, value: 0.4)
 command.object.save!
 
+qid296 = command.object
 peel_apart = command.object.assessment_question_options[0]
 integral = command.object.assessment_question_options[1]
 
@@ -8378,6 +8387,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 296,
     weight: 0,
+    parent: qid296,
     format: formats[:instant_photo_color],
     help_text: "Distortion results from silver and dye image migration "\
     "(likely due to poor storage orientation); cracking typically results "\
@@ -8402,6 +8412,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 297,
     weight: 0,
+    parent: qid296,
     format: formats[:instant_photo_color],
     help_text: "Select the degree of the support's breakdown. Discoloration "\
     "(e.g. yellowing) typically precedes obvious brittle properties, showing "\
@@ -8597,6 +8608,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 6,
     weight: 0,
+    parent: command.object,
     format: formats[:instant_photo_color], # TODO: fix
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -8852,6 +8864,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 16,
     weight: 0,
+    parent: command.object,
     format: formats[:architectural_drawing_reproduction],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -8934,6 +8947,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Plastic', index: 2, value: 1)
 command.object.save!
 
+qid19 = command.object
 paper = command.object.assessment_question_options[0]
 cloth = command.object.assessment_question_options[1]
 plastic = command.object.assessment_question_options[2]
@@ -8944,6 +8958,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 19,
     weight: 0,
+    parent: qid19,
     format: formats[:architectural_drawing_reproduction],
     help_text: "Select the degree of the paper's acidic breakdown. "\
     "Discoloration (e.g. yellowing) typically precedes obvious brittle "\
@@ -8970,6 +8985,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 20,
     weight: 0,
+    parent: qid19,
     format: formats[:architectural_drawing_reproduction],
     help_text: "Acetate and nitrate film supports will decay in very "\
     "different ways. Click through for more information on the levels of "\
@@ -8999,6 +9015,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 21,
     weight: 0,
+    parent: qid19,
     format: formats[:architectural_drawing_reproduction],
     help_text: "Drafting cloth should be strong and flexible, but the "\
     "residual acids of print process may attack fibers over time, causing the "\
@@ -9191,6 +9208,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 29,
     weight: 0,
+    parent: command.object,
     format: formats[:blueprint],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -9446,6 +9464,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 39,
     weight: 0,
+    parent: command.object,
     format: formats[:aniline_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -9531,6 +9550,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 42,
     weight: 0,
+    parent: nil, # TODO: TBD
     format: formats[:aniline_print],
     help_text: "Residual acids from the aniline process may have embrittled "\
     "the paper. Select the degree of the paper's acidic breakdown.\n\n"\
@@ -9556,6 +9576,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 43,
     weight: 0,
+    parent: nil, # TODO: TBD
     format: formats[:aniline_print],
     help_text: "Drafting cloth should be strong and flexible, but the "\
     "residual acids of print process may attack fibers over time, causing the "\
@@ -9749,6 +9770,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 51,
     weight: 0,
+    parent: command.object,
     format: formats[:wash_off_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -9838,6 +9860,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 54,
     weight: 0,
+    parent: command.object,
     format: formats[:wash_off_print],
     help_text: "Select the degree of the paper's acidic breakdown. As vellum "\
     "paper of this period is usually made of cotton fibers, this paper may "\
@@ -10035,6 +10058,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 62,
     weight: 0,
+    parent: command.object,
     format: formats[:ferro_gallic_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -10115,6 +10139,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Cloth', index: 1, value: 0.5)
 command.object.save!
 
+qid65 = command.object
 paper = command.object.assessment_question_options[0]
 cloth = command.object.assessment_question_options[1]
 
@@ -10124,6 +10149,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 65,
     weight: 0,
+    parent: qid65,
     format: formats[:ferro_gallic_print],
     help_text: "Select the degree of the paper's acidic breakdown. "\
     "Ferro-Gallic Prints are highly acidic, and most often brittle.\n\n"\
@@ -10150,6 +10176,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 66,
     weight: 0,
+    parent: qid65,
     format: formats[:ferro_gallic_print],
     help_text: "Drafting cloth should be strong and flexible, but the "\
     "residual acids of print process may attack fibers over time, causing the "\
@@ -10344,6 +10371,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 74,
     weight: 0,
+    parent: command.object,
     format: formats[:vandyke_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -10599,6 +10627,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 84,
     weight: 0,
+    parent: command.object,
     format: formats[:diazo_print_architectural_drawing],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -10681,6 +10710,7 @@ command.object.assessment_question_options << AssessmentQuestionOption.new(
     name: 'Plastic', index: 2, value: 1)
 command.object.save!
 
+qid87 = command.object
 paper = command.object.assessment_question_options[0]
 cloth = command.object.assessment_question_options[1]
 plastic = command.object.assessment_question_options[2]
@@ -10691,6 +10721,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 87,
     weight: 0,
+    parent: qid87,
     format: formats[:diazo_print_architectural_drawing],
     help_text: "Select the degree of the paper's acidic breakdown. Diazotypes "\
     "on paper are typically discolored and brittle to some degree.\n\n"\
@@ -10718,6 +10749,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 88,
     weight: 0,
+    parent: qid87,
     format: formats[:diazo_print_architectural_drawing],
     help_text: "Acetate film will show its degradation in several stages. "\
     "Click through for more information on the levels of acetate film "\
@@ -10747,6 +10779,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 89,
     weight: 0,
+    parent: qid87,
     format: formats[:diazo_print_architectural_drawing],
     help_text: "Drafting cloth should be strong and flexible, but the "\
     "residual acids of print process may attack fibers over time, causing the "\
@@ -10942,6 +10975,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 97,
     weight: 0,
+    parent: command.object,
     format: formats[:photostat_architectural_drawing],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -11203,6 +11237,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 107,
     weight: 0,
+    parent: command.object,
     format: formats[:hectograph],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -11460,6 +11495,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 117,
     weight: 0,
+    parent: command.object,
     format: formats[:office_copy_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -11713,6 +11749,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 127,
     weight: 0,
+    parent: command.object,
     format: formats[:carbon_copy_stencil_copy],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -11969,6 +12006,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 137,
     weight: 0,
+    parent: command.object,
     format: formats[:hectograph_spirit_duplicate],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -12226,6 +12264,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 147,
     weight: 0,
+    parent: command.object,
     format: formats[:photostat_office_copy],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -12482,6 +12521,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 157,
     weight: 0,
+    parent: command.object,
     format: formats[:diffusion_transfer_dual_spectrum],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -12739,6 +12779,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 167,
     weight: 0,
+    parent: command.object,
     format: formats[:electrostatic_print_laser_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -12995,6 +13036,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 177,
     weight: 0,
+    parent: command.object,
     format: formats[:color_photocopy],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -13252,6 +13294,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 187,
     weight: 0,
+    parent: command.object,
     format: formats[:carbonless_copy],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -13507,6 +13550,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 197,
     weight: 0,
+    parent: command.object,
     format: formats[:diazo_print_office_copy],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -13765,6 +13809,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 207,
     weight: 0,
+    parent: command.object,
     format: formats[:copybook_roller_copy_iron_gall_ink],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -14026,6 +14071,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 217,
     weight: 0,
+    parent: command.object,
     format: formats[:copybook_roller_copy_aniline_ink],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -14282,6 +14328,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 227,
     weight: 0,
+    parent: command.object,
     format: formats[:thermal_print_thermofax],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -14541,6 +14588,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 237,
     weight: 0,
+    parent: command.object,
     format: formats[:electrofax],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
@@ -14801,6 +14849,7 @@ params = {
     question_type: AssessmentQuestionType::RADIO,
     index: 247,
     weight: 0,
+    parent: command.object,
     format: formats[:paper_inkjet_print],
     help_text: "Be mindful of damage that places the image or visual "\
     "information at risk. If the paper edges bear only superficial damage "\
