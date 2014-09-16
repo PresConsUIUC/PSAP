@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  VERSION = '0.3'
+  VERSION = '0.4'
 
   def bootstrap_class_for flash_type
     case flash_type.to_sym
