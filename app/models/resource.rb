@@ -38,6 +38,23 @@ class Resource < ActiveRecord::Base
   before_validation :prune_empty_submodels
   before_save :update_assessment_percent_complete, :update_assessment_score
 
+  ##
+  # @return Array of all of a resource's children, regardless of depth in the
+  # hierarchy.
+  #
+  def all_children
+    def accumulate_children(resource, resource_bucket)
+      resource.children.each do |child|
+        resource_bucket << child
+        accumulate_children(child, resource_bucket)
+      end
+    end
+
+    resources = []
+    accumulate_children(self, resources)
+    resources
+  end
+
   def as_csv
     questions = []
     responses = []
