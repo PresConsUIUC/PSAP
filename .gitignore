@@ -15,6 +15,7 @@
 /log/*.log
 /tmp
 
-/config/database.yml
+database.yml
 .secret
 .smtp_dev_password
+
