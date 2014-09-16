@@ -80,6 +80,7 @@ var ResourceForm = {
                 // TODO: check for dependent questions
             });
             ResourceForm.showSections();
+            $('body').scrollspy({ target: '#sections' });
         });
     },
 
@@ -489,8 +490,6 @@ var ready = function() {
         $('ul.nav-pills a').on('click', function() {
             window.location.href = $(this).attr('href');
         });
-
-        $('body').scrollspy({ target: '#sections' });
 
         $('#sections').affix({ // TODO: broken on narrow screens and glitchy on short screens
             offset: {
