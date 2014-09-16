@@ -43,11 +43,14 @@ class AssessmentQuestionsController < ApplicationController
   ##
   # Responds to /formats/:id/assessment_questions to show all assessment
   # questions relevant to a format
+  #
   def index
     @assessment_questions = AssessmentQuestion.
-        where(format_id: params[:format_id]) # TODO: take a parent_id query parameter
+        where(format_id: params[:format_id]).
+        where(parent_id: params[:parent_id])
     render json: @assessment_questions.to_json(
-        include: :assessment_question_options)
+        include: [:assessment_question_options,
+                  :enabling_assessment_question_options])
   end
 
   def new

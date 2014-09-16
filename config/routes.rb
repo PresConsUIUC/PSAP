@@ -85,7 +85,7 @@ Psap::Application.routes.draw do
   end
   resources :formats do
     # used for populating the new/edit resource form with assessment questions
-    resources :assessment_questions, only: :index
+    resources :assessment_questions, only: :index, path: 'assessment-questions'
   end
   # used for dependent select menus in forms
   resources :format_types, only: [], path: 'format-types' do

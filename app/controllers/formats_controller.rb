@@ -53,7 +53,7 @@ class FormatsController < ApplicationController
       format.json { # dependent select menus in assessment form
         render json: Format.where(format_type: params[:format_type_id]).
             where(parent_id: params[:parent_id]).
-            order(:name) # TODO: hierarchy
+            order(:name)
       }
       format.html { # /formats
         if params[:format_type_id]

@@ -14,7 +14,6 @@ var ResourceForm = {
         }).trigger('PSAPFormSectionAdded');
 
         ResourceForm.initSuggestions();
-        ResourceForm.updateDependentQuestions();
         ResourceForm.updateProgress();
 
         $('button.save').on('click', function() { $('form').submit(); });
@@ -71,17 +70,6 @@ var ResourceForm = {
             $(this).closest('.input-group').find('input.day').prop('disabled',
                 ($(this).val().length < 1));
         }).trigger('keyup');
-
-        $(document).on('PSAPAssessmentQuestionsAdded', function() {
-            $('.assessment_question input, .assessment_question select').
-                on('change', function() {
-                ResourceForm.updateDependentQuestions();
-                ResourceForm.updateProgress();
-                // TODO: check for dependent questions
-            });
-            ResourceForm.showSections();
-            $('body').scrollspy({ target: '#sections' });
-        });
     },
 
     initInitialSelections: function() {
@@ -217,7 +205,7 @@ var ResourceForm = {
                 break;
         }
 
-        return '<div class="assessment_question">' +
+        return '<div class="assessment_question" data-id="' + object['id'] + '">' +
                 '<hr>' +
                 '<div class="row depth-0">' +
                     '<div class="col-sm-11">' +
@@ -291,34 +279,67 @@ var ResourceForm = {
         });
     },
 
-    selectFormat: function(id, onCompleteCallback) {
+    selectFormat: function(format_id, onCompleteCallback) {
         ResourceForm.clearAssessmentQuestions();
         ResourceForm.hideSections();
-        if (id) {
-            $('select[name="resource[format_id]"]').val(id);
-
-            var url = $('input[name="root-url"]').val() +
-                'formats/' + id + '/assessment_questions';
-            $.getJSON(url, function (data) {
-                $.each(data, function (i, object) {
-                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
-                        append(ResourceForm.htmlForQuestion(object, i));
-                });
-                if (data.length > 0) {
-                    ResourceForm.showSections();
-                    $(document).trigger('PSAPAssessmentQuestionsAdded');
-                } else {
-                    ResourceForm.hideSections();
-                }
-                ResourceForm.updateProgress();
-
-                if (onCompleteCallback) {
-                    onCompleteCallback();
-                }
-            });
-        } else {
-            ResourceForm.hideSections();
+        if (!format_id) {
+            return;
         }
+
+        $('select[name="resource[format_id]"]').val(format_id);
+
+        var questions_url = $('input[name="root-url"]').val() +
+            'formats/' + format_id + '/assessment-questions';
+        $.getJSON(questions_url, function (data) {
+            $.each(data, function (i, object) {
+                $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
+                    append(ResourceForm.htmlForQuestion(object, i));
+            });
+            if (data.length > 0) {
+                var onOptionChanged = function() {
+                    // check for dependent questions
+                    var selected_option_id = $(this).val();
+                    var question_elem = $(this).closest('div.assessment_question');
+                    var qid = question_elem.data('id');
+                    var child_questions_url = $('input[name="root-url"]').val() +
+                        'formats/' + format_id + '/assessment-questions?parent_id=' + qid;
+                    $.getJSON(child_questions_url, function(data) {
+                        $.each(data, function (i, object) {
+                            var child_question_elem =
+                                $('div.assessment_question[data-id=' + object['id'] + ']');
+                            var add = false;
+                            $.each(object['enabling_assessment_question_options'], function (i, opt) {
+                                // TODO: add data-depth attribute
+                                if (opt['id'] == selected_option_id) {
+                                    add = true;
+                                }
+                            });
+                            if (add && child_question_elem.length < 1) {
+                                question_elem.after(
+                                    ResourceForm.htmlForQuestion(object, i));
+                            } else {
+                                child_question_elem.remove();
+                            }
+                        });
+
+                        $('.assessment_question input, .assessment_question select').
+                            off('change').on('change', onOptionChanged);
+                    });
+
+                    ResourceForm.updateProgress();
+                };
+                $('.assessment_question input, .assessment_question select').
+                    on('change', onOptionChanged);
+
+                ResourceForm.showSections();
+                $('body').scrollspy({ target: '#sections' });
+            }
+            ResourceForm.updateProgress();
+
+            if (onCompleteCallback) {
+                onCompleteCallback();
+            }
+        });
     },
 
     selectFormatCategory: function(id, onCompleteCallback) {
@@ -383,24 +404,6 @@ var ResourceForm = {
     showSections: function() {
         $('div#sections').show();
         $('div.section').fadeIn();
-    },
-
-    updateDependentQuestions: function() {
-        $('div.assessment_question').each(function() {
-            var show = true;
-            var dependent_option_id = parseInt($(this).attr('data-dependent-option-id'));
-            if (dependent_option_id > -1) {
-                if (!$('input[data-option-id="' + dependent_option_id + '"]:checked').length
-                    && !$('input[data-option-id="' + dependent_option_id + '"]:selected').length) {
-                    show = false;
-                }
-            }
-            if (show) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
     },
 
     updateProgress: function() {
