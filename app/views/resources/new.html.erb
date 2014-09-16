@@ -54,7 +54,7 @@
 
   <div class="col-sm-9">
 
-    <%= form_for(@resource, url: location_resources_path) do |f| %>
+    <%= form_for(@resource, url: location_resources_path(@resource.location)) do |f| %>
 
       <div id="basic_info" class="section">
         <%= render 'basic_info_form', f: f %>
