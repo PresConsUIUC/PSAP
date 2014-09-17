@@ -157,7 +157,7 @@ var ResourceForm = {
 
     // Transforms an assessment question into HTML for the
     // assessment form.
-    htmlForQuestion: function(object, question_index) {
+    nodeForQuestion: function(object, question_index) {
         var control = '';
 
         switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
@@ -205,7 +205,7 @@ var ResourceForm = {
                 break;
         }
 
-        return '<div class="assessment_question" data-id="' + object['id'] + '">' +
+        return $.parseHTML('<div class="assessment_question" data-id="' + object['id'] + '">' +
                 '<hr>' +
                 '<div class="row depth-0">' +
                     '<div class="col-sm-11">' +
@@ -225,7 +225,7 @@ var ResourceForm = {
                         control +
                     '</div>' +
                 '</div>' +
-            '</div>';
+            '</div>');
     },
 
     hideSections: function() {
@@ -235,6 +235,16 @@ var ResourceForm = {
                 $(this).hide();
             }
         });
+    },
+
+    insertQuestionAfter: function(questionNode, afterNode) {
+        $(questionNode).hide();
+        afterNode.after(questionNode);
+        $(questionNode).fadeIn();
+    },
+
+    insertQuestionIn: function(questionNode, parentNode) {
+        parentNode.append(questionNode);
     },
 
     populateSelect: function(select, url, onCompleteCallback) {
@@ -292,8 +302,9 @@ var ResourceForm = {
             'formats/' + format_id + '/assessment-questions';
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
-                $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions').
-                    append(ResourceForm.htmlForQuestion(object, i));
+                ResourceForm.insertQuestionIn(
+                    ResourceForm.nodeForQuestion(object, i),
+                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'))
             });
             if (data.length > 0) {
                 var onOptionChanged = function() {
@@ -315,8 +326,9 @@ var ResourceForm = {
                                 }
                             });
                             if (add && child_question_elem.length < 1) {
-                                question_elem.after(
-                                    ResourceForm.htmlForQuestion(object, i));
+                                ResourceForm.insertQuestionAfter(
+                                    ResourceForm.nodeForQuestion(object, i),
+                                    question_elem)
                             } else {
                                 child_question_elem.remove();
                             }
