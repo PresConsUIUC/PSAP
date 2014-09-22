@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140915150444) do
+ActiveRecord::Schema.define(version: 20140922154539) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140915150444) do
     t.integer  "selected_option_id"
     t.text     "help_text"
     t.integer  "format_id"
+    t.integer  "qid"
   end
 
   add_index "assessment_questions", ["assessment_section_id"], name: "index_assessment_questions_on_assessment_section_id"
