@@ -15,6 +15,7 @@ class DashboardController < ApplicationController
           @most_active_institutions = Institution.most_active(5)
         end
         if @user.institution
+          @most_active_institution_users = @user.institution.most_active_users(5)
           @institution_events = events_for_institution(@user, limit)
           @institution_users = @user.institution.users.
               where('id != ?', @user.id).order(:last_name)
