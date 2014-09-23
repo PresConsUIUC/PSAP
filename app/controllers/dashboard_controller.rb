@@ -10,6 +10,10 @@ class DashboardController < ApplicationController
         @resources = current_user.resources.order(:name)
         @user_events = Event.where(user: @user).order(created_at: :desc).limit(limit)
 
+        if @user.is_admin?
+          @most_active_users = User.most_active(5)
+          @most_active_institutions = Institution.most_active(5)
+        end
         if @user.institution
           @institution_events = events_for_institution(@user, limit)
           @institution_users = @user.institution.users.
@@ -33,7 +37,6 @@ class DashboardController < ApplicationController
           @events = @user.institution ? events_for_institution(@user, limit) : []
         else
           render status: :forbidden, text: 'Access denied.'
-          return
         end
       }
     end

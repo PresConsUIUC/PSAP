@@ -16,6 +16,28 @@ class Institution < ActiveRecord::Base
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
+  ##
+  # Returns a list of "most active institutions based on the number of
+  # resources their users have created/updated.
+  #
+  # @return Array of hashes containing :count and :institution keys
+  #
+  def self.most_active(limit = 5) # TODO: test this
+    sql = "SELECT COUNT(description) AS count, users.institution_id "\
+          "FROM users "\
+          "LEFT JOIN events_users ON users.id = events_users.user_id "\
+          "LEFT JOIN events ON events_users.event_id = events.id "\
+          "WHERE events.description LIKE 'Created resource%' "\
+          "GROUP BY institution_id "\
+          "ORDER BY count DESC "\
+          "LIMIT #{limit}"
+    connection = ActiveRecord::Base.connection
+    counts = connection.execute(sql)
+
+    counts.map{ |r| { count: r[:count],
+                      institution: Institution.find(r[:institution_id]) } }
+  end
+
   def resources_as_csv
     # get a list of all questions
     questions = []
