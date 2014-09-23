@@ -65,8 +65,10 @@
         <ul class="dropdown-menu">
           <li><%= link_to 'This Resource',
                           edit_resource_path(@resource) %></li>
-          <li><%= link_to 'New Sub-Resource',
-                          new_resource_resource_path(@resource) %></li>
+          <% if @resource.resource_type == ResourceType::COLLECTION %>
+            <li><%= link_to 'New Sub-Resource',
+                            new_resource_resource_path(@resource) %></li>
+          <% end %>
         </ul>
       </div>
 
