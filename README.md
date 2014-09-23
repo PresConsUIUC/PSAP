@@ -15,17 +15,10 @@ This project uses the "Gitflow" git workflow, described at:
 Indentation is two spaces. Spaces are used instead of tabs. 80-character
 margins are aimed for but sometimes exceeded, especially in the view templates.
 
-## Mail
-
-If you want outgoing email to work, you will need to copy the
-SMTP server password to a file called `.smtp_dev_password` in the application
-root. Either contact a project member to obtain this password by emailing
-psap@library.illinois.edu, or use a different SMTP server in
-`config/environments/development.rb`.
-
 # Deployment
 
-PSAP is configured to use Capistrano for deployment. At UIUC, it runs in Passenger Standalone, reverse-proxied behind Apache.
+PSAP is configured to use Capistrano for deployment. At UIUC, it runs in
+Passenger Standalone, reverse-proxied behind Apache.
 
 You must change the secret key when you deploy. The command `rake secret`
 generates a new random secret you can use. Copy it from the console output to

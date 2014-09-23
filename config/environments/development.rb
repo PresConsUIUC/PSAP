@@ -13,29 +13,6 @@ Psap::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Set up ActionMailer
-  config.action_mailer.raise_delivery_errors = true
-
-  smtp_config_file = Rails.root.join('.smtp_dev_password')
-  if File.exist?(smtp_config_file)
-    smtp_password = File.read(smtp_config_file).chomp
-
-    config.action_mailer.default_options = {
-        from: 'Preservation Self-Assessment Program <psapdev@yahoo.com>'
-    }
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-        address: 'smtp.mail.yahoo.com',
-        port: 587,
-        user_name: 'psapdev@yahoo.com',
-        password: smtp_password,
-        authentication: 'plain',
-        enable_starttls_auto: true
-    }
-
-    config.psap_email_address = config.action_mailer.smtp_settings[:user_name]
-  end
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -46,6 +23,8 @@ Psap::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  config.action_mailer.raise_delivery_errors = true
 
   # Paginated views will show this many results per page. (Some views, like
   # events index, may show more.)

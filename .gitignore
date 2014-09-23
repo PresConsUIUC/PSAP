@@ -16,6 +16,6 @@
 /tmp
 
 database.yml
+mail.yml
 .secret
-.smtp_dev_password
 
