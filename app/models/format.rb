@@ -18,9 +18,9 @@ class Format < ActiveRecord::Base
   validates :score, presence: true, numericality: {
       greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
-  validate :validates_ranges_are_sequential
+  validate :validates_sequential_ranges
 
-  def validates_ranges_are_sequential
+  def validates_sequential_ranges
     ranges = self.temperature_ranges.sort_by { |obj| obj.min_temp_f or 0 }
     prev_range = nil
     ranges.each do |range|
@@ -32,10 +32,24 @@ class Format < ActiveRecord::Base
     end
   end
 
+  ##
+  # Returns all assessment questions associated with the format, including
+  # questions associated with any of its ancestors.
+  #
+  def all_assessment_questions
+    def collect_ancestor_ids(format, all_ids)
+      all_ids << format.id
+      collect_ancestor_ids(format.parent, all_ids) if format.parent
+    end
+    format_ids = []
+    collect_ancestor_ids(self, format_ids)
+
+    AssessmentQuestion.where('format_id IN (?)', format_ids)
+  end
+
   def as_json(options = { })
-    super((options || { }).merge({
-                                     :methods => [:format_subtype, :readable_format_subtype]
-                                 }))
+    super((options || { }).merge(
+              { :methods => [:format_subtype, :readable_format_subtype] }))
   end
 
   def readable_format_subtype
