@@ -247,6 +247,12 @@ form {
   padding-left:0px;
 }
 
+select.form-control {
+  background: url(image_path('select-control.png')) no-repeat right center;
+  @include image-2x('select-control@2x.png', 15px, 17px);
+  -webkit-appearance: none;
+}
+
 textarea.form-control {
   height:8em;
 }
