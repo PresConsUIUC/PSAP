@@ -6,6 +6,15 @@ class UserTest < ActiveSupport::TestCase
     @user = users(:normal_user)
   end
 
+  ######################### class method tests ##############################
+
+  test 'most_active should work' do
+    most_active = User.most_active
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of User, most_active[0][:user]
+  end
+
   ############################ object tests #################################
 
   test 'setup generates a confirmation code' do

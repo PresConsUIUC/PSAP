@@ -14,6 +14,73 @@
   </div>
 </div>
 
+<% if current_user.is_admin? %>
+
+  <div class="col-sm-6">
+    <div class="panel panel-default dashboard">
+      <div class="panel-heading">
+        <h3 class="panel-title">Most active users</h3>
+      </div>
+      <div class="panel-body">
+        <% if @most_active_users.any? %>
+          <ol>
+            <% @most_active_users.each do |row| %>
+              <%= link_to row[:user] do %>
+                  <%= gravatar_for row[:user], size: 52 %>
+                  <%= link_to user.full_name, row[:user] %>
+              <% end %>
+            <% end %>
+          </ol>
+        <% else %>
+          <p>Nothing to show right now.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="panel panel-default dashboard">
+      <div class="panel-heading">
+        <h3 class="panel-title">Most active institutions</h3>
+      </div>
+      <div class="panel-body">
+        <% if @most_active_institutions.any? %>
+          <ol>
+            <% @most_active_institutions.each do |row| %>
+              <li><%= link_to row[:institution].name, row[:institution] %></li>
+            <% end %>
+          </ol>
+        <% else %>
+          <p>Nothing to show right now.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
+<div class="col-sm-6">
+  <div class="panel panel-default dashboard">
+    <div class="panel-heading">
+      <h3 class="panel-title">Most active users in my institution</h3>
+    </div>
+    <div class="panel-body">
+      <% if @most_active_institution_users.any? %>
+          <ol>
+            <% @most_active_institution_users.each do |row| %>
+                <%= link_to row[:user] do %>
+                    <%= gravatar_for row[:user], size: 52 %>
+                    <%= link_to user.full_name, row[:user] %>
+                <% end %>
+            <% end %>
+          </ol>
+      <% else %>
+          <p>Nothing to show right now.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div class="col-sm-6">
   <div class="panel panel-default dashboard">
     <div class="panel-heading">

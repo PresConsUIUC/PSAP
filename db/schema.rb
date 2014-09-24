@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140922154539) do
+ActiveRecord::Schema.define(version: 20140924150607) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -152,6 +152,32 @@ ActiveRecord::Schema.define(version: 20140922154539) do
 
   add_index "extents", ["resource_id"], name: "index_extents_on_resource_id"
 
+  create_table "format_ink_media_types", force: true do |t|
+    t.string   "name"
+    t.decimal  "score",                  precision: 4, scale: 3, null: false
+    t.integer  "group"
+    t.integer  "format_id"
+    t.integer  "format_vector_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "format_support_types", force: true do |t|
+    t.string   "name"
+    t.decimal  "score",                  precision: 4, scale: 3, null: false
+    t.integer  "group"
+    t.integer  "format_id"
+    t.integer  "format_vector_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "format_vector_groups", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "formats", force: true do |t|
     t.string   "name",                                               null: false
     t.decimal  "score",          precision: 4, scale: 3,             null: false
@@ -160,6 +186,7 @@ ActiveRecord::Schema.define(version: 20140922154539) do
     t.integer  "parent_id"
     t.integer  "format_type",                            default: 0, null: false
     t.integer  "format_subtype"
+    t.integer  "fid"
   end
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id"
