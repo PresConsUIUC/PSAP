@@ -16,6 +16,13 @@ class InstitutionTest < ActiveSupport::TestCase
     assert @institution.save
   end
 
+  ######################### class method tests ##############################
+
+  test 'most_active works' do
+    flunk
+    Institution.most_active
+  end
+
   ########################### property tests ################################
 
   # name
@@ -112,6 +119,13 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'attempting to destroy an institution without users in it should work' do
     @institution = institutions(:institution_four)
     assert @institution.destroy
+  end
+
+  ############################# method tests #################################
+
+  test 'most_active_users works' do
+    flunk
+    @institution.most_active_users
   end
 
 end

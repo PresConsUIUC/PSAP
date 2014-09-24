@@ -22,7 +22,7 @@ class Institution < ActiveRecord::Base
   #
   # @return Array of hashes containing :count and :institution keys
   #
-  def self.most_active(limit = 5) # TODO: test this
+  def self.most_active(limit = 5)
     sql = "SELECT COUNT(description) AS count, users.institution_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
@@ -44,7 +44,7 @@ class Institution < ActiveRecord::Base
   #
   # @return Array of hashes containing :count and :user keys
   #
-  def most_active_users(limit = 5) # TODO: test this
+  def most_active_users(limit = 5)
     sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\

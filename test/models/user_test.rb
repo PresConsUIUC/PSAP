@@ -6,6 +6,13 @@ class UserTest < ActiveSupport::TestCase
     @user = users(:normal_user)
   end
 
+  ######################### class method tests ##############################
+
+  test 'most_active should work' do
+    flunk
+    User.most_active
+  end
+
   ############################ object tests #################################
 
   test 'setup generates a confirmation code' do
