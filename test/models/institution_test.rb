@@ -16,6 +16,15 @@ class InstitutionTest < ActiveSupport::TestCase
     assert @institution.save
   end
 
+  ######################### class method tests ##############################
+
+  test 'most_active works' do
+    most_active = Institution.most_active
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of Institution, most_active[0][:institution]
+  end
+
   ########################### property tests ################################
 
   # name
@@ -112,6 +121,16 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'attempting to destroy an institution without users in it should work' do
     @institution = institutions(:institution_four)
     assert @institution.destroy
+  end
+
+  ############################# method tests #################################
+
+  test 'most_active_users works' do
+    @institution.id = 1
+    most_active = @institution.most_active_users
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of User, most_active[0][:user]
   end
 
 end

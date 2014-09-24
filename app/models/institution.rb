@@ -16,6 +16,52 @@ class Institution < ActiveRecord::Base
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
+  ##
+  # Returns a list of "most active" institutions based on the number of
+  # resources their users have created/updated.
+  #
+  # @return Array of hashes containing :count and :institution keys
+  #
+  def self.most_active(limit = 5)
+    sql = "SELECT COUNT(description) AS count, users.institution_id AS institution_id "\
+          "FROM users "\
+          "LEFT JOIN events_users ON users.id = events_users.user_id "\
+          "LEFT JOIN events ON events_users.event_id = events.id "\
+          "WHERE events.description LIKE 'Created resource%' "\
+            "OR events.description LIKE 'Updated resource%' "\
+          "GROUP BY institution_id "\
+          "ORDER BY count DESC "\
+          "LIMIT #{limit}"
+    connection = ActiveRecord::Base.connection
+    counts = connection.execute(sql)
+
+    counts.map{ |r| { count: r['count'],
+                      institution: Institution.find(r['institution_id']) } }
+  end
+
+  ##
+  # Returns a list of the "most active" users in the institution, based on the
+  # number of resources they've created/updated.
+  #
+  # @return Array of hashes containing :count and :user keys
+  #
+  def most_active_users(limit = 5)
+    sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
+          "FROM users "\
+          "LEFT JOIN events_users ON users.id = events_users.user_id "\
+          "LEFT JOIN events ON events_users.event_id = events.id "\
+          "WHERE (events.description LIKE 'Created resource%' "\
+              "OR events.description LIKE 'Updated resource%') "\
+            "AND users.institution_id = #{self.id} "\
+          "ORDER BY count DESC "\
+          "LIMIT #{limit}"
+    connection = ActiveRecord::Base.connection
+    counts = connection.execute(sql)
+
+    counts.map{ |r| { count: r['count'],
+                      user: User.find(r['user_id']) } }
+  end
+
   def resources_as_csv
     # get a list of all questions
     questions = []

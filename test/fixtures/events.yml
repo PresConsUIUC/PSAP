@@ -24,3 +24,23 @@ error_event:
   id: 5
   description: Test error event
   event_level: <%= EventLevel::ERROR %>
+
+create_resource_event_1:
+  id: 6
+  description: Created resource
+  event_level: <%= EventLevel::DEBUG %>
+
+create_resource_event_2:
+  id: 7
+  description: Created resource
+  event_level: <%= EventLevel::DEBUG %>
+
+update_resource_event_1:
+  id: 8
+  description: Updated resource
+  event_level: <%= EventLevel::DEBUG %>
+
+update_resource_event_2:
+  id: 9
+  description: Updated resource
+  event_level: <%= EventLevel::DEBUG %>
