@@ -58,8 +58,12 @@ class Institution < ActiveRecord::Base
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r['count'],
-                      user: User.find(r['user_id']) } }
+    results = []
+    counts.each do |row|
+      results << { count: row['count'],
+                   user: User.find(row['user_id']) } if row['user_id']
+    end
+    results
   end
 
   def resources_as_csv
