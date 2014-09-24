@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  score: 9.99
+  group: 1
+
+two:
+  name: MyString
+  score: 9.99
+  group: 1

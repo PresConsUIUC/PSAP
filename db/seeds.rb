@@ -909,6 +909,44 @@ formats[:paper_inkjet_print] = Format.create!(
     format_type: FormatType::UNBOUND_PAPER,
     format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
 
+# Format Vector Groups
+format_vector_groups = [
+    FormatVectorGroup.create!(name: 'Pigment-Based Inks'),
+    FormatVectorGroup.create!(name: 'Pencils / Dye-Based Ink / Ball-Point Pen'),
+    FormatVectorGroup.create!(name: 'Iron Gall Ink / Felt-Tip Pen / Marker'),
+    FormatVectorGroup.create!(name: 'Other')
+]
+
+# Format Ink/Media Types
+FormatInkMediaType.create!(name: 'Unidentified Ink/Media', score: 0.55,
+                           format_vector_group: format_vector_groups[3])
+FormatInkMediaType.create!(name: 'Carbon Black Ink (black printing ink, black typescript)',
+                           score: 1,
+                           format_vector_group: format_vector_groups[0])
+FormatInkMediaType.create!(name: 'Color Pigment-Based Ink (colored printing ink)',
+                           score: 1,
+                           format_vector_group: format_vector_groups[0])
+FormatInkMediaType.create!(name: 'Graphite Pencil', score: 0.67,
+                           format_vector_group: format_vector_groups[1])
+FormatInkMediaType.create!(name: 'Wax-Based Pencil / Crayon', score: 0.67,
+                           format_vector_group: format_vector_groups[1])
+FormatInkMediaType.create!(name: 'Colored Pencil / Ink (copy pencil, colored manuscript)',
+                           score: 0.67,
+                           format_vector_group: format_vector_groups[1])
+FormatInkMediaType.create!(name: 'Ball-Point Pen', score: 0.67,
+                           format_vector_group: format_vector_groups[1])
+FormatInkMediaType.create!(name: 'Iron Gall Ink', score: 0,
+                           format_vector_group: format_vector_groups[2])
+FormatInkMediaType.create!(name: 'Felt-Tip Pen / Marker / Highlighter',
+                           score: 0,
+                           format_vector_group: format_vector_groups[2])
+
+# Format Support Types
+FormatSupportType.create!(name: 'Acid-Free Paper (rag paper, permanent paper)',
+                          score: 1)
+FormatSupportType.create!(name: 'Wood Pulp Paper', score: 0.25)
+FormatSupportType.create!(name: 'Unidentified Paper', score: 0.5)
+
 # Assessments
 assessments = [
     Assessment.create!(name: 'Resource Assessment', key: 'resource'),

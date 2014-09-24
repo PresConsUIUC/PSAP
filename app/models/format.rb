@@ -2,6 +2,8 @@ class Format < ActiveRecord::Base
   has_many :assessment_questions, inverse_of: :format
   has_many :children, class_name: 'Format', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
+  has_many :format_ink_media_types, inverse_of: :format
+  has_many :format_support_types, inverse_of: :format
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
   has_and_belongs_to_many :events
@@ -15,12 +17,13 @@ class Format < ActiveRecord::Base
   validates :format_type, presence: true,
             inclusion: { in: FormatType.all,
                          message: 'Must be a valid format type.' }
+  validates :name, presence: true, length: { maximum: 255 }
   validates :score, presence: true, numericality: {
       greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
-  validate :validates_sequential_ranges
+  validate :validates_temperature_ranges
 
-  def validates_sequential_ranges
+  def validates_temperature_ranges
     ranges = self.temperature_ranges.sort_by { |obj| obj.min_temp_f or 0 }
     prev_range = nil
     ranges.each do |range|
