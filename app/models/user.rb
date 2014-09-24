@@ -31,21 +31,24 @@ class User < ActiveRecord::Base
   #
   # @return Array of hashes containing :count and :user keys
   #
-  def self.most_active(limit = 5) # TODO: test this
+  def self.most_active(limit = 5)
     sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
           "LEFT JOIN events ON events_users.event_id = events.id "\
           "WHERE events.description LIKE 'Created resource%' "\
             "OR events.description LIKE 'Updated resource%' "\
-          "GROUP BY description "\
           "ORDER BY count DESC "\
           "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r[:count],
-                      user: User.find(r[:user_id]) } }
+    results = []
+    counts.each do |row|
+      results << { count: row['count'],
+                   user: User.find(row['user_id']) } if row['user_id']
+    end
+    results
   end
 
   def to_param

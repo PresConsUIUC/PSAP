@@ -23,19 +23,20 @@ class Institution < ActiveRecord::Base
   # @return Array of hashes containing :count and :institution keys
   #
   def self.most_active(limit = 5)
-    sql = "SELECT COUNT(description) AS count, users.institution_id "\
+    sql = "SELECT COUNT(description) AS count, users.institution_id AS institution_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
           "LEFT JOIN events ON events_users.event_id = events.id "\
           "WHERE events.description LIKE 'Created resource%' "\
+            "OR events.description LIKE 'Updated resource%' "\
           "GROUP BY institution_id "\
           "ORDER BY count DESC "\
           "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r[:count],
-                      institution: Institution.find(r[:institution_id]) } }
+    counts.map{ |r| { count: r['count'],
+                      institution: Institution.find(r['institution_id']) } }
   end
 
   ##
@@ -52,14 +53,13 @@ class Institution < ActiveRecord::Base
           "WHERE (events.description LIKE 'Created resource%' "\
               "OR events.description LIKE 'Updated resource%') "\
             "AND users.institution_id = #{self.id} "\
-          "GROUP BY description "\
           "ORDER BY count DESC "\
           "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r[:count],
-                      user: User.find(r[:user_id]) } }
+    counts.map{ |r| { count: r['count'],
+                      user: User.find(r['user_id']) } }
   end
 
   def resources_as_csv

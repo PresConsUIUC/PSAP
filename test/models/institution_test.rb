@@ -19,8 +19,10 @@ class InstitutionTest < ActiveSupport::TestCase
   ######################### class method tests ##############################
 
   test 'most_active works' do
-    flunk
-    Institution.most_active
+    most_active = Institution.most_active
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of Institution, most_active[0][:institution]
   end
 
   ########################### property tests ################################
@@ -124,8 +126,11 @@ class InstitutionTest < ActiveSupport::TestCase
   ############################# method tests #################################
 
   test 'most_active_users works' do
-    flunk
-    @institution.most_active_users
+    @institution.id = 1
+    most_active = @institution.most_active_users
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of User, most_active[0][:user]
   end
 
 end

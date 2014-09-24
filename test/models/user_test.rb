@@ -9,8 +9,10 @@ class UserTest < ActiveSupport::TestCase
   ######################### class method tests ##############################
 
   test 'most_active should work' do
-    flunk
-    User.most_active
+    most_active = User.most_active
+    assert_equal 1, most_active.length
+    assert_equal 4, most_active[0][:count]
+    assert_kind_of User, most_active[0][:user]
   end
 
   ############################ object tests #################################
