@@ -223,6 +223,7 @@ var ResourceForm = {
                 '<div class="row depth-0">' +
                     '<div class="col-sm-12 question">' +
                         control +
+                        '<input type="hidden" name="weight" value="' + object['weight'] + '">' +
                     '</div>' +
                 '</div>' +
             '</div>');
@@ -407,16 +408,9 @@ var ResourceForm = {
         questions.each(function() {
             var numChecked = $(this).find(
                 'input[type="radio"]:checked, input[type="checkbox"]:checked').length;
-            if (numChecked > 0 || ($(this).find('select').val() !== undefined
-                && $(this).find('select').val().length > 0)) {
-                numAnsweredQuestions++;
-            }
         });
 
         $('.total-assessment-question-count').text(numQuestions);
-        $('.complete-assessment-question-count').text(numAnsweredQuestions);
-        $('div.progress-bar.psap-progress').attr('style',
-                'width:' + numAnsweredQuestions / numQuestions * 100 + '%');
 
         // update question counts per-section
         var total = 0;
@@ -428,21 +422,12 @@ var ResourceForm = {
         });
 
         // Update score bar
-        //
-        // Formula (from SRS): TODO: this is broken
-        //
-        // climate control 70% + emergency preparedness 30% =
-        // environment (location)
-        //
-        // format (40%) + environment (location) (10%) + storage/container (5%)
-        // + use/access (5%) + condition (40%) = total
-
+        // https://github.com/PresConsUIUC/PSAP/wiki/Scoring
         var score = 0;
         var weight_elements = $('.question input[name="weight"]');
 
         weight_elements.each(function() {
             var weight = $(this).val();
-
             var input_elem = $(this).parent().find(
                 'input[type="radio"]:checked, input[type="checkbox"]:checked, option:selected');
             var response_value = input_elem.attr('data-option-score');
