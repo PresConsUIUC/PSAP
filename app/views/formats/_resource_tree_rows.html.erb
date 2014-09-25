@@ -1,0 +1,12 @@
+<% resources.each do |resource| %>
+    <tr>
+      <td class="depth-<%= depth %>">
+        <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
+      </td>
+      <td><%= link_to resource.location.repository.institution.name, resource.location.repository.institution %></td>
+      <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
+    </tr>
+    <%= render partial: 'resource_tree_rows',
+               locals: { resources: resource.children.order(:name),
+                         depth: depth + 1 } if resource.children.any? %>
+<% end %>
