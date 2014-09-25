@@ -554,23 +554,6 @@ assessments = [
     Assessment.create!(name: 'Institution Assessment', key: 'institution')
 ]
 
-# Admin role
-admin_role = Role.create!(name: 'Administrator', is_admin: true)
-
-# Normal role
-normal_role = Role.create!(name: 'User', is_admin: false)
-
-# Admin user
-command = CreateUserCommand.new(
-    { username: 'admin', email: 'admin@example.org',
-      first_name: 'Admin', last_name: 'Admin',
-      password: 'password', password_confirmation: 'password',
-      confirmed: true, enabled: true }, '127.0.0.1', false)
-command.execute
-admin_user = command.object
-admin_user.role = admin_role
-admin_user.save!
-
 # Assessment sections
 sections = {}
 command = CreateAssessmentSectionCommand.new(
@@ -597,56 +580,74 @@ command = CreateAssessmentSectionCommand.new(
 command.execute
 sections[:condition] = command.object
 
-# Assessment questions, loaded from CSV files in ./seed_data
-=begin
-  index = 0
-  CSV.foreach("seed_data/#{file}") do |row|
-    params = {
-        qid: row[5].strip,
-        name: row[6].strip,
-        question_type: row[11].strip == 'checkboxes' ?
-            AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
-        index: index,
-        weight: row[8].strip.to_f * 0.01,
-        format: formats[:paper_inkjet_print], # TODO: fix this
-        help_text: row[7].strip
-    }
-    case row[4][0..2].strip.downcase
-      when 'use'
-        params[:assessment_section] = sections[:use_access]
-      when 'sto'
-        params[:assessment_section] = sections[:storage_container]
-      when 'con'
-        params[:assessment_section] = sections[:condition]
-    end
-
-    if row[9] and row[10]
-      params[:parent] = AssessmentQuestion.find_by_qid(row[9])
-      params[:enabling_assessment_question_options] = []
-      row[10].split(';').select{ |x| x.strip }.each do |dep|
-        params[:enabling_assessment_question_options] <<
-            params[:parent].assessment_question_options.where(name: dep)
+# Assessment questions
+#aq_sheets = %w(Resource-Photo Resource-AV Resource-Paper-Unbound Resource-Paper-Bound)
+aq_sheets = %w(Resource-Photo)
+aq_sheets.each do |sheet|
+  xls.sheet(sheet).each_with_index do |row, index|
+    if index > 0 and !row[6].blank? # skip header & trailing rows
+      params = {
+          qid: row[5].to_i,
+          name: row[6].strip,
+          question_type: (!row[11].blank? and row[11].downcase == 'checkboxes') ?
+              AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
+          index: index,
+          weight: row[8].to_f * 0.01,
+          format: Format.find_by_fid(56), # TODO: fix this
+          help_text: row[7].strip
+      }
+      case row[4][0..2].strip.downcase
+        when 'use'
+          params[:assessment_section] = sections[:use_access]
+        when 'sto'
+          params[:assessment_section] = sections[:storage_container]
+        else
+          params[:assessment_section] = sections[:condition]
       end
+
+      unless row[9].blank? or row[10].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[9])
+        params[:enabling_assessment_question_options] = []
+        row[10].split(';').select{ |x| x.strip }.each do |dep|
+          params[:enabling_assessment_question_options] <<
+              params[:parent].assessment_question_options.where(name: dep)[0]
+        end
+      end
+
+      command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+      command.execute
+
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[12], index: 0, value: row[13]) if row[12] and row[13]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[14], index: 1, value: row[15]) if row[14] and row[15]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[16], index: 2, value: row[17]) if row[16] and row[17]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[18], index: 3, value: row[19]) if row[18] and row[19]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[20], index: 4, value: row[21]) if row[20] and row[21]
+      command.object.save!
     end
-
-    command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
-    command.execute
-
-    command.object.assessment_question_options << AssessmentQuestionOption.new(
-        name: row[12], index: 0, value: row[13]) if row[12] and row[13]
-    command.object.assessment_question_options << AssessmentQuestionOption.new(
-        name: row[14], index: 1, value: row[15]) if row[14] and row[15]
-    command.object.assessment_question_options << AssessmentQuestionOption.new(
-        name: row[16], index: 2, value: row[17]) if row[16] and row[17]
-    command.object.assessment_question_options << AssessmentQuestionOption.new(
-        name: row[18], index: 3, value: row[19]) if row[18] and row[19]
-    command.object.assessment_question_options << AssessmentQuestionOption.new(
-        name: row[20], index: 4, value: row[21]) if row[20] and row[21]
-    command.object.save!
-
-    index += 1
   end
-=end
+end
+
+# Admin role
+admin_role = Role.create!(name: 'Administrator', is_admin: true)
+
+# Normal role
+normal_role = Role.create!(name: 'User', is_admin: false)
+
+# Admin user
+command = CreateUserCommand.new(
+    { username: 'admin', email: 'admin@example.org',
+      first_name: 'Admin', last_name: 'Admin',
+      password: 'password', password_confirmation: 'password',
+      confirmed: true, enabled: true }, '127.0.0.1', false)
+command.execute
+admin_user = command.object
+admin_user.role = admin_role
+admin_user.save!
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
