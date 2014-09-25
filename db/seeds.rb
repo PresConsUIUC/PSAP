@@ -535,7 +535,7 @@ xls.sheet('InkMedia Scores').each_with_index do |row, i|
     group_name = row[2] || 'Other'
     group = FormatVectorGroup.find_by_name(group_name)
     group ||= FormatVectorGroup.create!(name: group_name)
-    FormatInkMediaType.create!(name: row[1], score: row[5],
+    FormatInkMediaType.create!(name: row[0], score: row[4],
                                format_vector_group: group)
   end
 end
@@ -543,7 +543,7 @@ end
 # Format Support Types
 xls.sheet('Support Scores').each_with_index do |row, i|
   if i > 0 # skip header row
-    FormatSupportType.create!(name: row[1], score: row[5])
+    FormatSupportType.create!(name: row[0], score: row[4])
   end
 end
 
@@ -585,18 +585,18 @@ sections[:condition] = command.object
 aq_sheets = %w(Resource-Photo)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
-    if index > 0 and !row[6].blank? # skip header & trailing rows
+    if index > 0 and !row[7].blank? # skip header & trailing rows
       params = {
-          qid: row[5].to_i,
-          name: row[6].strip,
-          question_type: (!row[11].blank? and row[11].downcase == 'checkboxes') ?
+          qid: row[6].to_i,
+          name: row[7].strip,
+          question_type: (!row[12].blank? and row[12].downcase == 'checkboxes') ?
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
-          weight: row[8].to_f * 0.01,
+          weight: row[9].to_f * 0.01,
           format: Format.find_by_fid(56), # TODO: fix this
-          help_text: row[7].strip
+          help_text: row[8].strip
       }
-      case row[4][0..2].strip.downcase
+      case row[5][0..2].strip.downcase
         when 'use'
           params[:assessment_section] = sections[:use_access]
         when 'sto'
@@ -605,10 +605,10 @@ aq_sheets.each do |sheet|
           params[:assessment_section] = sections[:condition]
       end
 
-      unless row[9].blank? or row[10].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[9])
+      unless row[10].blank? or row[11].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[10])
         params[:enabling_assessment_question_options] = []
-        row[10].split(';').select{ |x| x.strip }.each do |dep|
+        row[11].split(';').select{ |x| x.strip }.each do |dep|
           params[:enabling_assessment_question_options] <<
               params[:parent].assessment_question_options.where(name: dep)[0]
         end
@@ -618,15 +618,15 @@ aq_sheets.each do |sheet|
       command.execute
 
       command.object.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[12], index: 0, value: row[13]) if row[12] and row[13]
+          name: row[13], index: 0, value: row[14]) if row[13] and row[14]
       command.object.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[14], index: 1, value: row[15]) if row[14] and row[15]
+          name: row[15], index: 1, value: row[16]) if row[15] and row[16]
       command.object.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[16], index: 2, value: row[17]) if row[16] and row[17]
+          name: row[17], index: 2, value: row[18]) if row[17] and row[18]
       command.object.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[18], index: 3, value: row[19]) if row[18] and row[19]
+          name: row[19], index: 3, value: row[20]) if row[19] and row[20]
       command.object.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[20], index: 4, value: row[21]) if row[20] and row[21]
+          name: row[21], index: 4, value: row[22]) if row[21] and row[22]
       command.object.save!
     end
   end
@@ -655,7 +655,7 @@ case Rails.env
   when 'development'
     # Institutions
     institution_commands = [
-        CreateInstitutionCommand.new(
+        CreateInstitutionCommand.new( # TODO: add this in production
             { name: 'University of Illinois at Urbana-Champaign',
               address1: '1408 W. Gregory Dr.',
               address2: nil,
@@ -798,13 +798,13 @@ case Rails.env
           min_temp_f: 0, max_temp_f: 100, score: 1)
       location.save!
     end
-=begin
+
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Magna Carta',
           resource_type: ResourceType::ITEM,
-          format: formats[:cyanotype],
+          format: Format.find_by_fid(4),
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -813,7 +813,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Dead Sea Scrolls',
           resource_type: ResourceType::ITEM,
-          format: formats[:instant_photo_bw],
+          format: Format.find_by_fid(18),
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -959,7 +959,7 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-
+=begin
     # Assessment question responses
     responses = [
       AssessmentQuestionResponse.create!(
@@ -989,9 +989,9 @@ case Rails.env
     ]
     resources[0].assessment_percent_complete = 1
     resources[0].save!
-
+=end
     # Format temperature ranges
-    formats.values.each do |format|
+    Format.all do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
                                  format: format)
         TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
@@ -1008,7 +1008,9 @@ case Rails.env
                   user: normal_user,
                   address: '127.0.0.1',
                   created_at: Time.mktime(2014, 4, 12))
-    Event.create!(description: 'Made queso dip, but ran out of chips before the queso was consumed, so had to buy more chips, but then didn\'t have enough queso',
+    Event.create!(description: 'Made queso dip, but ran out of chips before '\
+    'the queso was consumed, so had to buy more chips, but then didn\'t have '\
+    'enough queso',
                   event_level: EventLevel::INFO,
                   user: admin_user,
                   address: '10.252.52.5',
@@ -1047,7 +1049,7 @@ case Rails.env
                     address: '127.0.0.1',
                     created_at: Time.mktime(2012, 12, 12))
     end
-=end
+
   when 'production'
 
 end
