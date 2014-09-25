@@ -1,11 +1,11 @@
 class Format < ActiveRecord::Base
-  has_many :assessment_questions, inverse_of: :format
   has_many :children, class_name: 'Format', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :format_ink_media_types, inverse_of: :format
   has_many :format_support_types, inverse_of: :format
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
+  has_and_belongs_to_many :assessment_questions
   has_and_belongs_to_many :events
   belongs_to :parent, class_name: 'Format', inverse_of: :children
 
@@ -42,7 +42,8 @@ class Format < ActiveRecord::Base
     format_ids = []
     collect_ancestor_ids(self, format_ids)
 
-    AssessmentQuestion.where('format_id IN (?)', format_ids)
+    AssessmentQuestion.joins(:formats).
+        where('assessment_questions_formats.format_id IN (?)', format_ids)
   end
 
 end

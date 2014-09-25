@@ -593,7 +593,6 @@ aq_sheets.each do |sheet|
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
           weight: row[9].to_f * 0.01,
-          format: Format.find_by_fid(56), # TODO: fix this
           help_text: row[8].strip
       }
       case row[5][0..2].strip.downcase
@@ -613,6 +612,8 @@ aq_sheets.each do |sheet|
               params[:parent].assessment_question_options.where(name: dep)[0]
         end
       end
+
+      params[:formats] = [ Format.find_by_fid(56) ] # TODO: fix this
 
       command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
       command.execute

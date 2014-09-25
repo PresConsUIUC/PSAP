@@ -41,7 +41,7 @@ class AssessmentQuestionsController < ApplicationController
   end
 
   ##
-  # Responds to /formats/:id/assessment_questions to show all assessment
+  # Responds to /formats/:id/assessment-questions to show all assessment
   # questions relevant to a format.
   #
   def index
@@ -94,6 +94,9 @@ class AssessmentQuestionsController < ApplicationController
                                                 assessment_question_options_attributes: [
                                                     :id, :name, :value, :index,
                                                     :_destroy
+                                                ],
+                                                formats_attributes: [
+                                                    :id
                                                 ])
   end
 
