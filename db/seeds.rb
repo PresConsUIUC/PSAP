@@ -1,4 +1,5 @@
-require 'csv'
+require 'roo'
+require 'spreadsheet'
 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
@@ -495,458 +496,56 @@ languages = [
     Language.create(english_name: 'Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki', native_name: 'zaza; dimili; dimli; kirdki; kirmanjki; zazaki', iso639_2_code: 'zza')
 ]
 
-formats = {}
-# Photo/Image formats
-formats[:pop] = Format.create!(
-    name: 'Positive Print on Paper',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:salt_print] = Format.create!(
-      name: 'Salt Print',
-      score: 0,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:cyanotype] = Format.create!(
-      name: 'Cyanotype',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:platinum_palladium_print] = Format.create!(
-      name: 'Platnium/Palladium Print',
-      score: 0.875,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:albumen_print] = Format.create!(
-      name: 'Albumen Print',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:carbon_print] = Format.create!(
-      name: 'Carbon Print',
-      score: 0.875,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:collodion_print] = Format.create!(
-      name: 'Collodion Print',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:matte_collodion_print] = Format.create!(
-      name: 'Matte Collodion Print',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:gelatin_pop_print] = Format.create!(
-      name: 'Gelatin POP Print',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:silver_gelatin_print] = Format.create!(
-      name: 'Silver Gelatin Print',
-      score: 0.375,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MONOCHROME_PRINT,
-      parent: formats[:pop])
-  formats[:chromogenic_color_print] = Format.create!(
-      name: 'Chromogenic Color Print',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::COLOR_PRINT,
-      parent: formats[:pop])
-  formats[:silver_dye_bleach_print] = Format.create!(
-      name: 'Silver Dye-Bleach Print',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::COLOR_PRINT,
-      parent: formats[:pop])
-  formats[:dye_transfer_print] = Format.create!(
-      name: 'Dye-Transfer Print',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::COLOR_PRINT,
-      parent: formats[:pop])
-  formats[:color_carbro_print] = Format.create!(
-      name: 'Color Carbro Print',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::COLOR_PRINT,
-      parent: formats[:pop])
-  formats[:instant_photo_bw] = Format.create!(
-      name: 'Instant Photo, B&W',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::INSTANT_PHOTO,
-      parent: formats[:pop])
-  formats[:instant_photo_color] = Format.create!(
-      name: 'Instant Photo, Color',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::INSTANT_PHOTO,
-      parent: formats[:pop])
-formats[:cased_direct_photograph] = Format.create!(
-    name: 'Cased/Direct Photograph',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:daguerreotype] = Format.create!(
-      name: 'Daguerreotype',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:cased_direct_photograph])
-  formats[:ambrotype] = Format.create!(
-      name: 'Ambrotype',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:cased_direct_photograph])
-  formats[:tintype] = Format.create!(
-      name: 'Tintype',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:cased_direct_photograph])
-formats[:negative_glass_film] = Format.create!(
-    name: 'Negative (Glass, Film)',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:glass_negative] = Format.create!(
-      name: 'Glass Negative',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::GLASS_NEGATIVE,
-      parent: formats[:negative_glass_film])
-  formats[:silver_gelatin_negative] = Format.create!(
-      name: 'Silver Gelatin Negative',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-      parent: formats[:negative_glass_film])
-    formats[:nitrate_silver_gelatin_negative] = Format.create!(
-        name: 'Nitrate - Silver Gelatin Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:silver_gelatin_negative])
-    formats[:acetate_silver_gelatin_negative] = Format.create!(
-        name: 'Acetate - Silver Gelatin Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:silver_gelatin_negative])
-    formats[:polyester_silver_gelatin_negative] = Format.create!(
-        name: 'Polyester - Silver Gelatin Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:silver_gelatin_negative])
-    formats[:unknown_silver_gelatin_negative] = Format.create!(
-        name: 'Unknown - Silver Gelatin Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:silver_gelatin_negative])
-  formats[:chromogenic_color_negative] = Format.create!(
-      name: 'Chromogenic Color Negative',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-      parent: formats[:negative_glass_film])
-    formats[:acetate_chromogenic_color_negative] = Format.create!(
-        name: 'Acetate - Chromogenic Color Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:chromogenic_color_negative])
-    formats[:polyester_chromogenic_color_negative] = Format.create!(
-        name: 'Polyester - Chromogenic Color Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:chromogenic_color_negative])
-    formats[:unknown_chromogenic_color_negative] = Format.create!(
-        name: 'Unknown - Chromogenic Color Negative',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM_NEGATIVE,
-        parent: formats[:chromogenic_color_negative])
-formats[:slide_transparency] = Format.create!(
-    name: 'Slide/Transparency (Glass, Film)',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:glass_slide_bw] = Format.create!(
-      name: 'Glass Slide, B&W',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::GLASS_SLIDE,
-      parent: formats[:slide_transparency])
-  formats[:autochrome] = Format.create!(
-      name: 'Autochrome (additive color screen)',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::GLASS_SLIDE,
-      parent: formats[:slide_transparency])
-  formats[:bw_film_slide] = Format.create!(
-      name: 'B&W Film Slide',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PLASTIC_FILM_SLIDE,
-      parent: formats[:slide_transparency])
-  formats[:color_film_slide] = Format.create!(
-      name: 'Color Film Slide',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PLASTIC_FILM_SLIDE,
-      parent: formats[:slide_transparency])
-formats[:photomechanical_print] = Format.create!(
-    name: 'Photomechanical Print',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:letterpress_halftone] = Format.create!(
-      name: 'Letterpress Halftone',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:photomechanical_print])
-  formats[:offset_lithography] = Format.create!(
-      name: 'Offset Lithography',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:photomechanical_print])
-  formats[:gravure] = Format.create!(
-      name: 'Gravure',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:photomechanical_print])
-  formats[:collotype] = Format.create!(
-      name: 'Collotype',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:photomechanical_print])
-  formats[:woodburytype] = Format.create!(
-      name: 'Woodburytype',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:photomechanical_print])
-formats[:digital_print] = Format.create!(
-    name: 'Digital Print',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:photo_inkjet_print] = Format.create!(
-      name: 'Inkjet Print',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      parent: formats[:digital_print])
-formats[:microform] = Format.create!(
-    name: 'Microform',
-    score: 0.5,
-    format_type: FormatType::PHOTO)
-  formats[:microfilm_microfiche] = Format.create!(
-      name: 'Microfilm/Microfiche',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PLASTIC_FILM,
-      parent: formats[:microform])
-    formats[:nitrate_microfilm_microfiche] = Format.create!(
-        name: 'Nitrate - Microfilm/Microfiche',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM,
-        parent: formats[:microfilm_microfiche])
-    formats[:acetate_microfilm_microfiche] = Format.create!(
-        name: 'Acetate - Microfilm/Microfiche',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM,
-        parent: formats[:microfilm_microfiche])
-    formats[:polyester_microfilm_microfiche] = Format.create!(
-        name: 'Polyester - Microfilm/Microfiche',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM,
-        parent: formats[:microfilm_microfiche])
-    formats[:unknown_microfilm_microfiche] = Format.create!(
-        name: 'Unknown - Microfilm/Microfiche',
-        score: 0.5,
-        format_type: FormatType::PHOTO,
-        format_subtype: FormatSubtype::PLASTIC_FILM,
-        parent: formats[:microfilm_microfiche])
-  formats[:microcard] = Format.create!(
-      name: 'Microcard',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PAPER,
-      parent: formats[:microform])
-  formats[:microprint] = Format.create!(
-      name: 'Microprint',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::PAPER,
-      parent: formats[:microform])
-  formats[:aperture_card] = Format.create!(
-      name: 'Aperture Card',
-      score: 0.5,
-      format_type: FormatType::PHOTO,
-      format_subtype: FormatSubtype::MIXED,
-      parent: formats[:microform])
+xls = Roo::Spreadsheet.open('db/seed_data/assessment_questions.xlsx')
 
-# Paper formats
-formats[:architectural_drawing_reproduction] = Format.create!(
-    name: 'Architectural Drawing Reproduction - Unidentified Process',
-    score: 0.542,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:blueprint] = Format.create!(
-    name: 'Blueprint',
-    score: 0.625,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:aniline_print] = Format.create!(
-    name: 'Aniline Print',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:wash_off_print] = Format.create!(
-    name: 'Wash-Off Print',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:ferro_gallic_print] = Format.create!(
-    name: 'Ferro-Gallic Print',
-    score: 0.125,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:vandyke_print] = Format.create!(
-    name: 'VanDyke Print',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:diazo_print_architectural_drawing] = Format.create!(
-    name: 'Diazo Print',
-    score: 0.375,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:photostat_architectural_drawing] = Format.create!(
-    name: 'Photostat',
-    score: 0.75,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:hectograph] = Format.create!(
-    name: 'Hectograph',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::ARCH_DRAWING_REPRODUCTION)
-formats[:office_copy_print] = Format.create!(
-    name: 'Office Copy/Print - Unidentified Process',
-    score: 0.6,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:carbon_copy_stencil_copy] = Format.create!(
-    name: 'Carbon Copy / Stencil Copy / Impact Print / Lithography',
-    score: 1,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:hectograph_spirit_duplicate] = Format.create!(
-    name: 'Hectograph / Spirit Duplicate',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:diazo_print_office_copy] = Format.create!(
-    name: 'Diazo Print',
-    score: 0.375,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:photostat_office_copy] = Format.create!(
-    name: 'Photostat',
-    score: 0.75,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:diffusion_transfer_dual_spectrum] = Format.create!(
-    name: 'Diffusion Transfer / Dual Spectrum',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:electrostatic_print_laser_print] = Format.create!(
-    name: 'Electrostatic Print (Xerox) / Laser Print',
-    score: 0.875,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:color_photocopy] = Format.create!(
-    name: 'Color Photocopy',
-    score: 0.75,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:carbonless_copy] = Format.create!(
-    name: 'Carbonless Copy (NCR)',
-    score: 0.75,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:copybook_roller_copy_iron_gall_ink] = Format.create!(
-    name: 'Copybook / Roller Copy - Iron Gall Ink',
-    score: 0.125,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:copybook_roller_copy_aniline_ink] = Format.create!(
-    name: 'Copybook / Roller Copy - Aniline (Color) Ink',
-    score: 0.375,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:thermal_print_thermofax] = Format.create!(
-    name: 'Thermal Print / Thermofax',
-    score: 0,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:electrofax] = Format.create!(
-    name: 'Electrofax',
-    score: 0,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
-formats[:paper_inkjet_print] = Format.create!(
-    name: 'Inkjet Print',
-    score: 0.5,
-    format_type: FormatType::UNBOUND_PAPER,
-    format_subtype: FormatSubtype::OFFICE_COPY_PRINT)
+# Formats
+sheet = xls.sheet('Format Scores')
+sheet.each_with_index do |row, i|
+  if i > 0 # skip header row
+    name = parent = nil
+    (2..5).reverse_each do |col|
+      if name.blank? and !row[col].blank?
+        name = row[col]
+        if col > 2 # find its parent FID by iterating backwards
+          (0..i).reverse_each do |j|
+            if sheet.row(j)[col].blank?
+              parent = Format.find_by_fid(sheet.row(j)[1])
+              break
+            end
+          end
+        else
+          parent = nil
+        end
+      end
+    end
+    unless name.blank?
+      Format.create!(fid: row[1],
+                     name: name,
+                     format_type: FormatType::type_for_name(row[0]),
+                     parent: parent,
+                     score: row[6])
+    end
+  end
+end
 
-# Format Vector Groups
-format_vector_groups = [
-    FormatVectorGroup.create!(name: 'Pigment-Based Inks'),
-    FormatVectorGroup.create!(name: 'Pencils / Dye-Based Ink / Ball-Point Pen'),
-    FormatVectorGroup.create!(name: 'Iron Gall Ink / Felt-Tip Pen / Marker'),
-    FormatVectorGroup.create!(name: 'Other')
-]
-
-# Format Ink/Media Types
-FormatInkMediaType.create!(name: 'Unidentified Ink/Media', score: 0.55,
-                           format_vector_group: format_vector_groups[3])
-FormatInkMediaType.create!(name: 'Carbon Black Ink (black printing ink, black typescript)',
-                           score: 1,
-                           format_vector_group: format_vector_groups[0])
-FormatInkMediaType.create!(name: 'Color Pigment-Based Ink (colored printing ink)',
-                           score: 1,
-                           format_vector_group: format_vector_groups[0])
-FormatInkMediaType.create!(name: 'Graphite Pencil', score: 0.67,
-                           format_vector_group: format_vector_groups[1])
-FormatInkMediaType.create!(name: 'Wax-Based Pencil / Crayon', score: 0.67,
-                           format_vector_group: format_vector_groups[1])
-FormatInkMediaType.create!(name: 'Colored Pencil / Ink (copy pencil, colored manuscript)',
-                           score: 0.67,
-                           format_vector_group: format_vector_groups[1])
-FormatInkMediaType.create!(name: 'Ball-Point Pen', score: 0.67,
-                           format_vector_group: format_vector_groups[1])
-FormatInkMediaType.create!(name: 'Iron Gall Ink', score: 0,
-                           format_vector_group: format_vector_groups[2])
-FormatInkMediaType.create!(name: 'Felt-Tip Pen / Marker / Highlighter',
-                           score: 0,
-                           format_vector_group: format_vector_groups[2])
+# Format Vector Groups & Ink/Media Types
+FormatVectorGroup.create!(name: 'Other')
+xls.sheet('InkMedia Scores').each_with_index do |row, i|
+  if i > 0 # skip header row
+    group_name = row[2] || 'Other'
+    group = FormatVectorGroup.find_by_name(group_name)
+    group ||= FormatVectorGroup.create!(name: group_name)
+    FormatInkMediaType.create!(name: row[1], score: row[5],
+                               format_vector_group: group)
+  end
+end
 
 # Format Support Types
-FormatSupportType.create!(name: 'Acid-Free Paper (rag paper, permanent paper)',
-                          score: 1)
-FormatSupportType.create!(name: 'Wood Pulp Paper', score: 0.25)
-FormatSupportType.create!(name: 'Unidentified Paper', score: 0.5)
+xls.sheet('Support Scores').each_with_index do |row, i|
+  if i > 0 # skip header row
+    FormatSupportType.create!(name: row[1], score: row[5])
+  end
+end
 
 # Assessments
 assessments = [
@@ -999,7 +598,7 @@ command.execute
 sections[:condition] = command.object
 
 # Assessment questions, loaded from CSV files in ./seed_data
-Dir.glob(File.expand_path('.') + '/seed_data/assessment_questions_*.csv') do |file|
+=begin
   index = 0
   CSV.foreach("seed_data/#{file}") do |row|
     params = {
@@ -1047,7 +646,7 @@ Dir.glob(File.expand_path('.') + '/seed_data/assessment_questions_*.csv') do |fi
 
     index += 1
   end
-end
+=end
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
@@ -1198,7 +797,7 @@ case Rails.env
           min_temp_f: 0, max_temp_f: 100, score: 1)
       location.save!
     end
-
+=begin
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],
@@ -1359,7 +958,7 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-=begin
+
     # Assessment question responses
     responses = [
       AssessmentQuestionResponse.create!(
@@ -1389,7 +988,7 @@ case Rails.env
     ]
     resources[0].assessment_percent_complete = 1
     resources[0].save!
-=end
+
     # Format temperature ranges
     formats.values.each do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
@@ -1447,7 +1046,7 @@ case Rails.env
                     address: '127.0.0.1',
                     created_at: Time.mktime(2012, 12, 12))
     end
-
+=end
   when 'production'
 
 end

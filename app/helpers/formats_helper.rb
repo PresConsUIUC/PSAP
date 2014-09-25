@@ -10,13 +10,6 @@ module FormatsHelper
     options
   end
 
-  def format_subtype_options
-    options = []
-    FormatSubtype.all.select{ |subtype|
-      options << [FormatSubtype.name_for_subtype(subtype), subtype] }
-    options.sort_by { |op| op[0] }
-  end
-
   def format_type_options
     options = []
     FormatType.all.select{ |type|

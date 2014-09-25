@@ -2,7 +2,7 @@
 # Formats have a type and a subtype. The type is the main format category,
 # appearing in the resource assessment form as a set of radio buttons that
 # toggle the contents of the first format <select> menu.
-class FormatType
+class FormatType # TODO: rename to FormatClass (#124)
 
   AV = 0
   PHOTO = 1
@@ -26,6 +26,18 @@ class FormatType
         'Paper-Unbound'
       when FormatType::BOUND_PAPER
         'Paper-Bound/Book'
+    end
+  end
+
+  def self.type_for_name(name)
+    if %w(audiovisual a/v).include?(name.downcase)
+      FormatType::AV
+    elsif name[0..2].downcase == 'pho'
+      FormatType::PHOTO
+    elsif name.downcase.include?('unbound')
+      FormatType::UNBOUND_PAPER
+    elsif name.downcase.include?('bound')
+      FormatType::BOUND_PAPER
     end
   end
 

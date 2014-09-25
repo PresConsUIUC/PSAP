@@ -11,15 +11,10 @@ class Format < ActiveRecord::Base
 
   accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 
-  validates :format_subtype, allow_blank: true,
-            inclusion: { in: FormatSubtype.all,
-                         message: 'Must be a valid format subtype.' }
   validates :format_type, presence: true,
             inclusion: { in: FormatType.all,
                          message: 'Must be a valid format type.' }
   validates :name, presence: true, length: { maximum: 255 }
-  validates :score, presence: true, numericality: {
-      greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
   validate :validates_temperature_ranges
 
@@ -48,15 +43,6 @@ class Format < ActiveRecord::Base
     collect_ancestor_ids(self, format_ids)
 
     AssessmentQuestion.where('format_id IN (?)', format_ids)
-  end
-
-  def as_json(options = { })
-    super((options || { }).merge(
-              { :methods => [:format_subtype, :readable_format_subtype] }))
-  end
-
-  def readable_format_subtype
-    FormatSubtype.name_for_subtype(format_subtype)
   end
 
 end
