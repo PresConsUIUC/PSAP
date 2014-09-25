@@ -257,28 +257,10 @@ var ResourceForm = {
                 select.prev().attr('name', 'noop');
             }
 
-            var any_subtypes = false;
-            $.each(data, function (i, object) {
-                if (object['format_subtype']) {
-                    any_subtypes = true;
-                }
-            });
             $.each(data, function (i, object) {
                 var option = $('<option>').attr('value',
                     object['id']).text(object['name']);
-                if (any_subtypes) {
-                    var optgroup = $('optgroup#format-subtype-' +
-                        object['format_subtype']);
-                    if (optgroup.length < 1) {
-                        optgroup = $('<optgroup id="format-subtype-' +
-                            object['format_subtype'] + '" label="' +
-                            object['readable_format_subtype'] + '"></optgroup>');
-                        select.append(optgroup);
-                    }
-                    optgroup.append(option);
-                } else {
-                    select.append(option);
-                }
+                select.append(option);
             });
             (select.find('option').length < 2) ?
                 select.hide() : select.show();
