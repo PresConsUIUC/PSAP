@@ -27,8 +27,8 @@ var ResourceForm = {
     },
 
     attachEventListeners: function() {
-        $('input[name="format_type"]').on('change', function() {
-            ResourceForm.selectFormatType();
+        $('input[name="format_class"]').on('change', function() {
+            ResourceForm.selectFormatClass();
         });
 
         $('button.save').on('click', function(event) {
@@ -101,7 +101,7 @@ var ResourceForm = {
             });
         };
 
-        var onFormatTypeSelected = function() {
+        var onFormatClassSelected = function() {
             $('input[name="selected_format_ids"]').each(function() {
                 var id = $(this).val();
                 $('select[name="resource[format_id]"] option').each(function() {
@@ -113,9 +113,9 @@ var ResourceForm = {
             });
         };
 
-        ResourceForm.selectFormatType(
-            $('input[name="selected_format_type"]').val(),
-            onFormatTypeSelected);
+        ResourceForm.selectFormatClass(
+            $('input[name="selected_format_class"]').val(),
+            onFormatClassSelected);
     },
 
     initSuggestions: function() {
@@ -344,8 +344,8 @@ var ResourceForm = {
                 var childSelect = ResourceForm.appendSelectToNode(
                     $(this).parent().parent());
                 var url = $('input[name="root-url"]').val() +
-                    '/format-types/' +
-                    $('input[name="format_type"]:checked').val() +
+                    '/format-classes/' +
+                    $('input[name="format_class"]:checked').val() +
                     '/formats?parent_id=' + $(this).val();
                 ResourceForm.populateSelect(childSelect, url,
                     onCompleteCallback);
@@ -354,9 +354,9 @@ var ResourceForm = {
     },
 
     // Format type is one of the radio buttons: A/V, Photo/Image...
-    selectFormatType: function(id, onCompleteCallback) {
+    selectFormatClass: function(id, onCompleteCallback) {
         if (id) {
-            $('input[name="format_type"]').each(function() {
+            $('input[name="format_class"]').each(function() {
                 if ($(this).val() == id) {
                     $(this).attr('checked', true);
                 }
@@ -377,8 +377,8 @@ var ResourceForm = {
             var childSelect = ResourceForm.appendSelectToNode(
                 $(this).parent());
             var url = $('input[name="root-url"]').val() +
-                '/format-types/' +
-                $('input[name="format_type"]:checked').val() +
+                '/format-classes/' +
+                $('input[name="format_class"]:checked').val() +
                 '/formats?parent_id=' + $(this).val();
             ResourceForm.populateSelect(childSelect, url);
             childSelect.on('change', onSelectChanged);
@@ -390,8 +390,8 @@ var ResourceForm = {
         };
         select.on('change', onSelectChanged);
 
-        var url = $('input[name="root-url"]').val() + '/format-types/' +
-            $('input[name="format_type"]:checked').val() + '/formats';
+        var url = $('input[name="root-url"]').val() + '/format-classes/' +
+            $('input[name="format_class"]:checked').val() + '/formats';
         ResourceForm.populateSelect(select, url, onCompleteCallback);
     },
 

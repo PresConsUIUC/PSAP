@@ -521,7 +521,7 @@ sheet.each_with_index do |row, i|
     unless name.blank?
       Format.create!(fid: row[1],
                      name: name,
-                     format_type: FormatType::type_for_name(row[0]),
+                     format_class: FormatClass::class_for_name(row[0]),
                      parent: parent,
                      score: row[6])
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925182607) do
+ActiveRecord::Schema.define(version: 20140925194848) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -182,12 +182,12 @@ ActiveRecord::Schema.define(version: 20140925182607) do
   end
 
   create_table "formats", force: true do |t|
-    t.string   "name",                                            null: false
-    t.decimal  "score",       precision: 4, scale: 3
+    t.string   "name",                                             null: false
+    t.decimal  "score",        precision: 4, scale: 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
-    t.integer  "format_type",                         default: 0, null: false
+    t.integer  "format_class",                         default: 0, null: false
     t.integer  "fid"
   end
 

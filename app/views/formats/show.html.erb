@@ -34,8 +34,8 @@
 
   <div class="col-sm-4">
     <dl>
-      <dt>Type</dt>
-      <dd><%= FormatType.name_for_type @format.format_type %></dd>
+      <dt>Class</dt>
+      <dd><%= FormatClass.name_for_class(@format.format_class) %></dd>
       <dt>Score</dt>
       <dd><%= @format.score ? @format.score : 'None' %></dd>
       <dt>Temperature Range Scores</dt>

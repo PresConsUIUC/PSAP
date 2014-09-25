@@ -10,10 +10,10 @@ module FormatsHelper
     options
   end
 
-  def format_type_options
+  def format_class_options
     options = []
-    FormatType.all.select{ |type|
-      options << [FormatType.name_for_type(type), type] }
+    FormatClass.all.select{ |clazz|
+      options << [ FormatClass.name_for_class(clazz), clazz ] }
     options.sort_by { |op| op[0] }
   end
 

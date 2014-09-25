@@ -58,8 +58,8 @@
       </div>
 
       <% # read by JS to select the relevant inputs %>
-      <input type="hidden" name="selected_format_type"
-             value="<%= @resource.format ? @resource.format.format_type : '' %>">
+      <input type="hidden" name="selected_format_class"
+             value="<%= @resource.format ? @resource.format.format_class : '' %>">
 
       <% format = @resource.format
       while format do %>

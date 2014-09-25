@@ -88,7 +88,7 @@ Psap::Application.routes.draw do
     resources :assessment_questions, only: :index, path: 'assessment-questions'
   end
   # used for dependent select menus in forms
-  resources :format_types, only: [], path: 'format-types' do
+  resources :format_classes, only: [], path: 'format-classes' do
     resources :formats, only: :index, path: 'formats'
   end
   resources :institutions do
