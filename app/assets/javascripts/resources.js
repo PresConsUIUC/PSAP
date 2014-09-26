@@ -380,21 +380,33 @@ var ResourceForm = {
         var format_score = ResourceForm.selectedFormatScore();
         if (format_score) {
             var section_scores = [];
-            // TODO: checkboxes don't work
             $('.section-questions').each(function () {
                 var question_scores = [];
                 var question_weights = [];
                 var weighted_scores = [];
 
                 $(this).find('.assessment_question').each(function () {
-                    // get the selected option
-                    var input_elem = $(this).find('input[type="radio"]:checked, ' +
-                        'input[type="checkbox"]:checked, option:selected');
-                    // and its score
-                    var response_value = input_elem.data('option-score');
-                    if (response_value) {
+                    // radios and checkboxes are handled differently. Radios
+                    // have the score of the selected radio. Checkboxes have
+                    // a score of 1 - (sum of checked checkboxes).
+                    var selected_radio = $(this).find('input[type="radio"]:checked');
+                    if (selected_radio.length) {
+                        // and its score
+                        var response_value = selected_radio.data('option-score');
+                        if (response_value) {
+                            question_scores.push(response_value);
+                            var question_weight = parseFloat($(this).data('weight'));
+                            question_weights.push(question_weight);
+                        }
+                    } else { // get the checked checkboxes
+                        var checked_checkboxes = $(this).find(
+                            'input[type="checkbox"]:checked');
+                        var response_value = 1;
+                        checked_checkboxes.each(function() {
+                            response_value -= $(this).data('option-score');
+                        });
                         question_scores.push(response_value);
-                        var question_weight = $(this).data('weight');
+                        var question_weight = parseFloat($(this).data('weight'));
                         question_weights.push(question_weight);
                     }
                 });
