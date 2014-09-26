@@ -233,19 +233,7 @@ var ResourceForm = {
                     }
                 }
                 break;
-            case 1: // select TODO: eliminate selects
-                control += '<select class="form-control" data-type="option" ' +
-                            'name="resource[assessment_question_responses][' + question_index + ']">';
-                for (var key in object['assessment_question_options']) {
-                    var option = object['assessment_question_options'][key];
-                    control += '<option value="' + option['id'] + '" data-option-score="' +
-                            option['value'] + '" data-option-id="' + option['id'] + '">' +
-                            option['name'] +
-                        '</option>';
-                }
-                control += '</select>';
-                break;
-            case 2: // checkbox
+            case 1: // checkbox
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     if (option['value']) { // TODO: why is option['value'] ever undefined?

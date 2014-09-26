@@ -28,8 +28,6 @@ class AssessmentQuestion < ActiveRecord::Base
     case question_type
       when AssessmentQuestionType::RADIO
         'Radio buttons'
-      when AssessmentQuestionType::SELECT
-        'Pull-down menu'
       when AssessmentQuestionType::CHECKBOX
         'Checkboxes'
     end

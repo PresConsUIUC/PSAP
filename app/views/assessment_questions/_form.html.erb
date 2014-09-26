@@ -42,7 +42,6 @@
   <%= f.label :question_type, 'Type' %>
   <%= select('assessment_question', 'question_type',
              options_for_select([['Radio buttons', AssessmentQuestionType::RADIO],
-                                 ['Pull-down menu', AssessmentQuestionType::SELECT],
                                  ['Checkboxes', AssessmentQuestionType::CHECKBOX]]),
              { include_blank: false },
              { class: 'form-control' }) %>
