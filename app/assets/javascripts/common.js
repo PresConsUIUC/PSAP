@@ -235,7 +235,7 @@ var Form = {
             });
 
             updateIndexes();
-            $(document).trigger('PSAPFormSectionAdded');
+            $(document).trigger('PSAPFormFieldAdded');
         });
 
         updateIndexes();

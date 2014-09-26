@@ -110,9 +110,7 @@ var ResourceForm = {
     },
 
     init: function() {
-        // PSAPFormSectionAdded refers to dynamic text fields, like adding a
-        // subject using the "+" button; not assessment sections. TODO: rename it
-        $(document).on('PSAPFormSectionAdded', function() {
+        $(document).on('PSAPFormFieldAdded', function() {
             ResourceForm.attachEventListeners();
 
             // Adding a form section will change the page length, necessitating
@@ -120,7 +118,7 @@ var ResourceForm = {
             $('[data-spy="scroll"]').each(function () {
                 $(this).scrollspy('refresh');
             });
-        }).trigger('PSAPFormSectionAdded');
+        }).trigger('PSAPFormFieldAdded');
 
         ResourceForm.initSuggestions();
 
@@ -198,7 +196,7 @@ var ResourceForm = {
         $('.typeahead').parent().css('display', '');
         $('.tt-hint').addClass('form-control');
 
-        $(document).on('PSAPFormSectionAdded', function() {
+        $(document).on('PSAPFormFieldAdded', function() {
             ResourceForm.initSuggestions();
         });
     },
