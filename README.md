@@ -12,8 +12,9 @@ This project uses the "Gitflow" git workflow, described at:
 
 ## Coding Standards
 
-Indentation is two spaces. Spaces are used instead of tabs. 80-character
-margins are aimed for but sometimes exceeded, especially in the view templates.
+Ruby indentation is two spaces; JavaScript, 4 spaces. Spaces are used instead
+of tabs. 80-character margins are aimed for but sometimes exceeded, especially
+in the view templates.
 
 # Deployment
 

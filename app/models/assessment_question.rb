@@ -19,8 +19,7 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :question_type, presence: true,
             inclusion: { in: AssessmentQuestionType.all,
                          message: 'Must be a valid assessment question type.' }
-  validates_numericality_of :weight, greater_than_or_equal_to: 0,
-                            less_than_or_equal_to: 1, presence: true
+  validates_numericality_of :weight, greater_than_or_equal_to: 0, presence: true
 
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true

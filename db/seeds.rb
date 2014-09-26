@@ -592,7 +592,7 @@ aq_sheets.each do |sheet|
           question_type: (!row[12].blank? and row[12].downcase == 'checkboxes') ?
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
-          weight: row[9].to_f * 0.01,
+          weight: row[9].to_f,
           help_text: row[8].strip
       }
       case row[5][0..2].strip.downcase
@@ -613,7 +613,7 @@ aq_sheets.each do |sheet|
         end
       end
 
-      params[:formats] = [ Format.find_by_fid(56) ] # TODO: fix this
+      params[:formats] = [ Format.offset(rand(Format.count)).first ] # TODO: fix this
 
       command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
       command.execute
@@ -805,7 +805,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Magna Carta',
           resource_type: ResourceType::ITEM,
-          format: Format.find_by_fid(4),
+          format: Format.find_by_fid(7),
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
