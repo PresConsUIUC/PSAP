@@ -25,8 +25,6 @@ var ResourceForm = {
             contents_url += '?parent_id=' + parent_format_id;
         }
 
-        // remove all options except "Select..."
-        newSelect.find('*').not(':first').remove();
         $.getJSON(contents_url, function(data) {
             if (data.length == 0) {
                 newSelect.remove();
@@ -43,6 +41,11 @@ var ResourceForm = {
             (newSelect.find('option').length < 2) ?
                 newSelect.hide() : newSelect.show();
 
+            // if the last select has been added
+            newSelect.on('change', function() {
+                ResourceForm.selectFormat($(this).val(), null);
+            });
+
             if (onCompleteCallback) {
                 onCompleteCallback(newSelect);
             }
@@ -51,7 +54,8 @@ var ResourceForm = {
 
     attachEventListeners: function() {
         $('input[name="format_class"]').on('change', function() {
-            ResourceForm.selectFormatClass();
+            ResourceForm.selectFormatClass($(this).val());
+            ResourceForm.addFormatSelect(null);
         });
 
         $('button.save').on('click', function(event) {
@@ -323,6 +327,7 @@ var ResourceForm = {
 
                         $('.assessment_question input, .assessment_question select').
                             off('change').on('change', onOptionChanged);
+                        $('body').scrollspy('refresh');
                     });
 
                     ResourceForm.updateProgress();
@@ -401,13 +406,15 @@ var ResourceForm = {
                     } else { // get the checked checkboxes
                         var checked_checkboxes = $(this).find(
                             'input[type="checkbox"]:checked');
-                        var response_value = 1;
-                        checked_checkboxes.each(function() {
-                            response_value -= $(this).data('option-score');
-                        });
-                        question_scores.push(response_value);
-                        var question_weight = parseFloat($(this).data('weight'));
-                        question_weights.push(question_weight);
+                        if (checked_checkboxes.length > 0) {
+                            var response_value = 1;
+                            checked_checkboxes.each(function () {
+                                response_value -= $(this).data('option-score');
+                            });
+                            question_scores.push(response_value);
+                            var question_weight = parseFloat($(this).data('weight'));
+                            question_weights.push(question_weight);
+                        }
                     }
                 });
 
