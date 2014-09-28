@@ -869,13 +869,6 @@ case Rails.env
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Issue 3',
-          resource_type: ResourceType::ITEM,
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
         { name: 'Napoleon Bonaparte Letters Collection',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
