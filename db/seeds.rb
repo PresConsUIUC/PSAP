@@ -581,8 +581,8 @@ command.execute
 sections[:condition] = command.object
 
 # Assessment questions
-#aq_sheets = %w(Resource-Photo Resource-AV Resource-Paper-Unbound Resource-Paper-Bound)
-aq_sheets = %w(Resource-Photo)
+aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
+#aq_sheets = %w(Resource-Paper-Bound)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
     if index > 0 and !row[7].blank? # skip header & trailing rows
@@ -604,16 +604,21 @@ aq_sheets.each do |sheet|
           params[:assessment_section] = sections[:condition]
       end
 
-      unless row[10].blank? or row[11].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[10])
+      unless row[10].blank? or row[10].to_s.include?('TBD') or row[11].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[10].to_i)
         params[:enabling_assessment_question_options] = []
-        row[11].split(';').select{ |x| x.strip }.each do |dep|
-          params[:enabling_assessment_question_options] <<
-              params[:parent].assessment_question_options.where(name: dep)[0]
+        row[11].split(';').map{ |x| x.strip }.each do |dep|
+          eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
+          if eaqo
+            params[:enabling_assessment_question_options] << eaqo
+          else
+            puts 'AQO error: QID ' + row[10].to_s + ': ' + dep
+          end
         end
       end
 
-      params[:formats] = [ Format.offset(rand(Format.count)).first ] # TODO: fix this
+      params[:formats] = Format.where('id IN (?)',
+                                      row[4].to_s.split(';').map{ |f| f.strip.to_i })
 
       command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
       command.execute
