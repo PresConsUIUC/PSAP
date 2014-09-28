@@ -132,55 +132,8 @@ var ResourceForm = {
         ResourceForm.hideSections();
 
         if ($('body#edit_resource').length) {
-            ResourceForm.initInitialSelections();
+            ResourceForm.setInitialSelections();
         }
-    },
-
-    initInitialSelections: function() {
-        ResourceForm.selectFormatClass(
-            $('input[name="selected_format_class"]').val());
-
-        var selected_format_ids = $('input[name="selected_format_ids"]').map(function() {
-            return $(this).val();
-        }).toArray().reverse();
-
-        var onSelectAdded = function(select) {
-            // set the select's default value
-            selected_format_ids.forEach(function(id) {
-                var options = select.find('option[value="' + id + '"]');
-                options.each(function() {
-                    if ($(this).val() == id) {
-                        $(this).prop('selected', true);
-                    }
-                });
-            });
-
-            // if the last select has been added
-            if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
-                ResourceForm.selectFormat(select.val(), null);
-
-                // select the question response options
-                $('input[name="selected_option_ids"]').each(function() {
-                    var selected_id = $(this).val();
-                    $('[data-type="option"]').each(function() {
-                        var form_option_id = $(this).val();
-                        if (form_option_id == selected_id) {
-                            if ($(this).prop('tagName') == 'SELECT') {
-                                $(this).val(form_option_id);
-                            } else {
-                                $(this).attr('checked', true);
-                            }
-                        }
-                    });
-                });
-                ResourceForm.updateProgress();
-            }
-        };
-
-        ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
-        selected_format_ids.forEach(function(id) {
-            ResourceForm.addFormatSelect(id, onSelectAdded);
-        });
     },
 
     initSuggestions: function() {
@@ -359,6 +312,53 @@ var ResourceForm = {
     selectedFormatScore: function() {
         return parseFloat($('select[name="resource[format_id]"] option:selected').
             data('score'));
+    },
+
+    setInitialSelections: function() {
+        ResourceForm.selectFormatClass(
+            $('input[name="selected_format_class"]').val());
+
+        var selected_format_ids = $('input[name="selected_format_ids"]').map(function() {
+            return $(this).val();
+        }).toArray().reverse();
+
+        var onSelectAdded = function(select) {
+            // set the select's default value
+            selected_format_ids.forEach(function(id) {
+                var options = select.find('option[value="' + id + '"]');
+                options.each(function() {
+                    if ($(this).val() == id) {
+                        $(this).prop('selected', true);
+                    }
+                });
+            });
+
+            // if the last select has been added
+            if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
+                ResourceForm.selectFormat(select.val(), null);
+
+                // select the question response options
+                $('input[name="selected_option_ids"]').each(function() {
+                    var selected_id = $(this).val();
+                    $('[data-type="option"]').each(function() {
+                        var form_option_id = $(this).val();
+                        if (form_option_id == selected_id) {
+                            if ($(this).prop('tagName') == 'SELECT') {
+                                $(this).val(form_option_id);
+                            } else {
+                                $(this).attr('checked', true);
+                            }
+                        }
+                    });
+                });
+                ResourceForm.updateProgress();
+            }
+        };
+
+        ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
+        selected_format_ids.forEach(function(id) {
+            ResourceForm.addFormatSelect(id, onSelectAdded);
+        });
     },
 
     showSections: function() {
