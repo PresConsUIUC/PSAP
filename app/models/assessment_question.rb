@@ -1,10 +1,10 @@
 class AssessmentQuestion < ActiveRecord::Base
   belongs_to :assessment_section, inverse_of: :assessment_questions
-  has_and_belongs_to_many :enabling_assessment_question_options,
-             class_name: 'AssessmentQuestionOption'
-  belongs_to :format, inverse_of: :assessment_questions
   belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
+  has_and_belongs_to_many :enabling_assessment_question_options,
+                          class_name: 'AssessmentQuestionOption'
   has_and_belongs_to_many :events, join_table: 'events_assessment_questions'
+  has_and_belongs_to_many :formats
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy, order: '\'index\''
   has_many :assessment_question_responses,
@@ -15,12 +15,11 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :assessment_section, presence: true
   validates :index, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  #validates :qid, presence: true TODO: re-enable
+  validates :qid, presence: true
   validates :question_type, presence: true,
             inclusion: { in: AssessmentQuestionType.all,
                          message: 'Must be a valid assessment question type.' }
-  validates_numericality_of :weight, greater_than_or_equal_to: 0,
-                            less_than_or_equal_to: 1, presence: true
+  validates_numericality_of :weight, greater_than_or_equal_to: 0, presence: true
 
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true
@@ -29,8 +28,6 @@ class AssessmentQuestion < ActiveRecord::Base
     case question_type
       when AssessmentQuestionType::RADIO
         'Radio buttons'
-      when AssessmentQuestionType::SELECT
-        'Pull-down menu'
       when AssessmentQuestionType::CHECKBOX
         'Checkboxes'
     end

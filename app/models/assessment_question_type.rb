@@ -1,11 +1,10 @@
 class AssessmentQuestionType
 
   RADIO = 0
-  SELECT = 1
-  CHECKBOX = 2
+  CHECKBOX = 1
 
   def self.all
-    (0..2)
+    (0..1)
   end
 
 end

@@ -49,22 +49,6 @@
                     </label>
                     <br>
                 <% end %>
-            <% when AssessmentQuestionType::SELECT %>
-                <% response = responses.first
-                   selected = response.assessment_question_option ?
-                           response.assessment_question_option.id :
-                           false
-                %>
-                <%= hidden_field_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_id]",
-                                     response.assessment_question.id %>
-                <label>
-                  <%= select_tag "resource[assessment_question_responses_attributes][#{response.id}][assessment_question_option_id]",
-                                 options_for_select(options.map { |op|
-                                   [op.name, op.id, { 'data-option-score' => op.value,
-                                                      'data-option-id' => op.id }] },
-                                                    selected: selected),
-                                 { include_blank: true } %>
-                </label>
             <% when AssessmentQuestionType::CHECKBOX %>
                 <% options.each do |option| %>
                     <% response = responses.first

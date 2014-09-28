@@ -1,25 +1,20 @@
 class Format < ActiveRecord::Base
-  has_many :assessment_questions, inverse_of: :format
   has_many :children, class_name: 'Format', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :format_ink_media_types, inverse_of: :format
   has_many :format_support_types, inverse_of: :format
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
+  has_and_belongs_to_many :assessment_questions
   has_and_belongs_to_many :events
   belongs_to :parent, class_name: 'Format', inverse_of: :children
 
   accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
 
-  validates :format_subtype, allow_blank: true,
-            inclusion: { in: FormatSubtype.all,
-                         message: 'Must be a valid format subtype.' }
-  validates :format_type, presence: true,
-            inclusion: { in: FormatType.all,
-                         message: 'Must be a valid format type.' }
+  validates :format_class, presence: true,
+            inclusion: { in: FormatClass.all,
+                         message: 'Must be a valid format class.' }
   validates :name, presence: true, length: { maximum: 255 }
-  validates :score, presence: true, numericality: {
-      greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
   validate :validates_temperature_ranges
 
@@ -47,16 +42,8 @@ class Format < ActiveRecord::Base
     format_ids = []
     collect_ancestor_ids(self, format_ids)
 
-    AssessmentQuestion.where('format_id IN (?)', format_ids)
-  end
-
-  def as_json(options = { })
-    super((options || { }).merge(
-              { :methods => [:format_subtype, :readable_format_subtype] }))
-  end
-
-  def readable_format_subtype
-    FormatSubtype.name_for_subtype(format_subtype)
+    AssessmentQuestion.joins(:formats).
+        where('assessment_questions_formats.format_id IN (?)', format_ids)
   end
 
 end

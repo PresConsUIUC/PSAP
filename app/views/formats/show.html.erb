@@ -34,12 +34,10 @@
 
   <div class="col-sm-4">
     <dl>
-      <dt>Type</dt>
-      <dd><%= FormatType.name_for_type @format.format_type %></dd>
-      <dt>Subtype</dt>
-      <dd><%= @format.format_subtype ? FormatSubtype.name_for_subtype(@format.format_subtype) : 'None' %></dd>
+      <dt>Class</dt>
+      <dd><%= FormatClass.name_for_class(@format.format_class) %></dd>
       <dt>Score</dt>
-      <dd><%= @format.score %> / 1</dd>
+      <dd><%= @format.score ? @format.score : 'None' %></dd>
       <dt>Temperature Range Scores</dt>
       <dd>
         <table class="table">
@@ -65,12 +63,51 @@
   </div>
 
   <div class="col-sm-8">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
       <li class="active">
-        <a href="#activity_tab" data-toggle="tab">Activity</a>
+        <a href="#resources-tab" data-toggle="tab">Resources</a>
+      </li>
+      <li>
+        <a href="#assessment-questions-tab" data-toggle="tab">Assessment Questions</a>
+      </li>
+      <li>
+        <a href="#activity-tab" data-toggle="tab">Activity</a>
       </li>
     </ul>
-    <%= render 'shared/events', events: @events %>
+
+    <div class="tab-content">
+      <div id="resources-tab" class="tab-pane active">
+        <% if @format.resources.any? %>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Institution</th>
+                <th>Complete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render partial: 'resource_tree_rows',
+                         locals: { resources: @format.resources.order(:name),
+                                   depth: 0 } if @format.resources.any? %>
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+
+      <div id="assessment-questions-tab" class="tab-pane">
+        <ul>
+          <% @format.assessment_questions.order(:index).each do |question| %>
+            <li><%= question.name %></li> <!-- TODO: improve display & show hierarchy -->
+          <% end %>
+        </ul>
+      </div>
+
+      <div id="activity-tab" class="tab-pane">
+        <%= render 'shared/events', events: @events %>
+      </div>
+
+    </div>
   </div>
 
 </div>

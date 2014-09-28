@@ -14,21 +14,12 @@
 </div>
 
 <div class="form-group">
-  <%= f.label :format_type %>
-  <%= f.select('format_type',
-               options_for_select(format_type_options,
-                                  selected: f.object.format_type),
+  <%= f.label :format_class %>
+  <%= f.select('format_class',
+               options_for_select(format_class_options,
+                                  selected: f.object.format_class),
                { include_blank: false },
-               { class: 'form-control format_type' }) %>
-</div>
-
-<div class="form-group">
-  <%= f.label :format_subtype %>
-  <%= f.select('format_subtype',
-               options_for_select(format_subtype_options,
-                                  selected: f.object.format_subtype),
-               { include_blank: true },
-               { class: 'form-control format_subtype' }) %>
+               { class: 'form-control format_class' }) %>
 </div>
 
 <div class="form-group">

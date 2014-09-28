@@ -81,10 +81,10 @@
     ?
   </button>
   <br>
-  <% FormatType.all.each do |type| %>
+  <% FormatClass.all.each do |clazz| %>
     <label class="radio-inline">
-      <input type="radio" name="format_type" class="format_type" value="<%= type %>">
-      <%= FormatType.name_for_type(type) %>
+      <input type="radio" name="format_class" class="format_class" value="<%= clazz %>">
+      <%= FormatClass.name_for_class(clazz) %>
     </label>
   <% end %>
   <!-- select menus will be appended here -->

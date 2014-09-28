@@ -51,17 +51,13 @@ class FormatsController < ApplicationController
         end
       }
       format.json { # dependent select menus in assessment form
-        render json: Format.where(format_type: params[:format_type_id]).
+        render json: Format.where(format_class: params[:format_class_id]).
             where(parent_id: params[:parent_id]).
             order(:name)
       }
       format.html { # /formats
-        if params[:format_type_id]
-          render status: :not_found, text: '404 Not Found'
-        else
-          @format_count = Format.all.length
-          @formats = Format.where('parent_id IS NULL').order(:name)
-        end
+        @format_count = Format.all.length
+        @formats = Format.where('parent_id IS NULL').order(:name)
       }
     end
   end
@@ -98,8 +94,7 @@ class FormatsController < ApplicationController
   private
 
   def format_params
-    params.require(:format).permit(:format_type, :format_subtype, :name,
-                                   :score, :parent_id,
+    params.require(:format).permit(:format_class, :name, :score, :parent_id,
                                    temperature_ranges_attributes: [:id,
                                                                    :min_temp_f,
                                                                    :max_temp_f,
