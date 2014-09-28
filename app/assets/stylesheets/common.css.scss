@@ -139,11 +139,13 @@ div table {
 /* top nav bar */
 
 nav.navbar {
-  background-color:rgba(0, 0, 0, 0.8);
+  background-color:rgba(0, 0, 0, 0.75);
 
   .navbar-left a, a.dropdown-toggle {
-      font-size:0.8em;
-      letter-spacing:1.2px;
+    font-family: Calibri, sans-serif;
+    font-size:0.9em;
+    letter-spacing:1.1px;
+    text-transform: uppercase;
   }
 
   li#help {
@@ -167,6 +169,9 @@ nav.navbar {
   }
 }
 
+.navbar-inverse .navbar-nav > li > a {
+  color: #c0c0c0;
+}
 
 /* header */
 
