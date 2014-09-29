@@ -60,6 +60,15 @@ body#new_resource, body#edit_resource {
     margin:1.5em 0em;
     padding:1em 0em;
   }
+  .depth-1 { padding-left:1.5em; }
+  .depth-2 { padding-left:3em; }
+  .depth-3 { padding-left:4.5em; }
+  .depth-4 { padding-left:6em; }
+  .depth-5 { padding-left:7.5em; }
+  .depth-6 { padding-left:9em; }
+  .depth-7 { padding-left:10.5em; }
+  .depth-8 { padding-left:12em; }
+  .depth-9 { padding-left:13.5em; }
 }
 
 body#show_resource div.assessment {

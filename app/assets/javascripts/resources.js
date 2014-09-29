@@ -100,7 +100,7 @@ var ResourceForm = {
     },
 
     clearAssessmentQuestions: function() {
-        $('div.assessment_question').remove();
+        $('.assessment_question').remove();
         ResourceForm.updateProgress();
     },
 
@@ -169,7 +169,10 @@ var ResourceForm = {
     },
 
     // Transforms an assessment question into HTML for the assessment form.
-    nodeForQuestion: function(object, question_index) {
+    nodeForQuestion: function(object, question_index, depth) {
+        if (!depth) {
+            depth = 0;
+        }
         var control = '';
 
         switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
@@ -209,10 +212,11 @@ var ResourceForm = {
                 break;
         }
 
-        return $.parseHTML('<div class="assessment_question" data-id="' +
-            object['id'] + '" data-weight="' + object['weight'] + '">' +
+        return $.parseHTML('<div class="assessment_question depth-' + depth +
+            '" data-id="' + object['id'] + '" data-depth="' + depth +
+            '" data-weight="' + object['weight'] + '">' +
                 '<hr>' +
-                '<div class="row depth-0">' +
+                '<div class="row">' +
                     '<div class="col-sm-11">' +
                         '<h3>' + object['name'] + '</h3>' +
                     '</div>' +
@@ -225,7 +229,7 @@ var ResourceForm = {
                         '</button>' +
                     '</div>' +
                 '</div>' +
-                '<div class="row depth-0">' +
+                '<div class="row">' +
                     '<div class="col-sm-12">' +
                         control +
                     '</div>' +
@@ -264,14 +268,17 @@ var ResourceForm = {
                                 $('div.assessment_question[data-id=' + object['id'] + ']');
                             var add = false;
                             $.each(object['enabling_assessment_question_options'], function (i, opt) {
-                                // TODO: add data-depth attribute
                                 if (opt['id'] == selected_option_id) {
                                     add = true;
                                 }
                             });
                             if (add && child_question_elem.length < 1) {
+                                var depth = 0;
+                                if (question_elem) {
+                                    depth = question_elem.data('depth') + 1;
+                                }
                                 ResourceForm.insertQuestionAfter(
-                                    ResourceForm.nodeForQuestion(object, i),
+                                    ResourceForm.nodeForQuestion(object, i, depth),
                                     question_elem)
                             } else {
                                 child_question_elem.remove();
