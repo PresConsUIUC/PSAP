@@ -13,7 +13,8 @@ class CreateUserCommand < Command
       raise 'Missing "User" role.' unless role
       @user.role = role
 
-      UserMailer.welcome_email(@user).deliver if @user.save! && @send_email
+      UserMailer.confirm_account_email(@user).deliver if
+          @user.save! and @send_email
     rescue ActiveRecord::RecordInvalid
       @user.events << Event.create(
           description: "Attempted to create a user account, but "\

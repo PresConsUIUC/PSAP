@@ -34,6 +34,20 @@ class UserMailerTest < ActionMailer::TestCase
                  email.html_part.body.raw_source
   end
 
+  test 'confirm_account_email' do
+    # Send the email, then test that it got queued
+    email = UserMailer.confirm_account_email(users(:normal_user)).deliver
+    assert !ActionMailer::Base.deliveries.empty?
+
+    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [users(:normal_user).email], email.to
+    assert_equal 'Welcome to PSAP!', email.subject
+    assert_equal read_fixture('confirm_account_email.txt').join,
+                 email.text_part.body.raw_source
+    assert_equal read_fixture('confirm_account_email.html').join,
+                 email.html_part.body.raw_source
+  end
+
   test 'password_reset_email' do
     # Send the email, then test that it got queued
     email = UserMailer.password_reset_email(users(:normal_user)).deliver
@@ -45,20 +59,6 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal read_fixture('password_reset_email.txt').join,
                  email.text_part.body.raw_source
     assert_equal read_fixture('password_reset_email.html').join,
-                 email.html_part.body.raw_source
-  end
-
-  test 'welcome_email' do
-    # Send the email, then test that it got queued
-    email = UserMailer.welcome_email(users(:normal_user)).deliver
-    assert !ActionMailer::Base.deliveries.empty?
-
-    assert_equal [Psap::Application.config.psap_email_address], email.from
-    assert_equal [users(:normal_user).email], email.to
-    assert_equal 'Welcome to PSAP!', email.subject
-    assert_equal read_fixture('welcome_email.txt').join,
-                 email.text_part.body.raw_source
-    assert_equal read_fixture('welcome_email.html').join,
                  email.html_part.body.raw_source
   end
 

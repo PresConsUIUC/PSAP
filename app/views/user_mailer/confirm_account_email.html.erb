@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+</head>
+<body>
+  <h1>Welcome to PSAP, <%= @user.first_name %>!</h1>
+  <p>You have successfully signed up for the Preservation Self-Assessment
+    Program. Your username is: <strong><%= @user.username %></strong>.</p>
+
+  <p>Before you can sign in, you will need to confirm your account. Follow the
+    link below:</p>
+
+  <p><a href="<%= @confirm_url %>"><%= @confirm_url %></a>.</p>
+</body>
+</html>

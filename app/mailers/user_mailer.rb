@@ -13,6 +13,16 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'Your PSAP feed key has been changed')
   end
 
+  def confirm_account_email(user)
+    @user = user
+    @confirm_url = url_for(controller: 'users',
+                           action: 'confirm',
+                           only_path: false,
+                           username: @user.username,
+                           code: @user.confirmation_code)
+    mail(to: @user.email, subject: 'Welcome to PSAP!')
+  end
+
   def password_reset_email(user)
     @user = user
     @password_reset_url = url_for(controller: 'password',
