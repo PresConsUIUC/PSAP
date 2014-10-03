@@ -12,7 +12,7 @@ class PasswordController < ApplicationController
       if @user
         @user.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
         @user.save!
-        UserMailer.welcome_email(@user).deliver unless Rails.env.test?
+        UserMailer.password_reset_email(@user).deliver unless Rails.env.test?
         flash[:notice] = 'An email has been sent containing a link to reset '\
                           'your password.'
       end
