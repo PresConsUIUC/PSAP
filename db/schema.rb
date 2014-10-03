@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925194848) do
+ActiveRecord::Schema.define(version: 20141003222224) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(version: 20140925194848) do
     t.boolean  "enabled",              default: false
     t.boolean  "show_contextual_help", default: true
     t.string   "feed_key",                             null: false
+    t.text     "about"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+</head>
+<body>
+
+<p>A user with the following information has successfully created a PSAP
+  account, but is not yet able to sign in:</p>
+
+<dl>
+  <dt>First Name</dt>
+  <dd><%= @user.first_name %></dd>
+  <dt>Last Name</dt>
+  <dd><%= @user.last_name %></dd>
+  <dt>Username</dt>
+  <dd><%= @user.username %></dd>
+  <dt>Email</dt>
+  <dd><%= @user.email %></dd>
+  <dt>About</dt>
+  <dd><%= @user.about %></dd>
+</dl>
+
+<ol>
+  <li>If this user looks legitimate, please
+    <%= link_to('sign in to the PSAP and enable the user', @user_url) %> at
+    your earliest convenience. The user will not be able to sign in until you
+    do this.</li>
+  <li>If you are not sure, please
+    <%= link_to('send the user an email', 'mailto:' + @user.email) %>
+    requesting more information.</li>
+  <li>If you are pretty sure that this is not a legitimate user, feel free to
+    <%= link_to('sign in to PSAP and delete the user', @user_url) %>.</li>
+</ol>
+
+</body>
+</html>

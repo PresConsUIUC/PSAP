@@ -4,13 +4,12 @@
   <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 </head>
 <body>
-  <h1>Welcome to PSAP, <%= @user.first_name %>!</h1>
-  <p>You have successfully signed up for the Preservation Self-Assessment
-    Program. Your username is: <strong><%= @user.username %></strong>.</p>
+<h1>Your PSAP account has been enabled!</h1>
+<p>Your account has been enabled, and you can now sign in to the PSAP. Follow
+  the link below:</p>
 
-  <p>Before you can sign in, you will need to confirm your account. Follow the
-    link below:</p>
+<p><a href="<%= @sign_in_url %>"><%= @sign_in_url %></a></p>
 
-  <p><a href="<%= @confirmation_url %>"><%= @confirmation_url %></a>.</p>
+<p>Thanks for your patience, and for your interest in the PSAP!</p>
 </body>
 </html>

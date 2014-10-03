@@ -1,10 +1,6 @@
-Welcome to PSAP, <%= @user.first_name %>!
-=====================================================================
+Your account has been enabled, and you can now sign in to the PSAP. Follow
+the link below:
 
-You have successfully signed up for the Preservation Self-Assessment
-Program. Your username is: <%= @user.username %>.
+<p><a href="<%= @sign_in_url %>"><%= @sign_in_url %></a></p>
 
-Before you can sign in, you will need to confirm your account. Follow
-this link:
-
-<%= @confirmation_url %>
+Thanks for your patience, and for your interest in the PSAP!

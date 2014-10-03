@@ -27,7 +27,10 @@ class UsersController < ApplicationController
     end
   end
 
-  # Mapped to GET /confirm
+  ##
+  # Responds to GET /confirm; linked to from the welcome email that users
+  # receive after creating their account.
+  #
   def confirm
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
@@ -38,7 +41,9 @@ class UsersController < ApplicationController
     rescue => e
       flash[:error] = "#{e}"
     else
-      flash[:success] = 'Your account has been confirmed. Please sign in.'
+      flash[:success] = 'Your account has been confirmed, but before you can '\
+      'sign in, it must be approved by an administrator. We\'ll get back to '\
+      'you as soon as we can. Thanks for your interest in the PSAP!'
     ensure
       redirect_to signin_url
     end
@@ -71,7 +76,9 @@ class UsersController < ApplicationController
   def edit
   end
 
+  ##
   # Responds to PATCH /users/:id/enable
+  #
   def enable
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
@@ -88,7 +95,9 @@ class UsersController < ApplicationController
     end
   end
 
+  ##
   # Responds to PATCH /users/:id/disable
+  #
   def disable
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
@@ -105,10 +114,12 @@ class UsersController < ApplicationController
     end
   end
 
+  ##
   # Responds to GET /users/:username/exists with either HTTP 200 or 404 for
   # the purpose of checking whether a user with the given username exists
   # from the registration form. (Can't do GET /users/:username because it
   # requires being signed in.)
+  #
   def exists
     render text: nil,
            status: User.find_by_username(params[:username]) ? 200: 404
@@ -127,7 +138,9 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  ##
   # Responds to PATCH /users/:id/reset_feed_key
+  #
   def reset_feed_key
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
