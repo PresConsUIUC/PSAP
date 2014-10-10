@@ -296,9 +296,10 @@ div#gravatar {
 /* footer */
 
 footer {
+  font-size:0.85em;
   margin-top: 45px;
-  margin-bottom:3em;
-  padding-top: 5px;
+  margin-bottom:2em;
+  padding-top: 1em;
   border-top: 1px solid #eaeaea;
   color: #999;
 }
@@ -309,6 +310,11 @@ footer a {
 
 footer a:hover {
   color: #222;
+}
+
+footer img {
+  float:left;
+  margin:0em 1em 0em 0em;
 }
 
 footer small {

@@ -1,7 +1,23 @@
 <footer class="footer">
-  <small>
-    PSAP <%= ApplicationHelper::VERSION %>
-    | <%= link_to 'About', about_path, class: 'modal_view',
+
+  <div class="row">
+    <div class="col-sm-8">
+      <%= link_to('http://www.library.illinois.edu/') do %>
+          <%= image_tag('logo-imark-gray-60.png', 'data-has-retina' => 'true') %>
+      <% end %>
+      Preservation Self-Assessment Program | Version <%= ApplicationHelper::VERSION %>
+      <br>
+      <%= link_to('University of Illinois at Urbana-Champaign', 'http://www.illinois.edu/') %>
+      <br>
+      <%= link_to 'About', about_path, class: 'modal_view',
                   data: { open: '/about' } %>
-  </small>
+    </div>
+
+    <div class="col-sm-4">
+      <%= link_to('http://www.imls.gov/', style: 'float: right') do %>
+          <%= image_tag('logo-imls-gray-60.png', 'data-has-retina' => 'true') %>
+      <% end %>
+    </div>
+  </div>
+
 </footer>
