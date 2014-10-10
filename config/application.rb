@@ -31,8 +31,10 @@ module Psap
       mail_config = YAML.load_file(mail_config_path)[Rails.env]
 
       config.action_mailer.default_options = { from: mail_config['from'] }
-      config.action_mailer.delivery_method = mail_config['delivery_method'].to_s
-      config.action_mailer.smtp_settings = {}
+      config.action_mailer.delivery_method = mail_config['delivery_method'].to_sym
+      config.action_mailer.smtp_settings = {
+          openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
+      }
       config.action_mailer.smtp_settings[:address] = mail_config['smtp_host'] if
           mail_config['smtp_host']
       config.action_mailer.smtp_settings[:port] = mail_config['smtp_port'] if

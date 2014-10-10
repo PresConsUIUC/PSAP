@@ -64,7 +64,6 @@ Psap::Application.routes.draw do
   match '/glossary', to: 'static#glossary', via: 'get'
   match '/help', to: 'static#help', via: 'get'
 
-  match '/confirm', to: 'users#confirm', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
 
@@ -122,6 +121,7 @@ Psap::Application.routes.draw do
   get '/users/register' => redirect('/register')
   resources :users, param: :username, path_names: { new: 'register' }
   match '/register', to: 'users#new', via: 'get'
+  match '/users/:username/confirm', to: 'users#confirm', via: 'get', as: 'confirm_user'
   match '/users/:username/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
   match '/users/:username/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
   match '/users/:username/exists', to: 'users#exists', via: 'get', as: 'user_exists'

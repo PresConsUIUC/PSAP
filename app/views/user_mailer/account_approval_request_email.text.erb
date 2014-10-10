@@ -5,7 +5,7 @@ First Name: <%= @user.first_name %>
 Last Name: <%= @user.last_name %>
 Username: <%= @user.username %>
 Email: <%= @user.email %>
-About: <%= word_wrap(@user.about) %>
+About: <%= @user.about ? word_wrap(@user.about) : '' %>
 
 1) If this user looks legitimate, please sign in to the PSAP and enable the
 user at your earliest convenience. The user will not be able to sign in until

@@ -19,8 +19,7 @@ class UsersController < ApplicationController
       flash[:error] = "#{e}"
       render 'new'
     else
-      flash[:success] = 'Thanks for registering for PSAP! Your account has '\
-      'been created, but you must confirm it before you can sign in. An email '\
+      flash[:success] = 'Thanks for registering for PSAP! An email '\
       'has been sent to the address you provided. Follow the link in the '\
       'email to confirm your account.'
       redirect_to root_url
