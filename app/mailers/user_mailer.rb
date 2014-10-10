@@ -60,7 +60,7 @@ class UserMailer < ActionMailer::Base
   def welcome_email(user)
     @user = user
     @sign_in_url = signin_url
-    mail(to: @user.email, subject: 'Welcome to PSAP!')
+    mail(to: @user.email, subject: 'Your PSAP account has been approved!')
   end
 
 end
