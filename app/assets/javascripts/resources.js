@@ -403,14 +403,13 @@ var ResourceForm = {
                     // a score of 1 - (sum of checked checkboxes).
                     var selected_radio = $(this).find('input[type="radio"]:checked');
                     if (selected_radio.length) {
-                        // and its score
                         var response_value = selected_radio.data('option-score');
                         if (response_value) {
                             question_scores.push(response_value);
                             var question_weight = parseFloat($(this).data('weight'));
                             question_weights.push(question_weight);
                         }
-                    } else { // get the checked checkboxes
+                    } else {
                         var checked_checkboxes = $(this).find(
                             'input[type="checkbox"]:checked');
                         if (checked_checkboxes.length > 0) {
