@@ -22,7 +22,7 @@ var ready = function() {
                 //observer.empty().append(prompt);
                 observer.empty();
                 if (observed.val()) {
-                    url = url_mask.replace(regexp, observed.val());
+                    var url = url_mask.replace(regexp, observed.val());
                     $.getJSON(url, function (data) {
                         $.each(data, function (i, object) {
                             observer.append($('<option>').attr('value',
