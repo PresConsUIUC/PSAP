@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003222224) do
+ActiveRecord::Schema.define(version: 20141013174045) do
 
   create_table "assessment_question_options", force: true do |t|
     t.integer  "index",                                          null: false
@@ -154,6 +154,32 @@ ActiveRecord::Schema.define(version: 20141003222224) do
   end
 
   add_index "extents", ["resource_id"], name: "index_extents_on_resource_id"
+
+  create_table "format_infos", force: true do |t|
+    t.integer  "format_class"
+    t.string   "format_category"
+    t.string   "name"
+    t.string   "anchor"
+    t.text     "images"
+    t.text     "image_captions"
+    t.text     "image_alts"
+    t.text     "synonyms"
+    t.text     "dates"
+    t.text     "common_sizes"
+    t.text     "description"
+    t.text     "composition"
+    t.text     "deterioration"
+    t.text     "risk_level"
+    t.text     "playback"
+    t.text     "background"
+    t.text     "storage_environment"
+    t.text     "storage_enclosure"
+    t.text     "storage_orientation"
+    t.text     "handling_care"
+    t.text     "cd_standard_specifications"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "format_ink_media_types", force: true do |t|
     t.string   "name"

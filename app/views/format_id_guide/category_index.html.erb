@@ -1,0 +1,99 @@
+<% provide(:body_id, 'format_id_guide') %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Format ID Guide', format_id_guide_path %>
+  </li>
+  <li class="active"><%= @category %></li>
+</ol>
+
+<h1><%= @category %></h1>
+
+<% @formats.each do |format| %>
+
+  <h2 id="<%= format.anchor %>"><%= format.name %></h2>
+
+  <% format.images.split(';').map{ |m| m.strip }.each do |image| %>
+    <%= image_tag(image, style: 'max-width:100px', alt: '') # TODO alt and caption
+    %>
+  <% end %>
+
+  <dl>
+    <% if format.synonyms %>
+      <dt>Synonyms</dt>
+      <dd>
+        <ul>
+          <% format.synonyms.split(';').each do |synonym| %>
+            <li><%= raw(synonym) %></li>
+          <% end %>
+        </ul>
+      </dd>
+    <% end %>
+
+    <% if format.dates %>
+      <dt>Dates</dt>
+      <dd><%= raw(format.dates) %></dd>
+    <% end %>
+
+    <% if format.common_sizes %>
+      <dt>Common Size(s)</dt>
+      <dd><%= raw(format.common_sizes) %></dd>
+    <% end %>
+
+    <% if format.description %>
+      <dt>Description</dt>
+      <dd><%= raw(format.description) %></dd>
+    <% end %>
+
+    <% if format.composition %>
+      <dt>Composition</dt>
+      <dd><%= raw(format.composition) %></dd>
+    <% end %>
+
+    <% if format.deterioration %>
+      <dt>Deterioration</dt>
+      <dd><%= raw(format.deterioration) %></dd>
+    <% end %>
+
+    <% if format.risk_level %>
+      <dt>Risk Level</dt>
+      <dd><%= raw(format.risk_level) %></dd>
+    <% end %>
+
+    <% if format.playback %>
+      <dt>Playback</dt>
+      <dd><%= raw(format.playback) %></dd>
+    <% end %>
+
+    <% if format.background %>
+      <dt>Background</dt>
+      <dd><%= raw(format.background) %></dd>
+    <% end %>
+
+    <% if format.storage_environment %>
+      <dt>Storage Environment</dt>
+      <dd><%= raw(format.storage_environment) %></dd>
+    <% end %>
+
+    <% if format.storage_enclosure %>
+      <dt>Storage Enclosure</dt>
+      <dd><%= raw(format.storage_enclosure) %></dd>
+    <% end %>
+
+    <% if format.storage_orientation %>
+      <dt>Storage Orientation</dt>
+      <dd><%= raw(format.storage_orientation) %></dd>
+    <% end %>
+
+    <% if format.handling_care %>
+      <dt>Handling/Care</dt>
+      <dd><%= raw(format.handling_care) %></dd>
+    <% end %>
+
+    <% if format.cd_standard_specifications %>
+      <dt>CD Standard Specifications</dt>
+      <dd><%= raw(format.cd_standard_specifications) %></dd>
+    <% end %>
+  </dl>
+
+<% end %>

@@ -15,6 +15,11 @@ module Psap
     config.autoload_paths += %W(#{config.root}/app/commands)
     config.autoload_paths += %W(#{config.root}/app/errors)
 
+    # Add image subfolders to the asset pipeline
+    Dir.glob("#{Rails.root}/app/assets/images/**/").each do |path|
+      config.assets.paths << path
+    end
+
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
