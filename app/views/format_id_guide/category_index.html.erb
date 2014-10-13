@@ -12,6 +12,8 @@
 
 <% @formats.each do |format| %>
 
+  <hr>
+
   <h2 id="<%= format.anchor %>"><%= format.name %></h2>
 
   <% format.images.split('||').map{ |m| m.strip }.each_with_index do |image, index| %>

@@ -14,6 +14,7 @@ var ready = function() {
 
         // http://fancyapps.com/fancybox/#examples
         $(".fancybox").fancybox({
+            parent: 'body', // required for turbolinks compatibility
             beforeShow : function() {
                 var alt = this.element.find('img').attr('alt');
                 this.inner.find('img').attr('alt', alt);
