@@ -10,6 +10,22 @@
 
 <h1><%= @category %></h1>
 
+<% info = nil
+case @category
+  when 'Optical Media'
+    info = 'This moving image and/or audio format type consists of a plastic disc encasing a dye or metal layer containing the encoded information. This format type is read by a laser.'
+end %>
+
+<% if info %>
+  <p><%= info %></p>
+<% end %>
+
+<ul class="toc">
+  <% @formats.each do |format| %>
+    <li><%= link_to format.name, "##{format.anchor}" %></li>
+  <% end %>
+</ul>
+
 <% @formats.each do |format| %>
 
   <hr>
@@ -22,7 +38,8 @@
        caption = format.image_captions.split('||').map{ |m| m.strip }[index]
     %>
     <%= link_to image_path(image), class: 'fancybox' do %>
-      <%= image_tag(image, style: 'max-width:100px', alt: alt, 'data-caption' => caption)
+      <%= image_tag(image, style: 'max-width:150px', class: 'img-thumbnail',
+                    alt: alt, 'data-caption' => caption)
       %>
     <% end %>
   <% end %>

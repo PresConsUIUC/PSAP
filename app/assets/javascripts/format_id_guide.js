@@ -28,6 +28,18 @@ var ready = function() {
                 }
             }
         });
+
+        // smooth scroll to anchor locations when clicking links in TOC
+        var $root = $('html, body');
+        $('a').click(function() {
+            var href = $.attr(this, 'href');
+            $root.animate({
+                scrollTop: $(href).offset().top - 60
+            }, 500, function () {
+                window.location.hash = href;
+            });
+            return false;
+        });
     }
 };
 
