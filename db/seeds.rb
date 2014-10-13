@@ -640,7 +640,7 @@ end
 
 # Formats in Format ID Guide
 xls = Roo::Spreadsheet.open('db/seed_data/formats.xlsx')
-sheet = xls.sheet('Optical Media')
+sheet = xls.sheet('Formats')
 sheet.each_with_index do |row, i|
   if i > 0 # skip header row
     FormatInfo.create!(

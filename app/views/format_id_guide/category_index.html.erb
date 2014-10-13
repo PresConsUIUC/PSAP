@@ -1,4 +1,5 @@
-<% provide(:body_id, 'format_id_guide') %>
+<% provide(:body_id, 'format_id_guide_categories') %>
+<% provide(:title, "Format ID Guide: #{@category}") %>
 
 <ol class="breadcrumb">
   <li>
@@ -13,10 +14,10 @@
 
   <h2 id="<%= format.anchor %>"><%= format.name %></h2>
 
-  <% format.images.split(';').map{ |m| m.strip }.each_with_index do |image, index| %>
+  <% format.images.split('||').map{ |m| m.strip }.each_with_index do |image, index| %>
     <%
-       alt = format.image_alts.split(';').map{ |m| m.strip }[index]
-       caption = format.image_captions.split(';').map{ |m| m.strip }[index]
+       alt = format.image_alts.split('||').map{ |m| m.strip }[index]
+       caption = format.image_captions.split('||').map{ |m| m.strip }[index]
     %>
     <%= link_to image_path(image), class: 'fancybox' do %>
       <%= image_tag(image, style: 'max-width:100px', alt: alt, 'data-caption' => caption)
@@ -27,13 +28,7 @@
   <dl>
     <% if format.synonyms %>
       <dt>Synonyms</dt>
-      <dd>
-        <ul>
-          <% format.synonyms.split(';').each do |synonym| %>
-            <li><%= raw(synonym) %></li>
-          <% end %>
-        </ul>
-      </dd>
+      <dd><%= raw(format.synonyms) %></dd>
     <% end %>
 
     <% if format.dates %>
