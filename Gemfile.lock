@@ -58,6 +58,8 @@ GEM
     daemon_controller (1.2.0)
     erubis (2.7.0)
     execjs (2.0.2)
+    fancybox2-rails (0.2.8)
+      railties (>= 3.1.0, < 5.0)
     hike (1.2.3)
     i18n (0.6.11)
     jbuilder (1.5.3)
@@ -172,6 +174,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rvm
   coffee-rails (~> 4.0.0)
+  fancybox2-rails
   jbuilder (~> 1.2)
   jquery-cookie-rails
   jquery-rails

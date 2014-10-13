@@ -13,9 +13,15 @@
 
   <h2 id="<%= format.anchor %>"><%= format.name %></h2>
 
-  <% format.images.split(';').map{ |m| m.strip }.each do |image| %>
-    <%= image_tag(image, style: 'max-width:100px', alt: '') # TODO alt and caption
+  <% format.images.split(';').map{ |m| m.strip }.each_with_index do |image, index| %>
+    <%
+       alt = format.image_alts.split(';').map{ |m| m.strip }[index]
+       caption = format.image_captions.split(';').map{ |m| m.strip }[index]
     %>
+    <%= link_to image_path(image), class: 'fancybox' do %>
+      <%= image_tag(image, style: 'max-width:100px', alt: alt, 'data-caption' => caption)
+      %>
+    <% end %>
   <% end %>
 
   <dl>
