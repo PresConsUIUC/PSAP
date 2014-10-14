@@ -256,7 +256,7 @@ var ResourceForm = {
             });
             if (data.length > 0) {
                 var onOptionChanged = function() {
-                    // check for dependent questions
+                    // check for dependent (child) questions
                     var selected_option_id = $(this).val();
                     var question_elem = $(this).closest('div.assessment_question');
                     var qid = question_elem.data('id');
@@ -272,14 +272,16 @@ var ResourceForm = {
                                     add = true;
                                 }
                             });
-                            if (add && child_question_elem.length < 1) {
-                                var depth = 0;
-                                if (question_elem) {
-                                    depth = question_elem.data('depth') + 1;
+                            if (add) {
+                                if (child_question_elem.length < 1) {
+                                    var depth = 0;
+                                    if (question_elem) {
+                                        depth = question_elem.data('depth') + 1;
+                                    }
+                                    ResourceForm.insertQuestionAfter(
+                                        ResourceForm.nodeForQuestion(object, i, depth),
+                                        question_elem)
                                 }
-                                ResourceForm.insertQuestionAfter(
-                                    ResourceForm.nodeForQuestion(object, i, depth),
-                                    question_elem)
                             } else {
                                 child_question_elem.remove();
                             }
@@ -441,8 +443,8 @@ var ResourceForm = {
             var location_score = 1; // TODO: this is a placeholder
             resource_score = 0.4 * format_score + 0.1 * location_score +
                 assessment_score;
-            console.log(format_score + ' format + ' + assessment_score + ' assessment + ' +
-                location_score + ' location (placeholder) = ' + resource_score + ' resource');
+            //console.log(format_score + ' format + ' + assessment_score + ' assessment + ' +
+            //    location_score + ' location (placeholder) = ' + resource_score + ' resource');
         }
         // TODO: include format vectors
         var score_bar = $('div.progress-bar.score');
