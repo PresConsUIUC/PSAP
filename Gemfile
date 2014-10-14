@@ -3,9 +3,6 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.3'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
@@ -43,6 +40,7 @@ gem 'local_time'
 gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
 gem 'fancybox2-rails'
+gem 'pg' # We are using PostgreSQL full-text search
 
 group :development do
   gem 'capistrano'
@@ -53,6 +51,5 @@ group :development do
 end
 
 group :production do
-  gem 'mysql2'
   gem 'passenger'
 end

@@ -114,23 +114,21 @@ class Resource < ActiveRecord::Base
   end
 
   def assessment_question_response_count
-    # SELECT assessment_question_responses.id
+    # SELECT assessment_question_options.assessment_question_id
     # FROM assessment_question_responses
     # LEFT JOIN assessment_question_options
     #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
     # WHERE assessment_question_responses.resource_id = ?
     #     AND assessment_question_responses.assessment_question_option_id IS NOT NULL
     # GROUP BY assessment_question_options.assessment_question_id
-    responses = AssessmentQuestionResponse.
-        select('assessment_question_responses.id').
+    AssessmentQuestionResponse.
+        select('assessment_question_options.assessment_question_id').
         joins('LEFT JOIN assessment_question_options '\
             'ON assessment_question_options.id '\
               '= assessment_question_responses.assessment_question_option_id').
         where('assessment_question_responses.resource_id = ?', self.id).
         where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
-        group('assessment_question_options.assessment_question_id')
-
-    responses.length
+        group('assessment_question_options.assessment_question_id').length
   end
 
   ##

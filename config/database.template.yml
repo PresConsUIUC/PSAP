@@ -1,33 +1,41 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: postgresql
+  database: psap_development
+  host: localhost
+  min_messages: warning
+  encoding: unicode
+  username: psap
+  password: psap
+  template: template1
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: postgresql
+  database: psap_test
+  host: localhost
+  port: 5432
+  min_messages: warning
+  encoding: unicode
+  username: psap
+  password: psap
+  template: template1
 
 staging:
-  adapter: mysql2
+  adapter: postgresql
   database: <%= begin IO.read("/home/psap/.db_staging_name") rescue "" end %>
-  encoding: utf8
+  min_messages: warning
+  encoding: unicode
   username: <%= begin IO.read("/home/psap/.db_staging_username") rescue "" end %>
   password: <%= begin IO.read("/home/psap/.db_staging_password") rescue "" end %>
+  template: template1
 
 production:
-  adapter: mysql2
+  adapter: postgresql
   database: <%= begin IO.read("/home/psap/.db_production_name") rescue "" end %>
-  encoding: utf8
+  min_messages: warning
+  encoding: unicode
   username: <%= begin IO.read("/home/psap/.db_production_username") rescue "" end %>
   password: <%= begin IO.read("/home/psap/.db_production_password") rescue "" end %>
+  template: template1

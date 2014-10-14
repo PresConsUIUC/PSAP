@@ -1,5 +1,6 @@
 class ChangeTypeOfAssessmentQuestionOptionValue < ActiveRecord::Migration
   def change
-    change_column :assessment_question_options, :value, :float
+    remove_column :assessment_question_options, :value
+    add_column :assessment_question_options, :value, :float
   end
 end

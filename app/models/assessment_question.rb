@@ -6,7 +6,7 @@ class AssessmentQuestion < ActiveRecord::Base
   has_and_belongs_to_many :events, join_table: 'events_assessment_questions'
   has_and_belongs_to_many :formats
   has_many :assessment_question_options, inverse_of: :assessment_question,
-           dependent: :destroy, order: '\'index\''
+           dependent: :destroy, order: 'index'
   has_many :assessment_question_responses,
            inverse_of: :assessment_question, dependent: :destroy
   has_many :children, class_name: 'AssessmentQuestion',
