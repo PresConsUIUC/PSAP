@@ -27,6 +27,7 @@ var ResourceForm = {
 
         $.getJSON(contents_url, function(data) {
             if (data.length == 0) {
+                ResourceForm.showSections();
                 newSelect.remove();
             } else {
                 newSelect.prev().attr('name', 'noop');
@@ -300,7 +301,6 @@ var ResourceForm = {
                 $('.assessment_question input, .assessment_question select').
                     on('change', onOptionChanged);
 
-                ResourceForm.showSections();
                 $('body').scrollspy({ target: '#sections' });
             }
             ResourceForm.updateProgress();
