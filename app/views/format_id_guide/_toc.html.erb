@@ -1,0 +1,458 @@
+<div class="row">
+  <!-- left column menu -->
+  <div class="col-sm-3">
+    <nav>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#all_formats">All Formats</a></li>
+        <li><a href="#audiovisual">Audiovisual</a></li>
+        <li><a href="#photo_image">Photo &amp; Image Material</a></li>
+        <li><a href="#book_paper">Book &amp; Paper</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="tab-content col-sm-9">
+
+    <div id="all_formats" class="tab-pane active">
+    </div>
+
+    <div id="audiovisual" class="tab-pane">
+      <h2>Audiovisual</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Film</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to '35mm', '' %></li>
+            <li><%= link_to '16mm', '' %></li>
+            <li><%= link_to '8mm', '' %></li>
+            <li><%= link_to 'Super 8mm', '' %></li>
+            <li><%= link_to '9.5mm', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Audiotape</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '2" Open Reel', '' %></li>
+                <li><%= link_to '1" Open Reel', '' %></li>
+                <li><%= link_to '½" Open Reel', '' %></li>
+                <li><%= link_to '¼" Open Reel', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette/ Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to 'Continuous Loop Cartridge (Cart)', '' %></li>
+                <li><%= link_to 'Compact Cassette', '' %></li>
+                <li><%= link_to 'Microcassette', '' %></li>
+                <li><%= link_to '8-Track', '' %></li>
+                <li><%= link_to 'Digital Audio Tape (DAT)', '' %></li>
+                <li><%= link_to 'Digital Compact Cassette (DCC)', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Videotape</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '2" Open Reel', '' %></li>
+                <li><%= link_to '1" Open Reel', '' %></li>
+                <li><%= link_to '½" Open Reel', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette / Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to 'U-matic / U-matic SP', '' %></li>
+                <li><%= link_to 'Betacam / BetacamSP', '' %></li>
+                <li><%= link_to 'Betamax', '' %></li>
+                <li><%= link_to 'D-2', '' %></li>
+                <li><%= link_to 'D-3', '' %></li>
+                <li><%= link_to 'Digital Betacam', '' %></li>
+                <li><%= link_to 'DVCAM', '' %></li>
+                <li><%= link_to 'DVCPRO', '' %></li>
+                <li><%= link_to 'MiniDV', '' %></li>
+                <li><%= link_to 'VHS', '' %></li>
+                <li><%= link_to 'Video8 / Hi8', '' %></li>
+                <li><%= link_to 'Other Digital Video Cassettes', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Phonograph Record</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Shellac Disc', '' %></li>
+            <li><%= link_to 'Lacquer Disc', '' %></li>
+            <li><%= link_to 'Aluminum Disc', '' %></li>
+            <li><%= link_to 'Vinyl Disc', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Optical Media</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'DVD', format_id_guide_category_path('optical-media', anchor: 'dvd') %></li>
+            <li><%= link_to 'Compact Disc (CD)', format_id_guide_category_path('optical-media', anchor: 'cd') %></li>
+            <li><%= link_to 'Laserdisc (LD)', format_id_guide_category_path('optical-media', anchor: 'laserdisc') %></li>
+            <li><%= link_to 'MiniDisc (MD)', format_id_guide_category_path('optical-media', anchor: 'minidisc') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Grooved Cylinder</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Wax Cylinder', '' %></li>
+            <li><%= link_to 'Plastic Cylinder', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Wire Recording</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Wire Audio', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Other Media Types</h3>
+        </div>
+        <div class="panel-body">
+        </div>
+      </div>
+
+    </div> <!-- #audiovisual -->
+
+    <div id="photo_image" class="tab-pane">
+      <h2>Photographic &amp; Image Material</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Photographic Print</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Monochrome Print</h4>
+              <ul>
+                <li><%= link_to 'Salt Print', '' %></li>
+                <li><%= link_to 'Cyanotype', '' %></li>
+                <li><%= link_to 'Platinum/Palladium Print', '' %></li>
+                <li><%= link_to 'Albumen Print', '' %></li>
+                <li><%= link_to 'Carbon Print', '' %></li>
+                <li><%= link_to 'Glossy Collodion Print', '' %></li>
+                <li><%= link_to 'Matte Collodion Print', '' %></li>
+                <li><%= link_to 'Gelatin POP Print', '' %></li>
+                <li><%= link_to 'Silver Gelatin Print (DOP)', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Color Print</h4>
+              <ul>
+                <li><%= link_to 'Chromogenic Color Print', '' %></li>
+                <li><%= link_to 'Silver Dye-Bleach Print', '' %></li>
+                <li><%= link_to 'Dye Transfer Print', '' %></li>
+                <li><%= link_to 'Color Carbro Print', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Instant Photo</h4>
+              <ul>
+                <li><%= link_to 'Instant Photo, B&W', '' %></li>
+                <li><%= link_to 'Instant Photo, Color', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Cased/Direct Photograph</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Daguerreotype', '' %></li>
+            <li><%= link_to 'Ambrotype', '' %></li>
+            <li><%= link_to 'Tintype', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Negative</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Negative</h4>
+              <ul>
+                <li><%= link_to 'Albumen Glass Negative', '' %></li>
+                <li><%= link_to 'Collodion Glass Negative', '' %></li>
+                <li><%= link_to 'Gelatin Glass Negative', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Negative</h4>
+              <ul>
+                <li><%= link_to 'Silver Gelatin Negative', '' %></li>
+                <li><%= link_to 'Chromogenic Color Negative', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Slide/Transparency</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Slide</h4>
+              <ul>
+                <li><%= link_to 'Glass Slide, B&W', '' %></li>
+                <li><%= link_to 'Autochrome', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Slide</h4>
+              <ul>
+                <li><%= link_to 'B&W Film Slide', '' %></li>
+                <li><%= link_to 'Color Film Slide', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Photomechanical Print</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Letterpress Halftone', '' %></li>
+            <li><%= link_to 'Offset Lithography', '' %></li>
+            <li><%= link_to 'Gravure', '' %></li>
+            <li><%= link_to 'Collotype', '' %></li>
+            <li><%= link_to 'Woodburytype', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Digital Print</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Inkjet Print', '' %></li>
+            <li><%= link_to 'Laser Print', '' %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Microform</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Plastic Film</h4>
+              <ul>
+                <li><%= link_to 'Microfilm', '' %></li>
+                <li><%= link_to 'Microfiche', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Paper</h4>
+              <ul>
+                <li><%= link_to 'Microcard', '' %></li>
+                <li><%= link_to 'Microprint', '' %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Mixed</h4>
+              <ul>
+                <li><%= link_to 'Aperture Card', '' %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- #photo_image -->
+
+    <div id="book_paper" class="tab-pane">
+      <h2>Book &amp; Paper</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Paper &mdash; Unbound</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Paper Types</h4>
+              <ul>
+                <li><%= link_to 'Newsprint', ''%></li>
+                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', ''%></li>
+                <li><%= link_to 'Coated Paper', ''%></li>
+                <li><%= link_to 'Proprietary Paper', ''%></li>
+                <li><%= link_to 'Tracing/Transparent Paper', ''%></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Ink and Other Media</h4>
+              <ul>
+                <li><%= link_to 'Carbon Black Ink', ''%></li>
+                <li><%= link_to 'Iron Gall Ink', ''%></li>
+                <li><%= link_to 'Typewriter Ribbon Ink', ''%></li>
+                <li><%= link_to 'Pigment-Based Ink', ''%></li>
+                <li><%= link_to 'Dye-Based Ink', ''%></li>
+                <li><%= link_to 'Felt-Tip Pen/Marker', ''%></li>
+                <li><%= link_to 'Ball-Point Pen', ''%></li>
+                <li><%= link_to 'Graphite', ''%></li>
+                <li><%= link_to 'Copying Pencil', ''%></li>
+                <li><%= link_to 'Wax-Based Pencil/Crayon', ''%></li>
+                <li><%= link_to 'Colored Pencils', ''%></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Architectural Drawing Reproduction</h4>
+              <ul>
+                <li><%= link_to 'Aniline Print', ''%></li>
+                <li><%= link_to 'Ferro-Gallic Print', ''%></li>
+                <li><%= link_to 'Blueprint', ''%></li>
+                <li><%= link_to 'VanDyke Print', ''%></li>
+                <li><%= link_to 'Photostat', ''%></li>
+                <li><%= link_to 'Wash-Off Print', ''%></li>
+                <li><%= link_to 'Diazo Print', ''%></li>
+                <li><%= link_to 'Hectograph', ''%></li>
+                <li><%= link_to 'Gel-Lithograph', ''%></li>
+                <li><%= link_to 'Electrostatic Print', ''%></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Office Copy/Print</h4>
+              <ul>
+                <li><%= link_to 'Carbon Copy', ''%></li>
+                <li><%= link_to 'Stencil Copy', ''%></li>
+                <li><%= link_to 'Impact Print', ''%></li>
+                <li><%= link_to 'Lithograph (Office Litho)', ''%></li>
+                <li><%= link_to 'Typography', ''%></li>
+                <li><%= link_to 'Hectograph', ''%></li>
+                <li><%= link_to 'Spirit Duplicate', ''%></li>
+                <li><%= link_to 'Diazo Print', ''%></li>
+                <li><%= link_to 'Photostat', ''%></li>
+                <li><%= link_to 'Diffusion Transfer', ''%></li>
+                <li><%= link_to 'Dual Spectrum', ''%></li>
+                <li><%= link_to 'Electrostatic/Xerox Copy', ''%></li>
+                <li><%= link_to 'Color Photocopy', ''%></li>
+                <li><%= link_to 'Laser Print', ''%></li>
+                <li><%= link_to 'Carbonless Copy (NCR)', ''%></li>
+                <li><%= link_to 'Copybook / Roller Copy', ''%></li>
+                <li><%= link_to 'Thermal Print / Thermofax', ''%></li>
+                <li><%= link_to 'Electrofax', ''%></li>
+                <li><%= link_to 'Inkjet Print', ''%></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Paper &mdash; Book/Bound</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Paper Types</h4>
+              <ul>
+                <li><%= link_to 'Newsprint', ''%></li>
+                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', ''%></li>
+                <li><%= link_to 'Coated Paper', ''%></li>
+                <li><%= link_to 'Proprietary Paper', ''%></li>
+                <li><%= link_to 'Tracing/Transparent Paper', ''%></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cover and Binding Materials</h4>
+              <ul>
+                <li><%= link_to 'Leather (sheep, goat, calf)', ''%></li>
+                <li><%= link_to 'Cloth (starch-filled, pyroxylin-treated, acrylic-coated)', ''%></li>
+                <li><%= link_to 'Paper', ''%></li>
+                <li><%= link_to 'Tawed Skin', ''%></li>
+                <li><%= link_to 'Parchment (vellum, etc.)', ''%></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Board Materials</h4>
+              <ul>
+                <li><%= link_to 'Paper Board', ''%></li>
+                <li><%= link_to 'Wood Board', ''%></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Binding Types</h4>
+              <ul>
+                <li><%= link_to 'Sewn Bindings (through-the-fold, oversewn, stab)', ''%></li>
+                <li><%= link_to 'Adhesive Bindings ("perfect" binding, double fan adhesive)', ''%></li>
+                <li><%= link_to 'Other Bindings (punch-and-bind, stapled, accordion)', ''%></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- #book_paper -->
+
+  </div> <!-- .tab-content -->
+</div>

@@ -1,0 +1,12 @@
+<% if @results.any? %>
+  <table class="table">
+    <tbody>
+      <% @results.each do |format| %>
+        <tr>
+          <td><%= raw(format.name) %></td>
+          <td><%= raw(format.description) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

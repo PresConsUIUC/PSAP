@@ -1,5 +1,6 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
+        // Make "All Formats" tab show all tabs
         var all_formats_link = $('a[href="#all_formats"]');
         var showAllSections = function() {
             $('div.tab-content div').addClass('active');
@@ -8,6 +9,23 @@ var ready = function() {
             showAllSections();
         }
         all_formats_link.on('click', showAllSections);
+
+        // enable search box
+        // TODO: write this
+        $('.entity_search input').on('keyup', function() {
+            if ($(this).val().length > 0) {
+                $('#toc').fadeOut();
+                $('#results').fadeIn();
+            } else {
+                $('#toc').fadeIn();
+                $('#results').fadeOut();
+            }
+        });
+        /*
+        if ($('div#results tr').length > 0) {
+            $('#toc').hide();
+            $('div#results').show();
+        }*/
 
     } else if ($('body#format_id_guide_categories').length) {
         $('table').addClass('table').addClass('table-striped');
