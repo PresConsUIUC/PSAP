@@ -25,34 +25,7 @@ var ready = function() {
     // Pagination links
     $('.pagination a').attr('data-remote', 'true');
 
-    // enable bootstrap popovers
-    $('button[data-toggle="popover"]').popover({ html: true });
-    // close popovers on outside clicks
-    $('body').on('click', function(e) {
-        $('[data-toggle=popover]').each(function () {
-            // hide any open popovers when the anywhere else in the body is clicked
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0
-                && $('.popover').has(e.target).length === 0) {
-                $(this).popover('hide');
-            }
-        });
-    });
-
-    // open & close popovers on hover-in & out
-    var should_open = true;
-    $('label').on('mouseover', function() {
-        should_open = true;
-        var label = $(this);
-        setTimeout(function() {
-            if (should_open) {
-                label.next('button[data-toggle="popover"]').popover('show');
-            }
-        }, 1000);
-    });
-    $('label').on('mouseout', function() {
-        should_open = false;
-        $(this).next('button[data-toggle="popover"]').popover('hide');
-    });
+    Popover.refresh();
 
     // Entity live-search forms
     $('.entity_search').submit(function() {
@@ -277,6 +250,44 @@ var Form = {
                 failValidation(elem);
             }
         }
+    }
+
+};
+
+var Popover = {
+
+    closeAll: function() {
+        $('[data-toggle="popover"]').popover('hide');
+    },
+
+    refresh: function() {
+        $('button[data-toggle="popover"]').popover({ html: true });
+        // close popovers on outside clicks
+        $('body').on('click', function(e) {
+            $('[data-toggle=popover]').each(function () {
+                // hide any open popovers when anywhere else in the body is clicked
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0
+                    && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
+        // open & close popovers on hover-in & out
+        var should_open = true;
+        $('label').on('mouseover', function() {
+            should_open = true;
+            var label = $(this);
+            setTimeout(function() {
+                if (should_open) {
+                    label.next('[data-toggle="popover"]').popover('show');
+                }
+            }, 1000);
+        });
+        $('label').on('mouseout', function() {
+            should_open = false;
+            $(this).next('[data-toggle="popover"]').popover('hide');
+        });
     }
 
 };

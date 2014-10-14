@@ -100,6 +100,7 @@ var ResourceForm = {
     },
 
     clearAssessmentQuestions: function() {
+        Popover.closeAll();
         $('.assessment_question').remove();
         ResourceForm.updateProgress();
     },
@@ -162,10 +163,12 @@ var ResourceForm = {
         $(questionNode).hide();
         afterNode.after(questionNode);
         $(questionNode).fadeIn();
+        Popover.refresh();
     },
 
     insertQuestionIn: function(questionNode, parentNode) {
         parentNode.append(questionNode);
+        Popover.refresh();
     },
 
     // Transforms an assessment question into HTML for the assessment form.
