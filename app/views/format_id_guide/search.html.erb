@@ -13,12 +13,21 @@
     <h1>Results for "<%= @query %>"</h1>
   </div>
   <div class="col-sm-3">
-    <%= form_tag format_id_guide_search_path, method: 'get',
-                 class: 'entity_search form-inline',
-                 style: 'float:right; max-width:100%' do %>
-      <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                           class: 'form-control' %>
-    <% end %>
+    <form method="get" action=""
+          class="form-inline entity_search" style="float:right; max-width:100%">
+      <%= search_field_tag :q, params[:q], class: 'form-control' %>
+    </form>
+    <!--
+    <form method="get" action=""
+          class="form-inline" style="float:right; max-width:100%">
+      <div class="input-group">
+        <%= search_field_tag :q, params[:q], class: 'form-control' %>
+        <span class="input-group-btn">
+          <input type="submit" value="Search" class="btn btn-default">
+        </span>
+      </div>
+    </form>
+    -->
   </div>
 </div>
 
