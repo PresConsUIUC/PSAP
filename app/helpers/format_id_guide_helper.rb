@@ -18,7 +18,8 @@ module FormatIdGuideHelper
 
     # process images
     doc.css('img').each do |image|
-      image['src'] = image_path(File.basename(image['src']))
+      image['src'] = image_path(
+          File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
     end
 
     raw(doc.to_html)

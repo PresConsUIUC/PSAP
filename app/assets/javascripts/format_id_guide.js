@@ -11,7 +11,11 @@ var ready = function() {
         all_formats_link.on('click', showAllSections);
 
     } else if ($('body#format_id_guide_categories').length) {
+        // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
+        $('div#page_content img').each(function() {
+            $(this).wrap('<a class="fancybox" href="' + $(this).attr('src') + '"></a>');
+        });
 
         // http://fancyapps.com/fancybox/#examples
         $(".fancybox").fancybox({
@@ -20,7 +24,7 @@ var ready = function() {
                 var alt = this.element.find('img').attr('alt');
                 this.inner.find('img').attr('alt', alt);
 
-                var caption = this.element.find('img').data('caption');
+                var caption = this.element.next('figcaption').html();
                 this.title = caption;
             },
             helpers : {

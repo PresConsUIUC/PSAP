@@ -1,7 +1,3 @@
-require 'nokogiri'
-require 'roo'
-require 'spreadsheet'
-
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
@@ -497,6 +493,8 @@ languages = [
     Language.create(english_name: 'Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki', native_name: 'zaza; dimili; dimli; kirdki; kirmanjki; zazaki', iso639_2_code: 'zza')
 ]
 
+puts 'Seeding formats...'
+
 xls = Roo::Spreadsheet.open('db/seed_data/assessment_questions.xlsx')
 
 # Formats
@@ -549,6 +547,7 @@ xls.sheet('Support Scores').each_with_index do |row, i|
 end
 
 # Assessments
+puts 'Seeding assessments...'
 assessments = [
     Assessment.create!(name: 'Resource Assessment', key: 'resource'),
     Assessment.create!(name: 'Location Assessment', key: 'location'),
@@ -580,8 +579,10 @@ command = CreateAssessmentSectionCommand.new(
       assessment: assessments[0] }, nil, '127.0.0.1')
 command.execute
 sections[:condition] = command.object
-
+=begin
 # Assessment questions
+puts 'Seeding assessment questions...'
+
 aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
 #aq_sheets = %w(Resource-Paper-Bound)
 aq_sheets.each do |sheet|
@@ -638,8 +639,9 @@ aq_sheets.each do |sheet|
     end
   end
 end
-
-# Format ID Guide
+=end
+# Format ID Guide HTML pages
+puts 'Ingesting Format ID Guide HTML pages...'
 Dir.glob('db/seed_data/format_id_guide/**/*.html').each do |file|
   File.open(file) do |contents|
     doc = Nokogiri::HTML(contents)
@@ -651,6 +653,20 @@ Dir.glob('db/seed_data/format_id_guide/**/*.html').each do |file|
                        searchable_html: FormatInfo::searchable_html(html))
   end
 end
+
+# Format ID Guide images
+puts 'Copying Format ID Guide images...'
+fidg_images_path = 'app/assets/images/format_id_guide'
+FileUtils.rm_rf(fidg_images_path)
+FileUtils.mkdir_p(fidg_images_path)
+Dir.glob('db/seed_data/format_id_guide/**/*.jpg').each do |file|
+  dest_path = fidg_images_path + '/' +
+      File.basename(file).gsub(' ', '_').gsub('%20', '_')
+  FileUtils.cp(file, dest_path)
+  File.chmod(0644, dest_path)
+end
+
+puts 'Creating the admin user...'
 
 # Admin role
 admin_role = Role.create!(name: 'Administrator', is_admin: true)
@@ -673,6 +689,8 @@ admin_user.save!
 case Rails.env
 
   when 'development'
+    puts 'Seeding DEVELOPMENT data...'
+
     # Institutions
     institution_commands = [
         CreateInstitutionCommand.new( # TODO: add this in production
@@ -1063,6 +1081,6 @@ case Rails.env
                     created_at: Time.mktime(2012, 12, 12))
     end
 
-  when 'production'
-
 end
+
+puts 'Done'

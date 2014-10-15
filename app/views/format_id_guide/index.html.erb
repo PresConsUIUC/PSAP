@@ -41,7 +41,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Film</h3>
+          <h3 class="panel-title"><%= link_to 'Film', format_id_guide_category_path('film') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -56,7 +56,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Audiotape</h3>
+          <h3 class="panel-title"><%= link_to 'Audiotape', format_id_guide_category_path('audiotape') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -86,7 +86,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Videotape</h3>
+          <h3 class="panel-title"><%= link_to 'Videotape', format_id_guide_category_path('videotape') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -121,7 +121,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Phonograph Record</h3>
+          <h3 class="panel-title"><%= link_to 'Phonograph Record', format_id_guide_category_path('phonodisc') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -135,21 +135,21 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Optical Media</h3>
+          <h3 class="panel-title"><%= link_to 'Optical Media', format_id_guide_category_path('opticalmedia') %></h3>
         </div>
         <div class="panel-body">
           <ul>
-            <li><%= link_to 'DVD', format_id_guide_category_path('optical-media', anchor: 'dvd') %></li>
-            <li><%= link_to 'Compact Disc (CD)', format_id_guide_category_path('optical-media', anchor: 'cd') %></li>
-            <li><%= link_to 'Laserdisc (LD)', format_id_guide_category_path('optical-media', anchor: 'laserdisc') %></li>
-            <li><%= link_to 'MiniDisc (MD)', format_id_guide_category_path('optical-media', anchor: 'minidisc') %></li>
+            <li><%= link_to 'DVD', format_id_guide_category_path('opticalmedia', anchor: 'dvd') %></li>
+            <li><%= link_to 'Compact Disc (CD)', format_id_guide_category_path('opticalmedia', anchor: 'cd') %></li>
+            <li><%= link_to 'Laserdisc (LD)', format_id_guide_category_path('opticalmedia', anchor: 'laserdisc') %></li>
+            <li><%= link_to 'MiniDisc (MD)', format_id_guide_category_path('opticalmedia', anchor: 'minidisc') %></li>
           </ul>
         </div>
       </div>
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Grooved Cylinder</h3>
+          <h3 class="panel-title"><%= link_to 'Grooved Cylinder', format_id_guide_category_path('cylinder') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -161,7 +161,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Wire Recording</h3>
+          <h3 class="panel-title"><%= link_to 'Wire Recording', format_id_guide_category_path('wire') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -172,7 +172,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Other Media Types</h3>
+          <h3 class="panel-title"><%= link_to 'Other Media Types', format_id_guide_category_path('TODO:FIX') %></h3>
         </div>
         <div class="panel-body">
           <!-- TODO: keep this? -->
@@ -186,7 +186,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Photographic Print</h3>
+          <h3 class="panel-title"><%= link_to 'Photographic Print', format_id_guide_category_path('photoprint') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -226,7 +226,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Cased/Direct Photograph</h3>
+          <h3 class="panel-title"><%= link_to 'Cased/Direct Photograph', format_id_guide_category_path('directimage') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -239,7 +239,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Negative</h3>
+          <h3 class="panel-title"><%= link_to 'Negative', format_id_guide_category_path('negative') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -264,7 +264,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Slide/Transparency</h3>
+          <h3 class="panel-title"><%= link_to 'Slide/Transparency', format_id_guide_category_path('slide') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -288,7 +288,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Photomechanical Print</h3>
+          <h3 class="panel-title"><%= link_to 'Photomechanical Print', format_id_guide_category_path('photomechanical') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -303,7 +303,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Digital Print</h3>
+          <h3 class="panel-title"><%= link_to 'Digital Print', format_id_guide_category_path('digitalprint') %></h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -315,7 +315,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Microform</h3>
+          <h3 class="panel-title"><%= link_to 'Microform', format_id_guide_category_path('microform') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -350,7 +350,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Paper &mdash; Unbound</h3>
+          <h3 class="panel-title"><%= link_to raw('Paper &mdash Unbound'), format_id_guide_category_path('paper') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -428,18 +428,19 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Paper &mdash; Book/Bound</h3>
+          <h3 class="panel-title"><%= link_to 'Paper', format_id_guide_category_path('paper') %> &mdash;
+            <%= link_to 'Book/Bound', format_id_guide_category_path('bookbound') %></h3>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
               <h4>Paper Types</h4>
               <ul>
-                <li><%= link_to 'Newsprint', ''%></li>
-                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', ''%></li>
-                <li><%= link_to 'Coated Paper', ''%></li>
-                <li><%= link_to 'Proprietary Paper', ''%></li>
-                <li><%= link_to 'Tracing/Transparent Paper', ''%></li>
+                <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
+                <li><%= link_to 'Acid-Free Paper', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
+                <li><%= link_to 'Coated Paper', format_id_guide_category_path('paper', anchor: 'coatedpaper') %></li>
+                <li><%= link_to 'Proprietary Paper', format_id_guide_category_path('paper', anchor: 'proprietarypaper') %></li>
+                <li><%= link_to 'Tracing/Transparent Paper', format_id_guide_category_path('paper', anchor: 'tracingpaper') %></li>
               </ul>
             </div>
             <div class="col-sm-6">

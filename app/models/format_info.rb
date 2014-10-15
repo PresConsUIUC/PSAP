@@ -8,6 +8,8 @@ class FormatInfo < ActiveRecord::Base
   # Requires PostgreSQL
   #
   def self.full_text_search(query, min_words = 50, max_words = 51, max_fragments = 3)
+    # There is no limit/offset because there are not enough potential results
+    # to warrant it.
     sql = "SELECT id, "\
       "ts_headline(searchable_html, keywords, "\
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\

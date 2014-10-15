@@ -4,14 +4,20 @@ body#format_id_guide {
   }
 }
 body#format_id_guide_categories {
-  img {
-    max-width:100%;
+  figure {
+    display:block;
+    margin:3em auto;
+    max-width:50%;
+    figcaption {
+      text-align:center;
+    }
   }
   .fancybox-title a {
     color: #d0e0ff;
   }
-  hr {
-    margin-top:3em;
+  img {
+    margin-bottom:1em;
+    max-width:100%;
   }
   ul.toc {
     margin-left:2em;
@@ -20,6 +26,12 @@ body#format_id_guide_categories {
   }
   .img-thumbnail {
     margin:0px 5px 10px 5px;
+  }
+  table {
+    margin:1em 0em 1em 0em;
+  }
+  dd {
+    margin:0px 0px 1em 0px;
   }
 }
 
