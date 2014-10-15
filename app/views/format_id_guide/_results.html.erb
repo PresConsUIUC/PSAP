@@ -1,10 +1,10 @@
 <% if @results.any? %>
   <table class="table">
     <tbody>
-      <% @results.each do |format| %>
+      <% @results.each do |category| %>
         <tr>
-          <td><%= raw(format.name) %></td>
-          <td><%= raw(format.description) %></td>
+          <td><%= link_to category.name, format_id_guide_category_path(category) %></td>
+          <td><%= highlight_matches(category.html, @query) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -40,7 +40,8 @@ gem 'local_time'
 gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
 gem 'fancybox2-rails'
-gem 'pg' # We are using PostgreSQL full-text search
+gem 'pg'
+gem 'textacular', '~> 3.0'
 
 group :development do
   gem 'capistrano'

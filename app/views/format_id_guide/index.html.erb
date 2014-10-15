@@ -6,15 +6,15 @@
     <h1>Format ID Guide</h1>
   </div>
   <div class="col-sm-3">
-    <%= form_tag format_id_guide_search_path, method: 'get', class: 'form-inline',
-                 style: 'float:right; max-width:100%' do %>
+    <form method="get" action="<%= format_id_guide_search_path %>"
+          class="form-inline" style="float:right; max-width:100%">
       <div class="input-group">
         <%= search_field_tag :q, params[:q], class: 'form-control' %>
         <span class="input-group-btn">
           <%= submit_tag('Search', class: 'btn btn-default') %>
         </span>
       </div>
-    <% end %>
+    </form>
   </div>
 </div>
 

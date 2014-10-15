@@ -7,14 +7,14 @@ class FormatIdGuideController < ApplicationController
   end
 
   ##
-  # Responds to /format-id-guide/search?q=...
+  # Responds to GET /format-id-guide/search?q=...
   #
   def search
     @results = []
     if params[:q] and params[:q].length > 0
-      @results = FormatInfo.where('description LIKE ?', "%#{params[:q]}%"). # TODO: use postgresql full-text search
-          paginate(page: params[:page], per_page: 20)
+      @results = FormatInfo.basic_search(html: params[:q])
     end
+    @query = params[:q].truncate(50)
   end
 
   ##

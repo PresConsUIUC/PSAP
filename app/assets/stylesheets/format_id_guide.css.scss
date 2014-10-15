@@ -22,3 +22,10 @@ body#format_id_guide_categories {
     margin:0px 5px 10px 5px;
   }
 }
+
+body#format_id_guide_results {
+  mark {
+    background-color:yellow;
+    font-weight:bold;
+  }
+}
