@@ -12,7 +12,7 @@ class FormatIdGuideController < ApplicationController
   def search
     @results = []
     if params[:q] and params[:q].length > 0
-      @results = FormatInfo.basic_search(html: params[:q])
+      @results = FormatInfo.full_text_search(params[:q])
     end
     @query = params[:q].truncate(50)
   end

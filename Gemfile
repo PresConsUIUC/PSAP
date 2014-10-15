@@ -41,7 +41,6 @@ gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
 gem 'fancybox2-rails'
 gem 'pg'
-gem 'textacular', '~> 3.0'
 
 group :development do
   gem 'capistrano'

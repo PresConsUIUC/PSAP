@@ -28,4 +28,9 @@ body#format_id_guide_results {
     background-color:yellow;
     font-weight:bold;
   }
+  td:first-child {
+    font-size:1.5em;
+    min-width:200px;
+    vertical-align: middle;
+  }
 }
