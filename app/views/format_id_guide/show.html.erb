@@ -1,0 +1,11 @@
+<% provide(:body_id, 'format_id_guide_categories') %>
+<% provide(:title, @page.name) %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Format ID Guide', format_id_guide_path %>
+  </li>
+  <li class="active"><%= @page.name %></li>
+</ol>
+
+<%= raw(@page.html) %>

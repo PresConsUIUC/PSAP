@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014183343) do
+ActiveRecord::Schema.define(version: 20141015020716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,26 +162,9 @@ ActiveRecord::Schema.define(version: 20141014183343) do
     t.integer  "format_class"
     t.string   "format_category"
     t.string   "name"
-    t.string   "anchor"
-    t.text     "images"
-    t.text     "image_captions"
-    t.text     "image_alts"
-    t.text     "synonyms"
-    t.text     "dates"
-    t.text     "common_sizes"
-    t.text     "description"
-    t.text     "composition"
-    t.text     "deterioration"
-    t.text     "risk_level"
-    t.text     "playback"
-    t.text     "background"
-    t.text     "storage_environment"
-    t.text     "storage_enclosure"
-    t.text     "storage_orientation"
-    t.text     "handling_care"
-    t.text     "cd_standard_specifications"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "html"
   end
 
   create_table "format_ink_media_types", force: true do |t|

@@ -1,3 +1,4 @@
+require 'nokogiri'
 require 'roo'
 require 'spreadsheet'
 
@@ -638,22 +639,14 @@ aq_sheets.each do |sheet|
   end
 end
 
-# Formats in Format ID Guide
-xls = Roo::Spreadsheet.open('db/seed_data/formats.xlsx')
-sheet = xls.sheet('Formats')
-sheet.each_with_index do |row, i|
-  if i > 0 # skip header row
-    FormatInfo.create!(
-        format_class: FormatClass::class_for_name(row[0]),
-        format_category: row[1], name: row[2], anchor: row[3],
-        images: row[4], image_captions: row[5],
-        image_alts: row[6], synonyms: row[7], dates: row[8],
-        common_sizes: row[9], description: row[10],
-        composition: row[11], deterioration: row[12],
-        risk_level: row[13], playback: row[14],
-        background: row[15], storage_environment: row[16],
-        storage_enclosure: row[17], storage_orientation: row[18],
-        handling_care: row[19], cd_standard_specifications: row[20])
+# Format ID Guide
+Dir.glob('db/seed_data/format_id_guide/**/*.html').each do |file|
+  File.open(file) do |contents|
+    doc = Nokogiri::HTML(contents)
+    FormatInfo.create!(name: doc.at_css('h1').text,
+                       format_category: File.basename(file, '.*'),
+                       format_class: nil, # TODO: fix
+                       html: doc.xpath('//body/*').to_html)
   end
 end
 
