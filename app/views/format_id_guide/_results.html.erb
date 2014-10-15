@@ -1,0 +1,13 @@
+<% if @results.any? %>
+  <table class="table">
+    <tbody>
+      <% @results.each do |result| %>
+        <% format = FormatInfo.find(result['id']) %>
+        <tr>
+          <td><%= link_to format.name, format_id_guide_category_path(format) %></td>
+          <td><%= raw(result['highlight']) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

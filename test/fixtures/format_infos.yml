@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  images: MyText
+  image_captions: MyText
+  image_alts: MyText
+  synonyms: MyText
+  dates: MyText
+  common_sizes: MyText
+  description: MyText
+  composition: MyText
+  deterioration: MyText
+  risk_level: MyText
+  playback: MyText
+  background: MyText
+  storage_environment: MyText
+  storage_enclosure: MyText
+  storage_orientation: MyText
+  handling_care: MyText
+  cd_standard_specifications: MyText
+
+two:
+  name: MyString
+  images: MyText
+  image_captions: MyText
+  image_alts: MyText
+  synonyms: MyText
+  dates: MyText
+  common_sizes: MyText
+  description: MyText
+  composition: MyText
+  deterioration: MyText
+  risk_level: MyText
+  playback: MyText
+  background: MyText
+  storage_environment: MyText
+  storage_enclosure: MyText
+  storage_orientation: MyText
+  handling_care: MyText
+  cd_standard_specifications: MyText

@@ -59,8 +59,6 @@ Psap::Application.routes.draw do
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
-  match '/format-id-guide', to: 'format_id_guide#index', via: 'get',
-        as: 'format_id_guide'
   match '/glossary', to: 'static#glossary', via: 'get'
   match '/help', to: 'static#help', via: 'get'
 
@@ -135,5 +133,13 @@ Psap::Application.routes.draw do
   # password to /new_password
   match '/new_password', to: 'password#new_password', via: 'get'
   match '/new_password', to: 'password#reset_password', via: 'post'
+
+  # Format ID Guide routes
+  match '/format-id-guide', to: 'format_id_guide#index', via: 'get',
+        as: 'format_id_guide'
+  match '/format-id-guide/search', to: 'format_id_guide#search',
+        via: 'get', as: 'format_id_guide_search'
+  match '/format-id-guide/:category', to: 'format_id_guide#show',
+        via: 'get', as: 'format_id_guide_category'
 
 end

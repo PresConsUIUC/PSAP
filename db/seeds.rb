@@ -1,3 +1,4 @@
+require 'nokogiri'
 require 'roo'
 require 'spreadsheet'
 
@@ -635,6 +636,19 @@ aq_sheets.each do |sheet|
           name: row[21], index: 4, value: row[22]) if row[21] and row[22]
       command.object.save!
     end
+  end
+end
+
+# Format ID Guide
+Dir.glob('db/seed_data/format_id_guide/**/*.html').each do |file|
+  File.open(file) do |contents|
+    doc = Nokogiri::HTML(contents)
+    html = doc.xpath('//body/*').to_html
+    FormatInfo.create!(name: doc.at_css('h1').text,
+                       format_category: File.basename(file, '.*'),
+                       format_class: File.basename(File.dirname(file)),
+                       html: html,
+                       searchable_html: FormatInfo::searchable_html(html))
   end
 end
 

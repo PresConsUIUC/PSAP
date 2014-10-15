@@ -1,0 +1,27 @@
+<% provide(:body_id, 'format_id_guide_results') %>
+<% provide(:title, 'Format ID Guide') %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Format ID Guide', format_id_guide_path %>
+  </li>
+  <li class="active">Search</li>
+</ol>
+
+<div class="row">
+  <div class="col-sm-9">
+    <h1>Results for "<%= @query %>"</h1>
+  </div>
+  <div class="col-sm-3">
+    <%= form_tag format_id_guide_search_path, method: 'get',
+                 class: 'entity_search form-inline',
+                 style: 'float:right; max-width:100%' do %>
+      <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                           class: 'form-control' %>
+    <% end %>
+  </div>
+</div>
+
+<div id="results">
+  <%= render 'results' %>
+</div>

@@ -3,9 +3,6 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.3'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
@@ -35,20 +32,15 @@ group :doc do
 end
 
 gem 'bootstrap-sass', '3.1.1.0'
-
 gem 'will_paginate', '3.0.4'
-
 # gem 'bootstrap-will_paginate'
 gem 'will_paginate-bootstrap'
-
-# Use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.1.2'
-
+gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
-
 gem 'bootstrap-typeahead-rails'
-
 gem 'nokogiri'
+gem 'fancybox2-rails'
+gem 'pg'
 
 group :development do
   gem 'capistrano'
@@ -59,6 +51,5 @@ group :development do
 end
 
 group :production do
-  gem 'mysql2'
   gem 'passenger'
 end

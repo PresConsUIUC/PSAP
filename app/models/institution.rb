@@ -53,8 +53,9 @@ class Institution < ActiveRecord::Base
           "WHERE (events.description LIKE 'Created resource%' "\
               "OR events.description LIKE 'Updated resource%') "\
             "AND users.institution_id = #{self.id} "\
+          "GROUP BY users.id "\
           "ORDER BY count DESC "\
-          "LIMIT #{limit}"
+          "LIMIT #{limit}" # TODO: is the GROUP BY right?
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 

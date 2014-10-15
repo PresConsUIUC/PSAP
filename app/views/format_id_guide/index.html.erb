@@ -1,6 +1,22 @@
+<% provide(:body_id, 'format_id_guide') %>
 <% provide(:title, 'Format ID Guide') %>
 
-<h1>Format ID Guide</h1>
+<div class="row">
+  <div class="col-sm-9">
+    <h1>Format ID Guide</h1>
+  </div>
+  <div class="col-sm-3">
+    <form method="get" action="<%= format_id_guide_search_path %>"
+          class="form-inline" style="float:right; max-width:100%">
+      <div class="input-group">
+        <%= search_field_tag :q, params[:q], class: 'form-control' %>
+        <span class="input-group-btn">
+          <%= submit_tag('Search', class: 'btn btn-default') %>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div class="row">
   <!-- left column menu -->
@@ -9,105 +25,455 @@
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#all_formats">All Formats</a></li>
         <li><a href="#audiovisual">Audiovisual</a></li>
-        <li><a href="#photo_image">Photo &amp; Image</a></li>
+        <li><a href="#photo_image">Photo &amp; Image Material</a></li>
         <li><a href="#book_paper">Book &amp; Paper</a></li>
       </ul>
     </nav>
   </div>
 
-  <div class="tab-content">
+  <div class="tab-content col-sm-9">
 
-  <div id="all_formats" class="col-sm-9 tab-pane active">
-    <h2>All Formats</h2>
-    <h3>Audiovisual</h3>
-    <ul>
-      <li>Film</li>
-      <li>Magnetic Audio</li>
-      <li>Cassette &amp; Cartridge Video</li>
-    </ul>
-    <h3>Photographic &amp; Image</h3>
-    <h3>Book &amp; Paper</h3>
-  </div>
-
-  <div id="audiovisual" class="col-sm-9 tab-pane">
-    <h2>Audiovisual</h2>
-  </div>
-
-  <div id="photo_image" class="col-sm-9 tab-pane">
-    <h2>Photographic &amp; Image</h2>
-
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#negative" data-toggle="tab">Negative</a>
-      </li>
-      <li>
-        <a href="#direct_positive" data-toggle="tab">Direct Positive</a>
-      </li>
-      <li>
-        <a href="#monochrome_print" data-toggle="tab">Monochrome Print</a>
-      </li>
-      <li>
-        <a href="#color_print" data-toggle="tab">Color Print</a>
-      </li>
-      <li>
-        <a href="#transparency" data-toggle="tab">Transparency</a>
-      </li>
-      <li>
-        <a href="#microform" data-toggle="tab">Microform</a>
-      </li>
-      <li>
-        <a href="#photomechanical" data-toggle="tab">Photomechanical</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div id="negative" class="tab-pane active">
-        <ul>
-          <li>Albumen Negative</li>
-          <li>Collodion Negative</li>
-          <li>Gelatin Glass Negative</li>
-          <li>Gelatin Silver Negative</li>
-          <li>Chromogenic Process</li>
-          <li>Negative</li>
-        </ul>
-      </div>
-      <div id="direct_positive" class="tab-pane">
-        <ul>
-          <li>Daguerreotype</li>
-          <li>Ambrotype</li>
-          <li>Tintype</li>
-        </ul>
-      </div>
-      <div id="monochrome_print" class="tab-pane">
-        <ul>
-          <li>Salt Print</li>
-          <li>Cyanotype</li>
-          <li>Platinum Print</li>
-          <li>Albumen Print</li>
-          <li>Carbon Print</li>
-          <li>Collodion Print</li>
-          <li>Matte Collodion POP Print</li>
-          <li>Gelatin POP Print</li>
-        </ul>
-      </div>
-      <div id="color_print" class="tab-pane">
-        Color print
-      </div>
-      <div id="transparency" class="tab-pane">
-        Transparency
-      </div>
-      <div id="microform" class="tab-pane">
-        Microform
-      </div>
-      <div id="photomechanical" class="tab-pane">
-        Photomechanical
-      </div>
+    <div id="all_formats" class="tab-pane active">
     </div>
-  </div>
 
-  <div id="book_paper" class="col-sm-9 tab-pane">
-    <h2>Book &amp; Paper</h2>
-  </div>
+    <div id="audiovisual" class="tab-pane">
+      <h2>Audiovisual</h2>
 
-  </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Film</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to '35mm', format_id_guide_category_path('film', anchor: 'film35mm') %></li>
+            <li><%= link_to '16mm', format_id_guide_category_path('film', anchor: 'film16mm') %></li>
+            <li><%= link_to '8mm', format_id_guide_category_path('film', anchor: 'film8mm') %></li>
+            <li><%= link_to 'Super 8mm', format_id_guide_category_path('film', anchor: 'filmsuper8') %></li>
+            <li><%= link_to '9.5mm', format_id_guide_category_path('film', anchor: 'film9point5mm') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Audiotape</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '2" Open Reel', format_id_guide_category_path('audiotape', anchor: 'audio2inOR') %></li>
+                <li><%= link_to '1" Open Reel', format_id_guide_category_path('audiotape', anchor: 'audio1inOR') %></li>
+                <li><%= link_to '½" Open Reel', format_id_guide_category_path('audiotape', anchor: 'audiohalfinOR') %></li>
+                <li><%= link_to '¼" Open Reel', format_id_guide_category_path('audiotape', anchor: 'audioquarterinOR') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette/ Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to 'Continuous Loop Cartridge (Cart)', format_id_guide_category_path('audiotape', anchor: 'cart') %></li>
+                <li><%= link_to 'Compact Cassette', format_id_guide_category_path('audiotape', anchor: 'compactcassette') %></li>
+                <li><%= link_to 'Microcassette', format_id_guide_category_path('audiotape', anchor: 'microcassette') %></li>
+                <li><%= link_to '8-Track', format_id_guide_category_path('audiotape', anchor: '8track') %></li>
+                <li><%= link_to 'Digital Audio Tape (DAT)', format_id_guide_category_path('audiotape', anchor: 'dat') %></li>
+                <li><%= link_to 'Digital Compact Cassette (DCC)', format_id_guide_category_path('audiotape', anchor: 'dcc') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Videotape</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '2" Open Reel', format_id_guide_category_path('videotape', anchor: 'video2inOR') %></li>
+                <li><%= link_to '1" Open Reel', format_id_guide_category_path('videotape', anchor: 'video1inOR') %></li>
+                <li><%= link_to '½" Open Reel', format_id_guide_category_path('videotape', anchor: 'videohalfinOR') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette / Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to 'U-matic / U-matic SP', format_id_guide_category_path('videotape', anchor: 'umatic') %></li>
+                <li><%= link_to 'Betacam / BetacamSP', format_id_guide_category_path('videotape', anchor: 'betacam') %></li>
+                <li><%= link_to 'Betamax', format_id_guide_category_path('videotape', anchor: 'betamax') %></li>
+                <li><%= link_to 'D-2', format_id_guide_category_path('videotape', anchor: 'd2') %></li>
+                <li><%= link_to 'D-3', format_id_guide_category_path('videotape', anchor: 'd3') %></li>
+                <li><%= link_to 'Digital Betacam', format_id_guide_category_path('videotape', anchor: 'digibeta') %></li>
+                <li><%= link_to 'DVCAM', format_id_guide_category_path('videotape', anchor: 'dvcam') %></li>
+                <li><%= link_to 'DVCPRO', format_id_guide_category_path('videotape', anchor: 'dvcpro') %></li>
+                <li><%= link_to 'MiniDV', format_id_guide_category_path('videotape', anchor: 'minidv') %></li>
+                <li><%= link_to 'VHS', format_id_guide_category_path('videotape', anchor: 'vhs') %></li>
+                <li><%= link_to 'Video8 / Hi8', format_id_guide_category_path('videotape', anchor: 'video8') %></li>
+                <!-- <li><%= link_to 'Other Digital Video Cassettes', format_id_guide_category_path('', anchor: 'dvd') %></li> TODO: this was in google doc but not in HTML -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Phonograph Record</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Shellac Disc', format_id_guide_category_path('phonodisc', anchor: 'shellacdisc') %></li>
+            <li><%= link_to 'Lacquer Disc', format_id_guide_category_path('phonodisc', anchor: 'lacquerdisc') %></li>
+            <li><%= link_to 'Aluminum Disc', format_id_guide_category_path('phonodisc', anchor: 'aluminumdisc') %></li>
+            <li><%= link_to 'Vinyl Disc', format_id_guide_category_path('phonodisc', anchor: 'vinyldisc') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Optical Media</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'DVD', format_id_guide_category_path('optical-media', anchor: 'dvd') %></li>
+            <li><%= link_to 'Compact Disc (CD)', format_id_guide_category_path('optical-media', anchor: 'cd') %></li>
+            <li><%= link_to 'Laserdisc (LD)', format_id_guide_category_path('optical-media', anchor: 'laserdisc') %></li>
+            <li><%= link_to 'MiniDisc (MD)', format_id_guide_category_path('optical-media', anchor: 'minidisc') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Grooved Cylinder</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Wax Cylinder', format_id_guide_category_path('cylinder', anchor: 'waxcylinder') %></li>
+            <li><%= link_to 'Plastic Cylinder', format_id_guide_category_path('cylinder', anchor: 'plasticcylinder') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Wire Recording</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Wire Audio', format_id_guide_category_path('wire') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Other Media Types</h3>
+        </div>
+        <div class="panel-body">
+          <!-- TODO: keep this? -->
+        </div>
+      </div>
+
+    </div> <!-- #audiovisual -->
+
+    <div id="photo_image" class="tab-pane">
+      <h2>Photographic &amp; Image Material</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Photographic Print</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Monochrome Print</h4>
+              <ul>
+                <li><%= link_to 'Salt Print', format_id_guide_category_path('photoprint', anchor: 'saltprint') %></li>
+                <li><%= link_to 'Cyanotype', format_id_guide_category_path('photoprint', anchor: 'cyanotype') %></li>
+                <li><%= link_to 'Platinum/Palladium Print', format_id_guide_category_path('photoprint', anchor: 'platinumprint') %></li>
+                <li><%= link_to 'Albumen Print', format_id_guide_category_path('photoprint', anchor: 'albumenprint') %></li>
+                <li><%= link_to 'Carbon Print', format_id_guide_category_path('photoprint', anchor: 'carbonprint') %></li>
+                <li><%= link_to 'Glossy Collodion Print', format_id_guide_category_path('photoprint', anchor: 'collodionpop') %></li>
+                <li><%= link_to 'Matte Collodion Print', format_id_guide_category_path('photoprint', anchor: 'mattecollodion') %></li>
+                <li><%= link_to 'Gelatin POP Print', format_id_guide_category_path('photoprint', anchor: 'gelatinpop') %></li>
+                <li><%= link_to 'Silver Gelatin Print (DOP)', format_id_guide_category_path('photoprint', anchor: 'silvergelprint') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Color Print</h4>
+              <ul>
+                <li><%= link_to 'Chromogenic Color Print', format_id_guide_category_path('photoprint', anchor: 'chromoprint') %></li>
+                <li><%= link_to 'Silver Dye-Bleach Print', format_id_guide_category_path('photoprint', anchor: 'silverdyebleach') %></li>
+                <li><%= link_to 'Dye Transfer Print', format_id_guide_category_path('photoprint', anchor: 'dyetransfer') %></li>
+                <li><%= link_to 'Color Carbro Print', format_id_guide_category_path('photoprint', anchor: 'colorcarbro') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Instant Photo</h4>
+              <ul>
+                <li><%= link_to 'Instant Photo, B&W', format_id_guide_category_path('photoprint', anchor: 'instantbw') %></li>
+                <li><%= link_to 'Instant Photo, Color', format_id_guide_category_path('photoprint', anchor: 'instantcolor') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Cased/Direct Photograph</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Daguerreotype', format_id_guide_category_path('directimage', anchor: 'daguerreotype') %></li>
+            <li><%= link_to 'Ambrotype', format_id_guide_category_path('directimage', anchor: 'ambrotype') %></li>
+            <li><%= link_to 'Tintype', format_id_guide_category_path('directimage', anchor: 'tintype') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Negative</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Negative</h4>
+              <ul>
+                <li><%= link_to 'Albumen Glass Negative', format_id_guide_category_path('negative', anchor: 'glassalbumen') %></li>
+                <li><%= link_to 'Collodion Glass Negative', format_id_guide_category_path('negative', anchor: 'glasscollodion') %></li>
+                <li><%= link_to 'Gelatin Glass Negative', format_id_guide_category_path('negative', anchor: 'glassgelatin') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Negative</h4>
+              <ul>
+                <li><%= link_to 'Silver Gelatin Negative', format_id_guide_category_path('negative', anchor: 'silvergelneg') %></li>
+                <li><%= link_to 'Chromogenic Color Negative', format_id_guide_category_path('negative', anchor: 'chromocolorneg') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Slide/Transparency</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Slide</h4>
+              <ul>
+                <li><%= link_to 'Glass Slide, B&W', format_id_guide_category_path('slide', anchor: 'bwglassslide') %></li>
+                <li><%= link_to 'Autochrome', format_id_guide_category_path('slide', anchor: 'autochrome') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Slide</h4>
+              <ul>
+                <li><%= link_to 'B&W Film Slide', format_id_guide_category_path('slide', anchor: 'bwfilmslide') %></li>
+                <li><%= link_to 'Color Film Slide', format_id_guide_category_path('slide', anchor: 'colorfilmslide') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Photomechanical Print</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Letterpress Halftone', format_id_guide_category_path('photomechanical', anchor: 'halftone') %></li>
+            <li><%= link_to 'Offset Lithography', format_id_guide_category_path('photomechanical', anchor: 'litho') %></li>
+            <li><%= link_to 'Gravure', format_id_guide_category_path('photomechanical', anchor: 'gravure') %></li>
+            <li><%= link_to 'Collotype', format_id_guide_category_path('photomechanical', anchor: 'collotype') %></li>
+            <li><%= link_to 'Woodburytype', format_id_guide_category_path('photomechanical', anchor: 'woodburytype') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Digital Print</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Inkjet Print', format_id_guide_category_path('digitalprint', anchor: 'inkjet') %></li>
+            <li><%= link_to 'Laser Print', format_id_guide_category_path('digitalprint', anchor: 'laser') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Microform</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Plastic Film</h4>
+              <ul>
+                <li><%= link_to 'Microfilm', format_id_guide_category_path('microform', anchor: 'microfilm') %></li>
+                <li><%= link_to 'Microfiche', format_id_guide_category_path('microform', anchor: 'microfiche') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Paper</h4>
+              <ul>
+                <li><%= link_to 'Microcard', format_id_guide_category_path('microform', anchor: 'microcard') %></li>
+                <li><%= link_to 'Microprint', format_id_guide_category_path('microform', anchor: 'microprint') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Mixed</h4>
+              <ul>
+                <li><%= link_to 'Aperture Card', format_id_guide_category_path('microform', anchor: 'aperture') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- #photo_image -->
+
+    <div id="book_paper" class="tab-pane">
+      <h2>Book &amp; Paper</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Paper &mdash; Unbound</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Paper Types</h4>
+              <ul>
+                <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
+                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %></li>
+                <li><%= link_to 'Coated Paper', format_id_guide_category_path('paper', anchor: 'coatedpaper') %></li>
+                <li><%= link_to 'Proprietary Paper', format_id_guide_category_path('paper', anchor: 'proprietarypaper') %></li>
+                <li><%= link_to 'Tracing/Transparent Paper', format_id_guide_category_path('paper', anchor: 'tracingpaper') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Ink and Other Media</h4>
+              <ul>
+                <li><%= link_to 'Carbon Black Ink', format_id_guide_category_path('inkothermedia', anchor: 'carbonblackink') %></li>
+                <li><%= link_to 'Iron Gall Ink', format_id_guide_category_path('inkothermedia', anchor: 'irongallink') %></li>
+                <li><%= link_to 'Typewriter Ribbon Ink', format_id_guide_category_path('inkothermedia', anchor: 'typewriterink') %></li>
+                <li><%= link_to 'Pigment-Based Ink', format_id_guide_category_path('inkothermedia', anchor: 'pigmentink') %></li>
+                <li><%= link_to 'Dye-Based Ink', format_id_guide_category_path('inkothermedia', anchor: 'dyeink') %></li>
+                <li><%= link_to 'Felt-Tip Pen/Marker', format_id_guide_category_path('inkothermedia', anchor: 'felttipink') %></li>
+                <li><%= link_to 'Ball-Point Pen', format_id_guide_category_path('inkothermedia', anchor: 'ballpointink') %></li>
+                <li><%= link_to 'Graphite', format_id_guide_category_path('inkothermedia', anchor: 'graphite') %></li>
+                <li><%= link_to 'Copying Pencil', format_id_guide_category_path('inkothermedia', anchor: 'copypencil') %></li>
+                <li><%= link_to 'Wax-Based Pencil/Crayon', format_id_guide_category_path('inkothermedia', anchor: 'waxcrayon') %></li>
+                <li><%= link_to 'Colored Pencils', format_id_guide_category_path('inkothermedia', anchor: 'coloredpencil') %></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Architectural Drawing Reproduction</h4>
+              <ul>
+                <li><%= link_to 'Aniline Print', format_id_guide_category_path('archdrawingrepro', anchor: 'anilineprint') %></li>
+                <li><%= link_to 'Ferro-Gallic Print', format_id_guide_category_path('archdrawingrepro', anchor: 'ferrogallicprint') %></li>
+                <li><%= link_to 'Blueprint', format_id_guide_category_path('archdrawingrepro', anchor: 'blueprint') %></li>
+                <li><%= link_to 'VanDyke Print', format_id_guide_category_path('archdrawingrepro', anchor: 'vandykeprint') %></li>
+                <li><%= link_to 'Photostat', format_id_guide_category_path('archdrawingrepro', anchor: 'photostat-arch') %></li>
+                <li><%= link_to 'Wash-Off Print', format_id_guide_category_path('archdrawingrepro', anchor: 'washoffprint') %></li>
+                <li><%= link_to 'Diazo Print', format_id_guide_category_path('archdrawingrepro', anchor: 'diazoprint-arch') %></li>
+                <li><%= link_to 'Hectograph', format_id_guide_category_path('archdrawingrepro', anchor: 'hectograph-arch') %></li>
+                <li><%= link_to 'Gel-Lithograph', format_id_guide_category_path('archdrawingrepro', anchor: 'gel-litho') %></li>
+                <li><%= link_to 'Electrostatic Print', format_id_guide_category_path('archdrawingrepro', anchor: 'electrostatic-arch') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Office Copy/Print</h4>
+              <ul>
+                <li><%= link_to 'Carbon Copy', format_id_guide_category_path('officeprintcopy', anchor: 'carboncopy') %></li>
+                <li><%= link_to 'Stencil Copy', format_id_guide_category_path('officeprintcopy', anchor: 'stencilcopy') %></li>
+                <li><%= link_to 'Impact Print', format_id_guide_category_path('officeprintcopy', anchor: 'impactprint') %></li>
+                <li><%= link_to 'Lithograph (Office Litho)', format_id_guide_category_path('officeprintcopy', anchor: 'lithography-office') %></li>
+                <li><%= link_to 'Typography', format_id_guide_category_path('officeprintcopy', anchor: 'typography') %></li>
+                <li><%= link_to 'Hectograph', format_id_guide_category_path('officeprintcopy', anchor: 'hectograph-office') %></li>
+                <li><%= link_to 'Spirit Duplicate', format_id_guide_category_path('officeprintcopy', anchor: 'spiritduplicate') %></li>
+                <li><%= link_to 'Diazo Print', format_id_guide_category_path('officeprintcopy', anchor: 'diazoprint-office') %></li>
+                <li><%= link_to 'Photostat', format_id_guide_category_path('officeprintcopy', anchor: 'photostat-office') %></li>
+                <li><%= link_to 'Diffusion Transfer', format_id_guide_category_path('officeprintcopy', anchor: 'diffusiontransfer') %></li>
+                <li><%= link_to 'Dual Spectrum', format_id_guide_category_path('officeprintcopy', anchor: 'dualspectrum') %></li>
+                <li><%= link_to 'Electrostatic/Xerox Copy', format_id_guide_category_path('officeprintcopy', anchor: 'electrostatic-office') %></li>
+                <li><%= link_to 'Color Photocopy', format_id_guide_category_path('officeprintcopy', anchor: 'colorxerox') %></li>
+                <li><%= link_to 'Laser Print', format_id_guide_category_path('officeprintcopy', anchor: 'laserprint') %></li>
+                <li><%= link_to 'Carbonless Copy (NCR)', format_id_guide_category_path('officeprintcopy', anchor: 'ncrcopy') %></li>
+                <li><%= link_to 'Copybook / Roller Copy', format_id_guide_category_path('officeprintcopy', anchor: 'copybookroller') %></li>
+                <li><%= link_to 'Thermal Print / Thermofax', format_id_guide_category_path('officeprintcopy', anchor: 'thermalprint') %></li>
+                <li><%= link_to 'Electrofax', format_id_guide_category_path('officeprintcopy', anchor: 'electrofax') %></li>
+                <li><%= link_to 'Inkjet Print', format_id_guide_category_path('officeprintcopy', anchor: 'inkjet-office') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Paper &mdash; Book/Bound</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Paper Types</h4>
+              <ul>
+                <li><%= link_to 'Newsprint', ''%></li>
+                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', ''%></li>
+                <li><%= link_to 'Coated Paper', ''%></li>
+                <li><%= link_to 'Proprietary Paper', ''%></li>
+                <li><%= link_to 'Tracing/Transparent Paper', ''%></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cover and Binding Materials</h4>
+              <ul>
+                <li><%= link_to 'Leather', format_id_guide_category_path('bookbound', anchor: 'leather') %> (sheep, goat, calf)</li>
+                <li><%= link_to 'Cloth', format_id_guide_category_path('bookbound', anchor: 'clothcover') %> (starch-filled, pyroxylin-treated, acrylic-coated)</li>
+                <li><%= link_to 'Paper', format_id_guide_category_path('bookbound', anchor: 'papercover') %></li>
+                <li><%= link_to 'Tawed Skin', format_id_guide_category_path('bookbound', anchor: 'tawedskin') %></li>
+                <li><%= link_to 'Parchment', format_id_guide_category_path('bookbound', anchor: 'parchment') %> (vellum, etc.)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Board Materials</h4>
+              <ul>
+                <li><%= link_to 'Paper Board', format_id_guide_category_path('bookbound', anchor: 'paperboard') %></li>
+                <li><%= link_to 'Wood Board', format_id_guide_category_path('bookbound', anchor: 'woodboard') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Binding Types</h4>
+              <ul>
+                <li><%= link_to 'Sewn Bindings', format_id_guide_category_path('bookbound', anchor: 'sewnbind') %> (through-the-fold, oversewn, stab)</li>
+                <li><%= link_to 'Adhesive Bindings', format_id_guide_category_path('bookbound', anchor: 'adhesivebind') %> ("perfect" binding, double fan adhesive)</li>
+                <li><%= link_to 'Other Bindings', format_id_guide_category_path('bookbound', anchor: 'otherbind') %> (punch-and-bind, stapled, accordion)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- #book_paper -->
+
+  </div> <!-- .tab-content -->
 </div>

@@ -38,8 +38,9 @@ class User < ActiveRecord::Base
           "LEFT JOIN events ON events_users.event_id = events.id "\
           "WHERE events.description LIKE 'Created resource%' "\
             "OR events.description LIKE 'Updated resource%' "\
+          "GROUP BY users.id "\
           "ORDER BY count DESC "\
-          "LIMIT #{limit}"
+          "LIMIT #{limit}"  # TODO: is the GROUP BY right?
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
