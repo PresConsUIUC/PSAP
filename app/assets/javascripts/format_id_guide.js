@@ -1,15 +1,10 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
-        // Make "All Formats" tab show all tabs
-        var all_formats_link = $('a[href="#all_formats"]');
-        var showAllSections = function() {
-            $('div.tab-content div').addClass('active');
-        };
-        if (all_formats_link.parent().hasClass('active')) {
-            showAllSections();
-        }
-        all_formats_link.on('click', showAllSections);
+        $('body').scrollspy({ target: '#sections' });
 
+        $('#sections').affix({
+            offset: { top: 160 }
+        });
     } else if ($('body#format_id_guide_categories').length) {
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
@@ -33,19 +28,19 @@ var ready = function() {
                 }
             }
         });
-
-        // smooth scroll to anchor locations when clicking links in TOC
-        var $root = $('html, body');
-        $('a').click(function() {
-            var href = $.attr(this, 'href');
-            $root.animate({
-                scrollTop: $(href).offset().top - 60
-            }, 500, function () {
-                window.location.hash = href;
-            });
-            return false;
-        });
     }
+
+    // smooth scroll to anchor locations when clicking links in TOC
+    var $root = $('html, body');
+    $('a').click(function() {
+        var href = $.attr(this, 'href');
+        $root.animate({
+            scrollTop: $(href).offset().top //- 60
+        }, 500, function () {
+            window.location.hash = href;
+        });
+        return false;
+    });
 };
 
 $(document).ready(ready);

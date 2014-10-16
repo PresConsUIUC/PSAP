@@ -1,6 +1,8 @@
 body#format_id_guide {
-  div#results {
-    display:none;
+  .affix {
+    margin: 0 10% 0 0;
+    width:21.8%;
+    top:70px;
   }
 }
 body#format_id_guide_categories {
