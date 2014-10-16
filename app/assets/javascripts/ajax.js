@@ -1,5 +1,5 @@
 $(document).ajaxStart(function(event, request, options) {
-    $('form.psap-live-search input').removeClass('active');
+    $('form.psap-live-search input').addClass('active');
 });
 
 /**
