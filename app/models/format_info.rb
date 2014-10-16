@@ -13,14 +13,17 @@ class FormatInfo < ActiveRecord::Base
     query = query.gsub(' ', ' & ') # replace spaces with boolean AND
     query = FormatInfo.sanitize(query)
 
-    # There is no limit/offset because there are not enough potential results
-    # to warrant it.
+    # limit/offset are not configurable because there are not enough potential
+    # results to warrant it. And there is no need to explicitly call ts_rank
+    # because queries that use the GIN index will automatically order by
+    # ts_rank desc.
     sql = "SELECT id, "\
       "ts_headline(searchable_html, keywords, "\
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\
-        "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') as highlight "\
+        "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') AS highlight "\
     "FROM format_infos, to_tsquery(#{query}) as keywords "\
-    "WHERE searchable_html @@ keywords;"
+    "WHERE searchable_html @@ keywords "\
+    "LIMIT 50;"
 
     ActiveRecord::Base.connection.execute(sql)
   end
