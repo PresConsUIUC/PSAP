@@ -53,12 +53,12 @@ a:focus {
   text-align: center;
 }
 
-h1 { font-family: 'montserratregular'; font-size:2em; margin:0em 0em 0.5em 0em }
-h2 { font-family: 'montserratregular'; font-size:1.66em; margin:0em 0em 1em 0em }
-h3 { font-family: 'montserratregular'; font-size:1.33em; margin:0em 0em 1em 0em }
-h4 { font-family: 'montserratregular'; font-size:1.15em; font-weight:500; }
-h5 { font-family: 'montserratregular'; font-size:0.9em }
-h6 { font-family: 'montserratregular'; font-size:0.8em }
+h1 { font-family: 'montserratregular'; font-size:2.25em; margin:0em 0em 0.5em 0em }
+h2 { font-family: 'montserratregular'; font-size:1.9em; margin:0em 0em 1em 0em }
+h3 { font-family: 'montserratregular'; font-size:1.6em; margin:0em 0em 1em 0em }
+h4 { font-family: 'montserratregular'; font-size:1.4em; font-weight:500; }
+h5 { font-family: 'montserratregular'; font-size:1.1em }
+h6 { font-family: 'montserratregular'; font-size:0.9em }
 
 table caption {
   color:$gray;
@@ -203,8 +203,8 @@ header {
   }
   h1 small a, h1 small a:hover {
     color:#808080;
+    font-family: "Helvetica Neue Light", sans-serif;
     font-size:0.9em;
-    font-style:italic;
     font-weight:200;
   }
   img#title_logo {
