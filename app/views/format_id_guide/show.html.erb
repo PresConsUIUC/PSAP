@@ -8,4 +8,11 @@
   <li class="active"><%= @page.name %></li>
 </ol>
 
+<div class="row">
+  <div class="col-sm-9"></div>
+  <div class="col-sm-3">
+    <%= render partial: 'search_field' %>
+  </div>
+</div>
+
 <%= format_id_guide_html(@page.html) %>

@@ -16,6 +16,11 @@ Ruby indentation is two spaces; JavaScript, 4 spaces. Spaces are used instead
 of tabs. 80-character margins are aimed for but sometimes exceeded, especially
 in the view templates.
 
+# Database
+
+PSAP uses PostgreSQL's full-text search features, and therefore requires
+PostgreSQL 8.3 or greater in both development and production.
+
 # Deployment
 
 PSAP is configured to use Capistrano for deployment. At UIUC, it runs in
@@ -30,8 +35,5 @@ password `password.` Immediately after deploying, you should log in as this
 user and change the password.
 
 # Notes
-
-PSAP uses the standard Rails application configuration files in
-`config/environments`.
 
 The application version number is set in `app/helpers/application_helper.rb`.

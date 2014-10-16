@@ -1,0 +1,9 @@
+<form method="get" action="<%= format_id_guide_search_path %>"
+      class="form-inline" style="float:right; max-width:100%">
+  <div class="input-group">
+    <%= search_field_tag :q, params[:q], class: 'form-control' %>
+    <span class="input-group-btn">
+          <input type="submit" value="Search" class="btn btn-default">
+        </span>
+  </div>
+</form>
