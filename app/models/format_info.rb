@@ -7,14 +7,17 @@ class FormatInfo < ActiveRecord::Base
   ##
   # Requires PostgreSQL
   #
-  def self.full_text_search(query, min_words = 50, max_words = 51, max_fragments = 3)
+  def self.full_text_search(query, min_words = 40, max_words = 41, max_fragments = 3)
+    query = query.delete('\'":|!@#$%^&*()') # strip certain characters
+    query = query.gsub(' ', ' & ') # replace spaces with boolean AND
+    query = FormatInfo.sanitize(query)
     # There is no limit/offset because there are not enough potential results
     # to warrant it.
     sql = "SELECT id, "\
       "ts_headline(searchable_html, keywords, "\
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\
         "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') as highlight "\
-    "FROM format_infos, to_tsquery(#{FormatInfo.sanitize(query)}) as keywords "\
+    "FROM format_infos, to_tsquery(#{query}) as keywords "\
     "WHERE searchable_html @@ keywords;"
 
     ActiveRecord::Base.connection.execute(sql)

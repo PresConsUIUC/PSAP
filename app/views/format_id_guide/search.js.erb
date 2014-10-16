@@ -1,1 +1,2 @@
 $('#results').html('<%= escape_javascript(render('results')) %>');
+$('.results-summary').text('<%= escape_javascript(raw(@results_summary)) %>');

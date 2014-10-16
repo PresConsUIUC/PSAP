@@ -15,6 +15,7 @@ class FormatIdGuideController < ApplicationController
       @results = FormatInfo.full_text_search(params[:q])
     end
     @query = params[:q].truncate(50)
+    @results_summary = @query.length > 0 ? "Results for \"#{@query}\"" : "Format ID Guide Search"
   end
 
   ##
