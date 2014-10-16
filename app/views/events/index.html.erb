@@ -6,7 +6,7 @@
     <h1>Event Log <small class="entity_count"></small></h1>
   </div>
   <div class="col-sm-7">
-    <%= form_tag events_path, method: 'get', class: 'entity_search form-inline',
+    <%= form_tag events_path, method: 'get', class: 'psap-live-search form-inline',
                  style: 'float:right; max-width:100%' do %>
         <input type="hidden" name="level" value="<%= @event_level %>">
         <%= search_field_tag :q, params[:q], placeholder: 'Search',

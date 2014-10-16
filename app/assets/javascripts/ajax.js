@@ -1,5 +1,5 @@
 $(document).ajaxStart(function(event, request, options) {
-    $('form.entity_search input').removeClass('active');
+    $('form.psap-live-search input').removeClass('active');
 });
 
 /**
@@ -7,7 +7,7 @@ $(document).ajaxStart(function(event, request, options) {
  X-Message-Type headers.
  */
 $(document).ajaxComplete(function(event, request, options) {
-    $('form.entity_search input').removeClass('active');
+    $('form.psap-live-search input').removeClass('active');
 
     $('#modal_progress_view').hide();
 

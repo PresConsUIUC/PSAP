@@ -11,7 +11,7 @@
     <h1>Users <small class="entity_count"></small></h1>
   </div>
   <div class="col-sm-4" style="text-align:right">
-    <%= form_tag users_path, method: 'get', class: 'entity_search',
+    <%= form_tag users_path, method: 'get', class: 'psap-live-search',
                  style: 'float:right' do %>
         <%= hidden_field_tag :direction, params[:direction] %>
         <%= hidden_field_tag :sort, params[:sort] %>

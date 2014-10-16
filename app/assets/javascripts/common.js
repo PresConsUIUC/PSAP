@@ -28,14 +28,14 @@ var ready = function() {
     Popover.refresh();
 
     // Entity live-search forms
-    $('.entity_search').submit(function() {
+    $('.psap-live-search').submit(function() {
         $.get(this.action, $(this).serialize(), null, 'script');
         $(this).nextAll('input').addClass('active');
         return false;
     });
-    $('.entity_search input').on('keyup', function() {
-        $.get($('.entity_search').attr('action'),
-            $('.entity_search').serialize(), null, 'script');
+    $('.psap-live-search input').on('keyup', function() {
+        var forms = $('.psap-live-search');
+        $.get(forms.attr('action'), forms.serialize(), null, 'script');
         $(this).addClass('active');
         return false;
     });
@@ -128,7 +128,7 @@ var ready = function() {
  * files on ajax load.
  */
 function updateResultsCount() {
-    var query_input = $('.entity_search input[name="q"]');
+    var query_input = $('.psap-live-search input[name="q"]');
     if (query_input.length) {
         var query_length = query_input.val().length;
         var count_elem = $('input[name="results_count"]');
