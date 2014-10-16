@@ -23,6 +23,7 @@ test:
 
 staging:
   adapter: postgresql
+  host: /tmp
   database: <%= begin IO.read("/home/psap/.db_staging_name") rescue "" end %>
   min_messages: warning
   encoding: unicode
@@ -32,6 +33,7 @@ staging:
 
 production:
   adapter: postgresql
+  host: /tmp
   database: <%= begin IO.read("/home/psap/.db_production_name") rescue "" end %>
   min_messages: warning
   encoding: unicode
