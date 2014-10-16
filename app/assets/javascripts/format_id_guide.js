@@ -29,6 +29,9 @@ var ready = function() {
                 var caption = this.element.next('figcaption').html();
                 this.title = caption;
             },
+            afterClose: function() {
+                $(".fancybox").show();
+            },
             helpers : {
                 title: {
                     type: 'outside'
