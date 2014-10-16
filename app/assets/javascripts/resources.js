@@ -293,7 +293,9 @@ var ResourceForm = {
 
                         $('.assessment_question input, .assessment_question select').
                             off('change').on('change', onOptionChanged);
-                        $('body').scrollspy('refresh');
+                        $('[data-spy="scroll"]').each(function () {
+                            var $spy = $(this).scrollspy('refresh')
+                        })
                     });
 
                     ResourceForm.updateProgress();
