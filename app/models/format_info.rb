@@ -8,9 +8,11 @@ class FormatInfo < ActiveRecord::Base
   # Requires PostgreSQL
   #
   def self.full_text_search(query, min_words = 40, max_words = 41, max_fragments = 3)
-    query = query.delete('\'":|!@#$%^&*()') # strip certain characters
+    query = query.delete('\'":|!@#$%^*()') # strip certain characters
+    query = query.gsub('&', ' ') # "B&W" won't return anything but "B W" will
     query = query.gsub(' ', ' & ') # replace spaces with boolean AND
     query = FormatInfo.sanitize(query)
+
     # There is no limit/offset because there are not enough potential results
     # to warrant it.
     sql = "SELECT id, "\
