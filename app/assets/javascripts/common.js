@@ -133,12 +133,8 @@ var ready = function() {
     }).trigger('change');
 
     Form.enableDynamicNestedEntities();
-};
 
-/**
- * Call this function once to enable smooth scrolling when clicking anchors.
- */
-function smoothAnchorScroll() {
+    // Enable smooth scrolling when clicking anchors.
     var top_padding = $('nav.navbar.navbar-default').height() + 10;
     var $root = $('html, body');
     $('a').click(function () {
@@ -150,7 +146,7 @@ function smoothAnchorScroll() {
         });
         return false;
     });
-}
+};
 
 /**
  * Updates the results count text. Called on document ready and in index.js.erb

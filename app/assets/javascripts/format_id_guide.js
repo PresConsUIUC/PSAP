@@ -8,7 +8,6 @@ var ready = function() {
         $('#sections').affix({
             offset: { top: 160 }
         });
-        smoothAnchorScroll();
     } else if ($('body#format_id_guide_categories').length) {
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
@@ -36,7 +35,6 @@ var ready = function() {
                 }
             }
         });
-        smoothAnchorScroll();
     }
 };
 
