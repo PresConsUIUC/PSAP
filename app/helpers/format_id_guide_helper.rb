@@ -19,8 +19,9 @@ module FormatIdGuideHelper
 
     # process images
     doc.css('img').each do |image|
-      image['src'] = image_path(
+      image['data-original'] = image_path(
           File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
+      image['src'] = nil
     end
 
     # process videos

@@ -19,3 +19,4 @@
 //= require turbolinks
 //= require local_time
 //= require_tree .
+//= require_tree ../../../vendor/assets/javascripts
