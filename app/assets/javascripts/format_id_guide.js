@@ -12,6 +12,10 @@ var ready = function() {
             $(this).wrap('<a class="fancybox" href="' + $(this).attr('src') + '"></a>');
         });
 
+        // move the header
+        $('div#page_content').find('div.col-sm-9:first').append(
+            $('div#page_content h1:first'));
+
         // http://fancyapps.com/fancybox/#examples
         $(".fancybox").fancybox({
             parent: 'body', // required for turbolinks compatibility
