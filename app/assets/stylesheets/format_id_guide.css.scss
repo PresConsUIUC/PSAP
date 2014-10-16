@@ -7,13 +7,17 @@ body#format_id_guide {
 }
 
 body#format_id_guide_categories {
+  h2 a, h3 a, h4 a, h5 a, h6 a {
+    color:black;
+  }
+  hr {
+    margin-top:3em;
+  }
   figure {
     display:block;
     margin:3em auto;
     max-width:50%;
-    figcaption {
-      text-align:center;
-    }
+    text-align:center;
   }
   .fancybox-title a {
     color: #d0e0ff;
@@ -23,8 +27,7 @@ body#format_id_guide_categories {
     max-width:100%;
   }
   ul.toc {
-    margin-left:2em;
-    margin-top:2em;
+    margin:1.5em 0em 2em 2em;
     padding-left:0em;
   }
   .img-thumbnail {
@@ -34,7 +37,7 @@ body#format_id_guide_categories {
     margin:1em 0em 1em 0em;
   }
   dd {
-    margin:0px 0px 1em 0px;
+    margin:0px 0px 1em 1em;
   }
 }
 

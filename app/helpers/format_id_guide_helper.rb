@@ -8,11 +8,12 @@ module FormatIdGuideHelper
   def format_id_guide_html(raw_html)
     doc = Nokogiri::HTML.fragment(raw_html)
 
-    # process internal links
     doc.css('a').each do |anchor|
+      # process internal links
       if anchor['href'] and anchor['href'][0..3] != 'http' and
           anchor['href'][0] != '#'
-        anchor['href'] = format_id_guide_path + '/' + File.basename(anchor['href'])
+        anchor['href'] = format_id_guide_path + '/' +
+            File.basename(anchor['href'], '.*')
       end
     end
 
