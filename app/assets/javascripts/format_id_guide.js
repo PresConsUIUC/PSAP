@@ -1,10 +1,14 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
-        $('body').scrollspy({ target: '#sections' });
+        $('body').scrollspy({
+            target: '#sections',
+            offset: $('nav.navbar.navbar-default').height() + 10
+        });
 
         $('#sections').affix({
             offset: { top: 160 }
         });
+        smoothAnchorScroll();
     } else if ($('body#format_id_guide_categories').length) {
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
@@ -32,19 +36,8 @@ var ready = function() {
                 }
             }
         });
+        smoothAnchorScroll();
     }
-
-    // smooth scroll to anchor locations when clicking links in TOC
-    var $root = $('html, body');
-    $('a').click(function() {
-        var href = $.attr(this, 'href');
-        $root.animate({
-            scrollTop: $(href).offset().top //- 60
-        }, 500, function () {
-            window.location.hash = href;
-        });
-        return false;
-    });
 };
 
 $(document).ready(ready);

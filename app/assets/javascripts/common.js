@@ -130,6 +130,23 @@ var ready = function() {
 };
 
 /**
+ * Call this function once to enable smooth scrolling when clicking anchors.
+ */
+function smoothAnchorScroll() {
+    var top_padding = $('nav.navbar.navbar-default').height() + 10;
+    var $root = $('html, body');
+    $('a').click(function () {
+        var href = $.attr(this, 'href');
+        $root.animate({
+            scrollTop: $(href).offset().top - top_padding
+        }, 500, function () {
+            window.location.hash = href;
+        });
+        return false;
+    });
+}
+
+/**
  * Updates the results count text. Called on document ready and in index.js.erb
  * files on ajax load.
  */
