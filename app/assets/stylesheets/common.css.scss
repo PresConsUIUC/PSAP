@@ -211,11 +211,8 @@ header {
   }
 }
 
-
-/* search field that appears above data tables, for filtering them */
-
-form.psap-live-search {
-  input {
+form.psap-live-search { /* may be overridden in page-specific stylesheets */
+  input[type=text] {
     display:inline;
     margin:0em 0em 1em 0em;
     width:120px;

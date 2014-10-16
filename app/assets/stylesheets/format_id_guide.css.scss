@@ -5,6 +5,7 @@ body#format_id_guide {
     top:70px;
   }
 }
+
 body#format_id_guide_categories {
   figure {
     display:block;
@@ -38,6 +39,12 @@ body#format_id_guide_categories {
 }
 
 body#format_id_guide_results {
+  form.psap-live-search { /* overrides common.css.scss */
+    input.active {
+      background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 185px 8px;
+      @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
+    }
+  }
   mark {
     background-color:yellow;
     font-weight:bold;
