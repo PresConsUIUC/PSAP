@@ -666,6 +666,15 @@ Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.jpg').each do |file|
   File.chmod(0644, dest_path)
 end
 
+# Format ID Guide videos
+puts 'Copying Format ID Guide videos...'
+Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.mp4').each do |file|
+  dest_path = fidg_images_path + '/' +
+      File.basename(file).gsub(' ', '_').gsub('%20', '_')
+  FileUtils.cp(file, dest_path)
+  File.chmod(0644, dest_path)
+end
+
 puts 'Creating the admin user...'
 
 # Admin role

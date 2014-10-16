@@ -23,6 +23,12 @@ module FormatIdGuideHelper
           File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
     end
 
+    # process videos
+    doc.css('video source').each do |video|
+      video['src'] = image_path(
+          File.basename(video['src']).gsub(' ', '_').gsub('%20', '_'))
+    end
+
     raw(doc.to_html)
   end
 
