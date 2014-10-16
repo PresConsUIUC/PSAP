@@ -29,11 +29,12 @@ class FormatInfo < ActiveRecord::Base
   end
 
   ##
-  # Strips headings, images, etc. before stripping tags.
+  # Strips headings, images, etc. before stripping tags, yielding searchable
+  # text.
   #
   def self.searchable_html(html)
     doc = Nokogiri::HTML.fragment(html)
-    %w(img a h1 h2 h3 h4 h5 h6 th figure dt ul).each do |tag|
+    %w(img a h1 h2 h3 h4 h5 h6 th dt).each do |tag|
       doc.search(tag).remove
     end
     ActionController::Base.helpers.strip_tags(doc.to_html)
