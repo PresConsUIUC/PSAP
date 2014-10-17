@@ -675,21 +675,6 @@ Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.mp4').each do |file|
   File.chmod(0644, dest_path)
 end
 
-# For every format document, iterate through its <img> tags, get the
-# dimensions of the image in the "src" attribute, and inject them into new
-# "height" and "width" attributes.
-puts 'Generating image height and width attributes...'
-FormatInfo.all.each do |f|
-  doc = Nokogiri::HTML.fragment(f.html)
-  doc.css('img').each do |img|
-    dimensions = `convert app/assets/images/format_id_guide/#{File.basename(img['src'])} -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
-    img['width'] = dimensions[0]
-    img['height'] = dimensions[1]
-  end
-  f.html = doc.to_html
-  f.save!
-end
-
 puts 'Creating the admin user...'
 
 # Admin role
