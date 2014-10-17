@@ -654,25 +654,24 @@ Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.html').each do |file|
   end
 end
 
-# Format ID Guide images
-puts 'Copying Format ID Guide images...'
+# Format ID Guide images/videos
+puts 'Copying Format ID Guide images & videos...'
 fidg_images_path = 'app/assets/images/format_id_guide'
 FileUtils.rm_rf(fidg_images_path)
 FileUtils.mkdir_p(fidg_images_path)
-Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.jpg').each do |file|
-  dest_path = fidg_images_path + '/' +
-      File.basename(file).gsub(' ', '_').gsub('%20', '_')
-  FileUtils.cp(file, dest_path)
-  File.chmod(0644, dest_path)
-end
-
-# Format ID Guide videos
-puts 'Copying Format ID Guide videos...'
-Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.mp4').each do |file|
-  dest_path = fidg_images_path + '/' +
-      File.basename(file).gsub(' ', '_').gsub('%20', '_')
-  FileUtils.cp(file, dest_path)
-  File.chmod(0644, dest_path)
+%w(jpg jpeg mp4 png tif tiff).each do |ext|
+  # File::FNM_CASEFOLD == case insensitive
+  Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.' + ext, File::FNM_CASEFOLD).each do |file|
+    dest_path = fidg_images_path + '/' +
+        File.basename(file, '.*').gsub(' ', '_').gsub('%20', '_') +
+        File.extname(file).downcase
+    begin
+      FileUtils.cp(file, dest_path)
+      File.chmod(0644, dest_path)
+    rescue => e
+      puts "ERROR: #{e}"
+    end
+  end
 end
 
 puts 'Creating the admin user...'

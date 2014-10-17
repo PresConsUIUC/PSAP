@@ -23,16 +23,16 @@ class FormatIdGuide
 
   def process_images
     tmppath = '/tmp/fidg.tmp.html'
-    Dir.glob(FOLDER + '/**/*.html').each do |htmlpath|
+    Dir.glob(FOLDER + '/**/*.html', File::FNM_CASEFOLD).each do |htmlpath|
       changed = false
       File.open(htmlpath, 'r') { |html|
-        puts "**** #{htmlpath} ****"
+        puts "**** #{htmlpath}"
         doc = Nokogiri::HTML(html)
         doc.css('img').each do |img|
           unless File.basename(img['src'], '.*').end_with?('-300')
             if generate_images_for(File.basename(img['src']))
               newimgsrc = File.join('images',
-                                    File.basename(img['src'], '.*') + '-300' + File.extname(img['src']))
+                                    File.basename(img['src'], '.*') + '-300' + File.extname(img['src']).downcase)
               img['src'] = newimgsrc
               dimensions = `convert "#{path_of_image(File.basename(newimgsrc))}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
               img['width'] = dimensions[0]
@@ -69,9 +69,9 @@ class FormatIdGuide
 
       PROFILES.each do |profile|
         non_retina_pathname = File.join(
-            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}#{imgsrcextname}")
+            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}#{imgsrcextname.downcase}")
         retina_pathname = File.join(
-            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}@2x#{imgsrcextname}")
+            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}@2x#{imgsrcextname.downcase}")
 
         unless File.exists?(non_retina_pathname)
           system "convert \"#{imgsrcpath}\" -quality #{profile[:quality]} "\
@@ -95,8 +95,8 @@ class FormatIdGuide
 
   def path_of_image(filename)
     IMAGE_EXTENSIONS.each do |ext|
-      Dir.glob(FOLDER + '/**/*.' + ext).each do |path|
-        return path if File.basename(path) == filename
+      Dir.glob(FOLDER + '/**/*.' + ext, File::FNM_CASEFOLD).each do |path|
+        return path if File.basename(path).downcase == filename.downcase
       end
     end
     nil
@@ -105,7 +105,7 @@ class FormatIdGuide
   def unused_images
     images = @referenced_images.dup
     IMAGE_EXTENSIONS.each do |ext|
-      Dir.glob(FOLDER + '/**/*.' + ext).each do |path|
+      Dir.glob(FOLDER + '/**/*.' + ext, File::FNM_CASEFOLD).each do |path|
         images.delete(path)
       end
     end
