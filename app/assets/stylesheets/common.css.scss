@@ -318,35 +318,28 @@ footer {
   padding-top: 1em;
   border-top: 1px solid #eaeaea;
   color: #999;
+  a {
+    color: #999;
+  }
+  a:hover {
+    color: #777;
+  }
+  img {
+    float:left;
+    margin:0em 1em 0em 0em;
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
 }
-
-footer a {
-  color: #555;
-}
-
-footer a:hover {
-  color: #222;
-}
-
-footer img {
-  float:left;
-  margin:0em 1em 0em 0em;
-}
-
-footer small {
-  float: left;
-}
-
-footer ul {
-  float: right;
-  list-style: none;
-}
-
-footer ul li {
-  float: left;
-  margin-left: 10px;
-}
-
 
 /* mixins, variables, etc. */
 

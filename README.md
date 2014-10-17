@@ -33,7 +33,3 @@ a file called `.secret` in the application root.
 Initially, only one user exists: an administrator with username of `admin` and
 password `password.` Immediately after deploying, you should log in as this
 user and change the password.
-
-# Notes
-
-The application version number is set in `app/helpers/application_helper.rb`.
