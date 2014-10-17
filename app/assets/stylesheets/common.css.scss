@@ -79,6 +79,13 @@ dl ul {
   padding-left:0em;
 }
 
+ul.reference-list {
+  list-style:none;
+  margin-left:2em;
+  padding-left:0px;
+  text-indent:-2em;
+}
+
 button.hovertip-fire {
   font-size:1.2em;
   font-weight:bold;
