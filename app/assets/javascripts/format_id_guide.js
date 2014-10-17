@@ -8,7 +8,7 @@ var ready = function() {
         $('#sections').affix({
             offset: { top: 160 }
         });
-    } else if ($('body#format_id_guide_categories').length) {
+    } else if ($('body#format_id_guide_page').length) {
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
 
