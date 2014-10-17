@@ -55,7 +55,7 @@ Psap::Application.routes.draw do
   #   end
 
   root 'static#landing'
-  match '/about', to: 'static#about', via: 'get'
+  match '/about', to: 'static#about', via: 'get', as: 'about'
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'

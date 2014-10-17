@@ -2,12 +2,12 @@
 
   <div class="row">
     <div class="col-sm-8">
-      <%= link_to ('http://www.illinois.edu') do %>
+      <%= link_to ('http://www.illinois.edu/') do %>
         <%= image_tag('logo-imark-gray-60.png', 'data-has-retina' => 'true') %>
       <% end %>
 
-      <%= link_to('Preservation Self-Assessment Program', 'http://psap.library.illinois.edu/') %> |
-      <%= link_to 'About', about_path, class: 'modal_view', data: { open: '/about' } %>
+      <%= link_to('Preservation Self-Assessment Program', root_url) %> |
+      <%= link_to 'About', about_path, class: 'modal_view', data: { open: about_path } %>
       <br>
       <%= link_to('University of Illinois at Urbana-Champaign', 'http://www.illinois.edu/') %>
     </div>
