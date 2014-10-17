@@ -2,7 +2,7 @@ var ready = function() {
     if ($('body#format_id_guide').length) {
         $('body').scrollspy({
             target: '#sections',
-            offset: $('nav.navbar.navbar-default').height() + 10
+            offset: $('nav.navbar.navbar-default').height() + 15
         });
 
         $('#sections').affix({
@@ -13,7 +13,7 @@ var ready = function() {
         $('table').addClass('table').addClass('table-striped');
 
         // move the header
-        $('div#page_content').find('div.col-sm-9:first').append(
+        $('div#page_content div.col-sm-9:first').append(
             $('div#page_content h1:first'));
 
         // set up fancybox
