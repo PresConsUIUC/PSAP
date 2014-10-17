@@ -19,5 +19,3 @@ database.yml
 mail.yml
 .secret
 
-# rake db:seed will populate this
-app/assets/images/format_id_guide
