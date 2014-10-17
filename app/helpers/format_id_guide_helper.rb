@@ -19,9 +19,15 @@ module FormatIdGuideHelper
 
     # process images
     doc.css('img').each do |image|
-      image['data-original'] = image_path(
-          File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
-      image['src'] = nil
+      #image['data-original'] = image_path(
+      #    File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
+      #image['src'] = nil
+
+      new_image_filename = File.basename(image['src']).gsub(' ', '_').
+          gsub('%20', '_')
+      image['src'] = image_path(new_image_filename)
+      image['data-lightbox-src'] = image_path(
+          new_image_filename.gsub('-300', '-1000'))
     end
 
     # process videos
