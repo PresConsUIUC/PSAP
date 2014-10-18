@@ -4,11 +4,13 @@
 
   <h1>Glossary</h1>
 
-  <ul>
-    <% ('A'..'Z').each do |n| %>
-      <li><a href="#<%= n %>"><%= n %></a></li>
-    <% end %>
-  </ul>
+  <div class="psap-glossary-letter-links" data-spy="affix" data-offset-top="180">
+    <ul>
+      <% (['#'] + ('A'..'Z').to_a).each do |n| %>
+          <li><a href="#<%= n %>"><%= n %></a></li>
+      <% end %>
+    </ul>
+  </div>
 
   <p>For examples and and more in-depth descriptions of paper, book, photographic, and audiovisual formats/processes, please check out our <%= link_to 'Format ID Guide', format_id_guide_path, target: '_blank' %>.</p>
 

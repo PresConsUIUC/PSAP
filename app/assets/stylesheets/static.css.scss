@@ -33,3 +33,16 @@
     margin-top:1em;
   }
 }
+
+#glossary {
+  a {
+    font-weight:600;
+  }
+  div.psap-glossary-letter-links.affix {
+    background-color:white;
+    border-bottom:1px solid $gray-lighter;
+    left:0px;
+    top:50px;
+    width:100%;
+  }
+}
