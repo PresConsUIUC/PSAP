@@ -20,9 +20,9 @@ var ready = function() {
     // "src" attribute with "[filename]@2x.[ext]"
     if (window.devicePixelRatio > 1) {
         $('img').each(function() {
-            if ($(this).attr('data-has-retina')) {
+            if ($(this).data('has-retina')) {
                 var parts = $(this).attr('src').split('.');
-                parts[parts.length - 2] = parts[parts.length - 2] + '@2x';
+                parts[parts.length - 2] += '@2x';
                 $(this).attr('src', parts.join('.'));
             }
         });

@@ -35,13 +35,7 @@ var ready = function() {
                 cursor: null
             },
             retina: {
-                ratio: 2,
-                replaceSrc: function(item, ratio) {
-                    if (item.el.data('has-retina') == 'true') {
-                        return item.src.replace(/\.\w+$/,
-                            function(m) { return '@2x' + m; });
-                    }
-                }
+                ratio: 2
             },
             zoom: {
                 enabled: true,
