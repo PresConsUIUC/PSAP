@@ -20,9 +20,6 @@ body#format_id_guide_page {
       display: none;
     }
   }
-  .fancybox-title a {
-    color: #d0e0ff;
-  }
   img, video {
     margin-bottom:1em;
   }
@@ -30,14 +27,51 @@ body#format_id_guide_page {
     margin:1.5em 0em 2em 2em;
     padding-left:0em;
   }
-  .img-thumbnail {
-    margin:0px 5px 10px 5px;
-  }
   table {
     margin:1em 0em 1em 0em;
   }
   dd {
     margin:0px 0px 1em 1em;
+  }
+
+  .mfp-with-zoom {
+    figure {
+      display:block;
+      figcaption {
+        display: inline;
+      }
+    }
+    img {
+      max-width: 98%; /* max height is set in the js resize callback */
+    }
+  }
+  .mfp-close {
+    display:none;
+  }
+  /* add fade transition to Magnific Popup backdrop */
+  .mfp-with-zoom .mfp-container,
+  .mfp-with-zoom.mfp-bg {
+    opacity: 0;
+    -webkit-backface-visibility: hidden;
+    /* ideally, transition speed should match zoom duration */
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .mfp-with-zoom a {
+    color: #d0e0ff;
+  }
+  .mfp-with-zoom.mfp-ready .mfp-container {
+    opacity: 1;
+  }
+  .mfp-with-zoom.mfp-ready.mfp-bg {
+    opacity: 0.8;
+  }
+
+  .mfp-with-zoom.mfp-removing .mfp-container,
+  .mfp-with-zoom.mfp-removing.mfp-bg {
+    opacity: 0;
   }
 }
 

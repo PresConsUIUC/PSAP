@@ -9,12 +9,11 @@ Array.prototype.sum = function () {
 };
 
 var ready = function() {
-    /* TODO: get this working with fancybox or else get rid of it
     // lazy-load images that have a data-original attribute
     $('img[data-original]').each(function() {
         // provided by vendor/assets/javascripts/jquery.lazyload.js
         $(this).lazyload({ effect: 'fadeIn' });
-    });*/
+    });
 
     // if using a retina display, loop through all <img> tags and, if they have
     // a "data-has-retina" attribute, replace the "[filename].[ext]" in their

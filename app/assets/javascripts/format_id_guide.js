@@ -16,33 +16,47 @@ var ready = function() {
         $('div#page_content div.col-sm-9:first').append(
             $('div#page_content h1:first'));
 
-        // set up fancybox
+        // initialize Magnific Popup
         $('div#page_content img').each(function() {
-            $(this).wrap('<a class="fancybox" href="' + $(this).data('lightbox-src') + '"></a>');
+            $(this).wrap('<a class="magnific" href="' + $(this).data('lightbox-src') + '"></a>');
         });
 
-        // http://fancyapps.com/fancybox/#examples
-        $(".fancybox").fancybox({
-            parent: 'body', // required for turbolinks compatibility
-            beforeShow : function() {
-                var alt = this.element.find('img').attr('alt');
-                this.inner.find('img').attr('alt', alt);
-
-                //$('div.fancybox-wrap').removeClass('fancybox-type-inline').
-                //    addClass('fancybox-type-image');
-                //this.inner.css('overflow', 'visible');
-                //this.inner.find('img').addClass('fancybox-image');
-
-                var caption = this.element.next('figcaption').html();
-                //$('div.fancybox-skin').append('<div class="fancybox-title">' + caption + '</div>');
-                this.title = caption;
+        $('a.magnific').magnificPopup({
+            type: 'image',
+            mainClass: 'mfp-with-zoom',
+            closeOnContentClick: true,
+            alignTop: true,
+            showCloseBtn: false,
+            image: {
+                titleSrc: function(item) {
+                    return item.el.next('figcaption').html();
+                },
+                verticalFit: true,
+                cursor: null
             },
-            afterClose: function() {
-                $(".fancybox").show();
+            retina: {
+                ratio: 2,
+                replaceSrc: function(item, ratio) {
+                    if (item.el.data('has-retina') == 'true') {
+                        return item.src.replace(/\.\w+$/,
+                            function(m) { return '@2x' + m; });
+                    }
+                }
             },
-            helpers : {
-                title: {
-                    type: 'outside'
+            zoom: {
+                enabled: true,
+                duration: 300,
+                easing: 'ease-in-out', // CSS transition easing function
+            },
+            callbacks: {
+                resize: function() {
+                    var img = this.content.find('img');
+                    img.css('max-height', parseFloat(img.css('max-height')) * 0.95);
+
+                    //var figure = this.content.find('.mfp-figure');
+                    //figure.css('top', parseFloat(figure.css('top')) * 0.5);
+
+                    //img.css('padding-top', parseFloat(img.css('padding-top')) * 0.5);
                 }
             }
         });

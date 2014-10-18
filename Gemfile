@@ -39,7 +39,7 @@ gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
-gem 'fancybox2-rails'
+gem 'magnific-popup-rails'
 gem 'pg'
 
 group :development do
