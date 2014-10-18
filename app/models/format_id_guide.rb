@@ -6,7 +6,7 @@ class FormatIdGuide
   FOLDER = 'db/seed_data/FormatIDGuide-HTML'
   PROFILES = [
       {
-          quality: 50,
+          quality: 60,
           size: 300
       },
       {
