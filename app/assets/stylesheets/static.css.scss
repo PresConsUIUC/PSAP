@@ -38,6 +38,21 @@
   a {
     font-weight:600;
   }
+  div.psap-glossary-letter-links {
+    margin-bottom:1em;
+    table {
+      text-align:center;
+      width: 100%;
+      td {
+        border-right: 1px solid $gray-lighter;
+        height:2.5em;
+        width:3.703%;
+      }
+      td:last-child {
+        border-right: none;
+      }
+    }
+  }
   div.psap-glossary-letter-links.affix {
     background-color:white;
     border-bottom:1px solid $gray-lighter;

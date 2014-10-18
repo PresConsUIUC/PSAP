@@ -5,16 +5,20 @@
   <h1>Glossary</h1>
 
   <div class="psap-glossary-letter-links" data-spy="affix" data-offset-top="180">
-    <ul>
-      <% (['#'] + ('A'..'Z').to_a).each do |n| %>
-          <li><a href="#<%= n %>"><%= n %></a></li>
-      <% end %>
-    </ul>
+    <table>
+      <tr>
+        <% (['#'] + ('A'..'Z').to_a).each do |n| %>
+          <td><a href="#<%= n %>"><%= n %></a></td>
+        <% end %>
+      </tr>
+    </table>
   </div>
 
   <p>For examples and and more in-depth descriptions of paper, book, photographic, and audiovisual formats/processes, please check out our <%= link_to 'Format ID Guide', format_id_guide_path, target: '_blank' %>.</p>
 
   <dl>
+    <a id="#"></a>
+
     <dt id="1-layer print">1-layer print</dt>
     <dd>An early era photographic print with no binder or baryta layer&mdash;simply image material on a paper support&mdash;is given this designation (popularized by James Reilly). Examples include the Salt Print, Cyanotype, and Platinum/Palladium Print.</dd>
 
