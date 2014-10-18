@@ -25,7 +25,7 @@ var ready = function() {
             type: 'image',
             mainClass: 'mfp-with-zoom',
             closeOnContentClick: true,
-            alignTop: true,
+            alignTop: false,
             showCloseBtn: false,
             image: {
                 titleSrc: function(item) {
@@ -46,17 +46,13 @@ var ready = function() {
             zoom: {
                 enabled: true,
                 duration: 300,
-                easing: 'ease-in-out', // CSS transition easing function
+                easing: 'ease-in-out' // CSS transition easing function
             },
             callbacks: {
                 resize: function() {
+                    // without this, the title will be pushed below the viewport
                     var img = this.content.find('img');
-                    img.css('max-height', parseFloat(img.css('max-height')) * 0.95);
-
-                    //var figure = this.content.find('.mfp-figure');
-                    //figure.css('top', parseFloat(figure.css('top')) * 0.5);
-
-                    //img.css('padding-top', parseFloat(img.css('padding-top')) * 0.5);
+                    img.css('max-height', parseFloat(img.css('max-height')) * 0.94);
                 }
             }
         });
