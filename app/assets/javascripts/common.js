@@ -134,8 +134,15 @@ var ready = function() {
 
     Form.enableDynamicNestedEntities();
 
-    // Enable smooth scrolling when clicking anchors.
-    var top_padding = $('nav.navbar.navbar-default').height() + 10;
+    // Enable smooth scrolling when clicking anchors
+    smoothAnchorScroll(0);
+};
+
+function smoothAnchorScroll(offset) {
+    if (!offset && offset !== 0) {
+        offset = 0;
+    }
+    var top_padding = $('nav.navbar.navbar-default').height() + 10 + offset;
     var $root = $('html, body');
     $('a').click(function () {
         var href = $.attr(this, 'href');
@@ -146,7 +153,7 @@ var ready = function() {
         });
         return false;
     });
-};
+}
 
 /**
  * Updates the results count text. Called on document ready and in index.js.erb

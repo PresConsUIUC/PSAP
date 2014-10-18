@@ -1,5 +1,7 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
+        smoothAnchorScroll(0); // defined in common.js
+
         $('body').scrollspy({
             target: '#sections',
             offset: $('nav.navbar.navbar-default').height() + 15
@@ -9,6 +11,8 @@ var ready = function() {
             offset: { top: 160 }
         });
     } else if ($('body#format_id_guide_page').length) {
+        smoothAnchorScroll(0); // defined in common.js
+
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
 
