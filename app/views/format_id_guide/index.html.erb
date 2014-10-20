@@ -25,6 +25,7 @@
           <li class="active"><a href="#audiovisual">Audiovisual Media</a></li>
           <li><a href="#photo_image">Photo &amp; Image Material</a></li>
           <li><a href="#book_paper">Book &amp; Paper</a></li>
+          <li><a href="#supplementary">Supplementary</a></li>
         </ul>
       </nav>
     </div>
@@ -331,8 +332,8 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-          <%= link_to format_id_guide_category_path('photomechanical') do %>
-            <%= image_tag('lithograph_postcard03-misregistration-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+            <%= link_to format_id_guide_category_path('photomechanical') do %>
+              <%= image_tag('lithograph_postcard03-misregistration-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
               Photomechanical Print
             <% end %>
           </h3>
@@ -538,6 +539,80 @@
       </div>
 
     </div> <!-- #book_paper -->
+
+    <div id="supplementary">
+      <h2>Supplementary</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Policy | Procedure
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Collection Development Policy', format_id_guide_category_path('collectiondev') %></li>
+            <li><%= link_to 'Disaster Preparedness', format_id_guide_category_path('disasterprepare') %></li>
+            <li><%= link_to 'Disaster Resources Online', format_id_guide_category_path('disasterresources') %></li>
+            <li><%= link_to 'Environmental Guidelines', format_id_guide_category_path('environmentalguide') %></li>
+            <li><%= link_to 'Exhibition Guidelines', format_id_guide_category_path('exhibitguide') %></li>
+            <!-- TODO: <li><%= link_to 'Material Inspection & Cleaning', '' %></li>-->
+            <li><%= link_to 'Preservation Assessments & Surveys', format_id_guide_category_path('assessmentssurveys') %></li>
+            <li><%= link_to 'Preservation Planning', format_id_guide_category_path('presplanning') %></li>
+            <!-- TODO: <li><%= link_to 'Use & Access', '' %></li> -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Material | Format
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Adhesives', format_id_guide_category_path('adhesives') %></li>
+            <li><%= link_to 'Ink & Other Media', format_id_guide_category_path('inkothermedia') %></li>
+            <li><%= link_to 'Lamination v. Encapsulation', format_id_guide_category_path('laminationencapsulation') %></li>
+            <li><%= link_to 'Papyrus', format_id_guide_category_path('papyrus') %></li>
+            <li><%= link_to 'Parchment', format_id_guide_category_path('parchment') %></li>
+            <li><%= link_to 'Plastic Transparencies', format_id_guide_category_path('plastictransparencies') %></li>
+            <li><%= link_to 'Architectural Drawing Reproduction: Support Materials', format_id_guide_category_path('supportsarchrepros') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Audiovisual-Specific
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Record Protection Mechanisms', format_id_guide_category_path('recordprotection') %></li>
+            <li><%= link_to 'Magnetic Tape Binder Breakdown', format_id_guide_category_path('softbindersyn') %></li>
+            <li><%= link_to 'Other AV Media Type', format_id_guide_category_path('otherav') %></li>
+            <!-- TODO: <li><%= link_to 'Playback Equipment', '' %></li> -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            About the PSAP
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'About the PSAP', about_path, class: 'modal_view', data: { open: about_path } %></li>
+          </ul>
+        </div>
+      </div>
+
+    </div> <!-- #supplementary -->
 
   </div> <!-- .tab-content -->
 </div>
