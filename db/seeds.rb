@@ -646,7 +646,7 @@ Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.htm*').each do |file|
   File.open(file) do |contents|
     doc = Nokogiri::HTML(contents)
     html = doc.xpath('//body/*').to_html
-    FormatInfo.create!(name: doc.at_css('h1').text,
+    StaticPage.create!(name: doc.at_css('h1').text,
                        format_category: File.basename(file, '.*'),
                        format_class: File.basename(File.dirname(file)),
                        html: html)

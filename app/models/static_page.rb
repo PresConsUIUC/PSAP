@@ -1,4 +1,4 @@
-class FormatInfo < ActiveRecord::Base
+class StaticPage < ActiveRecord::Base
 
   before_save :update_searchable_html
 
@@ -13,7 +13,7 @@ class FormatInfo < ActiveRecord::Base
     query = query.delete('\'":|!@#$%^*()') # strip certain characters
     query = query.gsub('&', ' ') # "B&W" won't return anything but "B W" will
     query = query.gsub(' ', ' & ') # replace spaces with boolean AND
-    query = FormatInfo.sanitize(query)
+    query = StaticPage.sanitize(query)
 
     # limit/offset are not configurable because there are not enough potential
     # results to warrant it. And there is no need to explicitly call ts_rank
@@ -23,7 +23,7 @@ class FormatInfo < ActiveRecord::Base
       "ts_headline(searchable_html, keywords, "\
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\
         "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') AS highlight "\
-    "FROM format_infos, to_tsquery(#{query}) as keywords "\
+    "FROM static_pages, to_tsquery(#{query}) as keywords "\
     "WHERE searchable_html @@ keywords "\
     "LIMIT 50;"
 

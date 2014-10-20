@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141015182317) do
+ActiveRecord::Schema.define(version: 20141020203813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,16 +157,6 @@ ActiveRecord::Schema.define(version: 20141015182317) do
   end
 
   add_index "extents", ["resource_id"], name: "index_extents_on_resource_id", using: :btree
-
-  create_table "format_infos", force: true do |t|
-    t.integer  "format_class"
-    t.string   "format_category"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "html"
-    t.text     "searchable_html"
-  end
 
   create_table "format_ink_media_types", force: true do |t|
     t.string   "name"
@@ -326,6 +316,16 @@ ActiveRecord::Schema.define(version: 20141015182317) do
   end
 
   add_index "roles", ["name"], name: "index_roles_on_name", unique: true, using: :btree
+
+  create_table "static_pages", force: true do |t|
+    t.integer  "format_class"
+    t.string   "format_category"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "html"
+    t.text     "searchable_html"
+  end
 
   create_table "subjects", force: true do |t|
     t.string   "name",        null: false
