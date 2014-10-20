@@ -642,7 +642,7 @@ end
 
 # Format ID Guide HTML pages
 puts 'Ingesting Format ID Guide HTML pages...'
-Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.html').each do |file|
+Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.htm*').each do |file|
   File.open(file) do |contents|
     doc = Nokogiri::HTML(contents)
     html = doc.xpath('//body/*').to_html

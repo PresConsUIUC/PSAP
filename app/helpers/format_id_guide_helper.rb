@@ -10,10 +10,12 @@ module FormatIdGuideHelper
 
     doc.css('a').each do |anchor|
       # process internal links
-      if anchor['href'] and anchor['href'][0..3] != 'http' and
+      if anchor['href'] and !anchor['href'].start_with?('http') and
           anchor['href'][0] != '#'
+        parts = anchor['href'].split('#')
         anchor['href'] = format_id_guide_path + '/' +
-            File.basename(anchor['href'], '.*')
+            File.basename(parts[0], '.*')
+        anchor['href'] += '#' + parts[1] if parts.length > 1
       end
     end
 

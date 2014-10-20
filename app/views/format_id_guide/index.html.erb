@@ -1,5 +1,11 @@
 <% provide(:body_id, 'format_id_guide') %>
 <% provide(:title, 'Format ID Guide') %>
+<%
+   thumbs = {
+           height: 60,
+           width: 60
+   }
+%>
 
 <div class="row">
   <div class="col-sm-9">
@@ -16,7 +22,7 @@
     <div id="sections">
       <nav>
         <ul class="nav nav-pills nav-stacked">
-          <li class="active"><a href="#audiovisual">Audiovisual</a></li>
+          <li class="active"><a href="#audiovisual">Audiovisual Media</a></li>
           <li><a href="#photo_image">Photo &amp; Image Material</a></li>
           <li><a href="#book_paper">Book &amp; Paper</a></li>
         </ul>
@@ -27,11 +33,16 @@
   <div class="tab-content col-sm-9">
 
     <div id="audiovisual">
-      <h2>Audiovisual</h2>
+      <h2>Audiovisual Media</h2>
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Film', format_id_guide_category_path('film') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('film') do %>
+              <%= image_tag('film-16mm-reversalfilm-ucla-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Film
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -46,7 +57,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Audiotape', format_id_guide_category_path('audiotape') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('audiotape') do %>
+              <%= image_tag('audio-quarterin-or-group-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Audiotape
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -76,7 +92,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Videotape', format_id_guide_category_path('videotape') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('videotape') do %>
+              <%= image_tag('vhs-apple-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Videotape
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -111,7 +132,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Phonograph Record', format_id_guide_category_path('phonodisc') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('phonodisc') do %>
+              <%= image_tag('record-vinyl-microgrooves02-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Phonograph Record
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -125,7 +151,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Optical Media', format_id_guide_category_path('opticalmedia') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('opticalmedia') do %>
+              <%= image_tag('compactdisc-gold-jewelcase-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Optical Media
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -139,7 +170,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Grooved Cylinder', format_id_guide_category_path('cylinder') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('cylinder') do %>
+              <%= image_tag('cylinder-plastic-onside-edge-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Grooved Cylinder
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -151,21 +187,17 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Wire Recording', format_id_guide_category_path('wire') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('wire') do %>
+              <%= image_tag('wire-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Wire Recording
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
             <li><%= link_to 'Wire Audio', format_id_guide_category_path('wire') %></li>
           </ul>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Other Media Types', format_id_guide_category_path('TODO:FIX') %></h3>
-        </div>
-        <div class="panel-body">
-          <!-- TODO: keep this? -->
         </div>
       </div>
 
@@ -176,7 +208,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Photographic Print', format_id_guide_category_path('photoprint') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('photoprint') do %>
+              <%= image_tag('Silver-DyeBleach_01_front_45_8x10_ULTRALARGE-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Photographic Print
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -216,7 +253,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Cased/Direct Photograph', format_id_guide_category_path('directimage') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('directimage') do %>
+              <%= image_tag('tintype2_hand_tinted-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Cased/Direct Photograph
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -229,7 +271,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Negative', format_id_guide_category_path('negative') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('negative') do %>
+              <%= image_tag('negative-silvergelatin-nitrate-backlit-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Negative
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -254,7 +301,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Slide/Transparency', format_id_guide_category_path('slide') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('slide') do %>
+              <%= image_tag('filmslide-color-03_d-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Slide/Transparency
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -278,7 +330,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Photomechanical Print', format_id_guide_category_path('photomechanical') %></h3>
+          <h3 class="panel-title">
+          <%= link_to format_id_guide_category_path('photomechanical') do %>
+            <%= image_tag('lithograph_postcard03-misregistration-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Photomechanical Print
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -293,7 +350,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Digital Print', format_id_guide_category_path('digitalprint') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('digitalprint') do %>
+              <%= image_tag('inkjet-uncoatedpaper-macro1-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Digital Print
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -305,7 +367,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><%= link_to 'Microform', format_id_guide_category_path('microform') %></h3>
+          <h3 class="panel-title">
+            <%= link_to format_id_guide_category_path('microform') do %>
+              <%= image_tag('microfilm01-unspooled-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Microform
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -332,7 +399,6 @@
           </div>
         </div>
       </div>
-
     </div> <!-- #photo_image -->
 
     <div id="book_paper">
@@ -340,22 +406,27 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Paper &mdash; Unbound</h3>
+          <h3 class="panel-title">
+            <%= link_to '' do %>
+              <%= image_tag('paper-fibers-inkonpage-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Unbound Paper
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Paper Types</h4>
+              <h4><%= link_to 'Paper Types', format_id_guide_category_path('paper') %></h4>
               <ul>
                 <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
-                <li><%= link_to 'Acid-Free Paper (Rag paper; Permanent paper)', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %></li>
+                <li><%= link_to 'Acid-Free Paper', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
                 <li><%= link_to 'Coated Paper', format_id_guide_category_path('paper', anchor: 'coatedpaper') %></li>
                 <li><%= link_to 'Proprietary Paper', format_id_guide_category_path('paper', anchor: 'proprietarypaper') %></li>
                 <li><%= link_to 'Tracing/Transparent Paper', format_id_guide_category_path('paper', anchor: 'tracingpaper') %></li>
               </ul>
             </div>
             <div class="col-sm-6">
-              <h4>Ink and Other Media</h4>
+              <h4><%= link_to 'Ink & Other Media', format_id_guide_category_path('inkothermedia') %></h4>
               <ul>
                 <li><%= link_to 'Carbon Black Ink', format_id_guide_category_path('inkothermedia', anchor: 'carbonblackink') %></li>
                 <li><%= link_to 'Iron Gall Ink', format_id_guide_category_path('inkothermedia', anchor: 'irongallink') %></li>
@@ -418,12 +489,17 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Paper &mdash; Book/Bound</h3>
+          <h3 class="panel-title">
+            <%= link_to '' do %>
+              <%= image_tag('binding-periodical-handsewthroughfoldontape2a_cropped-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              Bound/Book
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Paper Types</h4>
+              <h4><%= link_to 'Paper Types', format_id_guide_category_path('paper') %></h4>
               <ul>
                 <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
                 <li><%= link_to 'Acid-Free Paper', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
@@ -433,7 +509,7 @@
               </ul>
             </div>
             <div class="col-sm-6">
-              <h4>Cover and Binding Materials</h4>
+              <h4>Cover &amp; Binding Materials</h4>
               <ul>
                 <li><%= link_to 'Leather', format_id_guide_category_path('bookbound', anchor: 'leather') %> (sheep, goat, calf)</li>
                 <li><%= link_to 'Cloth', format_id_guide_category_path('bookbound', anchor: 'clothcover') %> (starch-filled, pyroxylin-treated, acrylic-coated)</li>
@@ -463,6 +539,7 @@
           </div>
         </div>
       </div>
+
     </div> <!-- #book_paper -->
 
   </div> <!-- .tab-content -->

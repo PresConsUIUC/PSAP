@@ -23,7 +23,7 @@ class FormatIdGuide
 
   def process_images
     tmppath = '/tmp/fidg.tmp.html'
-    Dir.glob(FOLDER + '/**/*.html', File::FNM_CASEFOLD).each do |htmlpath|
+    Dir.glob(FOLDER + '/**/*.htm*', File::FNM_CASEFOLD).each do |htmlpath|
       changed = false
       File.open(htmlpath, 'r') { |html|
         puts "**** #{htmlpath}"

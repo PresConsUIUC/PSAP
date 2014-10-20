@@ -18,6 +18,7 @@ var ready = function() {
     // if using a retina display, loop through all <img> tags and, if they have
     // a "data-has-retina" attribute, replace the "[filename].[ext]" in their
     // "src" attribute with "[filename]@2x.[ext]"
+    // TODO: do this before document ready
     if (window.devicePixelRatio > 1) {
         $('img').each(function() {
             if ($(this).data('has-retina')) {
@@ -145,6 +146,10 @@ function smoothAnchorScroll(offset) {
     var top_padding = $('nav.navbar.navbar-default').height() + 10 + offset;
     var $root = $('html, body');
     $('a').click(function () {
+        // avoid interfering with Bootstrap collapse panels
+        if ($(this).data('toggle') == 'collapse') {
+            return;
+        }
         var href = $.attr(this, 'href');
         $root.animate({
             scrollTop: $(href).offset().top - top_padding
