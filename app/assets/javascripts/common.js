@@ -144,19 +144,24 @@ function smoothAnchorScroll(offset) {
         offset = 0;
     }
     var top_padding = $('nav.navbar.navbar-default').height() + 10 + offset;
-    var $root = $('html, body');
-    $('a').click(function () {
+    var root = $('html, body');
+
+    var anchors = $('a[href^="#"]');
+    anchors.off('click');
+
+    anchors.on('click', function(e) {
         // avoid interfering with Bootstrap collapse panels
         if ($(this).data('toggle') == 'collapse') {
             return;
         }
-        var href = $.attr(this, 'href');
-        $root.animate({
-            scrollTop: $(href).offset().top - top_padding
-        }, 500, function () {
-            window.location.hash = href;
+        e.preventDefault();
+
+        var target = this.hash;
+        root.stop().animate({
+            'scrollTop': $(target).offset().top - top_padding
+        }, 500, 'swing', function () {
+            window.location.hash = target;
         });
-        return false;
     });
 }
 
