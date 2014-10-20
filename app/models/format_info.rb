@@ -1,5 +1,7 @@
 class FormatInfo < ActiveRecord::Base
 
+  before_save :update_searchable_html
+
   def to_param
     format_category
   end
@@ -28,16 +30,19 @@ class FormatInfo < ActiveRecord::Base
     ActiveRecord::Base.connection.execute(sql)
   end
 
+  private
+
   ##
-  # Strips headings, images, etc. before stripping tags, yielding searchable
-  # text.
+  # Copies the "html" property into the "searchable_html" property, stripping
+  # headings, images, etc. before stripping tags.
   #
-  def self.searchable_html(html)
+  def update_searchable_html
     doc = Nokogiri::HTML.fragment(html)
     %w(img a h1 h2 h3 h4 h5 h6 th dt).each do |tag|
       doc.search(tag).remove
     end
-    ActionController::Base.helpers.strip_tags(doc.to_html)
+    self.searchable_html = ActionController::Base.
+        helpers.strip_tags(doc.to_html).gsub('  ', ' ').tr("\"\n", '')
   end
 
 end

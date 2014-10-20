@@ -649,8 +649,7 @@ Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.html').each do |file|
     FormatInfo.create!(name: doc.at_css('h1').text,
                        format_category: File.basename(file, '.*'),
                        format_class: File.basename(File.dirname(file)),
-                       html: html,
-                       searchable_html: FormatInfo::searchable_html(html))
+                       html: html)
   end
 end
 
