@@ -4,4 +4,9 @@ namespace :psap do
     FormatIdGuide.new.process_images
   end
 
+  desc 'Updates Format ID Guide content in the database.'
+  task update_fidg: :environment do
+    FormatIdGuide.new.reseed
+  end
+
 end

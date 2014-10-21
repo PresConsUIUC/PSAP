@@ -641,37 +641,8 @@ aq_sheets.each do |sheet|
 end
 
 # Format ID Guide HTML pages
-puts 'Ingesting Format ID Guide HTML pages...'
-Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.htm*').each do |file|
-  File.open(file) do |contents|
-    doc = Nokogiri::HTML(contents)
-    html = doc.xpath('//body/*').to_html
-    StaticPage.create!(name: doc.at_css('h1').text,
-                       format_category: File.basename(file, '.*'),
-                       format_class: File.basename(File.dirname(file)),
-                       html: html)
-  end
-end
-
-# Format ID Guide images/videos
-puts 'Copying Format ID Guide images & videos...'
-fidg_images_path = 'app/assets/images/format_id_guide'
-FileUtils.rm_rf(fidg_images_path)
-FileUtils.mkdir_p(fidg_images_path)
-%w(jpg jpeg mp4 png tif tiff).each do |ext|
-  # File::FNM_CASEFOLD == case insensitive
-  Dir.glob('db/seed_data/FormatIDGuide-HTML/**/*.' + ext, File::FNM_CASEFOLD).each do |file|
-    dest_path = fidg_images_path + '/' +
-        File.basename(file, '.*').gsub(' ', '_').gsub('%20', '_') +
-        File.extname(file).downcase
-    begin
-      FileUtils.cp(file, dest_path)
-      File.chmod(0644, dest_path)
-    rescue => e
-      puts "ERROR: #{e}"
-    end
-  end
-end
+puts 'Ingesting Format ID Guide content...'
+FormatIdGuide.new.reseed
 
 puts 'Creating the admin user...'
 
