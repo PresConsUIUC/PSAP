@@ -8,7 +8,7 @@ class FormatIdGuide
   PROFILES = [
       {
           quality: 60,
-          size: 300
+          size: 300 # TODO: separate width & height dimensions
       },
       {
           quality: 75,
