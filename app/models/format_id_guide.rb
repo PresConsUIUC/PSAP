@@ -16,6 +16,7 @@ class FormatIdGuide
       }
   ]
   IMAGE_EXTENSIONS = %w(jpg jpeg png tif tiff)
+  VIDEO_EXTENSIONS = %w(mp4 webm)
 
   def initialize
     @referenced_images = [] # images that are referenced in src attributes
@@ -23,6 +24,8 @@ class FormatIdGuide
   end
 
   def process_images
+    # TODO: also process vp8 video derivatives, e.g.: ffmpeg -i Carbon_02.mp4 -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k Carbon_02.webm
+
     tmppath = '/tmp/fidg.tmp.html'
     Dir.glob(FOLDER + '/**/*.htm*', File::FNM_CASEFOLD).each do |htmlpath|
       changed = false
@@ -129,7 +132,7 @@ class FormatIdGuide
 
     # Images/videos
     FileUtils.mkdir_p(fidg_images_path)
-    %w(jpg jpeg mp4 png tif tiff).each do |ext|
+    (IMAGE_EXTENSIONS + VIDEO_EXTENSIONS).each do |ext|
       # File::FNM_CASEFOLD == case insensitive
       Dir.glob(File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML', '**', '*.' + ext),
                File::FNM_CASEFOLD).each do |file|
