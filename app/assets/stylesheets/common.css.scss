@@ -214,6 +214,11 @@ header {
     font-size:0.9em;
     font-weight:200;
   }
+  @media screen and (max-width: 450px) {
+    h1 small {
+      display:none;
+    }
+  }
   img#title_logo {
     float:left;
     margin-right:1em;
