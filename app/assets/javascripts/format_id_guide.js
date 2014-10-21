@@ -7,9 +7,11 @@ var ready = function() {
             offset: $('nav.navbar.navbar-default').height() + 15
         });
 
-        $('#sections').affix({
-            offset: { top: 160 }
-        });
+        if ($('body').width() > 600) {
+            $('#sections').affix({
+                offset: { top: 160 }
+            });
+        }
     } else if ($('body#format_id_guide_page').length) {
         smoothAnchorScroll(0); // defined in common.js
 
