@@ -1,18 +1,24 @@
 ##
-# Used by the psap:*_fidg rake tasks.
+# Used by several "psap:" rake tasks to process and ingest Format ID Guide
+# content from the HTML files in db/seed_data/FormatIDGuide-HTML.
 #
 class FormatIdGuide
 
-  FOLDER = 'db/seed_data/FormatIDGuide-HTML'
-  # psap:process_fidg and psap:seed_fidg need to be re-run after changing this.
+  SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML')
+  ASSET_PATH = File.join(Rails.root, 'app', 'assets', 'images', 'format_id_guide')
+  DEST_PATH = ASSET_PATH
   PROFILES = [
       {
-          quality: 60,
-          size: 300 # TODO: separate width & height dimensions
+          quality: 70,
+          width: 320, # max
+          height: 320, # max
+          type: 'thumb'
       },
       {
-          quality: 75,
-          size: 1000
+          quality: 80,
+          width: 1500, # max
+          height: 1000, # max
+          type: 'full'
       }
   ]
   IMAGE_EXTENSIONS = %w(jpg jpeg png tif tiff)
@@ -23,89 +29,103 @@ class FormatIdGuide
     @missing_images = [] # referenced images that don't exist on disk
   end
 
-  def process_images
-    # TODO: also process vp8 video derivatives, e.g.: ffmpeg -i Carbon_02.mp4 -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k Carbon_02.webm
+  ##
+  # Iterates through all of the HTML files in search of <img> tags, and
+  # generates derivative images based on their "src" attributes.
+  #
+  def generate_derivatives
+    FileUtils.rm_rf(ASSET_PATH) if File.exists?(ASSET_PATH)
+    FileUtils.mkdir_p(ASSET_PATH)
 
-    tmppath = '/tmp/fidg.tmp.html'
-    Dir.glob(FOLDER + '/**/*.htm*', File::FNM_CASEFOLD).each do |htmlpath|
-      changed = false
-      File.open(htmlpath, 'r') { |html|
-        puts "**** #{htmlpath}"
-        doc = Nokogiri::HTML(html)
+    Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
+      File.open(htmlpath, 'r') { |content|
+        puts "\n****** #{File.basename(htmlpath)} ******"
+        doc = Nokogiri::HTML(content)
+        # images
         doc.css('img').each do |img|
-          img_path = path_of_image(File.basename(img['src']))
-          @referenced_images << img_path if img_path
-          unless File.basename(img['src'], '.*').end_with?('-300')
-            if generate_images_for(File.basename(img['src']))
-              newimgsrc = File.join('images',
-                                    File.basename(img['src'], '.*') + '-300' +
-                                        File.extname(img['src']).downcase)
-              img['src'] = newimgsrc
-              dimensions = `convert "#{path_of_image(File.basename(newimgsrc))}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
-              img['width'] = dimensions[0]
-              img['height'] = dimensions[1]
-              changed = true
-            end
+          source_img_path = source_path_of_file(File.basename(img['src']))
+          @referenced_images << source_img_path if source_img_path
+          generate_images_for(File.basename(img['src']))
+        end
+        # videos
+        doc.css('video source').each do |video|
+          if video['type'] == 'video/mp4'
+            source_video_path = source_path_of_file(File.basename(video['src']))
+            @referenced_images << source_video_path if source_video_path
+            generate_images_for(File.basename(video['src']))
           end
         end
-        if changed
-          File.open(tmppath, 'w') { |tmpfile|
-            tmpfile << doc.to_html
-          }
-        end
       }
-      FileUtils.mv(tmppath, htmlpath) if changed and File.exists?(tmppath)
     end
-
     puts "Missing images:\n" + @missing_images.join("\n") + "\n\n"
     puts "Unused images:\n" + unused_images.join("\n")
   end
 
   ##
-  # @param image_filename An image filename from an <img src> tag, like
-  # image-300.jpg
+  # Generates derivative images for a given image, saving them in the assets
+  # folder.
+  #
+  # @param image_filename An image filename from an <img src> tag
+  # @return Boolean True if the image was generated; false if the image in the
+  # src tag is missing on disk
   #
   def generate_images_for(image_filename)
-    imgsrcpath = path_of_image(image_filename)
-    if imgsrcpath
-      puts File.basename(imgsrcpath)
-      imgsrcdirname = File.dirname(imgsrcpath)
-      imgsrcbasename = File.basename(imgsrcpath, '.*')
-      imgsrcextname = File.extname(imgsrcpath)
-
-      if File.exists?(File.join(imgsrcdirname, imgsrcbasename + '@2x' + imgsrcextname))
-        imgsrcpath = File.join(imgsrcdirname, imgsrcbasename + '@2x' + imgsrcextname)
-      end
+    source_image_path = source_path_of_file(image_filename)
+    if source_image_path
+      puts File.basename(source_image_path)
+      imgsrcbasename = File.basename(source_image_path, '.*')
+      imgsrcextname = File.extname(source_image_path)
+      FileUtils.mkdir_p(ASSET_PATH)
 
       PROFILES.each do |profile|
-        non_retina_pathname = File.join(
-            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}#{imgsrcextname.downcase}")
-        retina_pathname = File.join(
-            imgsrcdirname, "#{imgsrcbasename}-#{profile[:size]}@2x#{imgsrcextname.downcase}")
+        non_retina_dest_pathname = File.join(
+            ASSET_PATH, "#{imgsrcbasename}-#{profile[:width]}#{imgsrcextname.downcase}")
+        retina_dest_pathname = File.join(
+            ASSET_PATH, "#{imgsrcbasename}-#{profile[:width]}@2x#{imgsrcextname.downcase}")
 
-        unless File.exists?(non_retina_pathname)
-          system "convert \"#{imgsrcpath}\" -quality #{profile[:quality]} "\
-          "-colorspace RGB -resize #{profile[:size]}x#{profile[:size]} "\
-          "\"#{non_retina_pathname}\""
+        unless File.exists?(non_retina_dest_pathname)
+          # \> will resize only larger-to-smaller
+          system "convert \"#{source_image_path}\" -quality #{profile[:quality]} "\
+          "-strip -resize #{profile[:width]}x#{profile[:height]}\\> "\
+          "\"#{non_retina_dest_pathname}\""
         end
-        unless File.exists?(retina_pathname)
-          system "convert \"#{imgsrcpath}\" -quality #{profile[:quality]} "\
-          "-colorspace RGB -resize #{profile[:size] * 2}x#{profile[:size] * 2} "\
-          "\"#{retina_pathname}\""
+        unless File.exists?(retina_dest_pathname)
+          system "convert \"#{source_image_path}\" -quality #{profile[:quality]} "\
+          "-strip -resize #{profile[:width] * 2}x#{profile[:height] * 2}\\> "\
+          "\"#{retina_dest_pathname}\""
         end
       end
-
-      newimgsrcpath = imgsrcpath.gsub('@2x', '')
-      FileUtils.mv(imgsrcpath, newimgsrcpath) if imgsrcpath != newimgsrcpath
       return true
     end
     @missing_images << image_filename if image_filename
     false
   end
 
-  def path_of_image(filename)
-    IMAGE_EXTENSIONS.each do |ext|
-      Dir.glob(File.join(FOLDER, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
+  ##
+  # @param video_filename A video filename from a <source src> tag
+  # @return Boolean True if the video was generated; false if the video in the
+  # src tag is missing on disk
+  #
+  def generate_videos_for(video_filename)
+    videosrcpath = source_path_of_file(video_filename)
+    if videosrcpath
+      puts File.basename(videosrcpath)
+      videosrcbasename = File.basename(videosrcpath, '.*')
+      videodestpath = File.join(ASSET_PATH, "#{videosrcbasename}.webm")
+
+      # WebM/VP8
+      unless File.exists?(videodestpath)
+        `ffmpeg -i #{videosrcpath} -loglevel panic -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k #{videodestpath}`
+      end
+      return true
+    end
+    @missing_images << video_filename if video_filename
+    false
+  end
+
+  def source_path_of_file(filename)
+    (IMAGE_EXTENSIONS + VIDEO_EXTENSIONS).each do |ext|
+      Dir.glob(File.join(SOURCE_PATH, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
         return path if File.basename(path).downcase == filename.downcase
       end
     end
@@ -114,14 +134,29 @@ class FormatIdGuide
 
   def reseed
     StaticPage.destroy_all # TODO: destroy only FIDG pages
-    fidg_images_path = File.join(Rails.root, 'app', 'assets', 'images',
-                                 'format_id_guide')
-    FileUtils.rm_rf(fidg_images_path)
 
     # HTML pages
-    Dir.glob(File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML', '**', '*.htm*')).each do |file|
+    Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
       File.open(file) do |contents|
         doc = Nokogiri::HTML(contents)
+        # inject image widths & heights
+        doc.css('img').each do |img|
+          thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
+          img['src'] = "#{File.basename(img['src'], '.*')}-#{thumb_width}#{File.extname(img['src']).downcase}"
+          puts "#{img['src']}"
+          dimensions = `convert "#{ASSET_PATH}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
+          img['width'] = dimensions[0]
+          img['height'] = dimensions[1]
+        end
+
+        # add other video formats
+        doc.css('video').each do |video|
+          source = Nokogiri::XML::Node.new('source', doc)
+          source['src'] = "#{File.basename(video.children[0]['src'], '.*')}.webm"
+          source['type'] = 'video/webm'
+          video.add_child(source)
+        end
+
         html = doc.xpath('//body/*').to_html
         StaticPage.create!(name: doc.at_css('h1').text,
                            format_category: File.basename(file, '.*'),
@@ -130,27 +165,26 @@ class FormatIdGuide
       end
     end
 
-    # Images/videos
-    FileUtils.mkdir_p(fidg_images_path)
-    (IMAGE_EXTENSIONS + VIDEO_EXTENSIONS).each do |ext|
-      # File::FNM_CASEFOLD == case insensitive
-      Dir.glob(File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML', '**', '*.' + ext),
-               File::FNM_CASEFOLD).each do |file|
-        dest_path = fidg_images_path + '/' +
-            File.basename(file, '.*').gsub(' ', '_').gsub('%20', '_') +
-            File.extname(file).downcase
-        FileUtils.cp(file, dest_path)
-        File.chmod(0644, dest_path)
-      end
+    # Copy source videos
+    # File::FNM_CASEFOLD == case insensitive
+    Dir.glob(File.join(SOURCE_PATH, '**', '*.mp4'),
+             File::FNM_CASEFOLD).each do |file|
+      dest_path = ASSET_PATH + '/' + File.basename(file)
+      FileUtils.cp(file, dest_path)
+      File.chmod(0644, dest_path)
     end
   end
 
   private
 
+  ##
+  # Takes a pathname like /path/to/image-300.jpg or /path/to/image-300@2x.jpg
+  # and returns the master filename: image.jpg.
+  #
   def master_filename(path)
-    name = File.basename(path, '.*').gsub('@2x')
+    name = File.basename(path, '.*').gsub('@2x', '')
     PROFILES.each do |profile|
-      name = name.gsub('-' + profile[:size])
+      name = name.gsub("-#{profile[:width]}", '')
     end
     name
   end
@@ -158,10 +192,10 @@ class FormatIdGuide
   def unused_images
     unused = []
     IMAGE_EXTENSIONS.each do |ext|
-      Dir.glob(File.join(FOLDER, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
-        master_filename = master_filename(path)
+      # File::FNM_CASEFOLD == case insensitive
+      Dir.glob(File.join(SOURCE_PATH, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
         unused << path unless @referenced_images.map{ |r| master_filename(r) }.
-            include?(master_filename)
+            include?(master_filename(path))
       end
     end
     unused

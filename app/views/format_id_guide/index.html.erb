@@ -489,7 +489,6 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-
             <%= image_tag('binding-periodical-handsewthroughfoldontape2a_cropped-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
             Bound/Book
           </h3>
@@ -546,6 +545,20 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
+            Preservation Self-Assessment Program
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'About the PSAP', about_path, class: 'modal_view', data: { open: about_path } %></li>
+            <!-- TODO: link user manual and other docs -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
             Policy | Procedure
           </h3>
         </div>
@@ -578,7 +591,7 @@
             <li><%= link_to 'Papyrus', format_id_guide_category_path('papyrus') %></li>
             <li><%= link_to 'Parchment', format_id_guide_category_path('parchment') %></li>
             <li><%= link_to 'Plastic Transparencies', format_id_guide_category_path('plastictransparencies') %></li>
-            <li><%= link_to 'Architectural Drawing Reproduction: Support Materials', format_id_guide_category_path('supportsarchrepros') %></li>
+            <li><%= link_to 'Drawing Reproduction: Support Materials', format_id_guide_category_path('supportsarchrepros') %></li>
           </ul>
         </div>
       </div>
@@ -602,13 +615,14 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-            Preservation Self-Assessment Program
+            Identification Cheatsheets
           </h3>
         </div>
         <div class="panel-body">
           <ul>
-            <li><%= link_to 'About the PSAP', about_path, class: 'modal_view', data: { open: about_path } %></li>
-            <!-- TODO: link user manual and other docs -->
+            <li><%= link_to 'Photographic & Image Materials', format_id_guide_category_path('summary-photo') %></li>
+            <li><%= link_to 'Architectural Drawing Reproductions', format_id_guide_category_path('summary-archdrawrepro') %></li>
+            <li><%= link_to 'Office Prints/Copies', format_id_guide_category_path('summary-officeprintcopy') %></li>
           </ul>
         </div>
       </div>
