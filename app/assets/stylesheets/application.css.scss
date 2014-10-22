@@ -9,7 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require bootstrap-typeahead-rails
- *= require fancybox
+ *= require magnific-popup
  *= require_self
  */
 
@@ -26,5 +26,4 @@
 @import "report.css.scss";
 @import "resources.css.scss";
 @import "static.css.scss";
-@import "text_anchors.css.scss";
 @import "users.css.scss";

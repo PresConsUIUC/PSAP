@@ -21,22 +21,12 @@ test:
   password: psap
   template: template1
 
-staging:
-  adapter: postgresql
-  host: /tmp
-  database: <%= begin IO.read("/home/psap/.db_staging_name") rescue "" end %>
-  min_messages: warning
-  encoding: unicode
-  username: <%= begin IO.read("/home/psap/.db_staging_username") rescue "" end %>
-  password: <%= begin IO.read("/home/psap/.db_staging_password") rescue "" end %>
-  template: template1
-
 production:
   adapter: postgresql
   host: /tmp
-  database: <%= begin IO.read("/home/psap/.db_production_name") rescue "" end %>
+  database: psap
   min_messages: warning
   encoding: unicode
-  username: <%= begin IO.read("/home/psap/.db_production_username") rescue "" end %>
-  password: <%= begin IO.read("/home/psap/.db_production_password") rescue "" end %>
+  username: <%= begin IO.read("/home/psap/.db_username") rescue "" end %>
+  password: <%= begin IO.read("/home/psap/.db_password") rescue "" end %>
   template: template1

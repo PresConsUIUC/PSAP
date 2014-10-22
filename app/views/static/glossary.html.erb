@@ -4,15 +4,19 @@
 
   <h1>Glossary</h1>
 
-  <ul>
-    <% ('A'..'Z').each do |n| %>
-      <li><a href="#<%= n %>"><%= n %></a></li>
-    <% end %>
-  </ul>
+  <div id="psap-glossary-letter-links">
+    <ul class="nav nav-pills">
+      <% (['1-9'] + ('A'..'Z').to_a).each_with_index do |n, index| %>
+        <li <%= index == 0 ? 'class=active' : '' %>><a href="#<%= n %>"><%= n %></a></li>
+      <% end %>
+    </ul>
+  </div>
 
   <p>For examples and and more in-depth descriptions of paper, book, photographic, and audiovisual formats/processes, please check out our <%= link_to 'Format ID Guide', format_id_guide_path, target: '_blank' %>.</p>
 
   <dl>
+    <h2 id="1-9">1-9</h2>
+
     <dt id="1-layer print">1-layer print</dt>
     <dd>An early era photographic print with no binder or baryta layer&mdash;simply image material on a paper support&mdash;is given this designation (popularized by James Reilly). Examples include the Salt Print, Cyanotype, and Platinum/Palladium Print.</dd>
 
@@ -22,7 +26,7 @@
     <dt id="3-layer print">3-layer print</dt>
     <dd>An early era photographic print with a baryta layer, binder, and image material on a paper support&mdash;is given this designation (popularized by James Reilly). Examples include the glossy Collodion Print, Matte Collodion Print, Gelatin POP Print, and Silver Gelatin Print.</dd>
 
-    <a id="A"></a>
+    <h2 id="A">A</h2>
 
     <dt id="Abrasion">Abrasion</dt>
     <dd>Surface damage caused by friction, resulting in a scrape or scuff mark. In some cases, this may lead to information loss.</dd>
@@ -100,7 +104,7 @@
     <dt id="Authority file">Authority file, or Authority list</dt>
     <dd>A compilation of records that describe the preferred form of headings for use in a catalog, along with cross-references for other forms of headings. Examples include Library of Congress Subject Headings (LCSH) and Art and Architecture Thesaurus (AAT), among others (Pearce-Moses, 2005).</dd>
 
-    <a id="B"></a>
+    <h2 id="B">B</h2>
 
     <dt id="Backing film">Backing film, or Substrate</dt>
     <dd>The layer that supports the magnetic layer in a magnetic tape, most commonly made of polyethylene terephthalate (PET) (Bay Area Video Coalition, 2009). </dd>
@@ -156,7 +160,7 @@
     <dt id="Burn-through">Burn-through</dt>
     <dd>Term referring to the darkening on the back side of an inked area caused by ink corrosion rather than ink’s intended penetration.</dd>
 
-    <a id="C"></a>
+    <h2 id="C">C</h2>
 
     <dt id="Calendering">Calendering</dt>
     <dd>Refers to two similar finishing processes for cloth and machine-made papers producing more smooth and glossy surfaces. This was achieved through pressure, heat, and/or friction of rollers.</dd>
@@ -278,7 +282,7 @@
     <dt id="Cuperiferous pigment">Cupriferous pigment/ink</dt>
     <dd>Pigment that contains copper, commonly blues and greens. Conventionally used as a coloring agent in illuminated manuscripts and maps.</dd>
 
-    <a id="D"></a>
+    <h2 id="D">D</h2>
 
     <dt id="Daisy wheel printing">Daisy wheel printing</dt>
     <dd>Impact printing technology used in electronic typewriters, word processors and computers from the early 1970s–1980s. Daisy wheel printers were regarded for their crisp, high-quality text. Like other impact printing technology, though, daisy wheel printers were superseded by the laser printer.</dd>
@@ -365,7 +369,7 @@
       <p>There are two types of DVD-R discs: "General" and "Authoring." This has caused some compatibility issues, as the lasers in the discs' players need to be angled differently. Professional DVD players will have both lasers; however if you are using a domestic model, it is important to check which discs your player is compatible with. This is also true for all other types of discs. DVD is a rapidly developing technology and there is a continued push to increase the amount of data that can be stored on a disc (Bay Area Video Coalition, 2009).</p>
     </dd>
 
-    <a id="E"></a>
+    <h2 id="E">E</h2>
 
     <dt id="Echo">Echo</dt>
     <dd>A wave which has been reflected at one or more points in the transmission medium. Echoes may lead or lag the primary signal, and appear in the picture monitor as reflections or double images, commonly known as ghosts (Bay Area Video Coalition, 2009). Related Terms: Pre-echo; Post-echo. </dd>
@@ -391,7 +395,7 @@
     <dt id="Exercise">Exercise (a tape)</dt>
     <dd>The periodic rewinding and fast-forwarding of tapes in good condition for preservation purposes.</dd>
 
-    <a id="F"></a>
+    <h2 id="F">F</h2>
 
     <dt id="Fading image">Fading (image)</dt>
     <dd>A decrease in image density resulting in overall loss of tonal value. Most photographic materials are subject to image fading due to a number of factors. Light exposure, chemical reaction between compositional elements (hurried by poor storage conditions) external chemicals or atmospheric pollutants. The destructive results of these factors may be partial or evident all over the photograph. Usually the tone of the image will be lightened and there may also be a change of color, but not a uniform color shift.</dd>
@@ -445,7 +449,7 @@
     <dt id="Friable media">Friable media</dt>
     <dd>Refers to writing/drawing materials that are made up of small particles which may easily come loose from the paper or other support material. Examples of friable media include pastels and flaking paint.</dd>
 
-    <a id="G"></a>
+    <h2 id="G">G</h2>
 
     <dt id="Gauge">Gauge</dt>
     <dd>The width of motion picture film from edge to edge, expressed in millimeters (e.g. 35mm, 16mm, 8mm) (NFPF, 2004).</dd>
@@ -489,7 +493,7 @@
     <dt id="Gutter">Gutter</dt>
     <dd>In terms of a book, this refers to the inner margin, or the white space between the printed matter of the two pages. </dd>
 
-    <a id="H"></a>
+    <h2 id="H">H</h2>
 
     <dt id="Half-tone">Half-tone</dt>
     <dd>Quality of a photomechanical image produced through a screen. Half-tones simulate a range of tones by breaking an image into a pattern of some kind (lines, dots, grid). </dd>
@@ -527,7 +531,7 @@
     <dt id="Hygrothermograph">Hygrothermograph</dt>
     <dd>A device for recording atmospheric humidity and temperature over time (Pearce-Moses, 2005).</dd>
 
-    <a id="I"></a>
+    <h2 id="I">I</h2>
 
     <dt id="Illuminance">Illuminance</dt>
     <dd>Visible light incident on a surface.</dd>
@@ -571,14 +575,14 @@
     <dt id="Item">Item</dt>
     <dd>A physical resource that, in part, constitutes a collection. Often used interchangeably with "object."</dd>
 
-    <a id="J"></a>
+    <h2 id="J">J</h2>
 
-    <a id="K"></a>
+    <h2 id="K">K</h2>
 
     <dt id="Kraft paper">Kraft paper</dt>
     <dd>Form of paper or paperboard (cardboard) produced from chemical pulp that is almost entirely cellulose fibers. This is a low-grade, utility paper; think packaging and base papers, e.g. brown paper sacks.</dd>
 
-    <a id="L"></a>
+    <h2 id="L">L</h2>
 
     <dt id="Lacing">Lacing</dt>
     <dd>A common form of iron gall ink deterioration in which "the inked areas become so weak and brittle that they crack, crumble and fall out" resulting in a lace-like appearance (n.d., Iron gall ink).</dd>
@@ -625,7 +629,7 @@
     <dt id="Lux">Lux</dt>
     <dd>Unit of illuminance and luminous emittance; measures total illuminance or emission figured with the area over which the luminous flux is spread, luminous flux per unit area. This is equal to one lumen per square meter.</dd>
 
-    <a id="M"></a>
+    <h2 id="M">M</h2>
 
     <dt id="Magnetic media">Magnetic media</dt>
     <dd>Tape and discs that store information on a magnetized surface, such as videotape, audiotape or computer floppy discs (Bay Area Video Coalition, 2009). Related terms: Magnetic Audio, Magnetic Video.</dd>
@@ -692,7 +696,7 @@
     <dt id="Muslin">Muslin</dt>
     <dd>A cotton fabric of plain weave. Muslin is often a book cover fabric.</dd>
 
-    <a id="N"></a>
+    <h2 id="N">N</h2>
 
     <dt id="Negative">Negative</dt>
     <dd>Visual artifact carrying the reverse image of the image (or motion picture) subject. Typically the negative is though of as an intermediate artifact produced in service of the final positive image. Dark image areas of the negative become light image areas of the positive, and vice versa. The negative is often exposed in the camera or created from a positive in the laboratory. It is printed to produce a positive for projection and viewing (NFPF, 2004).</dd>
@@ -718,7 +722,7 @@
     <dt id="NTSC">NTSC</dt>
     <dd>Acronym for National Television Systems Committee. The U.S. standard for color television transmission, calling for 525 lines of information, scanned at a rate of 30 frames per second. NTSC standard is used mainly in North America, Japan, and parts of South America. One of three international standards, including PAL and SECAM (Bay Area Video Coalition, 2009).</dd>
 
-    <a id="O"></a>
+    <h2 id="O">O</h2>
 
     <dt id="OBA">OBA</dt>
     <dd>See <a href="#Optical Brightening Agent">Optical Brightening Agent</a>.</dd>
@@ -756,7 +760,7 @@
     <dt id="Oxidation silver">Oxidation (silver)</dt>
     <dd>Silver image particles undergo a chemical and physical change, causing silver (photo images) to fade. Throughout oxidation, image highlights gradually become lighter while dark areas of the image turn from gray-black to brown. Oxidation is caused largely by the relative humidity of the storage environment. Temperature also contributes, but humidity and moisture are the primary causes of silver-image oxidation. </dd>
 
-    <a id="P"></a>
+    <h2 id="P">P</h2>
 
     <dt id="Pack slip">Pack slip</dt>
     <dd>A lateral slip of select tape windings that cause high or low spots (when viewed with the tape reel lying flat on one side) in an otherwise smooth tape pack. Pack slip can cause subsequent edge damage when the tape is played, as it will unwind unevenly and may make contact with the tape reel flange (Bay Area Video Coalition, 2009).</dd>
@@ -848,12 +852,12 @@
     <dt id="Pyroxylin">Pyroxylin</dt>
     <dd>A nitrate cellulose plastic used in the coating or impregnation of book casing fabrics, i.e. buckram.</dd>
 
-    <a id="Q"></a>
+    <h2 id="Q">Q</h2>
 
     <dt id="Quarto">Quarto</dt>
     <dd>Book or pamphlet format comprising one or more full sheets of paper on which 8 pages of text are printed and then folded twice to produce 4 leaves. Each leaf of a quarto thus represents one fourth (a quarter) the size of the original sheet. Each group of 4 leaves could be sewn through the central fold to attach it to the other gatherings to form a book.</dd>
 
-    <a id="R"></a>
+    <h2 id="R">R</h2>
 
     <dt id="Rag paper">Rag paper</dt>
     <dd>See <a href="#Cotton paper">Cotton paper</a>.</dd>
@@ -915,7 +919,7 @@
     <dt id="Rosin-alum sizing">Rosin-alum sizing</dt>
     <dd>See <a href="#Alum-rosin sizing">Alum-rosin sizing</a>.</dd>
 
-    <a id="S"></a>
+    <h2 id="S">S</h2>
 
     <dt id="Safety film">Safety film</dt>
     <dd>The term applied to all film made with a nonflammable plastic base (NFPF, 2004).</dd>
@@ -1019,7 +1023,7 @@
     <dt id="Surface texture">Surface texture</dt>
     <dd>Description of the visual or tactile qualities of a material surface. For example, a calendered or finished support may be smooth; an unfinished or dense-fibered support may be rough-surfaced. </dd>
 
-    <a id="T"></a>
+    <h2 id="T">T</h2>
 
     <dt id="Tail">Tail</dt>
     <dd>The end of a film, video, or audio tape roll (NFPF, 2004).</dd>
@@ -1073,7 +1077,7 @@
     <dd> Fairly new designation for eco-friendly alternative to wood-pulp. Fiber sources</dt>
     <dd> agricultural residue (sugarcane, bagasse, husks, straw), crops and wild plants (bamboo, kenaf, hemp, jute, flax), and textile waste.</dd>
 
-    <a id="U"></a>
+    <h2 id="U">U</h2>
 
     <dt id="Ultrasonic splicer">Ultrasonic splicer</dt>
     <dd>A machine that splices polyester film by fusing the two film ends using high frequency energy (NFPF, 2004).</dd>
@@ -1093,7 +1097,7 @@
     <dt id="Unique">Unique</dt>
     <dd>An item so rare that no other copies are known to exist. Examples include 8mm, Super 8mm, and 16mm reversal originals, etc. (Reitz, 2007).</dd>
 
-    <a id="V"></a>
+    <h2 id="V">V</h2>
 
     <dt id="Vellum">Vellum</dt>
     <dd>Parchment made from fine-quality calf skin, though it is often a term loosely used to describe parchments made from a wide variety of mammal skin. Vellum was used as a printing and writing surface, and appears in the form of a single sheet, scroll, manuscript, or book. Though known for its smoothness and durability, under poor storage conditions vellum may become brittle, fragile, and susceptible to mold growth.</dd>
@@ -1130,7 +1134,7 @@
     <dt id="Volume">Volume</dt>
     <dd>Group of bound sheets or sections, sewn together in book form. In total, volumes add up to a text block.</dd>
 
-    <a id="W"></a>
+    <h2 id="W">W</h2>
 
     <dt id="Windowing">Windowing</dt>
     <dd>Interlayer slippage or magnetic tape in roll form, resulting in bucking of some strands of tape. The tape may fold over itself, causing a permanent vertical crease in the tape. Also, if not fixed, it will cause increased dropout (Bay Area Video Coalition, 2009).</dd>
@@ -1144,14 +1148,14 @@
     <dt id="Wove paper">Wove paper</dt>
     <dd>Form of paper with a fine, gridded texture: a uniform surface, not exhibiting a ribbed texture.</dd>
 
-    <a id="X"></a>
+    <h2 id="X">X</h2>
 
-    <a id="Y"></a>
+    <h2 id="Y">Y</h2>
 
     <dt id="Yellowing">Yellowing</dt>
     <dd>Discoloration that affects a color image or, in earlier color processes, the white border of a print.</dd>
 
-    <a id="Z"></a>
+    <h2 id="Z">Z</h2>
 
   </dl>
 

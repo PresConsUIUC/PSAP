@@ -20,9 +20,6 @@ gem 'jquery-rails'
 
 gem 'jquery-cookie-rails'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
@@ -39,15 +36,15 @@ gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
-gem 'fancybox2-rails'
+gem 'magnific-popup-rails'
 gem 'pg'
+gem 'roo'
 
 group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'roo'
 end
 
 group :production do

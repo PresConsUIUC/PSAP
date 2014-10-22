@@ -16,20 +16,19 @@
       <ul class="nav navbar-nav navbar-left">
         <li <%= 'class=active' if current_page?(format_id_guide_path) %>>
           <%= link_to 'Format ID Guide', format_id_guide_path,
-                      data: { open: format_id_guide_path } %>
+                      data: { open: format_id_guide_path }, class: 'nav-link' %>
         </li>
         <li <%= 'class=active' if current_page?(glossary_path) %>>
           <%= link_to 'Glossary', glossary_path,
-                      id: 'glossaryLink', class: 'modal_view',
+                      id: 'glossaryLink', class: 'modal_view nav-link',
                       data: { open: glossary_path } %>
         </li>
         <li <%= 'class=active' if current_page?(bibliography_path) %>>
           <%= link_to 'Bibliography', bibliography_path,
-                      id: 'bibliographyLink', class: 'modal_view',
+                      id: 'bibliographyLink', class: 'modal_view nav-link',
                       data: { open: bibliography_path } %>
         </li>
       </ul>
-
     </div>
   </div>
 </nav>

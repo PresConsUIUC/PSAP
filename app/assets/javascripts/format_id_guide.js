@@ -1,42 +1,67 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
+        smoothAnchorScroll(0); // defined in common.js
+
         $('body').scrollspy({
             target: '#sections',
-            offset: $('nav.navbar.navbar-default').height() + 10
+            offset: $('nav.navbar.navbar-default').height() + 15
         });
 
-        $('#sections').affix({
-            offset: { top: 160 }
-        });
-        smoothAnchorScroll();
-    } else if ($('body#format_id_guide_categories').length) {
+        if ($('body').width() > 600) {
+            $('#sections').affix({
+                offset: { top: 160 }
+            });
+        }
+    } else if ($('body#format_id_guide_page').length) {
+        smoothAnchorScroll(0); // defined in common.js
+
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
-        $('div#page_content img').each(function() {
-            $(this).wrap('<a class="fancybox" href="' + $(this).attr('src') + '"></a>');
-        });
+        $('div#page_content img').addClass('img-thumbnail').
+            addClass('gallery-item');
 
         // move the header
-        $('div#page_content').find('div.col-sm-9:first').append(
+        $('div#page_content div.col-sm-9:first').append(
             $('div#page_content h1:first'));
 
-        // http://fancyapps.com/fancybox/#examples
-        $(".fancybox").fancybox({
-            parent: 'body', // required for turbolinks compatibility
-            beforeShow : function() {
-                var alt = this.element.find('img').attr('alt');
-                this.inner.find('img').attr('alt', alt);
+        // initialize Magnific Popup
+        $('div#page_content img').each(function() {
+            $(this).wrap('<a class="magnific" href="' + $(this).data('lightbox-src') + '"></a>');
+        });
 
-                var caption = this.element.next('figcaption').html();
-                this.title = caption;
+        $('a.magnific').magnificPopup({
+            type: 'image',
+            mainClass: 'mfp-with-zoom',
+            closeOnContentClick: true,
+            alignTop: false,
+            showCloseBtn: false,
+            image: {
+                titleSrc: function(item) {
+                    return item.el.next('figcaption').html();
+                },
+                verticalFit: true,
+                cursor: null
             },
-            helpers : {
-                title: {
-                    type: 'outside'
+            retina: {
+                ratio: 2
+            },
+            gallery: {
+                enabled: true,
+                navigateByImgClick: false
+            },
+            zoom: {
+                enabled: true,
+                duration: 300,
+                easing: 'ease-in-out' // CSS transition easing function
+            },
+            callbacks: {
+                resize: function() {
+                    // without this, the title will be pushed below the viewport
+                    var img = this.content.find('img');
+                    img.css('max-height', parseFloat(img.css('max-height')) * 0.94);
                 }
             }
         });
-        smoothAnchorScroll();
     }
 };
 

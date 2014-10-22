@@ -12,7 +12,7 @@ class FormatIdGuideController < ApplicationController
   def search
     @results = []
     if params[:q] and params[:q].length > 0
-      @results = FormatInfo.full_text_search(params[:q])
+      @results = StaticPage.full_text_search(params[:q])
     end
     @query = params[:q].truncate(50)
     @results_summary = @query.length > 0 ? "Results for \"#{@query}\"" : "Format ID Guide Search"
@@ -22,7 +22,7 @@ class FormatIdGuideController < ApplicationController
   # Responds to GET /format-id-guide/:category
   #
   def show
-    @page = FormatInfo.find_by_format_category(params[:category])
+    @page = StaticPage.find_by_format_category(params[:category])
     raise ActiveRecord::RecordNotFound unless @page
   end
 

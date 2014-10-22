@@ -9,14 +9,21 @@ Array.prototype.sum = function () {
 };
 
 var ready = function() {
+    // lazy-load images that have a data-original attribute
+    $('img[data-original]').each(function() {
+        // provided by vendor/assets/javascripts/jquery.lazyload.js
+        $(this).lazyload({ effect: 'fadeIn' });
+    });
+
     // if using a retina display, loop through all <img> tags and, if they have
     // a "data-has-retina" attribute, replace the "[filename].[ext]" in their
     // "src" attribute with "[filename]@2x.[ext]"
+    // TODO: do this before document ready
     if (window.devicePixelRatio > 1) {
         $('img').each(function() {
-            if ($(this).attr('data-has-retina')) {
+            if ($(this).data('has-retina')) {
                 var parts = $(this).attr('src').split('.');
-                parts[parts.length - 2] = parts[parts.length - 2] + '@2x';
+                parts[parts.length - 2] += '@2x';
                 $(this).attr('src', parts.join('.'));
             }
         });
@@ -127,22 +134,34 @@ var ready = function() {
     }).trigger('change');
 
     Form.enableDynamicNestedEntities();
+
+    // Enable smooth scrolling when clicking anchors
+    smoothAnchorScroll(0);
 };
 
-/**
- * Call this function once to enable smooth scrolling when clicking anchors.
- */
-function smoothAnchorScroll() {
-    var top_padding = $('nav.navbar.navbar-default').height() + 10;
-    var $root = $('html, body');
-    $('a').click(function () {
-        var href = $.attr(this, 'href');
-        $root.animate({
-            scrollTop: $(href).offset().top - top_padding
-        }, 500, function () {
-            window.location.hash = href;
+function smoothAnchorScroll(offset) {
+    if (!offset && offset !== 0) {
+        offset = 0;
+    }
+    var top_padding = $('nav.navbar.navbar-default').height() + 10 + offset;
+    var root = $('html, body');
+
+    var anchors = $('a[href^="#"]');
+    anchors.off('click');
+
+    anchors.on('click', function(e) {
+        // avoid interfering with Bootstrap collapse panels
+        if ($(this).data('toggle') == 'collapse') {
+            return;
+        }
+        e.preventDefault();
+
+        var target = this.hash;
+        root.stop().animate({
+            'scrollTop': $(target).offset().top - top_padding
+        }, 500, 'swing', function () {
+            window.location.hash = target;
         });
-        return false;
     });
 }
 

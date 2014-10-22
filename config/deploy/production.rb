@@ -12,6 +12,8 @@ role :db,  production_server
 
 set :rails_env, 'production'
 
+set :keep_releases, 0
+
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server definition into the

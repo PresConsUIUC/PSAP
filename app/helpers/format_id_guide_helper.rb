@@ -8,18 +8,35 @@ module FormatIdGuideHelper
   def format_id_guide_html(raw_html)
     doc = Nokogiri::HTML.fragment(raw_html)
 
-    # process internal links
     doc.css('a').each do |anchor|
-      if anchor['href'] and anchor['href'][0..3] != 'http' and
+      # process internal links
+      if anchor['href'] and !anchor['href'].start_with?('http') and
           anchor['href'][0] != '#'
-        anchor['href'] = format_id_guide_path + '/' + File.basename(anchor['href'])
+        parts = anchor['href'].split('#')
+        anchor['href'] = format_id_guide_path + '/' +
+            File.basename(parts[0], '.*')
+        anchor['href'] += '#' + parts[1] if parts.length > 1
       end
     end
 
     # process images
     doc.css('img').each do |image|
-      image['src'] = image_path(
-          File.basename(image['src']).gsub(' ', '_').gsub('%20', '_'))
+      new_image_filename = File.basename(image['src']).gsub(' ', '_').
+          gsub('%20', '_')
+      image['data-original'] = image_path(new_image_filename)
+      image['src'] = nil
+
+      thumb_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'thumb' }.first
+      full_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'full' }.first
+      image['data-lightbox-src'] = image_path(
+          new_image_filename.gsub("-#{thumb_profile[:width]}",
+                                  "-#{full_profile[:width]}"))
+    end
+
+    # process videos
+    doc.css('video source').each do |video|
+      video['src'] = image_path(
+          File.basename(video['src']).gsub(' ', '_').gsub('%20', '_'))
     end
 
     raw(doc.to_html)

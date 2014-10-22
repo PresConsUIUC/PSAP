@@ -15,7 +15,7 @@
 //= require bootstrap
 //= require jquery.cookie
 //= require bootstrap-typeahead-rails
-//= require fancybox
-//= require turbolinks
+//= require magnific-popup
 //= require local_time
 //= require_tree .
+//= require_tree ../../../vendor/assets/javascripts

@@ -3,6 +3,7 @@
   padding-right:2em;
   .larger {
     font-size:1.4em;
+    font-weight:200;
   }
   .largest {
     font-size:1.8em;
@@ -25,16 +26,40 @@
 }
 
 #bibliography {
-  padding-left:2em;
-  padding-right:2em;
   h2, h3 {
     margin-bottom:0.5em;
     margin-top:1em;
   }
-  ul.bib-list {
-    list-style:none;
-    margin-left:2em;
-    padding-left:0px;
-    text-indent:-2em;
+}
+
+#glossary {
+  h2 {
+    margin-top: 1em;
+    margin-bottom:0.5em;
+  }
+  div#psap-glossary-letter-links {
+    margin-bottom:1em;
+    padding:0.4em 0em 0.4em 0em;
+    a {
+      font-weight:600;
+    }
+  }
+  div#psap-glossary-letter-links.affix {
+    background-color:white;
+    border-bottom:1px solid $gray-lighter;
+    left:0px;
+    top:50px;
+    width:100%;
+  }
+
+  /* center the nav pills */
+  .nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* IE7 fix */
+    zoom:1; /* hasLayout IE7 trigger */
+  }
+  .nav-tabs, .nav-pills {
+    text-align:center;
   }
 }

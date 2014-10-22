@@ -10,7 +10,9 @@ role :app, staging_server
 role :web, staging_server
 role :db,  staging_server
 
-set :rails_env, 'staging'
+set :rails_env, 'production'
+
+set :keep_releases, 0
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call

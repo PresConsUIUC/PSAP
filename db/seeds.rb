@@ -579,7 +579,7 @@ command = CreateAssessmentSectionCommand.new(
       assessment: assessments[0] }, nil, '127.0.0.1')
 command.execute
 sections[:condition] = command.object
-=begin
+
 # Assessment questions
 puts 'Seeding assessment questions...'
 
@@ -639,32 +639,10 @@ aq_sheets.each do |sheet|
     end
   end
 end
-=end
-# Format ID Guide HTML pages
-puts 'Ingesting Format ID Guide HTML pages...'
-Dir.glob('db/seed_data/format_id_guide/**/*.html').each do |file|
-  File.open(file) do |contents|
-    doc = Nokogiri::HTML(contents)
-    html = doc.xpath('//body/*').to_html
-    FormatInfo.create!(name: doc.at_css('h1').text,
-                       format_category: File.basename(file, '.*'),
-                       format_class: File.basename(File.dirname(file)),
-                       html: html,
-                       searchable_html: FormatInfo::searchable_html(html))
-  end
-end
 
-# Format ID Guide images
-puts 'Copying Format ID Guide images...'
-fidg_images_path = 'app/assets/images/format_id_guide'
-FileUtils.rm_rf(fidg_images_path)
-FileUtils.mkdir_p(fidg_images_path)
-Dir.glob('db/seed_data/format_id_guide/**/*.jpg').each do |file|
-  dest_path = fidg_images_path + '/' +
-      File.basename(file).gsub(' ', '_').gsub('%20', '_')
-  FileUtils.cp(file, dest_path)
-  File.chmod(0644, dest_path)
-end
+# Format ID Guide HTML pages
+puts 'Ingesting Format ID Guide content...'
+FormatIdGuide.new.reseed
 
 puts 'Creating the admin user...'
 
