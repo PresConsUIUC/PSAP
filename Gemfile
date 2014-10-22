@@ -38,13 +38,13 @@ gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
 gem 'magnific-popup-rails'
 gem 'pg'
+gem 'roo'
 
 group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'roo'
 end
 
 group :production do
