@@ -17,7 +17,8 @@ var ready = function() {
 
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
-        $('div#page_content img').addClass('img-thumbnail');
+        $('div#page_content img').addClass('img-thumbnail').
+            addClass('gallery-item');
 
         // move the header
         $('div#page_content div.col-sm-9:first').append(
@@ -43,6 +44,9 @@ var ready = function() {
             },
             retina: {
                 ratio: 2
+            },
+            gallery: {
+                enabled: true
             },
             zoom: {
                 enabled: true,
