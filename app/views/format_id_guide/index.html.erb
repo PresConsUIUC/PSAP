@@ -333,7 +333,7 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <%= link_to format_id_guide_category_path('photomechanical') do %>
-              <%= image_tag('lithograph_postcard03-misregistration-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
+              <%= image_tag('photomechanical-thumb-60.jpg', height: thumbs[:height], width: thumbs[:width], 'data-has-retina' => true) %>
               Photomechanical Print
             <% end %>
           </h3>
@@ -444,7 +444,7 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <h4>Architectural Drawing Reproduction</h4>
+              <h4><%= link_to 'Architectural Drawing Reproduction', format_id_guide_category_path('archdrawingrepro') %></h4>
               <ul>
                 <li><%= link_to 'Aniline Print', format_id_guide_category_path('archdrawingrepro', anchor: 'anilineprint') %></li>
                 <li><%= link_to 'Ferro-Gallic Print', format_id_guide_category_path('archdrawingrepro', anchor: 'ferrogallicprint') %></li>
@@ -459,7 +459,7 @@
               </ul>
             </div>
             <div class="col-sm-6">
-              <h4>Office Copy/Print</h4>
+              <h4><%= link_to 'Office Copy/Print', format_id_guide_category_path('officeprintcopy') %></h4>
               <ul>
                 <li><%= link_to 'Carbon Copy', format_id_guide_category_path('officeprintcopy', anchor: 'carboncopy') %></li>
                 <li><%= link_to 'Stencil Copy', format_id_guide_category_path('officeprintcopy', anchor: 'stencilcopy') %></li>
@@ -507,7 +507,7 @@
               </ul>
             </div>
             <div class="col-sm-6">
-              <h4>Cover &amp; Binding Materials</h4>
+              <h4><%= link_to 'Cover & Binding Materials', format_id_guide_category_path('bookbound', anchor: 'coverbindmat') %></h4>
               <ul>
                 <li><%= link_to 'Leather', format_id_guide_category_path('bookbound', anchor: 'leather') %> (sheep, goat, calf)</li>
                 <li><%= link_to 'Cloth', format_id_guide_category_path('bookbound', anchor: 'clothcover') %> (starch-filled, pyroxylin-treated, acrylic-coated)</li>
@@ -520,14 +520,14 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <h4>Board Materials</h4>
+              <h4><%= link_to 'Board Materials', format_id_guide_category_path('bookbound', anchor: 'boardmat') %></h4>
               <ul>
                 <li><%= link_to 'Paper Board', format_id_guide_category_path('bookbound', anchor: 'paperboard') %></li>
                 <li><%= link_to 'Wood Board', format_id_guide_category_path('bookbound', anchor: 'woodboard') %></li>
               </ul>
             </div>
             <div class="col-sm-6">
-              <h4>Binding Types</h4>
+              <h4><%= link_to 'Binding Types', format_id_guide_category_path('bookbound', anchor: 'bindtype') %></h4>
               <ul>
                 <li><%= link_to 'Sewn Bindings', format_id_guide_category_path('bookbound', anchor: 'sewnbind') %> (through-the-fold, oversewn, stab)</li>
                 <li><%= link_to 'Adhesive Bindings', format_id_guide_category_path('bookbound', anchor: 'adhesivebind') %> ("perfect" binding, double fan adhesive)</li>
