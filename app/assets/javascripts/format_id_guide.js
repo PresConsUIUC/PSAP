@@ -17,6 +17,7 @@ var ready = function() {
 
         // dynamically add some needed classes
         $('table').addClass('table').addClass('table-striped');
+        $('div#page_content img').addClass('img-thumbnail');
 
         // move the header
         $('div#page_content div.col-sm-9:first').append(
