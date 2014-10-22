@@ -24,7 +24,7 @@
         <ul class="nav nav-pills nav-stacked">
           <li class="active"><a href="#audiovisual">Audiovisual Media</a></li>
           <li><a href="#photo_image">Photo &amp; Image Material</a></li>
-          <li><a href="#book_paper">Book &amp; Paper</a></li>
+          <li><a href="#paper_book">Paper &amp; Book</a></li>
           <li><a href="#supplementary">Supplementary</a></li>
         </ul>
       </nav>
@@ -124,7 +124,7 @@
                 <li><%= link_to 'MiniDV', format_id_guide_category_path('videotape', anchor: 'minidv') %></li>
                 <li><%= link_to 'VHS', format_id_guide_category_path('videotape', anchor: 'vhs') %></li>
                 <li><%= link_to 'Video8 / Hi8', format_id_guide_category_path('videotape', anchor: 'video8') %></li>
-                <li><%= link_to 'Other Digital Video Cassettes', format_id_guide_category_path('videotape', anchor: 'othervideo') %></li>
+                <li><%= link_to 'Other Digital Video', format_id_guide_category_path('videotape', anchor: 'othervideo') %></li>
               </ul>
             </div>
           </div>
@@ -402,8 +402,8 @@
       </div>
     </div> <!-- #photo_image -->
 
-    <div id="book_paper">
-      <h2>Book &amp; Paper</h2>
+    <div id="paper_book">
+      <h2>Paper &amp; Book</h2>
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -415,7 +415,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <h4><%= link_to 'Paper Types', format_id_guide_category_path('paper') %></h4>
+              <h4><%= link_to 'Papers', format_id_guide_category_path('paper') %></h4>
               <ul>
                 <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
                 <li><%= link_to 'Acid-Free Paper', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
@@ -497,7 +497,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <h4><%= link_to 'Paper Types', format_id_guide_category_path('paper') %></h4>
+              <h4><%= link_to 'Paper', format_id_guide_category_path('paper') %></h4>
               <ul>
                 <li><%= link_to 'Newsprint', format_id_guide_category_path('paper', anchor: 'newsprint') %></li>
                 <li><%= link_to 'Acid-Free Paper', format_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
@@ -538,7 +538,7 @@
         </div>
       </div>
 
-    </div> <!-- #book_paper -->
+    </div> <!-- #paper_book -->
 
     <div id="supplementary">
       <h2>Supplementary</h2>
@@ -602,12 +602,13 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-            About the PSAP
+            Preservation Self-Assessment Program
           </h3>
         </div>
         <div class="panel-body">
           <ul>
             <li><%= link_to 'About the PSAP', about_path, class: 'modal_view', data: { open: about_path } %></li>
+            <!-- TODO: link user manual and other docs -->
           </ul>
         </div>
       </div>
