@@ -46,7 +46,8 @@ var ready = function() {
                 ratio: 2
             },
             gallery: {
-                enabled: true
+                enabled: true,
+                navigateByImgClick: false
             },
             zoom: {
                 enabled: true,
