@@ -265,6 +265,14 @@ module ApplicationHelper
      ['Zimbabwe', 'Zimbabwe']]
   end
 
+  ##
+  # Works with retina.js
+  #
+  def retina_image_tag(name_at_1x, options={})
+    name_at_2x = name_at_1x.gsub(%r{\.\w+$}, '@2x\0')
+    image_tag(name_at_1x, options.merge('data-at2x' => asset_path(name_at_2x)))
+  end
+
   def sortable(column, title = nil)
     title ||= column.titleize
     css_class = (column == sort_column) ? "current #{sort_direction}" : nil

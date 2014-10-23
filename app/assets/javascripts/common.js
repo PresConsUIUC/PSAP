@@ -15,20 +15,6 @@ var ready = function() {
         $(this).lazyload({ effect: 'fadeIn' });
     });
 
-    // if using a retina display, loop through all <img> tags and, if they have
-    // a "data-has-retina" attribute, replace the "[filename].[ext]" in their
-    // "src" attribute with "[filename]@2x.[ext]"
-    // TODO: do this before document ready
-    if (window.devicePixelRatio > 1) {
-        $('img').each(function() {
-            if ($(this).data('has-retina')) {
-                var parts = $(this).attr('src').split('.');
-                parts[parts.length - 2] += '@2x';
-                $(this).attr('src', parts.join('.'));
-            }
-        });
-    }
-
     // Pagination links
     $('.pagination a').attr('data-remote', 'true');
 
