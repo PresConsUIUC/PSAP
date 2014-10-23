@@ -24,11 +24,15 @@ module FormatIdGuideHelper
       new_image_filename = File.basename(image['src']).gsub(' ', '_').
           gsub('%20', '_')
       image['data-original'] = image_path(new_image_filename)
+      image['data-at2x'] = retina_image_path(new_image_filename)
       image['src'] = nil
 
       thumb_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'thumb' }.first
       full_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'full' }.first
       image['data-lightbox-src'] = image_path(
+          new_image_filename.gsub("-#{thumb_profile[:width]}",
+                                  "-#{full_profile[:width]}"))
+      image['data-retina-lightbox-src'] = retina_image_path(
           new_image_filename.gsub("-#{thumb_profile[:width]}",
                                   "-#{full_profile[:width]}"))
     end

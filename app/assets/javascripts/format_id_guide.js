@@ -26,7 +26,9 @@ var ready = function() {
 
         // initialize Magnific Popup
         $('div#page_content img').each(function() {
-            $(this).wrap('<a class="magnific" href="' + $(this).data('lightbox-src') + '"></a>');
+            var lightbox_src = (window.devicePixelRatio > 1) ?
+                $(this).data('retina-lightbox-src') : $(this).data('lightbox-src');
+            $(this).wrap('<a class="magnific" href="' + lightbox_src + '"></a>');
         });
 
         $('a.magnific').magnificPopup({
@@ -41,9 +43,6 @@ var ready = function() {
                 },
                 verticalFit: true,
                 cursor: null
-            },
-            retina: {
-                ratio: 2
             },
             gallery: {
                 enabled: true,
