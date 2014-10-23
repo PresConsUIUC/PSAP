@@ -58,10 +58,11 @@ body#format_id_guide_page {
     padding-left:0em;
   }
   table {
-    border-top: 2px solid #ddd;
-    border-bottom: 2px solid #ddd;
+    border: 2px solid #ddd;
     margin:1em 0em 1em 0em;
-    td {
+    th, td {
+      border-right: 1px solid #ddd;
+      text-align: center;
       vertical-align: middle;
     }
   }
@@ -129,5 +130,13 @@ body#format_id_guide_results {
     font-size:1.5em;
     min-width:200px;
     vertical-align: middle;
+  }
+}
+
+.psap-fidg-search {
+  input[type=search] {
+    background:#FFFFFF url(image_path('magnifier-21.png')) no-repeat 6px 6px;
+    @include image-2x('magnifier-21@2x.gif', 16px, 16px);
+    padding-left:33px;
   }
 }
