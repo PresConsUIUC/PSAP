@@ -14,9 +14,18 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
       <ul class="nav navbar-nav navbar-left">
-        <li <%= 'class=active' if current_page?(format_id_guide_path) %>>
-          <%= link_to 'Format ID Guide', format_id_guide_path,
-                      data: { open: format_id_guide_path }, class: 'nav-link' %>
+        <li class="dropdown <%= 'active' if controller.controller_name == 'format_id_guide' %>">
+          <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            Format ID Guide <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><%= link_to 'All Formats', format_id_guide_path %></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Audiovisual Media', format_id_guide_path(anchor: 'audiovisual') %></li>
+            <li><%= link_to 'Photo & Image Material', format_id_guide_path(anchor: 'photo_image') %></li>
+            <li><%= link_to 'Paper & Book', format_id_guide_path(anchor: 'paper_book') %></li>
+            <li><%= link_to 'Supplementary', format_id_guide_path(anchor: 'supplementary') %></li>
+          </ul>
         </li>
         <li <%= 'class=active' if current_page?(glossary_path) %>>
           <%= link_to 'Glossary', glossary_path,
