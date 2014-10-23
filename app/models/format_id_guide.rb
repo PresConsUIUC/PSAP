@@ -5,7 +5,7 @@
 class FormatIdGuide
 
   SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML')
-  ASSET_PATH = File.join(Rails.root, 'app', 'assets', 'images', 'format_id_guide')
+  ASSET_PATH = File.join(Rails.root, 'app', 'assets', 'format_id_guide')
   DEST_PATH = ASSET_PATH
   PROFILES = [
       {
@@ -39,7 +39,6 @@ class FormatIdGuide
 
     Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
       File.open(htmlpath, 'r') { |content|
-        puts "\n****** #{File.basename(htmlpath)} ******"
         doc = Nokogiri::HTML(content)
         # images
         doc.css('img').each do |img|
@@ -72,7 +71,6 @@ class FormatIdGuide
   def generate_images_for(image_filename)
     source_image_path = source_path_of_file(image_filename)
     if source_image_path
-      puts File.basename(source_image_path)
       imgsrcbasename = File.basename(source_image_path, '.*')
       imgsrcextname = File.extname(source_image_path)
       FileUtils.mkdir_p(ASSET_PATH)
@@ -109,7 +107,6 @@ class FormatIdGuide
   def generate_videos_for(video_filename)
     videosrcpath = source_path_of_file(video_filename)
     if videosrcpath
-      puts File.basename(videosrcpath)
       videosrcbasename = File.basename(videosrcpath, '.*')
       videodestpath = File.join(ASSET_PATH, "#{videosrcbasename}.webm")
 
@@ -143,7 +140,6 @@ class FormatIdGuide
         doc.css('img').each do |img|
           thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
           img['src'] = "#{File.basename(img['src'], '.*')}-#{thumb_width}#{File.extname(img['src']).downcase}"
-          puts "#{img['src']}"
           dimensions = `convert "#{ASSET_PATH}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
           img['width'] = dimensions[0]
           img['height'] = dimensions[1]

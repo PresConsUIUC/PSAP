@@ -16,6 +16,8 @@
 /tmp
 Thumbs.db
 
+/public/assets/**
+
 database.yml
 mail.yml
 .secret
