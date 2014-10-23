@@ -21,7 +21,7 @@ var ready = function() {
             addClass('gallery-item');
 
         // move the header
-        $('div#page_content div.col-sm-9:first').append(
+        $('div#page_content div.col-sm-8:first').append(
             $('div#page_content h1:first'));
 
         // initialize Magnific Popup
