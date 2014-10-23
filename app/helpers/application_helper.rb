@@ -266,11 +266,19 @@ module ApplicationHelper
   end
 
   ##
+  # Works with retina.js. When using instead of retina_image_tag, you have
+  # to add a "data-at2x" to your <img> tag.
+  #
+  def retina_image_path(name_at_1x)
+    asset_path(name_at_1x.gsub(%r{\.\w+$}, '@2x\0'))
+  end
+
+  ##
   # Works with retina.js
   #
   def retina_image_tag(name_at_1x, options={})
-    name_at_2x = name_at_1x.gsub(%r{\.\w+$}, '@2x\0')
-    image_tag(name_at_1x, options.merge('data-at2x' => asset_path(name_at_2x)))
+    image_tag(name_at_1x,
+              options.merge('data-at2x' => retina_image_path(name_at_1x)))
   end
 
   def sortable(column, title = nil)
