@@ -1,6 +1,6 @@
 Psap::Application.routes.draw do
 
-  root to: redirect('/format-id-guide')
+  root 'static#landing'
   match '/about', to: 'static#about', via: 'get', as: 'about'
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/glossary', to: 'static#glossary', via: 'get'
