@@ -21,26 +21,25 @@
 <%= render 'layouts/header' %>
 
 <div id="modal_progress_view">
-    <%= image_tag('progress_indicator.gif', size: '64x64', alt: 'Loading') %>
+  <%= image_tag('progress_indicator.gif', size: '64x64', alt: 'Loading') %>
 </div>
 
 <div class="container-fluid">
   <header class="page-header">
-    <%= link_to image_tag('psap_logo.png', size:'156x70', alt:'PSAP logo',
-                          id:'title_logo', 'data-has-retina' => true), root_path %>
+    <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
+                                 alt:'PSAP logo', id:'title_logo'), root_path %>
 
     <h1>
       <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
     </h1>
-
   </header>
 
   <% flash.each do |type, message| %>
-      <div class="alert alert-dismissable <%= bootstrap_class_for(type) %>">
-        <button type="button" class="close" data-dismiss="alert"
-                aria-hidden="true">&times;</button>
-        <%= message %>
-      </div>
+    <div class="alert alert-dismissable <%= bootstrap_class_for(type) %>">
+      <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
   <% end %>
 
   <div style="clear:both"></div>
@@ -48,7 +47,7 @@
   <%= render 'layouts/modal_panel' %>
 
   <div id="page_content">
-      <%= yield %>
+    <%= yield %>
   </div>
 
   <%= render 'layouts/footer' %>

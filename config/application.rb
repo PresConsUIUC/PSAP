@@ -15,10 +15,7 @@ module Psap
     config.autoload_paths += %W(#{config.root}/app/commands)
     config.autoload_paths += %W(#{config.root}/app/errors)
 
-    # Add image subfolders to the asset pipeline
-    Dir.glob("#{Rails.root}/app/assets/images/**/").each do |path|
-      config.assets.paths << path
-    end
+    config.assets.paths << "#{Rails.root}/app/assets/format_id_guide"
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
