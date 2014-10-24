@@ -3,7 +3,7 @@ class StaticPage < ActiveRecord::Base
   before_save :update_searchable_html
 
   def to_param
-    format_category
+    uri_fragment
   end
 
   ##

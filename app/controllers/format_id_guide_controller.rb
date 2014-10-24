@@ -22,7 +22,7 @@ class FormatIdGuideController < ApplicationController
   # Responds to GET /format-id-guide/:category
   #
   def show
-    @page = StaticPage.find_by_format_category(params[:category])
+    @page = StaticPage.find_by_uri_fragment(params[:category])
     raise ActiveRecord::RecordNotFound unless @page
   end
 

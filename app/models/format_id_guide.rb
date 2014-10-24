@@ -155,7 +155,7 @@ class FormatIdGuide
 
         html = doc.xpath('//body/*').to_html
         StaticPage.create!(name: doc.at_css('h1').text,
-                           format_category: File.basename(file, '.*'),
+                           uri_fragment: File.basename(file, '.*'),
                            format_class: File.basename(File.dirname(file)),
                            html: html)
       end
