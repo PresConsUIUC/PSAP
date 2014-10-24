@@ -136,8 +136,9 @@ function smoothAnchorScroll(offset) {
     anchors.off('click');
 
     anchors.on('click', function(e) {
-        // avoid interfering with Bootstrap collapse panels
-        if ($(this).data('toggle') == 'collapse') {
+        // avoid interfering with other Bootstrap components
+        if ($(this).data('toggle') == 'collapse' ||
+            $(this).data('toggle') == 'tab') {
             return;
         }
         e.preventDefault();
