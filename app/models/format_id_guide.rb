@@ -130,7 +130,7 @@ class FormatIdGuide
   end
 
   def reseed
-    StaticPage.destroy_all # TODO: destroy only FIDG pages
+    StaticPage.where('format_class IS NOT NULL').destroy_all
 
     # HTML pages
     Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
