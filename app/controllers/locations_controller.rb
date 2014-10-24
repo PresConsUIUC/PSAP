@@ -45,9 +45,9 @@ class LocationsController < ApplicationController
   def new
     @repository = Repository.find(params[:repository_id])
     @location = @repository.locations.build
-    @location.temperature_range = TemperatureRange.create(min_temp_f: 0,
-                                                          max_temp_f: 100,
-                                                          score: 1)
+    @location.temperature_range = TemperatureRange.new(min_temp_f: 0,
+                                                       max_temp_f: 100,
+                                                       score: 1)
   end
 
   def show
