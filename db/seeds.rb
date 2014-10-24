@@ -663,6 +663,24 @@ admin_user = command.object
 admin_user.role = admin_role
 admin_user.save!
 
+# UIUC institution
+command = CreateInstitutionCommand.new(
+    { name: 'University of Illinois at Urbana-Champaign',
+      address1: '1408 W. Gregory Dr.',
+      address2: nil,
+      city: 'Urbana',
+      state: 'IL',
+      postal_code: 61801,
+      country: 'United States of America',
+      url: 'http://www.library.illinois.edu/',
+      email: 'test@example.org',
+      language: languages[122],
+      description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
+command.execute
+uiuc_institution = command.object
+admin_user.institution = uiuc_institution
+admin_user.save!
+
 # From here, we seed the database differently depending on the environment.
 case Rails.env
 
@@ -671,29 +689,6 @@ case Rails.env
 
     # Institutions
     institution_commands = [
-        CreateInstitutionCommand.new( # TODO: add this in production
-            { name: 'University of Illinois at Urbana-Champaign',
-              address1: '1408 W. Gregory Dr.',
-              address2: nil,
-              city: 'Urbana',
-              state: 'IL',
-              postal_code: 61801,
-              country: 'United States of America',
-              url: 'http://www.library.illinois.edu/',
-              email: 'test@example.org',
-              language: languages[122],
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'West Southeast Directional State University',
-              address1: '1 Directional Drive',
-              address2: nil,
-              city: 'Podunk',
-              state: 'IL',
-              postal_code: 12345,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
         CreateInstitutionCommand.new(
             { name: 'Hamburger University',
               address1: '21 Hamburger Place',
@@ -701,17 +696,6 @@ case Rails.env
               city: 'Des Moines',
               state: 'IA',
               postal_code: 12345,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'San Quentin Prison University',
-              address1: '5435 Prison Ct.',
-              address2: nil,
-              city: 'San Quentin',
-              state: 'CA',
-              postal_code: 90210,
               country: 'United States of America',
               url: 'http://example.org/',
               email: 'test@example.org',
@@ -739,17 +723,14 @@ case Rails.env
               email: 'test@example.org',
               description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
     ]
-
-    institutions = institution_commands.map{ |command| command.execute; command.object }
-    admin_user.institution = institutions[0]
-    admin_user.save!
+    institution_commands.each{ |command| command.execute }
 
     # Normal user
     command = CreateUserCommand.new(
         { username: 'normal', email: 'normal@example.org',
           first_name: 'Norm', last_name: 'McNormal',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[0], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: true, enabled: true }, '127.0.0.1', false)
     command.execute
     normal_user = command.object
@@ -769,7 +750,7 @@ case Rails.env
         { username: 'unconfirmed', email: 'unconfirmed@example.org',
           first_name: 'Sally', last_name: 'NoConfirmy',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[1], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: false, enabled: false }, '127.0.0.1', false)
     command.execute
     unconfirmed_user = command.object
@@ -779,16 +760,16 @@ case Rails.env
         { username: 'disabled', email: 'disabled@example.org',
           first_name: 'Johnny', last_name: 'CantDoNothin',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[1], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: true, enabled: false }, '127.0.0.1', false)
     command.execute
     disabled_user = command.object
 
     # Repositories
     repository_commands = [
-        CreateRepositoryCommand.new(institutions[0],
+        CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Sample Repository' }, nil, '127.0.0.1'),
-        CreateRepositoryCommand.new(institutions[0],
+        CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Another Sample Repository' }, nil, '127.0.0.1')
     ]
 
