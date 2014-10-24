@@ -46,6 +46,110 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  def self.from_ead(ead, user_id)
+    doc = REXML::Document.new(ead)
+
+    begin
+      User.find(user_id)
+    rescue ActiveRecord::RecordNotFound => e
+      raise 'Invalid user ID'
+    end
+
+    attrs = {}
+
+    doc.elements.each('//archdesc/did/abstract[1]') do |element|
+      attrs[:description] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc/did/unitid[1]') do |element|
+      attrs[:local_identifier] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc/did/unittitle[1]') do |element|
+      attrs[:name] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc') do |type|
+      case type.attribute('level').value.strip
+        when 'collection'
+          attrs[:resource_type] = ResourceType::COLLECTION
+        when 'item'
+          attrs[:resource_type] = ResourceType::ITEM
+      end
+    end
+
+    attrs[:user_id] = user_id
+
+    # creators
+    attrs[:creators_attributes] = []
+    doc.elements.each('//archdesc/did/origination') do |element|
+      if element.attribute('label').value == 'creator'
+        attrs[:creators_attributes] << {
+            name: element.elements['persname'].text.strip }
+      end
+    end
+
+    # extents
+    attrs[:extents_attributes] = []
+    doc.elements.each('//archdesc/did/physdesc/extent') do |extent|
+      attrs[:extents_attributes] << { name: extent.text.strip }
+    end
+
+    # dates
+    attrs[:resource_dates_attributes] = []
+    doc.elements.each('//archdesc/did/unitdate') do |element|
+      date_struct = {}
+
+      case element.attribute('type').value
+        when 'inclusive'
+          date_struct[:date_type] = DateType::INCLUSIVE
+        when 'bulk'
+          date_struct[:date_type] = DateType::BULK
+        when 'span'
+          date_struct[:date_type] = DateType::SPAN
+        when 'single'
+          date_struct[:date_type] = DateType::SINGLE
+      end
+
+      date_text = element.attribute('normal').value
+      date_parts = date_text.split('/')
+
+      case date_struct[:date_type]
+        when DateType::SINGLE
+          date_struct.merge!(ead_date_to_ymd_hash(date_parts[0]))
+        else
+          if date_parts.length > 1
+            begin_parts = ead_date_to_ymd_hash(date_parts[0])
+            end_parts = ead_date_to_ymd_hash(date_parts[1])
+            date_struct[:begin_year] = begin_parts[:year] if begin_parts[:year]
+            date_struct[:begin_month] = begin_parts[:month] if begin_parts[:month]
+            date_struct[:begin_day] = begin_parts[:day] if begin_parts[:day]
+            date_struct[:end_year] = end_parts[:year] if end_parts[:year]
+            date_struct[:end_month] = end_parts[:month] if end_parts[:month]
+            date_struct[:end_day] = end_parts[:day] if end_parts[:day]
+          else
+            parts = ead_date_to_ymd_hash(date_parts[0])
+            date_struct[:begin_year] = parts[:year] if parts[:year]
+            date_struct[:begin_month] = parts[:month] if parts[:month]
+            date_struct[:begin_day] = parts[:day] if parts[:day]
+            date_struct[:end_year] = parts[:year] if parts[:year]
+            date_struct[:end_month] = parts[:month] if parts[:month]
+            date_struct[:end_day] = parts[:day] if parts[:day]
+          end
+      end
+
+      attrs[:resource_dates_attributes] << date_struct
+    end
+
+    # subjects
+    attrs[:subjects_attributes] = []
+    doc.elements.each('//archdesc/controlaccess/*') do |subject|
+      attrs[:subjects_attributes] << { name: subject.text.strip }
+    end
+
+    Resource.new(attrs)
+  end
+
   ##
   # @return Array of all of a resource's children, regardless of depth in the
   # hierarchy.
@@ -196,6 +300,17 @@ class Resource < ActiveRecord::Base
       when ResourceSignificance::HIGH
         'High'
     end
+  end
+
+  private
+
+  def self.ead_date_to_ymd_hash(date)
+    date = date.split('-')
+    parts = {}
+    parts[:day] = date[2].to_i if date.length > 2
+    parts[:month] = date[1].to_i if date.length > 1
+    parts[:year] = date[0].to_i
+    parts
   end
 
 end
