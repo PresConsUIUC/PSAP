@@ -26,20 +26,15 @@ var ready = function() {
                     if (uri.match(re)) {
                         return uri.replace(re, '$1' + key + "=" + value + '$2');
                     }
-                    else {
-                        return uri + separator + key + "=" + value;
-                    }
+                    return uri + separator + key + "=" + value;
                 }
             },
 
             updateLevelButtons: function(selected_button) {
-                $('.level_button').removeClass('active');
-                $('.level_button').removeClass('btn-info');
-                $('.level_button').removeClass('btn-warning');
-                $('.level_button').removeClass('btn-danger');
-                $('.level_button').addClass('btn-default');
-                selected_button.removeClass('btn-default');
-                selected_button.addClass('active');
+                $('.level_button').
+                    removeClass('active btn-info btn-warning btn-danger').
+                    addClass('btn-default');
+                selected_button.removeClass('btn-default').addClass('active');
 
                 var level = selected_button.attr('data-level');
                 if (level > 4) {

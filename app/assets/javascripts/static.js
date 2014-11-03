@@ -9,7 +9,7 @@ var ready = function() {
             offset: { top: 220 }
         });
 
-        smoothAnchorScroll(96); // defined in common.js
+        PSAP.smoothAnchorScroll(96);
     }
 };
 

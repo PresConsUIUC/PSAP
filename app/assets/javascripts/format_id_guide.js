@@ -1,33 +1,33 @@
 var ready = function() {
     if ($('body#format_id_guide').length) {
-        smoothAnchorScroll(0); // defined in common.js
+        PSAP.smoothAnchorScroll(0);
 
-        $('body').scrollspy({
+        var body = $('body');
+        body.scrollspy({
             target: '#sections',
             offset: $('nav.navbar.navbar-default').height() + 15
         });
 
-        if ($('body').width() > 600) {
-            $('#sections').affix({
-                offset: { top: 160 }
-            });
+        if (body.width() > 600) {
+            $('#sections').affix({ offset: { top: 160 } });
         }
     } else if ($('body#format_id_guide_page').length) {
-        smoothAnchorScroll(0); // defined in common.js
+        PSAP.smoothAnchorScroll(0);
 
         // dynamically add some needed classes
-        $('table').addClass('table').addClass('table-striped');
-        $('div#page_content img').addClass('img-thumbnail').
-            addClass('gallery-item');
+        $('table').addClass('table table-striped');
+        var page_content = $('div#page_content');
+        page_content.find('img').addClass('img-thumbnail gallery-item');
 
         // move the header
-        $('div#page_content div.col-sm-8:first').append(
-            $('div#page_content h1:first'));
+        page_content.find('div.col-sm-8:first').append(
+            page_content.find('h1:first'));
 
         // initialize Magnific Popup
-        $('div#page_content img').each(function() {
+        page_content.find('img').each(function() {
             var lightbox_src = (window.devicePixelRatio > 1) ?
-                $(this).data('retina-lightbox-src') : $(this).data('lightbox-src');
+                $(this).data('retina-lightbox-src') :
+                $(this).data('lightbox-src');
             $(this).wrap('<a class="magnific" href="' + lightbox_src + '"></a>');
         });
 

@@ -1,4 +1,4 @@
 $('#resources').html('<%= escape_javascript(render partial: 'resources/resources', locals: { resources: @resources, show_checkboxes: false }) %>');
 $('.pagination a').attr('data-remote', 'true');
 
-updateResultsCount();
+PSAP.updateResultsCount();
