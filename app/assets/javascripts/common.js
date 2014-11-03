@@ -20,8 +20,8 @@ var PSAP = {
 
         enableDynamicNestedEntities: function() {
             var updateIndexes = function() {
-                $('.addable_removable').each(function() {
-                    $(this).find('.addable_removable_input_group input[type="hidden"].index').each(function(index) {
+                $('.psap-addable-removable').each(function() {
+                    $(this).find('.psap-addable-removable-input-group input[type="hidden"].index').each(function(index) {
                         $(this).val(index);
                     });
                 });
@@ -30,27 +30,27 @@ var PSAP = {
             // enable certain form elements to be dynamically added and removed, as
             // in the case of a nested form with a 1..n relationship to its child
             // object(s).
-            $('.addable_removable button.remove').on('click', function() {
+            $('.psap-addable-removable button.remove').on('click', function() {
                 // Instead of removing it from the DOM, hide it and set its
                 // "_destroy" key to 1, so Rails knows to destroy its corresponding
                 // model.
-                var group = $(this).closest('.addable_removable_input_group');
+                var group = $(this).closest('.psap-addable-removable-input-group');
                 group.hide();
                 group.find('input[type="hidden"].destroy').val(1);
 
                 updateIndexes();
             });
 
-            $('.addable_removable button.add').on('click', function() {
+            $('.psap-addable-removable button.add').on('click', function() {
                 // prohibit adding more than 10 fields
-                if ($(this).closest('.addable_removable')
-                    .children('.addable_removable_input_group').length >= 10) {
+                if ($(this).closest('.psap-addable-removable')
+                    .children('.psap-addable-removable-input-group').length >= 10) {
                     return;
                 }
 
                 // clone the last input group and insert the clone into the DOM
                 // div input groups
-                var group = $(this).prevAll('.addable_removable_input_group:first');
+                var group = $(this).prevAll('.psap-addable-removable-input-group:first');
                 if (!group.length) {
                     // table input groups
                     group = $(this).prevAll('table:first').find('tr:last');
