@@ -1,11 +1,11 @@
-module FormatIdGuideHelper
+module StaticPageHelper
 
   ##
-  # Converts raw Format ID Guide HTML fragments from the form they were
+  # Converts raw static page HTML fragments from the form they were
   # imported in to a form that is compatible with the application, fixing
   # image URLs and internal links.
   #
-  def format_id_guide_html(raw_html)
+  def static_page_html(raw_html)
     doc = Nokogiri::HTML.fragment(raw_html)
 
     doc.css('a').each do |anchor|
@@ -27,8 +27,8 @@ module FormatIdGuideHelper
       image['data-at2x'] = retina_image_path(new_image_filename)
       image['src'] = nil
 
-      thumb_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'thumb' }.first
-      full_profile = FormatIdGuide::PROFILES.select{ |p| p[:type] == 'full' }.first
+      thumb_profile = ContentProcessing::PROFILES.select{ |p| p[:type] == 'thumb' }.first
+      full_profile = ContentProcessing::PROFILES.select{ |p| p[:type] == 'full' }.first
       image['data-lightbox-src'] = image_path(
           new_image_filename.gsub("-#{thumb_profile[:width]}",
                                   "-#{full_profile[:width]}"))

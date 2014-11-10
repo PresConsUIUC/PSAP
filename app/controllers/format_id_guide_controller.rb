@@ -12,10 +12,12 @@ class FormatIdGuideController < ApplicationController
   def search
     @results = []
     if params[:q] and params[:q].length > 0
-      @results = StaticPage.full_text_search(params[:q])
+      @results = StaticPage.full_text_search(
+          params[:q], FormatClass.all.map{ |c| FormatClass.name_for_class(c) })
     end
     @query = params[:q].truncate(50)
-    @results_summary = @query.length > 0 ? "Results for \"#{@query}\"" : "Format ID Guide Search"
+    @results_summary = @query.length > 0 ?
+        "Results for \"#{@query}\"" : "Format ID Guide Search"
   end
 
   ##
