@@ -60,7 +60,6 @@ Psap::Application.routes.draw do
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
   match '/glossary', to: 'static#glossary', via: 'get'
-  match '/help', to: 'static#help', via: 'get'
 
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
@@ -141,5 +140,10 @@ Psap::Application.routes.draw do
         via: 'get', as: 'format_id_guide_search'
   match '/format-id-guide/:category', to: 'format_id_guide#show',
         via: 'get', as: 'format_id_guide_category'
+
+  # Advanced Help routes
+  match '/help', to: 'static#help', via: 'get', as: 'help'
+  #match '/help', to: 'help#index', via: 'get', as: 'help'
+  #match '/help/:category', to: 'help#show', via: 'get', as: 'help_category'
 
 end

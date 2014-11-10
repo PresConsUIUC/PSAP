@@ -644,6 +644,10 @@ end
 puts 'Ingesting Format ID Guide content...'
 FormatIdGuide.new.reseed
 
+# Help HTML pages
+puts 'Ingesting help content...'
+Help.new.reseed
+
 puts 'Creating the admin user...'
 
 # Admin role
