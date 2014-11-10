@@ -41,14 +41,22 @@ class AssessmentQuestionsController < ApplicationController
   end
 
   ##
-  # Responds to /formats/:id/assessment-questions to show all assessment
-  # questions relevant to a format.
+  # Responds to GET /formats/:id/assessment-questions to show all assessment
+  # questions relevant to a format; also GET /locations/:id/assessment-questions
+  # and GET /institutions/:id/assessment-questions.
   #
   def index
-    @assessment_questions = Format.find(params[:format_id]).
-        all_assessment_questions.
-        where(parent_id: params[:parent_id]). # AQ parent id, not format
-        order(:index)
+    if params[:format_id]
+      @assessment_questions = Format.find(params[:format_id]).
+          all_assessment_questions.
+          where(parent_id: params[:parent_id]). # AQ parent id, not format
+          order(:index)
+    elsif params[:location_id]
+      @assessment_questions = Assessment.find_by_key('location').
+          assessment_questions.
+          where(parent_id: params[:parent_id]).
+          order(:index)
+    end
     render json: @assessment_questions.to_json(
         include: [:assessment_question_options,
                   :enabling_assessment_question_options])

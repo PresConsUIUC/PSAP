@@ -27,8 +27,8 @@ module StaticPageHelper
       image['data-at2x'] = retina_image_path(new_image_filename)
       image['src'] = nil
 
-      thumb_profile = ContentProcessing::PROFILES.select{ |p| p[:type] == 'thumb' }.first
-      full_profile = ContentProcessing::PROFILES.select{ |p| p[:type] == 'full' }.first
+      thumb_profile = StaticPageImporter::PROFILES.select{ |p| p[:type] == 'thumb' }.first
+      full_profile = StaticPageImporter::PROFILES.select{ |p| p[:type] == 'full' }.first
       image['data-lightbox-src'] = image_path(
           new_image_filename.gsub("-#{thumb_profile[:width]}",
                                   "-#{full_profile[:width]}"))

@@ -5,6 +5,7 @@ class AssessmentQuestion < ActiveRecord::Base
                           class_name: 'AssessmentQuestionOption'
   has_and_belongs_to_many :events, join_table: 'events_assessment_questions'
   has_and_belongs_to_many :formats
+  has_and_belongs_to_many :locations
   has_many :assessment_question_options, inverse_of: :assessment_question,
            dependent: :destroy, order: 'index'
   has_many :assessment_question_responses,

@@ -60,11 +60,7 @@ var ResourceForm = {
         });
 
         $('button.save').on('click', function(event) {
-            if ($('form#new_resource').length) {
-                $('form#new_resource').submit();
-            } else if ($('form#edit_resource').length) {
-                $('form#edit_resource').submit();
-            }
+            $('form.psap-assessment').submit();
         });
 
         $('select.date_type').on('change', function(event) {
@@ -101,7 +97,7 @@ var ResourceForm = {
     },
 
     clearAssessmentQuestions: function() {
-        Popover.closeAll();
+        PSAP.Popover.closeAll();
         $('.assessment_question').remove();
         ResourceForm.updateProgress();
     },
@@ -164,12 +160,12 @@ var ResourceForm = {
         $(questionNode).hide();
         afterNode.after(questionNode);
         $(questionNode).fadeIn();
-        Popover.refresh();
+        PSAP.Popover.refresh();
     },
 
     insertQuestionIn: function(questionNode, parentNode) {
         parentNode.append(questionNode);
-        Popover.refresh();
+        PSAP.Popover.refresh();
     },
 
     // Transforms an assessment question into HTML for the assessment form.
@@ -381,80 +377,12 @@ var ResourceForm = {
     },
 
     updateProgress: function() {
-        var questions = $('.assessment_question');
-        var numQuestions = questions.length;
-
-        $('.total-assessment-question-count').text(numQuestions);
-
         // update question counts per-section
         $('div.section').each(function() {
             var count = $(this).find('.assessment_question').length;
             $('.nav li[data-section-id="' + $(this).data('id') +
                 '"] .assessment-question-count').text(count);
         });
-
-        // Update score bar
-        // https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-        var resource_score = 0;
-        var format_score = ResourceForm.selectedFormatScore();
-        if (format_score) {
-            var section_scores = [];
-            $('.section-questions').each(function () {
-                var question_scores = [];
-                var question_weights = [];
-                var weighted_scores = [];
-
-                $(this).find('.assessment_question').each(function () {
-                    // radios and checkboxes are handled differently. Radios
-                    // have the score of the selected radio. Checkboxes have
-                    // a score of 1 - (sum of checked checkboxes).
-                    var selected_radio = $(this).find('input[type="radio"]:checked');
-                    if (selected_radio.length) {
-                        var response_value = selected_radio.data('option-score');
-                        if (response_value) {
-                            question_scores.push(response_value);
-                            var question_weight = parseFloat($(this).data('weight'));
-                            question_weights.push(question_weight);
-                        }
-                    } else {
-                        var checked_checkboxes = $(this).find(
-                            'input[type="checkbox"]:checked');
-                        if (checked_checkboxes.length > 0) {
-                            var response_value = 1;
-                            checked_checkboxes.each(function () {
-                                response_value -= $(this).data('option-score');
-                            });
-                            question_scores.push(response_value);
-                            var question_weight = parseFloat($(this).data('weight'));
-                            question_weights.push(question_weight);
-                        }
-                    }
-                });
-
-                var total_weight = question_weights.sum();
-                var section_weight = $(this).closest('.section').data('weight');
-                var score = 0;
-                if (question_scores.length > 0) {
-                    for (var i = 0; i < question_scores.length; i++) {
-                        weighted_scores[i] = question_scores[i] * question_weights[i];
-                    }
-                    score = (parseFloat(weighted_scores.sum()) / total_weight) *
-                        section_weight;
-                }
-                section_scores.push(score);
-            });
-
-            var assessment_score = section_scores.sum();
-            var location_score = 1; // TODO: this is a placeholder
-            resource_score = 0.4 * format_score + 0.1 * location_score +
-                assessment_score;
-            //console.log(format_score + ' format + ' + assessment_score + ' assessment + ' +
-            //    location_score + ' location (placeholder) = ' + resource_score + ' resource');
-        }
-        // TODO: include format vectors
-        var score_bar = $('div.progress-bar.score');
-        score_bar.css('width', resource_score * 100 + '%');
-        score_bar.attr('aria-valuenow', resource_score);
     }
 
 };

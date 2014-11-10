@@ -1,4 +1,7 @@
 <% provide(:title, 'New Location') %>
+<% provide(:body_id, 'new_location') %>
+
+<input type="hidden" name="root-url" value="<%= root_url %>">
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -15,9 +18,39 @@
   <li class="active">New Location</li>
 </ol>
 
-<h1>New Location</h1>
+<div class="row">
+  <div class="col-sm-7">
+    <h1>New Location</h1>
+  </div>
+  <div class="col-sm-5">
+    <div class="btn-group" style="float:right">
+      <!-- Save -->
+      <button type="button" class="btn btn-default save">
+        <span class="glyphicon glyphicon-cloud"></span> Save
+      </button>
+    </div>
+  </div>
+</div>
 
-<%= form_for(@location, url: repository_locations_path(@repository)) do |f| %>
-    <%= render 'form', :f => f %>
-    <%= f.submit 'Create Location', class: 'btn btn-primary' %>
-<% end %>
+<div class="row" id="assessment">
+
+  <!-- left column menu -->
+  <div class="col-sm-3">
+    <%= render partial: 'shared/assessment_sections',
+               locals: { assessment_sections: @assessment_sections } %>
+  </div>
+
+  <div class="col-sm-9">
+    <%= form_for(@location, class: 'psap-assessment', url: repository_locations_path(@location.repository)) do |f| %>
+
+      <div id="basic_info" class="section">
+        <%= render partial: 'basic_info_form', locals: { f: f } %>
+      </div>
+
+      <% @assessment_sections.each do |section| %>
+        <%= render partial: 'shared/section_form', locals: { section: section } %>
+      <% end %>
+
+    <% end %>
+  </div>
+</div>

@@ -547,20 +547,19 @@ xls.sheet('Support Scores').each_with_index do |row, i|
 end
 
 # Assessments
-puts 'Seeding assessments...'
-assessments = [
-    Assessment.create!(name: 'Resource Assessment', key: 'resource'),
-    Assessment.create!(name: 'Location Assessment', key: 'location'),
-    Assessment.create!(name: 'Institution Assessment', key: 'institution')
-]
+assessments = {
+    resource: Assessment.create!(name: 'Resource Assessment', key: 'resource'),
+    location: Assessment.create!(name: 'Location Assessment', key: 'location'),
+    institution: Assessment.create!(name: 'Institution Assessment', key: 'institution')
+}
 
-# Assessment sections
+# Resource assessment sections
 sections = {}
 command = CreateAssessmentSectionCommand.new(
     { name: 'Use / Access', index: 0, weight: 0.05,
       description: 'The following questions concern the level of use/handling '\
       'of the object(s).',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:use_access] = command.object
 
@@ -568,7 +567,7 @@ command = CreateAssessmentSectionCommand.new(
     { name: 'Storage / Container', index: 1, weight: 0.05,
       description: 'The following questions concern the appropriateness of '\
       'storage, housing, and labeling.',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:storage_container] = command.object
 
@@ -576,15 +575,71 @@ command = CreateAssessmentSectionCommand.new(
     { name: 'Condition', index: 2, weight: 0.4,
       description: 'The following questions concern the physical state of the '\
       'resource, and to what degree this impacts its content.',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:condition] = command.object
 
-# Assessment questions
-puts 'Seeding assessment questions...'
+# Location assessment sections
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Environment', index: 0, weight: 0.05,
+      description: '', # TODO: add a description
+      assessment: assessments[:location] }, nil, '127.0.0.1')
+command.execute
+sections[:location_environment] = command.object
 
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Emergency Preparedness', index: 1, weight: 0.05,
+      description: '', # TODO: add a description
+      assessment: assessments[:location] }, nil, '127.0.0.1')
+command.execute
+sections[:location_emergency_preparedness] = command.object
+
+# Institution assessment sections
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Collection Planning', index: 0, weight: 0.05,
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_collection_planning] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Use | Access', index: 1, weight: 0.05, # TODO: weights
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_use_access] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Material Inspection', index: 2, weight: 0.05, # TODO: weights
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_material_inspection] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Playback Equipment', index: 3, weight: 0.05, # TODO: weights
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_playback_equipment] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Security', index: 4, weight: 0.05, # TODO: weights
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_security] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Disaster Recovery', index: 5, weight: 0.05, # TODO: weights
+      description: '', # TODO: add a description
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_disaster_recovery] = command.object
+=begin
+# Resource assessment questions
+puts 'Seeding resource assessment questions...'
 aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
-#aq_sheets = %w(Resource-Paper-Bound)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
     if index > 0 and !row[7].blank? # skip header & trailing rows
@@ -639,14 +694,77 @@ aq_sheets.each do |sheet|
     end
   end
 end
+=end
+# Location & Institution assessment questions
+puts 'Seeding location assessment questions...'
+aq_sheets = %w(Location Institution)
+aq_sheets.each do |sheet|
+  xls.sheet(sheet).each_with_index do |row, index|
+    if index > 0 and !row[2].blank? # skip header & trailing rows
+      params = {
+          qid: row[1].to_i,
+          name: row[2].strip,
+          question_type: AssessmentQuestionType::RADIO,
+          index: index,
+          weight: row[6].to_f,
+          help_text: row[3].strip
+      }
+      case row[0][0..2].strip.downcase
+        when 'col'
+          params[:assessment_section] = sections[:institution_collection_planning]
+        when 'dis'
+          params[:assessment_section] = sections[:institution_disaster_recovery]
+        when 'env'
+          params[:assessment_section] = sections[:location_environment]
+        when 'eme'
+          params[:assessment_section] = sections[:location_emergency_preparedness]
+        when 'mat'
+          params[:assessment_section] = sections[:institution_material_inspection]
+        when 'pla'
+          params[:assessment_section] = sections[:institution_playback_equipment]
+        when 'sec'
+          params[:assessment_section] = sections[:institution_security]
+        when 'use'
+          params[:assessment_section] = sections[:institution_use_access]
+      end
+
+      unless row[9].blank? or row[8].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[7].to_i)
+        params[:enabling_assessment_question_options] = []
+        row[8].split(';').map{ |x| x.strip }.each do |dep|
+          eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
+          if eaqo
+            params[:enabling_assessment_question_options] << eaqo
+          else
+            puts 'AQO error: QID ' + row[7].to_s + ': ' + dep
+          end
+        end
+      end
+
+      command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+      command.execute
+
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[9], index: 0, value: row[10]) if row[9] and row[10]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[11], index: 1, value: row[12]) if row[11] and row[12]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[13], index: 2, value: row[14]) if row[13] and row[14]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[15], index: 3, value: row[16]) if row[15] and row[16]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[17], index: 4, value: row[18]) if row[17] and row[18]
+      command.object.save!
+    end
+  end
+end
 
 # Format ID Guide HTML pages
 puts 'Ingesting Format ID Guide content...'
-FormatIdGuide.new.reseed
-
-# Help HTML pages
-puts 'Ingesting help content...'
-Help.new.reseed
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
+    File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+p.reseed
 
 puts 'Creating the admin user...'
 

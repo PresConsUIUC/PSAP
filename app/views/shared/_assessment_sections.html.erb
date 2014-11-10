@@ -1,0 +1,23 @@
+<% # an assessment sections menu, appearing in the "edit/assess" view of all
+   # assessable entities (resources, institutions, locations). %>
+
+<div id="sections">
+  <nav>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active"><a href="#basic_info">Basic Info</a></li>
+      <% assessment_sections.each do |section| %>
+        <li data-section-id="<%= section.id %>">
+          <a href="#<%= section.name.gsub('/', '_').gsub(' ', '_') %>"><%= section.name %>
+          <small>(<span class="assessment-question-count">0</span>)</small></a>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <!-- Save button -->
+  <div class="center">
+    <button type="button" class="btn btn-default save">
+      <span class="glyphicon glyphicon-cloud"></span> Save
+    </button>
+  </div>
+</div>

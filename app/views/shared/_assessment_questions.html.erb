@@ -1,5 +1,5 @@
 <% assessment_questions.order(:index).each do |question| %>
-  <% response = resource.assessment_question_responses.where(assessment_question_id: question.id).first %>
+  <% response = entity.assessment_question_responses.where(assessment_question_id: question.id).first %>
   <% if response and response.assessment_question_option %>
     <dt class="depth-<%= depth %>"><%= question.name %></dt>
     <dd class="depth-<%= depth %>">
@@ -13,7 +13,7 @@
       </ul>
     </dd>
     <%= render partial: 'assessment_questions',
-               locals: { resource: resource,
+               locals: { entity: entity,
                          assessment_questions: question.children.order(:index),
                          depth: depth + 1 } if question.children.any? %>
   <% end %>

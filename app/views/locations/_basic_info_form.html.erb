@@ -1,7 +1,13 @@
+<h2>Basic Info</h2>
+
+<% # required for autocompletion %>
+<input type="hidden" name="institution_url"
+       value="<%= institution_url(@location.repository.institution) %>">
+
 <%= render 'shared/error_messages', :object => f.object %>
 
 <div class="form-group">
-  <%= f.label :name %>
+  <%= f.label :name, 'Name' %>
   <%= f.text_field :name, class: 'form-control' %>
 </div>
 
@@ -17,7 +23,6 @@
     <tr>
       <th>Min (&deg;F)</th>
       <th>Max (&deg;F)</th>
-      <th>Score</th>
     </tr>
   </thead>
   <tbody>
@@ -29,10 +34,6 @@
         </td>
         <td>
           <%= g.number_field :max_temp_f, min: 0, max: 100, maxlength: 4,
-                             class: 'form-control' %>
-        </td>
-        <td>
-          <%= g.number_field :score, min: 0, max: 100, maxlength: 4,
                              class: 'form-control' %>
         </td>
       </tr>

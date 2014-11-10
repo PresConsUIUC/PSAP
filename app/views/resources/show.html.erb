@@ -283,8 +283,8 @@
           </div>
           <div id="section-<%= section.id %>" class="panel-collapse collapse">
             <div class="panel-body">
-              <%= render partial: 'assessment_questions', locals: {
-                      resource: @resource,
+              <%= render partial: 'shared/assessment_questions', locals: {
+                      entity: @resource,
                       assessment_questions: section.assessment_questions.where(parent_id: nil).order(:index),
                       depth: 0 } %>
             </div>

@@ -1,4 +1,4 @@
-module ContentProcessing
+class StaticPageImporter
 
   PROFILES = [
       {
@@ -20,15 +20,20 @@ module ContentProcessing
   @referenced_images = [] # images that are referenced in src attributes
   @missing_images = [] # referenced images that don't exist on disk
 
+  def initialize(source_path, asset_path)
+    @source_path = source_path
+    @asset_path = asset_path
+  end
+
   ##
   # Iterates through all of the HTML files in search of <img> tags, and
   # generates derivative images based on their "src" attributes.
   #
   def generate_derivatives
-    FileUtils.rm_rf(ASSET_PATH) if File.exists?(ASSET_PATH)
-    FileUtils.mkdir_p(ASSET_PATH)
+    FileUtils.rm_rf(@asset_path) if File.exists?(@asset_path)
+    FileUtils.mkdir_p(@asset_path)
 
-    Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
+    Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
       File.open(htmlpath, 'r') { |content|
         doc = Nokogiri::HTML(content)
         # images
@@ -64,13 +69,13 @@ module ContentProcessing
     if source_image_path
       imgsrcbasename = File.basename(source_image_path, '.*')
       imgsrcextname = File.extname(source_image_path)
-      FileUtils.mkdir_p(ASSET_PATH)
+      FileUtils.mkdir_p(@asset_path)
 
       PROFILES.each do |profile|
         non_retina_dest_pathname = File.join(
-            ASSET_PATH, "#{imgsrcbasename}-#{profile[:width]}#{imgsrcextname.downcase}")
+            @asset_path, "#{imgsrcbasename}-#{profile[:width]}#{imgsrcextname.downcase}")
         retina_dest_pathname = File.join(
-            ASSET_PATH, "#{imgsrcbasename}-#{profile[:width]}@2x#{imgsrcextname.downcase}")
+            @asset_path, "#{imgsrcbasename}-#{profile[:width]}@2x#{imgsrcextname.downcase}")
 
         unless File.exists?(non_retina_dest_pathname)
           # \> will resize only larger-to-smaller
@@ -99,7 +104,7 @@ module ContentProcessing
     videosrcpath = source_path_of_file(video_filename)
     if videosrcpath
       videosrcbasename = File.basename(videosrcpath, '.*')
-      videodestpath = File.join(ASSET_PATH, "#{videosrcbasename}.webm")
+      videodestpath = File.join(@asset_path, "#{videosrcbasename}.webm")
 
       # WebM/VP8
       unless File.exists?(videodestpath)
@@ -113,7 +118,7 @@ module ContentProcessing
 
   def source_path_of_file(filename)
     (IMAGE_EXTENSIONS + VIDEO_EXTENSIONS).each do |ext|
-      Dir.glob(File.join(SOURCE_PATH, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
+      Dir.glob(File.join(@source_path, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
         return path if File.basename(path).downcase == filename.downcase
       end
     end
@@ -121,17 +126,17 @@ module ContentProcessing
   end
 
   def reseed
-    StaticPage.where('category IN (?)', FormatClass.all).destroy_all
+    StaticPage.destroy_all
 
     # HTML pages
-    Dir.glob(File.join(SOURCE_PATH, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
+    Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
       File.open(file) do |contents|
         doc = Nokogiri::HTML(contents)
         # inject image widths & heights
         doc.css('img').each do |img|
           thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
           img['src'] = "#{File.basename(img['src'], '.*')}-#{thumb_width}#{File.extname(img['src']).downcase}"
-          dimensions = `convert "#{ASSET_PATH}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
+          dimensions = `convert "#{@asset_path}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
           img['width'] = dimensions[0]
           img['height'] = dimensions[1]
         end
@@ -154,9 +159,9 @@ module ContentProcessing
 
     # Copy source videos
     # File::FNM_CASEFOLD == case insensitive
-    Dir.glob(File.join(SOURCE_PATH, '**', '*.mp4'),
+    Dir.glob(File.join(@source_path, '**', '*.mp4'),
              File::FNM_CASEFOLD).each do |file|
-      dest_path = ASSET_PATH + '/' + File.basename(file)
+      dest_path = File.join(@asset_path, File.basename(file))
       FileUtils.cp(file, dest_path)
       File.chmod(0644, dest_path)
     end
@@ -180,7 +185,7 @@ module ContentProcessing
     unused = []
     IMAGE_EXTENSIONS.each do |ext|
       # File::FNM_CASEFOLD == case insensitive
-      Dir.glob(File.join(SOURCE_PATH, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
+      Dir.glob(File.join(@source_path, '**', '*.' + ext), File::FNM_CASEFOLD).each do |path|
         unused << path unless @referenced_images.map{ |r| master_filename(r) }.
             include?(master_filename(path))
       end

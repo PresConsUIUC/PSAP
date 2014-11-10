@@ -7,15 +7,66 @@ body#assessment_template {
   }
 }
 
-body#assessment_template, body#new_resource, body#edit_resource {
-  div {
-    .depth-1 { margin-left:1em; }
-    .depth-2 { margin-left: 2em; }
-    .depth-3 { margin-left: 3em; }
-    .depth-4 { margin-left: 4em; }
-    .depth-5 { margin-left: 5em; }
-    .depth-6 { margin-left: 6em; }
-    .depth-7 { margin-left: 7em; }
-    .depth-8 { margin-left: 8em; }
+body#assessment_template, body#new_resource, body#edit_resource,
+body#new_location, body#edit_location {
+  div.section {
+    border-top:1px solid #cccccc;
+    margin-top:1em;
+    padding-top:1em;
   }
+  .affix {
+    margin: 0 10% 0 0;
+    width:21.5%;
+    top:70px;
+  }
+  button.btn-sm.help {
+    background-color:#c0c0c0;
+    border:none;
+    border-radius:9px;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    height:18px;
+    margin:0px 0px 5px 0.4em;
+    padding:0px;
+    width:18px;
+  }
+  button.btn-default.help {
+    background-color:#c0c0c0;
+    border:none;
+    border-radius:15px;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    height:23px;
+    margin:0px 0px 5px 0.4em;
+    padding:0px;
+    width:23px;
+  }
+  label.radio-inline {
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    color: #333333;
+    font-size:14px;
+    line-height: 1.428571429;
+    margin:1em 0.5em;
+    padding: 6px 12px 6px 30px;
+  }
+  label.radio-inline:hover {
+    background-color:#ebebeb;
+  }
+  div.popover {
+    @media screen and (min-width: 768px) {
+      min-width:500px;
+    }
+  }
+  .depth-1 { padding-left:1.5em; }
+  .depth-2 { padding-left:3em; }
+  .depth-3 { padding-left:4.5em; }
+  .depth-4 { padding-left:6em; }
+  .depth-5 { padding-left:7.5em; }
+  .depth-6 { padding-left:9em; }
+  .depth-7 { padding-left:10.5em; }
+  .depth-8 { padding-left:12em; }
+  .depth-9 { padding-left:13.5em; }
 }

@@ -1,4 +1,5 @@
 class Assessment < ActiveRecord::Base
+  has_many :assessment_questions, through: :assessment_sections
   has_many :assessment_sections, inverse_of: :assessment, dependent: :destroy
   has_and_belongs_to_many :events
 

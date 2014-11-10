@@ -99,9 +99,10 @@ Psap::Application.routes.draw do
   resources :repositories, except: :index do
     resources :locations, except: :index
   end
-  resources :locations, except: :index do
+  resources :locations, except: :index, path_names: { edit: 'assess' } do
     match '/resources/import', to: 'resources#import', via: 'post',
           as: 'resource_import_post'
+    match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     resources :resources, except: :index
   end
   match '/resources/move', to: 'resources#move', via: 'post', as: 'resource_move'

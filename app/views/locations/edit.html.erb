@@ -1,8 +1,11 @@
-<% provide(:title, "Edit #{@location.name}") %>
+<% provide(:title, "Assess #{@location.name}") %>
+<% provide(:body_id, 'edit_location') %>
+
+<input type="hidden" name="root-url" value="<%= root_url %>">
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li>
     <%= link_to @location.repository.institution.name,
@@ -13,12 +16,45 @@
                 polymorphic_path(@location.repository) %>
   </li>
   <li><%= link_to @location.name, polymorphic_path(@location) %></li>
-  <li class="active">Edit</li>
+  <li class="active">Assess</li>
 </ol>
 
-<h1>Edit <%= @location.name %></h1>
+<div class="row">
+  <div class="col-sm-10">
+    <h1>Location Assessment: <%= @location.name %></h1>
+  </div>
+  <div class="col-sm-2">
+    <div class="btn-group" style="float:right">
+      <!-- Save -->
+      <button type="button" class="btn btn-default save">
+        <span class="glyphicon glyphicon-cloud"></span> Save
+      </button>
+    </div>
+  </div>
+</div>
 
-<%= form_for(@location) do |f| %>
-    <%= render 'form', :f => f %>
-    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-<% end %>
+<div class="row">
+
+  <!-- left column menu -->
+  <div class="col-sm-3">
+    <%= render partial: 'shared/assessment_sections',
+               locals: { assessment_sections: @assessment_sections } %>
+  </div>
+
+  <div class="col-sm-9">
+    <%= form_for(@location, class: 'psap-assessment') do |f| %>
+      <div id="basic_info" class="section">
+        <%= render partial: 'basic_info_form', locals: { f: f } %>
+      </div>
+
+      <% @location.assessment_question_responses.each do |response| %>
+        <input type="hidden" name="selected_option_ids"
+               value="<%= response.assessment_question_option.id %>">
+      <% end %>
+
+      <% @assessment_sections.each do |section| %>
+        <%= render partial: 'shared/section_form', locals: { section: section } %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
