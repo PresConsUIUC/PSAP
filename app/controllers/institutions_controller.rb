@@ -8,6 +8,8 @@ class InstitutionsController < ApplicationController
     command = CreateInstitutionCommand.new(institution_params, current_user,
                                            request.remote_ip)
     @institution = command.object
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -65,6 +67,8 @@ class InstitutionsController < ApplicationController
         render text: @institution.resources_as_csv
       }
       format.html {
+        @assessment_sections = Assessment.find_by_key('institution').
+            assessment_sections.order(:index)
         @institution_users = @institution.users.where(confirmed: true).order(:last_name)
         @repositories = @institution.repositories.order(:name).
             paginate(page: params[:page],
@@ -97,6 +101,8 @@ class InstitutionsController < ApplicationController
     @institution = Institution.find(params[:id])
     command = UpdateInstitutionCommand.new(@institution, institution_params,
                                            current_user, request.remote_ip)
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -106,13 +112,13 @@ class InstitutionsController < ApplicationController
       render 'edit'
     else
       flash[:success] = "Institution \"#{@institution.name}\" updated."
-      redirect_to @institution
+      redirect_to edit_institution_url(@institution)
     end
   end
 
   # Outputs a high-level assessment report as a PDF.
   def report
-
+    # TODO: write this
   end
 
   private

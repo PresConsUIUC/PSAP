@@ -14,12 +14,12 @@
   </div>
   <div class="col-sm-4">
     <div class="btn-group" style="float:right">
-      <!-- Edit -->
+      <!-- Assess -->
       <% if current_user.is_admin? %>
           <%= link_to edit_institution_path(@institution),
                       class: 'btn btn-default' do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-              Edit
+              Assess
           <% end %>
       <% end %>
       <!-- Export as CSV -->

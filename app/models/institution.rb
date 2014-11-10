@@ -1,10 +1,15 @@
 class Institution < ActiveRecord::Base
+  has_and_belongs_to_many :assessment_questions
+  has_many :assessment_question_responses, inverse_of: :institution,
+           dependent: :destroy
   has_many :users, inverse_of: :institution, dependent: :restrict_with_exception
   has_many :repositories, inverse_of: :institution, dependent: :destroy
   has_and_belongs_to_many :events
   belongs_to :language, inverse_of: :institutions
   has_many :locations, through: :repositories
   has_many :resources, through: :locations
+
+  accepts_nested_attributes_for :assessment_question_responses
 
   validates :address1, presence: true, length: { maximum: 255 }
   validates :address2, length: { maximum: 255 }

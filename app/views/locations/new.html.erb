@@ -41,7 +41,8 @@
   </div>
 
   <div class="col-sm-9">
-    <%= form_for(@location, class: 'psap-assessment', url: repository_locations_path(@location.repository)) do |f| %>
+    <%= form_for(@location, class: 'psap-assessment',
+                 url: repository_locations_path(@location.repository)) do |f| %>
 
       <div id="basic_info" class="section">
         <%= render partial: 'basic_info_form', locals: { f: f } %>

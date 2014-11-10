@@ -87,8 +87,9 @@ Psap::Application.routes.draw do
   resources :format_classes, only: [], path: 'format-classes' do
     resources :formats, only: :index, path: 'formats'
   end
-  resources :institutions do
+  resources :institutions, path_names: { edit: 'assess' } do
     resources :repositories, except: :index
+    match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: 'get'
     match '/resources/subjects', to: 'resources#subjects', via: 'get'

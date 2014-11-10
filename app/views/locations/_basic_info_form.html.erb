@@ -1,9 +1,5 @@
 <h2>Basic Info</h2>
 
-<% # required for autocompletion %>
-<input type="hidden" name="institution_url"
-       value="<%= institution_url(@location.repository.institution) %>">
-
 <%= render 'shared/error_messages', :object => f.object %>
 
 <div class="form-group">
