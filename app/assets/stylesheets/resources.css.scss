@@ -2,10 +2,13 @@ body#new_resource, body#edit_resource {
   div#sections {
     display:none;
   }
+  div.format select {
+    min-width:50%;
+    max-width:90%;
+  }
 }
 
 body#show_resource div.assessment {
-
   dt.depth-1, dd.depth-1 { padding-left:1.5em; }
   dt.depth-2, dd.depth-2 { padding-left:3em; }
   dt.depth-3, dd.depth-3 { padding-left:4.5em; }

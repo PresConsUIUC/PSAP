@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141111161032) do
+ActiveRecord::Schema.define(version: 20141111195337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,13 +189,15 @@ ActiveRecord::Schema.define(version: 20141111161032) do
   end
 
   create_table "formats", force: true do |t|
-    t.string   "name",                                             null: false
-    t.decimal  "score",        precision: 4, scale: 3
+    t.string   "name",                                                       null: false
+    t.decimal  "score",                  precision: 4, scale: 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
-    t.integer  "format_class",                         default: 0, null: false
+    t.integer  "format_class",                                   default: 0, null: false
     t.integer  "fid"
+    t.string   "format_id_guide_page"
+    t.string   "format_id_guide_anchor"
   end
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree

@@ -522,7 +522,9 @@ sheet.each_with_index do |row, i|
                      name: name,
                      format_class: FormatClass::class_for_name(row[0]),
                      parent: parent,
-                     score: row[6])
+                     score: row[6],
+                     format_id_guide_page: row[7],
+                     format_id_guide_anchor: row[8])
     end
   end
 end
