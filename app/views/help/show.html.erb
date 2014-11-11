@@ -8,11 +8,4 @@
   <li class="active"><%= @page.name %></li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-8"></div>
-  <div class="col-sm-4">
-    <%= render partial: 'search_field' %>
-  </div>
-</div>
-
 <%= static_page_html(@page.html) %>

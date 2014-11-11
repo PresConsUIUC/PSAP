@@ -650,7 +650,9 @@ aq_sheets.each do |sheet|
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
           weight: row[9].to_f,
-          help_text: row[8].strip
+          help_text: row[8].strip,
+          advanced_help_page: nil, # TODO: fix
+          advanced_help_anchor: nil # TODO: fix
       }
       case row[5][0..2].strip.downcase
         when 'use'
@@ -707,7 +709,9 @@ aq_sheets.each do |sheet|
           question_type: AssessmentQuestionType::RADIO,
           index: index,
           weight: row[6].to_f,
-          help_text: row[3].strip
+          help_text: row[3].strip,
+          advanced_help_page: row[4] ? row[4].strip.gsub('.html', '') : nil,
+          advanced_help_anchor: row[5] ? row[5].strip : nil
       }
       case row[0][0..2].strip.downcase
         when 'col'
@@ -764,6 +768,13 @@ puts 'Ingesting Format ID Guide content...'
 p = StaticPageImporter.new(
     File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
     File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+p.reseed
+
+# Advanced Help HTML pages
+puts 'Ingesting advanced help content...'
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'AdvHelp'),
+    File.join(Rails.root, 'app', 'assets', 'advanced_help'))
 p.reseed
 
 puts 'Creating the admin user...'

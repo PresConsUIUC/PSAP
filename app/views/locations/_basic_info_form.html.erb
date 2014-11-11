@@ -16,7 +16,8 @@
 
 <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
         data-content="<p>Temperature control is critical to preserving collections. Measure the average temperature in your space (or make an educated estimate) and choose from one of the temperature ranges provided.</p>
-<p>Click through for more information about temperature had how it impacts collection materials.</p>">
+<p><%= link_to(raw('More information&hellip;'),
+               help_category_path('location', anchor: 'location-q2-3'), target: '_blank').gsub('"', '\'') %></p>">
   ?
 </button>
 

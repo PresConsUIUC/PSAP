@@ -149,28 +149,35 @@ var AssessmentForm = {
                 break;
         }
 
+        var adv_help_link = '';
+        if (object['advanced_help_page']) {
+            adv_help_link = '<br><br><a href="/help/' + object['advanced_help_page'] + '#' +
+                object['advanced_help_anchor'] + '" target="_blank">More information&hellip;</a>';
+            adv_help_link = adv_help_link.replace(/"/g, "'");
+        }
+
         return $.parseHTML('<div class="assessment_question depth-' + depth +
             '" data-id="' + object['id'] + '" data-depth="' + depth +
             '" data-weight="' + object['weight'] + '">' +
-            '<hr>' +
-            '<div class="row">' +
-            '<div class="col-sm-11">' +
-            '<h3>' + object['name'] + '</h3>' +
-            '</div>' +
-            '<div class="col-sm-1" style="text-align:right">' +
-            '<button type="button" class="btn btn-default help hovertip-fire" ' +
-            'data-container="body" data-toggle="popover" ' +
-            'data-placement="left" data-html="true" ' +
-            'data-content="' + object['help_text'].replace(/"/g, "&quot;").
-            replace("\n", "<br><br>") + '">? ' +
-            '</button>' +
-            '</div>' +
-            '</div>' +
-            '<div class="row">' +
-            '<div class="col-sm-12">' +
-            control +
-            '</div>' +
-            '</div>' +
+                '<hr>' +
+                '<div class="row">' +
+                    '<div class="col-sm-11">' +
+                        '<h3>' + object['name'] + '</h3>' +
+                    '</div>' +
+                    '<div class="col-sm-1" style="text-align:right">' +
+                        '<button type="button" class="btn btn-default help hovertip-fire" ' +
+                        'data-container="body" data-toggle="popover" ' +
+                        'data-placement="left" data-html="true" ' +
+                        'data-content="' + object['help_text'].replace(/"/g, "&quot;").
+                        replace("\n", "<br><br>") + adv_help_link + '">?' +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                    '<div class="col-sm-12">' +
+                        control +
+                    '</div>' +
+                '</div>' +
             '</div>');
     },
 

@@ -1,28 +1,28 @@
 class StaticPageImporter
 
-  PROFILES = [
+  PROFILES = [ # images will be aspect-fit to these widths & heights
       {
           quality: 70,
-          width: 320, # max
-          height: 320, # max
+          width: 320,
+          height: 320,
           type: 'thumb'
       },
       {
           quality: 80,
-          width: 1500, # max
-          height: 1000, # max
+          width: 1500,
+          height: 1000,
           type: 'full'
       }
   ]
   IMAGE_EXTENSIONS = %w(jpg jpeg png tif tiff)
   VIDEO_EXTENSIONS = %w(mp4 webm)
 
-  @referenced_images = [] # images that are referenced in src attributes
-  @missing_images = [] # referenced images that don't exist on disk
-
   def initialize(source_path, asset_path)
     @source_path = source_path
     @asset_path = asset_path
+
+    @referenced_images = [] # images that are referenced in src attributes
+    @missing_images = [] # referenced images that don't exist on disk
   end
 
   ##
@@ -126,8 +126,6 @@ class StaticPageImporter
   end
 
   def reseed
-    StaticPage.destroy_all
-
     # HTML pages
     Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
       File.open(file) do |contents|
@@ -149,11 +147,12 @@ class StaticPageImporter
           video.add_child(source)
         end
 
-        html = doc.xpath('//body/*').to_html
-        StaticPage.create!(name: doc.at_css('h1').text,
-                           uri_fragment: File.basename(file, '.*'),
-                           category: File.basename(File.dirname(file)),
-                           html: html)
+        page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
+        page = StaticPage.new unless page
+        page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
+                     uri_fragment: File.basename(file, '.*'),
+                     category: File.basename(File.dirname(file)),
+                     html: doc.xpath('//body/*').to_html)
       end
     end
 

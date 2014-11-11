@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110163557) do
+ActiveRecord::Schema.define(version: 20141111161032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,8 @@ ActiveRecord::Schema.define(version: 20141110163557) do
     t.integer  "selected_option_id"
     t.text     "help_text"
     t.integer  "qid"
+    t.string   "advanced_help_page"
+    t.string   "advanced_help_anchor"
   end
 
   add_index "assessment_questions", ["assessment_section_id"], name: "index_assessment_questions_on_assessment_section_id", using: :btree
