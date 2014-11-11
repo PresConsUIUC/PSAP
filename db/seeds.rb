@@ -638,7 +638,7 @@ command = CreateAssessmentSectionCommand.new(
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_disaster_recovery] = command.object
-=begin
+
 # Resource assessment questions
 puts 'Seeding resource assessment questions...'
 aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
@@ -698,7 +698,7 @@ aq_sheets.each do |sheet|
     end
   end
 end
-=end
+
 # Location & Institution assessment questions
 puts 'Seeding location assessment questions...'
 aq_sheets = %w(Location Institution)
