@@ -24,7 +24,9 @@ class FormatIdGuideController < ApplicationController
   # Responds to GET /format-id-guide/:category
   #
   def show
-    @page = StaticPage.find_by_uri_fragment(params[:category])
+    categories = %w(avmedia papersbooks photosimages supplementary)
+    @page = StaticPage.where('category IN (?)', categories).
+        where(uri_fragment: params[:category]).first
     raise ActiveRecord::RecordNotFound unless @page
   end
 
