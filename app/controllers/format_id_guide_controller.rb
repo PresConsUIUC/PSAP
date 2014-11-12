@@ -13,7 +13,7 @@ class FormatIdGuideController < ApplicationController
     @results = []
     if params[:q] and params[:q].length > 0
       @results = StaticPage.full_text_search(
-          params[:q], FormatClass.all.map{ |c| FormatClass.name_for_class(c) })
+          params[:q], %w(avmedia papersbooks photosimages supplementary))
     end
     @query = params[:q].truncate(50)
     @results_summary = @query.length > 0 ?
