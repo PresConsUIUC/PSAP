@@ -19,6 +19,20 @@ module StaticPageHelper
       end
     end
 
+    # add rights hovertips
+    doc.css('figure').each do |figure|
+      caption = figure.css('figcaption')[0]
+      button = Nokogiri::XML::Node.new('button', doc)
+      button['type'] = 'button'
+      button['class'] = 'btn btn-sm psap-rights'
+      button['data-container'] = 'body'
+      button['data-toggle'] = 'popover'
+      button['data-placement'] = 'top'
+      button['data-content'] = caption.inner_html
+      button.content = 'i'
+      caption.after(button)
+    end
+
     # process images
     doc.css('img').each do |image|
       new_image_filename = File.basename(image['src']).gsub(' ', '_').
