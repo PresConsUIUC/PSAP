@@ -16,7 +16,10 @@ var AssessmentForm = {
         AssessmentForm.updateProgress();
     },
 
-    init: function() {
+    /**
+     * @param entity 'location' or 'institution'
+     */
+    init: function(entity) {
         $(document).on('PSAPFormFieldAdded', function() {
             AssessmentForm.attachEventListeners();
 
@@ -27,19 +30,22 @@ var AssessmentForm = {
             });
         }).trigger('PSAPFormFieldAdded');
 
-        $('button.save').on('click', function() { $('form').submit(); });
-
-        if ($('body#edit_location').length) {
-            AssessmentForm.setInitialSelections();
+        // populate assessment questions
+        var root_url = $('input[name="root-url"]').val();
+        var questions_url;
+        switch (entity) {
+            case 'location':
+                questions_url = root_url + 'locations/1/assessment-questions';
+                break;
+            case 'institution':
+                questions_url = root_url + 'institutions/1/assessment-questions';
+                break;
         }
 
-        // populate assessment questions
-        var questions_url = $('input[name="root-url"]').val() +
-            'locations/1/assessment-questions';
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
                 AssessmentForm.insertQuestionIn(
-                    AssessmentForm.nodeForQuestion(object, i),
+                    AssessmentForm.nodeForQuestion(object, i, entity),
                     $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
             });
             if (data.length > 0) {
@@ -48,8 +54,17 @@ var AssessmentForm = {
                     var selected_option_id = $(this).val();
                     var question_elem = $(this).closest('div.assessment_question');
                     var qid = question_elem.data('id');
-                    var child_questions_url = $('input[name="root-url"]').val() +
-                        'locations/1/assessment-questions?parent_id=' + qid;
+                    var child_questions_url;
+                    switch (entity) {
+                        case 'location':
+                            child_questions_url = root_url +
+                                'locations/1/assessment-questions?parent_id=' + qid;
+                            break;
+                        case 'institution':
+                            child_questions_url = root_url +
+                                'institutions/1/assessment-questions?parent_id=' + qid;
+                            break;
+                    }
                     $.getJSON(child_questions_url, function(data) {
                         $.each(data, function (i, object) {
                             var child_question_elem =
@@ -67,7 +82,7 @@ var AssessmentForm = {
                                         depth = question_elem.data('depth') + 1;
                                     }
                                     AssessmentForm.insertQuestionAfter(
-                                        AssessmentForm.nodeForQuestion(object, i, depth),
+                                        AssessmentForm.nodeForQuestion(object, i, entity, depth),
                                         question_elem)
                                 }
                             } else {
@@ -90,6 +105,11 @@ var AssessmentForm = {
                 $('body').scrollspy({ target: '#sections' });
             }
             AssessmentForm.updateProgress();
+
+            if ($('body#edit_location').length ||
+                $('body#edit_institution').length) {
+                AssessmentForm.setInitialSelections();
+            }
         });
     },
 
@@ -105,8 +125,16 @@ var AssessmentForm = {
         PSAP.Popover.refresh();
     },
 
-    // Transforms an assessment question into HTML for the assessment form.
-    nodeForQuestion: function(object, question_index, depth) {
+    /**
+     * Transforms an assessment question into HTML for the assessment form.
+     *
+     * @param object JSON AssessmentQuestion object
+     * @param question_index
+     * @param entity 'institution' or 'location'
+     * @param depth
+     * @returns jQuery node
+     */
+    nodeForQuestion: function(object, question_index, entity, depth) {
         if (!depth) {
             depth = 0;
         }
@@ -116,16 +144,16 @@ var AssessmentForm = {
             case 0: // radio
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) { // TODO: why is option['value'] ever undefined?
+                    if (option['value']) {
                         control += '<div class="radio">' +
-                            '<label>' +
-                            '<input type="radio" ' +
-                            'name="resource[assessment_question_responses][' + question_index + ']" ' +
-                            'data-type="option" ' +
-                            'data-option-score="' + option['value'] + '" data-option-id="' +
-                            option['id'] + '" value="' + option['id'] + '"> ' +
-                            option['name'] +
-                            '</label>' +
+                                '<label>' +
+                                    '<input type="radio" ' +
+                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' + // TODO: make this work with institutions too
+                                    'data-type="option" ' +
+                                    'data-option-score="' + option['value'] + '" data-option-id="' +
+                                    option['id'] + '" value="' + option['id'] + '"> ' +
+                                    option['name'] +
+                                '</label>' +
                             '</div>';
                     }
                 }
@@ -133,16 +161,16 @@ var AssessmentForm = {
             case 1: // checkbox
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) { // TODO: why is option['value'] ever undefined?
+                    if (option['value']) {
                         control += '<div class="checkbox">' +
-                            '<label>' +
-                            '<input type="checkbox" ' +
-                            'name="resource[assessment_question_responses][' + question_index + ']" ' +
-                            'data-type="option" ' +
-                            'data-option-score="' + option['value'] + '" data-option-id="' +
-                            option['id'] + '" value="' + option['id'] + '"> ' +
-                            option['name'] +
-                            '</label>' +
+                                '<label>' +
+                                    '<input type="checkbox" ' +
+                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' + // TODO: make this work with institutions too
+                                    'data-type="option" ' +
+                                    'data-option-score="' + option['value'] + '" data-option-id="' +
+                                    option['id'] + '" value="' + option['id'] + '"> ' +
+                                    option['name'] +
+                                '</label>' +
                             '</div>';
                     }
                 }
@@ -186,13 +214,8 @@ var AssessmentForm = {
         $('input[name="selected_option_ids"]').each(function() {
             var selected_id = $(this).val();
             $('[data-type="option"]').each(function() {
-                var form_option_id = $(this).val();
-                if (form_option_id == selected_id) {
-                    if ($(this).prop('tagName') == 'SELECT') {
-                        $(this).val(form_option_id);
-                    } else {
-                        $(this).attr('checked', true);
-                    }
+                if ($(this).val() == selected_id) {
+                    $(this).prop('checked', true);
                 }
             });
         });
@@ -211,8 +234,8 @@ var AssessmentForm = {
 };
 
 var ready = function() {
-    if ($('body#new_location').length
-        || $('body#edit_location').length) {
+    if ($('body#new_location').length || $('body#edit_location').length ||
+        $('body#new_institution').length || $('body#edit_institution').length) {
         // override bootstrap nav-pills behavior
         $('ul.nav-pills a').on('click', function() {
             window.location.href = $(this).attr('href');
@@ -226,7 +249,11 @@ var ready = function() {
             //$('#sections').width($('.tab-pane.active').offset().left + 'px');
         });
 
-        AssessmentForm.init();
+        if ($('body#new_location').length || $('body#edit_location').length) {
+            AssessmentForm.init('location');
+        } else if ($('body#new_institution').length || $('body#edit_institution').length) {
+            AssessmentForm.init('institution');
+        }
     }
 };
 

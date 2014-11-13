@@ -7,7 +7,7 @@
       <li class="active"><a href="#basic_info">Basic Info</a></li>
       <% assessment_sections.each do |section| %>
         <li data-section-id="<%= section.id %>">
-          <a href="#<%= section.name.gsub('/', '_').gsub(' ', '_') %>"><%= section.name %>
+          <a href="#<%= section.name.tr('/ |', '') %>"><%= section.name %>
           <small>(<span class="assessment-question-count">0</span>)</small></a>
         </li>
       <% end %>

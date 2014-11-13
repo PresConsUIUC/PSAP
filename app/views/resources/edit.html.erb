@@ -47,7 +47,7 @@
 
   <div class="col-sm-9">
 
-    <%= form_for(@resource, class: 'psap-assessment') do |f| %>
+    <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
 
       <div id="basic_info" class="section">
         <%= render partial: 'basic_info_form', locals: { f: f } %>

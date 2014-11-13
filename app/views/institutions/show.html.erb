@@ -3,7 +3,7 @@
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li class="active"><%= @institution.name %></li>
 </ol>
@@ -15,12 +15,10 @@
   <div class="col-sm-4">
     <div class="btn-group" style="float:right">
       <!-- Assess -->
-      <% if current_user.is_admin? %>
-          <%= link_to edit_institution_path(@institution),
-                      class: 'btn btn-default' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-              Assess
-          <% end %>
+      <%= link_to edit_institution_path(@institution),
+                  class: 'btn btn-default' do %>
+        <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+        Assess
       <% end %>
       <!-- Export as CSV -->
       <div class="btn-group">
@@ -36,17 +34,17 @@
       </div>
       <!-- Delete -->
       <% if current_user.is_admin? %>
-          <% disabled = @institution.users.any? %>
-          <%= link_to institution_path(@institution), method: 'delete',
-                      class: 'btn btn-default',
-                      disabled: disabled,
-                      data: { confirm: 'Deleting this institution will '\
-                          'delete ALL of its repositories, locations, and '\
-                          'assessments along with it. Are you sure you want '\
-                          'to do this?' } do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-              Delete
-          <% end %>
+        <% disabled = @institution.users.any? %>
+        <%= link_to institution_path(@institution), method: 'delete',
+                    class: 'btn btn-default',
+                    disabled: disabled,
+                    data: { confirm: 'Deleting this institution will '\
+                        'delete ALL of its repositories, locations, and '\
+                        'assessments along with it. Are you sure you want '\
+                        'to do this?' } do %>
+            <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+            Delete
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -87,40 +85,40 @@
         </div>
 
         <% if @repositories.any? %>
-            <div id="repositories">
-              <%= render 'repositories' %>
-            </div>
+          <div id="repositories">
+            <%= render 'repositories' %>
+          </div>
         <% else %>
-            <p>This institution has no repositories.</p>
+          <p>This institution has no repositories.</p>
         <% end %>
       </div>
 
       <div class="tab-pane" id="assessments_tab">
         <% if @resources.any? %>
-            <div id="assessments">
-            <%= render partial: 'resources/resources',
-                       locals: { resources: @resources, show_checkboxes: false } %>
-            </div>
+          <div id="assessments">
+          <%= render partial: 'resources/resources',
+                     locals: { resources: @resources, show_checkboxes: false } %>
+          </div>
         <% else %>
-            <p>There are no resource assessments at this institution.</p>
+          <p>There are no resource assessments at this institution.</p>
         <% end %>
       </div>
 
       <div class="tab-pane" id="users_tab">
         <% if @institution.users.any? %>
-            <ul class="users">
-              <% @institution_users.each do |user| %>
-                  <li>
-                    <%= link_to user do %>
-                        <%= gravatar_for user, size: 52 %>
-                    <% end %>
-                    <%= link_to user.full_name, user %>
-                    <small><%= user.username %></small>
-                  </li>
-              <% end %>
-            </ul>
+          <ul class="users">
+            <% @institution_users.each do |user| %>
+              <li>
+                <%= link_to user do %>
+                  <%= gravatar_for user, size: 52 %>
+                <% end %>
+                <%= link_to user.full_name, user %>
+                <small><%= user.username %></small>
+              </li>
+            <% end %>
+          </ul>
         <% else %>
-            <p>There are no users affiliated with this institution.</p>
+          <p>There are no users affiliated with this institution.</p>
         <% end %>
       </div>
 
@@ -129,8 +127,8 @@
         <div class="btn-group" style="float:right">
           <!-- Print button -->
           <%= link_to 'javascript:window.print()', class: 'btn btn-default' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-print') %>
-              Print
+            <%= content_tag(:span, '', class: 'glyphicon glyphicon-print') %>
+            Print
           <% end %>
           <!-- Export button -->
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -322,18 +320,18 @@
       <dd>
         <%= @institution.address1 %>
         <% if @institution.address2 %>
-            <br><%= @institution.address2 %>
+          <br><%= @institution.address2 %>
         <% end %>
         <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
         <br><%= @institution.country %>
       </dd>
       <% if @institution.description %>
-          <dt>Description</dt>
-          <dd><%= @institution.description %></dd>
+        <dt>Description</dt>
+        <dd><%= @institution.description %></dd>
       <% end %>
       <% if @institution.language %>
-          <dt>Language</dt>
-          <dd><%= @institution.language.english_name %></dd>
+        <dt>Language</dt>
+        <dd><%= @institution.language.english_name %></dd>
       <% end %>
       <dt>Created</dt>
       <dd><%= local_time_ago(@institution.created_at) %></dd>

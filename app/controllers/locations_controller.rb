@@ -112,7 +112,14 @@ class LocationsController < ApplicationController
   def location_params
     params.require(:location).permit(
         :name, :description, :repository,
-        temperature_range_attributes: [:id, :min_temp_f, :max_temp_f, :score])
+        temperature_range_attributes:
+            [:id, :min_temp_f, :max_temp_f]).tap do |whitelisted|
+      # AQRs don't use Rails' nested params format, and will require additional
+      # processing
+      whitelisted[:assessment_question_responses] =
+          params[:location][:assessment_question_responses] if
+          params[:location][:assessment_question_responses]
+    end
   end
 
 end

@@ -134,7 +134,13 @@ class InstitutionsController < ApplicationController
   def institution_params
     params.require(:institution).permit(:name, :address1, :address2, :city,
                                         :state, :postal_code, :country, :url,
-                                        :description, :email)
+                                        :description, :email).tap do |whitelisted|
+      # AQRs don't use Rails' nested params format, and will require additional
+      # processing
+      whitelisted[:assessment_question_responses] =
+          params[:institution][:assessment_question_responses] if
+          params[:institution][:assessment_question_responses]
+    end
   end
 
 end

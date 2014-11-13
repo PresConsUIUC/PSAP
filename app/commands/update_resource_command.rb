@@ -9,7 +9,7 @@ class UpdateResourceCommand < Command
 
   def execute
     begin
-      # Fail if a non-admin user is trying to create the resource in a
+      # Fail if a non-admin user is trying to update a resource in a
       # different institution
       if @doing_user and !@doing_user.is_admin? and
           @doing_user.institution != @resource.location.repository.institution
@@ -17,17 +17,17 @@ class UpdateResourceCommand < Command
       end
 
       # delete existing AQRs
-      @resource.assessment_question_responses.destroy_all!
+      @resource.assessment_question_responses.destroy_all
 
       # the AQR params from the form are not in a rails-compatible format
-      @resource_params[:assessment_question_responses].each do |option_id|
+      @resource_params[:assessment_question_responses].each_value do |option_id|
         option = AssessmentQuestionOption.find(option_id)
         @resource.assessment_question_responses << AssessmentQuestionResponse.new(
             assessment_question_option: option,
             assessment_question: option.assessment_question)
       end
 
-      @resource.update!(@resource_params)
+      @resource.update!(@resource_params.except(:assessment_question_responses))
     rescue ActiveRecord::RecordInvalid
       @resource.events << Event.create(
           description: "Attempted to update resource \"#{@resource.name},\" "\

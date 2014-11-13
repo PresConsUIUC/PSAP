@@ -1,7 +1,7 @@
 <% # assessment section container, appearing in the "edit/assess" view of all
    # assessable entities (resources, institutions, locations). %>
 
-<div class="section" id="<%= section.name.gsub('/', '_').gsub(' ', '_') %>"
+<div class="section" id="<%= section.name.tr('/ |', '') %>"
      data-id="<%= section.id %>" data-weight="<%= section.weight %>">
   <h2><%= section.name %></h2>
   <p><%= section.description %></p>

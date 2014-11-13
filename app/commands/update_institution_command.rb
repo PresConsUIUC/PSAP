@@ -9,7 +9,25 @@ class UpdateInstitutionCommand < Command
 
   def execute
     begin
-      @institution.update!(@institution_params)
+      # Fail if a non-admin user is trying to update an institution to which
+      # s/he does not belong
+      if @doing_user and !@doing_user.is_admin? and
+          @doing_user.institution != @institution
+        raise 'Insufficient privileges'
+      end
+
+      # delete existing AQRs
+      @institution.assessment_question_responses.destroy_all
+
+      # the AQR params from the form are not in a rails-compatible format
+      @institution_params[:assessment_question_responses].each_value do |option_id|
+        option = AssessmentQuestionOption.find(option_id)
+        @institution.assessment_question_responses << AssessmentQuestionResponse.new(
+            assessment_question_option: option,
+            assessment_question: option.assessment_question)
+      end
+
+      @institution.update!(@institution_params.except(:assessment_question_responses))
     rescue ActiveRecord::RecordInvalid
       @institution.events << Event.create(
           description: "Attempted to update institution "\

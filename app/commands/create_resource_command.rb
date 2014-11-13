@@ -10,7 +10,7 @@ class CreateResourceCommand < Command
 
     # the AQR params from the form are not in a rails-compatible format
     if resource_params[:assessment_question_responses]
-      resource_params[:assessment_question_responses].each do |key, option_id|
+      resource_params[:assessment_question_responses].each_value do |option_id|
         option = AssessmentQuestionOption.find(option_id)
         if option.is_a?(AssessmentQuestionOption) and
             option.assessment_question.is_a?(AssessmentQuestion)

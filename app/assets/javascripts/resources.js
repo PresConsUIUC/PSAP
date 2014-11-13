@@ -372,13 +372,8 @@ var ResourceForm = {
                 $('input[name="selected_option_ids"]').each(function() {
                     var selected_id = $(this).val();
                     $('[data-type="option"]').each(function() {
-                        var form_option_id = $(this).val();
-                        if (form_option_id == selected_id) {
-                            if ($(this).prop('tagName') == 'SELECT') {
-                                $(this).val(form_option_id);
-                            } else {
-                                $(this).attr('checked', true);
-                            }
+                        if ($(this).val() == selected_id) {
+                            $(this).prop('checked', true);
                         }
                     });
                 });
