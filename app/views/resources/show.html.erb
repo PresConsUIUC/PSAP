@@ -130,16 +130,12 @@
 
   <div id="assessment_tab" class="assessment tab-pane <%= @resource.children.any? ? '' : 'active' %>">
 
-    <div class="row">
-      <div class="col-sm-8">
-      </div>
-      <div class="col-sm-4" style="text-align:center">
-          Score: <%= number_to_human(@resource.assessment_score * 100) %>
-        <div class="progress">
-          <div class="progress-bar progress-bar-success score" role="progressbar"
-               aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-               style="width:<%= @resource.assessment_score * 100 %>%;">
-          </div>
+    <div class="psap-progress-container">
+      Score: <%= number_to_human(@resource.assessment_score * 100) %>
+      <div class="progress">
+        <div class="progress-bar progress-bar-success score" role="progressbar"
+             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+             style="width:<%= @resource.assessment_score * 100 %>%;">
         </div>
       </div>
     </div>

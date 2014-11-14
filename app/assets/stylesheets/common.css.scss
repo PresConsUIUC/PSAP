@@ -321,8 +321,22 @@ textarea.form-control {
 }
 
 div.progress {
-  height:10px;
+  height:15px;
   margin-top:0.5em;
+}
+
+div.psap-progress-container {
+  margin:0 auto;
+  text-align:center;
+  @media screen and (max-width: 400px) {
+    width:90%;
+  }
+  @media screen and (max-width: 800px) {
+    width:70%;
+  }
+  @media screen and (min-width: 801px) {
+    width:40%;
+  }
 }
 
 div.signin_form {

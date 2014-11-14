@@ -140,6 +140,17 @@
       </div>
 
       <div class="tab-pane assessment" id="assessment_tab">
+
+        <div class="psap-progress-container">
+          Score: <%= number_to_human(@location.assessment_score * 100) %>
+          <div class="progress">
+            <div class="progress-bar progress-bar-success score" role="progressbar"
+                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                 style="width:<%= @location.assessment_score * 100 %>%;">
+            </div>
+          </div>
+        </div>
+
         <% i = 0; @assessment_sections.each do |section| %>
           <div class="panel panel-default">
             <div class="panel-heading">
