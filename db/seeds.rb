@@ -558,7 +558,7 @@ assessments = {
 # Resource assessment sections
 sections = {}
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Use / Access', index: 0, weight: 0.05,
+    { name: 'Use | Access', index: 0, weight: 0.05,
       description: 'The following questions concern the level of use/handling '\
       'of the object(s).',
       assessment: assessments[:resource] }, nil, '127.0.0.1')
@@ -566,7 +566,7 @@ command.execute
 sections[:use_access] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Storage / Container', index: 1, weight: 0.05,
+    { name: 'Storage | Container', index: 1, weight: 0.05,
       description: 'The following questions concern the appropriateness of '\
       'storage, housing, and labeling.',
       assessment: assessments[:resource] }, nil, '127.0.0.1')
