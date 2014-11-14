@@ -1,0 +1,76 @@
+<div class="btn-group" style="float:right">
+  <!-- Print button -->
+  <%= link_to 'javascript:window.print()', class: 'btn btn-default' do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-print') %>
+    Print
+  <% end %>
+  <!-- Export button -->
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-export"></span> Export
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><%= link_to 'PDF', institution_path(institution) + '.pdf' %></li>
+  </ul>
+</div>
+
+<section style="clear:both">
+  <h2>Institutional Preservation Infrastructure</h2>
+  <%= render partial: 'assessable_section_scores',
+             locals: { assessable: institution } %>
+</section>
+
+<section>
+  <h2>Storage Environments (Locations) Overview</h2>
+  <% institution.locations.order(:name).each do |location| %>
+    <%= render partial: 'assessable_section_scores',
+               locals: { assessable: location } %>
+  <% end %>
+</section>
+
+<section id="material_condition_overview">
+  <h2>Material Condition Overview (Collections View)</h2>
+
+  <% institution.resources.where(resource_type: ResourceType::COLLECTION).each do |resource| %>
+    <% all_assessed_items = resource.all_assessed_items %>
+    <% if all_assessed_items.length > 0 %>
+      <h3><%= link_to(resource.name, resource) %></h3>
+
+      <ul>
+        <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li> <!-- TODO: -->
+        <li><%= all_assessed_items.length %> items assessed</li>
+        <li>Assessed by: <%= link_to(resource.user.full_name, resource.user) %></li>
+        <li>Assessed on: <%= local_time(resource.updated_at) %></li>
+        <li>Formats present:
+          <ul>
+            <% resource.all_assessed_items.collect{ |r| r.format }.uniq{ |f| f.id }.each do |format| %>
+              <li><%= format.name %></li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+
+      <% stats = resource.assessed_item_statistics %>
+      <table class="table">
+        <tr>
+          <td><%= stats[:mean] %></td>
+          <td>Average/Mean</td>
+        </tr>
+        <tr>
+          <td><%= stats[:median] %></td>
+          <td>Median</td>
+        </tr>
+        <tr>
+          <td><%= stats[:low] %></td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td><%= stats[:high] %></td>
+          <td>High</td>
+        </tr>
+      </table>
+    <% end %>
+
+  <% end %>
+
+</section>

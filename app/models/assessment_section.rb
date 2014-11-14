@@ -11,4 +11,13 @@ class AssessmentSection < ActiveRecord::Base
   validates_numericality_of :weight, greater_than_or_equal_to: 0,
                             less_than_or_equal_to: 1, presence: true
 
+  def max_score
+    score = 0
+    self.assessment_questions.each do |question|
+      max = question.assessment_question_options.map{ |o| o.value }.max
+      score += max * question.weight if max
+    end
+    score
+  end
+
 end

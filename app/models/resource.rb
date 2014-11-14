@@ -1,4 +1,7 @@
 class Resource < ActiveRecord::Base
+
+  include Assessable
+
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
@@ -151,7 +154,16 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return Array of all of a resource's children, regardless of depth in the
+  # @return Array of all assessed items in a collection, regardless of depth
+  # in the hierarchy.
+  #
+  def all_assessed_items
+    all_children.select{ |x| x.resource_type == ResourceType::ITEM and
+        x.assessment_percent_complete >= 0.999999 }
+  end
+
+  ##
+  # @return Array of all children of a resource, regardless of depth in the
   # hierarchy.
   #
   def all_children
@@ -217,6 +229,31 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  ##
+  # Returns a hash containing statistics of all assessed items in the
+  # collection.
+  #
+  # @return hash with mean, median, low, and high keys
+  #
+  def assessed_item_statistics
+    stats = { mean: 0, median: 0, low: nil, high: 0 }
+    all_items = all_assessed_items
+    if all_items.length < 1
+      return nil
+    end
+
+    all_items.each do |item|
+      stats[:high] = item.assessment_score if item.assessment_score > stats[:high]
+      stats[:low] = item.assessment_score if
+          stats[:low].nil? or item.assessment_score < stats[:low]
+    end
+    stats[:mean] = all_items.map{ |r| r.assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.assessment_score }.sort
+    len = sorted.length
+    stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+    stats
+  end
+
   def assessment_question_response_count
     # SELECT assessment_question_options.assessment_question_id
     # FROM assessment_question_responses
@@ -240,17 +277,11 @@ class Resource < ActiveRecord::Base
   # extent, etc. This method will remove them.
   #
   def prune_empty_submodels
-    self.creators = self.creators.select{ |c| c.name.length > 0 }
-    self.extents = self.extents.select{ |e| e.name.length > 0 }
-    self.resource_dates = self.resource_dates.select{ |r| r.year }
-    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
-    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
-  end
-
-  def response_to_question(assessment_question)
-    responses = self.assessment_question_responses.
-        where(assessment_question_id: assessment_question.id)
-    responses.any? ? responses[0] : nil
+    self.creators.select!{ |c| c.name.length > 0 }
+    self.extents.select!{ |e| e.name.length > 0 }
+    self.resource_dates.select!{ |r| r.year }
+    self.resource_notes.select!{ |r| r.value.length > 0 }
+    self.subjects.select!{ |s| s.name.length > 0 }
   end
 
   def update_assessment_percent_complete
@@ -268,14 +299,22 @@ class Resource < ActiveRecord::Base
           joins('LEFT JOIN assessments '\
             'ON assessment_sections.assessment_id = assessments.id').
           where('assessments.key = \'resource\'')
-
       self.assessment_percent_complete = questions.length > 0 ?
           self.assessment_question_response_count.to_f / questions.length : 0
   end
 
+  ##
+  # Overrides Assessable mixin
+  #
   def update_assessment_score
-    # TODO: write this
-    self.assessment_score = 0
+    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
+    question_score = 0
+    self.assessment_question_responses.each do |response|
+      question_score += response.assessment_question_option.value *
+          response.assessment_question.weight
+    end
+    self.assessment_score = self.format.score * 0.4 +
+        self.location.assessment_score * 0.1 + question_score * 0.5
   end
 
   def filename

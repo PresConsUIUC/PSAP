@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141111195337) do
+ActiveRecord::Schema.define(version: 20141113224747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,19 +203,20 @@ ActiveRecord::Schema.define(version: 20141111195337) do
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
 
   create_table "institutions", force: true do |t|
-    t.string   "name",        null: false
+    t.string   "name",                           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "address1",    null: false
+    t.string   "address1",                       null: false
     t.string   "address2"
-    t.string   "city",        null: false
-    t.string   "state",       null: false
-    t.string   "postal_code", null: false
-    t.string   "country",     null: false
+    t.string   "city",                           null: false
+    t.string   "state",                          null: false
+    t.string   "postal_code",                    null: false
+    t.string   "country",                        null: false
     t.string   "url"
     t.integer  "language_id"
     t.text     "description"
     t.string   "email"
+    t.float    "assessment_score", default: 0.0
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id", using: :btree
@@ -231,12 +232,13 @@ ActiveRecord::Schema.define(version: 20141111195337) do
   add_index "languages", ["iso639_2_code"], name: "index_languages_on_iso639_2_code", unique: true, using: :btree
 
   create_table "locations", force: true do |t|
-    t.string   "name",                 null: false
+    t.string   "name",                               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repository_id",        null: false
+    t.integer  "repository_id",                      null: false
     t.text     "description"
     t.integer  "temperature_range_id"
+    t.float    "assessment_score",     default: 0.0
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id", using: :btree
