@@ -58,6 +58,19 @@
 
 <div class="row">
 
+  <div class="col-sm-4 panel">
+    <% if @location.description %>
+      <dl>
+        <dt>Description</dt>
+        <dd><%= @location.description %></dd>
+        <dt>Temperature Range</dt>
+        <dd>
+          <%= @location.temperature_range.min_temp_f %>&deg;F-<%= @location.temperature_range.max_temp_f %>&deg;F
+        </dd>
+      </dl>
+    <% end %>
+  </div>
+
   <div class="col-sm-8">
 
     <ul class="nav nav-tabs">
@@ -179,19 +192,6 @@
     </div> <!-- .tab-content -->
 
   </div> <!-- .col-sm-8 -->
-
-  <div class="col-sm-4 panel">
-    <% if @location.description %>
-      <dl>
-        <dt>Description</dt>
-        <dd><%= @location.description %></dd>
-        <dt>Temperature Range</dt>
-        <dd>
-          <%= @location.temperature_range.min_temp_f %>&deg;F-<%= @location.temperature_range.max_temp_f %>&deg;F
-        </dd>
-      </dl>
-    <% end %>
-  </div>
 
 </div> <!-- .row -->
 
