@@ -114,9 +114,12 @@ dl ul {
 
 ul.reference-list {
   list-style:none;
-  margin-left:2em;
+  margin-left:2.5em;
   padding-left:0px;
-  text-indent:-2em;
+  text-indent:-2.5em;
+  li {
+    margin-bottom:0.5em;
+  }
 }
 
 button.hovertip-fire {
