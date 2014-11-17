@@ -41,7 +41,8 @@ class Resource < ActiveRecord::Base
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete, :update_assessment_score
+  before_save :update_assessment_percent_complete
+  before_save :update_assessment_score
 
   def validates_not_child_of_item
     if parent and parent.resource_type != ResourceType::COLLECTION

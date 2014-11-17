@@ -820,6 +820,15 @@ case Rails.env
   when 'development'
     puts 'Seeding DEVELOPMENT data...'
 
+    # Institution assessment question responses
+    Assessment.find_by_key('institution').assessment_questions.each do |question|
+        AssessmentQuestionResponse.create!(
+            institution: uiuc_institution,
+            assessment_question: question,
+            assessment_question_option: question.assessment_question_options.first)
+    end
+    uiuc_institution.save!
+
     # Institutions
     institution_commands = [
         CreateInstitutionCommand.new(
@@ -928,6 +937,15 @@ case Rails.env
           min_temp_f: 0, max_temp_f: 100, score: 1)
       location.save!
     end
+
+    # Location assessment question responses
+    Assessment.find_by_key('location').assessment_questions.each do |question|
+        AssessmentQuestionResponse.create!(
+            location: locations[0],
+            assessment_question: question,
+            assessment_question_option: question.assessment_question_options.first)
+    end
+    locations[0].save!
 
     # Resources
     resource_commands = []
@@ -1071,14 +1089,13 @@ case Rails.env
                                   resource: resources[i])
     end
 
-    # Assessment question responses
+    # Resource assessment question responses
     resources[0].format.assessment_questions.each do |question|
       AssessmentQuestionResponse.create!(
           resource: resources[0],
           assessment_question: question,
           assessment_question_option: question.assessment_question_options.first)
     end
-    resources[0].assessment_percent_complete = 1
     resources[0].save!
 
     # Format temperature ranges
