@@ -3,7 +3,7 @@ class CreateLocationCommand < Command
   def initialize(repository, location_params, doing_user, remote_ip)
     @doing_user = doing_user
     @remote_ip = remote_ip
-
+    @repository = repository
     @location = repository.locations.build(
         location_params.except(:assessment_question_responses))
 

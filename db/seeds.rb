@@ -517,15 +517,13 @@ sheet.each_with_index do |row, i|
         end
       end
     end
-    unless name.blank?
-      Format.create!(fid: row[1],
-                     name: name,
-                     format_class: FormatClass::class_for_name(row[0]),
-                     parent: parent,
-                     score: row[6],
-                     format_id_guide_page: row[7],
-                     format_id_guide_anchor: row[8])
-    end
+    Format.create!(fid: row[1],
+                   name: name,
+                   format_class: FormatClass::class_for_name(row[0]),
+                   parent: parent,
+                   score: row[6],
+                   format_id_guide_page: row[7],
+                   format_id_guide_anchor: row[8]) unless name.blank?
   end
 end
 
@@ -934,7 +932,7 @@ case Rails.env
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Magna Carta',
+        { name: 'Sample Assessed Resource',
           resource_type: ResourceType::ITEM,
           format: Format.find_by_fid(7),
           user: normal_user,
@@ -980,27 +978,6 @@ case Rails.env
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Special Editions',
-          resource_type: ResourceType::COLLECTION,
-          user: admin_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: '1972 Presidential Election Special Issue',
-          resource_type: ResourceType::ITEM,
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Napoleon Bonaparte Letters Collection',
-          resource_type: ResourceType::COLLECTION,
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
 
     resources = resource_commands.map{ |command| command.execute; command.object }
 
@@ -1012,10 +989,7 @@ case Rails.env
 
     resources[4].parent = resources[3]
     resources[5].parent = resources[3]
-    resources[6].parent = resources[3]
-    resources[7].parent = resources[3]
-    resources[8].parent = resources[3]
-    resources.select{ |r| r.save! }
+    resources.each{ |r| r.save! }
 
     # Dates
     ResourceDate.create!(resource: resources[0],
@@ -1039,16 +1013,6 @@ case Rails.env
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
                          year: 1856)
-    ResourceDate.create!(resource: resources[6],
-                         date_type: DateType::SPAN,
-                         begin_year: 1960,
-                         end_year: 2000)
-    ResourceDate.create!(resource: resources[7],
-                         date_type: DateType::SINGLE,
-                         year: 1960)
-    ResourceDate.create!(resource: resources[8],
-                         date_type: DateType::SINGLE,
-                         year: 1961)
 
     # Extents
     extents = []
@@ -1084,37 +1048,17 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-=begin
+
     # Assessment question responses
-    responses = [
+    resources[0].format.assessment_questions.each do |question|
       AssessmentQuestionResponse.create!(
           resource: resources[0],
-          assessment_question: questions[0],
-          assessment_question_option: options[0]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[1],
-          assessment_question_option: options[5]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[2],
-          assessment_question_option: options[8]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[3],
-          assessment_question_option: options[12]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[4],
-          assessment_question_option: options[13]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[5],
-          assessment_question_option: options[15])
-    ]
+          assessment_question: question,
+          assessment_question_option: question.assessment_question_options.first)
+    end
     resources[0].assessment_percent_complete = 1
     resources[0].save!
-=end
+
     # Format temperature ranges
     Format.all do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,

@@ -308,13 +308,17 @@ class Resource < ActiveRecord::Base
   #
   def update_assessment_score
     # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-    question_score = 0
-    self.assessment_question_responses.each do |response|
-      question_score += response.assessment_question_option.value *
-          response.assessment_question.weight
+    if self.format
+      question_score = 0
+      self.assessment_question_responses.each do |response|
+        question_score += response.assessment_question_option.value *
+            response.assessment_question.weight
+      end
+      self.assessment_score = self.format.score * 0.4 +
+          self.location.assessment_score * 0.1 + question_score * 0.5
+    else
+      self.assessment_score = 0
     end
-    self.assessment_score = self.format.score * 0.4 +
-        self.location.assessment_score * 0.1 + question_score * 0.5
   end
 
   def filename
