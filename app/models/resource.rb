@@ -302,7 +302,7 @@ class Resource < ActiveRecord::Base
             response.assessment_question.weight
       end
       self.assessment_score = self.format.score * 0.4 +
-          self.location.assessment_score * 0.1 + question_score * 0.5
+          self.location.assessment_score * 0.1 + (question_score / 100) * 0.5
     else
       self.assessment_score = 0
     end
