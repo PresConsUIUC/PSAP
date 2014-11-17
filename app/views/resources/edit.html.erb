@@ -19,7 +19,7 @@
     <%= link_to @resource.location.name,
                 polymorphic_path(@resource.location) %>
   </li>
-  <li><%= link_to @resource.name, polymorphic_path(@resource) %></li>
+  <li><%= link_to truncate(@resource.name, length: 50), polymorphic_path(@resource) %></li>
   <li class="active">Assess</li>
 </ol>
 
