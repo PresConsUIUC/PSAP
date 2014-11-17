@@ -949,8 +949,8 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Sears Catalog Collection',
+    resource_commands << CreateResourceCommand.new(locations[1],
+        { name: 'Collection Containing Lots of Items',
           resource_type: ResourceType::COLLECTION,
           user: admin_user,
           description: 'Sample description',
@@ -958,7 +958,7 @@ case Rails.env
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Cat Fancy Collection',
+        { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
           description: 'Sample description',
@@ -978,6 +978,28 @@ case Rails.env
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
+    (0..100).each do
+      resource_commands << CreateResourceCommand.new(locations[1],
+          { name: 'Sample Multitudinous Top-Level Item',
+            resource_type: ResourceType::ITEM,
+            user: normal_user,
+            description: 'Sample description',
+            local_identifier: 'sample_local_id',
+            rights: 'Sample rights' }, nil, '127.0.0.1')
+    end
+
+    resources = resource_commands.map{ |command| command.execute; command.object }
+
+    (0..100).each do
+      resource_commands << CreateResourceCommand.new(locations[1],
+          { name: 'Sample Multitudinous Child Item',
+            resource_type: ResourceType::ITEM,
+            user: normal_user,
+            parent: resources[2],
+            description: 'Sample description',
+            local_identifier: 'sample_local_id',
+            rights: 'Sample rights' }, nil, '127.0.0.1')
+    end
 
     resources = resource_commands.map{ |command| command.execute; command.object }
 
