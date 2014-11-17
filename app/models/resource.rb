@@ -285,22 +285,9 @@ class Resource < ActiveRecord::Base
   end
 
   def update_assessment_percent_complete
-      # SELECT assessment_questions.id
-      # FROM assessment_questions
-      # LEFT JOIN assessment_sections
-      #     ON assessment_questions.assessment_section_id = assessment_sections.id
-      # LEFT JOIN assessments
-      #     ON assessment_sections.assessment_id = assessments.id
-      # WHERE assessments.key = 'resource'
-      questions = AssessmentQuestion.
-          select('assessment_questions.id').
-          joins('LEFT JOIN assessment_sections '\
-            'ON assessment_questions.assessment_section_id = assessment_sections.id').
-          joins('LEFT JOIN assessments '\
-            'ON assessment_sections.assessment_id = assessments.id').
-          where('assessments.key = \'resource\'')
-      self.assessment_percent_complete = questions.length > 0 ?
-          self.assessment_question_response_count.to_f / questions.length : 0
+    self.assessment_percent_complete =
+        self.assessment_question_responses.length.to_f /
+        self.format.assessment_questions.length.to_f
   end
 
   ##
