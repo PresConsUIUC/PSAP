@@ -830,42 +830,17 @@ case Rails.env
     uiuc_institution.save!
 
     # Institutions
-    institution_commands = [
-        CreateInstitutionCommand.new(
-            { name: 'Hamburger University',
-              address1: '21 Hamburger Place',
-              address2: nil,
-              city: 'Des Moines',
-              state: 'IA',
-              postal_code: 12345,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'Barnum & Bailey Clown College',
-              address1: 'Circus Tent C',
-              address2: '53 Trapeze Road',
-              city: 'Los Angeles',
-              state: 'CA',
-              postal_code: 99999,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'Hogwarts School of Witchcraft & Wizardry',
-              address1: '123 Magical St.',
-              address2: nil,
-              city: 'Hogsmeade',
-              state: 'N/A',
-              postal_code: 99999,
-              country: 'Hogsmeade',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
-    ]
-    institution_commands.each{ |command| command.execute }
+    CreateInstitutionCommand.new(
+        { name: 'Hogwarts School of Witchcraft & Wizardry',
+          address1: '123 Magical St.',
+          address2: 'Suite 12',
+          city: 'Hogsmeade',
+          state: 'N/A',
+          postal_code: 99999,
+          country: 'Hogsmeade',
+          url: 'http://example.org/',
+          email: 'test@example.org',
+          description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1').execute
 
     # Normal user
     command = CreateUserCommand.new(
