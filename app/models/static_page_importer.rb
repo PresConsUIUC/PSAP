@@ -80,12 +80,12 @@ class StaticPageImporter
         unless File.exists?(non_retina_dest_pathname)
           # \> will resize only larger-to-smaller
           system "convert \"#{source_image_path}\" -quality #{profile[:quality]} "\
-          "-strip -resize #{profile[:width]}x#{profile[:height]}\\> "\
+          "-strip -interlace Plane -resize #{profile[:width]}x#{profile[:height]}\\> "\
           "\"#{non_retina_dest_pathname}\""
         end
         unless File.exists?(retina_dest_pathname)
           system "convert \"#{source_image_path}\" -quality #{profile[:quality]} "\
-          "-strip -resize #{profile[:width] * 2}x#{profile[:height] * 2}\\> "\
+          "-strip -interlace Plane -resize #{profile[:width] * 2}x#{profile[:height] * 2}\\> "\
           "\"#{retina_dest_pathname}\""
         end
       end
