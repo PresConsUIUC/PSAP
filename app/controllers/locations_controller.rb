@@ -71,7 +71,8 @@ class LocationsController < ApplicationController
         'OR events_resources.resource_id IN (?)',
               @location.id,
               @location.resources.map{ |res| res.id }).
-        order(created_at: :desc)
+        order(created_at: :desc).
+        limit(20)
   end
 
   def update

@@ -92,7 +92,8 @@ class InstitutionsController < ApplicationController
                   @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
                   @institution.repositories.map { |repo| repo.locations.map {
                       |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
-            order(created_at: :desc)
+            order(created_at: :desc).
+            limit(20)
       }
     end
   end
