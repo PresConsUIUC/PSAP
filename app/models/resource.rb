@@ -285,9 +285,9 @@ class Resource < ActiveRecord::Base
   end
 
   def update_assessment_percent_complete
-    self.assessment_percent_complete =
+    self.assessment_percent_complete = self.format ?
         self.assessment_question_responses.length.to_f /
-        self.format.assessment_questions.length.to_f
+        self.format.assessment_questions.length.to_f : 0
   end
 
   ##
