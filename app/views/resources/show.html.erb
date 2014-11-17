@@ -166,7 +166,7 @@
                       <%= @resource.creators.first.name %>
                     <% else %>
                       <ul>
-                        <% for creator in @resource.creators %>
+                        <% @resource.creators.each do |creator| %>
                           <li><%= creator.name %></li>
                         <% end %>
                       </ul>
@@ -178,8 +178,11 @@
                   <dd>
                     <% if current_user.is_admin? %>
                       <%= link_to @resource.format.name, @resource.format %>
+                      <%= link_to('(Format ID Guide)', format_id_guide_category_path(@resource.format.format_id_guide_page,
+                                                                                     anchor: @resource.format.format_id_guide_anchor)) %>
                     <% else %>
-                      <%= @resource.format.name %>
+                      <%= link_to(@resource.format.name, format_id_guide_category_path(@resource.format.format_id_guide_page,
+                                                                                       anchor: @resource.format.format_id_guide_anchor)) %>
                     <% end %>
                   </dd>
                 <% end %>
