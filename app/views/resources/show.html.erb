@@ -134,8 +134,9 @@
       Score: <%= number_to_human(@resource.assessment_score * 100) %>
       <div class="progress">
         <div class="progress-bar progress-bar-success score" role="progressbar"
-             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-             style="width:<%= @resource.assessment_score * 100 %>%;">
+             aria-valuenow="<%= @resource.assessment_score * 100 %>"
+             aria-valuemin="0" aria-valuemax="100"
+             style="width:<%= @resource.assessment_score * 100 %>%">
         </div>
       </div>
     </div>
