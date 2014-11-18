@@ -1,5 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+--- !omap
 assessment_question_one:
   id: 1
   index: 0

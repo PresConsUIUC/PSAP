@@ -14,8 +14,3 @@ location_assessment:
   id: 3
   name: Location assessment
   key: location
-
-assessment_one:
-  id: 4
-  name: Sample assessment name
-  key: sample_assessment_key

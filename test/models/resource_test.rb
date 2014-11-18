@@ -28,7 +28,7 @@ class ResourceTest < ActiveSupport::TestCase
 
   test 'assessment_percent_complete should update properly' do
     @resource.save
-    assert_equal 0.5, @resource.assessment_percent_complete
+    assert_equal 1, @resource.assessment_percent_complete
 
     @resource.assessment_question_responses.destroy_all
     @resource.save
