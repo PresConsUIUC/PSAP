@@ -273,11 +273,11 @@ class Resource < ActiveRecord::Base
   # extent, etc. This method will remove them.
   #
   def prune_empty_submodels
-    self.creators.select!{ |c| c.name.length > 0 }
-    self.extents.select!{ |e| e.name.length > 0 }
-    self.resource_dates.select!{ |r| r.year }
-    self.resource_notes.select!{ |r| r.value.length > 0 }
-    self.subjects.select!{ |s| s.name.length > 0 }
+    self.creators = self.creators.select{ |c| c.name.length > 0 }
+    self.extents = self.extents.select{ |e| e.name.length > 0 }
+    self.resource_dates = self.resource_dates.select{ |r| r.year }
+    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
+    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
   end
 
   def update_assessment_percent_complete
