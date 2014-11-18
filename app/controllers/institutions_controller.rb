@@ -8,6 +8,8 @@ class InstitutionsController < ApplicationController
     command = CreateInstitutionCommand.new(institution_params, current_user,
                                            request.remote_ip)
     @institution = command.object
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -65,6 +67,8 @@ class InstitutionsController < ApplicationController
         render text: @institution.resources_as_csv
       }
       format.html {
+        @assessment_sections = Assessment.find_by_key('institution').
+            assessment_sections.order(:index)
         @institution_users = @institution.users.where(confirmed: true).order(:last_name)
         @repositories = @institution.repositories.order(:name).
             paginate(page: params[:page],
@@ -88,7 +92,8 @@ class InstitutionsController < ApplicationController
                   @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
                   @institution.repositories.map { |repo| repo.locations.map {
                       |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
-            order(created_at: :desc)
+            order(created_at: :desc).
+            limit(20)
       }
     end
   end
@@ -97,6 +102,8 @@ class InstitutionsController < ApplicationController
     @institution = Institution.find(params[:id])
     command = UpdateInstitutionCommand.new(@institution, institution_params,
                                            current_user, request.remote_ip)
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -106,13 +113,13 @@ class InstitutionsController < ApplicationController
       render 'edit'
     else
       flash[:success] = "Institution \"#{@institution.name}\" updated."
-      redirect_to @institution
+      redirect_to edit_institution_url(@institution)
     end
   end
 
   # Outputs a high-level assessment report as a PDF.
   def report
-
+    # TODO: write this
   end
 
   private
@@ -128,7 +135,13 @@ class InstitutionsController < ApplicationController
   def institution_params
     params.require(:institution).permit(:name, :address1, :address2, :city,
                                         :state, :postal_code, :country, :url,
-                                        :description, :email)
+                                        :description, :email).tap do |whitelisted|
+      # AQRs don't use Rails' nested params format, and will require additional
+      # processing
+      whitelisted[:assessment_question_responses] =
+          params[:institution][:assessment_question_responses] if
+          params[:institution][:assessment_question_responses]
+    end
   end
 
 end

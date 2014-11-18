@@ -114,9 +114,12 @@ dl ul {
 
 ul.reference-list {
   list-style:none;
-  margin-left:2em;
+  margin-left:2.5em;
   padding-left:0px;
-  text-indent:-2em;
+  text-indent:-2.5em;
+  li {
+    margin-bottom:0.5em;
+  }
 }
 
 button.hovertip-fire {
@@ -321,8 +324,22 @@ textarea.form-control {
 }
 
 div.progress {
-  height:10px;
+  height:15px;
   margin-top:0.5em;
+}
+
+div.psap-progress-container {
+  margin:0 auto;
+  text-align:center;
+  @media screen and (max-width: 400px) {
+    width:90%;
+  }
+  @media screen and (max-width: 800px) {
+    width:70%;
+  }
+  @media screen and (min-width: 801px) {
+    width:40%;
+  }
 }
 
 div.signin_form {
@@ -344,6 +361,46 @@ div#gravatar {
 .field_with_errors {
   @extend .control-group;
   @extend .error;
+}
+
+.btn-sm.help {
+  background-color:#cacaca;
+  border:none;
+  border-radius:9px;
+  color:white;
+  font-size:13px;
+  font-weight:bold;
+  height:18px;
+  margin:0px 0px 5px 0.4em;
+  padding:0px;
+  width:18px;
+}
+.btn-default.help {
+  background-color:#cacaca;
+  border:none;
+  border-radius:15px;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  height:23px;
+  margin:0px 0px 5px 0.4em;
+  padding:0px;
+  width:23px;
+}
+.btn-sm.psap-rights {
+  background-color:#cacaca;
+  border:none;
+  border-radius:9px;
+  color:white;
+  display:block;
+  font-family:'Times', serif;
+  font-size:13px;
+  font-style:italic;
+  font-weight:bold;
+  height:18px;
+  margin:-8px auto;
+  padding:0px;
+  width:18px;
 }
 
 

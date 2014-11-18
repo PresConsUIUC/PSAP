@@ -13,10 +13,10 @@ var UserForm = {
 
     attachEventListeners: function() {
         $('input#user_first_name').bind('keyup input paste', function() {
-            Form.validate('user_first_name', 1, 255);
+            PSAP.Form.validate('user_first_name', 1, 255);
         });
         $('input#user_last_name').bind('keyup input paste', function() {
-            Form.validate('user_last_name', 1, 255);
+            PSAP.Form.validate('user_last_name', 1, 255);
         });
         $('input#user_email').bind('keyup input paste', function() {
             UserForm.validateEmail();

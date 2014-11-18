@@ -172,13 +172,12 @@ class ResourcesController < ApplicationController
   ##
   # Responds to /institutions/:id/resources/subjects
   def subjects
-    render json: Subject.
+    render json: Subject.select('subjects.name').
         joins('LEFT JOIN resources ON subjects.resource_id = resources.id').
         joins('LEFT JOIN locations ON locations.id = resources.location_id').
         joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
         joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
-        where('institutions.id = ?', params[:institution_id]).
-        map{ |s| s.name }.uniq # TODO: this could be more efficient
+        where('institutions.id = ?', params[:institution_id]).distinct.map{ |r| r['name'] }
   end
 
   def update

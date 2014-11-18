@@ -517,13 +517,13 @@ sheet.each_with_index do |row, i|
         end
       end
     end
-    unless name.blank?
-      Format.create!(fid: row[1],
-                     name: name,
-                     format_class: FormatClass::class_for_name(row[0]),
-                     parent: parent,
-                     score: row[6])
-    end
+    Format.create!(fid: row[1],
+                   name: name,
+                   format_class: FormatClass::class_for_name(row[0]),
+                   parent: parent,
+                   score: row[6],
+                   format_id_guide_page: row[7],
+                   format_id_guide_anchor: row[8]) unless name.blank?
   end
 end
 
@@ -547,28 +547,27 @@ xls.sheet('Support Scores').each_with_index do |row, i|
 end
 
 # Assessments
-puts 'Seeding assessments...'
-assessments = [
-    Assessment.create!(name: 'Resource Assessment', key: 'resource'),
-    Assessment.create!(name: 'Location Assessment', key: 'location'),
-    Assessment.create!(name: 'Institution Assessment', key: 'institution')
-]
+assessments = {
+    resource: Assessment.create!(name: 'Resource Assessment', key: 'resource'),
+    location: Assessment.create!(name: 'Location Assessment', key: 'location'),
+    institution: Assessment.create!(name: 'Institution Assessment', key: 'institution')
+}
 
-# Assessment sections
+# Resource assessment sections
 sections = {}
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Use / Access', index: 0, weight: 0.05,
+    { name: 'Use | Access', index: 0, weight: 0.05,
       description: 'The following questions concern the level of use/handling '\
       'of the object(s).',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:use_access] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Storage / Container', index: 1, weight: 0.05,
+    { name: 'Storage | Container', index: 1, weight: 0.05,
       description: 'The following questions concern the appropriateness of '\
       'storage, housing, and labeling.',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:storage_container] = command.object
 
@@ -576,15 +575,71 @@ command = CreateAssessmentSectionCommand.new(
     { name: 'Condition', index: 2, weight: 0.4,
       description: 'The following questions concern the physical state of the '\
       'resource, and to what degree this impacts its content.',
-      assessment: assessments[0] }, nil, '127.0.0.1')
+      assessment: assessments[:resource] }, nil, '127.0.0.1')
 command.execute
 sections[:condition] = command.object
 
-# Assessment questions
-puts 'Seeding assessment questions...'
+# Location assessment sections
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Environment', index: 0, weight: 0.05,
+      description: 'This section addresses the climate (temperature, humidity) of this location, as well as your ability to monitor and respond to it.',
+      assessment: assessments[:location] }, nil, '127.0.0.1')
+command.execute
+sections[:location_environment] = command.object
 
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Emergency Preparedness', index: 1, weight: 0.05,
+      description: 'This section concerns the safety mechanisms and disaster readiness of this facility in the event of a disaster.',
+      assessment: assessments[:location] }, nil, '127.0.0.1')
+command.execute
+sections[:location_emergency_preparedness] = command.object
+
+# Institution assessment sections
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Collection Planning', index: 0, weight: 0.05,
+      description: 'This section concerns your institution\'s collection development policy and level of preservation planning.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_collection_planning] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Use | Access', index: 1, weight: 0.05, # TODO: weights
+      description: 'This section concerns your institution\'s practices regarding collection description, surrogates/copies, loans, and use supervision.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_use_access] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Material Inspection', index: 2, weight: 0.05, # TODO: weights
+      description: 'This section addresses the inspection, cleaning, and repair of collection materials at your institution.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_material_inspection] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Playback Equipment', index: 3, weight: 0.05, # TODO: weights
+      description: 'This section concerns the equipment used to access certain formats (e.g. audiovisual, microfilm) at your institution.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_playback_equipment] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Security', index: 4, weight: 0.05, # TODO: weights
+      description: 'This section addresses security of collections at your institution.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_security] = command.object
+
+command = CreateAssessmentSectionCommand.new(
+    { name: 'Disaster Recovery', index: 5, weight: 0.05, # TODO: weights
+      description: 'This section concerns the readiness of your institution in the event of a disaster.',
+      assessment: assessments[:institution] }, nil, '127.0.0.1')
+command.execute
+sections[:institution_disaster_recovery] = command.object
+
+# Resource assessment questions
+puts 'Seeding resource assessment questions...'
 aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
-#aq_sheets = %w(Resource-Paper-Bound)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
     if index > 0 and !row[7].blank? # skip header & trailing rows
@@ -595,7 +650,9 @@ aq_sheets.each do |sheet|
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
           weight: row[9].to_f,
-          help_text: row[8].strip
+          help_text: row[8].strip,
+          advanced_help_page: nil, # TODO: fix
+          advanced_help_anchor: nil # TODO: fix
       }
       case row[5][0..2].strip.downcase
         when 'use'
@@ -640,9 +697,85 @@ aq_sheets.each do |sheet|
   end
 end
 
+# Location & Institution assessment questions
+puts 'Seeding location assessment questions...'
+aq_sheets = %w(Location Institution)
+aq_sheets.each do |sheet|
+  xls.sheet(sheet).each_with_index do |row, index|
+    if index > 0 and !row[2].blank? # skip header & trailing rows
+      params = {
+          qid: row[1].to_i,
+          name: row[2].strip,
+          question_type: AssessmentQuestionType::RADIO,
+          index: index,
+          weight: row[6].to_f,
+          help_text: row[3].strip,
+          advanced_help_page: row[4] ? row[4].strip.gsub('.html', '') : nil,
+          advanced_help_anchor: row[5] ? row[5].strip : nil
+      }
+      case row[0][0..2].strip.downcase
+        when 'col'
+          params[:assessment_section] = sections[:institution_collection_planning]
+        when 'dis'
+          params[:assessment_section] = sections[:institution_disaster_recovery]
+        when 'env'
+          params[:assessment_section] = sections[:location_environment]
+        when 'eme'
+          params[:assessment_section] = sections[:location_emergency_preparedness]
+        when 'mat'
+          params[:assessment_section] = sections[:institution_material_inspection]
+        when 'pla'
+          params[:assessment_section] = sections[:institution_playback_equipment]
+        when 'sec'
+          params[:assessment_section] = sections[:institution_security]
+        when 'use'
+          params[:assessment_section] = sections[:institution_use_access]
+      end
+
+      unless row[9].blank? or row[8].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[7].to_i)
+        params[:enabling_assessment_question_options] = []
+        row[8].split(';').map{ |x| x.strip }.each do |dep|
+          eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
+          if eaqo
+            params[:enabling_assessment_question_options] << eaqo
+          else
+            puts 'AQO error: QID ' + row[7].to_s + ': ' + dep
+          end
+        end
+      end
+
+      command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
+      command.execute
+
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[9], index: 0, value: row[10]) if row[9] and row[10]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[11], index: 1, value: row[12]) if row[11] and row[12]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[13], index: 2, value: row[14]) if row[13] and row[14]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[15], index: 3, value: row[16]) if row[15] and row[16]
+      command.object.assessment_question_options << AssessmentQuestionOption.new(
+          name: row[17], index: 4, value: row[18]) if row[17] and row[18]
+      command.object.save!
+    end
+  end
+end
+
 # Format ID Guide HTML pages
 puts 'Ingesting Format ID Guide content...'
-FormatIdGuide.new.reseed
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
+    File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+p.reseed
+
+# Advanced Help HTML pages
+puts 'Ingesting advanced help content...'
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'AdvHelp'),
+    File.join(Rails.root, 'app', 'assets', 'advanced_help'))
+p.reseed
 
 puts 'Creating the admin user...'
 
@@ -663,93 +796,58 @@ admin_user = command.object
 admin_user.role = admin_role
 admin_user.save!
 
+# UIUC institution
+command = CreateInstitutionCommand.new(
+    { name: 'University of Illinois at Urbana-Champaign',
+      address1: '1408 W. Gregory Dr.',
+      address2: nil,
+      city: 'Urbana',
+      state: 'IL',
+      postal_code: 61801,
+      country: 'United States of America',
+      url: 'http://www.library.illinois.edu/',
+      email: 'test@example.org',
+      language: languages[122],
+      description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
+command.execute
+uiuc_institution = command.object
+admin_user.institution = uiuc_institution
+admin_user.save!
+
 # From here, we seed the database differently depending on the environment.
 case Rails.env
 
   when 'development'
     puts 'Seeding DEVELOPMENT data...'
 
-    # Institutions
-    institution_commands = [
-        CreateInstitutionCommand.new( # TODO: add this in production
-            { name: 'University of Illinois at Urbana-Champaign',
-              address1: '1408 W. Gregory Dr.',
-              address2: nil,
-              city: 'Urbana',
-              state: 'IL',
-              postal_code: 61801,
-              country: 'United States of America',
-              url: 'http://www.library.illinois.edu/',
-              email: 'test@example.org',
-              language: languages[122],
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'West Southeast Directional State University',
-              address1: '1 Directional Drive',
-              address2: nil,
-              city: 'Podunk',
-              state: 'IL',
-              postal_code: 12345,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'Hamburger University',
-              address1: '21 Hamburger Place',
-              address2: nil,
-              city: 'Des Moines',
-              state: 'IA',
-              postal_code: 12345,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'San Quentin Prison University',
-              address1: '5435 Prison Ct.',
-              address2: nil,
-              city: 'San Quentin',
-              state: 'CA',
-              postal_code: 90210,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'Barnum & Bailey Clown College',
-              address1: 'Circus Tent C',
-              address2: '53 Trapeze Road',
-              city: 'Los Angeles',
-              state: 'CA',
-              postal_code: 99999,
-              country: 'United States of America',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1'),
-        CreateInstitutionCommand.new(
-            { name: 'Hogwarts School of Witchcraft & Wizardry',
-              address1: '123 Magical St.',
-              address2: nil,
-              city: 'Hogsmeade',
-              state: 'N/A',
-              postal_code: 99999,
-              country: 'Hogsmeade',
-              url: 'http://example.org/',
-              email: 'test@example.org',
-              description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
-    ]
+    # Institution assessment question responses
+    Assessment.find_by_key('institution').assessment_questions.each do |question|
+        AssessmentQuestionResponse.create!(
+            institution: uiuc_institution,
+            assessment_question: question,
+            assessment_question_option: question.assessment_question_options.first)
+    end
+    uiuc_institution.save!
 
-    institutions = institution_commands.map{ |command| command.execute; command.object }
-    admin_user.institution = institutions[0]
-    admin_user.save!
+    # Institutions
+    CreateInstitutionCommand.new(
+        { name: 'Hogwarts School of Witchcraft & Wizardry',
+          address1: '123 Magical St.',
+          address2: 'Suite 12',
+          city: 'Hogsmeade',
+          state: 'N/A',
+          postal_code: 99999,
+          country: 'Hogsmeade',
+          url: 'http://example.org/',
+          email: 'test@example.org',
+          description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1').execute
 
     # Normal user
     command = CreateUserCommand.new(
         { username: 'normal', email: 'normal@example.org',
           first_name: 'Norm', last_name: 'McNormal',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[0], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: true, enabled: true }, '127.0.0.1', false)
     command.execute
     normal_user = command.object
@@ -769,7 +867,7 @@ case Rails.env
         { username: 'unconfirmed', email: 'unconfirmed@example.org',
           first_name: 'Sally', last_name: 'NoConfirmy',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[1], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: false, enabled: false }, '127.0.0.1', false)
     command.execute
     unconfirmed_user = command.object
@@ -779,16 +877,16 @@ case Rails.env
         { username: 'disabled', email: 'disabled@example.org',
           first_name: 'Johnny', last_name: 'CantDoNothin',
           password: 'password', password_confirmation: 'password',
-          institution: institutions[1], role: normal_role,
+          institution: uiuc_institution, role: normal_role,
           confirmed: true, enabled: false }, '127.0.0.1', false)
     command.execute
     disabled_user = command.object
 
     # Repositories
     repository_commands = [
-        CreateRepositoryCommand.new(institutions[0],
+        CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Sample Repository' }, nil, '127.0.0.1'),
-        CreateRepositoryCommand.new(institutions[0],
+        CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Another Sample Repository' }, nil, '127.0.0.1')
     ]
 
@@ -815,10 +913,27 @@ case Rails.env
       location.save!
     end
 
+    # Location assessment question responses
+    Assessment.find_by_key('location').assessment_questions.each do |question|
+        AssessmentQuestionResponse.create!(
+            location: locations[0],
+            assessment_question: question,
+            assessment_question_option: question.assessment_question_options.first)
+    end
+    locations[0].save!
+
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Magna Carta',
+        { name: 'Sample Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          significance: 0,
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[0],
+        { name: 'Sample Assessed Resource',
           resource_type: ResourceType::ITEM,
           format: Format.find_by_fid(7),
           user: normal_user,
@@ -835,8 +950,8 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Sears Catalog Collection',
+    resource_commands << CreateResourceCommand.new(locations[1],
+        { name: 'Collection Containing Lots of Items',
           resource_type: ResourceType::COLLECTION,
           user: admin_user,
           description: 'Sample description',
@@ -844,7 +959,7 @@ case Rails.env
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Cat Fancy Collection',
+        { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
           description: 'Sample description',
@@ -864,27 +979,28 @@ case Rails.env
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Special Editions',
-          resource_type: ResourceType::COLLECTION,
-          user: admin_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: '1972 Presidential Election Special Issue',
-          resource_type: ResourceType::ITEM,
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
-        { name: 'Napoleon Bonaparte Letters Collection',
-          resource_type: ResourceType::COLLECTION,
-          user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
+    (0..100).each do
+      resource_commands << CreateResourceCommand.new(locations[1],
+          { name: 'Sample Multitudinous Top-Level Item',
+            resource_type: ResourceType::ITEM,
+            user: normal_user,
+            description: 'Sample description',
+            local_identifier: 'sample_local_id',
+            rights: 'Sample rights' }, nil, '127.0.0.1')
+    end
+
+    resources = resource_commands.map{ |command| command.execute; command.object }
+
+    (0..100).each do
+      resource_commands << CreateResourceCommand.new(locations[1],
+          { name: 'Sample Multitudinous Child Item',
+            resource_type: ResourceType::ITEM,
+            user: normal_user,
+            parent: resources[3],
+            description: 'Sample description',
+            local_identifier: 'sample_local_id',
+            rights: 'Sample rights' }, nil, '127.0.0.1')
+    end
 
     resources = resource_commands.map{ |command| command.execute; command.object }
 
@@ -894,45 +1010,37 @@ case Rails.env
     end
     resources[1].save!
 
+    resources[1].parent = resources[0]
+    resources[2].parent = resources[0]
     resources[4].parent = resources[3]
     resources[5].parent = resources[3]
-    resources[6].parent = resources[3]
-    resources[7].parent = resources[3]
-    resources[8].parent = resources[3]
-    resources.select{ |r| r.save! }
+    resources.each{ |r| r.save! }
 
     # Dates
     ResourceDate.create!(resource: resources[0],
                          date_type: DateType::SINGLE,
-                         year: 1215)
+                         year: 1995)
     ResourceDate.create!(resource: resources[1],
+                         date_type: DateType::SINGLE,
+                         year: 1986)
+    ResourceDate.create!(resource: resources[2],
                          date_type: DateType::BULK,
                          begin_year: 30,
                          end_year: 50)
-    ResourceDate.create!(resource: resources[2],
+    ResourceDate.create!(resource: resources[3],
                          date_type: DateType::SPAN,
                          begin_year: 1920,
                          end_year: 1990)
-    ResourceDate.create!(resource: resources[3],
+    ResourceDate.create!(resource: resources[4],
                          date_type: DateType::BULK,
                          begin_year: 1980,
                          end_year: 1992)
-    ResourceDate.create!(resource: resources[4],
-                         date_type: DateType::SINGLE,
-                         year: 843)
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
-                         year: 1856)
+                         year: 843)
     ResourceDate.create!(resource: resources[6],
-                         date_type: DateType::SPAN,
-                         begin_year: 1960,
-                         end_year: 2000)
-    ResourceDate.create!(resource: resources[7],
                          date_type: DateType::SINGLE,
-                         year: 1960)
-    ResourceDate.create!(resource: resources[8],
-                         date_type: DateType::SINGLE,
-                         year: 1961)
+                         year: 1856)
 
     # Extents
     extents = []
@@ -968,37 +1076,16 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-=begin
-    # Assessment question responses
-    responses = [
+
+    # Resource assessment question responses
+    resources[1].format.assessment_questions.each do |question|
       AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[0],
-          assessment_question_option: options[0]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[1],
-          assessment_question_option: options[5]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[2],
-          assessment_question_option: options[8]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[3],
-          assessment_question_option: options[12]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[4],
-          assessment_question_option: options[13]),
-      AssessmentQuestionResponse.create!(
-          resource: resources[0],
-          assessment_question: questions[5],
-          assessment_question_option: options[15])
-    ]
-    resources[0].assessment_percent_complete = 1
-    resources[0].save!
-=end
+          resource: resources[1],
+          assessment_question: question,
+          assessment_question_option: question.assessment_question_options.first)
+    end
+    resources[1].save!
+
     # Format temperature ranges
     Format.all do |format|
         TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
@@ -1051,7 +1138,6 @@ case Rails.env
                   event_level: EventLevel::ALERT,
                   address: '127.0.0.1',
                   created_at: Time.mktime(2013, 6, 19))
-
     (0..250).each do
       Event.create!(description: 'Sample event',
                     event_level: EventLevel::DEBUG,

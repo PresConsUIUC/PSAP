@@ -1,11 +1,11 @@
-<% provide(:title, "Edit #{@resource.name}") %>
+<% provide(:title, "Assess #{@resource.name}") %>
 <% provide(:body_id, 'edit_resource') %>
 
 <input type="hidden" name="root-url" value="<%= root_url %>">
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li>
     <%= link_to @resource.location.repository.institution.name,
@@ -19,19 +19,15 @@
     <%= link_to @resource.location.name,
                 polymorphic_path(@resource.location) %>
   </li>
-  <li><%= link_to @resource.name, polymorphic_path(@resource) %></li>
-  <li class="active">Edit</li>
+  <li><%= link_to truncate(@resource.name, length: 50), polymorphic_path(@resource) %></li>
+  <li class="active">Assess</li>
 </ol>
 
 <div class="row">
-  <div class="col-sm-7">
+  <div class="col-sm-10">
     <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
   </div>
-  <div class="col-sm-5">
-    <div class="question_response_count_container">
-      <span class="complete-assessment-question-count">0</span> of
-      <span class="total-assessment-question-count">0</span> questions complete
-    </div>
+  <div class="col-sm-2">
     <div class="btn-group" style="float:right">
       <!-- Save -->
       <button type="button" class="btn btn-default save">
@@ -45,16 +41,16 @@
 
   <!-- left column menu -->
   <div class="col-sm-3">
-    <%= render partial: 'assessment_sections',
+    <%= render partial: 'shared/assessment_sections',
                locals: { assessment_sections: @assessment_sections } %>
   </div>
 
   <div class="col-sm-9">
 
-    <%= form_for(@resource) do |f| %>
+    <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
 
       <div id="basic_info" class="section">
-        <%= render 'basic_info_form', f: f %>
+        <%= render partial: 'basic_info_form', locals: { f: f } %>
       </div>
 
       <% # read by JS to select the relevant inputs %>
@@ -74,7 +70,7 @@
       <% end %>
 
       <% @assessment_sections.each do |section| %>
-        <%= render 'section_form', section: section %>
+        <%= render partial: 'shared/section_form', locals: { section: section } %>
       <% end %>
 
     <% end %>

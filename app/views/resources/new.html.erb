@@ -31,10 +31,6 @@
     <% end %>
   </div>
   <div class="col-sm-5">
-    <div class="question_response_count_container">
-      <span class="complete-assessment-question-count">0</span> of
-      <span class="total-assessment-question-count">0</span> questions complete
-    </div>
     <div class="btn-group" style="float:right">
       <!-- Save -->
       <button type="button" class="btn btn-default save">
@@ -48,23 +44,22 @@
 
   <!-- left column menu -->
   <div class="col-sm-3">
-    <%= render partial: 'assessment_sections',
+    <%= render partial: 'shared/assessment_sections',
                locals: { assessment_sections: @assessment_sections } %>
   </div>
 
   <div class="col-sm-9">
-
-    <%= form_for(@resource, url: location_resources_path(@resource.location)) do |f| %>
+    <%= form_for(@resource, class: 'psap-assessment',
+                 url: location_resources_path(@resource.location)) do |f| %>
 
       <div id="basic_info" class="section">
-        <%= render 'basic_info_form', f: f %>
+        <%= render partial: 'basic_info_form', locals: { f: f } %>
       </div>
 
       <% @assessment_sections.each do |section| %>
-        <%= render 'section_form', section: section %>
+        <%= render partial: 'shared/section_form', locals: { section: section } %>
       <% end %>
 
     <% end %>
-
   </div>
 </div>

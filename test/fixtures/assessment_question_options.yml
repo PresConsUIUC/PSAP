@@ -1,13 +1,45 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# option for question 1
 assessment_question_option_one:
+  id: 1
   index: 0
-  name: Sample question name 1
-  value: Sample question value 1
+  name: Question option 1
+  value: 1
   assessment_question_id: 1
 
 assessment_question_option_two:
+  id: 2
   index: 1
-  name: Sample question name 2
-  value: Sample question value 2
+  name: Question option 2
+  value: 0.5
   assessment_question_id: 1
+
+assessment_question_option_three:
+  id: 3
+  index: 2
+  name: Question option 3
+  value: 0
+  assessment_question_id: 1
+
+# option for question 2
+assessment_question_option_four:
+  id: 4
+  index: 0
+  name: Question option 4
+  value: 1
+  assessment_question_id: 2
+
+assessment_question_option_five:
+  id: 5
+  index: 1
+  name: Question option 5
+  value: 0.5
+  assessment_question_id: 2
+
+assessment_question_option_six:
+  id: 6
+  index: 2
+  name: Question option 6
+  value: 0
+  assessment_question_id: 2

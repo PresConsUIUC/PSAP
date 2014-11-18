@@ -7,15 +7,86 @@ body#assessment_template {
   }
 }
 
-body#assessment_template, body#new_resource, body#edit_resource {
-  div {
-    .depth-1 { margin-left:1em; }
-    .depth-2 { margin-left: 2em; }
-    .depth-3 { margin-left: 3em; }
-    .depth-4 { margin-left: 4em; }
-    .depth-5 { margin-left: 5em; }
-    .depth-6 { margin-left: 6em; }
-    .depth-7 { margin-left: 7em; }
-    .depth-8 { margin-left: 8em; }
+.assessment_question h3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size:1.3em;
+}
+
+body#assessment_template, body#new_resource, body#edit_resource,
+body#new_location, body#edit_location, body#new_institution, body#edit_institution {
+  div.section {
+    border-top:1px solid #cccccc;
+    margin-top:1em;
+    padding-top:1em;
+  }
+  .affix {
+    margin: 0 10% 0 0;
+    width:21.5%;
+    top:70px;
+  }
+  label.radio-inline {
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    color: #333333;
+    font-size:14px;
+    line-height: 1.428571429;
+    margin:1em 0.5em;
+    padding: 6px 12px 6px 30px;
+  }
+  label.radio-inline:hover {
+    background-color:#ebebeb;
+  }
+  div.popover {
+    @media screen and (min-width: 768px) {
+      min-width:500px;
+    }
+  }
+  .depth-1 { padding-left:1.5em; }
+  .depth-2 { padding-left:3em; }
+  .depth-3 { padding-left:4.5em; }
+  .depth-4 { padding-left:6em; }
+  .depth-5 { padding-left:7.5em; }
+  .depth-6 { padding-left:9em; }
+  .depth-7 { padding-left:10.5em; }
+  .depth-8 { padding-left:12em; }
+  .depth-9 { padding-left:13.5em; }
+}
+
+/* Used in show view of assessable resources (locations, institutions,
+resources). */
+div.assessment {
+  dt.depth-1, dd.depth-1 { padding-left:1.5em; }
+  dt.depth-2, dd.depth-2 { padding-left:3em; }
+  dt.depth-3, dd.depth-3 { padding-left:4.5em; }
+  dt.depth-4, dd.depth-4 { padding-left:6em; }
+  dt.depth-5, dd.depth-5 { padding-left:7.5em; }
+  dt.depth-6, dd.depth-6 { padding-left:9em; }
+  dt.depth-7, dd.depth-7 { padding-left:10.5em; }
+  dt.depth-8, dd.depth-8 { padding-left:12em; }
+  dt.depth-9, dd.depth-9 { padding-left:13.5em; }
+
+  ul {
+    list-style:none;
+    margin-left:0.2em;
+    padding:0px;
+    li {
+      overflow:visible;
+      padding-left:1.2em;
+      position:relative;
+    }
+    li:before {
+      content: '\2022';
+      left:0;
+      position:absolute;
+    }
+    li.selected {
+      color:green;
+      font-weight:bold;
+    }
+    li.selected:before {
+      content: '\2713';
+      left:0;
+      position:absolute;
+    }
   }
 }

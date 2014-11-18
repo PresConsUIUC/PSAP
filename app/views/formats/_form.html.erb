@@ -28,7 +28,7 @@
                      class: 'form-control' %>
 </div>
 
-<div class="form-group addable_removable">
+<div class="form-group psap-addable-removable">
   <%= f.label :temperature_ranges, 'Temperature Range Scores' %>
 
   <table cellpadding="0" cellspacing="0" border="0">
@@ -42,7 +42,7 @@
     </thead>
     <tbody>
     <%= f.fields_for :temperature_ranges do |g| %>
-        <tr class="addable_removable_input_group">
+        <tr class="psap-addable-removable-input-group">
           <td>
             <%= g.number_field :min_temp_f, min: 0, max: 100, maxlength: 4,
                                class: 'form-control' %>

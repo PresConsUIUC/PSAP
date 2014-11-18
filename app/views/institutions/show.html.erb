@@ -3,7 +3,7 @@
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li class="active"><%= @institution.name %></li>
 </ol>
@@ -14,13 +14,11 @@
   </div>
   <div class="col-sm-4">
     <div class="btn-group" style="float:right">
-      <!-- Edit -->
-      <% if current_user.is_admin? %>
-          <%= link_to edit_institution_path(@institution),
-                      class: 'btn btn-default' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-              Edit
-          <% end %>
+      <!-- Assess -->
+      <%= link_to edit_institution_path(@institution),
+                  class: 'btn btn-default' do %>
+        <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+        Assess
       <% end %>
       <!-- Export as CSV -->
       <div class="btn-group">
@@ -36,23 +34,53 @@
       </div>
       <!-- Delete -->
       <% if current_user.is_admin? %>
-          <% disabled = @institution.users.any? %>
-          <%= link_to institution_path(@institution), method: 'delete',
-                      class: 'btn btn-default',
-                      disabled: disabled,
-                      data: { confirm: 'Deleting this institution will '\
-                          'delete ALL of its repositories, locations, and '\
-                          'assessments along with it. Are you sure you want '\
-                          'to do this?' } do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-              Delete
-          <% end %>
+        <% disabled = @institution.users.any? %>
+        <%= link_to institution_path(@institution), method: 'delete',
+                    class: 'btn btn-default',
+                    disabled: disabled,
+                    data: { confirm: 'Deleting this institution will '\
+                        'delete ALL of its repositories, locations, and '\
+                        'assessments along with it. Are you sure you want '\
+                        'to do this?' } do %>
+            <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+            Delete
+        <% end %>
       <% end %>
     </div>
   </div>
 </div>
 
 <div class="row">
+
+  <div class="col-sm-4 panel">
+    <dl>
+      <dt>URL</dt>
+      <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
+      <dt>Email</dt>
+      <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
+      <dt>Address</dt>
+      <dd>
+        <%= @institution.address1 %>
+        <% if @institution.address2 and !@institution.address2.empty? %>
+            <br><%= @institution.address2 %>
+        <% end %>
+        <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
+        <br><%= @institution.country %>
+      </dd>
+      <% if @institution.description %>
+          <dt>Description</dt>
+          <dd><%= @institution.description %></dd>
+      <% end %>
+      <% if @institution.language %>
+          <dt>Language</dt>
+          <dd><%= @institution.language.english_name %></dd>
+      <% end %>
+      <dt>Created</dt>
+      <dd><%= local_time_ago(@institution.created_at) %></dd>
+      <dt>Last Updated</dt>
+      <dd><%= local_time_ago(@institution.updated_at) %></dd>
+    </dl>
+  </div>
 
   <div class="col-sm-8">
 
@@ -87,221 +115,45 @@
         </div>
 
         <% if @repositories.any? %>
-            <div id="repositories">
-              <%= render 'repositories' %>
-            </div>
+          <div id="repositories">
+            <%= render 'repositories' %>
+          </div>
         <% else %>
-            <p>This institution has no repositories.</p>
+          <p>This institution has no repositories.</p>
         <% end %>
       </div>
 
       <div class="tab-pane" id="assessments_tab">
         <% if @resources.any? %>
-            <div id="assessments">
-            <%= render partial: 'resources/resources',
-                       locals: { resources: @resources, show_checkboxes: false } %>
-            </div>
+          <div id="assessments">
+          <%= render partial: 'resources/resources',
+                     locals: { resources: @resources, show_checkboxes: false } %>
+          </div>
         <% else %>
-            <p>There are no resource assessments at this institution.</p>
+          <p>There are no resource assessments at this institution.</p>
         <% end %>
       </div>
 
       <div class="tab-pane" id="users_tab">
         <% if @institution.users.any? %>
-            <ul class="users">
-              <% @institution_users.each do |user| %>
-                  <li>
-                    <%= link_to user do %>
-                        <%= gravatar_for user, size: 52 %>
-                    <% end %>
-                    <%= link_to user.full_name, user %>
-                    <small><%= user.username %></small>
-                  </li>
-              <% end %>
-            </ul>
+          <ul class="users">
+            <% @institution_users.each do |user| %>
+              <li>
+                <%= link_to user do %>
+                  <%= gravatar_for user, size: 52 %>
+                <% end %>
+                <%= link_to user.full_name, user %>
+                <small><%= user.username %></small>
+              </li>
+            <% end %>
+          </ul>
         <% else %>
-            <p>There are no users affiliated with this institution.</p>
+          <p>There are no users affiliated with this institution.</p>
         <% end %>
       </div>
 
       <div class="tab-pane" id="assessment_report_tab">
-
-        <div class="btn-group" style="float:right">
-          <!-- Print button -->
-          <%= link_to 'javascript:window.print()', class: 'btn btn-default' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-print') %>
-              Print
-          <% end %>
-          <!-- Export button -->
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon glyphicon-export"></span> Export
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'PDF', institution_path(@institution) + '.pdf' %></li>
-          </ul>
-        </div>
-
-        <p>(This is a mockup. It does not contain any dynamic content yet.)</p>
-
-        <section>
-          <h2>Institutional Preservation Infrastructure</h2>
-          <h4>Score: 68</h4>
-          <table cellspacing="0" cellpadding="0" border="0" class="table">
-            <tr>
-              <td class="bg-warning">Moderate</td>
-              <td>Policies and Procedures: 75</td>
-            </tr>
-            <tr>
-              <td class="bg-success">High</td>
-              <td>Use and Loans: 80</td>
-            </tr>
-            <tr>
-              <td class="bg-danger">Low</td>
-              <td>Disaster Planning: 50</td>
-            </tr>
-          </table>
-        </section>
-
-        <section>
-          <h2>Storage Environments Overview</h2>
-
-          <h3>Annex</h3>
-          <h4>Score: 59</h4>
-          <table cellspacing="0" cellpadding="0" border="0" class="table">
-            <tr>
-              <td class="bg-warning">Moderate</td>
-              <td>Temperature: 70</td>
-            </tr>
-            <tr>
-              <td class="bg-warning">Moderate</td>
-              <td>Relative Humidity: 65</td>
-            </tr>
-            <tr>
-              <td class="bg-danger">Low</td>
-              <td>Fire and Water Detection and Fire Suppression: 50</td>
-            </tr>
-            <tr>
-              <td class="bg-danger">Low</td>
-              <td>Security: 50</td>
-            </tr>
-          </table>
-
-          <h3>Basement</h3>
-          <h4>Score: 51</h4>
-          <table cellspacing="0" cellpadding="0" border="0" class="table">
-            <tr>
-              <td class="bg-success">High</td>
-              <td>Temperature: 80</td>
-            </tr>
-            <tr>
-              <td class="bg-danger">Low</td>
-              <td>Relative Humidity: 50</td>
-            </tr>
-            <tr>
-              <td class="bg-warning">Moderate</td>
-              <td>Fire and Water Detection and Fire Suppression: 75</td>
-            </tr>
-            <tr>
-              <td class="bg-danger">Low</td>
-              <td>Security: 0</td>
-            </tr>
-          </table>
-        </section>
-
-        <section id="material_condition_overview">
-          <h2>Material Condition Overview (Collections View)</h2>
-
-          <h3>Mandeville Collection (15/31/26)</h3>
-
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-6 col-sm-4">
-                <ul>
-                  <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
-                  <li>68 items assessed</li>
-                  <li>Assessed by: RNE</li>
-                  <li>Assessed on: 2/21/14</li>
-                  <li>Formats present:
-                    <ul>
-                      <li>Photographs</li>
-                      <li>Books</li>
-                      <li>Papers</li>
-                    </ul>
-                  </li>
-                </ul>
-
-                <table cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td>7.0</td>
-                    <td>Average/Mean</td>
-                  </tr>
-                  <tr>
-                    <td>5.8</td>
-                    <td>Median</td>
-                  </tr>
-                  <tr>
-                    <td>4.1</td>
-                    <td>Low</td>
-                  </tr>
-                  <tr>
-                    <td>9.3</td>
-                    <td>High</td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-sm-12 col-sm-8">
-                <img src="" height="200" width="200" alt="">
-              </div>
-            </div>
-          </div>
-
-          <h3>Albertson, Samuel Collection (65/14/32)</h3>
-
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-6 col-sm-4">
-                <ul>
-                  <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li>
-                  <li>115 items assessed</li>
-                  <li>Assessed by: JHT</li>
-                  <li>Assessed on: 2/17/14</li>
-                  <li>Formats present:
-                    <ul>
-                      <li>Papers</li>
-                      <li>Books</li>
-                      <li>Office reprographics</li>
-                      <li>Photomechanical prints</li>
-                    </ul>
-                  </li>
-                </ul>
-
-                <table cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td>5.5</td>
-                    <td>Average/Mean</td>
-                  </tr>
-                  <tr>
-                    <td>5.7</td>
-                    <td>Median</td>
-                  </tr>
-                  <tr>
-                    <td>1.0</td>
-                    <td>Low</td>
-                  </tr>
-                  <tr>
-                    <td>9.6</td>
-                    <td>High</td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-sm-12 col-sm-8">
-                <img src="" height="200" width="200" alt="">
-              </div>
-            </div>
-          </div>
-
-        </section>
+        <%= render partial: 'assessment_report', locals: { institution: @institution } %>
       </div>
 
       <div id="activity_tab" class="tab-pane">
@@ -311,35 +163,5 @@
     </div> <!-- .tab-content -->
 
   </div> <!-- .col-sm-8 -->
-
-  <div class="col-sm-4 panel">
-    <dl>
-      <dt>URL</dt>
-      <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
-      <dt>Email</dt>
-      <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
-      <dt>Address</dt>
-      <dd>
-        <%= @institution.address1 %>
-        <% if @institution.address2 %>
-            <br><%= @institution.address2 %>
-        <% end %>
-        <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
-        <br><%= @institution.country %>
-      </dd>
-      <% if @institution.description %>
-          <dt>Description</dt>
-          <dd><%= @institution.description %></dd>
-      <% end %>
-      <% if @institution.language %>
-          <dt>Language</dt>
-          <dd><%= @institution.language.english_name %></dd>
-      <% end %>
-      <dt>Created</dt>
-      <dd><%= local_time_ago(@institution.created_at) %></dd>
-      <dt>Last Updated</dt>
-      <dd><%= local_time_ago(@institution.updated_at) %></dd>
-    </dl>
-  </div>
 
 </div> <!-- .row -->

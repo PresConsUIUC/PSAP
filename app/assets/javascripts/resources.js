@@ -4,23 +4,33 @@
 var ResourceForm = {
 
     addFormatSelect: function(parent_format_id, onCompleteCallback) {
-        var newSelect = $('<select>').attr('name', 'resource[format_id]').
-            attr('class', 'form-control');
-        newSelect.hide();
-        $('div.format').append(newSelect);
-        var prompt = $('<option value=\"\">Select...</option>');
-        newSelect.append(prompt);
+        var root_url = $('input[name="root-url"]').val();
 
-        newSelect.on('change', function() {
+        var new_select = $('<select></select>').
+            attr('name', 'resource[format_id]').
+            attr('class', 'form-control');
+        var prompt = $('<option value="">Select&hellip;</option>');
+        new_select.append(prompt);
+
+        // add help button (href will be populated in selectFormat())
+        var help_button = $('<a></a>').attr('href', '').
+            attr('class', 'btn btn-default help').attr('target', '_blank').
+            text('?').hide();
+
+        var group = $('<div class="form-inline"></div>').hide();
+        group.append(new_select);
+        group.append(help_button);
+        $('div.format').append(group);
+
+        new_select.on('change', function() {
             // destroy all selects after the changed select
-            $(this).nextAll('select').remove();
+            $(this).parent().nextAll('div.form-inline').remove();
             // create a child select
             ResourceForm.addFormatSelect($(this).val(), onCompleteCallback);
         });
 
-        var contents_url = $('input[name="root-url"]').val() +
-            '/format-classes/' + $('input[name="format_class"]:checked').val() +
-            '/formats';
+        var contents_url = root_url + '/format-classes/' +
+            $('input[name="format_class"]:checked').val() + '/formats';
         if (parent_format_id) {
             contents_url += '?parent_id=' + parent_format_id;
         }
@@ -28,27 +38,27 @@ var ResourceForm = {
         $.getJSON(contents_url, function(data) {
             if (data.length == 0) {
                 ResourceForm.showSections();
-                newSelect.remove();
+                group.remove();
             } else {
-                newSelect.prev().attr('name', 'noop');
+                group.prev().find('select').attr('name', 'noop');
             }
 
             $.each(data, function(i, object) {
-                var option = $('<option data-score="' + object['score'] + '">').
+                var option = $('<option data-help-page="' + object['format_id_guide_page'] + '" ' +
+                    'data-help-anchor="' + object['format_id_guide_anchor'] + '" ' +
+                    'data-score="' + object['score'] + '">').
                     attr('value', object['id']).
                     text(object['name']);
-                newSelect.append(option);
+                new_select.append(option);
             });
-            (newSelect.find('option').length < 2) ?
-                newSelect.hide() : newSelect.show();
+            (new_select.find('option').length < 2) ? group.hide() : group.show();
 
-            // if the last select has been added
-            newSelect.on('change', function() {
+            new_select.on('change', function() {
                 ResourceForm.selectFormat($(this).val(), null);
             });
 
             if (onCompleteCallback) {
-                onCompleteCallback(newSelect);
+                onCompleteCallback(new_select);
             }
         });
     },
@@ -60,11 +70,7 @@ var ResourceForm = {
         });
 
         $('button.save').on('click', function(event) {
-            if ($('form#new_resource').length) {
-                $('form#new_resource').submit();
-            } else if ($('form#edit_resource').length) {
-                $('form#edit_resource').submit();
-            }
+            $('form.psap-assessment').submit();
         });
 
         $('select.date_type').on('change', function(event) {
@@ -101,7 +107,7 @@ var ResourceForm = {
     },
 
     clearAssessmentQuestions: function() {
-        Popover.closeAll();
+        PSAP.Popover.closeAll();
         $('.assessment_question').remove();
         ResourceForm.updateProgress();
     },
@@ -118,7 +124,6 @@ var ResourceForm = {
     init: function() {
         $(document).on('PSAPFormFieldAdded', function() {
             ResourceForm.attachEventListeners();
-
             // Adding a form section will change the page length, necessitating
             // a refresh of the scrollspy.
             $('[data-spy="scroll"]').each(function () {
@@ -164,12 +169,12 @@ var ResourceForm = {
         $(questionNode).hide();
         afterNode.after(questionNode);
         $(questionNode).fadeIn();
-        Popover.refresh();
+        PSAP.Popover.refresh();
     },
 
     insertQuestionIn: function(questionNode, parentNode) {
         parentNode.append(questionNode);
-        Popover.refresh();
+        PSAP.Popover.refresh();
     },
 
     // Transforms an assessment question into HTML for the assessment form.
@@ -216,6 +221,13 @@ var ResourceForm = {
                 break;
         }
 
+        var adv_help_link = '';
+        if (object['advanced_help_page']) {
+            adv_help_link = '<br><br><a href="/help/' + object['advanced_help_page'] + '#' +
+                object['advanced_help_anchor'] + '" target="_blank">More information&hellip;</a>';
+            adv_help_link = adv_help_link.replace(/"/g, "'");
+        }
+
         return $.parseHTML('<div class="assessment_question depth-' + depth +
             '" data-id="' + object['id'] + '" data-depth="' + depth +
             '" data-weight="' + object['weight'] + '">' +
@@ -229,7 +241,7 @@ var ResourceForm = {
                             'data-container="body" data-toggle="popover" ' +
                             'data-placement="left" data-html="true" ' +
                             'data-content="' + object['help_text'].replace(/"/g, "&quot;").
-                            replace("\n", "<br><br>") + '">? ' +
+                            replace("\n", "<br><br>") + adv_help_link + '">? ' +
                         '</button>' +
                     '</div>' +
                 '</div>' +
@@ -248,28 +260,39 @@ var ResourceForm = {
             return;
         }
 
-        $('select[name="resource[format_id]"]').val(format_id);
+        var select = $('select[name="resource[format_id]"]');
+        select.val(format_id);
 
-        var questions_url = $('input[name="root-url"]').val() +
-            'formats/' + format_id + '/assessment-questions';
+        var root_url = $('input[name="root-url"]').val();
+        var help_page = select.find(':selected').data('help-page');
+        help_page = help_page ? help_page : '';
+        var help_anchor = select.find(':selected').data('help-anchor');
+        help_anchor = help_anchor ? '#' + help_anchor : '';
+        select.filter(':first').next('a').attr('href',
+                root_url + 'format-id-guide/' + help_page + help_anchor).show();
+
+        // check for assessment questions
+        var questions_url = root_url + 'formats/' + format_id +
+            '/assessment-questions';
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
                 ResourceForm.insertQuestionIn(
                     ResourceForm.nodeForQuestion(object, i),
-                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
+                    $('div[data-id="' + object['assessment_section_id'] +
+                        '"] div.section-questions'));
             });
             if (data.length > 0) {
                 var onOptionChanged = function() {
                     // check for dependent (child) questions
                     var selected_option_id = $(this).val();
-                    var question_elem = $(this).closest('div.assessment_question');
+                    var question_elem = $(this).closest('.assessment_question');
                     var qid = question_elem.data('id');
-                    var child_questions_url = $('input[name="root-url"]').val() +
-                        'formats/' + format_id + '/assessment-questions?parent_id=' + qid;
+                    var child_questions_url = root_url + 'formats/' +
+                        format_id + '/assessment-questions?parent_id=' + qid;
                     $.getJSON(child_questions_url, function(data) {
                         $.each(data, function (i, object) {
                             var child_question_elem =
-                                $('div.assessment_question[data-id=' + object['id'] + ']');
+                                $('.assessment_question[data-id=' + object['id'] + ']');
                             var add = false;
                             $.each(object['enabling_assessment_question_options'], function (i, opt) {
                                 if (opt['id'] == selected_option_id) {
@@ -291,17 +314,16 @@ var ResourceForm = {
                             }
                         });
 
-                        $('.assessment_question input, .assessment_question select').
-                            off('change').on('change', onOptionChanged);
+                        $('.assessment_question input').off('change').
+                            on('change', onOptionChanged);
                         $('[data-spy="scroll"]').each(function () {
-                            var $spy = $(this).scrollspy('refresh')
+                            $(this).scrollspy('refresh')
                         })
                     });
 
                     ResourceForm.updateProgress();
                 };
-                $('.assessment_question input, .assessment_question select').
-                    on('change', onOptionChanged);
+                $('.assessment_question input').on('change', onOptionChanged);
 
                 $('body').scrollspy({ target: '#sections' });
             }
@@ -318,14 +340,9 @@ var ResourceForm = {
         ResourceForm.clearAssessmentQuestions();
         ResourceForm.hideSections();
         // destroy all selects
-        $('div.format').find('select').remove();
+        $('div.format .form-inline').remove();
         // select the format class
         $('input[name="format_class"][value="' + id + '"]').attr('checked', true);
-    },
-
-    selectedFormatScore: function() {
-        return parseFloat($('select[name="resource[format_id]"] option:selected').
-            data('score'));
     },
 
     setInitialSelections: function() {
@@ -355,13 +372,8 @@ var ResourceForm = {
                 $('input[name="selected_option_ids"]').each(function() {
                     var selected_id = $(this).val();
                     $('[data-type="option"]').each(function() {
-                        var form_option_id = $(this).val();
-                        if (form_option_id == selected_id) {
-                            if ($(this).prop('tagName') == 'SELECT') {
-                                $(this).val(form_option_id);
-                            } else {
-                                $(this).attr('checked', true);
-                            }
+                        if ($(this).val() == selected_id) {
+                            $(this).prop('checked', true);
                         }
                     });
                 });
@@ -369,7 +381,7 @@ var ResourceForm = {
             }
         };
 
-        ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
+        //ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
         selected_format_ids.forEach(function(id) {
             ResourceForm.addFormatSelect(id, onSelectAdded);
         });
@@ -381,80 +393,12 @@ var ResourceForm = {
     },
 
     updateProgress: function() {
-        var questions = $('.assessment_question');
-        var numQuestions = questions.length;
-
-        $('.total-assessment-question-count').text(numQuestions);
-
         // update question counts per-section
         $('div.section').each(function() {
             var count = $(this).find('.assessment_question').length;
             $('.nav li[data-section-id="' + $(this).data('id') +
                 '"] .assessment-question-count').text(count);
         });
-
-        // Update score bar
-        // https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-        var resource_score = 0;
-        var format_score = ResourceForm.selectedFormatScore();
-        if (format_score) {
-            var section_scores = [];
-            $('.section-questions').each(function () {
-                var question_scores = [];
-                var question_weights = [];
-                var weighted_scores = [];
-
-                $(this).find('.assessment_question').each(function () {
-                    // radios and checkboxes are handled differently. Radios
-                    // have the score of the selected radio. Checkboxes have
-                    // a score of 1 - (sum of checked checkboxes).
-                    var selected_radio = $(this).find('input[type="radio"]:checked');
-                    if (selected_radio.length) {
-                        var response_value = selected_radio.data('option-score');
-                        if (response_value) {
-                            question_scores.push(response_value);
-                            var question_weight = parseFloat($(this).data('weight'));
-                            question_weights.push(question_weight);
-                        }
-                    } else {
-                        var checked_checkboxes = $(this).find(
-                            'input[type="checkbox"]:checked');
-                        if (checked_checkboxes.length > 0) {
-                            var response_value = 1;
-                            checked_checkboxes.each(function () {
-                                response_value -= $(this).data('option-score');
-                            });
-                            question_scores.push(response_value);
-                            var question_weight = parseFloat($(this).data('weight'));
-                            question_weights.push(question_weight);
-                        }
-                    }
-                });
-
-                var total_weight = question_weights.sum();
-                var section_weight = $(this).closest('.section').data('weight');
-                var score = 0;
-                if (question_scores.length > 0) {
-                    for (var i = 0; i < question_scores.length; i++) {
-                        weighted_scores[i] = question_scores[i] * question_weights[i];
-                    }
-                    score = (parseFloat(weighted_scores.sum()) / total_weight) *
-                        section_weight;
-                }
-                section_scores.push(score);
-            });
-
-            var assessment_score = section_scores.sum();
-            var location_score = 1; // TODO: this is a placeholder
-            resource_score = 0.4 * format_score + 0.1 * location_score +
-                assessment_score;
-            //console.log(format_score + ' format + ' + assessment_score + ' assessment + ' +
-            //    location_score + ' location (placeholder) = ' + resource_score + ' resource');
-        }
-        // TODO: include format vectors
-        var score_bar = $('div.progress-bar.score');
-        score_bar.css('width', resource_score * 100 + '%');
-        score_bar.attr('aria-valuenow', resource_score);
     }
 
 };

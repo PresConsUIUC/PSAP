@@ -18,7 +18,8 @@
     padding-left:0px;
   }
   img.logo {
-    height: 120px;
+    max-height: 120px;
+    max-width:100%;
   }
   div.row {
     text-align:center;

@@ -1,0 +1,11 @@
+<% provide(:body_id, 'help_page') %>
+<% provide(:title, @page.name) %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Help', help_path %>
+  </li>
+  <li class="active"><%= @page.name %></li>
+</ol>
+
+<%= static_page_html(@page.html) %>

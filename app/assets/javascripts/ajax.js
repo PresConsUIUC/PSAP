@@ -10,7 +10,7 @@ $(document).ajaxComplete(function(event, request, options) {
     $('form.psap-live-search input').removeClass('active');
 
     $('#modal_progress_view').hide();
-
+/*
     // These headers are set by an ApplicationController after_filter, to
     // support ajax requests.
     var msg = request.getResponseHeader('X-Message');
@@ -51,6 +51,8 @@ $(document).ajaxComplete(function(event, request, options) {
         //    $('div.alert').fadeOut(1000);
         //}, 5000);
     }
+ TODO: uncomment this
+ */
 });
 
 $(document).ajaxError(function(event, request) {

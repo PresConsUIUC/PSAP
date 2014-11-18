@@ -1,4 +1,10 @@
 class Institution < ActiveRecord::Base
+
+  include Assessable
+
+  has_and_belongs_to_many :assessment_questions
+  has_many :assessment_question_responses, inverse_of: :institution,
+           dependent: :destroy
   has_many :users, inverse_of: :institution, dependent: :restrict_with_exception
   has_many :repositories, inverse_of: :institution, dependent: :destroy
   has_and_belongs_to_many :events
@@ -6,8 +12,12 @@ class Institution < ActiveRecord::Base
   has_many :locations, through: :repositories
   has_many :resources, through: :locations
 
+  accepts_nested_attributes_for :assessment_question_responses
+
   validates :address1, presence: true, length: { maximum: 255 }
   validates :address2, length: { maximum: 255 }
+  validates :assessment_score, allow_blank: true,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :city, presence: true, length: { maximum: 255 }
   validates :name, presence: true, length: { minimum: 4, maximum: 255 },
             uniqueness: { case_sensitive: false }
@@ -15,6 +25,8 @@ class Institution < ActiveRecord::Base
   validates :postal_code, presence: true, length: { maximum: 30 }
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
+
+  before_save :update_assessment_score # Assessable mixin
 
   ##
   # Returns a list of "most active" institutions based on the number of

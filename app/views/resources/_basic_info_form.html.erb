@@ -109,7 +109,8 @@
               <p>Here you may assign a level of significance of this item at your organization. You may want
               to differentiate between items of higher and lesser significance when apportioning funds for
               preservation. Choosing the level of significance here will not impact your preservation
-              assessment score but can allow you to order your decision list by significance level.</p>">
+              assessment score but can allow you to order your decision list by significance level.</p>
+              <p><a href='<%= help_category_path('significance') %>' target='_blank'>More information&hellip;</a></p>">
               ?
             </button>
 
@@ -127,7 +128,7 @@
             </div>
           </div>
 
-          <div class="form-group addable_removable">
+          <div class="form-group psap-addable-removable">
             <%= f.label :creators, 'Creator(s)' %>
             <button type="button" class="btn btn-sm help" data-container="body"
                     data-toggle="popover" data-placement="right"
@@ -147,7 +148,7 @@
             </button>
 
             <%= f.fields_for :creators do |g| %>
-                <div class="addable_removable_input_group well">
+                <div class="psap-addable-removable-input-group well">
                   <%= select('resource[creators_attributes][0]', 'creator_type',
                              options_for_select([['Person', CreatorType::PERSON],
                                                  ['Company', CreatorType::COMPANY]]),
@@ -164,7 +165,7 @@
             </button>
           </div>
 
-          <div class="form-group addable_removable">
+          <div class="form-group psap-addable-removable">
             <%= f.label :resource_dates, 'Date(s)' %>
             <button type="button" class="btn btn-sm help" data-container="body"
                     data-toggle="popover" data-placement="right"
@@ -191,7 +192,7 @@
             </button>
 
             <%= f.fields_for :resource_dates do |g| %>
-                <div class="addable_removable_input_group well">
+                <div class="psap-addable-removable-input-group well">
                   <%= g.label 'Type' %>
                   <%= g.select('date_type',
                                options_for_select([['Single', DateType::SINGLE],
@@ -285,7 +286,7 @@
                                     { class: 'form-control' } %>
           </div>
 
-          <div class="form-group addable_removable">
+          <div class="form-group psap-addable-removable">
             <%= f.label :subjects, 'Subject(s)' %>
             <button type="button" class="btn btn-sm help" data-container="body"
                     data-toggle="popover" data-placement="right"
@@ -310,7 +311,7 @@
             </button>
 
             <%= f.fields_for :subjects do |g| %>
-                <div class="addable_removable_input_group">
+                <div class="psap-addable-removable-input-group">
                   <div class="col-sm-11">
                     <%= g.text_field :name, class: 'form-control typeahead resource_subject' %>
                   </div>
@@ -327,7 +328,7 @@
             </button>
           </div>
 
-          <div class="form-group addable_removable">
+          <div class="form-group psap-addable-removable">
             <%= f.label :extents, 'Extent(s)' %>
             <button type="button" class="btn btn-sm help" data-container="body"
                     data-toggle="popover" data-placement="right"
@@ -351,7 +352,7 @@
             </button>
 
             <%= f.fields_for :extents do |g| %>
-                <div class="addable_removable_input_group">
+                <div class="psap-addable-removable-input-group">
                   <div class="col-sm-11">
                     <%= g.text_field :name, class: 'form-control' %>
                   </div>
@@ -399,7 +400,7 @@
             <%= f.text_area :description, class: 'form-control' %>
           </div>
 
-          <div class="form-group addable_removable">
+          <div class="form-group psap-addable-removable">
             <%= f.label :resource_notes, 'Note(s)' %>
             <button type="button" class="btn btn-default help" data-container="body"
                     data-toggle="popover" data-placement="right"
@@ -409,7 +410,7 @@
             </button>
 
             <%= f.fields_for :resource_notes do |g| %>
-                <div class="addable_removable_input_group">
+                <div class="psap-addable-removable-input-group">
                   <%= g.text_area :value, class: 'form-control' %>
                   <button class="btn btn-default remove" type="button">
                     <span class="glyphicon glyphicon-minus"></span>

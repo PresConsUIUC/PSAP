@@ -1,85 +1,49 @@
 <% provide(:title, 'New Institution') %>
 <% provide(:body_id, 'new_institution') %>
 
+<input type="hidden" name="root-url" value="<%= root_url %>">
+
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
       <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
-  <li class="active">New</li>
+  <li class="active">New Institution</li>
 </ol>
 
-<h1>New Institution</h1>
-
-<%= form_for(@institution) do |f| %>
-    <%= render 'shared/error_messages', :object => f.object %>
-
-    <div class="form-group has-feedback">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
+<div class="row">
+  <div class="col-sm-7">
+    <h1>New Institution</h1>
+  </div>
+  <div class="col-sm-5">
+    <div class="btn-group" style="float:right">
+      <!-- Save -->
+      <button type="button" class="btn btn-default save">
+        <span class="glyphicon glyphicon-cloud"></span> Save
+      </button>
     </div>
+  </div>
+</div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :description %>
-      <%= f.text_area :description, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+<div class="row" id="assessment">
 
-    <div class="form-group has-feedback">
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+  <!-- left column menu -->
+  <div class="col-sm-3">
+    <%= render partial: 'shared/assessment_sections',
+               locals: { assessment_sections: @assessment_sections } %>
+  </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :url, 'URL' %>
-      <%= f.url_field :url, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+  <div class="col-sm-9">
+    <%= form_for(@institution, class: 'psap-assessment',
+                 url: repository_locations_path(@institution.repository)) do |f| %>
 
-    <div class="form-group has-feedback">
-      <%= f.label :address1, 'Address 1' %>
-      <%= f.text_field :address1, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+      <div id="basic_info" class="section">
+        <%= render partial: 'basic_info_form', locals: { f: f } %>
+      </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :address2, 'Address 2' %>
-      <%= f.text_field :address2, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+      <% @assessment_sections.each do |section| %>
+        <%= render partial: 'shared/section_form', locals: { section: section } %>
+      <% end %>
 
-    <div class="form-group has-feedback">
-      <%= f.label :city %>
-      <%= f.text_field :city, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
-
-    <div class="form-group has-feedback">
-      <%= f.label :state %>
-      <%= f.text_field :state, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
-
-    <div class="form-group has-feedback">
-      <%= f.label :postal_code %>
-      <%= f.text_field :postal_code, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :country %>
-      <%= select('institution', 'country', countries_for_select,
-                 { include_blank: false },
-                 { class: 'form-control' }) %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :language %>
-      <%= f.collection_select :language_id, Language.all, :id, :english_name,
-                              { include_blank: true },
-                              { class: 'form-control' } %>
-    </div>
-
-    <%= f.submit 'Create and Join Institution', class: 'btn btn-primary' %>
-<% end %>
+    <% end %>
+  </div>
+</div>

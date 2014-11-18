@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141020203813) do
+ActiveRecord::Schema.define(version: 20141117214914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,9 +35,11 @@ ActiveRecord::Schema.define(version: 20141020203813) do
   create_table "assessment_question_responses", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "resource_id",                   null: false
+    t.integer  "resource_id"
     t.integer  "assessment_question_option_id"
     t.integer  "assessment_question_id",        null: false
+    t.integer  "location_id"
+    t.integer  "institution_id"
   end
 
   add_index "assessment_question_responses", ["assessment_question_id"], name: "index_assessment_question_responses_on_assessment_question_id", using: :btree
@@ -56,6 +58,8 @@ ActiveRecord::Schema.define(version: 20141020203813) do
     t.integer  "selected_option_id"
     t.text     "help_text"
     t.integer  "qid"
+    t.string   "advanced_help_page"
+    t.string   "advanced_help_anchor"
   end
 
   add_index "assessment_questions", ["assessment_section_id"], name: "index_assessment_questions_on_assessment_section_id", using: :btree
@@ -65,6 +69,16 @@ ActiveRecord::Schema.define(version: 20141020203813) do
   create_table "assessment_questions_formats", id: false, force: true do |t|
     t.integer "assessment_question_id", null: false
     t.integer "format_id",              null: false
+  end
+
+  create_table "assessment_questions_institutions", force: true do |t|
+    t.integer "assessment_question_id"
+    t.integer "institution_id"
+  end
+
+  create_table "assessment_questions_locations", force: true do |t|
+    t.integer "assessment_question_id"
+    t.integer "location_id"
   end
 
   create_table "assessment_sections", force: true do |t|
@@ -185,31 +199,34 @@ ActiveRecord::Schema.define(version: 20141020203813) do
   end
 
   create_table "formats", force: true do |t|
-    t.string   "name",                                             null: false
-    t.decimal  "score",        precision: 4, scale: 3
+    t.string   "name",                                                       null: false
+    t.decimal  "score",                  precision: 4, scale: 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
-    t.integer  "format_class",                         default: 0, null: false
+    t.integer  "format_class",                                   default: 0, null: false
     t.integer  "fid"
+    t.string   "format_id_guide_page"
+    t.string   "format_id_guide_anchor"
   end
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
 
   create_table "institutions", force: true do |t|
-    t.string   "name",        null: false
+    t.string   "name",                           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "address1",    null: false
+    t.string   "address1",                       null: false
     t.string   "address2"
-    t.string   "city",        null: false
-    t.string   "state",       null: false
-    t.string   "postal_code", null: false
-    t.string   "country",     null: false
+    t.string   "city",                           null: false
+    t.string   "state",                          null: false
+    t.string   "postal_code",                    null: false
+    t.string   "country",                        null: false
     t.string   "url"
     t.integer  "language_id"
     t.text     "description"
     t.string   "email"
+    t.float    "assessment_score", default: 0.0
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id", using: :btree
@@ -225,12 +242,13 @@ ActiveRecord::Schema.define(version: 20141020203813) do
   add_index "languages", ["iso639_2_code"], name: "index_languages_on_iso639_2_code", unique: true, using: :btree
 
   create_table "locations", force: true do |t|
-    t.string   "name",                 null: false
+    t.string   "name",                               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repository_id",        null: false
+    t.integer  "repository_id",                      null: false
     t.text     "description"
     t.integer  "temperature_range_id"
+    t.float    "assessment_score",     default: 0.0
   end
 
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id", using: :btree
@@ -318,13 +336,13 @@ ActiveRecord::Schema.define(version: 20141020203813) do
   add_index "roles", ["name"], name: "index_roles_on_name", unique: true, using: :btree
 
   create_table "static_pages", force: true do |t|
-    t.integer  "format_class"
-    t.string   "format_category"
+    t.string   "uri_fragment"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "html"
     t.text     "searchable_html"
+    t.string   "category"
   end
 
   create_table "subjects", force: true do |t|

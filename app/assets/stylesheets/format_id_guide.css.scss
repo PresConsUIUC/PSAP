@@ -115,7 +115,7 @@ body#format_id_guide_page {
 body#format_id_guide_results {
   form.psap-live-search { /* overrides common.css.scss */
     input.active {
-      background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 185px 8px;
+      background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 208px 8px;
       @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
     }
   }

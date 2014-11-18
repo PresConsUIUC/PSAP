@@ -1,0 +1,45 @@
+<h2>Basic Info</h2>
+
+<%= render 'shared/error_messages', :object => f.object %>
+
+<div class="form-group">
+  <%= f.label :name, 'Name' %>
+  <%= f.text_field :name, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+  <%= f.label :description %>
+  <%= f.text_area :description, class: 'form-control' %>
+</div>
+
+<%= f.label :temperature_range, 'Temperature Range' %>
+
+<button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
+        data-content="<p>Temperature control is critical to preserving collections. Measure the average temperature in your space (or make an educated estimate) and choose from one of the temperature ranges provided.</p>
+<p><%= link_to(raw('More information&hellip;'),
+               help_category_path('location', anchor: 'location-q2-3'), target: '_blank').gsub('"', '\'') %></p>">
+  ?
+</button>
+
+<table cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th>Min (&deg;F)</th>
+      <th>Max (&deg;F)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= f.fields_for :temperature_range do |g| %>
+      <tr>
+        <td>
+          <%= g.number_field :min_temp_f, min: 0, max: 100, maxlength: 4,
+                             class: 'form-control' %>
+        </td>
+        <td>
+          <%= g.number_field :max_temp_f, min: 0, max: 100, maxlength: 4,
+                             class: 'form-control' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,4 +1,7 @@
 class Resource < ActiveRecord::Base
+
+  include Assessable
+
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
   has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
@@ -34,20 +37,129 @@ class Resource < ActiveRecord::Base
   validates :user, presence: true
 
   validate :validates_not_child_of_item
+  validate :validates_one_response_per_question
 
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete, :update_assessment_score
+  before_save :update_assessment_percent_complete
+  before_save :update_assessment_score
 
-  def validates_not_child_of_item
-    if parent and parent.resource_type != ResourceType::COLLECTION
-      errors[:base] << ('Only collection resources can have sub-resources.')
+  def self.from_ead(ead, user_id)
+    doc = REXML::Document.new(ead)
+
+    begin
+      User.find(user_id)
+    rescue ActiveRecord::RecordNotFound
+      raise 'Invalid user ID'
     end
+
+    attrs = {}
+
+    doc.elements.each('//archdesc/did/abstract[1]') do |element|
+      attrs[:description] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc/did/unitid[1]') do |element|
+      attrs[:local_identifier] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc/did/unittitle[1]') do |element|
+      attrs[:name] = element.text.strip
+    end
+
+    doc.elements.each('//archdesc') do |type|
+      case type.attribute('level').value.strip
+        when 'collection'
+          attrs[:resource_type] = ResourceType::COLLECTION
+        when 'item'
+          attrs[:resource_type] = ResourceType::ITEM
+      end
+    end
+
+    attrs[:user_id] = user_id
+
+    # creators
+    attrs[:creators_attributes] = []
+    doc.elements.each('//archdesc/did/origination') do |element|
+      if element.attribute('label').value == 'creator'
+        attrs[:creators_attributes] << {
+            name: element.elements['persname'].text.strip }
+      end
+    end
+
+    # extents
+    attrs[:extents_attributes] = []
+    doc.elements.each('//archdesc/did/physdesc/extent') do |extent|
+      attrs[:extents_attributes] << { name: extent.text.strip }
+    end
+
+    # dates
+    attrs[:resource_dates_attributes] = []
+    doc.elements.each('//archdesc/did/unitdate') do |element|
+      date_struct = {}
+
+      case element.attribute('type').value
+        when 'inclusive'
+          date_struct[:date_type] = DateType::INCLUSIVE
+        when 'bulk'
+          date_struct[:date_type] = DateType::BULK
+        when 'span'
+          date_struct[:date_type] = DateType::SPAN
+        when 'single'
+          date_struct[:date_type] = DateType::SINGLE
+      end
+
+      date_text = element.attribute('normal').value
+      date_parts = date_text.split('/')
+
+      case date_struct[:date_type]
+        when DateType::SINGLE
+          date_struct.merge!(ead_date_to_ymd_hash(date_parts[0]))
+        else
+          if date_parts.length > 1
+            begin_parts = ead_date_to_ymd_hash(date_parts[0])
+            end_parts = ead_date_to_ymd_hash(date_parts[1])
+            date_struct[:begin_year] = begin_parts[:year] if begin_parts[:year]
+            date_struct[:begin_month] = begin_parts[:month] if begin_parts[:month]
+            date_struct[:begin_day] = begin_parts[:day] if begin_parts[:day]
+            date_struct[:end_year] = end_parts[:year] if end_parts[:year]
+            date_struct[:end_month] = end_parts[:month] if end_parts[:month]
+            date_struct[:end_day] = end_parts[:day] if end_parts[:day]
+          else
+            parts = ead_date_to_ymd_hash(date_parts[0])
+            date_struct[:begin_year] = parts[:year] if parts[:year]
+            date_struct[:begin_month] = parts[:month] if parts[:month]
+            date_struct[:begin_day] = parts[:day] if parts[:day]
+            date_struct[:end_year] = parts[:year] if parts[:year]
+            date_struct[:end_month] = parts[:month] if parts[:month]
+            date_struct[:end_day] = parts[:day] if parts[:day]
+          end
+      end
+
+      attrs[:resource_dates_attributes] << date_struct
+    end
+
+    # subjects
+    attrs[:subjects_attributes] = []
+    doc.elements.each('//archdesc/controlaccess/*') do |subject|
+      attrs[:subjects_attributes] << { name: subject.text.strip }
+    end
+
+    Resource.new(attrs)
   end
 
   ##
-  # @return Array of all of a resource's children, regardless of depth in the
+  # @return Array of all assessed items in a collection, regardless of depth
+  # in the hierarchy.
+  #
+  def all_assessed_items
+    all_children.select{ |x| x.resource_type == ResourceType::ITEM and
+        x.assessment_percent_complete >= 0.999999 }
+  end
+
+  ##
+  # @return Array of all children of a resource, regardless of depth in the
   # hierarchy.
   #
   def all_children
@@ -113,6 +225,31 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  ##
+  # Returns a hash containing statistics of all assessed items in the
+  # collection.
+  #
+  # @return hash with mean, median, low, and high keys
+  #
+  def assessed_item_statistics
+    stats = { mean: 0, median: 0, low: nil, high: 0 }
+    all_items = all_assessed_items
+    if all_items.length < 1
+      return nil
+    end
+
+    all_items.each do |item|
+      stats[:high] = item.assessment_score if item.assessment_score > stats[:high]
+      stats[:low] = item.assessment_score if
+          stats[:low].nil? or item.assessment_score < stats[:low]
+    end
+    stats[:mean] = all_items.map{ |r| r.assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.assessment_score }.sort
+    len = sorted.length
+    stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+    stats
+  end
+
   def assessment_question_response_count
     # SELECT assessment_question_options.assessment_question_id
     # FROM assessment_question_responses
@@ -136,42 +273,36 @@ class Resource < ActiveRecord::Base
   # extent, etc. This method will remove them.
   #
   def prune_empty_submodels
-    self.creators = self.creators.select{ |c| c.name.length > 0 }
-    self.extents = self.extents.select{ |e| e.name.length > 0 }
-    self.resource_dates = self.resource_dates.select{ |r| r.year }
-    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
-    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
-  end
-
-  def response_to_question(assessment_question)
-    responses = self.assessment_question_responses.
-        where(assessment_question_id: assessment_question.id)
-    responses.any? ? responses[0] : nil
+    self.creators.select!{ |c| c.name.length > 0 }
+    self.extents.select!{ |e| e.name.length > 0 }
+    self.resource_dates.select!{ |r| r.year }
+    self.resource_notes.select!{ |r| r.value.length > 0 }
+    self.subjects.select!{ |s| s.name.length > 0 }
   end
 
   def update_assessment_percent_complete
-      # SELECT assessment_questions.id
-      # FROM assessment_questions
-      # LEFT JOIN assessment_sections
-      #     ON assessment_questions.assessment_section_id = assessment_sections.id
-      # LEFT JOIN assessments
-      #     ON assessment_sections.assessment_id = assessments.id
-      # WHERE assessments.key = 'resource'
-      questions = AssessmentQuestion.
-          select('assessment_questions.id').
-          joins('LEFT JOIN assessment_sections '\
-            'ON assessment_questions.assessment_section_id = assessment_sections.id').
-          joins('LEFT JOIN assessments '\
-            'ON assessment_sections.assessment_id = assessments.id').
-          where('assessments.key = \'resource\'')
-
-      self.assessment_percent_complete = questions.length > 0 ?
-          self.assessment_question_response_count.to_f / questions.length : 0
+    self.assessment_percent_complete =
+        (self.format and self.format.assessment_questions.any?) ?
+        self.assessment_question_responses.length.to_f /
+        self.format.assessment_questions.length.to_f : 0
   end
 
+  ##
+  # Overrides Assessable mixin
+  #
   def update_assessment_score
-    # TODO: write this
-    self.assessment_score = 0
+    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
+    if self.format
+      question_score = 0
+      self.assessment_question_responses.each do |response|
+        question_score += response.assessment_question_option.value *
+            response.assessment_question.weight
+      end
+      self.assessment_score = self.format.score * 0.4 +
+          self.location.assessment_score * 0.1 + (question_score / 100) * 0.5
+    else
+      self.assessment_score = 0
+    end
   end
 
   def filename
@@ -195,6 +326,30 @@ class Resource < ActiveRecord::Base
         'Moderate'
       when ResourceSignificance::HIGH
         'High'
+    end
+  end
+
+  private
+
+  def self.ead_date_to_ymd_hash(date)
+    date = date.split('-')
+    parts = {}
+    parts[:day] = date[2].to_i if date.length > 2
+    parts[:month] = date[1].to_i if date.length > 1
+    parts[:year] = date[0].to_i
+    parts
+  end
+
+  def validates_not_child_of_item
+    if parent and parent.resource_type != ResourceType::COLLECTION
+      errors[:base] << 'Only collection resources can have sub-resources.'
+    end
+  end
+
+  def validates_one_response_per_question
+    if self.assessment_question_responses.uniq{ |r| r.assessment_question_id }.length <
+        self.assessment_question_responses.length
+      errors[:base] << 'Only one response allowed per assessment question.'
     end
   end
 
