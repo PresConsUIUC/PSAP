@@ -47,7 +47,7 @@ class StaticPageImporter
           if video['type'] == 'video/mp4'
             source_video_path = source_path_of_file(File.basename(video['src']))
             @referenced_images << source_video_path if source_video_path
-            generate_images_for(File.basename(video['src']))
+            generate_videos_for(File.basename(video['src']))
           end
         end
       }
