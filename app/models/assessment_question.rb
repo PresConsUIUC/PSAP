@@ -7,8 +7,8 @@ class AssessmentQuestion < ActiveRecord::Base
   has_and_belongs_to_many :formats
   has_and_belongs_to_many :locations
   has_and_belongs_to_many :institutions
-  has_many :assessment_question_options, inverse_of: :assessment_question,
-           dependent: :destroy, order: 'index'
+  has_many :assessment_question_options, -> { order(:index) },
+           inverse_of: :assessment_question, dependent: :destroy
   has_many :assessment_question_responses,
            inverse_of: :assessment_question, dependent: :destroy
   has_many :children, class_name: 'AssessmentQuestion',
