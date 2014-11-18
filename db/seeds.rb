@@ -925,6 +925,14 @@ case Rails.env
     # Resources
     resource_commands = []
     resource_commands << CreateResourceCommand.new(locations[0],
+        { name: 'Sample Collection',
+          resource_type: ResourceType::COLLECTION,
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          significance: 0,
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(locations[0],
         { name: 'Sample Assessed Resource',
           resource_type: ResourceType::ITEM,
           format: Format.find_by_fid(7),
@@ -988,7 +996,7 @@ case Rails.env
           { name: 'Sample Multitudinous Child Item',
             resource_type: ResourceType::ITEM,
             user: normal_user,
-            parent: resources[2],
+            parent: resources[3],
             description: 'Sample description',
             local_identifier: 'sample_local_id',
             rights: 'Sample rights' }, nil, '127.0.0.1')
@@ -1002,6 +1010,8 @@ case Rails.env
     end
     resources[1].save!
 
+    resources[1].parent = resources[0]
+    resources[2].parent = resources[0]
     resources[4].parent = resources[3]
     resources[5].parent = resources[3]
     resources.each{ |r| r.save! }
@@ -1009,23 +1019,26 @@ case Rails.env
     # Dates
     ResourceDate.create!(resource: resources[0],
                          date_type: DateType::SINGLE,
-                         year: 1215)
+                         year: 1995)
     ResourceDate.create!(resource: resources[1],
+                         date_type: DateType::SINGLE,
+                         year: 1986)
+    ResourceDate.create!(resource: resources[2],
                          date_type: DateType::BULK,
                          begin_year: 30,
                          end_year: 50)
-    ResourceDate.create!(resource: resources[2],
+    ResourceDate.create!(resource: resources[3],
                          date_type: DateType::SPAN,
                          begin_year: 1920,
                          end_year: 1990)
-    ResourceDate.create!(resource: resources[3],
+    ResourceDate.create!(resource: resources[4],
                          date_type: DateType::BULK,
                          begin_year: 1980,
                          end_year: 1992)
-    ResourceDate.create!(resource: resources[4],
+    ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
                          year: 843)
-    ResourceDate.create!(resource: resources[5],
+    ResourceDate.create!(resource: resources[6],
                          date_type: DateType::SINGLE,
                          year: 1856)
 
@@ -1065,13 +1078,13 @@ case Rails.env
     end
 
     # Resource assessment question responses
-    resources[0].format.assessment_questions.each do |question|
+    resources[1].format.assessment_questions.each do |question|
       AssessmentQuestionResponse.create!(
-          resource: resources[0],
+          resource: resources[1],
           assessment_question: question,
           assessment_question_option: question.assessment_question_options.first)
     end
-    resources[0].save!
+    resources[1].save!
 
     # Format temperature ranges
     Format.all do |format|
@@ -1125,7 +1138,6 @@ case Rails.env
                   event_level: EventLevel::ALERT,
                   address: '127.0.0.1',
                   created_at: Time.mktime(2013, 6, 19))
-
     (0..250).each do
       Event.create!(description: 'Sample event',
                     event_level: EventLevel::DEBUG,
