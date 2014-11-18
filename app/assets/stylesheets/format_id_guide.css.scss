@@ -40,11 +40,17 @@ body#format_id_guide_page {
   figure {
     display:inline-block;
     margin:1em;
+    .psap-rights {
+      display:none;
+    }
   }
   .figure-gallery {
     text-align:center;
     figcaption {
       display:none;
+    }
+    .psap-rights {
+      display:block;
     }
   }
   img, video {
