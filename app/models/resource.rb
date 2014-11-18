@@ -37,6 +37,7 @@ class Resource < ActiveRecord::Base
   validates :user, presence: true
 
   validate :validates_not_child_of_item
+  validate :validates_one_response_per_question
 
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
@@ -44,18 +45,12 @@ class Resource < ActiveRecord::Base
   before_save :update_assessment_percent_complete
   before_save :update_assessment_score
 
-  def validates_not_child_of_item
-    if parent and parent.resource_type != ResourceType::COLLECTION
-      errors[:base] << ('Only collection resources can have sub-resources.')
-    end
-  end
-
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
 
     begin
       User.find(user_id)
-    rescue ActiveRecord::RecordNotFound => e
+    rescue ActiveRecord::RecordNotFound
       raise 'Invalid user ID'
     end
 
@@ -343,6 +338,19 @@ class Resource < ActiveRecord::Base
     parts[:month] = date[1].to_i if date.length > 1
     parts[:year] = date[0].to_i
     parts
+  end
+
+  def validates_not_child_of_item
+    if parent and parent.resource_type != ResourceType::COLLECTION
+      errors[:base] << 'Only collection resources can have sub-resources.'
+    end
+  end
+
+  def validates_one_response_per_question
+    if self.assessment_question_responses.uniq{ |r| r.assessment_question_id }.length <
+        self.assessment_question_responses.length
+      errors[:base] << 'Only one response allowed per assessment question.'
+    end
   end
 
 end
