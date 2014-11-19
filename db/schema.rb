@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141117214914) do
+ActiveRecord::Schema.define(version: 20141119153633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,26 +174,14 @@ ActiveRecord::Schema.define(version: 20141117214914) do
 
   create_table "format_ink_media_types", force: true do |t|
     t.string   "name"
-    t.decimal  "score",                  precision: 4, scale: 3, null: false
-    t.integer  "group"
-    t.integer  "format_id"
-    t.integer  "format_vector_group_id"
+    t.decimal  "score",      precision: 4, scale: 3, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "format_support_types", force: true do |t|
     t.string   "name"
-    t.decimal  "score",                  precision: 4, scale: 3, null: false
-    t.integer  "group"
-    t.integer  "format_id"
-    t.integer  "format_vector_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "format_vector_groups", force: true do |t|
-    t.string   "name"
+    t.decimal  "score",      precision: 4, scale: 3, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -318,6 +306,8 @@ ActiveRecord::Schema.define(version: 20141117214914) do
     t.float    "assessment_percent_complete",                         default: 0.0
     t.float    "assessment_score",                                    default: 0.0
     t.decimal  "significance",                precision: 2, scale: 1
+    t.integer  "format_ink_media_type_id"
+    t.integer  "format_support_type_id"
   end
 
   add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id", using: :btree

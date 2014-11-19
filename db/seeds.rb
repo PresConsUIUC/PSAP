@@ -528,22 +528,13 @@ sheet.each_with_index do |row, i|
 end
 
 # Format Vector Groups & Ink/Media Types
-FormatVectorGroup.create!(name: 'Other')
 xls.sheet('InkMedia Scores').each_with_index do |row, i|
-  if i > 0 # skip header row
-    group_name = row[2] || 'Other'
-    group = FormatVectorGroup.find_by_name(group_name)
-    group ||= FormatVectorGroup.create!(name: group_name)
-    FormatInkMediaType.create!(name: row[0], score: row[4],
-                               format_vector_group: group)
-  end
+  FormatInkMediaType.create!(name: row[0], score: row[4]) if i > 0 # skip header row
 end
 
 # Format Support Types
 xls.sheet('Support Scores').each_with_index do |row, i|
-  if i > 0 # skip header row
-    FormatSupportType.create!(name: row[0], score: row[4])
-  end
+  FormatSupportType.create!(name: row[0], score: row[4]) if i > 0 # skip header row
 end
 
 # Assessments

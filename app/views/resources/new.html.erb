@@ -60,6 +60,10 @@
         <%= render partial: 'shared/section_form', locals: { section: section } %>
       <% end %>
 
+      <%= hidden_field_tag('formats_json', Format.all.to_json) %>
+      <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
+      <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
+
     <% end %>
   </div>
 </div>

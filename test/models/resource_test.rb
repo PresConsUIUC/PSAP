@@ -119,11 +119,6 @@ class ResourceTest < ActiveSupport::TestCase
     flunk
   end
 
-  # assessment_question_response_count
-  test 'assessment_question_response_count should work' do
-    flunk
-  end
-
   # from_ead
   test 'from_ead should work' do
     flunk

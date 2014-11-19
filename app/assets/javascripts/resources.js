@@ -3,6 +3,13 @@
  */
 var ResourceForm = {
 
+    // lazy-loaded by formats()
+    formats_json: null,
+    // lazy-loaded by formatInkMediaTypes()
+    format_ink_media_types_json: null,
+    // lazy_loaded by formatSupportTypes()
+    format_support_types_json: null,
+
     addFormatSelect: function(parent_format_id, onCompleteCallback) {
         var root_url = $('input[name="root-url"]').val();
 
@@ -54,7 +61,8 @@ var ResourceForm = {
             (new_select.find('option').length < 2) ? group.hide() : group.show();
 
             new_select.on('change', function() {
-                ResourceForm.selectFormat($(this).val(), null);
+                var format = ResourceForm.format($(this).val());
+                ResourceForm.selectFormat(format, null);
             });
 
             if (onCompleteCallback) {
@@ -110,6 +118,44 @@ var ResourceForm = {
         PSAP.Popover.closeAll();
         $('.assessment_question').remove();
         ResourceForm.updateProgress();
+    },
+
+    format: function(id) {
+        var formats = ResourceForm.formats();
+        for (var i = 0; i < formats.length; i++) {
+            if (formats[i]['id'] == id) {
+                return formats[i];
+            }
+        }
+        return null;
+    },
+
+    formats: function() {
+        if (!ResourceForm.formats_json) {
+            ResourceForm.formats_json = $.parseJSON(
+                $('input[name="formats_json"]').val());
+        }
+        return ResourceForm.formats_json;
+    },
+
+    formatInkMediaTypes: function() {
+        if (!ResourceForm.format_ink_media_types_json) {
+            ResourceForm.format_ink_media_types_json = $.parseJSON(
+                $('input[name="format_ink_media_types_json"]').val());
+        }
+        return ResourceForm.format_ink_media_types_json;
+    },
+
+    formatSupportTypes: function() {
+        if (!ResourceForm.format_support_types_json) {
+            ResourceForm.format_support_types_json = $.parseJSON(
+                $('input[name="format_support_types_json"]').val());
+        }
+        return ResourceForm.format_support_types_json;
+    },
+
+    hideFormatVectorMenus: function() {
+        $('.format-vectors').remove();
     },
 
     hideSections: function() {
@@ -253,15 +299,27 @@ var ResourceForm = {
             '</div>');
     },
 
-    selectFormat: function(format_id, onCompleteCallback) {
+    /**
+     * @param format Format object (from ResourceForm.format())
+     * @param onCompleteCallback Function
+     */
+    selectFormat: function(format, onCompleteCallback) {
         ResourceForm.clearAssessmentQuestions();
         ResourceForm.hideSections();
-        if (!format_id) {
+        if (!format) {
             return;
         }
 
+        // if the format is Paper-Unbound --> Original Document, show the
+        // ink/media type and support menus
+        if (format['fid'] == 159) {
+            ResourceForm.showFormatVectorMenus();
+        } else {
+            ResourceForm.hideFormatVectorMenus();
+        }
+
         var select = $('select[name="resource[format_id]"]');
-        select.val(format_id);
+        select.val(format['id']);
 
         var root_url = $('input[name="root-url"]').val();
         var help_page = select.find(':selected').data('help-page');
@@ -272,7 +330,7 @@ var ResourceForm = {
                 root_url + 'format-id-guide/' + help_page + help_anchor).show();
 
         // check for assessment questions
-        var questions_url = root_url + 'formats/' + format_id +
+        var questions_url = root_url + 'formats/' + format['id'] +
             '/assessment-questions';
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
@@ -288,7 +346,7 @@ var ResourceForm = {
                     var question_elem = $(this).closest('.assessment_question');
                     var qid = question_elem.data('id');
                     var child_questions_url = root_url + 'formats/' +
-                        format_id + '/assessment-questions?parent_id=' + qid;
+                        format['id'] + '/assessment-questions?parent_id=' + qid;
                     $.getJSON(child_questions_url, function(data) {
                         $.each(data, function (i, object) {
                             var child_question_elem =
@@ -307,7 +365,7 @@ var ResourceForm = {
                                     }
                                     ResourceForm.insertQuestionAfter(
                                         ResourceForm.nodeForQuestion(object, i, depth),
-                                        question_elem)
+                                        question_elem);
                                 }
                             } else {
                                 child_question_elem.remove();
@@ -366,7 +424,8 @@ var ResourceForm = {
 
             // if the last select has been added
             if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
-                ResourceForm.selectFormat(select.val(), null);
+                var format = ResourceForm.format(select.val());
+                ResourceForm.selectFormat(format, null);
 
                 // select the question response options
                 $('input[name="selected_option_ids"]').each(function() {
@@ -385,6 +444,44 @@ var ResourceForm = {
         selected_format_ids.forEach(function(id) {
             ResourceForm.addFormatSelect(id, onSelectAdded);
         });
+
+        // TODO: populate format vectors
+    },
+
+    showFormatVectorMenus: function() {
+        ResourceForm.hideFormatVectorMenus();
+
+        var ink_select = $('<select></select>').
+            attr('id', 'resource[format_ink_media_type_id]').
+            attr('name', 'resource[format_ink_media_type_id]').
+            attr('class', 'form-control').
+            append($('<option value="">Select&hellip;</option>'));
+        $.each(ResourceForm.formatInkMediaTypes(), function(i, obj) {
+            ink_select.append($('<option data-score="' + obj['score'] + '">').
+                attr('value', obj['id']).text(obj['name']));
+        });
+
+        var ink_container = $('<div class="form-inline"></div>');
+        ink_container.append('<label for="resource[format_ink_media_type_id]">Ink/Media Type: </label>');
+        ink_container.append(ink_select);
+
+        var support_select = $('<select></select>').
+            attr('id', 'resource[format_support_type_id]').
+            attr('name', 'resource[format_support_type_id]').
+            attr('class', 'form-control').
+            append($('<option value="">Select&hellip;</option>'));
+        $.each(ResourceForm.formatSupportTypes(), function(i, obj) {
+            support_select.append($('<option data-score="' + obj['score'] + '">').
+                attr('value', obj['id']).text(obj['name']));
+        });
+
+        var support_container = $('<div class="form-inline"></div>');
+        support_container.append('<label for="resource[format_ink_media_type_id]">Support Type: </label>');
+        support_container.append(support_select);
+
+        var group = $('<div class="format-vectors"></div>');
+        group.append(ink_container).append(support_container);
+        $('div.format').append(group);
     },
 
     showSections: function() {

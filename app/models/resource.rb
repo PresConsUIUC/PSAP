@@ -13,6 +13,8 @@ class Resource < ActiveRecord::Base
   has_many :subjects, inverse_of: :resource, dependent: :destroy
   has_and_belongs_to_many :events
   belongs_to :format, inverse_of: :resources
+  belongs_to :format_ink_media_type, inverse_of: :resources
+  belongs_to :format_support_type, inverse_of: :resources
   belongs_to :language, inverse_of: :resources
   belongs_to :location, inverse_of: :resources
   belongs_to :parent, class_name: 'Resource', inverse_of: :children
@@ -250,24 +252,6 @@ class Resource < ActiveRecord::Base
     stats
   end
 
-  def assessment_question_response_count
-    # SELECT assessment_question_options.assessment_question_id
-    # FROM assessment_question_responses
-    # LEFT JOIN assessment_question_options
-    #     ON assessment_question_options.id = assessment_question_responses.assessment_question_option_id
-    # WHERE assessment_question_responses.resource_id = ?
-    #     AND assessment_question_responses.assessment_question_option_id IS NOT NULL
-    # GROUP BY assessment_question_options.assessment_question_id
-    AssessmentQuestionResponse.
-        select('assessment_question_options.assessment_question_id').
-        joins('LEFT JOIN assessment_question_options '\
-            'ON assessment_question_options.id '\
-              '= assessment_question_responses.assessment_question_option_id').
-        where('assessment_question_responses.resource_id = ?', self.id).
-        where('assessment_question_responses.assessment_question_option_id IS NOT NULL').
-        group('assessment_question_options.assessment_question_id').length
-  end
-
   ##
   # Submitted assessment forms will often have empty submodels such as creator,
   # extent, etc. This method will remove them.
@@ -298,7 +282,20 @@ class Resource < ActiveRecord::Base
         question_score += response.assessment_question_option.value *
             response.assessment_question.weight
       end
-      self.assessment_score = self.format.score * 0.4 +
+
+      if self.format.format_class == FormatClass::BOUND_PAPER or
+          self.format.fid == 159 # Unbound Paper -> Original Document
+        if self.format_support_type and self.format_ink_media_type
+          format_score = self.format_support_type.score * 0.6 +
+              self.format_ink_media_type.score * 0.4
+        else
+          format_score = 0
+        end
+      else
+        format_score = self.format.score * 0.4
+      end
+
+      self.assessment_score = format_score +
           self.location.assessment_score * 0.1 + (question_score / 100) * 0.5
     else
       self.assessment_score = 0
