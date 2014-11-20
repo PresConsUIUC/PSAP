@@ -915,7 +915,8 @@ case Rails.env
 
     # Resources
     resource_commands = []
-    resource_commands << CreateResourceCommand.new(locations[0],
+    resource_commands << CreateResourceCommand.new(
+        locations[0],
         { name: 'Sample Collection',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
@@ -923,8 +924,9 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Sample Assessed Resource',
+    resource_commands << CreateResourceCommand.new(
+        locations[0],
+        { name: 'Sample Assessed Albumen Print Resource',
           resource_type: ResourceType::ITEM,
           format: Format.find_by_fid(7),
           user: normal_user,
@@ -932,16 +934,32 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[0],
-        { name: 'Dead Sea Scrolls',
+    resource_commands << CreateResourceCommand.new(
+        locations[0],
+        { name: 'Sample Assessed Bound Paper Resource',
           resource_type: ResourceType::ITEM,
-          format: Format.find_by_fid(18),
+          format: Format.find_by_fid(160),
+          format_ink_media_type: FormatInkMediaType.find(2),
+          format_support_type: FormatSupportType.find(2),
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           significance: 1,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[1],
+    resource_commands << CreateResourceCommand.new(
+        locations[0],
+        { name: 'Sample Assessed Original Document Resource',
+          resource_type: ResourceType::ITEM,
+          format: Format.find_by_fid(159),
+          format_ink_media_type: FormatInkMediaType.find(3),
+          format_support_type: FormatSupportType.find(3),
+          user: normal_user,
+          description: 'Sample description',
+          local_identifier: 'sample_local_id',
+          significance: 1,
+          rights: 'Sample rights' }, nil, '127.0.0.1')
+    resource_commands << CreateResourceCommand.new(
+        locations[1],
         { name: 'Collection Containing Lots of Items',
           resource_type: ResourceType::COLLECTION,
           user: admin_user,
@@ -949,21 +967,24 @@ case Rails.env
           local_identifier: 'sample_local_id',
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
+    resource_commands << CreateResourceCommand.new(
+        locations[2],
         { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
           resource_type: ResourceType::COLLECTION,
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
+    resource_commands << CreateResourceCommand.new(
+        locations[2],
         { name: 'Issue 1',
           resource_type: ResourceType::ITEM,
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(locations[2],
+    resource_commands << CreateResourceCommand.new(
+        locations[2],
         { name: 'Issue 2',
           resource_type: ResourceType::ITEM,
           user: disabled_user,
@@ -971,7 +992,8 @@ case Rails.env
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
     (0..100).each do
-      resource_commands << CreateResourceCommand.new(locations[1],
+      resource_commands << CreateResourceCommand.new(
+          locations[1],
           { name: 'Sample Multitudinous Top-Level Item',
             resource_type: ResourceType::ITEM,
             user: normal_user,
@@ -981,31 +1003,42 @@ case Rails.env
     end
 
     resources = resource_commands.map{ |command| command.execute; command.object }
+    resource_commands = []
 
     (0..100).each do
-      resource_commands << CreateResourceCommand.new(locations[1],
+      resource_commands << CreateResourceCommand.new(
+          locations[1],
           { name: 'Sample Multitudinous Child Item',
             resource_type: ResourceType::ITEM,
             user: normal_user,
-            parent: resources[3],
+            parent: resources[4],
             description: 'Sample description',
             local_identifier: 'sample_local_id',
             rights: 'Sample rights' }, nil, '127.0.0.1')
     end
 
-    resources = resource_commands.map{ |command| command.execute; command.object }
+    resources += resource_commands.map{ |command| command.execute; command.object }
 
-    resources[1].assessment_question_responses.each do |response|
-      response.assessment_question_option =
-        response.assessment_question.assessment_question_options[0]
+    # Resource assessment question responses
+    [1, 2, 3].each do |i|
+      resources[i].format.assessment_questions.each do |question|
+        AssessmentQuestionResponse.create!(
+            resource: resources[i],
+            assessment_question: question,
+            assessment_question_option: question.assessment_question_options.first)
+      end
     end
-    resources[1].save!
 
     resources[1].parent = resources[0]
     resources[2].parent = resources[0]
-    resources[4].parent = resources[3]
-    resources[5].parent = resources[3]
-    resources.each{ |r| r.save! }
+    resources[3].parent = resources[0]
+    resources[5].parent = resources[4]
+    resources[6].parent = resources[4]
+    resources.each do |r|
+      r.update_assessment_score
+      r.update_assessment_percent_complete
+      r.save!
+    end
 
     # Dates
     ResourceDate.create!(resource: resources[0],
@@ -1030,6 +1063,9 @@ case Rails.env
                          date_type: DateType::SINGLE,
                          year: 843)
     ResourceDate.create!(resource: resources[6],
+                         date_type: DateType::SINGLE,
+                         year: 1856)
+    ResourceDate.create!(resource: resources[7],
                          date_type: DateType::SINGLE,
                          year: 1856)
 
@@ -1067,15 +1103,6 @@ case Rails.env
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
     end
-
-    # Resource assessment question responses
-    resources[1].format.assessment_questions.each do |question|
-      AssessmentQuestionResponse.create!(
-          resource: resources[1],
-          assessment_question: question,
-          assessment_question_option: question.assessment_question_options.first)
-    end
-    resources[1].save!
 
     # Format temperature ranges
     Format.all do |format|

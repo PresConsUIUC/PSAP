@@ -10,8 +10,17 @@ var ResourceForm = {
     // lazy_loaded by formatSupportTypes()
     format_support_types_json: null,
 
-    addFormatSelect: function(parent_format_id, onCompleteCallback) {
-        var root_url = $('input[name="root-url"]').val();
+    /**
+     * @param parent_format Format object
+     * @param onCompleteCallback
+     */
+    addFormatSelect: function(parent_format, onCompleteCallback) {
+        var format_class_id = $('input[name="format_class"]:checked').val();
+        if (ResourceForm.shouldShowFormatVectorMenus()) {
+            return;
+        }
+
+        var ROOT_URL = $('input[name="root-url"]').val();
 
         var new_select = $('<select></select>').
             attr('name', 'resource[format_id]').
@@ -20,26 +29,26 @@ var ResourceForm = {
         new_select.append(prompt);
 
         // add help button (href will be populated in selectFormat())
-        var help_button = $('<a></a>').attr('href', '').
+        var help_button = $('<a>?</a>').attr('href', '').
             attr('class', 'btn btn-default help').attr('target', '_blank').
-            text('?').hide();
+            hide();
 
         var group = $('<div class="form-inline"></div>').hide();
-        group.append(new_select);
-        group.append(help_button);
+        group.append(new_select).append(help_button);
         $('div.format').append(group);
 
         new_select.on('change', function() {
             // destroy all selects after the changed select
             $(this).parent().nextAll('div.form-inline').remove();
             // create a child select
-            ResourceForm.addFormatSelect($(this).val(), onCompleteCallback);
+            ResourceForm.addFormatSelect(ResourceForm.format($(this).val()),
+                onCompleteCallback);
         });
 
-        var contents_url = root_url + '/format-classes/' +
-            $('input[name="format_class"]:checked').val() + '/formats';
-        if (parent_format_id) {
-            contents_url += '?parent_id=' + parent_format_id;
+        var contents_url = ROOT_URL + '/format-classes/' + format_class_id +
+            '/formats';
+        if (parent_format) {
+            contents_url += '?parent_id=' + parent_format['id'];
         }
 
         $.getJSON(contents_url, function(data) {
@@ -74,7 +83,7 @@ var ResourceForm = {
     attachEventListeners: function() {
         $('input[name="format_class"]').on('change', function() {
             ResourceForm.selectFormatClass($(this).val());
-            ResourceForm.addFormatSelect(null);
+            ResourceForm.addFormatSelect();
         });
 
         $('button.save').on('click', function(event) {
@@ -124,6 +133,16 @@ var ResourceForm = {
         var formats = ResourceForm.formats();
         for (var i = 0; i < formats.length; i++) {
             if (formats[i]['id'] == id) {
+                return formats[i];
+            }
+        }
+        return null;
+    },
+
+    formatByFID: function(fid) {
+        var formats = ResourceForm.formats();
+        for (var i = 0; i < formats.length; i++) {
+            if (formats[i]['fid'] == fid) {
                 return formats[i];
             }
         }
@@ -393,7 +412,11 @@ var ResourceForm = {
         });
     },
 
-    // Format class is one of the radio buttons: A/V, Photo/Image...
+    /**
+     * Format class is one of the radio buttons: A/V, Photo/Image...
+     *
+     * @param id Format class ID
+     */
     selectFormatClass: function(id) {
         ResourceForm.clearAssessmentQuestions();
         ResourceForm.hideSections();
@@ -401,51 +424,94 @@ var ResourceForm = {
         $('div.format .form-inline').remove();
         // select the format class
         $('input[name="format_class"][value="' + id + '"]').attr('checked', true);
+
+        if (id == 3) { // 3 == bound paper
+            ResourceForm.showFormatVectorMenus();
+            // if the format is bound paper, provide the format ID in a hidden
+            // input instead of a select menu.
+            var format = ResourceForm.formatByFID(160);
+            $('div.format').append(
+                '<input type="hidden" name="resource[format_id]" value="' + format['id'] + '">');
+        } else {
+            $('input[name="resource[format_id]"]').remove();
+        }
     },
 
     setInitialSelections: function() {
-        ResourceForm.selectFormatClass(
-            $('input[name="selected_format_class"]').val());
+        var format_class_id = $('input[name="selected_format_class"]').val();
+        ResourceForm.selectFormatClass(format_class_id);
 
         var selected_format_ids = $('input[name="selected_format_ids"]').map(function() {
             return $(this).val();
         }).toArray().reverse();
+        var selected_format_fids = $('input[name="selected_format_fids"]').map(function() {
+            return parseInt($(this).val());
+        }).toArray();
 
-        var onSelectAdded = function(select) {
-            // set the select's default value
-            selected_format_ids.forEach(function(id) {
-                var options = select.find('option[value="' + id + '"]');
-                options.each(function() {
-                    if ($(this).val() == id) {
-                        $(this).prop('selected', true);
-                    }
-                });
-            });
+        var is_original_document = (selected_format_fids.indexOf(159) > -1);
+        var is_bound_paper = (format_class_id == 3);
 
-            // if the last select has been added
-            if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
-                var format = ResourceForm.format(select.val());
-                ResourceForm.selectFormat(format, null);
+        if (ResourceForm.shouldShowFormatVectorMenus()) {
+            ResourceForm.showFormatVectorMenus();
+        }
 
-                // select the question response options
-                $('input[name="selected_option_ids"]').each(function() {
-                    var selected_id = $(this).val();
-                    $('[data-type="option"]').each(function() {
-                        if ($(this).val() == selected_id) {
-                            $(this).prop('checked', true);
+        var setInitialFormatVectorSelections = function() {
+            $('[name="resource[format_ink_media_type_id]"]').val(
+                $('input[name="selected_format_ink_media_type_id"]').val());
+            $('[name="resource[format_support_type_id]"]').val(
+                $('input[name="selected_format_support_type_id"]').val());
+        }
+
+        if (is_bound_paper) {
+            setInitialFormatVectorSelections();
+        } else {
+            var onSelectAdded = function(select) {
+                // set the select's default value
+                selected_format_ids.forEach(function(id) {
+                    var options = select.find('option[value="' + id + '"]');
+                    options.each(function() {
+                        if ($(this).val() == id) {
+                            $(this).prop('selected', true);
                         }
                     });
                 });
-                ResourceForm.updateProgress();
-            }
-        };
 
-        //ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
-        selected_format_ids.forEach(function(id) {
-            ResourceForm.addFormatSelect(id, onSelectAdded);
-        });
+                // if the last select has been added
+                if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
+                    var format = ResourceForm.format(select.val());
+                    ResourceForm.selectFormat(format, null);
 
-        // TODO: populate format vectors
+                    if (is_original_document) {
+                        setInitialFormatVectorSelections();
+                    }
+
+                    // select the question response options
+                    $('input[name="selected_option_ids"]').each(function() {
+                        var selected_id = $(this).val();
+                        $('[data-type="option"]').each(function() {
+                            if ($(this).val() == selected_id) {
+                                $(this).prop('checked', true);
+                            }
+                        });
+                    });
+                    ResourceForm.updateProgress();
+                }
+            };
+
+            ResourceForm.addFormatSelect(null, onSelectAdded); // top-level formats
+            var clone = selected_format_ids.slice();
+            clone.shift();
+            clone.forEach(function(id) {
+                ResourceForm.addFormatSelect(ResourceForm.format(id), onSelectAdded);
+            });
+        }
+    },
+
+    shouldShowFormatVectorMenus: function() {
+        // if format class is Bound Paper or format is Unbound Paper -->
+        // Original Document
+        return ($('input[name="format_class"]:checked').val() == 3 ||
+        $('[name="resource[format_id]"]').val() == 159);
     },
 
     showFormatVectorMenus: function() {
@@ -522,8 +588,8 @@ var ready = function() {
                 alert.modal();
             }, 100);
         });
-    } else if ($('body#new_resource').length
-        || $('body#edit_resource').length) {
+    } else if ($('body#new_resource').length ||
+        $('body#edit_resource').length) {
         // override bootstrap nav-pills behavior
         $('ul.nav-pills a').on('click', function() {
             window.location.href = $(this).attr('href');

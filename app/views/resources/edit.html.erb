@@ -54,13 +54,17 @@
       </div>
 
       <% # read by JS to select the relevant inputs %>
-      <input type="hidden" name="selected_format_class"
-             value="<%= @resource.format ? @resource.format.format_class : '' %>">
+      <%= hidden_field_tag('selected_format_class',
+                           @resource.format ? @resource.format.format_class : '') %>
+      <%= hidden_field_tag('selected_format_ink_media_type_id',
+                           @resource.format_ink_media_type ? @resource.format_ink_media_type.id : '') %>
+      <%= hidden_field_tag('selected_format_support_type_id',
+                           @resource.format_support_type ? @resource.format_support_type.id : '') %>
 
       <% format = @resource.format
       while format do %>
-        <input type="hidden" name="selected_format_ids"
-               value="<%= format.id %>">
+        <%= hidden_field_tag('selected_format_ids', format.id) %>
+        <%= hidden_field_tag('selected_format_fids', format.fid) %>
         <% format = format.parent
       end %>
 
