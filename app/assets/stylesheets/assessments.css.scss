@@ -1,18 +1,9 @@
-body#assessment_template {
-  h3 {
-    margin-bottom:0.5em;
-  }
-  table {
-    font-size:0.9em;
-  }
-}
-
 .assessment_question h3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size:1.3em;
 }
 
-body#assessment_template, body#new_resource, body#edit_resource,
+body#new_resource, body#edit_resource,
 body#new_location, body#edit_location, body#new_institution, body#edit_institution {
   div.section {
     border-top:1px solid #cccccc;

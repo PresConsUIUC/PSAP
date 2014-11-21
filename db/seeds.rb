@@ -546,87 +546,69 @@ assessments = {
 
 # Resource assessment sections
 sections = {}
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Use | Access', index: 0,
-      description: 'The following questions concern the level of use/handling '\
-      'of the object(s).',
-      assessment: assessments[:resource] }, nil, '127.0.0.1')
-command.execute
-sections[:use_access] = command.object
-
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Storage | Container', index: 1,
-      description: 'The following questions concern the appropriateness of '\
-      'storage, housing, and labeling.',
-      assessment: assessments[:resource] }, nil, '127.0.0.1')
-command.execute
-sections[:storage_container] = command.object
-
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Condition', index: 2,
-      description: 'The following questions concern the physical state of the '\
-      'resource, and to what degree this impacts its content.',
-      assessment: assessments[:resource] }, nil, '127.0.0.1')
-command.execute
-sections[:condition] = command.object
+sections[:use_access] = AssessmentSection.create!(
+    name: 'Use | Access', index: 0,
+    description: 'The following questions concern the level of use/handling '\
+    'of the object(s).',
+    assessment: assessments[:resource])
+sections[:storage_container] = AssessmentSection.create!(
+    name: 'Storage | Container', index: 1,
+    description: 'The following questions concern the appropriateness of '\
+    'storage, housing, and labeling.',
+    assessment: assessments[:resource])
+sections[:condition] = AssessmentSection.create!(
+    name: 'Condition', index: 2,
+    description: 'The following questions concern the physical state of the '\
+    'resource, and to what degree this impacts its content.',
+    assessment: assessments[:resource])
 
 # Location assessment sections
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Environment', index: 0,
-      description: 'This section addresses the climate (temperature, humidity) of this location, as well as your ability to monitor and respond to it.',
-      assessment: assessments[:location] }, nil, '127.0.0.1')
-command.execute
-sections[:location_environment] = command.object
-
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Emergency Preparedness', index: 1,
-      description: 'This section concerns the safety mechanisms and disaster readiness of this facility in the event of a disaster.',
-      assessment: assessments[:location] }, nil, '127.0.0.1')
-command.execute
-sections[:location_emergency_preparedness] = command.object
+sections[:location_environment] = AssessmentSection.create!(
+    name: 'Environment', index: 0,
+    description: 'This section addresses the climate (temperature, humidity) '\
+    'of this location, as well as your ability to monitor and respond to it.',
+    assessment: assessments[:location])
+sections[:location_emergency_preparedness] = AssessmentSection.new(
+    name: 'Emergency Preparedness', index: 1,
+    description: 'This section concerns the safety mechanisms and disaster '\
+    'readiness of this facility in the event of a disaster.',
+    assessment: assessments[:location])
 
 # Institution assessment sections
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Collection Planning', index: 0,
-      description: 'This section concerns your institution\'s collection development policy and level of preservation planning.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_collection_planning] = command.object
+sections[:institution_collection_planning] = AssessmentSection.create!(
+    name: 'Collection Planning', index: 0,
+    description: 'This section concerns your institution\'s collection '\
+    'development policy and level of preservation planning.',
+    assessment: assessments[:institution])
+sections[:institution_use_access] = AssessmentSection.create!(
+    name: 'Use | Access', index: 1,
+    description: 'This section concerns your institution\'s practices '\
+    'regarding collection description, surrogates/copies, loans, and use '\
+    'supervision.',
+    assessment: assessments[:institution])
+sections[:institution_material_inspection] = AssessmentSection.create!(
+    name: 'Material Inspection', index: 2,
+    description: 'This section addresses the inspection, cleaning, and repair '\
+    'of collection materials at your institution.',
+    assessment: assessments[:institution])
 
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Use | Access', index: 1,
-      description: 'This section concerns your institution\'s practices regarding collection description, surrogates/copies, loans, and use supervision.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_use_access] = command.object
+sections[:institution_playback_equipment] = AssessmentSection.create!(
+    name: 'Playback Equipment', index: 3,
+    description: 'This section concerns the equipment used to access certain '\
+    'formats (e.g. audiovisual, microfilm) at your institution.',
+    assessment: assessments[:institution])
 
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Material Inspection', index: 2,
-      description: 'This section addresses the inspection, cleaning, and repair of collection materials at your institution.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_material_inspection] = command.object
+sections[:institution_security] = AssessmentSection.create!(
+    name: 'Security', index: 4,
+    description: 'This section addresses security of collections at your '\
+    'institution.',
+    assessment: assessments[:institution])
 
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Playback Equipment', index: 3,
-      description: 'This section concerns the equipment used to access certain formats (e.g. audiovisual, microfilm) at your institution.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_playback_equipment] = command.object
-
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Security', index: 4,
-      description: 'This section addresses security of collections at your institution.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_security] = command.object
-
-command = CreateAssessmentSectionCommand.new(
-    { name: 'Disaster Recovery', index: 5,
-      description: 'This section concerns the readiness of your institution in the event of a disaster.',
-      assessment: assessments[:institution] }, nil, '127.0.0.1')
-command.execute
-sections[:institution_disaster_recovery] = command.object
+sections[:institution_disaster_recovery] = AssessmentSection.create!(
+    name: 'Disaster Recovery', index: 5,
+    description: 'This section concerns the readiness of your institution in '\
+    'the event of a disaster.',
+    assessment: assessments[:institution])
 
 # Resource assessment questions
 puts 'Seeding resource assessment questions...'
@@ -670,20 +652,19 @@ aq_sheets.each do |sheet|
       params[:formats] = Format.where('id IN (?)',
                                       row[4].to_s.split(';').map{ |f| f.strip.to_i })
 
-      command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
-      command.execute
+      question = AssessmentQuestion.create!(params)
 
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[13], index: 0, value: row[14]) if row[13] and row[14]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[15], index: 1, value: row[16]) if row[15] and row[16]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[17], index: 2, value: row[18]) if row[17] and row[18]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[19], index: 3, value: row[20]) if row[19] and row[20]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[21], index: 4, value: row[22]) if row[21] and row[22]
-      command.object.save!
+      question.save!
     end
   end
 end
@@ -736,20 +717,19 @@ aq_sheets.each do |sheet|
         end
       end
 
-      command = CreateAssessmentQuestionCommand.new(params, nil, '127.0.0.1')
-      command.execute
+      question = AssessmentQuestion.create!(params)
 
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[9], index: 0, value: row[10]) if row[9] and row[10]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[11], index: 1, value: row[12]) if row[11] and row[12]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[13], index: 2, value: row[14]) if row[13] and row[14]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[15], index: 3, value: row[16]) if row[15] and row[16]
-      command.object.assessment_question_options << AssessmentQuestionOption.new(
+      question.assessment_question_options << AssessmentQuestionOption.new(
           name: row[17], index: 4, value: row[18]) if row[17] and row[18]
-      command.object.save!
+      question.save!
     end
   end
 end
@@ -1032,8 +1012,8 @@ case Rails.env
     resources[1].parent = resources[0]
     resources[2].parent = resources[0]
     resources[3].parent = resources[0]
-    resources[5].parent = resources[4]
-    resources[6].parent = resources[4]
+    resources[6].parent = resources[5]
+    resources[7].parent = resources[5]
     resources.each do |r|
       r.update_assessment_score
       r.update_assessment_percent_complete

@@ -64,17 +64,6 @@ Psap::Application.routes.draw do
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
 
-  # There is only one assessment template. It can be edited but not deleted,
-  # and new ones cannot be created.
-  resources :assessments, param: :key, only: [:index, :show] do
-    resources :assessment_questions, only: [:new, :create, :edit, :update],
-              path: 'assessment-questions'
-  end
-  resources :assessment_questions, except: [:index, :show],
-            path: 'assessment-questions' do
-    # used for dependent select menus in forms
-    resources :assessment_question_options, only: :index, path: 'options'
-  end
   resources :formats, only: [:index, :show] do
     # used for populating the new/edit resource form with assessment questions
     resources :assessment_questions, only: :index, path: 'assessment-questions'
