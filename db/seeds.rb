@@ -649,7 +649,7 @@ aq_sheets.each do |sheet|
         end
       end
 
-      params[:formats] = Format.where('id IN (?)',
+      params[:formats] = Format.where('fid IN (?)',
                                       row[4].to_s.split(';').map{ |f| f.strip.to_i })
 
       question = AssessmentQuestion.create!(params)
