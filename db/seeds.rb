@@ -547,7 +547,7 @@ assessments = {
 # Resource assessment sections
 sections = {}
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Use | Access', index: 0, weight: 0.05,
+    { name: 'Use | Access', index: 0,
       description: 'The following questions concern the level of use/handling '\
       'of the object(s).',
       assessment: assessments[:resource] }, nil, '127.0.0.1')
@@ -555,7 +555,7 @@ command.execute
 sections[:use_access] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Storage | Container', index: 1, weight: 0.05,
+    { name: 'Storage | Container', index: 1,
       description: 'The following questions concern the appropriateness of '\
       'storage, housing, and labeling.',
       assessment: assessments[:resource] }, nil, '127.0.0.1')
@@ -563,7 +563,7 @@ command.execute
 sections[:storage_container] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Condition', index: 2, weight: 0.4,
+    { name: 'Condition', index: 2,
       description: 'The following questions concern the physical state of the '\
       'resource, and to what degree this impacts its content.',
       assessment: assessments[:resource] }, nil, '127.0.0.1')
@@ -572,14 +572,14 @@ sections[:condition] = command.object
 
 # Location assessment sections
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Environment', index: 0, weight: 0.05,
+    { name: 'Environment', index: 0,
       description: 'This section addresses the climate (temperature, humidity) of this location, as well as your ability to monitor and respond to it.',
       assessment: assessments[:location] }, nil, '127.0.0.1')
 command.execute
 sections[:location_environment] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Emergency Preparedness', index: 1, weight: 0.05,
+    { name: 'Emergency Preparedness', index: 1,
       description: 'This section concerns the safety mechanisms and disaster readiness of this facility in the event of a disaster.',
       assessment: assessments[:location] }, nil, '127.0.0.1')
 command.execute
@@ -587,42 +587,42 @@ sections[:location_emergency_preparedness] = command.object
 
 # Institution assessment sections
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Collection Planning', index: 0, weight: 0.05,
+    { name: 'Collection Planning', index: 0,
       description: 'This section concerns your institution\'s collection development policy and level of preservation planning.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_collection_planning] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Use | Access', index: 1, weight: 0.05, # TODO: weights
+    { name: 'Use | Access', index: 1,
       description: 'This section concerns your institution\'s practices regarding collection description, surrogates/copies, loans, and use supervision.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_use_access] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Material Inspection', index: 2, weight: 0.05, # TODO: weights
+    { name: 'Material Inspection', index: 2,
       description: 'This section addresses the inspection, cleaning, and repair of collection materials at your institution.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_material_inspection] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Playback Equipment', index: 3, weight: 0.05, # TODO: weights
+    { name: 'Playback Equipment', index: 3,
       description: 'This section concerns the equipment used to access certain formats (e.g. audiovisual, microfilm) at your institution.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_playback_equipment] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Security', index: 4, weight: 0.05, # TODO: weights
+    { name: 'Security', index: 4,
       description: 'This section addresses security of collections at your institution.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute
 sections[:institution_security] = command.object
 
 command = CreateAssessmentSectionCommand.new(
-    { name: 'Disaster Recovery', index: 5, weight: 0.05, # TODO: weights
+    { name: 'Disaster Recovery', index: 5,
       description: 'This section concerns the readiness of your institution in the event of a disaster.',
       assessment: assessments[:institution] }, nil, '127.0.0.1')
 command.execute

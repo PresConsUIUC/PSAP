@@ -75,10 +75,6 @@ Psap::Application.routes.draw do
     # used for dependent select menus in forms
     resources :assessment_question_options, only: :index, path: 'options'
   end
-  resources :assessment_sections, except: [:index, :show],
-            path: 'assessment-sections' do
-    resources :assessment_questions, only: :new, path: 'assessment-questions'
-  end
   resources :formats, only: [:index, :show] do
     # used for populating the new/edit resource form with assessment questions
     resources :assessment_questions, only: :index, path: 'assessment-questions'

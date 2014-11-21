@@ -8,8 +8,6 @@ class AssessmentSection < ActiveRecord::Base
   validates :index, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates_uniqueness_of :name, scope: :assessment_id
-  validates_numericality_of :weight, greater_than_or_equal_to: 0,
-                            less_than_or_equal_to: 1, presence: true
 
   def max_score
     score = 0

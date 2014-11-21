@@ -32,19 +32,6 @@ class AssessmentSectionTest < ActiveSupport::TestCase
     assert !@section.save
   end
 
-  # weight
-  test 'weight is required' do
-    @section.weight = nil
-    assert !@section.save
-  end
-
-  test 'weight should be between 0 and 1' do
-    @section.weight = -0.5
-    assert !@section.save
-    @section.weight = 1.5
-    assert !@section.save
-  end
-
   ########################### dependency tests ###############################
 
   test 'dependent assessment questions should be destroyed on destroy' do
