@@ -18,7 +18,7 @@ module ApplicationHelper
   def breadcrumb(*items) # TODO: use this more
     crumb = '<ol class="breadcrumb">'
     items.each_with_index do |item, index|
-      if index == items.length
+      if index == items.length - 1
         crumb += '<li class="active">'
       else
         crumb += '<li>'
