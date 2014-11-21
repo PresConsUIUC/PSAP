@@ -22,10 +22,5 @@ class Location < ActiveRecord::Base
   validates :repository, presence: true
 
   before_save :update_assessment_score # Assessable mixin
-  before_save :update_resource_scores
-
-  def update_resource_scores
-    self.resources.each{ |r| r.save! }
-  end
 
 end

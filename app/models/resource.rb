@@ -208,7 +208,7 @@ class Resource < ActiveRecord::Base
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [self.assessment_score * 100] +
+          [self.total_assessment_score * 100] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +
           [self.format ? self.format.name : nil] +
@@ -241,12 +241,12 @@ class Resource < ActiveRecord::Base
     end
 
     all_items.each do |item|
-      stats[:high] = item.assessment_score if item.assessment_score > stats[:high]
-      stats[:low] = item.assessment_score if
-          stats[:low].nil? or item.assessment_score < stats[:low]
+      stats[:high] = item.total_assessment_score if item.total_assessment_score > stats[:high]
+      stats[:low] = item.total_assessment_score if
+          stats[:low].nil? or item.total_assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.assessment_score }.sort
+    stats[:mean] = all_items.map{ |r| r.total_assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.total_assessment_score }.sort
     len = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
@@ -264,6 +264,15 @@ class Resource < ActiveRecord::Base
     self.subjects = self.subjects.select{ |s| s.name.length > 0 }
   end
 
+  ##
+  # Returns the assessment score of the resource, factoring in
+  # institution/location scores as well, unlike assessment_score which does not.
+  #
+  def total_assessment_score
+    self.update_assessment_score
+    self.assessment_score * 0.9 + self.location.assessment_score * 0.1
+  end
+
   def update_assessment_percent_complete
     self.assessment_percent_complete =
         (self.format and self.format.assessment_questions.any?) ?
@@ -272,6 +281,12 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # Updates the score of the resource only, without taking location/institution
+  # into account.
+  #
+  # Scores are stored (rather than being calculated on-the-fly) in order to
+  # make for simpler queries.
+  #
   # Overrides Assessable mixin
   #
   def update_assessment_score
@@ -292,11 +307,10 @@ class Resource < ActiveRecord::Base
           format_score = 0
         end
       else
-        format_score = self.format.score * 0.4
+        format_score = self.format.score * 0.45
       end
 
-      self.assessment_score = format_score +
-          self.location.assessment_score * 0.1 + (question_score / 100) * 0.5
+      self.assessment_score = format_score + (question_score / 100) * 0.55
     else
       self.assessment_score = 0
     end

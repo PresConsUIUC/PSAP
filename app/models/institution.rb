@@ -132,7 +132,7 @@ class Institution < ActiveRecord::Base
         # properties with blanks
         csv << [resource.local_identifier] +
             [resource.name] +
-            [resource.assessment_score * 100] +
+            [resource.total_assessment_score * 100] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
             [resource.format ? resource.format.name : nil] +

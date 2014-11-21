@@ -12,7 +12,7 @@
             <% end %>
           </ul>
         </dd>
-        <%= render partial: 'assessment_questions',
+        <%= render partial: 'shared/assessment_questions',
                    locals: { entity: entity,
                              assessment_questions: question.children.order(:index),
                              depth: depth + 1 } if question.children.any? %>
