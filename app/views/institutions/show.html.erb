@@ -1,12 +1,10 @@
 <% provide(:title, @institution.name) %>
 <% provide(:body_id, 'show_institution') %>
 
-<ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-    <li><%= link_to 'Institutions', institutions_path %></li>
-  <% end %>
-  <li class="active"><%= @institution.name %></li>
-</ol>
+<% breadcrumbs = []
+   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+   breadcrumbs << @institution.name %>
+<%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
   <div class="col-sm-8">

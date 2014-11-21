@@ -1,10 +1,6 @@
 <% provide(:title, 'Institutions') %>
 
-<ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-      <li class="active">Institutions</li>
-  <% end %>
-</ol>
+<%= breadcrumbs('Institutions') %>
 
 <div class="row">
   <div class="col-sm-7">

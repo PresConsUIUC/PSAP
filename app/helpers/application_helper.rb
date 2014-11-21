@@ -16,6 +16,7 @@ module ApplicationHelper
   end
 
   def breadcrumbs(items) # TODO: use this more
+    items = [items] if items.kind_of?(String)
     crumb = '<ol class="breadcrumb">'
     items.each_with_index do |item, index|
       if index == items.length - 1
