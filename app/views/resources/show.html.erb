@@ -1,24 +1,15 @@
 <% provide(:title, @resource.name) %>
 <% provide(:body_id, 'show_resource') %>
 
-<ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
-  <% end %>
-  <li>
-    <%= link_to @resource.location.repository.institution.name,
-                polymorphic_path(@resource.location.repository.institution) %>
-  </li>
-  <li>
-    <%= link_to @resource.location.repository.name,
-                polymorphic_path(@resource.location.repository) %>
-  </li>
-  <li>
-    <%= link_to @resource.location.name,
-                polymorphic_path(@resource.location) %>
-  </li>
-  <li class="active"><%= truncate(@resource.name, length: 50) %></li>
-</ol>
+<%= breadcrumb(
+    { 'Institutions' => institutions_path },
+    { @resource.location.repository.institution.name =>
+            polymorphic_path(@resource.location.repository.institution) },
+    { @resource.location.repository.name =>
+            polymorphic_path(@resource.location.repository) },
+    { @resource.location.name => polymorphic_path(@resource.location) },
+    @resource.name
+) %>
 
 <div class="row">
   <div class="col-sm-7">

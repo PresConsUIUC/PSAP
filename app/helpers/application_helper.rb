@@ -15,6 +15,25 @@ module ApplicationHelper
     end
   end
 
+  def breadcrumb(*items) # TODO: use this more
+    crumb = '<ol class="breadcrumb">'
+    items.each_with_index do |item, index|
+      if index == items.length
+        crumb += '<li class="active">'
+      else
+        crumb += '<li>'
+      end
+      if item.is_a?(Hash)
+        crumb += link_to(truncate(item.keys[0], length: 50), item.values[0])
+      else
+        crumb += truncate(item, length: 50)
+      end
+      crumb += '</li>'
+    end
+    crumb += '</ol>'
+    raw(crumb)
+  end
+
   def countries_for_select
     [['United States of America', 'United States of America'],
      ['Afghanistan', 'Afghanistan'],
