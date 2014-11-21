@@ -44,8 +44,7 @@ class Resource < ActiveRecord::Base
   validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete
-  before_save :update_assessment_score
+  before_save :update_assessment_percent_complete, :update_assessment_score
 
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
@@ -275,9 +274,9 @@ class Resource < ActiveRecord::Base
 
   def update_assessment_percent_complete
     self.assessment_percent_complete =
-        (self.format and self.format.assessment_questions.any?) ?
-        self.assessment_question_responses.length.to_f /
-        self.format.assessment_questions.length.to_f : 0
+        (self.format and self.format.all_assessment_questions.any?) ?
+            self.assessment_question_responses.length.to_f /
+            self.format.all_assessment_questions.length.to_f : 0
   end
 
   ##

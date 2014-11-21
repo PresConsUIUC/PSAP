@@ -1002,10 +1002,11 @@ case Rails.env
     # Resource assessment question responses
     [1, 2, 3].each do |i|
       resources[i].format.assessment_questions.each do |question|
-        AssessmentQuestionResponse.create!(
-            resource: resources[i],
-            assessment_question: question,
-            assessment_question_option: question.assessment_question_options.first)
+        resources[i].assessment_question_responses <<
+            AssessmentQuestionResponse.create!(
+                resource: resources[i],
+                assessment_question: question,
+                assessment_question_option: question.assessment_question_options.first)
       end
     end
 
@@ -1014,11 +1015,7 @@ case Rails.env
     resources[3].parent = resources[0]
     resources[6].parent = resources[5]
     resources[7].parent = resources[5]
-    resources.each do |r|
-      r.update_assessment_score
-      r.update_assessment_percent_complete
-      r.save!
-    end
+    resources.each{ |r| r.save! }
 
     # Dates
     ResourceDate.create!(resource: resources[0],
@@ -1063,16 +1060,16 @@ case Rails.env
     # Creators
     creators = []
     for i in 0..resources.length - 1
-        creators << Creator.create!(name: 'Sample creator',
-                                    creator_type: i.odd? ? CreatorType::PERSON : CreatorType::COMPANY,
-                                    resource: resources[i])
+      creators << Creator.create!(name: 'Sample creator',
+                                  creator_type: i.odd? ? CreatorType::PERSON : CreatorType::COMPANY,
+                                  resource: resources[i])
     end
 
     # Notes
     notes = []
     for i in 0..resources.length - 1
       notes << ResourceNote.create!(value: 'Sample note 1',
-                                  resource: resources[i])
+                                    resource: resources[i])
       notes << ResourceNote.create!(value: 'Sample note 2',
                                     resource: resources[i])
     end
@@ -1086,14 +1083,14 @@ case Rails.env
 
     # Format temperature ranges
     Format.all do |format|
-        TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
-                                 format: format)
-        TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
-                                 format: format)
-        TemperatureRange.create!(min_temp_f: 55, max_temp_f: 72, score: 0.33,
-                                 format: format)
-        TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
-                                 format: format)
+      TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
+                               format: format)
+      TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
+                               format: format)
+      TemperatureRange.create!(min_temp_f: 55, max_temp_f: 72, score: 0.33,
+                               format: format)
+      TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
+                               format: format)
     end
 
     # Events
