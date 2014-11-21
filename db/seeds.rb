@@ -793,10 +793,11 @@ case Rails.env
 
     # Institution assessment question responses
     Assessment.find_by_key('institution').assessment_questions.each do |question|
-        AssessmentQuestionResponse.create!(
-            institution: uiuc_institution,
-            assessment_question: question,
-            assessment_question_option: question.assessment_question_options.first)
+        uiuc_institution.assessment_question_responses <<
+            AssessmentQuestionResponse.create!(
+                institution: uiuc_institution,
+                assessment_question: question,
+                assessment_question_option: question.assessment_question_options.first)
     end
     uiuc_institution.save!
 
@@ -886,10 +887,11 @@ case Rails.env
 
     # Location assessment question responses
     Assessment.find_by_key('location').assessment_questions.each do |question|
-        AssessmentQuestionResponse.create!(
-            location: locations[0],
-            assessment_question: question,
-            assessment_question_option: question.assessment_question_options.first)
+        locations[0].assessment_question_responses <<
+            AssessmentQuestionResponse.create!(
+                location: locations[0],
+                assessment_question: question,
+                assessment_question_option: question.assessment_question_options.first)
     end
     locations[0].save!
 
