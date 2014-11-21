@@ -1,15 +1,16 @@
 <% provide(:title, @resource.name) %>
 <% provide(:body_id, 'show_resource') %>
 
-<%= breadcrumb(
-    { 'Institutions' => institutions_path },
-    { @resource.location.repository.institution.name =>
-            polymorphic_path(@resource.location.repository.institution) },
-    { @resource.location.repository.name =>
-            polymorphic_path(@resource.location.repository) },
-    { @resource.location.name => polymorphic_path(@resource.location) },
-    @resource.name
-) %>
+<% breadcrumbs = []
+   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+   breadcrumbs << { @resource.location.repository.institution.name =>
+                            @resource.location.repository.institution }
+   breadcrumbs << { @resource.location.repository.name =>
+                            @resource.location.repository }
+   breadcrumbs << { @resource.location.name => @resource.location }
+   breadcrumbs << @resource.name
+%>
+<%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
   <div class="col-sm-7">

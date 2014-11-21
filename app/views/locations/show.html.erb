@@ -1,20 +1,14 @@
 <% provide(:title, @location.name) %>
 <% provide(:body_id, 'show_location') %>
 
-<ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-    <li><%= link_to 'Institutions', institutions_path %></li>
-  <% end %>
-  <li>
-    <%= link_to @location.repository.institution.name,
-                polymorphic_path(@location.repository.institution) %>
-  </li>
-  <li>
-    <%= link_to @location.repository.name,
-                polymorphic_path(@location.repository) %>
-  </li>
-  <li class="active"><%= @location.name %></li>
-</ol>
+<% breadcrumbs = []
+   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+   breadcrumbs << { @location.repository.institution.name =>
+                            @location.repository.institution }
+   breadcrumbs << { @location.repository.name => @location.repository }
+   breadcrumbs << @location.name
+%>
+<%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
   <div class="col-sm-4">

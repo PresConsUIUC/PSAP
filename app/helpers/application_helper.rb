@@ -15,7 +15,7 @@ module ApplicationHelper
     end
   end
 
-  def breadcrumb(*items) # TODO: use this more
+  def breadcrumbs(items) # TODO: use this more
     crumb = '<ol class="breadcrumb">'
     items.each_with_index do |item, index|
       if index == items.length - 1
