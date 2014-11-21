@@ -329,9 +329,11 @@ var ResourceForm = {
             return;
         }
 
-        // if the format is Paper-Unbound --> Original Document, show the
-        // ink/media type and support menus
-        if (format['fid'] == 159) {
+        // if the format is Paper-Unbound --> Original Document or Paper-Bound,
+        // show the ink/media type and support menus
+        if (format['fid'] == 159 || format['fid'] == 160) {
+            $('div.format').append(
+                '<input type="hidden" name="resource[format_id]" value="' + format['id'] + '">');
             ResourceForm.showFormatVectorMenus();
         } else {
             ResourceForm.hideFormatVectorMenus();
@@ -430,8 +432,9 @@ var ResourceForm = {
             // if the format is bound paper, provide the format ID in a hidden
             // input instead of a select menu.
             var format = ResourceForm.formatByFID(160);
-            $('div.format').append(
-                '<input type="hidden" name="resource[format_id]" value="' + format['id'] + '">');
+            ResourceForm.selectFormat(format, function() {
+                ResourceForm.showSections();
+            });
         } else {
             $('input[name="resource[format_id]"]').remove();
         }
