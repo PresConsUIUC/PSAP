@@ -9,8 +9,6 @@ class Format < ActiveRecord::Base
   has_and_belongs_to_many :events
   belongs_to :parent, class_name: 'Format', inverse_of: :children
 
-  accepts_nested_attributes_for :temperature_ranges, allow_destroy: true
-
   validates :format_class, presence: true,
             inclusion: { in: FormatClass.all,
                          message: 'Must be a valid format class.' }

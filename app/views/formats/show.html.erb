@@ -6,29 +6,7 @@
   <li class="active"><%= @format.name %></li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-8">
-    <h1><%= @format.name %></h1>
-  </div>
-  <div class="col-sm-4" style="text-align:right">
-    <div class="btn-group">
-      <!-- Edit -->
-      <%= link_to edit_format_path(@format), class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-          Edit
-      <% end %>
-      <!-- Delete -->
-      <%= link_to format_path(@format), method: 'delete',
-                  class: 'btn btn-default',
-                  data: { confirm: 'Deleting this format make it '\
-                          'unavailable for new resource assessments. Are you '\
-                          'sure you want to delete this format?' } do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-          Delete
-      <% end %>
-    </div>
-  </div>
-</div>
+<h1><%= @format.name %></h1>
 
 <div class="row">
 
