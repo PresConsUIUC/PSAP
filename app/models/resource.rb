@@ -251,13 +251,6 @@ class Resource < ActiveRecord::Base
     stats
   end
 
-  def complete_assessment_questions_in_section(assessment_section)
-    self.assessment_question_responses.
-        select{ |r| !r.assessment_question_option.nil? }.
-        map{ |r| r.assessment_question }.
-        select{ |q| q.assessment_section.id == assessment_section.id }
-  end
-
   def assessment_percent_complete_in_section(section)
     all_aqs = section.assessment_questions_for_format(self.format)
     complete_aqs = self.complete_assessment_questions_in_section(section)
