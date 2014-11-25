@@ -10,6 +10,11 @@ body#new_location, body#edit_location, body#new_institution, body#edit_instituti
     margin-top:1em;
     padding-top:1em;
   }
+  div#sections {
+    button.save {
+      margin-top:1em;
+    }
+  }
   .affix {
     margin: 0 10% 0 0;
     width:21.5%;

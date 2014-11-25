@@ -288,7 +288,7 @@
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#section-<%= section.id %>">
                 <%= section.name %>
-                (<%= (@resource.assessment_percent_complete_in_section(section) * 100).round %>% complete)
+                <small>(<%= (@resource.assessment_percent_complete_in_section(section) * 100).round %>% complete)</small>
               </a>
             </h4>
           </div>
