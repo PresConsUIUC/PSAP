@@ -350,68 +350,7 @@ var ResourceForm = {
         select.filter(':first').next('a').attr('href',
                 root_url + 'format-id-guide/' + help_page + help_anchor).show();
 
-        // check for assessment questions
-        var questions_url = root_url + 'formats/' + format['id'] +
-            '/assessment-questions';
-        $.getJSON(questions_url, function (data) {
-            $.each(data, function (i, object) {
-                ResourceForm.insertQuestionIn(
-                    ResourceForm.nodeForQuestion(object, i),
-                    $('div[data-id="' + object['assessment_section_id'] +
-                        '"] div.section-questions'));
-            });
-            if (data.length > 0) {
-                var onOptionChanged = function() {
-                    // check for dependent (child) questions
-                    var selected_option_id = $(this).val();
-                    var question_elem = $(this).closest('.assessment_question');
-                    var qid = question_elem.data('id');
-                    var child_questions_url = root_url + 'formats/' +
-                        format['id'] + '/assessment-questions?parent_id=' + qid;
-                    $.getJSON(child_questions_url, function(data) {
-                        $.each(data, function (i, object) {
-                            var child_question_elem =
-                                $('.assessment_question[data-id=' + object['id'] + ']');
-                            var add = false;
-                            $.each(object['enabling_assessment_question_options'], function (i, opt) {
-                                if (opt['id'] == selected_option_id) {
-                                    add = true;
-                                }
-                            });
-                            if (add) {
-                                if (child_question_elem.length < 1) {
-                                    var depth = 0;
-                                    if (question_elem) {
-                                        depth = question_elem.data('depth') + 1;
-                                    }
-                                    ResourceForm.insertQuestionAfter(
-                                        ResourceForm.nodeForQuestion(object, i, depth),
-                                        question_elem);
-                                }
-                            } else {
-                                child_question_elem.remove();
-                            }
-                        });
-
-                        $('.assessment_question input').off('change').
-                            on('change', onOptionChanged);
-                        $('[data-spy="scroll"]').each(function () {
-                            $(this).scrollspy('refresh')
-                        })
-                    });
-
-                    ResourceForm.updateProgress();
-                };
-                $('.assessment_question input').on('change', onOptionChanged);
-
-                $('body').scrollspy({ target: '#sections' });
-            }
-            ResourceForm.updateProgress();
-
-            if (onCompleteCallback) {
-                onCompleteCallback();
-            }
-        });
+        ResourceForm.showAssessmentQuestions(format, onCompleteCallback);
     },
 
     /**
@@ -488,14 +427,17 @@ var ResourceForm = {
                         setInitialFormatVectorSelections();
                     }
 
-                    // select the question response options
-                    $('input[name="selected_option_ids"]').each(function() {
-                        var selected_id = $(this).val();
-                        $('[data-type="option"]').each(function() {
-                            if ($(this).val() == selected_id) {
-                                $(this).prop('checked', true);
-                            }
+                    $(document).on('PSAPAssessmentQuestionsAdded', function() {
+                        // select the question response options
+                        $('input[name="selected_option_ids"]').each(function() {
+                            var selected_id = $(this).val();
+                            $('[data-type="option"]').each(function() {
+                                if ($(this).val() == selected_id) {
+                                    $(this).prop('checked', true);
+                                }
+                            });
                         });
+                        ResourceForm.updateProgress();
                     });
                     ResourceForm.updateProgress();
                 }
@@ -515,6 +457,72 @@ var ResourceForm = {
         // Original Document
         return ($('input[name="format_class"]:checked').val() == 3 ||
         $('[name="resource[format_id]"]').val() == 159);
+    },
+
+    showAssessmentQuestions: function(format, onCompleteCallback) {
+        var root_url = $('input[name="root-url"]').val();
+        var questions_url = root_url + 'formats/' + format['id'] +
+            '/assessment-questions';
+        $.getJSON(questions_url, function (data) {
+            $.each(data, function (i, object) {
+                ResourceForm.insertQuestionIn(
+                    ResourceForm.nodeForQuestion(object, i),
+                    $('div[data-id="' + object['assessment_section_id'] +
+                    '"] div.section-questions'));
+            });
+            if (data.length > 0) {
+                var onOptionChanged = function() {
+                    // check for dependent (child) questions
+                    var selected_option_id = $(this).val();
+                    var question_elem = $(this).closest('.assessment_question');
+                    var qid = question_elem.data('id');
+                    var child_questions_url = root_url + 'formats/' +
+                        format['id'] + '/assessment-questions?parent_id=' + qid;
+                    $.getJSON(child_questions_url, function(data) {
+                        $.each(data, function (i, object) {
+                            var child_question_elem =
+                                $('.assessment_question[data-id=' + object['id'] + ']');
+                            var add = false;
+                            $.each(object['enabling_assessment_question_options'], function (i, opt) {
+                                if (opt['id'] == selected_option_id) {
+                                    add = true;
+                                }
+                            });
+                            if (add) {
+                                if (child_question_elem.length < 1) {
+                                    var depth = 0;
+                                    if (question_elem) {
+                                        depth = question_elem.data('depth') + 1;
+                                    }
+                                    ResourceForm.insertQuestionAfter(
+                                        ResourceForm.nodeForQuestion(object, i, depth),
+                                        question_elem);
+                                }
+                            } else {
+                                child_question_elem.remove();
+                            }
+                        });
+
+                        $('.assessment_question input').off('change').
+                            on('change', onOptionChanged);
+                        $('[data-spy="scroll"]').each(function () {
+                            $(this).scrollspy('refresh')
+                        })
+                    });
+
+                    ResourceForm.updateProgress();
+                };
+                $('.assessment_question input').on('change', onOptionChanged);
+
+                $('body').scrollspy({ target: '#sections' });
+            }
+            ResourceForm.updateProgress();
+
+            if (onCompleteCallback) {
+                onCompleteCallback();
+            }
+            $('body').trigger('PSAPAssessmentQuestionsAdded');
+        });
     },
 
     showFormatVectorMenus: function() {
