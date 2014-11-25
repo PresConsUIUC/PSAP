@@ -195,8 +195,10 @@
                     <% end %>
                   </dd>
                 <% end %>
-                <dt>Description</dt>
-                <dd><%= @resource.description ? @resource.description : '(None)' %></dd>
+                <% unless @resource.description.blank? %>
+                  <dt>Description</dt>
+                  <dd><%= @resource.description %></dd>
+                <% end %>
               </dl>
             </div>
             <div class="col-sm-4">
