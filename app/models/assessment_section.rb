@@ -9,6 +9,10 @@ class AssessmentSection < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 255 }
   validates_uniqueness_of :name, scope: :assessment_id
 
+  def assessment_questions_for_format(format)
+    format.all_assessment_questions.where(assessment_section: self)
+  end
+
   def max_score
     score = 0
     self.assessment_questions.each do |question|
