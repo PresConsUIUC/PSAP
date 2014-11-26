@@ -4,8 +4,15 @@
   <dd class="depth-<%= depth %>">
     <ul>
       <% question.assessment_question_options.order(:index).each do |option| %>
-        <li class="<%= response and response.assessment_question_option and
-                               option.id == response.assessment_question_option.id ? 'selected' : '' %>">
+        <%
+        class_ = ''
+        if response and response.assessment_question_option and
+                option.id == response.assessment_question_option.id
+          class_ = 'selected ' + bootstrap_fg_class_for_score(
+                  response.assessment_question_option.value)
+        end
+        %>
+        <li class="<%= class_ %>">
           <%= option.name %>
         </li>
       <% end %>
