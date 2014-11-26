@@ -283,7 +283,32 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
 }
 
-ul.users {
+ul.psap-entity-list {
+  list-style-type:none;
+  margin-left:0px;
+  padding-left:0px;
+  li {
+    border-bottom:1px solid #dddddd;
+    padding:1em 0em 1em 0em;
+  }
+  li:first-child {
+    padding-top:0px;
+  }
+  li:last-child {
+    border-bottom:none;
+  }
+  small {
+    margin-left:0.4em;
+  }
+  span.title {
+    font-size:1.3em;
+  }
+  span.description {
+    color:#606060;
+  }
+}
+
+ul.users { /* TODO: replace with psap-entity-list */
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;

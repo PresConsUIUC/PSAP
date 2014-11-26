@@ -1,28 +1,14 @@
 <% # Will be read by PSAP.updateResultsCount() in JS %>
 <input type="hidden" name="results_count" value="<%= @repositories.total_entries %>">
 
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th></th>
-    <th>Name</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <!-- Edit -->
+<ul class="psap-entity-list">
   <% @repositories.each do |repository| %>
-      <tr>
-        <td>
-          <%= link_to 'Edit', edit_repository_path(repository) %>
-        </td>
-        <td><%= link_to repository.name, repository %></td>
-        <td><%= repository.locations.count %>
-          <%= repository.locations.count == 1 ? 'location' : 'locations' %></td>
-      </tr>
+      <li>
+        <span class="title"><%= link_to repository.name, repository %></span>
+        <small><%= pluralize(repository.locations.count, 'location') %></small>
+      </li>
   <% end %>
-  </tbody>
-</table>
+</ul>
 
 <div class="text-center">
   <%= will_paginate @repositories, renderer: BootstrapPagination::Rails %>
