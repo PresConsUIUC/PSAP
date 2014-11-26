@@ -16,8 +16,8 @@
       <small><%= glyphicon(@location) %>Location</small>
     </h1>
   </div>
-  <div class="col-sm-8" style="text-align:right">
-    <div class="btn-group">
+  <div class="col-sm-7">
+    <div class="btn-group" style="float:right">
       <!-- Assess a Resource Here button -->
       <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
         <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>

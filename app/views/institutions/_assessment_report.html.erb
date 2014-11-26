@@ -39,7 +39,7 @@
       <ul>
         <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li> <!-- TODO: -->
         <li><%= all_assessed_items.length %> items assessed</li>
-        <li>Assessed by: <%= link_to(resource.user.full_name, resource.user) %></li>
+        <li>Assessed by: <%= glyphicon(resource.user) %> <%= link_to(resource.user.full_name, resource.user) %></li>
         <li>Assessed on: <%= local_time(resource.updated_at) %></li>
         <li>Formats present:
           <ul>

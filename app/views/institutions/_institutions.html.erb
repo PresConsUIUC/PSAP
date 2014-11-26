@@ -10,7 +10,8 @@
       <li>
         <span class="title"><%= link_to institution.name, institution %></span>
         <small>
-          <!-- TODO: add repository count icon -->
+          <%= glyphicon(Repository, pluralize(institution.repositories.count, 'repository')) %>
+          <%= institution.repositories.count %>
           <%= glyphicon(Resource, pluralize(institution.resources.count, 'resource')) %>
           <%= institution.resources.count %>
           <%= glyphicon(User, pluralize(institution.users.count, 'user')) %>
