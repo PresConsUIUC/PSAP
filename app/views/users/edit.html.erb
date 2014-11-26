@@ -20,30 +20,46 @@
   <!-- left column menu -->
   <div class="col-sm-3">
     <nav>
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#basic_info">Basic Information</a></li>
-        <li><a href="#institution">Institution</a></li>
-        <li><a href="#preferences">Preferences</a></li>
-        <li><a href="#change_password">Change Password</a></li>
+      <ul class="nav nav-pills nav-stacked" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#basic_info" data-toggle="tab" aria-controls="basic_info">
+            Basic Information
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#institution" data-toggle="tab" aria-controls="institution">
+            Institution
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#preferences" data-toggle="tab" aria-controls="preferences">
+            Preferences
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#change_password" data-toggle="tab" aria-controls="change_password">
+            Change Password
+          </a>
+        </li>
       </ul>
     </nav>
   </div>
 
   <div class="col-sm-9 tab-content">
 
-    <div id="basic_info" class="tab-pane active">
+    <div role="tabpanel" id="basic_info" class="tab-pane active">
       <%= render 'basic_info_form' %>
     </div>
 
-    <div id="institution" class="tab-pane">
+    <div role="tabpanel" id="institution" class="tab-pane">
       <%= render 'institution_form' %>
     </div>
 
-    <div id="preferences" class="tab-pane">
+    <div role="tabpanel" id="preferences" class="tab-pane">
       <%= render 'preferences_form' %>
     </div>
 
-    <div id="change_password" class="tab-pane">
+    <div role="tabpanel" id="change_password" class="tab-pane">
       <%= render 'change_password_form' %>
     </div>
 
