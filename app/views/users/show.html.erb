@@ -94,7 +94,16 @@
   <div class="col-sm-4">
     <dl>
       <dt>Institution</dt>
-      <dd><%= @user.institution ? @user.institution.name : 'Unaffiliated' %></dd>
+      <dd>
+        <% if @user.institution %>
+          <%= link_to @user.institution do %>
+            <%= glyphicon(@user.institution) %>
+            <%= @user.institution.name %>
+          <% end %>
+        <% else %>
+          Unaffiliated
+        <% end %>
+      </dd>
       <dt>Email</dt>
       <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
       <dt>Account</dt>
@@ -107,9 +116,9 @@
       <dt>Last Sign-In</dt>
       <dd>
         <% if @user.last_signin %>
-            <%= local_time_ago(@user.last_signin) %>
+          <%= local_time_ago(@user.last_signin) %>
         <% else %>
-            Never
+          Never
         <% end %>
       </dd>
     </dl>
@@ -131,39 +140,39 @@
            # when the user doesn't own the entire hierarchy. So we will display
            # all of the user's resources in a flat list. %>
         <% if @resources.any? %>
-            <table class="table table-striped">
-              <thead>
+          <table class="table table-striped">
+            <thead>
               <tr>
                 <th>Title</th>
                 <th>Complete</th>
                 <th>Score</th>
               </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
               <% @resources.each do |resource| %>
-                  <tr>
-                    <td>
-                      <%= link_to resource do %>
-                        <%= glyphicon(resource) %>
-                        <%= resource.name %>
-                      <% end %>
-                    </td>
-                    <td><%= number_to_human((resource.assessment_percent_complete * 100).round) %>%</td>
-                    <td><%= number_to_human((resource.assessment_score * 100).round) %></td>
-                  </tr>
+                <tr>
+                  <td>
+                    <%= link_to resource do %>
+                      <%= glyphicon(resource) %>
+                      <%= resource.name %>
+                    <% end %>
+                  </td>
+                  <td><%= number_to_human((resource.assessment_percent_complete * 100).round) %>%</td>
+                  <td><%= number_to_human((resource.assessment_score * 100).round) %></td>
+                </tr>
               <% end %>
-              </tbody>
-            </table>
+            </tbody>
+          </table>
         <% else %>
-            <% if @user == current_user %>
-                <p>You have not begun any assessments.</p>
-            <% else %>
-                <p>This user has not begun any assessments.</p>
-            <% end %>
+          <% if @user == current_user %>
+            <p>You have not begun any assessments.</p>
+          <% else %>
+            <p>This user has not begun any assessments.</p>
+          <% end %>
         <% end %>
       </div>
       <div id="activity" class="tab-pane">
-        <%= render 'shared/events', events: @events %>
+        <%= render partial: 'shared/events', locals: { events: @events } %>
       </div>
     </div>
 

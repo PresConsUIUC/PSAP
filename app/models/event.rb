@@ -35,6 +35,29 @@ class Event < ActiveRecord::Base
         order(created_at: :desc)
   end
 
+  def associated_entity_class
+    if self.assessments.any?
+      return Assessment
+    elsif self.assessment_questions.any?
+      return AssessmentQuestion
+    elsif self.assessment_sections.any?
+      return AssessmentSection
+    elsif self.formats.any?
+      return Format
+    elsif self.institutions.any?
+      return Institution
+    elsif self.locations.any?
+      return Location
+    elsif self.repositories.any?
+      return Repository
+    elsif self.resources.any?
+      return Resource
+    elsif self.users.any?
+      return User
+    end
+    nil
+  end
+
   private
 
   def self.parse_date(date)
