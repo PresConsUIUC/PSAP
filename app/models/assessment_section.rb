@@ -10,7 +10,8 @@ class AssessmentSection < ActiveRecord::Base
   validates_uniqueness_of :name, scope: :assessment_id
 
   def assessment_questions_for_format(format)
-    format.all_assessment_questions.where(assessment_section: self)
+    format ? format.all_assessment_questions.where(assessment_section: self) :
+        AssessmentQuestion.where(id: 'cats') # empty set
   end
 
   def max_score
