@@ -134,21 +134,22 @@
             <table class="table table-striped">
               <thead>
               <tr>
-                <th></th>
                 <th>Title</th>
-                <th>Type</th>
                 <th>Complete</th>
+                <th>Score</th>
               </tr>
               </thead>
               <tbody>
               <% @resources.each do |resource| %>
                   <tr>
                     <td>
-                      <%= link_to 'Edit', edit_resource_path(resource) %>
+                      <%= link_to resource do %>
+                        <%= glyphicon(resource) %>
+                        <%= resource.name %>
+                      <% end %>
                     </td>
-                    <td><%= link_to resource.name, resource %></td>
-                    <td><%= resource.readable_resource_type %></td>
-                    <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
+                    <td><%= number_to_human((resource.assessment_percent_complete * 100).round) %>%</td>
+                    <td><%= number_to_human((resource.assessment_score * 100).round) %></td>
                   </tr>
               <% end %>
               </tbody>
