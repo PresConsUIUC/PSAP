@@ -5,24 +5,26 @@
   <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
 </div>
 
-<table class="institutions table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Resources</th>
-      <th>Users</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @institutions.each do |institution| %>
-      <tr>
-        <td><%= link_to institution.name, institution %></td>
-        <td class="center"><%= institution.resources.count %></td>
-        <td class="center"><%= institution.users.count %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<ul class="institutions psap-entity-list">
+  <% @institutions.each do |institution| %>
+      <li>
+        <span class="title"><%= link_to institution.name, institution %></span>
+        <small>
+          <!-- TODO: add repository count icon -->
+          <span title="<%= pluralize(institution.resources.count, 'resource') %>"
+                class="glyphicon glyphicon-folder-open"
+                aria-hidden="true"></span>
+            <%= institution.resources.count %>
+          <span title="<%= pluralize(institution.users.count, 'user') %>"
+                class="glyphicon glyphicon-user"
+                aria-hidden="true"></span>
+            <%= institution.users.count %>
+        </small>
+        <br>
+        <span class="description"><%= institution.description %></span>
+      </li>
+  <% end %>
+</ul>
 
 <div class="text-center">
   <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
