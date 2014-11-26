@@ -286,6 +286,44 @@ module ApplicationHelper
   end
 
   ##
+  # @param entity Some entity: Institution, Location, etc.
+  # @param title Optional title for a tooltip
+  #
+  def glyphicon(entity, title = '')
+    class_ = ''
+    if entity.kind_of?(Institution) or entity == Institution
+      class_ = '' # TODO: return an icon
+    elsif entity.kind_of?(Location) or entity == Location
+      class_ = 'glyphicon-home'
+    elsif entity.kind_of?(Repository) or entity == Repository
+      class_ = '' # TODO: return an icon
+    elsif entity.kind_of?(Resource)
+      if entity.resource_type == ResourceType::COLLECTION
+        class_ = 'glyphicon-folder-open'
+      elsif entity.format
+        case entity.format.format_class
+          when FormatClass::AV
+            class_ = 'glyphicon-facetime-video'
+          when FormatClass::IMAGE
+            class_ = 'glyphicon-picture'
+          when FormatClass::UNBOUND_PAPER
+            class_ = 'glyphicon-file'
+          when FormatClass::BOUND_PAPER
+            class_ = 'glyphicon-book'
+        end
+      else
+        class_ = 'glyphicon-file'
+      end
+    elsif entity == Resource
+      class_ = 'glyphicon-file'
+    elsif entity.kind_of?(User) or entity == User
+      class_ = 'glyphicon-user'
+    end
+    raw("<span class=\"glyphicon #{class_}\" aria-hidden=\"true\" "\
+    "title=\"#{title}\"></span>")
+  end
+
+  ##
   # Works with retina.js. When using instead of retina_image_tag, you have
   # to add a "data-at2x" to your <img> tag.
   #

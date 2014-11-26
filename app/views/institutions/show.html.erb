@@ -8,7 +8,9 @@
 
 <div class="row">
   <div class="col-sm-8">
-    <h1><%= @institution.name %> <small>Institution</small></h1>
+    <h1><%= @institution.name %>
+      <small><%= glyphicon(@institution) %>Institution</small>
+    </h1>
   </div>
   <div class="col-sm-4">
     <div class="btn-group" style="float:right">

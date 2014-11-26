@@ -11,14 +11,10 @@
         <span class="title"><%= link_to institution.name, institution %></span>
         <small>
           <!-- TODO: add repository count icon -->
-          <span title="<%= pluralize(institution.resources.count, 'resource') %>"
-                class="glyphicon glyphicon-folder-open"
-                aria-hidden="true"></span>
-            <%= institution.resources.count %>
-          <span title="<%= pluralize(institution.users.count, 'user') %>"
-                class="glyphicon glyphicon-user"
-                aria-hidden="true"></span>
-            <%= institution.users.count %>
+          <%= glyphicon(Resource, pluralize(institution.resources.count, 'resource')) %>
+          <%= institution.resources.count %>
+          <%= glyphicon(User, pluralize(institution.users.count, 'user')) %>
+          <%= institution.users.count %>
         </small>
         <br>
         <span class="description"><%= institution.description %></span>

@@ -6,9 +6,7 @@
     <li>
       <span class="title"><%= link_to location.name, location %></span>
       <small>
-        <span title="<%= pluralize(location.resources.count, 'resource') %>"
-              class="glyphicon glyphicon-folder-open"
-              aria-hidden="true"></span>
+        <%= glyphicon(Resource, pluralize(location.resources.count, 'resource')) %>
         <%= location.resources.count %>
       </small>
       <br>
