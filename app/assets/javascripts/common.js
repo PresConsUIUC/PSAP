@@ -167,13 +167,6 @@ var PSAP = {
 
         PSAP.updateResultsCount();
 
-        // Used by the Bootstrap 3 tab bar
-        // http://getbootstrap.com/javascript/#tabs
-        $('ul.nav-tabs a, ul.nav-pills a').click(function(e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-
         // Show the glossary, bibliography, help, etc. in a modal panel instead of
         // a new page
         $('a.modal_view').on('click', function() {
