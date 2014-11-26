@@ -1,5 +1,24 @@
 module ResourcesHelper
 
+  # TODO: refactor into glyphicon(entity), move to ApplicationHelper, and return the complete span tag
+  def glyphicon(resource)
+    if resource.resource_type == ResourceType::COLLECTION
+      return 'glyphicon-folder-open'
+    elsif resource.format
+      case resource.format.format_class
+        when FormatClass::AV
+          return 'glyphicon-facetime-video'
+        when FormatClass::IMAGE
+          return 'glyphicon-picture'
+        when FormatClass::UNBOUND_PAPER
+          return 'glyphicon-file'
+        when FormatClass::BOUND_PAPER
+          return 'glyphicon-book'
+      end
+    end
+    'glyphicon-file'
+  end
+
   def human_readable_date(resource_date)
     if resource_date.year
       "#{resource_date.year} (#{resource_date.readable_date_type.downcase})"

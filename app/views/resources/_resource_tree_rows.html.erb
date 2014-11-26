@@ -6,9 +6,11 @@
         </td>
       <% end %>
       <td class="depth-<%= depth %>">
-        <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
+        <%= depth > 0 ? raw('&#8627; ') : '' %>
+        <span class="glyphicon <%= glyphicon(resource) %>"
+              aria-hidden="true"></span>
+        <%= link_to resource.name, resource %>
       </td>
-      <td><%= resource.readable_resource_type %></td>
       <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
     </tr>
     <%= render partial: 'resources/resource_tree_rows',

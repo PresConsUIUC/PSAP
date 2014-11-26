@@ -283,6 +283,14 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
 }
 
+.psap-entity-list {
+  span.glyphicon {
+    color:#808080;
+    margin-left:0.45em;
+    padding-right:0.2em;
+  }
+}
+
 ul.psap-entity-list {
   list-style-type:none;
   margin-left:0px;

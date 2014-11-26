@@ -5,7 +5,12 @@
   <% @locations.each do |location| %>
     <li>
       <span class="title"><%= link_to location.name, location %></span>
-      <small><%= pluralize(location.resources.count, 'resource') %></small>
+      <small>
+        <span title="<%= pluralize(location.resources.count, 'resource') %>"
+              class="glyphicon glyphicon-folder-open"
+              aria-hidden="true"></span>
+        <%= location.resources.count %>
+      </small>
       <br>
       <span class="description"><%= location.description %></span>
     </li>

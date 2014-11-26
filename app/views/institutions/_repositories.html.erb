@@ -5,7 +5,17 @@
   <% @repositories.each do |repository| %>
       <li>
         <span class="title"><%= link_to repository.name, repository %></span>
-        <small><%= pluralize(repository.locations.count, 'location') %></small>
+        <small>
+          <span title="<%= pluralize(repository.locations.count, 'location') %>"
+                class="glyphicon glyphicon-home"
+                aria-hidden="true"></span>
+          <%= repository.locations.count %>
+
+          <span title="<%= pluralize(repository.resources.count, 'resource') %>"
+                class="glyphicon glyphicon-folder-open"
+                aria-hidden="true"></span>
+          <%= repository.resources.count %>
+        </small>
       </li>
   <% end %>
 </ul>
