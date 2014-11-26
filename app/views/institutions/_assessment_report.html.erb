@@ -55,19 +55,19 @@
       <% stats = resource.assessed_item_statistics %>
       <table class="table">
         <tr>
-          <td><%= stats[:mean] %></td>
+          <td><%= (stats[:mean] * 100).round(1) %></td>
           <td>Average/Mean</td>
         </tr>
         <tr>
-          <td><%= stats[:median] %></td>
+          <td><%= (stats[:median] * 100).round(1) %></td>
           <td>Median</td>
         </tr>
         <tr>
-          <td><%= stats[:low] %></td>
+          <td><%= (stats[:low] * 100).round(1) %></td>
           <td>Low</td>
         </tr>
         <tr>
-          <td><%= stats[:high] %></td>
+          <td><%= (stats[:high] * 100).round(1) %></td>
           <td>High</td>
         </tr>
       </table>
