@@ -10,7 +10,8 @@
       <%= glyphicon(resource) %>
       <%= link_to resource.name, resource %>
     </td>
-    <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
+    <td><%= number_to_human(resource.assessment_percent_complete * 100) %>%</td>
+    <td><%= number_to_human(resource.assessment_score * 100) %></td>
   </tr>
   <%= render partial: 'resources/resource_tree_rows',
              locals: { resources: resource.children.order(:name),
