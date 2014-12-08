@@ -28,7 +28,7 @@ module StaticPageHelper
         button['class'] = 'btn btn-sm psap-rights'
         button['data-container'] = 'body'
         button['data-toggle'] = 'popover'
-        button['data-placement'] = 'top'
+        button['data-placement'] = 'bottom'
         button['data-content'] = caption.inner_html     
         button.content = 'i'
         caption.after(button)
