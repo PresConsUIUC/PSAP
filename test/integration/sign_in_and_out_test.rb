@@ -8,32 +8,28 @@ class SignInAndOutTest < ActionDispatch::IntegrationTest
   end
 
   def signin(username, password)
-    post_via_redirect '/sessions',
+    post_via_redirect('/sessions',
                       'session[username]' => username,
-                      'session[password]' => password
+                      'session[password]' => password)
   end
 
   test 'signin with invalid credentials should fail' do
-    get '/signin'
-    assert_response :success
-
-    post_via_redirect '/sessions',
-                      'session[username]' => 'adflakjdfljk',
-                      'session[password]' => 'adlkjadlfkjafd'
+    signin('adfasdf', 'asdfasfafd')
     assert_equal '/signin', path
+    assert_equal('Sign-in failed.', flash[:error])
   end
 
   test 'signin should redirect to dashboard' do
     get '/signin'
     assert_response :success
     signin(@valid_username, @valid_password)
-    assert_equal '/dashboard', path
+    assert_equal('/dashboard', path)
   end
 
   test 'signout should redirect to landing page' do
     signin(@valid_username, @valid_password)
     delete_via_redirect '/signout'
-    assert_equal '/', path
+    assert_equal('/', path)
   end
 
 end
