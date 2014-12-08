@@ -70,7 +70,7 @@
             <% @most_active_institution_users.each do |row| %>
                 <%= link_to row[:user] do %>
                     <%= gravatar_for row[:user], size: 52 %>
-                    <%= link_to user.full_name, row[:user] %>
+                    <%= link_to row[:user].full_name, row[:user] %>
                 <% end %>
             <% end %>
           </ol>
