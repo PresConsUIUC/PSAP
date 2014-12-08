@@ -1,15 +1,16 @@
 require 'test_helper'
 
-class UserFlowsTest < ActionDispatch::IntegrationTest
+class SignInAndOutTest < ActionDispatch::IntegrationTest
 
-  def signin
-    get '/signin'
-    assert_response :success
+  setup do
+    @valid_username = users(:normal_user).username
+    @valid_password = 'password'
+  end
 
+  def signin(username, password)
     post_via_redirect '/sessions',
-                      'session[username]' => users(:normal_user).username,
-                      'session[password]' => 'password'
-    assert_equal '/dashboard', path
+                      'session[username]' => username,
+                      'session[password]' => password
   end
 
   test 'signin with invalid credentials should fail' do
@@ -23,11 +24,14 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test 'signin should redirect to dashboard' do
-    signin
+    get '/signin'
+    assert_response :success
+    signin(@valid_username, @valid_password)
+    assert_equal '/dashboard', path
   end
 
   test 'signout should redirect to landing page' do
-    signin
+    signin(@valid_username, @valid_password)
     delete_via_redirect '/signout'
     assert_equal '/', path
   end
