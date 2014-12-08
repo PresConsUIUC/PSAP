@@ -5,7 +5,6 @@ assessment_section_one:
   index: 0
   name: Test section 1
   description: Test section description
-  weight: 0.5
   assessment_id: 1
 
 assessment_section_two:
@@ -13,5 +12,4 @@ assessment_section_two:
   index: 1
   name: Test section 2
   description: Test section description
-  weight: 0.5
   assessment_id: 1
