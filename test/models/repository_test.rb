@@ -26,7 +26,7 @@ class RepositoryTest < ActiveSupport::TestCase
     assert !@repository.save
   end
 
-  ########################### dependency tests ###############################
+  ########################### association tests ##############################
 
   test 'locations should be destroyed on destroy' do
     location = locations(:location_two)

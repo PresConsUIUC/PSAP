@@ -13,3 +13,10 @@ assessment_section_two:
   name: Test section 2
   description: Test section description
   assessment_id: 1
+
+assessment_section_three:
+  id: 3
+  index: 1
+  name: Test section 1
+  description: Test section description
+  assessment_id: 2

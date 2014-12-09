@@ -1,6 +1,5 @@
 class Event < ActiveRecord::Base
   belongs_to :user
-  has_and_belongs_to_many :assessments, join_table: 'events_assessments'
   has_and_belongs_to_many :assessment_questions,
                           join_table: 'events_assessment_questions'
   has_and_belongs_to_many :assessment_sections,
@@ -36,9 +35,7 @@ class Event < ActiveRecord::Base
   end
 
   def associated_entity_class
-    if self.assessments.any?
-      return Assessment
-    elsif self.assessment_questions.any?
+    if self.assessment_questions.any?
       return AssessmentQuestion
     elsif self.assessment_sections.any?
       return AssessmentSection

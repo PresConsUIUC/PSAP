@@ -26,13 +26,4 @@ class AssessmentQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true
 
-  def readable_question_type
-    case question_type
-      when AssessmentQuestionType::RADIO
-        'Radio buttons'
-      when AssessmentQuestionType::CHECKBOX
-        'Checkboxes'
-    end
-  end
-
 end

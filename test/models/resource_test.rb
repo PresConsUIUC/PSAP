@@ -16,14 +16,6 @@ class ResourceTest < ActiveSupport::TestCase
     flunk
   end
 
-  test 'resource cannot be a child of an item' do
-    flunk
-  end
-
-  test 'resource cannot have more than one response to the same assessment question' do
-    flunk
-  end
-
   ########################### property tests ################################
 
   # all_assessed_items
@@ -163,7 +155,7 @@ class ResourceTest < ActiveSupport::TestCase
     flunk
   end
 
-  ########################### dependency tests ###############################
+  ########################### association tests ##############################
 
   test 'assessment question responses should be destroyed on destroy' do
     flunk
@@ -209,6 +201,14 @@ class ResourceTest < ActiveSupport::TestCase
     @resource.subjects << subject
     @resource.destroy
     assert subject.destroyed?
+  end
+
+  test 'resource cannot be a child of an item' do
+    flunk
+  end
+
+  test 'resource cannot have more than one response to the same assessment question' do
+    flunk
   end
 
 end

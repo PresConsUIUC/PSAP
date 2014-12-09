@@ -20,7 +20,8 @@ class Format < ActiveRecord::Base
     ranges = self.temperature_ranges.sort_by { |obj| obj.min_temp_f or 0 }
     prev_range = nil
     ranges.each do |range|
-      if prev_range && range.min_temp_f && range.min_temp_f - prev_range.max_temp_f != 1
+      if prev_range and range.min_temp_f and
+          range.min_temp_f - prev_range.max_temp_f != 1
         errors[:base] << ('The minimum temperature must be one '\
         'degree greater than the maximum temperature of the next lower range.')
       end

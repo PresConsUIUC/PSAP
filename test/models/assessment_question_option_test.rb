@@ -6,6 +6,10 @@ class AssessmentQuestionOptionTest < ActiveSupport::TestCase
     @option = assessment_question_options(:assessment_question_option_one)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid AQO saves' do
@@ -36,6 +40,20 @@ class AssessmentQuestionOptionTest < ActiveSupport::TestCase
   test 'value is required' do
     @option.value = nil
     assert !@option.save
+  end
+
+  ############################ method tests #################################
+
+  # none
+
+  ########################## association tests ##############################
+
+  # assessment_question_responses
+  test 'assessment question responses are destroyed on delete' do
+    aqr = assessment_question_responses(:assessment_question_response_one)
+    @option.assessment_question_responses << aqr
+    @option.destroy!
+    assert aqr.destroyed?
   end
 
 end

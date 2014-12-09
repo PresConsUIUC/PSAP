@@ -47,7 +47,7 @@ class Institution < ActiveRecord::Base
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r['count'],
+    counts.map{ |r| { count: r['count'].to_i,
                       institution: Institution.find(r['institution_id']) } }
   end
 
@@ -73,7 +73,7 @@ class Institution < ActiveRecord::Base
 
     results = []
     counts.each do |row|
-      results << { count: row['count'],
+      results << { count: row['count'].to_i,
                    user: User.find(row['user_id']) } if row['user_id']
     end
     results
