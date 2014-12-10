@@ -8,6 +8,10 @@ class ResourceNoteTest < ActiveSupport::TestCase
     @note.resource = resources(:resource_one)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid resource note saves' do
@@ -27,5 +31,13 @@ class ResourceNoteTest < ActiveSupport::TestCase
     @note.resource = nil
     assert !@note.save
   end
+
+  ############################# method tests #################################
+
+  # none
+
+  ########################### association tests ##############################
+
+  # none
 
 end

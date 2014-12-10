@@ -36,12 +36,13 @@ class Resource < ActiveRecord::Base
   validates :resource_type, presence: true,
             inclusion: { in: ResourceType.all,
                          message: 'must be a valid resource type.' }
+  validates :significance, allow_blank: true,
+            inclusion: { in: ResourceSignificance.all,
+                         message: 'must be a valid resource significance.' }
   validates :user, presence: true
 
   validate :validates_not_child_of_item
   validate :validates_one_response_per_question
-
-  validates_inclusion_of :significance, in: [0, 0.5, 1], allow_nil: true
 
   before_validation :prune_empty_submodels
   before_save :update_assessment_percent_complete, :update_assessment_score
@@ -263,6 +264,10 @@ class Resource < ActiveRecord::Base
     0.0
   end
 
+  def filename
+    self.local_identifier ? self.local_identifier : self.id.to_s
+  end
+
   ##
   # Submitted assessment forms will often have empty submodels such as creator,
   # extent, etc. This method will remove them.
@@ -273,6 +278,26 @@ class Resource < ActiveRecord::Base
     self.resource_dates = self.resource_dates.select{ |r| r.year }
     self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
     self.subjects = self.subjects.select{ |s| s.name.length > 0 }
+  end
+
+  def readable_resource_type
+    case resource_type
+      when ResourceType::COLLECTION
+        'Collection'
+      when ResourceType::ITEM
+        'Item'
+    end
+  end
+
+  def readable_significance
+    case significance
+      when ResourceSignificance::LOW
+        'Low'
+      when ResourceSignificance::MODERATE
+        'Moderate'
+      when ResourceSignificance::HIGH
+        'High'
+    end
   end
 
   ##
@@ -324,30 +349,6 @@ class Resource < ActiveRecord::Base
       self.assessment_score = format_score + (question_score / 100) * 0.55
     else
       self.assessment_score = 0
-    end
-  end
-
-  def filename
-    self.local_identifier ? self.local_identifier : self.id
-  end
-
-  def readable_resource_type
-    case resource_type
-      when ResourceType::COLLECTION
-        'Collection'
-      when ResourceType::ITEM
-        'Item'
-    end
-  end
-
-  def readable_significance
-    case significance
-      when ResourceSignificance::LOW
-        'Low'
-      when ResourceSignificance::MODERATE
-        'Moderate'
-      when ResourceSignificance::HIGH
-        'High'
     end
   end
 

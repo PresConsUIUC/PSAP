@@ -19,8 +19,12 @@ class UserTest < ActiveSupport::TestCase
 
   test 'setup generates a confirmation code' do
     user = User.new(users(:normal_user).attributes)
-    user.confirmation_code = 'cats'
-    assert_equal 'cats', user.confirmation_code
+    assert_not_nil user.confirmation_code
+  end
+
+  test 'setup sets the feed key' do
+    user = User.new(users(:normal_user).attributes)
+    assert_not_nil user.feed_key
   end
 
   test 'valid user saves' do
@@ -35,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
     assert !@user.save
   end
 
-  test 'email is case-insensitively unique' do
+  test 'email must be case-insensitively unique' do
     @user.save
 
     user2 = users(:unaffiliated_user)
@@ -43,10 +47,21 @@ class UserTest < ActiveSupport::TestCase
     assert !user2.save
   end
 
-  test 'email is downcased on save' do
+  test 'email should be downcased on save' do
     @user.email = 'TEST@EXAMPLE.ORG'
     @user.save
     assert_equal 'test@example.org', @user.email
+  end
+
+  # feed_key
+  test 'feed_key is required' do
+    @user.feed_key = nil
+    assert !@user.save
+  end
+
+  test 'feed_key should be 255 characters or less' do
+    @user.feed_key = 'a' * 256
+    assert !@user.save
   end
 
   # first_name
@@ -62,10 +77,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   # password
-  test 'password is not required' do
+  test 'password is required' do
     @user.password = nil
-    @user.password_confirmation = nil
-    assert @user.save
+    assert !@user.save
   end
 
   test 'password should be a minimum of 6 characters' do
@@ -93,15 +107,25 @@ class UserTest < ActiveSupport::TestCase
     assert !user2.save
   end
 
+  test 'username should be 20 characters or less' do
+    @user.username = 'a' * 21
+    assert !@user.save
+  end
+
   ############################ method tests #################################
+
+  # to_param
+  test 'to_param should return the username' do
+    assert_equal @user.username, @user.to_param
+  end
 
   # full_name
   test 'full name is correct' do
     assert_equal "#{@user.first_name} #{@user.last_name}", @user.full_name
   end
 
-  # has_permission
-  test 'has_permission should work' do
+  # has_permission?
+  test 'has_permission? should work' do
     assert_equal @user.role.has_permission?('cats'),
                  @user.has_permission?('cats')
   end
@@ -110,5 +134,16 @@ class UserTest < ActiveSupport::TestCase
   test 'is_admin? should work' do
     assert_equal @user.role.is_admin?, @user.is_admin?
   end
+
+  # reset_feed_key
+  test 'reset_feed_key should work' do
+    initial = @user.feed_key
+    @user.reset_feed_key
+    assert_not_equal @user.feed_key, initial
+  end
+
+  ########################### association tests ##############################
+
+  # none
 
 end

@@ -6,6 +6,10 @@ class TemperatureRangeTest < ActiveSupport::TestCase
     @range = temperature_ranges(:temp_range_two)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid range saves' do
@@ -44,5 +48,13 @@ class TemperatureRangeTest < ActiveSupport::TestCase
     @range.score = -0.4
     assert !@range.save
   end
+
+  ############################# method tests #################################
+
+  # none
+
+  ########################### association tests ##############################
+
+  # none
 
 end

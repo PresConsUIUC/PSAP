@@ -5,6 +5,11 @@ assessment_question_response_one:
   assessment_question_id: 1
   assessment_question_option_id: 1
 
+assessment_question_response_one_point_five:
+  id: 3
+  assessment_question_id: 1
+  assessment_question_option_id: 2
+
 assessment_question_response_two:
   id: 2
   assessment_question_id: 2

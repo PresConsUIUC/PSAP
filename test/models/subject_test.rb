@@ -3,10 +3,12 @@ require 'test_helper'
 class SubjectTest < ActiveSupport::TestCase
 
   def setup
-    @default_values = {name: 'Test'}
-    @subject = Subject.new(@default_values)
-    @subject.resource = resources(:resource_one)
+    @subject = subjects(:subject_one)
   end
+
+  ######################### class method tests ##############################
+
+  # none
 
   ############################ object tests #################################
 
@@ -22,10 +24,23 @@ class SubjectTest < ActiveSupport::TestCase
     assert !@subject.save
   end
 
+  test 'name should be no more than 255 characters' do
+    @subject.name = 'a' * 256
+    assert !@subject.save
+  end
+
   # resource
   test 'resource is required' do
     @subject.resource = nil
     assert !@subject.save
   end
+
+  ############################# method tests #################################
+
+  # none
+
+  ########################### association tests ##############################
+
+  # none
 
 end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+permissions_roles_one:
+  permission_id: 1
+  role_id: 1
+
+permissions_roles_two:
+  permission_id: 2
+  role_id: 1
+
+permissions_roles_three:
+  permission_id: 3
+  role_id: 2

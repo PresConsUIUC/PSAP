@@ -74,7 +74,7 @@ class ResourceDate < ActiveRecord::Base
     begin_string = join_date_parts(self.begin_year, self.begin_month,
                                    self.begin_day)
     end_string = join_date_parts(self.end_year, self.end_month, self.end_day)
-    return "#{begin_string}/#{end_string}"
+    "#{begin_string}/#{end_string}"
   end
 
   def readable_date_type
@@ -91,9 +91,7 @@ class ResourceDate < ActiveRecord::Base
   private
 
   def join_date_parts(year, month, day)
-    parts = [year, month, day]
-    parts.reject! { |c| c.to_s.empty? }
-    return parts.join('-')
+    [year, month, day].reject{ |c| c.to_s.empty? }.join('-')
   end
 
 end

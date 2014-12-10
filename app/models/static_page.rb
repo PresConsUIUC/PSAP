@@ -32,8 +32,6 @@ class StaticPage < ActiveRecord::Base
     ActiveRecord::Base.connection.execute(sql)
   end
 
-  private
-
   ##
   # Copies the "html" property into the "searchable_html" property, stripping
   # headings, images, etc. before stripping tags.

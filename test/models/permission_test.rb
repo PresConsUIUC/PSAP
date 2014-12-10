@@ -6,6 +6,10 @@ class PermissionTest < ActiveSupport::TestCase
     @permission = permissions(:permission_one)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid permissions can be created' do
@@ -28,5 +32,13 @@ class PermissionTest < ActiveSupport::TestCase
     @permission.key = nil
     assert !@permission.save
   end
+
+  ############################# method tests #################################
+
+  # none
+
+  ########################### association tests ##############################
+
+  # none
 
 end
