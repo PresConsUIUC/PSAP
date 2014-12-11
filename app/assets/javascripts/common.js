@@ -109,13 +109,21 @@ var PSAP = {
 
             var value = elem.val().trim();
 
-            if (min_length > 0 && max_length > 0) {
-                if (value.length >= min_length && value.length <= max_length) {
+            if (min_length > 0) {
+                if (value.length >= min_length) {
                     passValidation(elem);
                 } else {
                     failValidation(elem);
                 }
-            } else if (type == PSAP.Form.TYPE_URL) {
+            }
+            if (max_length > 0) {
+                if (value.length <= max_length) {
+                    passValidation(elem);
+                } else {
+                    failValidation(elem);
+                }
+            }
+            if (type == PSAP.Form.TYPE_URL) {
                 // very crude checks here, but good enough
                 if (value.substring(0, 7) == 'http://' && value.length > 7
                     || value.substring(0, 8) == 'https://' && value.length > 8) {
