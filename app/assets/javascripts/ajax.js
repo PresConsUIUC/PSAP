@@ -58,6 +58,6 @@ $(document).ajaxComplete(function(event, request, options) {
 $(document).ajaxError(function(event, request) {
     var msg = request.getResponseHeader('X-Message');
     if (msg) {
-        alert(msg);
+        console.log(msg);
     }
 });
