@@ -3,16 +3,17 @@
 #
 # DO NOT COMMIT MAIL.YML TO VERSION CONTROL.
 #
-# PSAP already has working development & production email accounts which can
-# be plugged in here. Contact a project member for details.
+# For deployment at UIUC, PSAP already has working development & production
+# email accounts which can be plugged in here. Contact a project member for
+# details.
 
 development:
-  address:
-  from:
+  address: psap@example.org
+  from: 'Preservation Self-Assessment Program <psapdev@yahoo.com>'
   delivery_method: smtp
-  smtp_host:
-  smtp_port:
-  username:
+  smtp_host: smtp.mail.yahoo.com
+  smtp_port: 465
+  username: psapdev@yahoo.com
   password:
   authentication: plain
   enable_starttls_auto: true
