@@ -13,6 +13,7 @@ class DashboardController < ApplicationController
         if @user.is_admin?
           @most_active_users = User.most_active(5)
           @most_active_institutions = Institution.most_active(5)
+          @confirmed_disabled_users = User.where(confirmed: true, enabled: false)
         end
         if @user.institution
           @most_active_institution_users = @user.institution.most_active_users(5)

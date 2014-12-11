@@ -16,6 +16,28 @@
 
 <% if current_user.is_admin? %>
 
+  <% if @confirmed_disabled_users.any? %>
+    <div class="col-sm-6">
+      <div class="panel panel-default dashboard">
+        <div class="panel-heading">
+          <h3 class="panel-title">Users awaiting approval</h3>
+        </div>
+        <div class="panel-body users">
+          <ul>
+            <% @confirmed_disabled_users.each do |user| %>
+              <li>
+                <%= link_to user do %>
+                  <%= gravatar_for user, size: 52 %>
+                  <%= link_to user.full_name, user %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="col-sm-6">
     <div class="panel panel-default dashboard">
       <div class="panel-heading">
@@ -25,10 +47,12 @@
         <% if @most_active_users.any? %>
           <ol>
             <% @most_active_users.each do |row| %>
-              <%= link_to row[:user] do %>
+              <li>
+                <%= link_to row[:user] do %>
                   <%= gravatar_for row[:user], size: 52 %>
-                  <%= link_to user.full_name, row[:user] %>
-              <% end %>
+                  <%= link_to row[:user].full_name, row[:user] %>
+                <% end %>
+              </li>
             <% end %>
           </ol>
         <% else %>
@@ -66,16 +90,18 @@
     </div>
     <div class="panel-body">
       <% if @most_active_institution_users.any? %>
-          <ol>
-            <% @most_active_institution_users.each do |row| %>
-                <%= link_to row[:user] do %>
-                    <%= gravatar_for row[:user], size: 52 %>
-                    <%= link_to row[:user].full_name, row[:user] %>
-                <% end %>
-            <% end %>
-          </ol>
+        <ol>
+          <% @most_active_institution_users.each do |row| %>
+            <li>
+              <%= link_to row[:user] do %>
+                <%= gravatar_for row[:user], size: 52 %>
+                <%= link_to row[:user].full_name, row[:user] %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
       <% else %>
-          <p>Nothing to show right now.</p>
+        <p>Nothing to show right now.</p>
       <% end %>
     </div>
   </div>
@@ -89,10 +115,12 @@
     <div class="panel-body">
       <% if @resources.any? %>
         <ul>
-          <% for resource in @resources %>
-              <li><%= link_to resource.name, resource %><br>
-                <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
-                  / updated <%= local_time_ago resource.updated_at %></small></li>
+          <% @resources.each do |resource| %>
+            <li>
+              <%= link_to resource.name, resource %><br>
+              <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
+                / updated <%= local_time_ago resource.updated_at %></small>
+            </li>
           <% end %>
         </ul>
       <% else %>
@@ -110,10 +138,12 @@
     <div class="panel-body">
       <% if @recent_assessments.any? %>
         <ul>
-          <% for resource in @recent_assessments %>
-            <li><%= link_to resource.name, resource %><br>
-                <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
-                  / updated <%= local_time_ago resource.updated_at %></small></li>
+          <% @recent_assessments.each do |resource| %>
+            <li>
+              <%= link_to resource.name, resource %><br>
+              <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
+                / updated <%= local_time_ago resource.updated_at %></small>
+            </li>
           <% end %>
         </ul>
       <% else %>
@@ -130,14 +160,14 @@
     </div>
     <div class="panel-body">
       <% if @user_events.any? %>
-          <ul>
-            <% @user_events.each do |event| %>
-                <li><%= event.description %>
-                  <small>(<%= local_time_ago event.created_at %>)</small></li>
-            <% end %>
-          </ul>
+        <ul>
+          <% @user_events.each do |event| %>
+            <li><%= event.description %>
+              <small>(<%= local_time_ago event.created_at %>)</small></li>
+          <% end %>
+        </ul>
       <% else %>
-          <p>You haven't done anything yet&hellip;</p>
+        <p>You haven't done anything yet&hellip;</p>
       <% end %>
     </div>
   </div>
@@ -148,20 +178,20 @@
     <div class="panel-heading">
       <h3 class="panel-title">Other users at my institution</h3>
     </div>
-    <div class="panel-body institution_users">
+    <div class="panel-body users">
       <% if @institution_users.any? %>
-          <ul>
-            <% @institution_users.each do |user| %>
-                <li>
-                  <%= link_to user do %>
-                      <%= gravatar_for user, size: 52 %>
-                      <%= link_to user.full_name, user %>
-                  <% end %>
-                </li>
-            <% end %>
-          </ul>
+        <ul>
+          <% @institution_users.each do |user| %>
+            <li>
+              <%= link_to user do %>
+                <%= gravatar_for user, size: 52 %>
+                <%= link_to user.full_name, user %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
       <% else %>
-          <p>You're the only one here&hellip;</p>
+        <p>You're the only one here&hellip;</p>
       <% end %>
     </div>
   </div>
@@ -176,8 +206,8 @@
       <% if @institution_events.any? %>
         <ul>
           <% @institution_events.each do |event| %>
-              <li><%= event.description %>
-                <small>(<%= local_time_ago event.created_at %>)</small></li>
+            <li><%= event.description %>
+              <small>(<%= local_time_ago event.created_at %>)</small></li>
           <% end %>
         </ul>
       <% else %>
