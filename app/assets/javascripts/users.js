@@ -1,6 +1,6 @@
 var ready = function() {
     // Code for the user registration, edit, and show forms.
-    if ($('#new_user') || $('.edit_user') || $('#show_user')) {
+    if ($('#new_user').length || $('.edit_user').length || $('#show_user').length) {
         $('.entity_menu a').on('click', function() {
             UserForm.attachEventListeners();
             return false;
@@ -24,6 +24,9 @@ var UserForm = {
         $('input#user_username').bind('keyup input paste', function() {
             UserForm.validateUsername();
         });
+        $('input#user_about').bind('keyup input paste', function() {
+            PSAP.Form.validate('user_last_name', 1, 0);
+        });
         $('input#user_password').bind('keyup input paste', function() {
             UserForm.validatePassword();
             UserForm.validatePasswordConfirmation();
@@ -31,6 +34,12 @@ var UserForm = {
         $('input#user_password_confirmation').bind('keyup input paste', function() {
             UserForm.validatePasswordConfirmation();
         });
+
+        if ($('meta[name="request-method"]').attr('content') == 'POST') {
+            $('input#user_first_name, input#user_last_name, ' +
+            'input#user_email, input#user_about, input#user_username, ' +
+            'input#user_password').trigger('paste');
+        }
     },
 
     validateEmail: function() {
@@ -42,10 +51,8 @@ var UserForm = {
 
         var value = input.val().trim();
 
-        // Far from perfect, but forces the user to at least put in the effort
-        // to make it look real.
+        // not perfect, but forces the user to at least put in some effort
         var regex = /\S+@\S+\.\S+/;
-
         if (regex.test(value)) {
             input.parent('div').addClass('has-success');
             input.next('span').addClass('glyphicon-ok');
@@ -100,8 +107,7 @@ var UserForm = {
                     msg_element.prev('span').removeClass('glyphicon-remove');
                 }
             },
-            success: function() {
-            }
+            success: function() {}
         });
     },
 

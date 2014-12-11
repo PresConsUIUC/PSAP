@@ -11,13 +11,11 @@ class ConfirmUserCommand < Command
       @user.confirmed = true
       @user.confirmation_code = nil
       @user.enabled = false # admin needs to approve
-
-      UserMailer.account_approval_request_email(@user).deliver
-
       @user.save!
       @user.events << Event.create(
           description: "Confirmed user #{@user.username}",
           user: @user, address: @remote_ip)
+      UserMailer.account_approval_request_email(@user).deliver
     elsif @confirmation_code != @user.confirmation_code
       @user.events << Event.create(
           description: "Invalid confirmation code supplied for user "\
