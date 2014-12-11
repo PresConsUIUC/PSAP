@@ -23,3 +23,6 @@ database.yml
 mail.yml
 .secret
 
+# Ignore the bundle package. Normally we wouldn't want to, but github has
+# a file size limit of 100MB.
+vendor/cache
