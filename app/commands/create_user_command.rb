@@ -12,16 +12,17 @@ class CreateUserCommand < Command
       role = Role.find_by_name 'User'
       raise 'Missing "User" role.' unless role
       @user.role = role
-
-      UserMailer.confirm_account_email(@user).deliver if
-          @user.save! and @send_email
+      ActiveRecord::Base.transaction do
+        @user.save!
+        UserMailer.confirm_account_email(@user).deliver if @send_email
+      end
     rescue ActiveRecord::RecordInvalid
       @user.events << Event.create(
           description: "Attempted to create a user account, but "\
-          "failed: #{@user.errors.full_messages[0]}",
+          "failed: #{@user.errors.full_messages.first}",
           user: nil, address: @remote_ip, event_level: EventLevel::DEBUG)
       raise ValidationError,
-            "Failed to create user account: #{@user.errors.full_messages[0]}"
+            "Failed to create user account: #{@user.errors.full_messages.first}"
     rescue => e
       @user.events << Event.create(
           description: "Attempted to create a user account, but "\
