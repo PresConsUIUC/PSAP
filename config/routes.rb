@@ -96,15 +96,9 @@ Psap::Application.routes.draw do
     match '/import', to: 'resources#import', via: 'post', as: 'import_post'
     resources :resources, only: [:new, :create]
   end
-  #resources :roles # not using this at the moment
   resources :sessions, only: [:new, :create, :destroy]
 
-  # These rules will provide the /users resource, but with /users/new replaced
-  # by /register.
-  # TODO: eliminate /users/register
-  get '/users/register' => redirect('/register')
   resources :users, param: :username, path_names: { new: 'register' }
-  match '/register', to: 'users#new', via: 'get'
   match '/users/:username/confirm', to: 'users#confirm', via: 'get', as: 'confirm_user'
   match '/users/:username/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
   match '/users/:username/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
