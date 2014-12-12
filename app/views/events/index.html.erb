@@ -5,18 +5,17 @@
   <div class="col-sm-5">
     <h1>Event Log <small class="entity_count"></small></h1>
   </div>
-  <div class="col-sm-7">
-    <%= form_tag events_path, method: 'get', class: 'psap-live-search form-inline',
-                 style: 'float:right; max-width:100%' do %>
-        <input type="hidden" name="level" value="<%= @event_level %>">
-        <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                             class: 'form-control', style: 'width:150px' %>
-        <label for="begin_date">From:</label>
-        <input type="text" id="begin_date" name="begin_date" class="form-control"
-               style="width:120px" placeholder="YYYY-MM-DD">
-        <label for="begin_date">To:</label>
-        <input type="text" id="end_date" name="end_date" class="form-control"
-               style="width:120px" placeholder="YYYY-MM-DD">
+  <div class="col-sm-7 search" style="text-align:right">
+    <%= form_tag events_path, method: 'get', class: 'psap-live-search form-inline' do %>
+      <input type="hidden" name="level" value="<%= @event_level %>">
+      <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                           class: 'form-control', style: 'width:150px' %>
+      <label for="begin_date">From:</label>
+      <input type="text" id="begin_date" name="begin_date" class="form-control"
+             style="width:120px" placeholder="YYYY-MM-DD">
+      <label for="begin_date">To:</label>
+      <input type="text" id="end_date" name="end_date" class="form-control"
+             style="width:120px" placeholder="YYYY-MM-DD">
     <% end %>
   </div>
 </div>

@@ -278,7 +278,7 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
     width:120px;
   }
   input.active {
-    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 96px 8px;
+    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 126px 8px;
     @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
   }
 }
