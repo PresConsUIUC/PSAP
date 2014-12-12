@@ -27,7 +27,8 @@ class Event < ActiveRecord::Base
         parse_date(params[:end_date]) : Time.new('3000')
 
     Event.joins('LEFT JOIN users ON users.id = events.user_id').
-        where('events.description LIKE ? OR users.username LIKE ? OR events.address LIKE ?', q, q, q).
+        where('LOWER(events.description) LIKE ? OR LOWER(users.username) LIKE ? OR LOWER(events.address) LIKE ?',
+              q.downcase, q.downcase, q.downcase).
         where('events.created_at >= ?', begin_date).
         where('events.created_at <= ?', end_date).
         where('events.event_level <= ?', event_level).
