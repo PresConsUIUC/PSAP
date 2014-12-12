@@ -156,11 +156,17 @@ var PSAP = {
         });
         var input_timer;
         $('.psap-live-search input').on('keyup', function() {
+            var input = $(this);
+            input.addClass('active');
+
             clearTimeout(input_timer);
             var msec = 800; // wait this long after user has stopped typing
             var forms = $('.psap-live-search');
             input_timer = setTimeout(function() {
-                $.get(forms.attr('action'), forms.serialize(), null, 'script');
+                $.get(forms.attr('action'),
+                    forms.serialize(),
+                    function() { input.removeClass('active'); },
+                    'script');
                 return false;
             }, msec);
             return false;
