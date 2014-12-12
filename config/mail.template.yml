@@ -8,7 +8,7 @@
 # details.
 
 development:
-  address: psap@example.org
+  address: psapdev@yahoo.com
   from: 'Preservation Self-Assessment Program <psapdev@yahoo.com>'
   delivery_method: smtp
   smtp_host: smtp.mail.yahoo.com
