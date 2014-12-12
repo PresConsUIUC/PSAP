@@ -259,7 +259,7 @@ class Resource < ActiveRecord::Base
     all_aqs = section.assessment_questions_for_format(self.format)
     if all_aqs.length > 0
       complete_aqs = self.complete_assessment_questions_in_section(section)
-      complete_aqs.length.to_f / all_aqs.length.to_f
+      return complete_aqs.length.to_f / all_aqs.length.to_f
     end
     0.0
   end
