@@ -67,7 +67,7 @@ class StaticPageImporter
   def generate_images_for(image_filename)
     source_image_path = source_path_of_file(image_filename)
     if source_image_path
-      imgsrcbasename = File.basename(source_image_path, '.*')
+      imgsrcbasename = File.basename(source_image_path, '.*').gsub(' ', '_')
       imgsrcextname = File.extname(source_image_path)
       FileUtils.mkdir_p(@asset_path)
 
@@ -133,7 +133,8 @@ class StaticPageImporter
         # inject image widths & heights
         doc.css('img').each do |img|
           thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
-          img['src'] = "#{File.basename(img['src'], '.*')}-#{thumb_width}#{File.extname(img['src']).downcase}"
+          img['src'] = "#{File.basename(img['src'], '.*').gsub(' ', '_')}-"\
+          "#{thumb_width}#{File.extname(img['src']).downcase}"
           dimensions = `convert "#{@asset_path}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
           img['width'] = dimensions[0]
           img['height'] = dimensions[1]
