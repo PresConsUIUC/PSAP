@@ -38,14 +38,16 @@
 
   <div class="container-fluid">
 
-    <header class="page-header">
-      <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
-                                   alt:'PSAP logo', id:'title_logo'), root_path %>
+    <% unless current_page?(root_path) %>
+      <header class="page-header">
+        <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
+                                     alt:'PSAP logo', id:'title_logo'), root_path %>
 
-      <h1>
-        <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
-      </h1>
-    </header>
+        <h1>
+          <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
+        </h1>
+      </header>
+    <% end %>
 
     <% flash.each do |type, message| %>
       <div class="alert alert-dismissable <%= bootstrap_class_for(type) %>">
