@@ -12,7 +12,7 @@ role :db,  production_server
 
 set :rails_env, 'production'
 
-set :keep_releases, 0
+set :keep_releases, 2
 
 # Extended Server Syntax
 # ======================
