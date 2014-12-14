@@ -1,6 +1,5 @@
 class Event < ActiveRecord::Base
   belongs_to :user
-  has_and_belongs_to_many :assessments, join_table: 'events_assessments'
   has_and_belongs_to_many :assessment_questions,
                           join_table: 'events_assessment_questions'
   has_and_belongs_to_many :assessment_sections,
@@ -28,11 +27,33 @@ class Event < ActiveRecord::Base
         parse_date(params[:end_date]) : Time.new('3000')
 
     Event.joins('LEFT JOIN users ON users.id = events.user_id').
-        where('events.description LIKE ? OR users.username LIKE ? OR events.address LIKE ?', q, q, q).
+        where('LOWER(events.description) LIKE ? OR LOWER(users.username) LIKE ? OR LOWER(events.address) LIKE ?',
+              q.downcase, q.downcase, q.downcase).
         where('events.created_at >= ?', begin_date).
         where('events.created_at <= ?', end_date).
         where('events.event_level <= ?', event_level).
         order(created_at: :desc)
+  end
+
+  def associated_entity_class
+    if self.assessment_questions.any?
+      return AssessmentQuestion
+    elsif self.assessment_sections.any?
+      return AssessmentSection
+    elsif self.formats.any?
+      return Format
+    elsif self.institutions.any?
+      return Institution
+    elsif self.locations.any?
+      return Location
+    elsif self.repositories.any?
+      return Repository
+    elsif self.resources.any?
+      return Resource
+    elsif self.users.any?
+      return User
+    end
+    nil
   end
 
   private

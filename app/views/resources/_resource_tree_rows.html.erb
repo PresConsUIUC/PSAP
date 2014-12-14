@@ -1,18 +1,20 @@
 <% resources.each do |resource| %>
-    <tr>
-      <% if show_checkboxes %>
-        <td>
-          <input type="checkbox" name="resources[]" value="<%= resource.id %>">
-        </td>
-      <% end %>
-      <td class="depth-<%= depth %>">
-        <%= depth > 0 ? raw('&#8627; ') : '' %><%= link_to resource.name, resource %>
+  <tr>
+    <% if show_checkboxes %>
+      <td>
+        <input type="checkbox" name="resources[]" value="<%= resource.id %>">
       </td>
-      <td><%= resource.readable_resource_type %></td>
-      <td><%= number_to_human resource.assessment_percent_complete * 100 %>%</td>
-    </tr>
-    <%= render partial: 'resources/resource_tree_rows',
-               locals: { resources: resource.children.order(:name),
-                         depth: depth + 1,
-                         show_checkboxes: show_checkboxes } if resource.children.any? %>
+    <% end %>
+    <td class="depth-<%= depth %>">
+      <%= depth > 0 ? raw('&#8627; ') : '' %>
+      <%= glyphicon(resource) %>
+      <%= link_to resource.name, resource %>
+    </td>
+    <td><%= number_to_human(resource.assessment_percent_complete * 100) %>%</td>
+    <td><%= number_to_human(resource.assessment_score * 100) %></td>
+  </tr>
+  <%= render partial: 'resources/resource_tree_rows',
+             locals: { resources: resource.children.order(:name),
+                       depth: depth + 1,
+                       show_checkboxes: show_checkboxes } if resource.children.any? %>
 <% end %>

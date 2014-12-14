@@ -15,6 +15,26 @@ module ApplicationHelper
     end
   end
 
+  def breadcrumbs(items) # TODO: use this more
+    items = [items] if items.kind_of?(String)
+    crumb = '<ol class="breadcrumb">'
+    items.each_with_index do |item, index|
+      if index == items.length - 1
+        crumb += '<li class="active">'
+      else
+        crumb += '<li>'
+      end
+      if item.is_a?(Hash)
+        crumb += link_to(truncate(item.keys[0], length: 50), item.values[0])
+      else
+        crumb += truncate(item, length: 50)
+      end
+      crumb += '</li>'
+    end
+    crumb += '</ol>'
+    raw(crumb)
+  end
+
   def countries_for_select
     [['United States of America', 'United States of America'],
      ['Afghanistan', 'Afghanistan'],
@@ -263,6 +283,44 @@ module ApplicationHelper
      ['Zaire', 'Zaire'],
      ['Zambia', 'Zambia'],
      ['Zimbabwe', 'Zimbabwe']]
+  end
+
+  ##
+  # @param entity Some entity: Institution, Location, etc.
+  # @param title Optional title for a tooltip
+  #
+  def glyphicon(entity, title = '')
+    class_ = ''
+    if entity.kind_of?(Institution) or entity == Institution
+      class_ = '' # TODO: return an icon
+    elsif entity.kind_of?(Location) or entity == Location
+      class_ = 'glyphicon-home'
+    elsif entity.kind_of?(Repository) or entity == Repository
+      class_ = '' # TODO: return an icon
+    elsif entity.kind_of?(Resource)
+      if entity.resource_type == ResourceType::COLLECTION
+        class_ = 'glyphicon-folder-open'
+      elsif entity.format
+        case entity.format.format_class
+          when FormatClass::AV
+            class_ = 'glyphicon-facetime-video'
+          when FormatClass::IMAGE
+            class_ = 'glyphicon-picture'
+          when FormatClass::UNBOUND_PAPER
+            class_ = 'glyphicon-file'
+          when FormatClass::BOUND_PAPER
+            class_ = 'glyphicon-book'
+        end
+      else
+        class_ = 'glyphicon-file'
+      end
+    elsif entity == Resource
+      class_ = 'glyphicon-file'
+    elsif entity.kind_of?(User) or entity == User
+      class_ = 'glyphicon-user'
+    end
+    raw("<span class=\"glyphicon #{class_}\" aria-hidden=\"true\" "\
+    "title=\"#{title}\"></span>")
   end
 
   ##

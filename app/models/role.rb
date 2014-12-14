@@ -6,7 +6,7 @@ class Role < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
 
   def has_permission?(key)
-    self.is_admin? || self.permissions.select{ |p| p.key == key }.any?
+    self.is_admin? or self.permissions.where(key: key).any?
   end
 
 end

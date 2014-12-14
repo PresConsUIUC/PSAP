@@ -1,27 +1,23 @@
 <% provide(:title, @location.name) %>
 <% provide(:body_id, 'show_location') %>
 
-<ol class="breadcrumb">
-  <% if current_user.is_admin? %>
-    <li><%= link_to 'Institutions', institutions_path %></li>
-  <% end %>
-  <li>
-    <%= link_to @location.repository.institution.name,
-                polymorphic_path(@location.repository.institution) %>
-  </li>
-  <li>
-    <%= link_to @location.repository.name,
-                polymorphic_path(@location.repository) %>
-  </li>
-  <li class="active"><%= @location.name %></li>
-</ol>
+<% breadcrumbs = []
+   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+   breadcrumbs << { @location.repository.institution.name =>
+                            @location.repository.institution }
+   breadcrumbs << { @location.repository.name => @location.repository }
+   breadcrumbs << @location.name
+%>
+<%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-4">
-    <h1><%= @location.name %> <small>Location</small></h1>
+  <div class="col-sm-5">
+    <h1><%= @location.name %>
+      <small><%= glyphicon(@location) %> Location</small>
+    </h1>
   </div>
-  <div class="col-sm-8" style="text-align:right">
-    <div class="btn-group">
+  <div class="col-sm-7">
+    <div class="btn-group" style="float:right">
       <!-- Assess a Resource Here button -->
       <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
         <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
@@ -171,6 +167,7 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#section-<%= section.id %>">
                   <%= section.name %>
+                  <small>(<%= (@location.assessment_percent_complete_in_section(section) * 100).round %>% complete)</small>
                 </a>
               </h4>
             </div>
@@ -178,7 +175,7 @@
               <div class="panel-body">
                 <%= render partial: 'shared/assessment_questions', locals: {
                         entity: @location,
-                        assessment_questions: section.assessment_questions.where(parent_id: nil).order(:index),
+                        assessment_questions: section.assessment_questions.where(parent_id: nil),
                         depth: 0 } %>
               </div>
             </div>

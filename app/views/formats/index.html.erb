@@ -4,24 +4,12 @@
   <li class="active">Formats</li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-7">
-    <h1>Formats <small class="entity_count"></small></h1>
-  </div>
-  <div class="col-sm-5" style="text-align:right">
-    <div class="btn-group">
-      <%= link_to new_format_path, class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add Format
-      <% end %>
-    </div>
-  </div>
-</div>
+<h1>Formats <small class="entity_count"></small></h1>
 
 <%= form_tag formats_path, method: 'get', class: 'psap-live-search',
              style: 'float:right' do %>
-    <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                         class: 'form-control' %>
+  <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                       class: 'form-control' %>
 <% end %>
 
 <div id="formats">

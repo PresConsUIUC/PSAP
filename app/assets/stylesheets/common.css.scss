@@ -278,12 +278,45 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
     width:120px;
   }
   input.active {
-    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 96px 8px;
+    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 126px 8px;
     @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
   }
 }
 
-ul.users {
+.psap-entity-list {
+  span.glyphicon {
+    color:#808080;
+    margin-left:0.45em;
+    padding-right:0.2em;
+  }
+}
+
+ul.psap-entity-list {
+  list-style-type:none;
+  margin-left:0px;
+  padding-left:0px;
+  li {
+    border-bottom:1px solid #dddddd;
+    padding:1em 0em 1em 0em;
+  }
+  li:first-child {
+    padding-top:0px;
+  }
+  li:last-child {
+    border-bottom:none;
+  }
+  small {
+    margin-left:0.4em;
+  }
+  span.title {
+    font-size:1.3em;
+  }
+  span.description {
+    color:#606060;
+  }
+}
+
+ul.users { /* TODO: replace with psap-entity-list */
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;

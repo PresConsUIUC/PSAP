@@ -3,10 +3,12 @@ require 'test_helper'
 class ExtentTest < ActiveSupport::TestCase
 
   def setup
-    @default_values = { name: 'Test' }
-    @extent = Extent.new(@default_values)
-    @extent.resource = resources(:resource_one)
+    @extent = extents(:extent_one)
   end
+
+  ######################### class method tests ##############################
+
+  # none
 
   ############################ object tests #################################
 
@@ -22,10 +24,23 @@ class ExtentTest < ActiveSupport::TestCase
     assert !@extent.save
   end
 
+  test 'name should be 255 characters or less' do
+    @extent.name = 'a' * 256
+    assert !@extent.save
+  end
+
   # resource
   test 'resource is required' do
     @extent.resource = nil
     assert !@extent.save
   end
+
+  ############################ method tests #################################
+
+  # none
+
+  ########################## association tests ##############################
+
+  # none
 
 end

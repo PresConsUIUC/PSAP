@@ -148,7 +148,7 @@ var AssessmentForm = {
                         control += '<div class="radio">' +
                                 '<label>' +
                                     '<input type="radio" ' +
-                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' + // TODO: make this work with institutions too
+                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
@@ -165,7 +165,7 @@ var AssessmentForm = {
                         control += '<div class="checkbox">' +
                                 '<label>' +
                                     '<input type="checkbox" ' +
-                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' + // TODO: make this work with institutions too
+                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +

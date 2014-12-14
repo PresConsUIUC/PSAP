@@ -47,7 +47,7 @@ class Institution < ActiveRecord::Base
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r['count'],
+    counts.map{ |r| { count: r['count'].to_i,
                       institution: Institution.find(r['institution_id']) } }
   end
 
@@ -73,7 +73,7 @@ class Institution < ActiveRecord::Base
 
     results = []
     counts.each do |row|
-      results << { count: row['count'],
+      results << { count: row['count'].to_i,
                    user: User.find(row['user_id']) } if row['user_id']
     end
     results
@@ -132,7 +132,7 @@ class Institution < ActiveRecord::Base
         # properties with blanks
         csv << [resource.local_identifier] +
             [resource.name] +
-            [resource.assessment_score * 100] +
+            [resource.total_assessment_score * 100] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
             [resource.format ? resource.format.name : nil] +

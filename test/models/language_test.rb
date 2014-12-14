@@ -7,11 +7,26 @@ class LanguageTest < ActiveSupport::TestCase
     @default_values = languages(:english_language).attributes
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
+  ############################ object tests #################################
+
+  test 'valid language saves' do
+    assert @language.save
+  end
+
   ########################### property tests ################################
 
   # english_name
   test 'english_name is required' do
     @language.english_name = nil
+    assert !@language.save
+  end
+
+  test 'english_name should be no longer than 255 characters' do
+    @language.english_name = 'a' * 256
     assert !@language.save
   end
 
@@ -42,5 +57,18 @@ class LanguageTest < ActiveSupport::TestCase
     @language.native_name = nil
     assert !@language.save
   end
+
+  test 'native_name should be no longer than 255 characters' do
+    @language.native_name = 'a' * 256
+    assert !@language.save
+  end
+
+  ############################# method tests #################################
+
+  # none
+
+  ########################### association tests ##############################
+
+  # none
 
 end

@@ -9,7 +9,7 @@ var ready = function() {
             offset: { top: 220 }
         });
 
-        PSAP.smoothAnchorScroll(96);
+        PSAP.smoothAnchorScroll(90);
     }
 };
 

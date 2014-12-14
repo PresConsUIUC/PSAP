@@ -5,6 +5,7 @@ assessment_question_one:
   id: 1
   index: 0
   name: Sample question name
+  qid: 1
   question_type: 1
   weight: 0.5
   assessment_section_id: 1
@@ -15,6 +16,7 @@ assessment_question_two:
   parent_id: 1
   index: 1
   name: Sample question name
+  qid: 2
   question_type: 1
   weight: 0.5
   assessment_section_id: 1

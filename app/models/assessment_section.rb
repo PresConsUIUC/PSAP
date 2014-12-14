@@ -8,8 +8,11 @@ class AssessmentSection < ActiveRecord::Base
   validates :index, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates_uniqueness_of :name, scope: :assessment_id
-  validates_numericality_of :weight, greater_than_or_equal_to: 0,
-                            less_than_or_equal_to: 1, presence: true
+
+  def assessment_questions_for_format(format)
+    format ? format.all_assessment_questions.where(assessment_section: self) :
+        AssessmentQuestion.where(id: 'cats') # empty set
+  end
 
   def max_score
     score = 0

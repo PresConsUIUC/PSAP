@@ -17,4 +17,8 @@ body#events {
   div#events_list {
     margin-top:1em;
   }
+
+  div.search input.form-control {
+    margin:0px;
+  }
 }

@@ -7,13 +7,17 @@ body#dashboard div#page_content {
       margin-left:1.5em;
       padding-left:0px;
     }
+    .panel-body {
+      max-height:20em;
+      overflow-y:scroll;
+    }
     div.institution_association {
       input[type=submit], a {
         margin:1.8em auto;
         width:80%;
       }
     }
-    div.institution_users {
+    div.users {
       ul {
         margin:0px;
         padding:0px;

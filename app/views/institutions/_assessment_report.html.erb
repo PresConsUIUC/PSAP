@@ -39,14 +39,14 @@
       <ul>
         <li>&check; Item level&nbsp;&nbsp;&#9744; Sample</li> <!-- TODO: -->
         <li><%= all_assessed_items.length %> items assessed</li>
-        <li>Assessed by: <%= link_to(resource.user.full_name, resource.user) %></li>
+        <li>Assessed by: <%= glyphicon(resource.user) %> <%= link_to(resource.user.full_name, resource.user) %></li>
         <li>Assessed on: <%= local_time(resource.updated_at) %></li>
         <li>Formats present:
           <ul>
             <% resource.all_assessed_items.collect{ |r| r.format }.uniq{ |f| f.id }.each do |format| %>
               <li><%= link_to(format.name, format_id_guide_category_path(
                                                  format.format_id_guide_page,
-                                                 anchor: format.format_id_guide_anchor)) %></li>
+                                                 anchor: format.format_id_guide_anchor), target: '_blank') %></li>
             <% end %>
           </ul>
         </li>
@@ -55,19 +55,19 @@
       <% stats = resource.assessed_item_statistics %>
       <table class="table">
         <tr>
-          <td><%= stats[:mean] %></td>
+          <td><%= (stats[:mean] * 100).round(1) %></td>
           <td>Average/Mean</td>
         </tr>
         <tr>
-          <td><%= stats[:median] %></td>
+          <td><%= (stats[:median] * 100).round(1) %></td>
           <td>Median</td>
         </tr>
         <tr>
-          <td><%= stats[:low] %></td>
+          <td><%= (stats[:low] * 100).round(1) %></td>
           <td>Low</td>
         </tr>
         <tr>
-          <td><%= stats[:high] %></td>
+          <td><%= (stats[:high] * 100).round(1) %></td>
           <td>High</td>
         </tr>
       </table>

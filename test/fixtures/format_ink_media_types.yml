@@ -3,9 +3,7 @@
 one:
   name: MyString
   score: 9.99
-  group: 1
 
 two:
   name: MyString
   score: 9.99
-  group: 1

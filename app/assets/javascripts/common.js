@@ -1,13 +1,3 @@
-Array.prototype.sum = function () {
-    var total = 0;
-    var i = this.length;
-
-    while (i--) {
-        total += this[i];
-    }
-    return total;
-};
-
 var ready = function() {
     PSAP.init();
 };
@@ -109,13 +99,21 @@ var PSAP = {
 
             var value = elem.val().trim();
 
-            if (min_length > 0 && max_length > 0) {
-                if (value.length >= min_length && value.length <= max_length) {
+            if (min_length > 0) {
+                if (value.length >= min_length) {
                     passValidation(elem);
                 } else {
                     failValidation(elem);
                 }
-            } else if (type == PSAP.Form.TYPE_URL) {
+            }
+            if (max_length > 0) {
+                if (value.length <= max_length) {
+                    passValidation(elem);
+                } else {
+                    failValidation(elem);
+                }
+            }
+            if (type == PSAP.Form.TYPE_URL) {
                 // very crude checks here, but good enough
                 if (value.substring(0, 7) == 'http://' && value.length > 7
                     || value.substring(0, 8) == 'https://' && value.length > 8) {
@@ -148,11 +146,17 @@ var PSAP = {
         });
         var input_timer;
         $('.psap-live-search input').on('keyup', function() {
+            var input = $(this);
+            input.addClass('active');
+
             clearTimeout(input_timer);
             var msec = 800; // wait this long after user has stopped typing
             var forms = $('.psap-live-search');
             input_timer = setTimeout(function() {
-                $.get(forms.attr('action'), forms.serialize(), null, 'script');
+                $.get(forms.attr('action'),
+                    forms.serialize(),
+                    function() { input.removeClass('active'); },
+                    'script');
                 return false;
             }, msec);
             return false;
@@ -166,13 +170,6 @@ var PSAP = {
         });
 
         PSAP.updateResultsCount();
-
-        // Used by the Bootstrap 3 tab bar
-        // http://getbootstrap.com/javascript/#tabs
-        $('ul.nav-tabs a, ul.nav-pills a').click(function(e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
 
         // Show the glossary, bibliography, help, etc. in a modal panel instead of
         // a new page

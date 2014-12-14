@@ -2,7 +2,11 @@ body#new_resource, body#edit_resource {
   div#sections {
     display:none;
   }
+  div.format label {
+    margin-right:0.5em;
+  }
   div.format select {
+    margin: 0.5em 0em 0.5em 0em;
     min-width:50%;
     max-width:90%;
   }

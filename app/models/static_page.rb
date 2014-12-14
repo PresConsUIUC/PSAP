@@ -32,8 +32,6 @@ class StaticPage < ActiveRecord::Base
     ActiveRecord::Base.connection.execute(sql)
   end
 
-  private
-
   ##
   # Copies the "html" property into the "searchable_html" property, stripping
   # headings, images, etc. before stripping tags.
@@ -43,8 +41,8 @@ class StaticPage < ActiveRecord::Base
     %w(img a h1 h2 h3 h4 h5 h6 th dt).each do |tag|
       doc.search(tag).remove
     end
-    self.searchable_html = ActionController::Base.
-        helpers.strip_tags(doc.to_html).gsub('  ', ' ').tr("\"\n", '')
+    self.searchable_html = ActionController::Base.helpers.
+        strip_tags(doc.to_html).gsub('  ', ' ').tr("\"\n", '').gsub('()', '')
   end
 
 end

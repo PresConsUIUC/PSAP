@@ -6,6 +6,10 @@ class AssessmentSectionTest < ActiveSupport::TestCase
     @section = assessment_sections(:assessment_section_one)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid assessment section saves' do
@@ -32,20 +36,42 @@ class AssessmentSectionTest < ActiveSupport::TestCase
     assert !@section.save
   end
 
-  # weight
-  test 'weight is required' do
-    @section.weight = nil
+  test 'name should be 255 characters or less' do
+    @section.name = 'a' * 256
     assert !@section.save
   end
 
-  test 'weight should be between 0 and 1' do
-    @section.weight = -0.5
-    assert !@section.save
-    @section.weight = 1.5
-    assert !@section.save
+  test 'name must be unique within the same assessment' do
+    @section.name = 'cats'
+    @section.save
+    section2 = assessment_sections(:assessment_section_two)
+    section2.name = 'cats'
+    assert !section2.save
   end
 
-  ########################### dependency tests ###############################
+  test 'name does not have to be unique across assessments' do
+    @section.name = 'cats'
+    @section.save
+    section2 = assessment_sections(:assessment_section_three)
+    section2.name = 'cats'
+    assert section2.save
+  end
+
+  ############################ method tests #################################
+
+  test 'assessment_questions_for_format returns an empty set if no format supplied' do
+    assert_equal 0, @section.assessment_questions_for_format(nil).length
+  end
+
+  test 'assessment_questions_for_format works when a format is supplied' do
+    flunk # TODO: write this
+  end
+
+  test 'max_score should work properly' do
+    assert_equal 1, @section.max_score
+  end
+
+  ########################### association tests ##############################
 
   test 'dependent assessment questions should be destroyed on destroy' do
     question = assessment_questions(:assessment_question_one)

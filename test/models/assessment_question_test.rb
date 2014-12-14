@@ -6,6 +6,10 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
     @question = assessment_questions(:assessment_question_one)
   end
 
+  ######################### class method tests ##############################
+
+  # none
+
   ############################ object tests #################################
 
   test 'valid question saves' do
@@ -32,9 +36,20 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
     assert !@question.save
   end
 
+  # qid
+  test 'qid is required' do
+    @question.qid = nil
+    assert !@question.save
+  end
+
   # question_type
   test 'question_type is required' do
     @question.question_type = nil
+    assert !@question.save
+  end
+
+  test 'question_type should be valid' do
+    @question.question_type = 8
     assert !@question.save
   end
 
@@ -44,23 +59,27 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
     assert !@question.save
   end
 
-  test 'weight should be between 0 and 1' do
+  test 'weight should be greater than 0' do
     @question.weight = -0.5
     assert !@question.save
-    @question.weight = 1.2
-    assert !@question.save
+    @question.weight = 0.5
+    assert @question.save
   end
 
-  ########################### dependency tests ###############################
+  ############################ method tests #################################
 
-  test 'dependent options should be destroyed on destroy' do
+  # none
+
+  ########################### association tests ##############################
+
+  test 'dependent assessment question options should be destroyed on destroy' do
     option = assessment_question_options(:assessment_question_option_one)
     @question.assessment_question_options << option
     @question.destroy
     assert option.destroyed?
   end
 
-  test 'dependent responses should be destroyed on destroy' do
+  test 'dependent assessment question responses should be destroyed on destroy' do
     response = assessment_question_responses(:assessment_question_response_one)
     @question.assessment_question_responses << response
     @question.destroy

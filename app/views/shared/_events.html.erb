@@ -13,7 +13,14 @@
             <tr>
                 <td><%= event.description %></td>
                 <td><%= link_to_event_entity(event) %></td>
-                <td><%= event.user ? link_to(event.user.full_name, event.user) : '' %></td>
+                <td>
+                  <% if event.user %>
+                    <%= link_to(event.user) do %>
+                      <%= glyphicon(event.user) %>
+                      <%= event.user.full_name %>
+                    <% end %>
+                  <% end %>
+                </td>
                 <td><%= local_time_ago(event.created_at) %></td>
             </tr>
         <% end %>

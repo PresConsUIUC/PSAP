@@ -1,27 +1,19 @@
 <% # Will be read by PSAP.updateResultsCount() in JS %>
 <input type="hidden" name="results_count" value="<%= @locations.total_entries %>">
 
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th></th>
-    <th>Name</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
+<ul class="psap-entity-list">
   <% @locations.each do |location| %>
-      <tr>
-        <td>
-          <%= link_to 'Edit', edit_location_path(location) %>
-        </td>
-        <td><%= link_to location.name, location %></td>
-        <td><%= location.resources.count %>
-          <%= location.resources.count == 1 ? 'resource' : 'resources' %></td>
-      </tr>
+    <li>
+      <span class="title"><%= link_to location.name, location %></span>
+      <small>
+        <%= glyphicon(Resource, pluralize(location.resources.count, 'resource')) %>
+        <%= location.resources.count %>
+      </small>
+      <br>
+      <span class="description"><%= location.description %></span>
+    </li>
   <% end %>
-  </tbody>
-</table>
+</ul>
 
 <div class="text-center">
   <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>

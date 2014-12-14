@@ -35,8 +35,10 @@
             <td><%= local_time_ago(event.created_at) %></td>
             <td>
               <% if event.user %>
-                  <%= link_to event.user.username, event.user,
-                              title: event.user.full_name %>
+                <%= link_to event.user, title: event.user.full_name do %>
+                  <%= glyphicon(event.user) %>
+                  <%= event.user.username %>
+                <% end %>
               <% end %>
             </td>
             <td><%= event.address %></td>

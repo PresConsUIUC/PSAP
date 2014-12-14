@@ -1,5 +1,10 @@
 module Assessable
 
+  def assessment_percent_complete_in_section(section)
+    self.complete_assessment_questions_in_section(section).length.to_f /
+        section.assessment_questions.length.to_f
+  end
+
   ##
   # @return Hash of AssessmentQuestionResponses keyed by section id
   #
@@ -28,6 +33,13 @@ module Assessable
       sections[section_id] = (sections[section_id] / section.max_score)
     end
     sections
+  end
+
+  def complete_assessment_questions_in_section(assessment_section)
+    self.assessment_question_responses.
+        select{ |r| !r.assessment_question_option.nil? }.
+        map{ |r| r.assessment_question }.
+        select{ |q| q.assessment_section.id == assessment_section.id }
   end
 
   ##

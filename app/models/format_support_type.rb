@@ -1,10 +1,10 @@
 ##
 # One of the "vectors" of a Bound or Unbound Paper format, alongside
-# FormatInkMediaType. Resides in a FormatVectorGroup.
+# FormatInkMediaType.
 #
 class FormatSupportType < ActiveRecord::Base
-  belongs_to :format, inverse_of: :format_support_types
-  belongs_to :format_vector_group, inverse_of: :format_ink_media_types
+  has_many :resources, inverse_of: :format_ink_media_type,
+           dependent: :restrict_with_exception
 
   validates :name, presence: true, length: { maximum: 255 }
   validates :score, presence: true, numericality: {

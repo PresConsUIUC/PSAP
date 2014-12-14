@@ -47,31 +47,40 @@ module EventsHelper
   end
 
   def link_to_event_entity(event)
-    if event.assessments.any?
-      return link_to event.assessments[0].name, event.assessments[0]
-    elsif event.assessment_questions.any?
-      return link_to event.assessment_questions[0].name,
-                     event.assessment_questions[0]
-    elsif event.assessment_sections.any?
-      return link_to event.assessment_sections[0].name,
-                     event.assessment_sections[0]
-    elsif event.formats.any?
-      return link_to event.formats[0].name, event.formats[0]
-    elsif event.institutions.any?
-      return link_to event.institutions[0].name,
-                     event.institutions[0]
-    elsif event.locations.any?
-      return link_to event.locations[0].name,
-                     event.locations[0]
-    elsif event.repositories.any?
-      return link_to event.repositories[0].name, event.repositories[0]
-    elsif event.resources.any?
-      return link_to event.resources[0].name,
-                     event.resources[0]
-    elsif event.users.any?
-      return link_to event.users[0].full_name, event.users[0]
+    string = entity = ''
+    case event.associated_entity_class.to_s
+      when 'Assessment'
+        entity = event.assessments.first
+        string = entity.name
+      when 'AssessmentQuestion'
+        entity = event.assessment_questions.first
+        string = entity.name
+      when 'AssessmentSection'
+        entity = event.assessment_sections.first
+        string = entity.name
+      when 'Format'
+        entity = event.formats.first
+        string = entity.name
+      when 'Institution'
+        entity = event.institutions.first
+        string = entity.name
+      when 'Location'
+        entity = event.locations.first
+        string = entity.name
+      when 'Repository'
+        entity = event.repositories.first
+        string = entity.name
+      when 'Resource'
+        entity = event.resources.first
+        string = entity.name
+      when 'User'
+        entity = event.users.first
+        string = entity.full_name
+
     end
-    ''
+    raw(link_to(entity) do
+      raw(glyphicon(event.associated_entity_class)) + ' ' + string
+    end)
   end
 
 end

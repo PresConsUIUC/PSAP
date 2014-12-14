@@ -3,12 +3,12 @@ require 'test_helper'
 class ResourceDateTest < ActiveSupport::TestCase
 
   def setup
-    @default_values = { date_type: DateType::BULK,
-                        begin_year: 1930,
-                        end_year: 1960 }
-    @resource_date = ResourceDate.new(@default_values)
-    @resource_date.resource = resources(:resource_one)
+    @resource_date = resource_dates(:bulk_date)
   end
+
+  ######################### class method tests ##############################
+
+  # none
 
   ############################ object tests #################################
 
@@ -173,5 +173,39 @@ class ResourceDateTest < ActiveSupport::TestCase
     @resource_date.end_day = 1
     assert @resource_date.save
   end
+
+  # resource
+  test 'resource is required' do
+    @resource_date.resource = nil
+    assert !@resource_date.save
+  end
+
+  ############################# method tests #################################
+
+  # as_dublin_core_string
+  test 'as_dublin_core_string should work' do
+    @resource_date = resource_dates(:single_date)
+    assert_equal '1950-1-1', @resource_date.as_dublin_core_string
+
+    @resource_date = resource_dates(:bulk_date)
+    @resource_date.date_type = DateType::BULK
+    assert_equal '1930-1-1/1960-1-1', @resource_date.as_dublin_core_string
+  end
+
+  # readable_date_type
+  test 'readable_date_type should work' do
+    @resource_date.date_type = DateType::SINGLE
+    assert_equal 'Single', @resource_date.readable_date_type
+
+    @resource_date.date_type = DateType::BULK
+    assert_equal 'Bulk', @resource_date.readable_date_type
+
+    @resource_date.date_type = DateType::SPAN
+    assert_equal 'Span', @resource_date.readable_date_type
+  end
+
+  ########################### association tests ##############################
+
+  # none
 
 end

@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 },
             if: :validate_password?
   validates :role_id, presence: true
-  validates :username, presence: true, length: { maximum: 255 },
+  validates :username, presence: true, length: { maximum: 20 },
             uniqueness: { case_sensitive: false },
             format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i,
                       message: 'Only letters and numbers are allowed.' }
@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
 
     results = []
     counts.each do |row|
-      results << { count: row['count'],
+      results << { count: row['count'].to_i,
                    user: User.find(row['user_id']) } if row['user_id']
     end
     results
@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def validate_password?
-    password.present? || password_confirmation.present?
+    password.present? or password_confirmation.present?
   end
 
 end
