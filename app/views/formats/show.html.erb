@@ -68,22 +68,22 @@
 
     <div class="tab-content">
       <div id="resources-tab" class="tab-pane active">
-        <% if @format.resources.any? %>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Institution</th>
-                <th>Complete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%= render partial: 'resource_tree_rows',
-                         locals: { resources: @format.resources.order(:name),
-                                   depth: 0 } if @format.resources.any? %>
-            </tbody>
-          </table>
-        <% end %>
+        <ul class="psap-entity-list">
+          <% @format.resources.order(:name).each do |resource| %>
+            <li>
+              <span class="title">
+                <%= glyphicon(resource) %>
+                <%= link_to resource.name, resource %>
+              </span>
+              <br>
+              <span class="description">
+                <%= glyphicon(Institution) %>
+                <%= link_to(resource.location.repository.institution.name,
+                            resource.location.repository.institution) %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
       </div>
 
       <div id="institutions-tab" class="tab-pane">
