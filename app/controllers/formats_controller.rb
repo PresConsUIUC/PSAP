@@ -30,6 +30,19 @@ class FormatsController < ApplicationController
   def show
     @format = Format.find(params[:id])
     @events = @format.events.order(created_at: :desc)
+
+    sql = 'SELECT institutions.id AS inst_id, COUNT(institutions.id) AS count '\
+    'FROM institutions '\
+    'LEFT JOIN repositories ON repositories.institution_id = institutions.id '\
+    'LEFT JOIN locations ON locations.repository_id = repositories.id '\
+    'LEFT JOIN resources ON resources.location_id = locations.id '\
+    'LEFT JOIN formats ON formats.id = resources.format_id '\
+    "WHERE format_id = #{@format.id} "\
+    'GROUP BY institutions.id '\
+    'ORDER BY count DESC'
+    @institution_counts = ActiveRecord::Base.connection.execute(sql).
+        map{ |row| { institution: Institution.find(row['inst_id']),
+                     count: row['count'] } }
   end
 
 end

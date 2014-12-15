@@ -56,6 +56,9 @@
         <a href="#resources-tab" data-toggle="tab">Resources</a>
       </li>
       <li>
+        <a href="#institutions-tab" data-toggle="tab">Institutions</a>
+      </li>
+      <li>
         <a href="#assessment-questions-tab" data-toggle="tab">Assessment Questions</a>
       </li>
       <li>
@@ -81,6 +84,20 @@
             </tbody>
           </table>
         <% end %>
+      </div>
+
+      <div id="institutions-tab" class="tab-pane">
+        <ul class="psap-entity-list">
+          <% @institution_counts.each do |pair| %>
+            <li>
+              <span class="title"><%= link_to pair[:institution].name, pair[:institution] %></span>
+              <small>
+                <%= glyphicon(Resource, pluralize(pair[:count], 'resource') + ' of this format') %>
+                <%= pair[:count] %>
+              </small>
+            </li>
+          <% end %>
+        </ul>
       </div>
 
       <div id="assessment-questions-tab" class="tab-pane">
