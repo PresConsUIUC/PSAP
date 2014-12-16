@@ -5,6 +5,8 @@ class Institution < ActiveRecord::Base
   has_and_belongs_to_many :assessment_questions
   has_many :assessment_question_responses, inverse_of: :institution,
            dependent: :destroy
+  has_many :desiring_users, class_name: 'User', inverse_of: :desired_institution,
+           dependent: :restrict_with_exception
   has_many :users, inverse_of: :institution, dependent: :restrict_with_exception
   has_many :repositories, inverse_of: :institution, dependent: :destroy
   has_and_belongs_to_many :events

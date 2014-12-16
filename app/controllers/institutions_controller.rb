@@ -19,8 +19,9 @@ class InstitutionsController < ApplicationController
       render 'new'
     else
       flash[:success] = "The institution \"#{@institution.name}\" has been "\
-        "created, and you have automatically been added to it."
-      redirect_to @institution
+        "created. An administrator has been notified and will review your "\
+        "request to join it momentarily,"
+      redirect_to dashboard_path
     end
   end
 
@@ -125,7 +126,7 @@ class InstitutionsController < ApplicationController
 
   # Outputs a high-level assessment report as a PDF.
   def report
-    # TODO: write this
+    # TODO: https://github.com/PresConsUIUC/PSAP/issues/63
   end
 
   private

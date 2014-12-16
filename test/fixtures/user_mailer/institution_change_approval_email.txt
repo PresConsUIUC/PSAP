@@ -1,0 +1,8 @@
+Your new PSAP institution has been approved!
+
+Your institution has successfully been changed to
+University of Illinois at Urbana-Champaign.
+
+The PSAP is available at:
+
+http://localhost:3000/

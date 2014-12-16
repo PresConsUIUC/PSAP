@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  belongs_to :desired_institution, class_name: 'Institution',
+             foreign_key: 'desired_institution_id'
   has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :users
   has_many :resources, inverse_of: :user

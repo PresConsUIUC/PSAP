@@ -176,4 +176,8 @@ class InstitutionTest < ActiveSupport::TestCase
     assert @institution.destroy
   end
 
+  test 'attempting to destroy an institution with desiring users in it should raise an exception' do
+    flunk
+  end
+
 end

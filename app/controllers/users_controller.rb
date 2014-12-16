@@ -4,9 +4,30 @@ class UsersController < ApplicationController
   before_action :before_new_user, only: [:new, :create]
   before_action :before_edit_user, only: [:edit, :update]
   before_action :before_show_user, only: :show
-  before_action :admin_user, only: [:index, :destroy, :enable, :disable]
+  before_action :admin_user, only: [:approve_institution, :index, :destroy,
+                                    :enable, :disable]
 
   helper_method :sort_column, :sort_direction
+
+  ##
+  # Responds to PATCH /users/:username/approve-institution
+  #
+  def approve_institution
+    user = User.find_by_username(params[:username])
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = ApproveUserInstitutionCommand.new(user, current_user,
+                                                request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution change approved for user #{user.username}."
+    ensure
+      redirect_to :back
+    end
+  end
 
   def create
     command = CreateUserCommand.new(user_create_params, request.remote_ip)

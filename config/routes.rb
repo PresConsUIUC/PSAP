@@ -99,11 +99,18 @@ Psap::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :users, param: :username, path_names: { new: 'register' }
-  match '/users/:username/confirm', to: 'users#confirm', via: 'get', as: 'confirm_user'
-  match '/users/:username/enable', to: 'users#enable', via: 'patch', as: 'enable_user'
-  match '/users/:username/disable', to: 'users#disable', via: 'patch', as: 'disable_user'
-  match '/users/:username/exists', to: 'users#exists', via: 'get', as: 'user_exists'
-  match '/users/:username/reset_feed_key', to: 'users#reset_feed_key', via: 'patch', as: 'reset_user_feed_key'
+  match '/users/:username/confirm', to: 'users#confirm',
+        via: 'get', as: 'confirm_user'
+  match '/users/:username/enable', to: 'users#enable',
+        via: 'patch', as: 'enable_user'
+  match '/users/:username/disable', to: 'users#disable',
+        via: 'patch', as: 'disable_user'
+  match '/users/:username/exists', to: 'users#exists',
+        via: 'get', as: 'user_exists'
+  match '/users/:username/reset_feed_key', to: 'users#reset_feed_key',
+        via: 'patch', as: 'reset_user_feed_key'
+  match '/users/:username/approve-institution', to: 'users#approve_institution',
+        via: 'patch', as: 'approve_user_institution'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot_password

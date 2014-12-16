@@ -24,7 +24,8 @@ class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Created institution \"#{@valid_command.object.name}\"",
+    assert_equal "Created and joined institution "\
+    "\"#{@valid_command.object.name}\"",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
@@ -37,8 +38,8 @@ class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Attempted to create institution, but failed: Name can't be "\
-    "blank",
+    assert_equal "Attempted to create and join institution, but failed: Name "\
+    "can't be blank",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

@@ -1,17 +1,6 @@
 class UserMailer < ActionMailer::Base
 
   ##
-  # Sent to the psap email address after a user has initially signed up.
-  # Contains a confirmation URL that must be followed.
-  #
-  def account_approval_request_email(user)
-    @user = user
-    @user_url = url_for(user)
-    mail(to: Psap::Application.config.psap_email_address,
-         subject: 'New PSAP user requests account approval')
-  end
-
-  ##
   # Sent to the user's previous email address when their email has changed.
   #
   def change_email(user, old_email, new_email)
@@ -38,6 +27,12 @@ class UserMailer < ActionMailer::Base
     @user = user
     @confirm_url = confirm_user_url(@user, code: @user.confirmation_code)
     mail(to: @user.email, subject: 'Welcome to PSAP!')
+  end
+
+  def institution_change_approved_email(user)
+    @user = user
+    @psap_url = root_url
+    mail(to: @user.email, subject: 'Your new PSAP institution has been approved')
   end
 
   ##

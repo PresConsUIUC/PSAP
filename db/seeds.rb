@@ -376,6 +376,17 @@ case Rails.env
     command.execute
     disabled_user = command.object
 
+    # User who desires to change institutions
+    command = CreateUserCommand.new(
+        { username: 'hpotter', email: 'harry@example.org',
+          first_name: 'Harry', last_name: 'Potter',
+          password: 'password', password_confirmation: 'password',
+          institution: uiuc_institution,
+          desired_institution: Institution.find_by_city('Hogsmeade'),
+          role: normal_role,
+          confirmed: true, enabled: true }, '127.0.0.1', false)
+    command.execute
+
     # Repositories
     repository_commands = [
         CreateRepositoryCommand.new(uiuc_institution,

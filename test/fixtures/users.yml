@@ -63,6 +63,7 @@ unconfirmed_user:
   role_id: 2
   confirmed: false
   enabled: false
+  about: hi
 
 disabled_user:
   id: 5
