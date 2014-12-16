@@ -13,10 +13,10 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-7">
     <h1><%= glyphicon(@resource) %> <%= @resource.name %></h1>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <div class="btn-group" style="float:right">
       <% if @resource.resource_type == ResourceType::COLLECTION %>
         <!-- Import button -->
