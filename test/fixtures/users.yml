@@ -26,6 +26,19 @@ admin_user:
   institution_id: 1
   role_id: 1
 
+non_uiuc_admin_user:
+  id: 6
+  first_name: Pip
+  email: admin@example.net
+  last_name: McAdmin
+  password_digest: <%= BCrypt::Password.create('password') %>
+  username: admin2
+  confirmed: true
+  enabled: true
+  feed_key: sdfjasdfsdfsdf
+  institution_id: 2
+  role_id: 1
+
 unaffiliated_user:
   id: 3
   username: 'unaffiliated'

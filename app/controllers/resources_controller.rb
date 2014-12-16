@@ -67,8 +67,7 @@ class ResourcesController < ApplicationController
     end
 
     command = ImportArchivesspaceEadCommand.new(
-        params[:files], @location, @parent_resource, current_user,
-        request.remote_ip)
+        params[:files], @parent_resource, current_user, request.remote_ip)
     begin
       command.execute
     rescue => e

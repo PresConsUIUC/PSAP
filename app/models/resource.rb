@@ -43,6 +43,7 @@ class Resource < ActiveRecord::Base
 
   validate :validates_not_child_of_item
   validate :validates_one_response_per_question
+  validate :validates_same_institution_as_user
 
   before_validation :prune_empty_submodels
   before_save :update_assessment_percent_complete, :update_assessment_score
@@ -374,6 +375,13 @@ class Resource < ActiveRecord::Base
         self.assessment_question_responses.length
       # TODO: fix
       #errors[:base] << 'Only one response allowed per assessment question.'
+    end
+  end
+
+  def validates_same_institution_as_user
+    if user and !user.is_admin? and
+        user.institution != self.location.repository.institution
+      errors[:base] << 'Owning user must be of the same institution.'
     end
   end
 

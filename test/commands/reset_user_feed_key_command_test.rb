@@ -30,7 +30,7 @@ class ResetUserFeedKeyCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write failure to event log if unsuccessful' do
-    skip 'Need to get this to happen'
+    flunk 'Need to get this to happen'
   end
 
   test 'non-admin users should not be able to reset other users\' feed keys' do

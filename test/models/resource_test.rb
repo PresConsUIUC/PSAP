@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'rexml/document'
 
 class ResourceTest < ActiveSupport::TestCase
 
@@ -10,8 +11,38 @@ class ResourceTest < ActiveSupport::TestCase
 
   ######################### class method tests ##############################
 
-  test 'from_ead should work properly' do
-    flunk # TODO: write this
+  test 'from_ead should raise an exception if given invalid XML' do
+    assert_raises REXML::ParseException do
+      Resource.from_ead('<cats></cat', users(:normal_user).id)
+    end
+  end
+
+  test 'from_ead should raise an exception if given an invalid user ID' do
+    assert_raises RuntimeError do
+      Resource.from_ead('<?xml version="1.0" ?><cats></cats>', 999999999)
+    end
+  end
+
+  test 'from_ead should return correct resource attributes' do
+    xml = File.read('test/models/archivesspace_ead_export.xml')
+    resource = Resource.from_ead(xml, users(:normal_user).id)
+
+    assert_equal 'Here is a brief', resource.description[0..14]
+    assert_nil resource.format
+    assert_equal '15.31.26', resource.local_identifier
+    assert_nil resource.location_id
+    assert_equal 'Mandeville Collection', resource.name
+    assert_equal 0, resource.resource_notes.length
+    assert_equal 0, resource.resource_type
+    assert_equal users(:normal_user).username, resource.user.username
+    assert_equal 'Davis, Michael J., 1942-', resource.creators.first.name
+    assert_equal '229 Photographic Prints', resource.extents.first.name
+    assert_equal '5 boxes, 2 oversized boxes, 8 oversized folders',
+                 resource.extents[1].name
+    assert_equal 1, resource.resource_dates.first.date_type
+    assert_equal 1965, resource.resource_dates.first.begin_year
+    assert_equal 1985, resource.resource_dates.first.end_year
+    assert_equal 'Alaska--Description and travel.', resource.subjects.first.name
   end
 
   ############################ object tests #################################
@@ -153,11 +184,6 @@ class ResourceTest < ActiveSupport::TestCase
     flunk # TODO: write this
   end
 
-  # from_ead
-  test 'from_ead should work' do
-    flunk # TODO: write this
-  end
-
   # prune_empty_submodels
   test 'prune_empty_submodels should work' do
     resource = resources(:resource_twelve)
@@ -288,6 +314,14 @@ class ResourceTest < ActiveSupport::TestCase
     @resource.assessment_question_responses <<
         assessment_question_responses(:assessment_question_response_one_point_five)
     assert !@resource.save
+  end
+
+  test 'resource\'s owning user must be of the same institution unless an admin' do
+    @resource.user = users(:disabled_user)
+    assert !@resource.save
+
+    @resource.user = users(:non_uiuc_admin_user)
+    assert @resource.save
   end
 
 end

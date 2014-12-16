@@ -20,11 +20,13 @@ class UpdateInstitutionCommand < Command
       @institution.assessment_question_responses.destroy_all
 
       # the AQR params from the form are not in a rails-compatible format
-      @institution_params[:assessment_question_responses].each_value do |option_id|
-        option = AssessmentQuestionOption.find(option_id)
-        @institution.assessment_question_responses << AssessmentQuestionResponse.new(
-            assessment_question_option: option,
-            assessment_question: option.assessment_question)
+      if @institution_params[:assessment_question_responses]
+        @institution_params[:assessment_question_responses].each_value do |option_id|
+          option = AssessmentQuestionOption.find(option_id)
+          @institution.assessment_question_responses << AssessmentQuestionResponse.new(
+              assessment_question_option: option,
+              assessment_question: option.assessment_question)
+        end
       end
 
       @institution.update!(@institution_params.except(:assessment_question_responses))
