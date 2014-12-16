@@ -5,3 +5,10 @@ body#edit_user {
     }
   }
 }
+
+body#show_user {
+  span.label {
+    padding:0.3em;
+    text-transform:uppercase;
+  }
+}
