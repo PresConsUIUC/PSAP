@@ -7,8 +7,8 @@ class FormatsController < ApplicationController
     respond_to do |format|
       format.js { # ajax search field on /formats
         if params[:q].length > 0
-          @format_count = Format.where('name LIKE ?', "%#{params[:q]}%").length
-          @formats = Format.where('name LIKE ?', "%#{params[:q]}%").
+          @format_count = Format.where('LOWER(name) LIKE ?', "%#{params[:q].downcase}%").length
+          @formats = Format.where('LOWER(name) LIKE ?', "%#{params[:q].downcase}%").
               order(:name)
         else
           @format_count = Format.all.length
