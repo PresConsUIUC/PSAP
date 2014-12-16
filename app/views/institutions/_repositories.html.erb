@@ -4,7 +4,10 @@
 <ul class="psap-entity-list">
   <% @repositories.each do |repository| %>
       <li>
-        <span class="title"><%= link_to repository.name, repository %></span>
+        <span class="title">
+          <%= glyphicon(repository) %>
+          <%= link_to repository.name, repository %>
+        </span>
         <small>
           <%= glyphicon(Location, pluralize(repository.locations.count, 'location')) %>
           <%= repository.locations.count %>

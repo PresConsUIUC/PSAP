@@ -29,6 +29,7 @@ group :doc do
 end
 
 gem 'bootstrap-sass', '3.1.1.0'
+gem 'font-awesome-sass', '~> 4.2.0'
 gem 'will_paginate', '3.0.4'
 # gem 'bootstrap-will_paginate'
 gem 'will_paginate-bootstrap'

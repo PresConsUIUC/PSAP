@@ -289,38 +289,39 @@ module ApplicationHelper
   # @param entity Some entity: Institution, Location, etc.
   # @param title Optional title for a tooltip
   #
-  def glyphicon(entity, title = '')
+  def glyphicon(entity, title = '') # TODO: rename this to entity_icon
+    # https://fortawesome.github.io/Font-Awesome/icons/
     class_ = ''
     if entity.kind_of?(Institution) or entity == Institution
-      class_ = '' # TODO: return an icon
+      class_ = 'fa-university'
     elsif entity.kind_of?(Location) or entity == Location
-      class_ = 'glyphicon-home'
+      class_ = 'fa-map-marker'
     elsif entity.kind_of?(Repository) or entity == Repository
-      class_ = '' # TODO: return an icon
+      class_ = 'fa-building-o'
     elsif entity.kind_of?(Resource)
       if entity.resource_type == ResourceType::COLLECTION
-        class_ = 'glyphicon-folder-open'
+        class_ = 'fa-folder-open-o'
       elsif entity.format
         case entity.format.format_class
           when FormatClass::AV
-            class_ = 'glyphicon-facetime-video'
+            class_ = 'fa-film'
           when FormatClass::IMAGE
-            class_ = 'glyphicon-picture'
+            class_ = 'fa-picture-o'
           when FormatClass::UNBOUND_PAPER
-            class_ = 'glyphicon-file'
+            class_ = 'fa-file-text-o'
           when FormatClass::BOUND_PAPER
-            class_ = 'glyphicon-book'
+            class_ = 'fa-book'
         end
       else
-        class_ = 'glyphicon-file'
+        class_ = 'fa-cube'
       end
     elsif entity == Resource
-      class_ = 'glyphicon-file'
+      class_ = 'fa-cube'
     elsif entity.kind_of?(User) or entity == User
-      class_ = 'glyphicon-user'
+      class_ = 'fa-user'
     end
-    raw("<span class=\"psap-entity-icon glyphicon #{class_}\" "\
-    "aria-hidden=\"true\" title=\"#{title}\"></span>")
+    raw("<i class=\"psap-entity-icon fa #{class_}\" "\
+    "aria-hidden=\"true\" title=\"#{title}\"></i>")
   end
 
   ##
