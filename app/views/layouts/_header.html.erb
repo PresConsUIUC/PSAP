@@ -74,9 +74,13 @@
             </ul>
           </li>
 
-          <li id="help"><%= link_to 'Help', help_path, title: 'Help',
-                                    id: 'helpLink', class: 'modal_view nav_link',
-                                    data: { :open => '/help' } %></li>
+          <li id="help">
+            <%= link_to(help_path, title: 'Help',
+                        class: 'modal_view nav_link',
+                        data: { :open => '/help' }) do %>
+              <i class="fa fa-question-circle"></i>
+            <% end %>
+          </li>
         <% else %>
           <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
         <% end %>

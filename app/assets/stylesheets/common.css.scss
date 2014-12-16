@@ -204,23 +204,9 @@ nav.navbar {
   }
 
   li#help {
-    margin-right:10px;
-    /* The help icon looks weird when the navbar collapses on narrow screens. */
-    @media screen and (min-width: 768px) {
-      a {
-        background: url(image_path('question-24.png')) center center no-repeat;
-        @include image-2x('question-24@2x.png', 24px, 24px);
-        content:url(image_path('1x1transparent.png'));
-        top:11px;
-        width:24px;
-        height:24px;
-        text-indent:-9999px;
-      }
-      a:hover {
-        background: url(image_path('question-white-24.png')) center center no-repeat;
-        @include image-2x('question-white-24@2x.png', 24px, 24px);
-      }
-    }
+    font-size:20px;
+    margin:0px;
+    padding:0px;
   }
 }
 
