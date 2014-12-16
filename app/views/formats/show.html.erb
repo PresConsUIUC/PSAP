@@ -72,12 +72,12 @@
           <% @format.resources.order(:name).each do |resource| %>
             <li>
               <span class="title">
-                <%= glyphicon(resource) %>
+                <%= entity_icon(resource) %>
                 <%= link_to resource.name, resource %>
               </span>
               <br>
               <span class="description">
-                <%= glyphicon(Institution) %>
+                <%= entity_icon(Institution) %>
                 <%= link_to(resource.location.repository.institution.name,
                             resource.location.repository.institution) %>
               </span>
@@ -92,7 +92,7 @@
             <li>
               <span class="title"><%= link_to pair[:institution].name, pair[:institution] %></span>
               <small>
-                <%= glyphicon(Resource, pluralize(pair[:count], 'resource') + ' of this format') %>
+                <%= entity_icon(Resource, pluralize(pair[:count], 'resource') + ' of this format') %>
                 <%= pair[:count] %>
               </small>
             </li>

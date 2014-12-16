@@ -79,7 +79,7 @@ module EventsHelper
 
     end
     raw(link_to(entity) do
-      raw(glyphicon(event.associated_entity_class)) + ' ' + string
+      raw(entity_icon(event.associated_entity_class)) + ' ' + string
     end)
   end
 

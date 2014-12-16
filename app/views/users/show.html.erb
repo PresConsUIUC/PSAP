@@ -96,8 +96,8 @@
       <dt>Institution</dt>
       <dd>
         <% if @user.institution %>
+          <%= entity_icon(@user.institution) %>
           <%= link_to @user.institution do %>
-            <%= glyphicon(@user.institution) %>
             <%= @user.institution.name %>
           <% end %>
         <% else %>
@@ -152,8 +152,8 @@
               <% @resources.each do |resource| %>
                 <tr>
                   <td>
+                    <%= entity_icon(resource) %>
                     <%= link_to resource do %>
-                      <%= glyphicon(resource) %>
                       <%= resource.name %>
                     <% end %>
                   </td>

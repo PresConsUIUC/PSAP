@@ -14,7 +14,7 @@
 
 <div class="row">
   <div class="col-sm-7">
-    <h1><%= glyphicon(@resource) %> <%= @resource.name %></h1>
+    <h1><%= entity_icon(@resource) %> <%= @resource.name %></h1>
   </div>
   <div class="col-sm-5">
     <div class="btn-group" style="float:right">
@@ -150,7 +150,7 @@
                   <dt>Parent Collection</dt>
                   <dd>
                     <%= link_to @resource.parent do %>
-                      <%= glyphicon(@resource.parent) %>
+                      <%= entity_icon(@resource.parent) %>
                       <%= @resource.parent.name %>
                     <% end %>
                   </dd>
@@ -279,7 +279,7 @@
                 <dt>Created</dt>
                 <dd><%= local_time_ago(@resource.created_at) %> by
                   <%= link_to @resource.user do %>
-                    <%= glyphicon(@resource.user) %>
+                    <%= entity_icon(@resource.user) %>
                     <%= @resource.user.full_name %>
                   <% end %>
                 </dd>

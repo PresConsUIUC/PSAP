@@ -15,8 +15,8 @@
                 <td><%= link_to_event_entity(event) %></td>
                 <td>
                   <% if event.user %>
+                    <%= entity_icon(event.user) %>
                     <%= link_to(event.user) do %>
-                      <%= glyphicon(event.user) %>
                       <%= event.user.full_name %>
                     <% end %>
                   <% end %>

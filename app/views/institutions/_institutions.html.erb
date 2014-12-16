@@ -10,11 +10,11 @@
       <li>
         <span class="title"><%= link_to institution.name, institution %></span>
         <small>
-          <%= glyphicon(Repository, pluralize(institution.repositories.count, 'repository')) %>
+          <%= entity_icon(Repository, pluralize(institution.repositories.count, 'repository')) %>
           <%= institution.repositories.count %>
-          <%= glyphicon(Resource, pluralize(institution.resources.count, 'resource')) %>
+          <%= entity_icon(Resource, pluralize(institution.resources.count, 'resource')) %>
           <%= institution.resources.count %>
-          <%= glyphicon(User, pluralize(institution.users.count, 'user')) %>
+          <%= entity_icon(User, pluralize(institution.users.count, 'user')) %>
           <%= institution.users.count %>
         </small>
         <br>

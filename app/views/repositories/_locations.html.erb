@@ -5,11 +5,11 @@
   <% @locations.each do |location| %>
     <li>
       <span class="title">
-        <%= glyphicon(location) %>
+        <%= entity_icon(location) %>
         <%= link_to location.name, location %>
       </span>
       <small>
-        <%= glyphicon(Resource, pluralize(location.resources.count, 'resource')) %>
+        <%= entity_icon(Resource, pluralize(location.resources.count, 'resource')) %>
         <%= location.resources.count %>
       </small>
       <br>

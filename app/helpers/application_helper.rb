@@ -289,7 +289,7 @@ module ApplicationHelper
   # @param entity Some entity: Institution, Location, etc.
   # @param title Optional title for a tooltip
   #
-  def glyphicon(entity, title = '') # TODO: rename this to entity_icon
+  def entity_icon(entity, title = '')
     # https://fortawesome.github.io/Font-Awesome/icons/
     class_ = ''
     if entity.kind_of?(Institution) or entity == Institution

@@ -39,7 +39,7 @@
         <% if location.assessment_question_responses.any? %>
           <tr>
             <td>
-              <%= glyphicon(location) %>
+              <%= entity_icon(location) %>
               <%= link_to(location.name, location) %>
             </td>
             <% location.assessment_section_scores.each do |section_id, score| %>
@@ -61,7 +61,7 @@
     <ul class="psap-mini-entity-list">
       <% @non_assessed_locations.each do |location| %>
         <li>
-          <%= glyphicon(location) %>
+          <%= entity_icon(location) %>
           <%= link_to location.name, location %>
         </li>
       <% end %>
@@ -91,7 +91,7 @@
     <ul class="psap-mini-entity-list">
       <% @non_assessed_resources.each do |resource| %>
         <li>
-          <%= glyphicon(resource) %>
+          <%= entity_icon(resource) %>
           <%= link_to resource.name, resource %>
         </li>
       <% end %>

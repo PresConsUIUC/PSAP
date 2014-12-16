@@ -5,14 +5,14 @@
   <% @repositories.each do |repository| %>
       <li>
         <span class="title">
-          <%= glyphicon(repository) %>
+          <%= entity_icon(repository) %>
           <%= link_to repository.name, repository %>
         </span>
         <small>
-          <%= glyphicon(Location, pluralize(repository.locations.count, 'location')) %>
+          <%= entity_icon(Location, pluralize(repository.locations.count, 'location')) %>
           <%= repository.locations.count %>
 
-          <%= glyphicon(Resource, pluralize(repository.resources.count, 'resource')) %>
+          <%= entity_icon(Resource, pluralize(repository.resources.count, 'resource')) %>
           <%= repository.resources.count %>
         </small>
       </li>

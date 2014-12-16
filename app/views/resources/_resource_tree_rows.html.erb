@@ -7,7 +7,7 @@
     <% end %>
     <td class="depth-<%= depth %>">
       <%= depth > 0 ? raw('&#8627; ') : '' %>
-      <%= glyphicon(resource) %>
+      <%= entity_icon(resource) %>
       <%= link_to resource.name, resource %>
     </td>
     <td><%= number_to_human(resource.assessment_percent_complete * 100) %>%</td>
