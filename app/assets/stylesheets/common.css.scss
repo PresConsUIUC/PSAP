@@ -214,6 +214,13 @@ nav.navbar {
   color: #c0c0c0;
 }
 
+@media screen and (max-width: 767px) {
+  .affix {
+    position: static;
+    width: 100%;
+  }
+}
+
 /* header */
 
 header {
