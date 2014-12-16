@@ -316,6 +316,12 @@ ul.psap-entity-list {
   }
 }
 
+ul.psap-mini-entity-list {
+  list-style-type:none;
+  margin-left:0px;
+  padding-left:0px;
+}
+
 ul.users { /* TODO: replace with psap-entity-list */
   list-style-type:none;
   margin-left:0px;

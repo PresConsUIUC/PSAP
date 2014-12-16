@@ -1,9 +1,9 @@
 body#show_institution {
   @media print {
-    div.col-sm-8 {
+    div.col-sm-9 {
       width:100%;
     }
-    div.col-sm-4 {
+    div.col-sm-3 {
       display:none;
     }
   }

@@ -126,6 +126,14 @@ class InstitutionTest < ActiveSupport::TestCase
 
   ############################# method tests #################################
 
+  test 'all_assessed_items works' do
+    flunk
+  end
+
+  test 'assessed_item_statistics works' do
+    flunk
+  end
+
   test 'most_active_users works' do
     @institution.id = 1
     most_active = @institution.most_active_users

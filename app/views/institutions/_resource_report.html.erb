@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-sm-6">
+    <ul>
+      <li><%= institution.resources.length %> items assessed</li>
+      <li>Formats present:
+        <ul>
+          <% institution.resources.collect{ |r| r.format }.
+                  select{ |f| f }.uniq{ |f| f.id }.each do |format| %>
+              <li><%= link_to(format.name, format_id_guide_category_path(
+                                                 format.format_id_guide_page,
+                                                 anchor: format.format_id_guide_anchor), target: '_blank') %></li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+
+    <% stats = institution.assessed_item_statistics %>
+    <table class="table">
+      <tr>
+        <td><%= (stats[:mean] * 100).round %></td>
+        <td>Average/Mean</td>
+      </tr>
+      <tr>
+        <td><%= (stats[:median] * 100).round %></td>
+        <td>Median</td>
+      </tr>
+      <tr>
+        <td><%= (stats[:high] * 100).round %></td>
+        <td>High</td>
+      </tr>
+      <tr>
+        <td><%= (stats[:low] * 100).round %></td>
+        <td>Low</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- chart column -->
+  <div class="col-sm-6">
+    <%= chart_for_collection(institution) %>
+  </div>
+</div>

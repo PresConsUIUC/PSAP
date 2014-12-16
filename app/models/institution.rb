@@ -52,6 +52,39 @@ class Institution < ActiveRecord::Base
   end
 
   ##
+  # @return Array of all assessed items in an institution, regardless of depth
+  # in the hierarchy.
+  #
+  def all_assessed_items
+    self.resources.select{ |x| x.assessment_percent_complete >= 0.999999 }
+  end
+
+  ##
+  # Returns a hash containing statistics of all assessed items in the
+  # institution.
+  #
+  # @return hash with mean, median, low, and high keys
+  #
+  def assessed_item_statistics
+    stats = { mean: 0, median: 0, low: nil, high: 0 }
+    all_items = all_assessed_items
+    if all_items.length < 1
+      return nil
+    end
+
+    all_items.each do |item|
+      stats[:high] = item.total_assessment_score if item.total_assessment_score > stats[:high]
+      stats[:low] = item.total_assessment_score if
+          stats[:low].nil? or item.total_assessment_score < stats[:low]
+    end
+    stats[:mean] = all_items.map{ |r| r.total_assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.total_assessment_score }.sort
+    len = sorted.length
+    stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+    stats
+  end
+
+  ##
   # Returns a list of the "most active" users in the institution, based on the
   # number of resources they've created/updated.
   #

@@ -77,6 +77,12 @@ class InstitutionsController < ApplicationController
         @resources = @institution.resources.where(parent_id: nil).order(:name).
             paginate(page: params[:page],
                      per_page: Psap::Application.config.results_per_page)
+        @non_assessed_locations = @institution.locations.order(:name).
+            select{ |l| l.assessment_question_responses.length < 1 }
+        @non_assessed_resources = @institution.resources.order(:name).
+            select{ |r| r.assessment_question_responses.length < 1 }
+        @location_assessment_sections = Assessment.find_by_key('location').
+            assessment_sections.order(:index)
 
         @events = Event.
             joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
