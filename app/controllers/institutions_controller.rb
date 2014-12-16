@@ -5,8 +5,8 @@ class InstitutionsController < ApplicationController
   before_action :same_institution_user, only: [:show, :edit, :update]
 
   def create
-    command = CreateInstitutionCommand.new(institution_params, current_user,
-                                           request.remote_ip)
+    command = CreateAndJoinInstitutionCommand.new(
+        institution_params, current_user, request.remote_ip)
     @institution = command.object
     @assessment_sections = Assessment.find_by_key('institution').
         assessment_sections.order(:index)

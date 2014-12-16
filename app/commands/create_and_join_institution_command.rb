@@ -1,4 +1,4 @@
-class CreateInstitutionCommand < Command
+class CreateAndJoinInstitutionCommand < Command
 
   def initialize(institution_params, doing_user, remote_ip)
     @doing_user = doing_user

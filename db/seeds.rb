@@ -290,7 +290,7 @@ admin_user.role = admin_role
 admin_user.save!
 
 # UIUC institution
-command = CreateInstitutionCommand.new(
+command = CreateAndJoinInstitutionCommand.new(
     { name: 'University of Illinois at Urbana-Champaign',
       address1: '1408 W. Gregory Dr.',
       address2: nil,
@@ -324,7 +324,7 @@ case Rails.env
     uiuc_institution.save!
 
     # Institutions
-    CreateInstitutionCommand.new(
+    CreateAndJoinInstitutionCommand.new(
         { name: 'Hogwarts School of Witchcraft & Wizardry',
           address1: '123 Magical St.',
           address2: 'Suite 12',
@@ -403,7 +403,7 @@ case Rails.env
 
     locations.each do |location|
       location.temperature_range = TemperatureRange.create!(
-          min_temp_f: 0, max_temp_f: 100, score: 1)
+          min_temp_f: 60, max_temp_f: 70, score: 1)
       location.save!
     end
 

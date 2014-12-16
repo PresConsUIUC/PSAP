@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CreateInstitutionCommandTest < ActiveSupport::TestCase
+class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
     @valid_institution_params = institutions(:institution_one).attributes
@@ -8,12 +8,12 @@ class CreateInstitutionCommandTest < ActiveSupport::TestCase
     @valid_institution_params['name'] = 'asdfasfd'
     @user = users(:normal_user)
     @remote_ip = '10.0.0.1'
-    @valid_command = CreateInstitutionCommand.new(@valid_institution_params,
-                                                  @user, @remote_ip)
+    @valid_command = CreateAndJoinInstitutionCommand.new(
+        @valid_institution_params, @user, @remote_ip)
 
     @invalid_institution_params = @valid_institution_params.dup.except('name')
-    @invalid_command = CreateInstitutionCommand.new(@invalid_institution_params,
-                                                    @user, @remote_ip)
+    @invalid_command = CreateAndJoinInstitutionCommand.new(
+        @invalid_institution_params, @user, @remote_ip)
   end
 
   # execute
