@@ -68,10 +68,10 @@ class Institution < ActiveRecord::Base
   # @return hash with mean, median, low, and high keys
   #
   def assessed_item_statistics
-    stats = { mean: 0, median: 0, low: nil, high: 0 }
+    stats = { mean: 0, median: 0, low: 0, high: 0 }
     all_items = all_assessed_items
     if all_items.length < 1
-      return nil
+      return stats
     end
 
     all_items.each do |item|
