@@ -319,8 +319,8 @@ module ApplicationHelper
     elsif entity.kind_of?(User) or entity == User
       class_ = 'glyphicon-user'
     end
-    raw("<span class=\"glyphicon #{class_}\" aria-hidden=\"true\" "\
-    "title=\"#{title}\"></span>")
+    raw("<span class=\"psap-entity-icon glyphicon #{class_}\" "\
+    "aria-hidden=\"true\" title=\"#{title}\"></span>")
   end
 
   ##

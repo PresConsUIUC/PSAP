@@ -6,14 +6,10 @@
       <li>
         <span class="title"><%= link_to repository.name, repository %></span>
         <small>
-          <span title="<%= pluralize(repository.locations.count, 'location') %>"
-                class="glyphicon glyphicon-home"
-                aria-hidden="true"></span>
+          <%= glyphicon(Location, pluralize(repository.locations.count, 'location')) %>
           <%= repository.locations.count %>
 
-          <span title="<%= pluralize(repository.resources.count, 'resource') %>"
-                class="glyphicon glyphicon-folder-open"
-                aria-hidden="true"></span>
+          <%= glyphicon(Resource, pluralize(repository.resources.count, 'resource')) %>
           <%= repository.resources.count %>
         </small>
       </li>
