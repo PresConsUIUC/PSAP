@@ -11,3 +11,10 @@ body#new_resource, body#edit_resource {
     max-width:90%;
   }
 }
+
+body#show_resource {
+  .popover-content ul {
+    margin-left:1.5em;
+    padding-left:0px;
+  }
+}

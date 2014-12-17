@@ -124,6 +124,9 @@
 
     <div class="psap-progress-container">
       Score: <%= number_to_human(@resource.total_assessment_score * 100) %>
+      <button type="button" data-container="body" data-placement="bottom"
+              data-toggle="popover" class="btn btn-sm help"
+              data-content="<%= score_help(@resource) %>">?</button>
       <div class="progress">
         <div class="progress-bar progress-bar-success score" role="progressbar"
              aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
