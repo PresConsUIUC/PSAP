@@ -218,14 +218,14 @@ class ResourcesController < ApplicationController
       institution = Institution.find(params[:institution_id])
     end
     if institution
-      redirect_to(root_url) unless institution.users.include?(current_user) ||
+      redirect_to(root_url) unless institution.users.include?(current_user) or
               current_user.is_admin?
     end
   end
 
   def resource_params
-    params.require(:resource).permit(:description, :format_id,
-                                     :format_ink_media_type_id,
+    params.require(:resource).permit(:assessment_type, :description,
+                                     :format_id, :format_ink_media_type_id,
                                      :format_support_type_id,
                                      :local_identifier, :location_id, :name,
                                      :notes, :parent_id, :resource_type,

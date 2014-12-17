@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216200909) do
+ActiveRecord::Schema.define(version: 20141217200031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(version: 20141216200909) do
     t.decimal  "significance",                precision: 2, scale: 1
     t.integer  "format_ink_media_type_id"
     t.integer  "format_support_type_id"
+    t.integer  "assessment_type"
   end
 
   add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id", using: :btree

@@ -81,6 +81,17 @@ var ResourceForm = {
     },
 
     attachEventListeners: function() {
+        // conditionally show/hide assessment type depending on whether the
+        // resource is a collection
+        $('input[name="resource[resource_type]"]').on('change', function() {
+            var assessment_type_group = $('#psap-assessment-type-group');
+            if ($('input[name="resource[resource_type]"]:checked').val() == '0') { // collection
+                assessment_type_group.show();
+            } else {
+                assessment_type_group.hide();
+            }
+        }).trigger('change');
+
         $('input[name="format_class"]').on('change', function() {
             ResourceForm.selectFormatClass($(this).val());
             ResourceForm.addFormatSelect();
@@ -506,7 +517,7 @@ var ResourceForm = {
                         $('.assessment_question input').off('change').
                             on('change', onOptionChanged);
                         $('[data-spy="scroll"]').each(function () {
-                            $(this).scrollspy('refresh')
+                            $(this).scrollspy('refresh');
                         })
                     });
 

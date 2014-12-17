@@ -160,6 +160,12 @@
                 <% end %>
                 <dt>Local Identifier</dt>
                 <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
+                <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
+                    <dt>Assessment Type</dt>
+                    <dd>
+                      <%= AssessmentType::name_for_type(@resource.assessment_type) %>
+                    </dd>
+                <% end %>
                 <% if @resource.creators.any? %>
                   <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
                   <dd>

@@ -78,6 +78,7 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal 0, @resource.assessment_percent_complete
   end
 
+  # assessment_score
   test 'assessment_score should be within bounds' do
     @resource.assessment_score = -0.5
     assert !@resource.save
@@ -87,6 +88,17 @@ class ResourceTest < ActiveSupport::TestCase
 
     @resource.assessment_score = 0.8
     assert @resource.save
+  end
+
+  # assessment_type
+  test 'assessment_type is not required' do
+    @resource.assessment_type = nil
+    assert @resource.save
+  end
+
+  test 'assessment_type should be within bounds' do
+    @resource.assessment_type = AssessmentType.all.last + 1
+    assert !@resource.save
   end
 
   # filename
