@@ -64,3 +64,19 @@
     text-align:center;
   }
 }
+
+#landing {
+  .jumbotron {
+    text-align: center;
+    p {
+      margin-top: 3em;
+    }
+    p:first-child {
+      margin-top: 0em;
+    }
+  }
+  .larger {
+    font-size:1.4em;
+    font-weight:200;
+  }
+}

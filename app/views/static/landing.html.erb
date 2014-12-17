@@ -1,10 +1,19 @@
 <% provide(:title, 'Home') %>
+<% provide(:body_id, 'landing') %>
 
-<div id="main_panel" class="jumbotron">
-  <p>I already have an account.</p>
-  <%= link_to 'Sign in', signin_path,
-              class: 'btn btn-lg btn-primary btn-block' %>
-  <p>I don't yet have an account.</p>
-  <%= link_to 'Sign up now!', new_user_path,
-              class: 'btn btn-md btn-primary btn-block' %>
+<div class="row">
+  <div class="col-sm-6">
+    <p class="larger">The Preservation Self-Assessment Program (PSAP) is a free online tool that helps collection managers prioritize efforts to improve conditions of collections. Through guided evaluation of materials, storage/exhibit environments, and institutional policies, the PSAP produces reports on the factors that impact the health of cultural heritage materials, and defines the points from which to begin care.</p>
+    <p class="larger"><%= link_to(raw('More&hellip;'), about_path, class: 'modal_view', data: { open: about_path }) %></p>
+  </div>
+  <div class="col-sm-6">
+    <div class="jumbotron">
+      <p>I already have an account.</p>
+      <%= link_to 'Sign in', signin_path,
+                  class: 'btn btn-lg btn-primary btn-block' %>
+      <p>I don't yet have an account.</p>
+      <%= link_to 'Sign up now!', new_user_path,
+                  class: 'btn btn-md btn-primary btn-block' %>
+    </div>
+  </div>
 </div>
