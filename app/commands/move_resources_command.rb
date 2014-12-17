@@ -27,6 +27,11 @@ class MoveResourcesCommand < Command
         @resources.each do |resource|
           resource.location = @location
           resource.save!
+          # move all of its children as well
+          resource.all_children.each do |child|
+            child.location = @location
+            child.save!
+          end
         end
 
         # Fail if the resource is a child resource and its parent is not in (or
@@ -35,16 +40,6 @@ class MoveResourcesCommand < Command
             |r| r.parent and r.parent.location.id != @location.id }.any?
           raise 'Cannot move a child resource to a different location than its '\
           'parent'
-        end
-
-        # Fail if the resource is a parent resource and its children are not
-        # all in (or being moved to) the same location
-        @resources.each do |resource|
-          if resource.all_children.select{
-              |r| r.location.id != @location.id }.any?
-            raise 'Parent resources must reside in the same location as all of '\
-            'their children'
-          end
         end
       end
     rescue => e
