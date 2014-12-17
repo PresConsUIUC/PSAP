@@ -149,7 +149,8 @@ class UsersController < ApplicationController
     q = "%#{params[:q]}%"
     @users = User.
         joins('LEFT JOIN institutions ON users.institution_id = institutions.id').
-        where('users.username LIKE ? OR users.first_name LIKE ? OR users.last_name LIKE ?', q, q, q).
+        where('LOWER(users.username) LIKE ? OR LOWER(users.first_name) LIKE ? OR LOWER(users.last_name) LIKE ?',
+              q.downcase, q.downcase, q.downcase).
         order("#{sort_column} #{sort_direction}").
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
