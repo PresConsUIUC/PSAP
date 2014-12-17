@@ -29,8 +29,6 @@ class Resource < ActiveRecord::Base
 
   validates :assessment_percent_complete, allow_blank: true,
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
-  validates :assessment_score, allow_blank: true,
-            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :assessment_type, allow_blank: true,
             inclusion: { in: AssessmentType.all,
                          message: 'must be a valid assessment type.' }
@@ -45,11 +43,10 @@ class Resource < ActiveRecord::Base
   validates :user, presence: true
 
   validate :validates_not_child_of_item
-  validate :validates_one_response_per_question
   validate :validates_same_institution_as_user
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete, :update_assessment_score
+  before_save :update_assessment_percent_complete
 
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
@@ -370,14 +367,6 @@ class Resource < ActiveRecord::Base
   def validates_not_child_of_item
     if parent and parent.resource_type != ResourceType::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
-    end
-  end
-
-  def validates_one_response_per_question
-    if self.assessment_question_responses.uniq{ |r| r.assessment_question.qid }.length <
-        self.assessment_question_responses.length
-      # TODO: fix
-      #errors[:base] << 'Only one response allowed per assessment question.'
     end
   end
 

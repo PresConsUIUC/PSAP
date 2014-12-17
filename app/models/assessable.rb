@@ -1,5 +1,15 @@
 module Assessable
 
+  extend ActiveSupport::Concern
+
+  included do
+    validates :assessment_score, allow_blank: true,
+              numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+    validate :validates_one_response_per_question
+
+    before_save :update_assessment_score
+  end
+
   def assessment_percent_complete_in_section(section)
     self.complete_assessment_questions_in_section(section).length.to_f /
         section.assessment_questions.length.to_f
@@ -61,6 +71,14 @@ module Assessable
           response.assessment_question.weight
     end
     self.assessment_score *= 0.01
+  end
+
+  def validates_one_response_per_question
+    if self.assessment_question_responses.uniq{ |r| r.assessment_question.qid }.length <
+        self.assessment_question_responses.length
+      # TODO: https://github.com/PresConsUIUC/PSAP/issues/189
+      #errors[:base] << 'Only one response is allowed per assessment question.'
+    end
   end
 
 end
