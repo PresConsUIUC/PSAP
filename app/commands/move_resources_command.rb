@@ -51,7 +51,7 @@ class MoveResourcesCommand < Command
     else
       @resources.each do |resource|
         event = Event.create(
-            description: "Moved resource to #{@location.name}.",
+            description: "Moved resource to #{@location.name}",
             user: @doing_user, address: @remote_ip)
         resource.events << event
         @location.events << event
