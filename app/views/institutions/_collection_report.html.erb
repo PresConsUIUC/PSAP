@@ -58,7 +58,16 @@
               <td>Low</td>
             </tr>
           </table>
-        </div>
+
+          <% if resource.resource_notes.any? %>
+            <ul>
+              <% resource.resource_notes.each do |note| %>
+                <li><%= simple_format(note.value) %></li>
+              <% end %>
+            </ul>
+          <% end %>
+
+        </div> <!-- col-sm-6 -->
 
         <!-- chart column -->
         <div class="col-sm-6">
