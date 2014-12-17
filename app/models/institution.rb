@@ -37,20 +37,24 @@ class Institution < ActiveRecord::Base
   # @return Array of hashes containing :count and :institution keys
   #
   def self.most_active(limit = 5)
-    sql = "SELECT COUNT(description) AS count, users.institution_id AS institution_id "\
+    sql = "SELECT COUNT(events.description) AS count, "\
+            "users.institution_id AS institution_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON events_users.event_id = events.id "\
-          "WHERE events.description LIKE 'Created resource%' "\
-            "OR events.description LIKE 'Updated resource%' "\
+          "LEFT JOIN events ON ("\
+            "events_users.event_id = events.id "\
+            "AND events.description LIKE 'Created resource%' "\
+              "OR events.description LIKE 'Updated resource%' "\
+              "OR events.description LIKE 'Moved resource%') "\
+          "WHERE users.institution_id IS NOT NULL "\
           "GROUP BY institution_id "\
           "ORDER BY count DESC "\
           "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    counts.map{ |r| { count: r['count'].to_i,
-                      institution: Institution.find(r['institution_id']) } }
+    counts.map{ |row| { count: row['count'].to_i,
+                        institution: Institution.find(row['institution_id']) } }
   end
 
   ##
@@ -96,22 +100,20 @@ class Institution < ActiveRecord::Base
     sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON events_users.event_id = events.id "\
-          "WHERE (events.description LIKE 'Created resource%' "\
-              "OR events.description LIKE 'Updated resource%') "\
-            "AND users.institution_id = #{self.id} "\
+          "LEFT JOIN events ON ("\
+            "events_users.event_id = events.id "\
+            "AND events.description LIKE 'Created resource%' "\
+              "OR events.description LIKE 'Updated resource%' "\
+              "OR events.description LIKE 'Moved resource%') "\
+          "WHERE users.institution_id = #{self.id} "\
           "GROUP BY users.id "\
           "ORDER BY count DESC "\
-          "LIMIT #{limit}" # TODO: is the GROUP BY right?
+          "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    results = []
-    counts.each do |row|
-      results << { count: row['count'].to_i,
-                   user: User.find(row['user_id']) } if row['user_id']
-    end
-    results
+    counts.map{ |row| { count: row['count'].to_i,
+                        user: User.find(row['user_id']) } }
   end
 
   def resources_as_csv
