@@ -61,7 +61,7 @@ class Institution < ActiveRecord::Base
   # @return Array of all assessed items in an institution, regardless of depth
   # in the hierarchy.
   #
-  def all_assessed_items
+  def all_assessed_items # TODO: rename to all_assessed_resources
     self.resources.select{ |x| x.assessment_percent_complete >= 0.999999 }
   end
 
