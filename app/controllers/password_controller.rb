@@ -16,7 +16,7 @@ class PasswordController < ApplicationController
     if params[:user].kind_of?(Hash)
       @user = User.find_by_email params[:user][:email]
       if @user
-        @user.password_reset_key = SecureRandom.urlsafe_base64(nil, false) # TODO: put this in User.reset_reset_password_key
+        @user.reset_password_reset_key
         @user.save!
         UserMailer.password_reset_email(@user).deliver unless Rails.env.test?
         flash[:notice] = 'An email has been sent containing a link to reset '\

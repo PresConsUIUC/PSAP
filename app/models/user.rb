@@ -84,6 +84,10 @@ class User < ActiveRecord::Base
     self.feed_key = SecureRandom.hex
   end
 
+  def reset_password_reset_key
+    self.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
+  end
+
   def validate_password?
     password.present? or password_confirmation.present?
   end
