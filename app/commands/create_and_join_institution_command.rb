@@ -10,17 +10,8 @@ class CreateAndJoinInstitutionCommand < Command
     begin
       ActiveRecord::Base.transaction do
         @institution.save!
-        if @doing_user
-          if @doing_user.is_admin? # admins can change their institutions with no review
-            @doing_user.institution = @institution
-            @doing_user.save!
-          else # non-admin institution changes require review
-            @doing_user.desired_institution = @institution
-            @doing_user.save!
-            UserMailer.institution_change_review_request_email(@doing_user).deliver
-          end
-        end
-        @institution.reload
+        JoinInstitutionCommand.new(@doing_user, @institution, @doing_user,
+                                   @remote_ip).execute
       end
     rescue ActiveRecord::RecordInvalid
       @institution.events << Event.create(

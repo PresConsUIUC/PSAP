@@ -19,13 +19,12 @@ class ApplicationController < ActionController::Base
   # Stores the flash message and type in the response headers for ajax
   # purposes.
   def flash_in_response_headers
-    return unless request.xhr?
-    response.headers['X-Message-Type'] = 'error' unless flash[:error].blank?
-    response.headers['X-Message-Type'] = 'success' unless flash[:success].blank?
-    response.headers['X-Message'] = flash[:error] unless flash[:error].blank?
-    response.headers['X-Message'] = flash[:success] unless flash[:success].blank?
-
-    flash.discard # prevent the flash from appearing when the page is reloaded
+    if request.xhr?
+      response.headers['X-Message-Type'] = 'error' unless flash['error'].blank?
+      response.headers['X-Message-Type'] = 'success' unless flash['success'].blank?
+      response.headers['X-Message'] = flash['error'] unless flash['error'].blank?
+      response.headers['X-Message'] = flash['success'] unless flash['success'].blank?
+    end
   end
 
   def init

@@ -164,7 +164,7 @@ var PSAP = {
 
         // Show the modal progress view after submitting an ajax form
         $(document).on('submit', 'form[data-remote="true"]', function() {
-            var view = $('#modal_progress_view');
+            var view = $('#psap-ajax-shade');
             view.height($(document).height());
             view.show();
         });

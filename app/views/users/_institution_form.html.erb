@@ -3,17 +3,20 @@
 <%= form_for @user, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
-    <div class="form-group">
-      <%= f.collection_select :institution_id,
-                              Institution.all.order(:name), :id, :name,
-                              { selected: @user.institution_id },
-                              { class: 'form-control' } %>
-    </div>
+  <div class="form-group">
+    <%= f.collection_select :desired_institution_id,
+                            Institution.all.order(:name), :id, :name,
+                            { selected: @user.institution_id },
+                            { class: 'form-control' } %>
+    <p class="help-block">Changing your institution requires administrator
+      approval. You will receive an email when your request has been approved
+      or denied.</p>
+  </div>
 
-    <div class="center">
-      <%= f.submit 'My institution is selected above',
-                   class: 'btn btn-primary' %>
-      <%= link_to 'My institution is not listed here', new_institution_path,
-                   class: 'btn btn-default' %>
-    </div>
+  <div class="center">
+    <%= f.submit 'My institution is selected above',
+                 class: 'btn btn-primary' %>
+    <%= link_to 'My institution is not listed here', new_institution_path,
+                 class: 'btn btn-default' %>
+  </div>
 <% end %>

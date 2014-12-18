@@ -187,18 +187,19 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
-    @resources = @user.resources.order(:name)
 
-    # @events_on_user = @user.events.order(created_at: :desc)
+    @resources = @user.resources.order(:name)
     @events = Event.where(user: @user).order(created_at: :desc).limit(20)
   end
 
+  ##
+  # This action is meant to be invoked via ajax.
+  #
   def update
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
 
-    # If the user is changing their password
-    if params[:user][:current_password]
+    if params[:user][:current_password] # the user is changing their password
       command = ChangePasswordCommand.new(
           @user, params[:user][:current_password],
           params[:user][:password],
@@ -216,15 +217,35 @@ class UsersController < ApplicationController
         flash[:success] = @user == current_user ?
             'Your password has been changed.' :
             "#{@user.username}'s password has been changed."
-
-        respond_to do |format|
-          format.html { redirect_to edit_user_url(@user) }
-          format.js { render 'edit' }
-        end
+        redirect_to edit_user_url(@user)
       end
-    else
-      was_unaffiliated = @user.institution.nil?
-
+    elsif params[:user][:desired_institution_id] # the user is changing their institution
+      new_institution = Institution.find(params[:user][:desired_institution_id])
+      command = JoinInstitutionCommand.new(@user, new_institution,
+                                           current_user, request.remote_ip)
+      begin
+        command.execute
+      rescue ValidationError
+        render 'edit'
+      rescue => e
+        flash[:error] = "#{e}"
+        render 'edit'
+      else
+        if @user.institution == new_institution # already joined, which means an admin did it
+          if @user == current_user
+            flash['success'] = "Your institution has been changed to "\
+            "#{new_institution.name}."
+          else
+            flash['success'] = "#{@user.username}'s institution has been "\
+            "changed to #{new_institution.name}."
+          end
+        else
+          flash['success'] = "An administrator has been notified and will "\
+          "review your request to join #{new_institution.name} momentarily,"
+        end
+        redirect_to dashboard_path
+      end
+    else # the user is changing their basic info
       command = UpdateUserCommand.new(@user, user_update_params, current_user,
                                       request.remote_ip)
       begin
@@ -235,26 +256,10 @@ class UsersController < ApplicationController
         flash[:error] = "#{e}"
         render 'edit'
       else
-        # If the user was not affiliated with an institution before the update,
-        # but now is, this implies that they have just joined an institution for
-        # the first time by following a link from their dashboard.
-        if was_unaffiliated && @user.institution
-          flash[:success] = @user == current_user ?
-              "You are now a member of #{@user.institution.name}." :
-              "#{@user.username} is now a member of #{@user.institution.name}."
-        else
-          flash[:success] = @user == current_user ?
-              'Your profile has been updated.' :
-              "#{@user.username}'s profile has been updated."
-        end
-
-        respond_to do |format|
-          format.html {
-            redirect_to was_unaffiliated && @user.institution ?
-                            dashboard_url : edit_user_url(@user)
-          }
-          format.js { render 'edit' }
-        end
+        flash[:success] = @user == current_user ?
+            'Your profile has been updated.' :
+            "#{@user.username}'s profile has been updated."
+        redirect_to edit_user_url(@user)
       end
     end
   end
@@ -295,9 +300,8 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:user).permit(:username, :email, :first_name, :last_name,
-                                 :institution_id, :enabled,
-                                 :show_contextual_help)
+    params.require(:user).permit(:desired_institution_id, :enabled, :email,
+                                 :first_name, :last_name, :username)
   end
 
 end
