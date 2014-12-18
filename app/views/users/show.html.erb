@@ -106,6 +106,8 @@
       </dd>
       <dt>Email</dt>
       <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+      <dt>Role</dt>
+      <dd><%= @user.role.name %></li></dd>
       <dt>Account</dt>
       <dd>
         <%= confirmation_status(@user) %>
