@@ -7,13 +7,8 @@
     <p class="larger"><%= link_to(raw('More&hellip;'), about_path, class: 'modal_view', data: { open: about_path }) %></p>
   </div>
   <div class="col-sm-6">
-    <div class="jumbotron">
-      <p>I already have an account.</p>
-      <%= link_to 'Sign in', signin_path,
-                  class: 'btn btn-lg btn-primary btn-block' %>
-      <p>I don't yet have an account.</p>
-      <%= link_to 'Sign up now!', new_user_path,
-                  class: 'btn btn-md btn-primary btn-block' %>
+    <div class="well">
+      <%= render partial: 'sessions/sign_in_form' %>
     </div>
   </div>
 </div>
