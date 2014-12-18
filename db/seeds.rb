@@ -335,6 +335,7 @@ case Rails.env
           url: 'http://example.org/',
           email: 'test@example.org',
           description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1').execute
+    hogwarts_institution = command.object
 
     # Normal user
     command = CreateUserCommand.new(
@@ -381,7 +382,7 @@ case Rails.env
         { username: 'hpotter', email: 'harry@example.org',
           first_name: 'Harry', last_name: 'Potter',
           password: 'password', password_confirmation: 'password',
-          institution: uiuc_institution,
+          institution: hogwarts_institution,
           desired_institution: Institution.find_by_city('Hogsmeade'),
           role: normal_role,
           confirmed: true, enabled: true }, '127.0.0.1', false)
