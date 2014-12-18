@@ -14,7 +14,10 @@
 
 <div class="row">
   <div class="col-sm-7">
-    <h1><%= entity_icon(@resource) %> <%= @resource.name %></h1>
+    <h1>
+      <%= @resource.name %>
+      <small><%= entity_icon(@resource) %><%= @resource.readable_resource_type %></small>
+    </h1>
   </div>
   <div class="col-sm-5">
     <div class="btn-group" style="float:right">
@@ -105,8 +108,11 @@
     </li>
   <% end %>
   <li <%= @resource.children.any? ? '' : 'class=active' %>>
-    <a href="#assessment_tab" data-toggle="tab">Assessment</a>
+    <a href="#info_tab" data-toggle="tab">Info</a>
   </li>
+  <% if @resource.resource_type == ResourceType::ITEM %>
+    <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
+  <% end %>
   <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
 </ul>
 
@@ -120,182 +126,172 @@
     </div>
   <% end %>
 
-  <div id="assessment_tab" class="assessment tab-pane <%= @resource.children.any? ? '' : 'active' %>">
-
-    <div class="psap-progress-container">
-      Score: <%= number_to_human(@resource.total_assessment_score * 100) %>
-      <button type="button" data-container="body" data-placement="bottom"
-              data-toggle="popover" class="btn btn-sm help"
-              data-content="<%= score_help(@resource) %>">?</button>
-      <div class="progress">
-        <div class="progress-bar progress-bar-success score" role="progressbar"
-             aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
-             aria-valuemin="0" aria-valuemax="100"
-             style="width:<%= @resource.total_assessment_score * 100 %>%">
-        </div>
+  <div id="info_tab" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+    <div class="row">
+      <div class="col-sm-4">
+        <dl>
+          <% if @resource.parent %>
+            <dt>Parent Collection</dt>
+            <dd>
+              <%= link_to @resource.parent do %>
+                <%= entity_icon(@resource.parent) %>
+                <%= @resource.parent.name %>
+              <% end %>
+            </dd>
+          <% end %>
+          <dt>Local Identifier</dt>
+          <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
+          <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
+            <dt>Assessment Type</dt>
+            <dd>
+              <%= AssessmentType::name_for_type(@resource.assessment_type) %>
+            </dd>
+          <% end %>
+          <% if @resource.creators.any? %>
+            <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
+            <dd>
+              <% if @resource.creators.length == 1 %>
+                <%= @resource.creators.first.name %>
+              <% else %>
+                <ul>
+                  <% @resource.creators.each do |creator| %>
+                    <li><%= creator.name %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </dd>
+          <% end %>
+          <% if @resource.format %>
+            <dt>Format</dt>
+            <dd>
+              <% if current_user.is_admin? %>
+                <%= link_to @resource.format.name, @resource.format %>
+                <%= link_to('(Format ID Guide)', format_id_guide_category_path(@resource.format.format_id_guide_page,
+                                                                               anchor: @resource.format.format_id_guide_anchor)) %>
+              <% else %>
+                <%= link_to(@resource.format.name, format_id_guide_category_path(@resource.format.format_id_guide_page,
+                                                                                 anchor: @resource.format.format_id_guide_anchor)) %>
+              <% end %>
+              <% if @resource.format_ink_media_type or @resource.format_support_type %>
+                <dl>
+                  <% if @resource.format_ink_media_type %>
+                    <dt>Ink/Media Type</dt>
+                    <dd>
+                      <%= @resource.format_ink_media_type.name %>
+                    </dd>
+                  <% end %>
+                  <% if @resource.format_support_type %>
+                    <dt>Support Type</dt>
+                    <dd>
+                      <%= @resource.format_support_type.name %>
+                    </dd>
+                  <% end %>
+                </dl>
+              <% end %>
+            </dd>
+          <% end %>
+          <% unless @resource.description.blank? %>
+            <dt>Description</dt>
+            <dd><%= @resource.description %></dd>
+          <% end %>
+        </dl>
+      </div>
+      <div class="col-sm-4">
+        <dl>
+          <% if @resource.resource_notes.any? %>
+            <dt>Notes</dt>
+            <dd>
+              <% if @resource.resource_notes.length == 1 %>
+                <%= @resource.resource_notes[0].value %>
+              <% else %>
+                <ul>
+                  <% @resource.resource_notes.each do |note| %>
+                    <li><%= note.value %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </dd>
+          <% end %>
+          <% if @resource.resource_dates.any? %>
+            <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
+            <dd>
+              <% if @resource.resource_dates.length == 1 %>
+                <%= human_readable_date(@resource.resource_dates[0]) %>
+              <% else %>
+                <ul>
+                  <% for date in @resource.resource_dates %>
+                    <li><%= human_readable_date(date) %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </dd>
+          <% end %>
+          <% if @resource.subjects.any? %>
+            <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
+            <dd>
+              <% if @resource.subjects.length == 1 %>
+                <%= @resource.subjects.first.name %>
+              <% else %>
+                <ul>
+                  <% for subject in @resource.subjects %>
+                    <li><%= subject.name %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </dd>
+          <% end %>
+          <% if @resource.extents.any? %>
+            <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
+            <dd>
+              <% if @resource.extents.length == 1 %>
+                <%= @resource.extents.first.name %>
+              <% else %>
+                <ul>
+                  <% for extent in @resource.extents %>
+                    <li><%= extent.name %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </dd>
+          <% end %>
+        </dl>
+      </div>
+      <div class="col-sm-4">
+        <dl>
+          <% if @resource.significance %>
+            <dt>Significance</dt>
+            <dd><%= @resource.readable_significance %></dd>
+          <% end %>
+          <% if @resource.rights %>
+            <dt>Rights</dt>
+            <dd><%= @resource.rights %></dd>
+          <% end %>
+          <dt>Created</dt>
+          <dd><%= local_time_ago(@resource.created_at) %> by
+            <%= link_to @resource.user do %>
+              <%= entity_icon(@resource.user) %>
+              <%= @resource.user.full_name %>
+            <% end %>
+          </dd>
+          <dt>Last Updated</dt>
+          <dd><%= local_time_ago(@resource.updated_at) %></dd>
+        </dl>
       </div>
     </div>
+  </div> <!-- #info_tab -->
 
-    <div class="panel-group assessment" id="section-basic-info">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#section-basic-info" href="#basic-info">
-              Basic Info
-            </a>
-          </h4>
-        </div>
-        <div id="basic-info" class="panel-collapse collapse in">
-          <div class="panel-body">
-            <div class="col-sm-4">
-              <dl>
-                <% if @resource.parent %>
-                  <dt>Parent Collection</dt>
-                  <dd>
-                    <%= link_to @resource.parent do %>
-                      <%= entity_icon(@resource.parent) %>
-                      <%= @resource.parent.name %>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <dt>Local Identifier</dt>
-                <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
-                <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
-                    <dt>Assessment Type</dt>
-                    <dd>
-                      <%= AssessmentType::name_for_type(@resource.assessment_type) %>
-                    </dd>
-                <% end %>
-                <% if @resource.creators.any? %>
-                  <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
-                  <dd>
-                    <% if @resource.creators.length == 1 %>
-                      <%= @resource.creators.first.name %>
-                    <% else %>
-                      <ul>
-                        <% @resource.creators.each do |creator| %>
-                          <li><%= creator.name %></li>
-                        <% end %>
-                      </ul>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <% if @resource.format %>
-                  <dt>Format</dt>
-                  <dd>
-                    <% if current_user.is_admin? %>
-                      <%= link_to @resource.format.name, @resource.format %>
-                      <%= link_to('(Format ID Guide)', format_id_guide_category_path(@resource.format.format_id_guide_page,
-                                                                                     anchor: @resource.format.format_id_guide_anchor)) %>
-                    <% else %>
-                      <%= link_to(@resource.format.name, format_id_guide_category_path(@resource.format.format_id_guide_page,
-                                                                                       anchor: @resource.format.format_id_guide_anchor)) %>
-                    <% end %>
-                    <% if @resource.format_ink_media_type or @resource.format_support_type %>
-                      <dl>
-                      <% if @resource.format_ink_media_type %>
-                        <dt>Ink/Media Type</dt>
-                        <dd>
-                          <%= @resource.format_ink_media_type.name %>
-                        </dd>
-                      <% end %>
-                      <% if @resource.format_support_type %>
-                        <dt>Support Type</dt>
-                        <dd>
-                          <%= @resource.format_support_type.name %>
-                        </dd>
-                      <% end %>
-                      </dl>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <% unless @resource.description.blank? %>
-                  <dt>Description</dt>
-                  <dd><%= @resource.description %></dd>
-                <% end %>
-              </dl>
-            </div>
-            <div class="col-sm-4">
-              <dl>
-                <% if @resource.resource_notes.any? %>
-                  <dt>Notes</dt>
-                  <dd>
-                    <% if @resource.resource_notes.length == 1 %>
-                      <%= @resource.resource_notes[0].value %>
-                    <% else %>
-                      <ul>
-                        <% @resource.resource_notes.each do |note| %>
-                          <li><%= note.value %></li>
-                        <% end %>
-                      </ul>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <% if @resource.resource_dates.any? %>
-                  <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
-                  <dd>
-                    <% if @resource.resource_dates.length == 1 %>
-                      <%= human_readable_date(@resource.resource_dates[0]) %>
-                    <% else %>
-                      <ul>
-                        <% for date in @resource.resource_dates %>
-                          <li><%= human_readable_date(date) %></li>
-                        <% end %>
-                      </ul>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <% if @resource.subjects.any? %>
-                  <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
-                  <dd>
-                    <% if @resource.subjects.length == 1 %>
-                      <%= @resource.subjects.first.name %>
-                    <% else %>
-                      <ul>
-                        <% for subject in @resource.subjects %>
-                          <li><%= subject.name %></li>
-                        <% end %>
-                      </ul>
-                    <% end %>
-                  </dd>
-                <% end %>
-                <% if @resource.extents.any? %>
-                  <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
-                  <dd>
-                    <% if @resource.extents.length == 1 %>
-                      <%= @resource.extents.first.name %>
-                    <% else %>
-                      <ul>
-                        <% for extent in @resource.extents %>
-                          <li><%= extent.name %></li>
-                        <% end %>
-                      </ul>
-                    <% end %>
-                  </dd>
-                <% end %>
-              </dl>
-            </div>
-            <div class="col-sm-4">
-              <dl>
-                <% if @resource.significance %>
-                  <dt>Significance</dt>
-                  <dd><%= @resource.readable_significance %></dd>
-                <% end %>
-                <% if @resource.rights %>
-                  <dt>Rights</dt>
-                  <dd><%= @resource.rights %></dd>
-                <% end %>
-                <dt>Created</dt>
-                <dd><%= local_time_ago(@resource.created_at) %> by
-                  <%= link_to @resource.user do %>
-                    <%= entity_icon(@resource.user) %>
-                    <%= @resource.user.full_name %>
-                  <% end %>
-                </dd>
-                <dt>Last Updated</dt>
-                <dd><%= local_time_ago(@resource.updated_at) %></dd>
-              </dl>
-            </div>
+  <% if @resource.resource_type == ResourceType::ITEM %>
+    <div id="assessment_tab" class="tab-pane">
+      <div class="psap-progress-container">
+        Score: <%= number_to_human(@resource.total_assessment_score * 100) %>
+        <button type="button" data-container="body" data-placement="bottom"
+                data-toggle="popover" class="btn btn-sm help"
+                data-content="<%= score_help(@resource) %>">?</button>
+        <div class="progress">
+          <div class="progress-bar progress-bar-success score" role="progressbar"
+               aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
+               aria-valuemin="0" aria-valuemax="100"
+               style="width:<%= @resource.total_assessment_score * 100 %>%">
           </div>
         </div>
       </div>
@@ -304,30 +300,27 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#section-<%= section.id %>">
-                <%= section.name %>
-                <small>(<%= (@resource.assessment_percent_complete_in_section(section) * 100).round %>% complete)</small>
-              </a>
+              <%= section.name %>
+              <small>(<%= (@resource.assessment_percent_complete_in_section(section) * 100).round %>% complete)</small>
             </h4>
           </div>
-          <div id="section-<%= section.id %>" class="panel-collapse collapse">
-            <div class="panel-body">
-              <%= render partial: 'shared/assessment_questions', locals: {
-                      entity: @resource,
-                      assessment_questions: section.
+          <div class="panel-body assessment">
+            <%= render partial: 'shared/assessment_questions', locals: {
+                       entity: @resource,
+                       assessment_questions: section.
                               assessment_questions_for_format(@resource.format).
                               where(parent_id: nil),
-                      depth: 0 } %>
-            </div>
+                       depth: 0 } %>
           </div>
         </div>
       <% end %>
-    </div>
-  </div>
+    </div> <!-- #assessment_tab -->
+  <% end %>
 
   <div id="activity_tab" class="tab-pane">
     <%= render 'shared/events', events: @events %>
   </div>
+
 </div> <!-- .tab-content -->
 
 <%= render partial: 'resources/import_from_archivesspace',
