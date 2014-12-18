@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   ##
+  # Counterpart of refuse_institution.
   # Responds to PATCH /users/:username/approve-institution
   #
   def approve_institution
@@ -158,6 +159,27 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+  end
+
+  ##
+  # Counterpart of approve_institution.
+  # Responds to PATCH /users/:username/refuse-institution
+  #
+  def refuse_institution
+    user = User.find_by_username(params[:username])
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = RefuseUserInstitutionCommand.new(user, current_user,
+                                               request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution change refused for user #{user.username}."
+    ensure
+      redirect_to :back
+    end
   end
 
   ##

@@ -35,6 +35,13 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'Your new PSAP institution has been approved')
   end
 
+  def institution_change_refused_email(user)
+    @user = user
+    @psap_url = root_url
+    mail(to: @user.email,
+         subject: 'Your request to change your PSAP institution has been denied')
+  end
+
   ##
   # Sent to the user after when password has been reset.
   #

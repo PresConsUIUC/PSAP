@@ -111,6 +111,8 @@ Psap::Application.routes.draw do
         via: 'patch', as: 'reset_user_feed_key'
   match '/users/:username/approve-institution', to: 'users#approve_institution',
         via: 'patch', as: 'approve_user_institution'
+  match '/users/:username/refuse-institution', to: 'users#refuse_institution',
+        via: 'patch', as: 'refuse_user_institution'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot_password

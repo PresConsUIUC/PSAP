@@ -1,0 +1,8 @@
+Your request to change your PSAP institution has been denied.
+
+This is an automated message from the PSAP application. For more information,
+please contact the PSAP team at: psapdev@yahoo.com.
+
+The PSAP is available at:
+
+http://localhost:3000/

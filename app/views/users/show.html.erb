@@ -61,17 +61,8 @@
                             'you want to do this?' } %>
               <% end %>
             </li>
-            <li>
-              <!-- Approve Institution Change -->
-              <% if @user.desired_institution %>
-                <%= link_to 'Approve Institution Change',
-                            approve_user_institution_path(@user),
-                            method: :patch %>
-              <% end %>
-            </li>
           </ul>
         </div>
-
         <!-- Edit -->
         <% if current_user.is_admin? || current_user == @user %>
           <%= link_to edit_user_path(@user), class: 'btn btn-default' do %>
@@ -136,12 +127,18 @@
   <div class="col-sm-8">
 
     <% if current_user.is_admin? and @user.desired_institution %>
-      <div class="alert alert-info">
+      <div id="psap-institution-change-alert" class="alert alert-info">
         <p>This user has requested to change his/her institution to
           <%= link_to(@user.desired_institution.name, @user.desired_institution) %>.
-          At your earliest convenience, either select "Approve Institution
-          Change" from the "Actions" menu, or consider emailing the
-          user with an explanation as to why the change was denied.</p>
+          At your earliest convenience, either approve or refuse the change.
+          The user will receive a notification email automatically.</p>
+          <p>If you refuse, consider emailing the user with an explanation.</p>
+          <%= link_to('Approve Institution Change',
+                      approve_user_institution_path(@user),
+                      method: :patch, class: 'btn btn-success') %>
+          <%= link_to('Refuse Institution Change',
+                      refuse_user_institution_path(@user),
+                      method: :patch, class: 'btn btn-danger') %>
       </div>
     <% end %>
 
