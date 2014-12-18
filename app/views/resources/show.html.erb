@@ -51,6 +51,19 @@
         </ul>
       </div>
 
+      <% if @resource.resource_type == ResourceType::COLLECTION %>
+        <!-- Edit -->
+        <%= link_to edit_resource_path(@resource), class: 'btn btn-default' do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+          Edit
+        <% end %>
+      <% else %>
+        <!-- Assess -->
+        <%= link_to edit_resource_path(@resource), class: 'btn btn-default' do %>
+            <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+            Assess
+        <% end %>
+      <% end %>
 
       <!-- Delete -->
       <%= link_to resource_path(@resource), method: 'delete',
