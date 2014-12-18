@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PasswordControllerTest < ActionController::TestCase
 
-  #### forgot_password ####
+  #### forgot-password ####
 
   test 'forgot-password page should display' do
     get :forgot_password

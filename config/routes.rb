@@ -115,13 +115,13 @@ Psap::Application.routes.draw do
         via: 'patch', as: 'refuse_user_institution'
 
   # Password routes
-  # Step 1: "I forgot my password," click a button to POST to /forgot_password
-  match '/forgot_password', to: 'password#forgot_password', via: 'get'
-  match '/forgot_password', to: 'password#send_email', via: 'post'
-  # Step 2: I click the link to /new_password in the email, then POST new
-  # password to /new_password
-  match '/new_password', to: 'password#new_password', via: 'get'
-  match '/new_password', to: 'password#reset_password', via: 'post'
+  # Step 1: "I forgot my password," click a button to POST to /forgot-password
+  match '/forgot-password', to: 'password#forgot_password', via: 'get'
+  match '/forgot-password', to: 'password#send_email', via: 'post'
+  # Step 2: I click the link to /new-password in the email, then POST new
+  # password to /new-password
+  match '/new-password', to: 'password#new_password', via: 'get'
+  match '/new-password', to: 'password#reset_password', via: 'post'
 
   # Format ID Guide routes
   match '/format-id-guide', to: 'format_id_guide#index', via: 'get',

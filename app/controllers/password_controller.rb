@@ -1,7 +1,7 @@
 class PasswordController < ApplicationController
 
   ##
-  # Responds to GET /forgot_password, displaying a form that will POST to
+  # Responds to GET /forgot-password, displaying a form that will POST to
   # /forgot_password.
   #
   def forgot_password
@@ -9,7 +9,7 @@ class PasswordController < ApplicationController
   end
 
   ##
-  # Responds to POST /forgot_password, sending an email containing a password
+  # Responds to POST /forgot-password, sending an email containing a password
   # reset link and redirecting to the root URL.
   #
   def send_email
@@ -32,9 +32,9 @@ class PasswordController < ApplicationController
   end
 
   ##
-  # Responds to GET /new_password, which handles incoming links from password
+  # Responds to GET /new-password, which handles incoming links from password
   # reset emails, and contains a form with new-password fields that will POST
-  # to /new_password.
+  # to /new-password.
   #
   def new_password
     @user = User.find_by_username params[:username]
@@ -45,7 +45,7 @@ class PasswordController < ApplicationController
   end
 
   ##
-  # Responds to POST /new_password. Resets the password.
+  # Responds to POST /new-password. Resets the password.
   #
   def reset_password
     if params[:user].kind_of?(Hash)
