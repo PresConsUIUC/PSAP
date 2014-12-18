@@ -34,16 +34,15 @@
       </div>
       <!-- Delete -->
       <% if current_user.is_admin? %>
-        <% disabled = @institution.users.any? %>
         <%= link_to institution_path(@institution), method: 'delete',
-                    class: 'btn btn-default',
-                    disabled: disabled,
-                    data: { confirm: 'Deleting this institution will '\
-                        'delete ALL of its repositories, locations, and '\
-                        'assessments along with it. Are you sure you want '\
-                        'to do this?' } do %>
-            <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-            Delete
+                  class: 'btn btn-danger',
+                  disabled: @institution.users.any?,
+                  data: { confirm: 'Deleting this institution will '\
+                      'delete ALL of its repositories, locations, and '\
+                      'assessments along with it. Are you sure you want '\
+                      'to do this?' } do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+          Delete
         <% end %>
       <% end %>
     </div>
@@ -108,7 +107,7 @@
         <!-- Add Repository button -->
         <div style="text-align:right">
           <%= link_to new_institution_repository_path(@institution),
-                      class: 'btn btn-default' do %>
+                      class: 'btn btn-success' do %>
               <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
               Add Repository
           <% end %>

@@ -21,7 +21,7 @@
       <% end %>
       <!-- Delete -->
       <%= link_to repository_path(@repository), method: 'delete',
-                  class: 'btn btn-default',
+                  class: 'btn btn-danger',
                   data: { confirm: 'Deleting this repository will delete all '\
                           'locations and resource assessments it contains. '\
                           'Are you sure you want to delete this repository?' } do %>
@@ -44,7 +44,7 @@
   <div class="tab-pane active" id="locations_tab">
     <div style="text-align:right">
       <!-- Add Location button -->
-      <%= link_to new_repository_location_path(@repository), class: 'btn btn-default' do %>
+      <%= link_to new_repository_location_path(@repository), class: 'btn btn-success' do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
           Add Location
       <% end %>

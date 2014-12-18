@@ -11,18 +11,13 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <h1><%= @location.name %>
       <small><%= entity_icon(@location) %> Location</small>
     </h1>
   </div>
-  <div class="col-sm-7">
+  <div class="col-sm-6">
     <div class="btn-group" style="float:right">
-      <!-- Assess a Resource Here button -->
-      <%= link_to new_location_resource_path(@location), class: 'btn btn-default' do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-        Assess a Resource Here
-      <% end %>
       <!-- Import button -->
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -41,7 +36,7 @@
       <% end %>
       <!-- Delete -->
       <%= link_to location_path(@location), method: 'delete',
-                  class: 'btn btn-default',
+                  class: 'btn btn-danger',
                   data: { confirm: 'Deleting this location will also delete '\
                   'all resource assessments it contains. Are '\
                   'you sure you want to delete this location?' } do %>
@@ -92,6 +87,11 @@
 
         <!-- Move Checked button -->
         <div class="btn-group" style="float:right">
+          <!-- Add Resource button -->
+          <%= link_to new_location_resource_path(@location), class: 'btn btn-success' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+              Add Resource
+          <% end %>
           <button type="button" class="btn btn-default psap-move-checked"
                   data-toggle="modal" data-target="#moveModal"
                   <%= @resources.any? ? '' : 'disabled' %>>
