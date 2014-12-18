@@ -225,21 +225,17 @@ nav.navbar {
 
 header {
   border-bottom:1px solid $gray-lighter;
-  height:100px;
+  height:96px;
   h1 {
-    margin-bottom:0.4em;
+    font-family: "Helvetica Neue Light", sans-serif;
+    font-size:1.5em;
+    font-weight:200;
+    letter-spacing:1px;
+    margin-bottom:8px;
+    padding-top:6px;
   }
   h1 a, h1 a:hover {
-    color:black;
-    font-weight:normal;
-    margin:0em;
-    text-decoration:none;
-  }
-  h1 small a, h1 small a:hover {
     color:#808080;
-    font-family: "Helvetica Neue Light", sans-serif;
-    font-size:0.9em;
-    font-weight:200;
   }
   @media screen and (max-width: 450px) {
     h1 small {
