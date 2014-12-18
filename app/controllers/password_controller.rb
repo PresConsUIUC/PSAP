@@ -13,15 +13,20 @@ class PasswordController < ApplicationController
   # reset link and redirecting to the root URL.
   #
   def send_email
-    if params[:user].kind_of?(Hash)
-      @user = User.find_by_email params[:user][:email]
+    if params[:email]
+      @user = User.find_by_email params[:email]
       if @user
         @user.reset_password_reset_key
         @user.save!
         UserMailer.password_reset_email(@user).deliver unless Rails.env.test?
         flash[:notice] = 'An email has been sent containing a link to reset '\
                           'your password.'
+        redirect_to root_url
+      else
+        flash[:error] = 'No user found with the given email address.'
+        redirect_to forgot_password_url
       end
+      return
     end
     redirect_to root_url
   end
