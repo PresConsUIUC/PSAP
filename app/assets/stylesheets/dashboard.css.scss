@@ -3,6 +3,9 @@ body#dashboard {
     margin-left:1.5em;
     padding-left:0px;
   }
+  small {
+    color: #606060;
+  }
   .panel-body {
     max-height:20em;
     overflow-y:scroll;
