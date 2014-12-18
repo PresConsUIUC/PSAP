@@ -29,7 +29,6 @@ class FormatsController < ApplicationController
 
   def show
     @format = Format.find(params[:id])
-    @events = @format.events.order(created_at: :desc)
 
     sql = 'SELECT institutions.id AS inst_id, COUNT(institutions.id) AS count '\
     'FROM institutions '\

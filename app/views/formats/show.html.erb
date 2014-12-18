@@ -61,9 +61,6 @@
       <li>
         <a href="#assessment-questions-tab" data-toggle="tab">Assessment Questions</a>
       </li>
-      <li>
-        <a href="#activity-tab" data-toggle="tab">Activity</a>
-      </li>
     </ul>
 
     <div class="tab-content">
@@ -105,10 +102,6 @@
             <li><%= question.name %></li> <!-- TODO: improve display & show hierarchy -->
           <% end %>
         </ul>
-      </div>
-
-      <div id="activity-tab" class="tab-pane">
-        <%= render 'shared/events', events: @events %>
       </div>
 
     </div>
