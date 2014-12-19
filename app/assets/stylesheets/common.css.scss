@@ -25,6 +25,18 @@
 
 }
 
+@font-face {
+  font-family: 'montserrathairline';
+  src: font_url('Montserrat-Hairline.eot');
+  src: font_url('Montserrat-Hairline.eot?#iefix') format('embedded-opentype'),
+  font_url('Montserrat-Hairline.woff') format('woff'),
+  font_url('Montserrat-Hairline.ttf') format('truetype'),
+  font_url('Montserrat-Hairline.svg#montserrathairline') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 /* universal */
 
 html {
@@ -227,15 +239,15 @@ header {
   border-bottom:1px solid $gray-lighter;
   height:96px;
   h1 {
-    font-family: "Helvetica Neue Light", sans-serif;
+    font-family: 'montserrathairline';
     font-size:1.5em;
-    font-weight:200;
     letter-spacing:1px;
     margin-bottom:8px;
     padding-top:6px;
   }
   h1 a, h1 a:hover {
     color:#808080;
+    text-decoration: none;
   }
   @media screen and (max-width: 450px) {
     h1 small {
