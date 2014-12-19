@@ -38,8 +38,8 @@
       <%= link_to location_path(@location), method: 'delete',
                   class: 'btn btn-danger',
                   data: { confirm: 'Deleting this location will also delete '\
-                  'all resource assessments it contains. Are '\
-                  'you sure you want to delete this location?' } do %>
+                  'all resources it contains. Are you sure you want to '\
+                  'delete this location?' } do %>
         <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
         Delete
       <% end %>

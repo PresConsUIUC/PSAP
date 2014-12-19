@@ -80,7 +80,7 @@ class FormatsControllerTest < ActionController::TestCase
       delete :destroy, id: format.id
     end
     assert_equal "The format \"#{format.name}\" cannot be deleted, as it is "\
-    "being used by one or more resource assessments.",
+    "being used by one or more resources.",
                  flash[:error]
     assert_redirected_to format
   end

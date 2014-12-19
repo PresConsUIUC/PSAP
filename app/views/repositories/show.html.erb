@@ -23,7 +23,7 @@
       <%= link_to repository_path(@repository), method: 'delete',
                   class: 'btn btn-danger',
                   data: { confirm: 'Deleting this repository will delete all '\
-                          'locations and resource assessments it contains. '\
+                          'locations and resources it contains. '\
                           'Are you sure you want to delete this repository?' } do %>
           <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
           Delete
