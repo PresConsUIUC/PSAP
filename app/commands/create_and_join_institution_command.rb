@@ -11,7 +11,7 @@ class CreateAndJoinInstitutionCommand < Command
       ActiveRecord::Base.transaction do
         @institution.save!
         JoinInstitutionCommand.new(@doing_user, @institution, @doing_user,
-                                   @remote_ip).execute
+                                   @remote_ip).execute if @doing_user
       end
     rescue ActiveRecord::RecordInvalid
       @institution.events << Event.create(
@@ -29,9 +29,15 @@ class CreateAndJoinInstitutionCommand < Command
           event_level: EventLevel::ERROR)
       raise "Failed to create and join institution: #{e.message}"
     else
-      @institution.events << Event.create(
-          description: "Created and joined institution \"#{@institution.name}\"",
-          user: @doing_user, address: @remote_ip)
+      if @doing_user
+        @institution.events << Event.create(
+            description: "Created and joined institution \"#{@institution.name}\"",
+            user: @doing_user, address: @remote_ip)
+      else
+        @institution.events << Event.create(
+            description: "Created and institution \"#{@institution.name}\"",
+            user: @doing_user, address: @remote_ip)
+      end
     end
   end
 

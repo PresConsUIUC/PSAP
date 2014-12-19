@@ -316,7 +316,7 @@ command = CreateAndJoinInstitutionCommand.new(
       url: 'http://www.library.illinois.edu/',
       email: 'test@example.org',
       language: languages[122],
-      description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
+      description: 'Lorem ipsum dolor sit amet' }, admin_user, '127.0.0.1')
 command.execute
 uiuc_institution = command.object
 admin_user.institution = uiuc_institution
