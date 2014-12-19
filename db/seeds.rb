@@ -39,13 +39,28 @@ sheet.each_with_index do |row, i|
         end
       end
     end
-    Format.create!(fid: row[1],
-                   name: name,
-                   format_class: FormatClass::class_for_name(row[0]),
-                   parent: parent,
-                   score: row[6],
-                   format_id_guide_page: row[7],
-                   format_id_guide_anchor: row[8]) unless name.blank?
+    unless name.blank?
+      format = Format.new(
+          fid: row[1],
+          name: name,
+          format_class: FormatClass::class_for_name(row[0]),
+          parent: parent,
+          score: row[6],
+          format_id_guide_page: row[7],
+          format_id_guide_anchor: row[8])
+      unless row[9].blank?
+        min_temps = row[9].split(',')
+        max_temps = row[10].split(',')
+        temp_scores = row[11].split(',')
+        min_temps.each_with_index do |min_temp, i|
+          format.temperature_ranges << TemperatureRange.create!(
+              min_temp_f: min_temp.strip.to_i,
+              max_temp_f: max_temps[i].strip.to_i,
+              score: temp_scores[i].strip.to_f)
+        end
+      end
+      format.save!
+    end
   end
 end
 
@@ -618,18 +633,6 @@ case Rails.env
     for i in 0..resources.length - 1
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
-    end
-
-    # Format temperature ranges
-    Format.all do |format|
-      TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 55, max_temp_f: 72, score: 0.33,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
-                               format: format)
     end
 
     # Events

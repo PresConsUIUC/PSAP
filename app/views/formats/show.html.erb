@@ -28,24 +28,30 @@
       <dd><%= @format.score ? @format.score : 'None' %></dd>
       <dt>Temperature Range Scores</dt>
       <dd>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Min (&deg;F)</th>
-              <th>Max (&deg;F)</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
+        <% if @format.temperature_ranges.any? %>
+          <table class="table">
+            <thead>
               <tr>
-                <td><%= range.min_temp_f %></td>
-                <td><%= range.max_temp_f %></td>
-                <td><%= range.score %></td>
+                <th>Min (&deg;F)</th>
+                <th>Max (&deg;F)</th>
+                <th>Score</th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
+                <tr>
+                  <td><%= range.min_temp_f %></td>
+                  <td><%= range.max_temp_f %></td>
+                  <td><%= range.score %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% elsif @format.score.nil? %>
+          None (format is not selectable)
+        <% else %>
+          None
+        <% end %>
       </dd>
     </dl>
   </div>
