@@ -1,8 +1,4 @@
 body#dashboard {
-  ul, ol {
-    margin-left:1.5em;
-    padding-left:0px;
-  }
   small {
     color: #606060;
   }
@@ -16,12 +12,11 @@ body#dashboard {
       width:80%;
     }
   }
-  .users {
+  .psap-user-list {
     margin:0px;
     padding:0px;
     li {
       list-style-type:none;
-      margin:0.5em 0em 0.5em 0em;
     }
     li:first-child {
       margin-top:0px;

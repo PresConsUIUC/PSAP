@@ -135,7 +135,7 @@
 
       <div class="tab-pane" id="users_tab">
         <% if @institution.users.any? %>
-          <ul class="users">
+          <ul class="psap-user-list">
             <% @institution_users.each do |user| %>
               <li>
                 <%= link_to user do %>

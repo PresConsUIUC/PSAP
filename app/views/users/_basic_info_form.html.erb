@@ -1,10 +1,8 @@
 <h2>Basic Information</h2>
 
 <% if @user == current_user %>
-    <div id="gravatar">
-      <%= gravatar_for @user %>
-      <a href="http://gravatar.com/emails" target="_blank">Change</a>
-    </div>
+  <%= gravatar_for @user %>
+  <a href="http://gravatar.com/emails" target="_blank">Change</a>
 <% end %>
 
 <%= form_for @user, remote: true do |f| %>

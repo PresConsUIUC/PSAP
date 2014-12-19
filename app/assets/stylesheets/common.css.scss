@@ -265,7 +265,7 @@ header {
 
 @media print {
   .breadcrumb, .nav-tabs, .btn-group, h1 small, h2 small, h3 small, h4 small,
-  h5 small, h6 small, header, footer, .debug_dump {
+  h5 small, h6 small, header, footer {
     display:none;
   }
 }
@@ -310,6 +310,7 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
   span.description {
     color:#707070;
+    margin-left: 1.95em;
   }
 }
 
@@ -319,7 +320,12 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   padding-left:0px;
 }
 
-ul.users { /* TODO: replace with psap-entity-list */
+.psap-plain-list {
+  margin-left:1.5em;
+  padding-left:0px;
+}
+
+.psap-user-list {
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;
@@ -376,10 +382,6 @@ div.psap-progress-container {
   @media screen and (min-width: 801px) {
     width:40%;
   }
-}
-
-div#gravatar {
-  margin:0em 0em 1em 0em;
 }
 
 .panel.submission-error {

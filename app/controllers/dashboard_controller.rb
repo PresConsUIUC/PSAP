@@ -7,7 +7,6 @@ class DashboardController < ApplicationController
       format.html {
         limit = 4
         @user = current_user
-        @resources = current_user.resources.order(:name)
         @user_events = Event.where(user: @user).order(created_at: :desc).limit(limit)
 
         if @user.is_admin?
@@ -20,7 +19,7 @@ class DashboardController < ApplicationController
           @institution_events = events_for_institution(@user, limit)
           @institution_users = @user.institution.users.
               where('id != ?', @user.id).order(:last_name)
-          @recent_assessments = Resource.
+          @recent_updated_resources = Resource.
               joins(:location => { :repository => :institution }).
               where(:institutions => { :id => @user.institution.id }).
               order(:updated_at => :desc).limit(limit)
