@@ -6,29 +6,39 @@
 <% end %>
 
 <%= form_for @user, remote: true do |f| %>
-    <%= render 'shared/error_messages', :object => f.object %>
+  <%= render 'shared/error_messages', :object => f.object %>
 
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+
+  <% if current_user.is_admin? %>
     <div class="form-group">
-      <%= f.label :first_name %>
-      <%= f.text_field :first_name, class: 'form-control' %>
+      <%= f.label :username %>
+      <%= f.text_field :username, class: 'form-control' %>
     </div>
+  <% end %>
 
+  <% if current_user.is_admin? %>
     <div class="form-group">
-      <%= f.label :last_name %>
-      <%= f.text_field :last_name, class: 'form-control' %>
+      <%= f.label :role %>
+      <%= collection_select(:user, :role_id, @roles, :id, :name, {},
+                            { class: 'form-control' }) %>
     </div>
+  <% else %>
+    <%= f.hidden_field :role_id, value: @user_role.id %>
+  <% end %>
 
-    <div class="form-group">
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
-    </div>
-
-    <% if current_user.is_admin? %>
-        <div class="form-group">
-          <%= f.label :username %>
-          <%= f.text_field :username, class: 'form-control' %>
-        </div>
-    <% end %>
-
-    <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+  <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
 <% end %>

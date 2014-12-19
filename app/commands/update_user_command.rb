@@ -13,32 +13,38 @@ class UpdateUserCommand < Command
       new_email = @user_params[:email]
 
       # non-admin users are not allowed to update other users
-      if !@doing_user.is_admin? && @doing_user != @user
-        raise 'Insufficient privileges'
+      if !@doing_user.is_admin? and @doing_user != @user
+        raise 'Insufficient privileges to update other users.'
+      end
+
+      # non-admin users are not allowed to change roles
+      if !@doing_user.is_admin? and @user_params[:role_id] and
+          @user_params[:role_id] != @user.role_id
+        raise 'Insufficient privileges to change roles.'
       end
 
       # non-admin users are not allowed to change usernames (though they are
       # allowed to set them for the first time, in CreateUserCommand)
-      if !@doing_user.is_admin? && @user.username && @user_params[:username] &&
-          @user.username != @user_params[:username]
-        raise 'Insufficient privileges'
+      if !@doing_user.is_admin? and @user.username and
+          @user_params[:username] and @user.username != @user_params[:username]
+        raise 'Insufficient privileges to change usernames.'
       end
 
       @user.update!(@user_params)
     rescue ActiveRecord::RecordInvalid
       @user.events << Event.create(
           description: "Attempted to update user #{@user.username}, "\
-          "but failed: #{@user.errors.full_messages[0]}",
+          "but failed: #{@user.errors.full_messages.first}",
           user: @doing_user, address: @remote_ip,
           event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise ValidationError,
               "Failed to update your account: "\
-              "#{@user.errors.full_messages[0]}"
+              "#{@user.errors.full_messages.first}"
       else
         raise ValidationError,
               "Failed to update user #{@user.username}: "\
-              "#{@user.errors.full_messages[0]}"
+              "#{@user.errors.full_messages.first}"
       end
     rescue => e
       @user.events << Event.create(

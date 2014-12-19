@@ -95,6 +95,8 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @roles = Role.all.order(:name)
+    @user_role = Role.find_by_name('User')
   end
 
   ##
@@ -323,7 +325,7 @@ class UsersController < ApplicationController
 
   def user_update_params
     params.require(:user).permit(:desired_institution_id, :enabled, :email,
-                                 :first_name, :last_name, :username)
+                                 :first_name, :last_name, :role_id, :username)
   end
 
 end
