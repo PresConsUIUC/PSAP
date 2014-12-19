@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217200031) do
+ActiveRecord::Schema.define(version: 20141219164234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,17 @@ ActiveRecord::Schema.define(version: 20141217200031) do
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
 
+  create_table "humidity_ranges", force: true do |t|
+    t.decimal  "min_rh",     precision: 3, scale: 0
+    t.decimal  "max_rh",     precision: 3, scale: 0
+    t.decimal  "score",      precision: 4, scale: 3
+    t.integer  "format_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "humidity_ranges", ["format_id"], name: "index_humidity_ranges_on_format_id", using: :btree
+
   create_table "institutions", force: true do |t|
     t.string   "name",                           null: false
     t.datetime "created_at"
@@ -236,9 +247,12 @@ ActiveRecord::Schema.define(version: 20141217200031) do
     t.text     "description"
     t.integer  "temperature_range_id"
     t.float    "assessment_score",     default: 0.0
+    t.integer  "humidity_range_id"
   end
 
+  add_index "locations", ["humidity_range_id"], name: "index_locations_on_humidity_range_id", using: :btree
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id", using: :btree
+  add_index "locations", ["temperature_range_id"], name: "index_locations_on_temperature_range_id", using: :btree
 
   create_table "permissions", force: true do |t|
     t.string   "key"

@@ -60,6 +60,13 @@ class LocationTest < ActiveSupport::TestCase
     assert response.destroyed?
   end
 
+  test 'dependent humidity ranges should be destroyed on destroy' do
+    range = humidity_ranges(:rh_range_one)
+    @location.humidity_range = range
+    @location.destroy
+    assert range.destroyed?
+  end
+
   test 'dependent resources should be destroyed on destroy' do
     resource = resources(:resource_two)
     @location.resources << resource

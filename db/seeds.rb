@@ -48,15 +48,26 @@ sheet.each_with_index do |row, i|
           score: row[6],
           format_id_guide_page: row[7],
           format_id_guide_anchor: row[8])
-      unless row[9].blank?
+      unless row[9].blank? # temperature ranges
         min_temps = row[9].split(',')
         max_temps = row[10].split(',')
         temp_scores = row[11].split(',')
         min_temps.each_with_index do |min_temp, i|
           format.temperature_ranges << TemperatureRange.create!(
-              min_temp_f: min_temp.strip.to_i,
-              max_temp_f: max_temps[i].strip.to_i,
+              min_temp_f: i == 0 ? nil : min_temp.strip.to_i,
+              max_temp_f: i == max_temps.length - 1 ? nil : max_temps[i].strip.to_i,
               score: temp_scores[i].strip.to_f)
+        end
+      end
+      unless row[12].blank? # relative humidity ranges
+        min_rhs = row[12].split(',')
+        max_rhs = row[13].split(',')
+        rh_scores = row[14].split(',')
+        min_rhs.each_with_index do |min_rh, i|
+          format.humidity_ranges << HumidityRange.create!(
+              min_rh: min_rh.strip.to_i,
+              max_rh: max_rhs[i].strip.to_i,
+              score: rh_scores[i].strip.to_f)
         end
       end
       format.save!

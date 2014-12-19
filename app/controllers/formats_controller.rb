@@ -29,6 +29,9 @@ class FormatsController < ApplicationController
 
   def show
     @format = Format.find(params[:id])
+    @humidity_ranges = @format.humidity_ranges.order('min_rh NULLS FIRST')
+    @temperature_ranges = @format.temperature_ranges.
+        order('min_temp_f NULLS FIRST')
 
     sql = 'SELECT institutions.id AS inst_id, COUNT(institutions.id) AS count '\
     'FROM institutions '\

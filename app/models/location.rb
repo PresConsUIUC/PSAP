@@ -9,6 +9,7 @@ class Location < ActiveRecord::Base
   has_many :assessment_question_responses, inverse_of: :location,
            dependent: :destroy
   has_and_belongs_to_many :events
+  belongs_to :humidity_range, inverse_of: :location, dependent: :destroy
   belongs_to :repository, inverse_of: :locations
   has_many :resources, inverse_of: :location, dependent: :destroy
   belongs_to :temperature_range, inverse_of: :location, dependent: :destroy

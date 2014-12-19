@@ -38,12 +38,39 @@
               </tr>
             </thead>
             <tbody>
-              <% @format.temperature_ranges.order(:min_temp_f).each do |range| %>
+              <% @temperature_ranges.each do |range| %>
                 <tr>
                   <td><%= range.min_temp_f %></td>
                   <td><%= range.max_temp_f %></td>
                   <td><%= range.score %></td>
                 </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% elsif @format.score.nil? %>
+          None (format is not selectable)
+        <% else %>
+          None
+        <% end %>
+      </dd>
+      <dt>Relative Humidity Range Scores</dt>
+      <dd>
+        <% if @format.humidity_ranges.any? %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Min (%)</th>
+                <th>Max (%)</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @humidity_ranges.each do |range| %>
+                  <tr>
+                    <td><%= range.min_rh %></td>
+                    <td><%= range.max_rh %></td>
+                    <td><%= range.score %></td>
+                  </tr>
               <% end %>
             </tbody>
           </table>
