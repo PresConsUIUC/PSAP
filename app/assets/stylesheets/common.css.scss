@@ -334,6 +334,15 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
 }
 
+.psap-event-list { /* extends .psap-entity-list */
+  span.title {
+    font-size:1em;
+  }
+  span.description {
+    margin-left:0px;
+  }
+}
+
 .nav-stacked li, .nav-stacked a {
   line-height:2.65em;
   height:4em;
