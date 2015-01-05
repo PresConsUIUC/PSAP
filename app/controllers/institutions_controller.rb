@@ -39,8 +39,66 @@ class InstitutionsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        #pdf = Prawn::Document.new
-        #send_data pdf.render, filename: 'report.pdf', type: 'application/pdf'
+        # http://prawnpdf.org/manual.pdf
+        pdf = Prawn::Document.new(
+            info: {
+                Title: "PSAP Assessment Report: #{@institution.name}",
+                Author: current_user.full_name,
+                #Subject: "My Subject",
+                #Keywords: "test metadata ruby pdf dry",
+                Creator: "Preservation Self-Assessment Program (PSAP)",
+                Producer: "Prawn",
+                CreationDate: Time.now
+            })
+
+        font = 'Helvetica'
+        h1_size = 18
+        h2_size = 16
+        pdf.default_leading 2
+
+        # heading
+        pdf.font font, style: :bold
+        pdf.text 'PSAP Assessment Report', size: h1_size
+        pdf.font font, style: :normal
+        pdf.text @institution.name
+        pdf.text Time.now.strftime('%B %-d, %Y'), size: 10
+        pdf.stroke_horizontal_rule
+        pdf.move_down 20
+
+        # institution overview
+        pdf.font font, style: :bold
+        pdf.text 'Institution', size: h2_size
+        pdf.font font, style: :normal
+
+        # chart
+        prawn_bar_chart(pdf, @chart_data)
+
+        # locations summary
+        pdf.start_new_page
+        pdf.font font, style: :bold
+        pdf.text 'Locations', size: h2_size
+        pdf.font font, style: :normal
+
+        # resources overview
+        pdf.start_new_page
+        pdf.font font, style: :bold
+        pdf.text 'Resources', size: h2_size
+        pdf.font font, style: :normal
+
+        # collections overview
+        pdf.start_new_page
+        pdf.font font, style: :bold
+        pdf.text 'Collections', size: h2_size
+        pdf.font font, style: :normal
+
+        pdf.number_pages '<page>', { start_count_at: 2,
+                                     page_filter: lambda{ |pg| pg != 1 },
+                                     at: [pdf.bounds.right - 50, 0],
+                                     align: :right,
+                                     size: 12 }
+
+        send_data pdf.render, filename: 'assessment_report.pdf',
+                  type: 'application/pdf', disposition: 'inline'
       end
     end
   end
@@ -185,6 +243,72 @@ class InstitutionsController < ApplicationController
   end
 
   private
+
+  ##
+  # @param doc Prawn::Document
+  # @param data Array of numbers corresponding to columns
+  # @param height integer
+  # @return void
+  #
+  def prawn_bar_chart(doc, data, height = 200)
+    x_margin = 20
+    label_size = 8
+    label_height = doc.height_of('bla', size: label_size)
+    bar_width = (doc.bounds.right - x_margin) / 11
+    y_max = nil # will be computed later
+    y_increments = 11
+    y_increment = data.max / y_increments - label_height - label_height / y_increments
+
+    # draw axes
+    doc.stroke_color 'a0a0a0'
+    doc.stroke do
+      doc.dash([4], phase: 0)
+      doc.vertical_line doc.cursor.to_i - height, doc.cursor.to_i, at: x_margin
+      doc.horizontal_line x_margin, doc.bounds.right, at: doc.cursor.to_i - height
+    end
+
+    # draw y axis labels
+    doc.move_down y_increment
+
+    def step_size(range, target_steps)
+      ln10 = Math.log(10)
+      temp_step = range / target_steps
+
+      mag = (Math.log(temp_step) / ln10).floor
+      mag_pow = 10**mag
+
+      mag_msd = (temp_step / mag_pow + 0.5).round
+
+      if mag_msd > 5.0
+        mag_msd = 10.0
+      elsif mag_msd > 2.0
+        mag_msd = 5.0
+      elsif mag_msd > 1.0
+        mag_msd = 2.0
+      end
+      mag_msd * mag_pow
+    end
+
+    increment = step_size(data.max, y_increments)
+
+    y_increments.downto(0).each do |i|
+      doc.text "#{(i * increment).round}", size: label_size
+      doc.move_down y_increment
+    end
+
+    # draw x axis labels & bars
+    data.each_with_index do |score, i|
+      doc.draw_text "#{(i * 10)}", size: label_size,
+                    at: [x_margin + bar_width / 2 + i * bar_width, doc.cursor.to_i]
+      if score > 0
+        #doc.rectangle [x_margin + i * bar_width, doc.cursor.to_i + label_height],
+        #          bar_width, (score / data.max) * height
+        doc.rectangle [x_margin + i * bar_width, doc.cursor.to_i + label_height + (score / data.max) * height],
+                  bar_width, (score / data.max) * height
+        doc.fill
+      end
+    end
+  end
 
   def same_institution_user
     # Normal users can only edit their own institution. Administrators can edit

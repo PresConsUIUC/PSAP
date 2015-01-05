@@ -31,15 +31,15 @@ end
 gem 'bootstrap-sass', '3.1.1.0'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'will_paginate', '3.0.4'
-# gem 'bootstrap-will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
-gem 'magnific-popup-rails'
+gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
-gem 'roo'
+gem 'roo' # used to import seed data from xlsx
+gem 'prawn' # used to generate a PDF version of the assessment report
 
 group :development do
   gem 'capistrano'
