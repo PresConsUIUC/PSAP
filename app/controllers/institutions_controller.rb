@@ -35,6 +35,14 @@ class InstitutionsController < ApplicationController
       @chart_data << ActiveRecord::Base.connection.execute(sql).
           map{ |r| r['count'].to_i }.first
     end
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        #pdf = Prawn::Document.new
+        #send_data pdf.render, filename: 'report.pdf', type: 'application/pdf'
+      end
+    end
   end
 
   def create
@@ -136,19 +144,19 @@ class InstitutionsController < ApplicationController
     @institution = Institution.find(params[:id])
 
     respond_to do |format|
-      format.csv {
+      format.csv do
         #response.headers['Content-Disposition'] =
         #    "attachment; filename=\"#{@institution.name.parameterize}\""
         render text: @institution.resources_as_csv
-      }
-      format.html {
+      end
+      format.html do
         @assessment_sections = Assessment.find_by_key('institution').
             assessment_sections.order(:index)
         @repositories = @institution.repositories.order(:name).
             paginate(page: params[:page],
                      per_page: Psap::Application.config.results_per_page)
         render 'repositories'
-      }
+      end
     end
   end
 

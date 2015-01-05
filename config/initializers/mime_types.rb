@@ -6,3 +6,4 @@
 
 Mime::Type.register 'application/xml', :dcxml
 Mime::Type.register 'application/xml', :ead
+Mime::Type.register 'application/pdf', :pdf
