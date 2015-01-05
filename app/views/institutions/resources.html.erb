@@ -1,0 +1,12 @@
+<%= render layout: 'institutions/show' do %>
+
+  <% if @resources.any? %>
+    <div id="assessments">
+      <%= render partial: 'resources/resources',
+                 locals: { resources: @resources, show_checkboxes: false } %>
+    </div>
+  <% else %>
+    <p>There are no resources at this institution.</p>
+  <% end %>
+
+<% end %>

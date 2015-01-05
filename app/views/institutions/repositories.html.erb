@@ -1,0 +1,43 @@
+<%= render layout: 'institutions/show' do %>
+  <!-- Add Repository button -->
+  <div style="text-align:right">
+    <%= link_to new_institution_repository_path(@institution),
+                class: 'btn btn-success' do %>
+      <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
+      Add Repository
+    <% end %>
+  </div>
+
+  <% if @repositories.any? %>
+    <div id="repositories">
+      <% # Will be read by PSAP.updateResultsCount() in JS %>
+      <input type="hidden" name="results_count" value="<%= @repositories.total_entries %>">
+
+      <ul class="psap-entity-list">
+        <% @repositories.each do |repository| %>
+          <li>
+            <span class="title">
+              <%= entity_icon(repository) %>
+              <%= link_to repository.name, repository %>
+            </span>
+            <small>
+              <%= entity_icon(Location, pluralize(repository.locations.count, 'location')) %>
+              <%= repository.locations.count %>
+
+              <%= entity_icon(Resource, pluralize(repository.resources.count, 'resource')) %>
+              <%= repository.resources.count %>
+            </small>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="text-center">
+        <%= will_paginate @repositories, renderer: BootstrapPagination::Rails %>
+      </div>
+
+    </div>
+  <% else %>
+    <p>This institution has no repositories.</p>
+  <% end %>
+
+<% end %>

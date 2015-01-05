@@ -1,3 +1,4 @@
+<% # Layout template used by the individual tabs on the show-institution page %>
 <% provide(:title, @institution.name) %>
 <% provide(:body_id, 'show_institution') %>
 
@@ -84,80 +85,26 @@
   <div class="col-sm-9">
 
     <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#repositories_tab" data-toggle="tab">Repositories</a>
+      <li class="<%= action_name == 'show' ? 'active' : '' %>">
+        <%= link_to 'Repositories', @institution %>
       </li>
-      <li>
-        <a href="#resources_tab" data-toggle="tab">Resources</a>
+      <li class="<%= action_name == 'resources' ? 'active' : '' %>">
+        <%= link_to 'Resources', institution_resources_path(@institution) %>
       </li>
-      <li>
-        <a href="#users_tab" data-toggle="tab">Users</a>
+      <li class="<%= action_name == 'users' ? 'active' : '' %>">
+        <%= link_to 'Users', institution_users_path(@institution) %>
       </li>
-      <li>
-        <a href="#assessment_report_tab" data-toggle="tab">Assessment Report</a>
+      <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
+        <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
       </li>
-      <li>
-        <a href="#activity_tab" data-toggle="tab">Activity</a>
+      <li class="<%= action_name == 'events' ? 'active' : '' %>">
+        <%= link_to 'Activity', institution_events_path(@institution) %>
       </li>
     </ul>
 
     <div class="tab-content">
 
-      <div class="tab-pane active" id="repositories_tab">
-        <!-- Add Repository button -->
-        <div style="text-align:right">
-          <%= link_to new_institution_repository_path(@institution),
-                      class: 'btn btn-success' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-              Add Repository
-          <% end %>
-        </div>
-
-        <% if @repositories.any? %>
-          <div id="repositories">
-            <%= render 'repositories' %>
-          </div>
-        <% else %>
-          <p>This institution has no repositories.</p>
-        <% end %>
-      </div>
-
-      <div class="tab-pane" id="resources_tab">
-        <% if @resources.any? %>
-          <div id="assessments">
-          <%= render partial: 'resources/resources',
-                     locals: { resources: @resources, show_checkboxes: false } %>
-          </div>
-        <% else %>
-          <p>There are no resources at this institution.</p>
-        <% end %>
-      </div>
-
-      <div class="tab-pane" id="users_tab">
-        <% if @institution.users.any? %>
-          <ul class="psap-user-list">
-            <% @institution_users.each do |user| %>
-              <li>
-                <%= link_to user do %>
-                  <%= gravatar_for user, size: 52 %>
-                <% end %>
-                <%= link_to user.full_name, user %>
-                <small><%= user.username %></small>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p>There are no users affiliated with this institution.</p>
-        <% end %>
-      </div>
-
-      <div class="tab-pane" id="assessment_report_tab">
-        <%= render partial: 'assessment_report', locals: { institution: @institution } %>
-      </div>
-
-      <div id="activity_tab" class="tab-pane">
-        <%= render 'shared/events', events: @events %>
-      </div>
+      <%= yield %>
 
     </div> <!-- .tab-content -->
 

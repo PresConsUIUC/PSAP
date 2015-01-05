@@ -4,6 +4,39 @@ class InstitutionsController < ApplicationController
   before_action :admin_user, only: [:index, :destroy]
   before_action :same_institution_user, only: [:show, :edit, :update]
 
+  ##
+  # Responds to GET /institutions/:id/assessment-report
+  #
+  def assessment_report
+    @institution = Institution.find(params[:institution_id])
+
+    @location_assessment_sections = Assessment.find_by_key('location').
+        assessment_sections.order(:index)
+    @non_assessed_locations = @institution.locations.order(:name).
+        select{ |l| l.assessment_question_responses.length < 1 }
+    @non_assessed_resources = @institution.resources.order(:name).
+        select{ |r| r.assessment_question_responses.length < 1 }
+    @stats = @institution.assessed_item_statistics
+    @all_assessed_items = @institution.all_assessed_items
+    @institution_formats = @institution.resources.collect{ |r| r.format }.
+        select{ |f| f }.uniq{ |f| f.id }
+    @collections = @institution.resources.
+        where(resource_type: ResourceType::COLLECTION)
+
+    @chart_data = []
+    (0..9).each do |i|
+      sql = "SELECT COUNT(resources.id) AS count "\
+          "FROM resources "\
+          "LEFT JOIN locations ON locations.id = resources.location_id "\
+          "LEFT JOIN repositories ON repositories.id = locations.repository_id "\
+          "WHERE repositories.institution_id = #{@institution.id} "\
+          "AND resources.assessment_score >= #{i * 0.1} "\
+          "AND resources.assessment_score < #{(i + 1) * 0.1} "
+      @chart_data << ActiveRecord::Base.connection.execute(sql).
+          map{ |r| r['count'].to_i }.first
+    end
+  end
+
   def create
     command = CreateAndJoinInstitutionCommand.new(
         institution_params, current_user, request.remote_ip)
@@ -46,6 +79,26 @@ class InstitutionsController < ApplicationController
         assessment_sections.order(:index)
   end
 
+  def events
+    @institution = Institution.find(params[:institution_id])
+    @events = Event.
+        joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
+        joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
+        joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
+        joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
+        where('events_institutions.institution_id = ? '\
+        'OR events_repositories.repository_id IN (?) '\
+        'OR events_locations.location_id IN (?)'\
+        'OR events_resources.resource_id IN (?)',
+              @institution.id,
+              @institution.repositories.map { |repo| repo.id },
+              @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
+              @institution.repositories.map { |repo| repo.locations.map {
+                  |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
+        order(created_at: :desc).
+        limit(20)
+  end
+
   def index
     @institutions = Institution.order(:name).paginate(
         page: params[:page],
@@ -56,6 +109,27 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new
     @assessment_sections = Assessment.find_by_key('institution').
         assessment_sections.order(:index)
+  end
+
+  ##
+  # Responds to GET /institutions/:id/repositories
+  #
+  def repositories
+    @institution = Institution.find(params[:institution_id])
+    @repositories = @institution.repositories.order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
+  end
+
+  ##
+  # Responds to GET /institutions/:id/resources
+  #
+  def resources
+    @institution = Institution.find(params[:institution_id])
+    # show only top-level resources
+    @resources = @institution.resources.where(parent_id: nil).order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
   end
 
   def show
@@ -70,43 +144,10 @@ class InstitutionsController < ApplicationController
       format.html {
         @assessment_sections = Assessment.find_by_key('institution').
             assessment_sections.order(:index)
-        @institution_users = @institution.users.where(confirmed: true).order(:last_name)
         @repositories = @institution.repositories.order(:name).
             paginate(page: params[:page],
                      per_page: Psap::Application.config.results_per_page)
-        # show only top-level resources
-        @resources = @institution.resources.where(parent_id: nil).order(:name).
-            paginate(page: params[:page],
-                     per_page: Psap::Application.config.results_per_page)
-        @non_assessed_locations = @institution.locations.order(:name).
-            select{ |l| l.assessment_question_responses.length < 1 }
-        @non_assessed_resources = @institution.resources.order(:name).
-            select{ |r| r.assessment_question_responses.length < 1 }
-        @location_assessment_sections = Assessment.find_by_key('location').
-            assessment_sections.order(:index)
-        @collections = @institution.resources.
-            where(resource_type: ResourceType::COLLECTION)
-        @stats = @institution.assessed_item_statistics
-        @all_assessed_items = @institution.all_assessed_items
-        @institution_formats = @institution.resources.collect{ |r| r.format }.
-            select{ |f| f }.uniq{ |f| f.id }
-
-        @events = Event.
-            joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
-            joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
-            joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
-            joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
-            where('events_institutions.institution_id = ? '\
-        'OR events_repositories.repository_id IN (?) '\
-        'OR events_locations.location_id IN (?)'\
-        'OR events_resources.resource_id IN (?)',
-                  @institution.id,
-                  @institution.repositories.map { |repo| repo.id },
-                  @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
-                  @institution.repositories.map { |repo| repo.locations.map {
-                      |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
-            order(created_at: :desc).
-            limit(20)
+        render 'repositories'
       }
     end
   end
@@ -130,9 +171,9 @@ class InstitutionsController < ApplicationController
     end
   end
 
-  # Outputs a high-level assessment report as a PDF.
-  def report
-    # TODO: https://github.com/PresConsUIUC/PSAP/issues/63
+  def users
+    @institution = Institution.find(params[:institution_id])
+    @institution_users = @institution.users.where(confirmed: true).order(:last_name)
   end
 
   private
