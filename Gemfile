@@ -40,6 +40,7 @@ gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
 gem 'roo' # used to import seed data from xlsx
 gem 'prawn' # used to generate a PDF version of the assessment report
+gem 'prawn-table'
 
 group :development do
   gem 'capistrano'
