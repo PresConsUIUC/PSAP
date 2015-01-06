@@ -197,7 +197,11 @@ class InstitutionsController < ApplicationController
   def same_institution_user
     # Normal users can only edit their own institution. Administrators can edit
     # any institution.
-    institution = Institution.find(params[:id])
+    if params[:id]
+      institution = Institution.find(params[:id])
+    else
+      institution = Institution.find(params[:institution_id])
+    end
     redirect_to(root_url) unless
         institution.users.include?(current_user) || current_user.is_admin?
   end
