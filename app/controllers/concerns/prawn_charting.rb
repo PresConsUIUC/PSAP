@@ -15,7 +15,7 @@ module PrawnCharting
                             institution_formats, collections)
     pdf = Prawn::Document.new(
         info: {
-            Title: "PSAP Assessment Report: #{institution.name}",
+            Title: "Assessment Report: #{institution.name}",
             Author: user.full_name,
             #Subject: "My Subject",
             #Keywords: "test metadata ruby pdf dry",
@@ -252,9 +252,7 @@ module PrawnCharting
 
     # draw x axis labels & bars
     data.each_with_index do |score, i|
-      range_start = i * 10
-      range_end = (i == data.length - 1) ? 100 : ((i + 1) * 10) - 1
-      label_text = "#{range_start}-#{range_end}"
+      label_text = "#{i * 10}+"
       label_width = pdf.width_of(label_text, size: label_size)
       pdf.draw_text label_text, size: label_size, width: label_width,
                     at: [origin[0] + i * bar_width + (bar_width - label_width) / 2 + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
