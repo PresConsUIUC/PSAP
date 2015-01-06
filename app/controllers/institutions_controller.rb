@@ -4,7 +4,9 @@ class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
-  before_action :same_institution_user, only: [:show, :edit, :update]
+  before_action :same_institution_user, only: [:assessment_report, :events,
+                                               :repositories, :resources,
+                                               :show, :edit, :update, :users]
 
   ##
   # Responds to GET /institutions/:id/assessment-report
