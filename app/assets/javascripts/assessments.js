@@ -180,7 +180,7 @@ var AssessmentForm = {
         var adv_help_link = '';
         if (object['advanced_help_page']) {
             adv_help_link = '<br><br><a href="/help/' + object['advanced_help_page'] + '#' +
-                object['advanced_help_anchor'] + '" target="_blank">More information&hellip;</a>';
+                object['advanced_help_anchor'].replace(/#/g, '') + '" target="_blank">More information&hellip;</a>';
             adv_help_link = adv_help_link.replace(/"/g, "'");
         }
 
