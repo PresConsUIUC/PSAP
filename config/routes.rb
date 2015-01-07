@@ -72,7 +72,8 @@ Psap::Application.routes.draw do
   resources :format_classes, only: [], path: 'format-classes' do
     resources :formats, only: :index, path: 'formats'
   end
-  resources :institutions, path_names: { edit: 'assess' } do
+  resources :institutions do
+    match '/assess', to: 'institutions#assess', via: 'get'
     match '/assessment-report', to: 'institutions#assessment_report', via: 'get'
     resources :repositories, except: :index
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
@@ -90,14 +91,16 @@ Psap::Application.routes.draw do
   resources :repositories, except: :index do
     resources :locations, except: :index
   end
-  resources :locations, except: :index, path_names: { edit: 'assess' } do
+  resources :locations, except: :index do
+    match '/assess', to: 'locations#assess', via: 'get'
     match '/resources/import', to: 'resources#import', via: 'post',
           as: 'resource_import_post'
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     resources :resources, except: :index
   end
   match '/resources/move', to: 'resources#move', via: 'post', as: 'resource_move'
-  resources :resources, except: :index, path_names: { edit: 'assess' } do
+  resources :resources, except: :index do
+    match '/assess', to: 'resources#assess', via: 'get'
     match '/import', to: 'resources#import', via: 'post', as: 'import_post'
     resources :resources, only: [:new, :create]
   end

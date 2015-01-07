@@ -2,8 +2,14 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:create, :destroy, :edit, :import, :names, :new,
+                only: [:assess, :create, :destroy, :edit, :import, :names, :new,
                        :show, :subjects, :update]
+
+  def assess
+    @resource = Resource.find(params[:resource_id])
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
+  end
 
   def create
     @location = Location.find(params[:location_id])
@@ -40,7 +46,9 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # Responds to /resources/:id/assess
+  ##
+  # Responds to GET /resources/:id/assess
+  #
   def edit
     @resource = Resource.find(params[:id])
 
@@ -51,13 +59,11 @@ class ResourcesController < ApplicationController
     @resource.resource_dates.build unless @resource.resource_dates.any?
     @resource.resource_notes.build unless @resource.resource_notes.any?
     @resource.subjects.build unless @resource.subjects.any?
-
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
   end
 
   ##
   # Responds to POST /locations/:id/resources/import
+  #
   def import
     if params[:location_id]
       @location = Location.find(params[:location_id])

@@ -6,9 +6,7 @@
 body#new_resource, body#edit_resource,
 body#new_location, body#edit_location, body#new_institution, body#edit_institution {
   div.section {
-    border-top:1px solid #cccccc;
-    margin-top:1em;
-    padding-top:1em;
+    margin-bottom:2em;
   }
   div#sections {
     button.save {

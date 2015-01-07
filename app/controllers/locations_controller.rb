@@ -1,9 +1,14 @@
 class LocationsController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new, :create,
-                                                           :edit, :update,
-                                                           :show, :destroy]
+  before_action :user_of_same_institution_or_admin,
+                only: [:assess, :create, :destroy, :edit, :new, :show, :update]
+
+  def assess
+    @location = Location.find(params[:location_id])
+    @assessment_sections = Assessment.find_by_key('location').
+        assessment_sections.order(:index)
+  end
 
   def create
     @repository = Repository.find(params[:repository_id])
@@ -42,9 +47,6 @@ class LocationsController < ApplicationController
 
   def edit
     @location = Location.find(params[:id])
-
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
   end
 
   def new
@@ -102,7 +104,10 @@ class LocationsController < ApplicationController
     if params[:id]
       location = Location.find(params[:id])
       repository = location.repository
-    else
+    elsif params[:location_id]
+      location = Location.find(params[:location_id])
+      repository = location.repository
+    elsif params[:repository_id]
       repository = Repository.find(params[:repository_id])
     end
     redirect_to(root_url) unless

@@ -4,9 +4,15 @@ class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
-  before_action :same_institution_user, only: [:assessment_report, :events,
-                                               :repositories, :resources,
+  before_action :same_institution_user, only: [:assess, :assessment_report,
+                                               :events, :repositories, :resources,
                                                :show, :edit, :update, :users]
+
+  def assess
+    @institution = Institution.find(params[:institution_id])
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
+  end
 
   ##
   # Responds to GET /institutions/:id/assessment-report
@@ -110,8 +116,6 @@ class InstitutionsController < ApplicationController
 
   def edit
     @institution = Institution.find(params[:id])
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
   end
 
   def events
