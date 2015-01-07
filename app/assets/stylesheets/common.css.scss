@@ -359,12 +359,14 @@ form {
 .form-group div.col-sm-11, .form-group div.col-sm-1 {
   padding-left:0px;
 }
-
+/*
+Not supported in Firefox yet:
+https://github.com/PresConsUIUC/PSAP/issues/152
 select.form-control {
   background: url(image_path('select-control.png')) no-repeat right center;
   @include image-2x('select-control@2x.png', 17px, 14px);
   -webkit-appearance: none;
-}
+}*/
 
 textarea.form-control {
   height:8em;
