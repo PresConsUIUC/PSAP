@@ -32,13 +32,7 @@ module PrawnCharting
     page_width = pdf.bounds.right
 
     # heading
-    pdf.font font, style: :bold
-    pdf.text 'PSAP Assessment Report', size: h1_size
-    pdf.font font, style: :normal
-    pdf.text institution.name
-    pdf.text Time.now.strftime('%B %-d, %Y'), size: 10
-    pdf.stroke_horizontal_rule
-    pdf.move_down 20
+    heading(pdf, institution, font, h1_size)
 
     # institution overview
     pdf.font font, style: :bold
@@ -55,10 +49,13 @@ module PrawnCharting
                   assessment_score_characterization(score) ]
       end
       pdf.table(data, cell_style: { border_lines: [:dotted] })
+    else
+      pdf.text 'The institution has not been assessed yet.'
     end
 
     # locations summary
     pdf.start_new_page
+    heading(pdf, institution, font, h1_size)
     pdf.font font, style: :bold
     pdf.text 'Storage Environments', size: h2_size
     pdf.font font, style: :normal
@@ -91,6 +88,7 @@ module PrawnCharting
 
     # resources overview
     pdf.start_new_page
+    heading(pdf, institution, font, h1_size)
     pdf.font font, style: :bold
     pdf.text 'Resources', size: h2_size
     pdf.font font, style: :normal
@@ -112,6 +110,7 @@ module PrawnCharting
 
     # collections overview
     pdf.start_new_page
+    heading(pdf, institution, font, h1_size)
     pdf.font font, style: :bold
     pdf.text 'Collections', size: h2_size
     pdf.font font, style: :normal
@@ -192,7 +191,7 @@ module PrawnCharting
 
     pdf.number_pages '<page>', { start_count_at: 2,
                                  page_filter: lambda{ |pg| pg != 1 },
-                                 at: [page_width - 50, 0],
+                                 at: [page_width - 50, pdf.bounds.top],
                                  align: :right,
                                  size: 10 }
     pdf
@@ -269,6 +268,23 @@ module PrawnCharting
     origin[1] -= label_height * 1.5
     pdf.text_box 'Assessment Score Range',
              at: origin, width: width, size: label_size, align: :center
+  end
+
+  ##
+  # @param pdf Prawn::Document
+  # @param institution Institution
+  # @param font string
+  # @param h1_size integer
+  # @return void
+  #
+  def heading(pdf, institution, font, h1_size)
+    pdf.font font, style: :bold
+    pdf.text 'PSAP Assessment Report', size: h1_size
+    pdf.font font, style: :normal
+    pdf.text institution.name
+    pdf.text Time.now.strftime('%B %-d, %Y'), size: 10
+    pdf.stroke_horizontal_rule
+    pdf.move_down 20
   end
 
 end
