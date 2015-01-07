@@ -1,6 +1,6 @@
 ##
-# Provides methods used by InstitutionsController to assist in creating PDFs
-# with Prawn. Requires the 'prawn' and 'prawn-table' gems.
+# Provides methods to assist in creating PDFs with Prawn. Requires the
+# 'prawn' and 'prawn-table' gems.
 #
 # Prawn documentation:
 # http://prawnpdf.org/manual.pdf
@@ -211,8 +211,9 @@ module PrawnCharting
     label_size = 8
     label_height = pdf.height_of('bla', size: label_size)
     bar_spacing = width / 50
-    bar_width = width / 10 - bar_spacing
+    bar_width = width / data.length - bar_spacing
     target_num_steps = 11
+    bar_color = '0000d0'
 
     # draw axes
     origin = [x_margin, pdf.cursor.to_i - height]
@@ -257,7 +258,7 @@ module PrawnCharting
                     at: [origin[0] + i * bar_width + (bar_width - label_width) / 2 + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
                          origin[1] - label_height]
       if score > 0
-        pdf.fill_color '0000d0'
+        pdf.fill_color bar_color
         pdf.fill_rectangle [origin[0] + i * bar_width + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
                             origin[1] + (score.to_f / data.max.to_f) * height],
                            bar_width, (score.to_f / data.max.to_f) * height
@@ -278,11 +279,15 @@ module PrawnCharting
   # @return void
   #
   def heading(pdf, institution, font, h1_size)
-    pdf.font font, style: :bold
-    pdf.text 'PSAP Assessment Report', size: h1_size
-    pdf.font font, style: :normal
-    pdf.text institution.name
-    pdf.text Time.now.strftime('%B %-d, %Y'), size: 10
+    pdf.image "#{Rails.root}/app/assets/images/psap_logo@2x.png",
+              at: [0, pdf.bounds.top], width: 100
+    pdf.indent 110 do
+      pdf.font font, style: :bold
+      pdf.text 'Assessment Report', size: h1_size
+      pdf.font font, style: :normal
+      pdf.text institution.name
+      pdf.text Time.now.strftime('%B %-d, %Y'), size: 10
+    end
     pdf.stroke_horizontal_rule
     pdf.move_down 20
   end
