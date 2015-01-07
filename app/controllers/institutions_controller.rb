@@ -21,13 +21,12 @@ class InstitutionsController < ApplicationController
     @non_assessed_resources = @institution.resources.order(:name).
         select{ |r| r.assessment_question_responses.length < 1 }
     @stats = @institution.assessed_item_statistics
-    @all_assessed_items = @institution.all_assessed_items
     @institution_formats = @institution.resources.collect{ |r| r.format }.
         select{ |f| f }.uniq{ |f| f.id }
     @collections = @institution.resources.
         where(resource_type: ResourceType::COLLECTION)
 
-    @chart_data = []
+    @resource_chart_data = []
     (0..9).each do |i|
       sql = "SELECT COUNT(resources.id) AS count "\
           "FROM resources "\
@@ -36,17 +35,37 @@ class InstitutionsController < ApplicationController
           "WHERE repositories.institution_id = #{@institution.id} "\
           "AND resources.assessment_score >= #{i * 0.1} "\
           "AND resources.assessment_score < #{(i + 1) * 0.1} "
-      @chart_data << ActiveRecord::Base.connection.execute(sql).
+      @resource_chart_data << ActiveRecord::Base.connection.execute(sql).
           map{ |r| r['count'].to_i }.first
+    end
+
+    @collection_chart_datas = {}
+    @collections.each do |collection|
+      sub_collections = collection.all_children.select{ |r|
+        r.resource_type == ResourceType::COLLECTION }
+      sub_collections << collection
+      parent_ids = sub_collections.map{ |r| r.id }.join(', ')
+      data = []
+      (0..9).each do |i|
+        sql = "SELECT COUNT(resources.id) AS count "\
+          "FROM resources "\
+          "WHERE resources.parent_id IN (#{parent_ids}) "\
+          "AND resources.assessment_score >= #{i * 0.1} "\
+          "AND resources.assessment_score < #{(i + 1) * 0.1} "
+        data << ActiveRecord::Base.connection.execute(sql).
+            map{ |r| r['count'].to_i }.first
+      end
+      @collection_chart_datas[collection.id] = data
     end
 
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = pdf_assessment_report(@institution, current_user, @chart_data,
+        pdf = pdf_assessment_report(@institution, current_user,
+                                    @resource_chart_data,
+                                    @collection_chart_datas,
                                     @location_assessment_sections,
-                                    @all_assessed_items, @institution_formats,
-                                    @collections)
+                                    @institution_formats, @collections)
         send_data pdf.render, filename: 'assessment_report.pdf',
                   type: 'application/pdf', disposition: 'inline'
       end

@@ -85,7 +85,7 @@
     <h2>Resources</h2>
     <%= render partial: 'resource_report',
                locals: { institution: @institution, stats: @stats,
-                         all_assessed_items: @all_assessed_items,
+                         all_assessed_items: @institution.all_assessed_items,
                          institution_formats: @institution_formats } %>
   </section>
 

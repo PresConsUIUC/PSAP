@@ -10,8 +10,19 @@ module PrawnCharting
   extend ActiveSupport::Concern
   include AssessmentQuestionsHelper
 
+  ##
+  # @param institution Institution
+  # @param user User
+  # @param institution_data 10-element array of numbers
+  # @param collection_datas Hash of 10-element arrays of numbers, keyed by
+  # resource ID
+  # @param location_assessment_sections Array of AssessmentSections
+  # @param institution_formats
+  # @param collections Array of Resources of
+  # resource_type == ResourceType::COLLECTION
+  #
   def pdf_assessment_report(institution, user, institution_data,
-                            location_assessment_sections, all_assessed_items,
+                            collection_datas, location_assessment_sections,
                             institution_formats, collections)
     pdf = Prawn::Document.new(
         info: {
@@ -95,7 +106,7 @@ module PrawnCharting
     pdf.move_down 20
 
     pdf.text "#{institution.resources.length} total items"
-    pdf.text "#{all_assessed_items.length} items assessed"
+    pdf.text "#{institution.all_assessed_items.length} items assessed"
     if institution_formats.any?
       pdf.text "Formats present:"
       pdf.indent 10 do
@@ -146,7 +157,7 @@ module PrawnCharting
             all_assessed_items.sort{ |x,y| x.updated_at <=> y.updated_at }.
                 last.updated_at.strftime('%B %d, %Y')}"
             pdf.text "Formats present:"
-            collection.all_assessed_items.collect{ |r| r.format }.uniq{ |f| f.id }.each do |format|
+            all_assessed_items.collect{ |r| r.format }.uniq{ |f| f.id }.each do |format|
               pdf.indent 10 do
                 pdf.text "• #{format.name}"
               end
@@ -165,7 +176,7 @@ module PrawnCharting
 
             if collection.resource_notes.any?
               collection.resource_notes.each do |note|
-                pdf.text note.value
+                pdf.text "• #{note.value}"
               end
             end
             #pdf.stroke_bounds
@@ -174,8 +185,7 @@ module PrawnCharting
           # right column
           pdf.bounding_box([page_width / 2, y_pos],
                            width: page_width / 2, height: col_height) do
-            data = [2, 0, 11, 18, 16, 8, 11, 13, 3, 1] # TODO: use real data
-            bar_chart(pdf, data,
+            bar_chart(pdf, collection_datas[collection.id],
                       pdf.bounds.right, col_height / 1.2)
             #pdf.stroke_bounds
           end
