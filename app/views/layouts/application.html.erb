@@ -50,7 +50,12 @@
             <%= current_user.institution.name %> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to 'Overview', polymorphic_url(current_user.institution) %></li>
+            <li><%= link_to 'Home', current_user.institution %></li>
+            <li role="presentation" class="divider"></li>
+            <li><%= link_to 'Resources', institution_resources_path(current_user.institution) %></li>
+            <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
+            <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
+            <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
             <% if @user_institution_repositories.any? %>
               <li role="presentation" class="divider"></li>
               <li role="presentation" class="dropdown-header">Repositories</li>
