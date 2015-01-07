@@ -42,6 +42,7 @@ class Resource < ActiveRecord::Base
                          message: 'must be a valid resource significance.' }
   validates :user, presence: true
 
+  validate :validates_collections_not_assessable
   validate :validates_not_child_of_item
   validate :validates_same_institution_as_user
 
@@ -362,6 +363,13 @@ class Resource < ActiveRecord::Base
     parts[:month] = date[1].to_i if date.length > 1
     parts[:year] = date[0].to_i
     parts
+  end
+
+  def validates_collections_not_assessable
+    if self.resource_type == ResourceType::COLLECTION and
+        self.assessment_question_responses.any?
+      errors[:base] << 'Collections are not assessable.'
+    end
   end
 
   def validates_not_child_of_item

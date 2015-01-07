@@ -55,6 +55,13 @@ class ResourceTest < ActiveSupport::TestCase
     flunk # TODO: write this
   end
 
+  test 'collections are not assessable' do
+    response = assessment_question_responses(:assessment_question_response_one)
+    @resource.assessment_question_responses << response
+    @resource.resource_type = ResourceType::COLLECTION
+    assert !@resource.save
+  end
+
   ########################### property tests ################################
 
   # assessment_percent_complete
