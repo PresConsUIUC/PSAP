@@ -1,18 +1,13 @@
 <%= render layout: 'institutions/show' do %>
   <!-- Add Repository button -->
   <div style="text-align:right">
-    <%= link_to new_institution_repository_path(@institution),
-                class: 'btn btn-success' do %>
-      <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-      Add Repository
-    <% end %>
+    <%= button_link('Add Repository',
+                    new_institution_repository_path(@institution),
+                    entity_icon(Repository), 'btn-success') %>
   </div>
 
   <% if @repositories.any? %>
     <div id="repositories">
-      <% # Will be read by PSAP.updateResultsCount() in JS %>
-      <input type="hidden" name="results_count" value="<%= @repositories.total_entries %>">
-
       <ul class="psap-entity-list">
         <% @repositories.each do |repository| %>
           <li>

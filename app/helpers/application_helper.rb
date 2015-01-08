@@ -35,6 +35,32 @@ module ApplicationHelper
     raw(crumb)
   end
 
+  ##
+  # Creates a Bootstrap button link.
+  #
+  # @param title string Button title
+  # @param url string Button URL
+  # @param icon string Name of Glyphicon (e.g. "glyphicon-x"), Font Awesome icon
+  # (e.g. "fa-x"), or return value of entity_icon()
+  # @param class_ Additional classes to give the button, such as Bootstrap's
+  # "btn-success"
+  #
+  def button_link(title, url, icon = nil, class_ = '') # TODO: use this more
+    if icon
+      link = link_to(url, class: "btn #{class_}".strip) do
+        if icon.include?('psap-entity-icon')
+          raw(icon.gsub('psap-entity-icon', '')) + ' ' + title
+        elsif icon.include?('glyphicon')
+          content_tag(:span, '', class: 'glyphicon ' + icon) + title
+        else
+          content_tag(:i, '', class: 'fa ' + icon) + title
+        end
+      end
+      return raw(link)
+    end
+    raw(link_to(title, url, class: class_))
+  end
+
   def countries_for_select
     countries = [
         'United States of America', 'Afghanistan', 'Albania', 'Algeria',

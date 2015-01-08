@@ -97,11 +97,8 @@
                   <%= @resources.any? ? '' : 'disabled' %>>
             <span class="glyphicon glyphicon-share"></span> Move Checked
           </button>
-          <!-- Add Resource button -->
-          <%= link_to new_location_resource_path(@location), class: 'btn btn-success' do %>
-            <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-            Add Resource
-          <% end %>
+          <%= button_link('Add Resource', new_location_resource_path(@location),
+                          entity_icon(Resource), 'btn-success') %>
         </div>
 
         <%= form_tag(resource_move_path) do %>
