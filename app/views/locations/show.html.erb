@@ -106,7 +106,9 @@
           <% if @resources.any? %>
             <div id="resources">
               <%= render partial: 'resources/resources',
-                         locals: { resources: @resources, show_checkboxes: true } %>
+                         locals: { resources: @resources,
+                                   show_checkboxes: true,
+                                   show_hierarchy: true } %>
             </div>
           <% else %>
             <p>There are no resources in this location.</p>

@@ -125,7 +125,7 @@
 
       <%= render partial: 'resources/resources',
                  locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
-                           show_checkboxes: false } %>
+                           show_checkboxes: false, show_hierarchy: true } %>
     </div>
   <% end %>
 

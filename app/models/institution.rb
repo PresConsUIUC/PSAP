@@ -7,12 +7,14 @@ class Institution < ActiveRecord::Base
            dependent: :destroy
   has_many :desiring_users, class_name: 'User', inverse_of: :desired_institution,
            dependent: :restrict_with_exception
-  has_many :users, inverse_of: :institution, dependent: :restrict_with_exception
-  has_many :repositories, inverse_of: :institution, dependent: :destroy
+  has_many :users, -> { order(:last_name) }, inverse_of: :institution,
+           dependent: :restrict_with_exception
+  has_many :repositories, -> { order(:name) }, inverse_of: :institution,
+           dependent: :destroy
   has_and_belongs_to_many :events
   belongs_to :language, inverse_of: :institutions
-  has_many :locations, through: :repositories
-  has_many :resources, through: :locations
+  has_many :locations, -> { order(:name) }, through: :repositories
+  has_many :resources, -> { order(:name) }, through: :locations
 
   accepts_nested_attributes_for :assessment_question_responses
 

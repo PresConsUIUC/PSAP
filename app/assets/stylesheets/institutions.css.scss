@@ -1,10 +1,17 @@
 body#show_institution {
-  @media print {
-    div.col-sm-9 {
-      width:100%;
+  form {
+    max-width:100%; /* override */
+
+    select#score_direction {
+      display:inline;
+      max-width:12em;
     }
-    div.col-sm-3 {
-      display:none;
+    input#score {
+      display:inline;
+      width: 4em;
+    }
+    .psap-buttons {
+      float:right;
     }
   }
 }

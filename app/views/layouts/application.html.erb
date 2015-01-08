@@ -52,9 +52,8 @@
           <ul class="dropdown-menu">
             <li><%= link_to 'Home', current_user.institution %></li>
             <li role="presentation" class="divider"></li>
+            <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
             <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
-            <li><%= link_to 'Resources', institution_resources_path(current_user.institution) %></li>
-            <li><%= link_to 'Info', institution_info_path(current_user.institution) %></li>
             <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
             <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
             <% if @user_institution_repositories.any? %>

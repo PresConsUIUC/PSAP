@@ -14,8 +14,11 @@
     <td><%= resource.resource_type == ResourceType::ITEM ?
                     number_to_human(resource.assessment_score * 100) : '' %></td>
   </tr>
-  <%= render partial: 'resources/resource_tree_rows',
-             locals: { resources: resource.children.order(:name),
-                       depth: depth + 1,
-                       show_checkboxes: show_checkboxes } if resource.children.any? %>
+  <% if show_hierarchy %>
+    <%= render partial: 'resources/resource_tree_rows',
+               locals: { resources: resource.children.order(:name),
+                         depth: depth + 1,
+                         show_checkboxes: show_checkboxes,
+                         show_hierarchy: show_hierarchy } if resource.children.any? %>
+  <% end %>
 <% end %>

@@ -47,6 +47,53 @@ class Resource < ActiveRecord::Base
   before_validation :prune_empty_submodels
   before_save :update_assessment_complete
 
+  def self.all_matching_query(params, starting_set = nil)
+    starting_set = Resource.all unless starting_set
+    resources = starting_set
+
+    # assessed
+    if params[:assessed] == '1'
+      resources = resources.where(assessment_complete: true)
+    elsif params[:assessed] == '0'
+      resources = resources.where(assessment_complete: false)
+    end
+    # format_id
+    resources = resources.where(format_id: params[:format_id]) unless
+        params[:format_id].blank?
+    # language_id
+    resources = resources.where(language_id: params[:language_id]) unless
+        params[:language_id].blank?
+    # location_id
+    resources = resources.where(location_id: params[:location_id]) unless
+        params[:location_id].blank?
+    # q
+    unless params[:q].blank?
+      q = "%#{params[:q].strip.downcase}%"
+      resources = resources.joins(:resource_notes, :subjects).
+          where('LOWER(resources.description) LIKE ? '\
+          'OR LOWER(resources.local_identifier) LIKE ? '\
+          'OR LOWER(resources.name) LIKE ? '\
+          'OR LOWER(resources.rights) LIKE ? '\
+          'OR LOWER(resource_notes.value) LIKE ? '\
+          'OR LOWER(subjects.name) LIKE ?',
+                q, q, q, q, q, q)
+    end
+    # resource_type
+    resources = resources.where(resource_type: params[:resource_type]) unless
+        params[:resource_type].blank? or params[:resource_type] == 'any'
+    # score/score_direction
+    if !params[:score].blank? and !params[:score_direction].blank?
+      score = params[:score].to_f / 100
+      direction = params[:score_direction] == 'greater' ? '>' : '<'
+      resources = resources.
+          where("resources.assessment_score #{direction} #{score}")
+    end
+    # user_id
+    resources = resources.where(user_id: params[:user_id]) unless
+        params[:user_id].blank?
+    resources
+  end
+
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
 

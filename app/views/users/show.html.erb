@@ -153,34 +153,11 @@
 
     <div class="tab-content">
       <div id="resources" class="tab-pane active">
-        <% # This view unfortunately can't use the resources/resources partial
-           # because it displays resources hierarchically, which is problematic
-           # when the user doesn't own the entire hierarchy. So we will display
-           # all of the user's resources in a flat list. %>
         <% if @resources.any? %>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Assessed</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @resources.each do |resource| %>
-                <tr>
-                  <td>
-                    <%= entity_icon(resource) %>
-                    <%= link_to resource do %>
-                      <%= resource.name %>
-                    <% end %>
-                  </td>
-                  <td><%= resource.assessment_complete ? raw('&check;') : '' %></td>
-                  <td><%= number_to_human((resource.assessment_score * 100).round) %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+          <%= render partial: 'resources/resources',
+                     locals: { resources: @resources,
+                               show_checkboxes: false,
+                               show_hierarchy: false } %>
         <% else %>
           <% if @user == current_user %>
             <p>You have not begun any assessments.</p>

@@ -1,12 +1,134 @@
 <%= render layout: 'institutions/show' do %>
 
+  <div class="well">
+    <%= form_tag(institution_resources_path(@institution), method: 'get',
+                 class: 'psap-search') do %>
+      <div class="row">
+        <div class="col-sm-2">
+          <!-- Location -->
+          <div class="form-group">
+            <%= label_tag('location') %>
+            <%= select_tag(:location_id,
+                           options_from_collection_for_select(@institution.locations, :id, :name, params[:location_id]),
+                           include_blank: 'Any', class: 'form-control') %>
+          </div>
+
+          <!-- Format -->
+          <div class="form-group">
+            <%= label_tag('format') %>
+            <%= select_tag(:format_id,
+                           format_hierarchy_options_for_select(params[:format_id]),
+                           include_blank: 'Any', class: 'form-control') %>
+          </div>
+        </div>
+
+        <div class="col-sm-2">
+          <!-- Language -->
+          <div class="form-group">
+            <%= label_tag('language') %>
+            <%= select_tag(:language_id,
+                           options_from_collection_for_select(Language.all.order(:english_name), :id, :english_name, params[:language_id]),
+                           include_blank: 'Any', class: 'form-control') %>
+          </div>
+
+          <!-- User -->
+          <div class="form-group">
+            <%= label_tag('user') %>
+            <%= select_tag(:user_id,
+                           options_from_collection_for_select(@institution.users, :id, :full_name, params[:user_id]),
+                           include_blank: 'Any', class: 'form-control') %>
+          </div>
+        </div>
+
+        <div class="col-sm-2">
+          <!-- Resource Type -->
+          <div class="form-group">
+            <%= label_tag :resource_type, 'Resource Type' %>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('resource_type', 'any',
+                          !ResourceType::all.include?(params[:resource_type])) +
+                        'Any'
+              end %>
+            </div>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('resource_type', ResourceType::ITEM,
+                             (params[:resource_type] == ResourceType::ITEM.to_s)) +
+                        'Item'
+            end %>
+            </div>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('resource_type', ResourceType::COLLECTION,
+                              (params[:resource_type] == ResourceType::COLLECTION.to_s)) +
+                        'Collection'
+              end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2">
+          <!-- Assessed -->
+          <div class="form-group">
+            <%= label_tag :assessed, 'Assessed' %>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('assessed', 'any',
+                                 !%w(0, 1).include?(params[:assessed])) +
+                        'Any'
+              end %>
+            </div>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('assessed', '1',
+                              (params[:assessed] and params[:assessed] == '1')) +
+                        'Assessed'
+              end %>
+            </div>
+            <div class="radio">
+              <%= label_tag('', class: 'radio') do
+                radio_button_tag('assessed', '0',
+                              (params[:assessed] and params[:assessed] == '0')) +
+                        'Not Assessed'
+              end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <!-- Filter -->
+          <div class="form-group">
+            <%= text_field_tag(:q, params[:q], placeholder: 'Keyword',
+                              class: 'form-control') %>
+          </div>
+
+          <!-- Score -->
+          <div class="form-group">
+            <%= select_tag(:score_direction,
+                           options_for_select([['Score Above', 'greater'], ['Score Below', 'less']], params[:score_direction]),
+                           class: 'form-control', id: 'score_direction') %>
+            <%= number_field_tag(:score, params[:score], class: 'form-control', id: 'score') %>
+          </div>
+
+          <div class="form-group psap-buttons">
+            <input type="reset" value="Clear" class="btn btn-default psap-clear">
+            <%= submit_tag('Filter', class: 'btn btn-primary') %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div> <!-- .well -->
+
   <% if @resources.any? %>
-    <div id="assessments">
+    <div id="resources">
       <%= render partial: 'resources/resources',
-                 locals: { resources: @resources, show_checkboxes: false } %>
+                 locals: { resources: @resources,
+                           show_checkboxes: false,
+                           show_hierarchy: !@searching } %>
     </div>
   <% else %>
-    <p>There are no resources at this institution.</p>
+    <p>No results.</p>
   <% end %>
 
 <% end %>

@@ -18,8 +18,8 @@
       <!-- Edit -->
       <%= link_to edit_institution_path(@institution),
                   class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-          Edit
+        <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+        Edit
       <% end %>
       <!-- Assess -->
       <%= link_to institution_assess_path(@institution),
@@ -61,7 +61,7 @@
     <%= link_to 'Repositories', @institution %>
   </li>
   <li class="<%= action_name == 'resources' ? 'active' : '' %>">
-    <%= link_to 'Resources', institution_resources_path(@institution) %>
+    <%= link_to 'Resource Search', institution_resources_path(@institution) %>
   </li>
   <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
     <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>

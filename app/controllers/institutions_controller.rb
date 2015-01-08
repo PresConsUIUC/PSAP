@@ -166,10 +166,21 @@ class InstitutionsController < ApplicationController
   #
   def resources
     @institution = Institution.find(params[:institution_id])
-    # show only top-level resources
-    @resources = @institution.resources.where(parent_id: nil).order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+    @resources = @institution.resources
+    @searching = false
+
+    # all available URL query parameters
+    query_keys = [:assessed, :format_id, :language_id, :location_id, :q,
+                  :resource_type, :score, :score_direction, :user_id]
+    if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
+      # no search query input present; show only top-level resources
+      @resources = @resources.where(parent_id: nil).order(:name)
+    else
+      @resources = Resource.all_matching_query(params, @resources)
+      @searching = true
+    end
+    @resources = @resources.paginate(page: params[:page],
+                                     per_page: Psap::Application.config.results_per_page)
   end
 
   def show
