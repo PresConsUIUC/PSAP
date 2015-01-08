@@ -65,18 +65,6 @@
     <% else %>
       <p>No locations have been assessed yet.</p>
     <% end %>
-
-    <% if @non_assessed_locations.any? %>
-      <h3>Not Yet Assessed</h3>
-      <ul class="psap-mini-entity-list">
-        <% @non_assessed_locations.each do |location| %>
-          <li>
-            <%= entity_icon(location) %>
-            <%= link_to location.name, location %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
   </section>
 
   <hr>
@@ -97,18 +85,6 @@
       <% @collections.each do |resource| %>
           <%= render partial: 'collection_report',
                      locals: { resource: resource } %>
-      <% end %>
-
-      <% if @non_assessed_resources.any? %>
-        <h3>Not Yet Assessed</h3>
-        <ul class="psap-mini-entity-list">
-          <% @non_assessed_resources.each do |resource| %>
-            <li>
-              <%= entity_icon(resource) %>
-              <%= link_to resource.name, resource %>
-            </li>
-          <% end %>
-        </ul>
       <% end %>
     </section>
   <% end %>

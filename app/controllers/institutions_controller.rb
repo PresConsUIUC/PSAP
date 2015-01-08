@@ -23,10 +23,6 @@ class InstitutionsController < ApplicationController
 
     @location_assessment_sections = Assessment.find_by_key('location').
         assessment_sections.order(:index)
-    @non_assessed_locations = @institution.locations.order(:name).
-        select{ |l| l.assessment_question_responses.length < 1 }
-    @non_assessed_resources = @institution.resources.order(:name).
-        select{ |r| r.assessment_question_responses.length < 1 }
     @stats = @institution.assessed_item_statistics
     @institution_formats = @institution.resources.collect{ |r| r.format }.
         select{ |f| f }.uniq{ |f| f.id }
