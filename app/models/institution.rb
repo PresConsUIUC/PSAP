@@ -59,7 +59,7 @@ class Institution < ActiveRecord::Base
   #
   def all_assessed_items
     self.resources.select{ |r| r.resource_type == ResourceType::COLLECTION and
-        r.assessment_percent_complete >= 0.999999 }
+        r.assessment_complete }
   end
 
   ##
