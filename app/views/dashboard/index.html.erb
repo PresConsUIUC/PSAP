@@ -122,8 +122,7 @@
             <li>
               <%= entity_icon(resource) %>
               <%= link_to resource.name, resource %><br>
-              <small><%= number_to_human resource.assessment_percent_complete * 100 %>% complete
-                | updated <%= local_time_ago resource.updated_at %></small>
+              <small>updated <%= local_time_ago resource.updated_at %></small>
             </li>
           <% end %>
         </ul>

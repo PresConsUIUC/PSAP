@@ -64,25 +64,13 @@ class ResourceTest < ActiveSupport::TestCase
 
   ########################### property tests ################################
 
-  # assessment_percent_complete
-  test 'assessment_percent_complete should be within bounds' do
-    @resource.assessment_percent_complete = -0.5
-    assert !@resource.save
-
-    @resource.assessment_percent_complete = 1.1
-    assert !@resource.save
-
-    @resource.assessment_percent_complete = 0.8
-    assert @resource.save
-  end
-
-  test 'assessment_percent_complete should update properly' do
+  test 'assessment_complete should update properly' do
     @resource.save
-    assert_equal 1, @resource.assessment_percent_complete
+    assert @resource.assessment_complete
 
     @resource.assessment_question_responses.destroy_all
     @resource.save
-    assert_equal 0, @resource.assessment_percent_complete
+    assert !@resource.assessment_complete
   end
 
   # assessment_score
@@ -198,11 +186,6 @@ class ResourceTest < ActiveSupport::TestCase
     flunk # TODO: write this
   end
 
-  # assessment_percent_complete_in_section
-  test 'assessment_percent_complete_in_section should work' do
-    flunk # TODO: write this
-  end
-
   # prune_empty_submodels
   test 'prune_empty_submodels should work' do
     resource = resources(:resource_twelve)
@@ -237,22 +220,22 @@ class ResourceTest < ActiveSupport::TestCase
     flunk # TODO: write this
   end
 
-  # update_assessment_percent_complete
-  test 'update_assessment_percent_complete should set 0 if no format' do
+  # update_assessment_complete
+  test 'update_assessment_complete should set false if no format' do
     @resource.format = nil
-    @resource.update_assessment_percent_complete
-    assert_equal 0, @resource.assessment_percent_complete
+    @resource.update_assessment_complete
+    assert !@resource.assessment_complete
   end
 
-  test 'update_assessment_percent_complete should set 0 if format has no assessment questions' do
+  test 'update_assessment_complete should set false if format has no assessment questions' do
     @resource.format = formats(:format_four)
-    @resource.update_assessment_percent_complete
-    assert_equal 0, @resource.assessment_percent_complete
+    @resource.update_assessment_complete
+    assert !@resource.assessment_complete
   end
 
-  test 'update_assessment_percent_complete should work when a format with assessment questions is set and a response exists' do
-    @resource.update_assessment_percent_complete
-    assert_equal 1, @resource.assessment_percent_complete
+  test 'update_assessment_complete should work when a format with assessment questions is set and a response exists' do
+    @resource.update_assessment_complete
+    assert @resource.assessment_complete
   end
 
   # update_assessment_score

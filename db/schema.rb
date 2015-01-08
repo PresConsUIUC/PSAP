@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219164234) do
+ActiveRecord::Schema.define(version: 20150108150117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -304,24 +304,24 @@ ActiveRecord::Schema.define(version: 20141219164234) do
   create_table "resources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "location_id",                                                       null: false
+    t.integer  "location_id",                                                    null: false
     t.integer  "parent_id"
-    t.integer  "resource_type",                                                     null: false
-    t.string   "name",                                                              null: false
+    t.integer  "resource_type",                                                  null: false
+    t.string   "name",                                                           null: false
     t.integer  "format_id"
-    t.integer  "user_id",                                                           null: false
+    t.integer  "user_id",                                                        null: false
     t.text     "description"
     t.string   "local_identifier"
     t.integer  "date_type"
     t.integer  "assessment_id"
     t.string   "rights"
     t.integer  "language_id"
-    t.float    "assessment_percent_complete",                         default: 0.0
-    t.float    "assessment_score",                                    default: 0.0
-    t.decimal  "significance",                precision: 2, scale: 1
+    t.float    "assessment_score",                                 default: 0.0
+    t.decimal  "significance",             precision: 2, scale: 1
     t.integer  "format_ink_media_type_id"
     t.integer  "format_support_type_id"
     t.integer  "assessment_type"
+    t.boolean  "assessment_complete"
   end
 
   add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id", using: :btree

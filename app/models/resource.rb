@@ -27,8 +27,6 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
-  validates :assessment_percent_complete, allow_blank: true,
-            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :assessment_type, allow_blank: true,
             inclusion: { in: AssessmentType.all,
                          message: 'must be a valid assessment type.' }
@@ -47,7 +45,7 @@ class Resource < ActiveRecord::Base
   validate :validates_same_institution_as_user
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete
+  before_save :update_assessment_complete
 
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
@@ -159,7 +157,7 @@ class Resource < ActiveRecord::Base
   #
   def all_assessed_items
     all_children.select{ |x| x.resource_type == ResourceType::ITEM and
-        x.assessment_percent_complete >= 0.999999 }
+        x.assessment_complete }
   end
 
   ##
@@ -254,18 +252,6 @@ class Resource < ActiveRecord::Base
     stats
   end
 
-  ##
-  # @return float
-  #
-  def assessment_percent_complete_in_section(section)
-    all_aqs = section.assessment_questions_for_format(self.format)
-    if all_aqs.length > 0
-      complete_aqs = self.complete_assessment_questions_in_section(section)
-      return complete_aqs.length.to_f / all_aqs.length.to_f
-    end
-    0.0
-  end
-
   def filename
     self.local_identifier ? self.local_identifier : self.id.to_s
   end
@@ -311,11 +297,12 @@ class Resource < ActiveRecord::Base
     self.assessment_score * 0.9 + self.location.assessment_score * 0.1
   end
 
-  def update_assessment_percent_complete
-    self.assessment_percent_complete =
+  def update_assessment_complete
+    self.assessment_complete =
         (self.format and self.format.all_assessment_questions.any?) ?
-            self.assessment_question_responses.length.to_f /
-            self.format.all_assessment_questions.length.to_f : 0
+            self.assessment_question_responses.length >=
+                self.format.all_assessment_questions.length : false
+    nil
   end
 
   ##

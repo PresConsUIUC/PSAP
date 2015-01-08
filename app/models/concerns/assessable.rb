@@ -10,11 +10,6 @@ module Assessable
     before_save :update_assessment_score
   end
 
-  def assessment_percent_complete_in_section(section)
-    self.complete_assessment_questions_in_section(section).length.to_f /
-        section.assessment_questions.length.to_f
-  end
-
   ##
   # @return Hash of AssessmentQuestionResponses keyed by section id
   #

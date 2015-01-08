@@ -162,7 +162,7 @@
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Complete</th>
+                <th>Assessed</th>
                 <th>Score</th>
               </tr>
             </thead>
@@ -175,7 +175,7 @@
                       <%= resource.name %>
                     <% end %>
                   </td>
-                  <td><%= number_to_human((resource.assessment_percent_complete * 100).round) %>%</td>
+                  <td><%= resource.assessment_complete ? raw('&check;') : '' %></td>
                   <td><%= number_to_human((resource.assessment_score * 100).round) %></td>
                 </tr>
               <% end %>
