@@ -5,8 +5,9 @@ class InstitutionsController < ApplicationController
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
   before_action :same_institution_user, only: [:assess, :assessment_report,
-                                               :events, :repositories, :resources,
-                                               :show, :edit, :update, :users]
+                                               :events, :info, :repositories,
+                                               :resources, :show, :edit,
+                                               :update, :users]
 
   def assess
     @institution = Institution.find(params[:institution_id])
@@ -142,6 +143,10 @@ class InstitutionsController < ApplicationController
     @institutions = Institution.order(:name).paginate(
         page: params[:page],
         per_page: Psap::Application.config.results_per_page)
+  end
+
+  def info
+    @institution = Institution.find(params[:institution_id])
   end
 
   def new

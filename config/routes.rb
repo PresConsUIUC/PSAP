@@ -78,6 +78,7 @@ Psap::Application.routes.draw do
     resources :repositories, except: :index
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     match '/events', to: 'institutions#events', via: 'get'
+    match '/info', to: 'institutions#info', via: 'get'
     match '/repositories', to: 'institutions#repositories', via: 'get'
     match '/resources', to: 'institutions#resources', via: 'get'
     match '/users', to: 'institutions#users', via: 'get'

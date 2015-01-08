@@ -56,64 +56,27 @@
   </div>
 </div>
 
-<div class="row">
+<ul class="nav nav-tabs">
+  <li class="<%= action_name == 'show' ? 'active' : '' %>">
+    <%= link_to 'Repositories', @institution %>
+  </li>
+  <li class="<%= action_name == 'resources' ? 'active' : '' %>">
+    <%= link_to 'Resources', institution_resources_path(@institution) %>
+  </li>
+  <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
+    <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
+  </li>
+  <li class="<%= action_name == 'info' ? 'active' : '' %>">
+    <%= link_to 'Info', institution_info_path(@institution) %>
+  </li>
+  <li class="<%= action_name == 'users' ? 'active' : '' %>">
+    <%= link_to 'Users', institution_users_path(@institution) %>
+  </li>
+  <li class="<%= action_name == 'events' ? 'active' : '' %>">
+    <%= link_to 'Activity', institution_events_path(@institution) %>
+  </li>
+</ul>
 
-  <div class="col-sm-3">
-    <dl>
-      <dt>URL</dt>
-      <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
-      <dt>Email</dt>
-      <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
-      <dt>Address</dt>
-      <dd>
-        <%= @institution.address1 %>
-        <% if @institution.address2 and !@institution.address2.empty? %>
-            <br><%= @institution.address2 %>
-        <% end %>
-        <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
-        <br><%= @institution.country %>
-      </dd>
-      <% if @institution.description %>
-          <dt>Description</dt>
-          <dd><%= @institution.description %></dd>
-      <% end %>
-      <% if @institution.language %>
-          <dt>Language</dt>
-          <dd><%= @institution.language.english_name %></dd>
-      <% end %>
-      <dt>Created</dt>
-      <dd><%= local_time_ago(@institution.created_at) %></dd>
-      <dt>Last Updated</dt>
-      <dd><%= local_time_ago(@institution.updated_at) %></dd>
-    </dl>
-  </div>
-
-  <div class="col-sm-9">
-
-    <ul class="nav nav-tabs">
-      <li class="<%= action_name == 'show' ? 'active' : '' %>">
-        <%= link_to 'Repositories', @institution %>
-      </li>
-      <li class="<%= action_name == 'resources' ? 'active' : '' %>">
-        <%= link_to 'Resources', institution_resources_path(@institution) %>
-      </li>
-      <li class="<%= action_name == 'users' ? 'active' : '' %>">
-        <%= link_to 'Users', institution_users_path(@institution) %>
-      </li>
-      <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
-        <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
-      </li>
-      <li class="<%= action_name == 'events' ? 'active' : '' %>">
-        <%= link_to 'Activity', institution_events_path(@institution) %>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-
-      <%= yield %>
-
-    </div> <!-- .tab-content -->
-
-  </div> <!-- .col-sm-8 -->
-
-</div> <!-- .row -->
+<div class="tab-content">
+  <%= yield %>
+</div>
