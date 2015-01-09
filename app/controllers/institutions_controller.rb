@@ -186,6 +186,10 @@ class InstitutionsController < ApplicationController
             'attachment; filename="resources.csv"'
         render text: Resource.as_csv(@resources)
       end
+      format.json do
+        response.headers['Content-Disposition'] =
+            'attachment; filename="resources.json"'
+      end
       format.html do
         @resources = @resources.paginate(page: params[:page],
                                          per_page: Psap::Application.config.results_per_page)

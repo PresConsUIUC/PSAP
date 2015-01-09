@@ -121,10 +121,19 @@
   </div> <!-- .well -->
 
   <% if @resources.any? %>
-    <div style="float:right">
-      <%= button_link('Export as CSV', params.merge(format: 'csv'),
-                      'fa-file-text-o', class: 'psap-export',
-                      data: { format: 'CSV', filename: 'resources.csv' }) %>
+    <div class="btn-group" style="float:right">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-export"></span> Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><%= link_to('CSV', params.merge(format: 'csv'),
+                        class: 'psap-export',
+                        data: { format: 'CSV', filename: 'resources.csv' }) %></li>
+        <li><%= link_to('JSON', params.merge(format: 'json'),
+                        class: 'psap-export',
+                        data: { format: 'JSON', filename: 'resources.json' }) %></li>
+      </ul>
     </div>
 
     <div id="resources">
