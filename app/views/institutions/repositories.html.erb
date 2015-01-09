@@ -3,7 +3,7 @@
   <div style="text-align:right">
     <%= button_link('Add Repository',
                     new_institution_repository_path(@institution),
-                    entity_icon(Repository), 'btn-success') %>
+                    entity_icon(Repository), { class: 'btn-success' }) %>
   </div>
 
   <% if @repositories.any? %>

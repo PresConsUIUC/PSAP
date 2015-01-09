@@ -42,12 +42,12 @@ module ApplicationHelper
   # @param url string Button URL
   # @param icon string Name of Glyphicon (e.g. "glyphicon-x"), Font Awesome icon
   # (e.g. "fa-x"), or return value of entity_icon()
-  # @param class_ Additional classes to give the button, such as Bootstrap's
-  # "btn-success"
+  # @param html_options Additional HTML attribute-value pairs
   #
-  def button_link(title, url, icon = nil, class_ = '') # TODO: use this more
+  def button_link(title, url, icon = nil, html_options = {}) # TODO: use this more
+    html_options[:class] = "btn #{html_options[:class]}".strip
     if icon
-      link = link_to(url, class: "btn #{class_}".strip) do
+      link = link_to(url, html_options) do
         if icon.include?('psap-entity-icon')
           raw(icon.gsub('psap-entity-icon', '')) + ' ' + title
         elsif icon.include?('glyphicon')
@@ -58,7 +58,7 @@ module ApplicationHelper
       end
       return raw(link)
     end
-    raw(link_to(title, url, class: class_))
+    raw(link_to(title, url, html_options))
   end
 
   def countries_for_select

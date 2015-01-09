@@ -98,7 +98,7 @@
             <span class="glyphicon glyphicon-share"></span> Move Checked
           </button>
           <%= button_link('Add Resource', new_location_resource_path(@location),
-                          entity_icon(Resource), 'btn-success') %>
+                          entity_icon(Resource), { class: 'btn-success' }) %>
         </div>
 
         <%= form_tag(resource_move_path) do %>
