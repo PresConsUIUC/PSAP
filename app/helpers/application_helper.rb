@@ -45,15 +45,17 @@ module ApplicationHelper
   # @param html_options Additional HTML attribute-value pairs
   #
   def button_link(title, url, icon = nil, html_options = {}) # TODO: use this more
+    html_options[:class] = 'btn-default' unless html_options[:class] and
+        html_options[:class].include?('btn-')
     html_options[:class] = "btn #{html_options[:class]}".strip
     if icon
       link = link_to(url, html_options) do
         if icon.include?('psap-entity-icon')
           raw(icon.gsub('psap-entity-icon', '')) + ' ' + title
         elsif icon.include?('glyphicon')
-          content_tag(:span, '', class: 'glyphicon ' + icon) + title
+          content_tag(:span, '', class: 'glyphicon ' + icon) + ' ' + title
         else
-          content_tag(:i, '', class: 'fa ' + icon) + title
+          content_tag(:i, '', class: 'fa ' + icon) + ' ' + title
         end
       end
       return raw(link)
