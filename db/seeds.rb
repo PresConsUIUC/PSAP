@@ -419,7 +419,7 @@ case Rails.env
         CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Sample Repository' }, nil, '127.0.0.1'),
         CreateRepositoryCommand.new(uiuc_institution,
-            { name: 'Another Sample Repository' }, nil, '127.0.0.1')
+            { name: 'Empty Repository' }, nil, '127.0.0.1')
     ]
 
     repositories = repository_commands.map{ |command| command.execute; command.object }
@@ -427,14 +427,14 @@ case Rails.env
     # Locations
     location_commands = [
         CreateLocationCommand.new(repositories[0],
-            { name: 'Secret Location',
+            { name: 'Sample Location',
               description: 'Sample description' }, nil, '127.0.0.1'),
         CreateLocationCommand.new(repositories[0],
-            { name: 'Even More Secret Location',
+            { name: 'Location With Lots of Stuff',
               description: 'Sample description' }, nil, '127.0.0.1'),
         CreateLocationCommand.new(repositories[0],
-            { name: 'Attic',
-              description: 'Sample description' }, nil, '127.0.0.1'),
+            { name: 'Empty Location',
+              description: 'Sample description' }, nil, '127.0.0.1')
     ]
 
     locations = location_commands.map{ |command| command.execute; command.object }
@@ -512,27 +512,11 @@ case Rails.env
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(
-        locations[2],
+        locations[0],
         { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
           resource_type: ResourceType::COLLECTION,
           assessment_type: AssessmentType::ITEM_LEVEL,
           user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(
-        locations[2],
-        { name: 'Issue 1',
-          resource_type: ResourceType::ITEM,
-          user: admin_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(
-        locations[2],
-        { name: 'Issue 2',
-          resource_type: ResourceType::ITEM,
-          user: disabled_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
@@ -578,8 +562,6 @@ case Rails.env
     resources[1].parent = resources[0]
     resources[2].parent = resources[0]
     resources[3].parent = resources[0]
-    resources[6].parent = resources[5]
-    resources[7].parent = resources[5]
     resources.each{ |r| r.save! }
 
     # Dates
@@ -604,12 +586,6 @@ case Rails.env
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
                          year: 843)
-    ResourceDate.create!(resource: resources[6],
-                         date_type: DateType::SINGLE,
-                         year: 1856)
-    ResourceDate.create!(resource: resources[7],
-                         date_type: DateType::SINGLE,
-                         year: 1856)
 
     # Extents
     extents = []
