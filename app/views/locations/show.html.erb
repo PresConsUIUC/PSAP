@@ -104,14 +104,13 @@
           <button type="button" class="btn btn-default psap-move-checked"
                   data-toggle="modal" data-target="#moveModal"
                   <%= @resources.any? ? '' : 'disabled' %>>
-            <span class="glyphicon glyphicon-share"></span> Move Checked
+            <i class="fa fa-share"></i> Move Checked
           </button>
           <%= button_link('Add Resource', new_location_resource_path(@location),
                           entity_icon(Resource), { class: 'btn-success' }) %>
         </div>
 
         <%= form_tag(resource_move_path) do %>
-
           <% if @resources.any? %>
             <div id="resources">
               <%= render partial: 'resources/resources',
