@@ -238,9 +238,13 @@ class Resource < ActiveRecord::Base
       csv << ['Local Identifier'] +
           ['Title/Name'] +
           ['PSAP Assessment Score'] +
+          ['Assessment Type'] +
+          ['Location'] +
           ['Resource Type'] +
           ['Parent Resource'] +
           ['Format'] +
+          ['Format Ink/Media Type'] +
+          ['Format Support Type'] +
           ['Significance'] +
           (['Creator'] * self.creators.length) +
           (['Date'] * self.resource_dates.length) +
@@ -255,10 +259,14 @@ class Resource < ActiveRecord::Base
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [self.total_assessment_score * 100] +
+          [self.total_assessment_score * 100].round(2) +
+          [AssessmentType::name_for_type(self.assessment_type)] +
+          [self.location.name] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +
           [self.format ? self.format.name : nil] +
+          [self.format_ink_media_type ? self.format_ink_media_type.name : nil] +
+          [self.format_support_type ? self.format_support_type.name : nil] +
           [self.readable_significance] +
           self.creators.map { |r| r.name } +
           self.resource_dates.map { |r| r.as_dublin_core_string } +
