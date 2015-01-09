@@ -92,7 +92,7 @@ class LocationsController < ApplicationController
       render 'edit'
     else
       flash[:success] = "Location \"#{@location.name}\" updated."
-      redirect_to edit_location_url(@location)
+      redirect_to @location
     end
   end
 
