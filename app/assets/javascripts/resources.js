@@ -598,18 +598,6 @@ var ready = function() {
             // Center modal vertically in window
             $dialog.css("margin-top", offset);
         });
-
-        // show the export notification panel after clicking an export option
-        $('a.export').on('click', function() {
-            var filename = $(this).attr('data-filename');
-            var format = $(this).text();
-            setTimeout(function() {
-                var alert = $('div#export_notification');
-                alert.find('#filename').text(filename);
-                alert.find('.format').text(format);
-                alert.modal();
-            }, 100);
-        });
     } else if ($('body#new_resource').length ||
         $('body#edit_resource').length) {
         // override bootstrap nav-pills behavior

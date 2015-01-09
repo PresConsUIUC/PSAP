@@ -123,7 +123,8 @@
   <% if @resources.any? %>
     <div style="float:right">
       <%= button_link('Export as CSV', params.merge(format: 'csv'),
-                      'fa-file-text-o', target: '_blank') %>
+                      'fa-file-text-o', class: 'psap-export',
+                      data: { format: 'CSV', filename: 'resources.csv' }) %>
     </div>
 
     <div id="resources">
@@ -135,5 +136,7 @@
   <% else %>
     <p>No results.</p>
   <% end %>
+
+  <%= render partial: 'shared/export_panel' %>
 
 <% end %>

@@ -231,6 +231,18 @@ var PSAP = {
 
         PSAP.Form.enableDynamicNestedEntities();
 
+        // show the export notification panel after clicking an export option
+        $('.psap-export').on('click', function() {
+            var filename = $(this).attr('data-filename');
+            var format = $(this).attr('data-format');
+            setTimeout(function() {
+                var alert = $('div#psap-export-notification');
+                alert.find('.psap-filename').text(filename);
+                alert.find('.psap-format').text(format);
+                alert.modal();
+            }, 100);
+        });
+
         PSAP.smoothAnchorScroll(0);
     },
 
