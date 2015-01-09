@@ -1,8 +1,6 @@
 <% provide(:title, "Edit #{@resource.name}") %>
 <% provide(:body_id, 'edit_resource') %>
 
-<input type="hidden" name="root-url" value="<%= root_url %>">
-
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
     <li><%= link_to 'Institutions', institutions_path %></li>
@@ -27,9 +25,10 @@
 
 <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
   <div id="basic_info" class="section">
-    <%= render partial: 'basic_info_form', locals: { f: f } %>
+    <%= render partial: 'edit_form', locals: { f: f } %>
   </div>
 
+  <%= hidden_field_tag('root-url', root_url) %>
   <% # read by JS to select the relevant inputs %>
   <%= hidden_field_tag('selected_format_class',
                        @resource.format ? @resource.format.format_class : '') %>
@@ -48,4 +47,6 @@
   <%= hidden_field_tag('formats_json', Format.all.to_json) %>
   <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
   <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
+
+  <%= submit_tag('Edit Resource', class: 'btn btn-primary') %>
 <% end %>

@@ -1,7 +1,5 @@
 <% provide(:title, "Assess #{@resource.name}") %>
-<% provide(:body_id, 'edit_resource') %>
-
-<input type="hidden" name="root-url" value="<%= root_url %>">
+<% provide(:body_id, 'assess_resource') %>
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -48,14 +46,18 @@
 
     <div class="col-sm-9">
       <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
+        <%= hidden_field_tag('format_id', @resource.format.id) %>
+        <%= hidden_field_tag('root-url', root_url) %>
+
         <% @resource.assessment_question_responses.each do |response| %>
-          <input type="hidden" name="selected_option_ids"
-                 value="<%= response.assessment_question_option.id %>">
+          <%= hidden_field_tag('selected_option_ids',
+                               response.assessment_question_option.id) %>
         <% end %>
 
         <div class="form-group" id="psap-assessment-type-group">
           <%= f.label :assessment_type, 'Assessment Type' %>
-          <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
+          <button type="button" class="btn btn-sm help" data-container="body"
+                  data-toggle="popover" data-placement="right"
                   data-content="Is this collection assessed at the item level or on a sample basis? OPTIONAL.">
             ?
           </button>

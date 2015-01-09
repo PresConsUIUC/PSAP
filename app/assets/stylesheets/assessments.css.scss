@@ -3,20 +3,15 @@
   font-size:1.3em;
 }
 
-body#new_resource, body#edit_resource,
+body#new_resource, body#edit_resource, body#assess_resource,
 body#new_location, body#edit_location, body#new_institution, body#edit_institution {
   div.section {
     margin-bottom:2em;
   }
-  div#sections {
+  div#psap-affixed-menu {
     button.save {
       margin-top:1em;
     }
-  }
-  .affix {
-    margin: 0 10% 0 0;
-    width:21.5%;
-    top:70px;
   }
   label.radio-inline {
     border:1px solid #cccccc;

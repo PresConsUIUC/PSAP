@@ -1,19 +1,5 @@
 var ready = function() {
-    if ($('body#format_id_guide').length) {
-        PSAP.smoothAnchorScroll(0);
-
-        var body = $('body');
-        body.scrollspy({
-            target: '#sections',
-            offset: $('nav.navbar.navbar-default').height() + 15
-        });
-
-        if (body.width() > 600) {
-            $('#sections').affix({ offset: { top: 160 } });
-        }
-    } else if ($('body#format_id_guide_page').length) {
-        PSAP.smoothAnchorScroll(0);
-
+    if ($('body#format_id_guide_page').length) {
         // dynamically add some needed classes
         $('table').addClass('table table-striped');
         var page_content = $('div#page_content');

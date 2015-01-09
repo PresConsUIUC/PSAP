@@ -53,7 +53,7 @@
                  url: location_resources_path(@resource.location)) do |f| %>
 
       <div id="basic_info" class="section">
-        <%= render partial: 'basic_info_form', locals: { f: f } %>
+        <%= render partial: 'edit_form', locals: { f: f } %>
       </div>
 
       <% @assessment_sections.each do |section| %>

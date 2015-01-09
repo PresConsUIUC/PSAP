@@ -222,6 +222,10 @@ nav.navbar {
   color: #c0c0c0;
 }
 
+.affix {
+  top:70px;
+}
+
 @media screen and (max-width: 767px) {
   .affix {
     position: static;

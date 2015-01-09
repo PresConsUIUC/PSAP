@@ -243,6 +243,25 @@ var PSAP = {
             }, 100);
         });
 
+        // set up affixed left menu with scrollspy
+        var affixed = $('#psap-affixed-menu');
+        if (affixed.length) {
+            var body = $('body');
+            if (body.width() > 600) {
+                var navbar = $('nav.navbar.navbar-default');
+                affixed.width(affixed.parent().width());
+                affixed.affix({
+                    offset: {
+                        top: affixed.offset().top - navbar.height() - 15
+                    }
+                });
+                body.scrollspy({
+                    target: '#psap-affixed-menu',
+                    offset: navbar.height() + 15
+                });
+            }
+        }
+
         PSAP.smoothAnchorScroll(0);
     },
 

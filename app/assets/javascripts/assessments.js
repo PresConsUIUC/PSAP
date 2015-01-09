@@ -102,7 +102,7 @@ var AssessmentForm = {
                 $('.assessment_question input, .assessment_question select').
                     on('change', onOptionChanged);
 
-                $('body').scrollspy({ target: '#sections' });
+                $('body').scrollspy({ target: '#psap-affixed-menu' });
             }
             AssessmentForm.updateProgress();
 
@@ -241,12 +241,8 @@ var ready = function() {
             window.location.href = $(this).attr('href');
         });
 
-        $('#sections').affix({ // TODO: broken on narrow screens and glitchy on short screens
+        $('#psap-affixed-menu').affix({ // TODO: broken on narrow screens and glitchy on short screens
             offset: { top: 220 }
-        });
-
-        $(document).bind('affix.bs.affix', function() {
-            //$('#sections').width($('.tab-pane.active').offset().left + 'px');
         });
 
         if ($('body#new_location').length || $('body#edit_location').length) {
