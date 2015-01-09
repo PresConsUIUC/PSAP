@@ -158,7 +158,7 @@
 
       <div id="info_tab" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
         <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <dl>
               <% if @resource.parent %>
                 <dt>Parent Collection</dt>
@@ -226,7 +226,7 @@
               <% end %>
             </dl>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <dl>
               <% if @resource.resource_notes.any? %>
                 <dt>Notes</dt>
@@ -284,23 +284,19 @@
                   <% end %>
                 </dd>
               <% end %>
-            </dl>
-          </div>
-          <div class="col-sm-4">
-            <dl>
               <% if @resource.significance %>
-                <dt>Significance</dt>
-                <dd><%= @resource.readable_significance %></dd>
+                  <dt>Significance</dt>
+                  <dd><%= @resource.readable_significance %></dd>
               <% end %>
               <% if @resource.rights %>
-                <dt>Rights</dt>
-                <dd><%= @resource.rights %></dd>
+                  <dt>Rights</dt>
+                  <dd><%= @resource.rights %></dd>
               <% end %>
               <dt>Created</dt>
               <dd><%= local_time_ago(@resource.created_at) %> by
                 <%= link_to @resource.user do %>
-                  <%= entity_icon(@resource.user) %>
-                  <%= @resource.user.full_name %>
+                    <%= entity_icon(@resource.user) %>
+                    <%= @resource.user.full_name %>
                 <% end %>
               </dd>
               <dt>Last Updated</dt>
