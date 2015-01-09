@@ -218,7 +218,7 @@ class InstitutionsController < ApplicationController
       render 'edit'
     else
       flash[:success] = "Institution \"#{@institution.name}\" updated."
-      redirect_to edit_institution_url(@institution)
+      redirect_to @institution
     end
   end
 
