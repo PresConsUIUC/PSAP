@@ -60,22 +60,6 @@
   </div>
 </div>
 
-<div class="form-group" id="psap-assessment-type-group">
-  <%= f.label :assessment_type, 'Assessment Type' %>
-  <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
-          data-content="Is this collection assessed at the item level or on a sample basis? OPTIONAL.">
-    ?
-  </button>
-  <div class="radio">
-    <%= f.radio_button :assessment_type, AssessmentType::ITEM_LEVEL %>
-    <%= f.label :assessment_type, 'Item-Level', value: AssessmentType::ITEM_LEVEL %>
-  </div>
-  <div class="radio">
-    <%= f.radio_button :assessment_type, AssessmentType::SAMPLE %>
-    <%= f.label :assessment_type, 'Sample', value: AssessmentType::SAMPLE %>
-  </div>
-</div>
-
 <div class="form-group">
   <%= f.label :parent_id, 'Parent Resource' %>
   <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
