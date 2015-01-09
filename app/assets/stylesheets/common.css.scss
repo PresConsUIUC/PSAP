@@ -320,6 +320,20 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   padding-left:0px;
 }
 
+.psap-hierarchy-list {
+  list-style-type:none;
+  margin-left:1.8em;
+  padding-left:0px;
+  text-indent:-1em;
+  .psap-hierarchy-list {
+    margin-left:1.6em;
+    padding-left:0px;
+  }
+  .active {
+    font-weight:bold;
+  }
+}
+
 .psap-plain-list {
   margin-left:1.5em;
   padding-left:0px;

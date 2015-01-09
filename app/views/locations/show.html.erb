@@ -54,17 +54,25 @@
 
 <div class="row">
 
-  <div class="col-sm-4 panel">
-    <% if @location.description %>
-      <dl>
-        <dt>Description</dt>
-        <dd><%= @location.description %></dd>
-        <dt>Temperature Range</dt>
-        <dd>
-          <%= @location.temperature_range.min_temp_f %>&deg;F-<%= @location.temperature_range.max_temp_f %>&deg;F
-        </dd>
-      </dl>
-    <% end %>
+  <div class="col-sm-4">
+    <ol class="psap-hierarchy-list">
+      <li>
+        <%= entity_icon(@location.repository) %>
+        <%= link_to @location.repository.name, @location.repository %>
+        <ol class="psap-hierarchy-list">
+          <% @location.repository.locations.each do |loc| %>
+            <li>
+              <%= entity_icon loc %>
+              <% if loc == @location %>
+                <span class="active"><%= loc.name %></span>
+              <% else %>
+                <%= link_to loc.name, loc %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </li>
+    </ol>
   </div>
 
   <div class="col-sm-8">
@@ -74,6 +82,7 @@
         <a href="#resources_tab" data-toggle="tab">Resources</a>
       </li>
       <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
+      <li><a href="#info_tab" data-toggle="tab">Info</a></li>
       <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
@@ -181,6 +190,21 @@
             </div>
           </div>
         <% end %>
+      </div>
+
+      <div class="tab-pane" id="info_tab">
+        <dl>
+          <% if @location.description %>
+            <dt>Description</dt>
+            <dd><%= @location.description %></dd>
+          <% end %>
+          <% if @location.temperature_range %>
+            <dt>Temperature Range</dt>
+            <dd>
+              <%= @location.temperature_range.min_temp_f %>&deg;F-<%= @location.temperature_range.max_temp_f %>&deg;F
+            </dd>
+          <% end %>
+        </dl>
       </div>
 
       <div class="tab-pane" id="activity_tab">

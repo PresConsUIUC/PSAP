@@ -32,30 +32,55 @@
   </div>
 </div>
 
-<ul class="nav nav-tabs">
-  <li class="active">
-    <a href="#locations_tab" data-toggle="tab">Locations</a>
-  </li>
-  <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
-</ul>
-
-<div class="tab-content">
-
-  <div class="tab-pane active" id="locations_tab">
-    <div style="text-align:right">
-      <%= button_link('Add Location', new_repository_location_path(@repository),
-                      entity_icon(Location), 'btn-success') %>
-    </div>
-    <% if @repository.locations.any? %>
-      <div id="locations">
-        <%= render 'locations' %>
-      </div>
-    <% else %>
-      <p>This repository has no locations.</p>
-    <% end %>
+<div class="row">
+  <div class="col-sm-4">
+    <ol class="psap-hierarchy-list">
+      <li>
+        <%= entity_icon(@repository.institution) %>
+        <%= link_to @repository.institution.name, @repository.institution %>
+        <ol class="psap-hierarchy-list">
+          <% @repository.institution.repositories.each do |repo| %>
+            <li>
+              <%= entity_icon repo %>
+              <% if repo == @repository %>
+                <span class="active"><%= repo.name %></span>
+              <% else %>
+                <%= link_to repo.name, repo %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </li>
+    </ol>
   </div>
 
-  <div class="tab-pane" id="activity_tab">
-    <%= render 'shared/events', events: @events %>
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#locations_tab" data-toggle="tab">Locations</a>
+      </li>
+      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="locations_tab">
+        <div style="text-align:right">
+          <%= button_link('Add Location', new_repository_location_path(@repository),
+                          entity_icon(Location), { class: 'btn-success' }) %>
+        </div>
+        <% if @repository.locations.any? %>
+            <div id="locations">
+              <%= render 'locations' %>
+            </div>
+        <% else %>
+            <p>This repository has no locations.</p>
+        <% end %>
+      </div>
+
+      <div class="tab-pane" id="activity_tab">
+        <%= render 'shared/events', events: @events %>
+      </div>
+    </div>
   </div>
 </div>

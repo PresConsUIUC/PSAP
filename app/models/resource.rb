@@ -4,8 +4,8 @@ class Resource < ActiveRecord::Base
 
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
-  has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
-           inverse_of: :parent, dependent: :destroy
+  has_many :children, -> { order(:name) }, class_name: 'Resource',
+           foreign_key: 'parent_id', inverse_of: :parent, dependent: :destroy
   has_many :creators, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
