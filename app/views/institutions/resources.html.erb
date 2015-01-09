@@ -121,6 +121,11 @@
   </div> <!-- .well -->
 
   <% if @resources.any? %>
+    <div style="float:right">
+      <%= button_link('Export as CSV', params.merge(format: 'csv'),
+                      'fa-file-text-o', target: '_blank') %>
+    </div>
+
     <div id="resources">
       <%= render partial: 'resources/resources',
                  locals: { resources: @resources,

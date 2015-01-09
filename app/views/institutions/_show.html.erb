@@ -27,18 +27,6 @@
         <%= content_tag(:span, '', class: 'glyphicon glyphicon-stats') %>
         Assess
       <% end %>
-      <!-- Export as CSV -->
-      <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          <span class="glyphicon glyphicon-export"></span> Export
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><%= link_to 'CSV', institution_path(@institution) + '.csv',
-                          class: 'export',
-                          data: { filename: "#{@institution.name.parameterize}.csv" } %></li>
-        </ul>
-      </div>
       <!-- Delete -->
       <% if current_user.is_admin? %>
         <%= link_to institution_path(@institution), method: 'delete',

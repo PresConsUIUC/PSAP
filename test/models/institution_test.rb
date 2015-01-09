@@ -142,10 +142,6 @@ class InstitutionTest < ActiveSupport::TestCase
     assert_kind_of User, most_active[0][:user]
   end
 
-  test 'resources_as_csv works' do
-    flunk # TODO: write this
-  end
-
   ########################### association tests ##############################
 
   test 'assessment question responses should be destroyed on destroy' do

@@ -179,28 +179,25 @@ class InstitutionsController < ApplicationController
       @resources = Resource.all_matching_query(params, @resources)
       @searching = true
     end
-    @resources = @resources.paginate(page: params[:page],
-                                     per_page: Psap::Application.config.results_per_page)
+
+    respond_to do |format|
+      format.csv { render text: Resource.as_csv(@resources) }
+      format.html do
+        @resources = @resources.paginate(page: params[:page],
+                                         per_page: Psap::Application.config.results_per_page)
+      end
+    end
   end
 
   def show
     @institution = Institution.find(params[:id])
 
-    respond_to do |format|
-      format.csv do
-        #response.headers['Content-Disposition'] =
-        #    "attachment; filename=\"#{@institution.name.parameterize}\""
-        render text: @institution.resources_as_csv
-      end
-      format.html do
-        @assessment_sections = Assessment.find_by_key('institution').
-            assessment_sections.order(:index)
-        @repositories = @institution.repositories.order(:name).
-            paginate(page: params[:page],
-                     per_page: Psap::Application.config.results_per_page)
-        render 'repositories'
-      end
-    end
+    @assessment_sections = Assessment.find_by_key('institution').
+        assessment_sections.order(:index)
+    @repositories = @institution.repositories.order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
+    render 'repositories'
   end
 
   def update
