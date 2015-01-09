@@ -6,7 +6,7 @@ json.resources @resources do |resource|
   json.assessment_type AssessmentType::name_for_type(resource.assessment_type)
   json.location resource.location.name
   json.resource_type resource.readable_resource_type
-  json.parent resource.parent.name if resource.parent
+  json.parent_psap_id resource.parent.id if resource.parent
   json.format resource.format.name if resource.format
   json.format_ink_media_type resource.format_ink_media_type.name if resource.format_ink_media_type
   json.format_support_type resource.format_support_type.name if resource.format_support_type
@@ -15,19 +15,19 @@ json.resources @resources do |resource|
   json.rights resource.rights
   json.description resource.description
   json.creators do
-    json.array! resource.creators.collect{ |c| c.name }
+    json.array! resource.creators.map{ |c| c.name }
   end
   json.dates do
-    json.array! resource.resource_dates.collect{ |d| d.as_dublin_core_string }
+    json.array! resource.resource_dates.map{ |d| d.as_dublin_core_string }
   end
   json.subjects do
-    json.array! resource.subjects.collect{ |s| s.name }
+    json.array! resource.subjects.map{ |s| s.name }
   end
   json.extents do
-    json.array! resource.extents.collect{ |e| e.name }
+    json.array! resource.extents.map{ |e| e.name }
   end
   json.notes do
-    json.array! resource.resource_notes.collect { |n| n.value }
+    json.array! resource.resource_notes.map{ |n| n.value }
   end
   json.created resource.created_at.iso8601
   json.updated resource.updated_at.iso8601
@@ -38,6 +38,4 @@ json.resources @resources do |resource|
     json.response response.assessment_question_option.name
     json.score response.assessment_question_option.value.to_f
   end
-
-
 end
