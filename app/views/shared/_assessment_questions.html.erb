@@ -1,9 +1,11 @@
+<% # Displays a summary of assessment questions and responses to them. %>
+
 <% assessment_questions.order(:index).each do |question| %>
   <% response = entity.assessment_question_responses.where(assessment_question_id: question.id).first %>
   <dt class="depth-<%= depth %>"><%= question.name %></dt>
   <dd class="depth-<%= depth %>">
     <ul>
-      <% question.assessment_question_options.order(:index).each do |option| %>
+      <% question.assessment_question_options.each do |option| %>
         <%
         class_ = ''
         if response and response.assessment_question_option and
@@ -13,7 +15,7 @@
         end
         %>
         <li class="<%= class_ %>">
-          <%= option.name %>
+          <%= option.name %> <small>(<%= (option.value * 100).round %>)</small>
         </li>
       <% end %>
     </ul>

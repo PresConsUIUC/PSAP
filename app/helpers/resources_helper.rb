@@ -29,7 +29,8 @@ module ResourcesHelper
         (resource.format.score * 100).round(1) : 0
     location_score = (resource.location.assessment_score * 100).round(1)
 
-    text = '<p>The PSAP uses the following formula to calculate a resource\'s score:</p>'\
+    text = '<p>The PSAP uses the following formula to calculate a resource\'s '\
+    'assessment score:</p>'\
     '<p><em>Assessment score &times; 0.5 + format score &times; 0.4 + '\
     'location score &times; 0.1</em></p>'\
     '<ul>'

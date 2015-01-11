@@ -305,20 +305,25 @@
             </div>
           </div>
 
-          <% @assessment_sections.each do |section| %>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><%= section.name %></h4>
+          <% if @resource.assessment_complete %>
+            <% @assessment_sections.each do |section| %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title"><%= section.name %></h4>
+                </div>
+                <div class="panel-body assessment">
+                  <%= render partial: 'shared/assessment_questions',
+                             locals: { entity: @resource,
+                                       assessment_questions: section.
+                                       assessment_questions_for_format(@resource.format).
+                                       where(parent_id: nil),
+                                       depth: 0 } %>
+                </div>
               </div>
-              <div class="panel-body assessment">
-                <%= render partial: 'shared/assessment_questions',
-                           locals: { entity: @resource,
-                                     assessment_questions: section.
-                                     assessment_questions_for_format(@resource.format).
-                                     where(parent_id: nil),
-                                     depth: 0 } %>
-              </div>
-            </div>
+            <% end %>
+          <% else %>
+            <p>Once this resource has been assessed, a summary of its assessment
+              will appear here.</p>
           <% end %>
         </div> <!-- #assessment_tab -->
       <% end %>
