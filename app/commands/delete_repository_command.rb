@@ -18,9 +18,10 @@ class DeleteRepositoryCommand < Command
           user: @doing_user, address: @address, event_level: EventLevel::ERROR)
       raise "Failed to delete repository \"#{@repository.name}\": #{e.message}"
     else
-      Event.create(description: "Deleted repository \"#{@repository.name}\" "\
-      "from institution \"#{@repository.institution.name}\"",
-                   user: @doing_user, address: @address)
+      @repository.institution.events << Event.create(
+          description: "Deleted repository \"#{@repository.name}\" "\
+          "from institution \"#{@repository.institution.name}\"",
+          user: @doing_user, address: @address)
     end
   end
 

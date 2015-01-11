@@ -20,9 +20,10 @@ class DeleteResourceCommand < Command
       raise "Failed to delete resource \"#{@resource.name}\": "\
       "#{e.message}"
     else
-      Event.create(description: "Deleted resource \"#{@resource.name}\" from "\
-      "location \"#{@resource.location.name}\"",
-                   user: @doing_user, address: @remote_ip)
+      @resource.location.events << Event.create(
+          description: "Deleted resource \"#{@resource.name}\" from "\
+          "location \"#{@resource.location.name}\"",
+          user: @doing_user, address: @remote_ip)
     end
   end
 
