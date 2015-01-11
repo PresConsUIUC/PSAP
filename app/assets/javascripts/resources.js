@@ -1,4 +1,4 @@
-var ResourceAssessForm = {
+var ResourceAssessForm = { // TODO: replace with AssessmentForm in assesments.js
 
     init: function() {
         $(document).on('PSAPAssessmentQuestionsAdded', function() {

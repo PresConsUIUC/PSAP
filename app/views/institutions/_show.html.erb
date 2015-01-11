@@ -8,12 +8,12 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-7">
+  <div class="col-sm-8">
     <h1><%= @institution.name %>
       <small><%= entity_icon(@institution) %>Institution</small>
     </h1>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <div class="btn-group" style="float:right">
       <!-- Edit -->
       <%= link_to edit_institution_path(@institution),

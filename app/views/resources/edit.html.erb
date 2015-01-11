@@ -24,9 +24,8 @@
 <h1>Edit <%= @resource.readable_resource_type %>: <%= @resource.name %></h1>
 
 <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
-  <div id="basic_info" class="section">
-    <%= render partial: 'edit_form', locals: { f: f } %>
-  </div>
+
+  <%= render partial: 'edit_form', locals: { f: f } %>
 
   <%= hidden_field_tag('root-url', root_url) %>
   <% # read by JS to select the relevant inputs %>
