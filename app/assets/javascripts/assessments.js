@@ -1,14 +1,8 @@
 /**
- * Used in add and edit view for locations and institutions. Resource
+ * Used in assess view for locations and institutions. Resource
  * assessment uses different code, in resources.js.
  */
 var AssessmentForm = {
-
-    attachEventListeners: function() {
-        $('button.save').on('click', function(event) {
-            $('form.psap-assessment').submit();
-        });
-    },
 
     clearAssessmentQuestions: function() {
         PSAP.Popover.closeAll();
@@ -20,15 +14,15 @@ var AssessmentForm = {
      * @param entity 'location' or 'institution'
      */
     init: function(entity) {
-        $(document).on('PSAPFormFieldAdded', function() {
-            AssessmentForm.attachEventListeners();
-
-            // Adding a form section will change the page length, necessitating
-            // a refresh of the scrollspy.
+        $(document).on('PSAPAssessmentQuestionsAdded', function() {
             $('[data-spy="scroll"]').each(function () {
                 $(this).scrollspy('refresh');
             });
-        }).trigger('PSAPFormFieldAdded');
+        });
+
+        $('button.save').on('click', function(event) {
+            $('form.psap-assessment').submit();
+        });
 
         // populate assessment questions
         var root_url = $('input[name="root-url"]').val();
@@ -89,6 +83,7 @@ var AssessmentForm = {
                                 child_question_elem.remove();
                             }
                         });
+                        $(document).trigger('PSAPAssessmentQuestionsAdded');
 
                         $('.assessment_question input, .assessment_question select').
                             off('change').on('change', onOptionChanged);
@@ -101,10 +96,10 @@ var AssessmentForm = {
                 };
                 $('.assessment_question input, .assessment_question select').
                     on('change', onOptionChanged);
-
-                $('body').scrollspy({ target: '#psap-affixed-menu' });
             }
             AssessmentForm.updateProgress();
+
+            $(document).trigger('PSAPAssessmentQuestionsAdded');
 
             if ($('body#edit_location').length ||
                 $('body#edit_institution').length) {
@@ -234,22 +229,10 @@ var AssessmentForm = {
 };
 
 var ready = function() {
-    if ($('body#new_location').length || $('body#edit_location').length ||
-        $('body#new_institution').length || $('body#edit_institution').length) {
-        // override bootstrap nav-pills behavior
-        $('ul.nav-pills a').on('click', function() {
-            window.location.href = $(this).attr('href');
-        });
-
-        $('#psap-affixed-menu').affix({ // TODO: broken on narrow screens and glitchy on short screens
-            offset: { top: 220 }
-        });
-
-        if ($('body#new_location').length || $('body#edit_location').length) {
-            AssessmentForm.init('location');
-        } else if ($('body#new_institution').length || $('body#edit_institution').length) {
-            AssessmentForm.init('institution');
-        }
+    if ($('body#assess_location').length) {
+        AssessmentForm.init('location');
+    } else if ($('body#assess_institution').length) {
+        AssessmentForm.init('institution');
     }
 };
 
