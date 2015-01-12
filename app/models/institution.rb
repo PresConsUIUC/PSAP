@@ -60,8 +60,7 @@ class Institution < ActiveRecord::Base
   # in the hierarchy.
   #
   def all_assessed_items
-    self.resources.select{ |r| r.resource_type == ResourceType::COLLECTION and
-        r.assessment_complete }
+    self.resources.where(assessment_complete: true)
   end
 
   ##
