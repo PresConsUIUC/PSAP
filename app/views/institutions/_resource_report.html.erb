@@ -41,8 +41,8 @@
   <!-- chart column -->
   <div class="col-sm-6">
     <% if institution.all_assessed_items.any? %>
-      <%= hidden_field_tag('chart_data', resource_chart_data.to_json) %>
-      <svg id="psap-resources-chart" width="400" height="300"></svg>
+      <%= hidden_field_tag('chart_data', chart_data.to_json) %>
+      <svg id="psap-resources-chart" class="psap-chart" width="400" height="300"></svg>
     <% end %>
   </div>
 </div>

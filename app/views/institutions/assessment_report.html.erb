@@ -72,7 +72,7 @@
       <h2>Resources</h2>
       <%= render partial: 'resource_report',
                  locals: { institution: @institution, stats: @stats,
-                           resource_chart_data: @resource_chart_data,
+                           chart_data: @resource_chart_data,
                            institution_formats: @institution_formats } %>
     </div>
 
@@ -81,7 +81,8 @@
       <% if @collections.any? %>
         <% @collections.each do |resource| %>
           <%= render partial: 'collection_report',
-                     locals: { resource: resource } %>
+                     locals: { resource: resource,
+                               chart_data: @collection_chart_datas[resource.id] } %>
         <% end %>
       <% else %>
         <p>This institution has no collections.</p>

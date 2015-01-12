@@ -1,9 +1,5 @@
 module ResourcesHelper
 
-  def chart_for_collection(resource)
-    raw('<svg></svg>')
-  end
-
   def human_readable_date(resource_date)
     if resource_date.year
       "#{resource_date.year} (#{resource_date.readable_date_type.downcase})"

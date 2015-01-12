@@ -67,7 +67,11 @@
 
     <!-- chart column -->
     <div class="col-sm-6">
-      <%= chart_for_collection(resource) %>
+      <% if resource.all_assessed_items.any? %>
+          <%= hidden_field_tag('chart_data', chart_data.to_json) %>
+          <svg id="psap-collection-chart-<%= resource.id %>"
+               class="psap-chart" width="400" height="350"></svg>
+      <% end %>
     </div>
   </div>
 <% end %>
