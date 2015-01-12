@@ -38,6 +38,7 @@ gem 'bootstrap-typeahead-rails'
 gem 'nokogiri'
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
+gem 'd3-rails' # used for charts in assessment report
 gem 'roo' # used to import seed data from xlsx
 gem 'prawn' # used to generate a PDF version of the assessment report
 gem 'prawn-table'

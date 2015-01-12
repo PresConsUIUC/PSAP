@@ -2,7 +2,7 @@
   <div class="col-sm-6">
     <ul>
       <li><%= institution.resources.length %> total items</li>
-      <li><%= all_assessed_items.length %> items assessed</li>
+      <li><%= institution.all_assessed_items.length %> items assessed</li>
       <% if institution_formats.any? %>
         <li>Formats present:
           <ul>
@@ -16,7 +16,7 @@
       <% end %>
     </ul>
 
-    <% if all_assessed_items.any? %>
+    <% if institution.all_assessed_items.any? %>
       <table class="table">
         <tr>
           <td><%= (stats[:mean] * 100).round %></td>
@@ -40,6 +40,9 @@
 
   <!-- chart column -->
   <div class="col-sm-6">
-    <%= chart_for_collection(institution) if all_assessed_items.any? %>
+    <% if institution.all_assessed_items.any? %>
+      <%= hidden_field_tag('chart_data', resource_chart_data.to_json) %>
+      <svg id="psap-resources-chart" width="400" height="300"></svg>
+    <% end %>
   </div>
 </div>
