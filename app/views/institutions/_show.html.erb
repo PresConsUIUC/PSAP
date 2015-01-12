@@ -49,7 +49,7 @@
     <%= link_to 'Repositories', @institution %>
   </li>
   <li class="<%= action_name == 'resources' ? 'active' : '' %>">
-    <%= link_to 'Resource Search', institution_resources_path(@institution) %>
+    <%= link_to 'Resources', institution_resources_path(@institution) %>
   </li>
   <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
     <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
