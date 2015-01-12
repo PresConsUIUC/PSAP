@@ -297,7 +297,8 @@
                     data-toggle="popover" class="btn btn-sm help"
                     data-content="<%= score_help(@resource) %>">?</button>
             <div class="progress">
-              <div class="progress-bar progress-bar-success score" role="progressbar"
+              <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.total_assessment_score) %> score"
+                   role="progressbar"
                    aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
                    aria-valuemin="0" aria-valuemax="100"
                    style="width:<%= @resource.total_assessment_score * 100 %>%">

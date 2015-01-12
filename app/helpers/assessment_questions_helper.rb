@@ -5,18 +5,21 @@ module AssessmentQuestionsHelper
           cutoff: 0.6666,
           bootstrap_bg_class: 'bg-success',
           bootstrap_fg_class: 'text-success',
+          bootstrap_progress_bar_class: 'progress-bar-success',
           characterization: 'High'
       },
       {
           cutoff: 0.3333,
           bootstrap_bg_class: 'bg-warning',
           bootstrap_fg_class: 'text-warning',
+          bootstrap_progress_bar_class: 'progress-bar-warning',
           characterization: 'Moderate'
       },
       {
           cutoff: 0,
           bootstrap_bg_class: 'bg-danger',
           bootstrap_fg_class: 'text-danger',
+          bootstrap_progress_bar_class: 'progress-bar-danger',
           characterization: 'Low'
       },
   ]
@@ -52,6 +55,15 @@ module AssessmentQuestionsHelper
     SCORES.each do |s|
       if s[:cutoff] <= score
         return s[:bootstrap_fg_class]
+      end
+    end
+    ''
+  end
+
+  def bootstrap_progress_bar_class_for_score(score)
+    SCORES.each do |s|
+      if s[:cutoff] <= score
+        return s[:bootstrap_progress_bar_class]
       end
     end
     ''
