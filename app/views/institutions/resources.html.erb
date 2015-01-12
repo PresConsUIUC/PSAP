@@ -5,11 +5,11 @@
                  class: 'psap-search') do %>
       <div class="row">
         <div class="col-sm-2">
-          <!-- Location -->
+          <!-- Repository -->
           <div class="form-group">
-            <%= label_tag('location') %>
-            <%= select_tag(:location_id,
-                           options_from_collection_for_select(@institution.locations, :id, :name, params[:location_id]),
+            <%= label_tag('repository') %>
+            <%= select_tag(:repository_id,
+                           options_from_collection_for_select(@institution.repositories, :id, :name, params[:repository_id]),
                            include_blank: 'Any', class: 'form-control') %>
           </div>
 

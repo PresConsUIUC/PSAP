@@ -63,9 +63,10 @@ class Resource < ActiveRecord::Base
     # language_id
     resources = resources.where(language_id: params[:language_id]) unless
         params[:language_id].blank?
-    # location_id
-    resources = resources.where(location_id: params[:location_id]) unless
-        params[:location_id].blank?
+    # repository_id
+    resources = resources.
+        where('locations.repository_id = ?', params[:repository_id]) unless
+        params[:repository_id].blank?
     # q
     unless params[:q].blank?
       q = "%#{params[:q].strip.downcase}%"

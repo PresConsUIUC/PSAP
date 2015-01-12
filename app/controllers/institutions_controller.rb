@@ -170,7 +170,7 @@ class InstitutionsController < ApplicationController
     @searching = false
 
     # all available URL query parameters
-    query_keys = [:assessed, :format_id, :language_id, :location_id, :q,
+    query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
                   :resource_type, :score, :score_direction, :user_id]
     if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
       # no search query input present; show only top-level resources
@@ -186,10 +186,7 @@ class InstitutionsController < ApplicationController
             'attachment; filename="resources.csv"'
         render text: Resource.as_csv(@resources)
       end
-      format.json do
-        response.headers['Content-Disposition'] =
-            'attachment; filename="resources.json"'
-      end
+      format.json
       format.html do
         @resources = @resources.paginate(page: params[:page],
                                          per_page: Psap::Application.config.results_per_page)
