@@ -69,6 +69,16 @@ module AssessmentQuestionsHelper
     ''
   end
 
+  def hex_color_for_score(score)
+    # 10-stop gradient from red -> orange -> green
+    # these should be kept in sync with institutions.css.scss
+    colors = %w(d00000 d00000 d42800 d85000 dc7800 e0a000 aba000 70a000 38a000 00a000)
+    colors.each_with_index do |color, index|
+      return color if index.to_f * 0.1 >= score
+    end
+    '000000'
+  end
+
   private
 
   def values_for_select(questions, pairs = [], depth = 0)

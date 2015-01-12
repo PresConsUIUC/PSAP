@@ -223,7 +223,6 @@ module PrawnCharting
     bar_spacing = width / 50
     bar_width = width / data.length - bar_spacing
     target_num_steps = 11
-    bar_color = '0000d0'
 
     # draw axes
     origin = [x_margin, pdf.cursor.to_i - height]
@@ -261,17 +260,17 @@ module PrawnCharting
     end
 
     # draw x axis labels & bars
-    data.each_with_index do |score, i|
+    data.each_with_index do |count, i|
       label_text = "#{i * 10}+"
       label_width = pdf.width_of(label_text, size: label_size)
       pdf.draw_text label_text, size: label_size, width: label_width,
                     at: [origin[0] + i * bar_width + (bar_width - label_width) / 2 + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
                          origin[1] - label_height]
-      if score > 0
-        pdf.fill_color bar_color
+      if count > 0
+        pdf.fill_color hex_color_for_score(i * 0.1)
         pdf.fill_rectangle [origin[0] + i * bar_width + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
-                            origin[1] + (score.to_f / data.max.to_f) * height],
-                           bar_width, (score.to_f / data.max.to_f) * height
+                            origin[1] + (count.to_f / data.max.to_f) * height],
+                           bar_width, (count.to_f / data.max.to_f) * height
         pdf.fill_color '000000'
       end
     end
@@ -289,7 +288,7 @@ module PrawnCharting
   # @return void
   #
   def heading(pdf, institution, font, h1_size)
-    pdf.image "#{Rails.root}/app/assets/images/psap_logo@2x.png",
+    pdf.image File.join(Rails.root, 'app', 'assets', 'images', 'psap_logo@2x.png'),
               at: [0, pdf.bounds.top], width: 100
     pdf.indent 110 do
       pdf.font font, style: :bold

@@ -60,11 +60,11 @@ var ready = function() {
                 .attr('y', function (d) {
                     return yRange(d.y);
                 })
+                .attr('class', function (d) { return 'bar bar-' + d.x })
                 .attr('width', xRange.rangeBand())
                 .attr('height', function (d) {
                     return ((HEIGHT - MARGINS.bottom) - yRange(d.y));
-                })
-                .attr('fill', 'rgb(66, 139, 202)'); // bootstrap blue
+                });
         });
     }
 };
