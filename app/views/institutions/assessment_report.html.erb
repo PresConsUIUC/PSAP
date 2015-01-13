@@ -13,7 +13,7 @@
       <div class="btn-group" style="float:right">
         <%= button_link('Export PDF',
                         institution_assessment_report_path(@institution) + '.pdf',
-                        'fa-file-pdf-o', { target: '_blank' }) %>
+                        'fa-file-pdf-o') %>
       </div>
     </div>
   </div>
@@ -48,7 +48,7 @@
                 <tr>
                   <td>
                     <%= entity_icon(location) %>
-                    <%= link_to(location.name, location, target: '_blank') %>
+                    <%= link_to(location.name, location) %>
                   </td>
                   <% location.assessment_section_scores.each do |section_id, score| %>
                     <td class="<%= bootstrap_bg_class_for_score(score) %>">

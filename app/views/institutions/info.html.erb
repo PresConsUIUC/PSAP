@@ -1,7 +1,7 @@
 <%= render layout: 'institutions/show' do %>
   <dl>
     <dt>URL</dt>
-    <dd><%= link_to @institution.url, @institution.url, target: '_blank' %></dd>
+    <dd><%= link_to @institution.url, @institution.url %></dd>
     <dt>Email</dt>
     <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
     <dt>Address</dt>

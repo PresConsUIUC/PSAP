@@ -2,7 +2,7 @@
 <% if all_assessed_items.any? %>
   <h3>
     <%= entity_icon(resource) %>
-    <%= link_to(resource.name, resource, target: '_blank') %>
+    <%= link_to(resource.name, resource) %>
   </h3>
   <div class="row">
     <div class="col-sm-6">
@@ -15,7 +15,7 @@
                     uniq{ |r| r.user_id }.each do |item| %>
               <li>
                 <%= entity_icon(item.user) %>
-                <%= link_to(item.user.full_name, item.user, target: '_blank') %>
+                <%= link_to(item.user.full_name, item.user) %>
               </li>
             <% end %>
           </ul>
@@ -29,7 +29,7 @@
             <% resource.all_assessed_items.collect{ |r| r.format }.uniq{ |f| f.id }.each do |format| %>
               <li><%= link_to(format.name, format_id_guide_category_path(
                                                  format.format_id_guide_page,
-                                                 anchor: format.format_id_guide_anchor), target: '_blank') %></li>
+                                                 anchor: format.format_id_guide_anchor)) %></li>
             <% end %>
           </ul>
         </li>
