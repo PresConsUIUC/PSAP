@@ -212,7 +212,7 @@ var ResourceEditForm = {
 
         var new_select = $('<select></select>').
             attr('name', 'resource[format_id]').
-            attr('class', 'form-control');
+            attr('class', 'form-control input-md');
         var prompt = $('<option value="">Select&hellip;</option>');
         new_select.append(prompt);
 
@@ -523,7 +523,7 @@ var ResourceEditForm = {
         var ink_select = $('<select></select>').
             attr('id', 'resource[format_ink_media_type_id]').
             attr('name', 'resource[format_ink_media_type_id]').
-            attr('class', 'form-control').
+            attr('class', 'form-control input-md').
             append($('<option value="">Select&hellip;</option>'));
         $.each(ResourceEditForm.formatInkMediaTypes(), function(i, obj) {
             ink_select.append($('<option data-score="' + obj['score'] + '">').
@@ -537,7 +537,7 @@ var ResourceEditForm = {
         var support_select = $('<select></select>').
             attr('id', 'resource[format_support_type_id]').
             attr('name', 'resource[format_support_type_id]').
-            attr('class', 'form-control').
+            attr('class', 'form-control input-md').
             append($('<option value="">Select&hellip;</option>'));
         $.each(ResourceEditForm.formatSupportTypes(), function(i, obj) {
             support_select.append($('<option data-score="' + obj['score'] + '">').

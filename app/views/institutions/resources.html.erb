@@ -10,7 +10,7 @@
             <%= label_tag('repository') %>
             <%= select_tag(:repository_id,
                            options_from_collection_for_select(@institution.repositories, :id, :name, params[:repository_id]),
-                           include_blank: 'Any', class: 'form-control') %>
+                           include_blank: 'Any', class: 'form-control input-sm') %>
           </div>
 
           <!-- Format -->
@@ -18,7 +18,7 @@
             <%= label_tag('format') %>
             <%= select_tag(:format_id,
                            format_hierarchy_options_for_select(params[:format_id]),
-                           include_blank: 'Any', class: 'form-control') %>
+                           include_blank: 'Any', class: 'form-control input-sm') %>
           </div>
         </div>
 
@@ -28,7 +28,7 @@
             <%= label_tag('language') %>
             <%= select_tag(:language_id,
                            options_from_collection_for_select(Language.all.order(:english_name), :id, :english_name, params[:language_id]),
-                           include_blank: 'Any', class: 'form-control') %>
+                           include_blank: 'Any', class: 'form-control input-sm') %>
           </div>
 
           <!-- User -->
@@ -36,7 +36,7 @@
             <%= label_tag('user') %>
             <%= select_tag(:user_id,
                            options_from_collection_for_select(@institution.users, :id, :full_name, params[:user_id]),
-                           include_blank: 'Any', class: 'form-control') %>
+                           include_blank: 'Any', class: 'form-control input-sm') %>
           </div>
         </div>
 
@@ -107,8 +107,8 @@
           <div class="form-group">
             <%= select_tag(:score_direction,
                            options_for_select([['Score Above', 'greater'], ['Score Below', 'less']], params[:score_direction]),
-                           class: 'form-control', id: 'score_direction') %>
-            <%= number_field_tag(:score, params[:score], class: 'form-control', id: 'score') %>
+                           class: 'form-control input-sm', id: 'score_direction') %>
+            <%= number_field_tag(:score, params[:score], class: 'form-control input-sm', id: 'score') %>
           </div>
 
           <div class="form-group psap-buttons">

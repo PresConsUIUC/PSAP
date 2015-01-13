@@ -69,7 +69,7 @@
   <%= select('resource', 'parent_id',
              resource_hierarchy_options_for_select(@resource.location),
              { include_blank: 'None (Top-Level)' },
-             { class: 'form-control' }) %>
+             { class: 'form-control input-md' }) %>
 </div>
 
 <div class="form-group format">
@@ -151,7 +151,7 @@
                              options_for_select([['Person', CreatorType::PERSON],
                                                  ['Company', CreatorType::COMPANY]]),
                              { include_blank: false },
-                             { class: 'form-control' }) %>
+                             { class: 'form-control input-md' }) %>
                   <%= g.text_field :name, class: 'form-control' %>
                   <button class="btn btn-default btn-sm remove" type="button">
                     <span class="glyphicon glyphicon-minus"></span>
