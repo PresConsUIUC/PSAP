@@ -199,13 +199,13 @@ class Resource < ActiveRecord::Base
     Resource.new(attrs)
   end
 
+  ##
+  # Returns a CSV representation of the given resources. Assessment questions
+  # are excluded for performance reasons.
+  #
+  # @param resource Array of Resources
+  #
   def self.as_csv(resources)
-    # get a list of all questions
-    questions = []
-    Assessment.find_by_key('resource').assessment_sections.order(:index).each do |section|
-      questions += section.assessment_questions
-    end
-
     # find the max number of one-to-many columns needed
     num_columns = { creator: 0, date: 0, subject: 0, extent: 0, note: 0 }
     resources.each do |resource|
@@ -215,9 +215,6 @@ class Resource < ActiveRecord::Base
       num_columns[:extent] = [resource.extents.length, num_columns[:extent]].max
       num_columns[:note] = [resource.resource_notes.length, num_columns[:note]].max
     end
-
-    # get a list of all question names (question text)
-    question_names = questions.map{ |q| "Q#{q.qid}: #{q.name}" }
 
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
@@ -238,16 +235,8 @@ class Resource < ActiveRecord::Base
           ['Description'] +
           (['Note'] * num_columns[:note]) +
           ['Created'] +
-          ['Updated'] +
-          question_names
+          ['Updated']
       resources.each do |resource|
-        # get a list of all question response names (question response text)
-        question_response_names = []
-        questions.each_with_index do |question, index|
-          response = resource.response_to_question(question)
-          question_response_names << (response ? "Q#{index + 1}: #{response.assessment_question_option.name}" : nil)
-        end
-
         # can't use Resource.as_csv because we need to pad the one-to-many
         # properties with blanks
         csv << [resource.local_identifier] +
@@ -266,8 +255,7 @@ class Resource < ActiveRecord::Base
             [resource.description] +
             resource.resource_notes.map { |n| n.value } + [nil] * (num_columns[:note] - resource.resource_notes.length) +
             [resource.created_at.iso8601] +
-            [resource.updated_at.iso8601] +
-            question_response_names
+            [resource.updated_at.iso8601]
       end
     end
   end
