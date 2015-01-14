@@ -3,7 +3,7 @@ class TemperatureRange < ActiveRecord::Base
   has_one :location, inverse_of: :temperature_range
 
   validates_numericality_of :score, greater_than_or_equal_to: 0,
-                            less_than_or_equal_to: 1, presence: true
+                            less_than_or_equal_to: 1, allow_nil: true
   validate :validate_min_or_max_range_required
   validate :validate_max_greater_than_min
 
