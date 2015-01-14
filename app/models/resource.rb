@@ -434,7 +434,7 @@ class Resource < ActiveRecord::Base
   def update_assessment_score
     # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     if self.format
-      question_score = 0
+      question_score = 0.0
       self.assessment_question_responses.each do |response|
         question_score += response.assessment_question_option.value *
             response.assessment_question.weight
@@ -446,7 +446,7 @@ class Resource < ActiveRecord::Base
           format_score = self.format_support_type.score * 0.6 +
               self.format_ink_media_type.score * 0.4
         else
-          format_score = 0
+          format_score = 0.0
         end
       else
         format_score = self.format.score * 0.45
@@ -454,7 +454,7 @@ class Resource < ActiveRecord::Base
 
       self.assessment_score = format_score + (question_score / 100) * 0.55
     else
-      self.assessment_score = 0
+      self.assessment_score = 0.0
     end
   end
 
