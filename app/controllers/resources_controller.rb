@@ -16,8 +16,6 @@ class ResourcesController < ApplicationController
     command = CreateResourceCommand.new(@location, resource_params,
                                         current_user, request.remote_ip)
     @resource = command.object
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError

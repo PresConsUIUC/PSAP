@@ -15,8 +15,6 @@ class LocationsController < ApplicationController
     command = CreateLocationCommand.new(@repository, location_params,
                                         current_user, request.remote_ip)
     @location = command.object
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError

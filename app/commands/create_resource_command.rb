@@ -3,23 +3,9 @@ class CreateResourceCommand < Command
   def initialize(location, resource_params, doing_user, remote_ip)
     @doing_user = doing_user
     @remote_ip = remote_ip
-
     @resource = location.resources.build(
         resource_params.except(:assessment_question_responses))
     @resource.user ||= doing_user
-
-    # the AQR params from the form are not in a rails-compatible format
-    if resource_params[:assessment_question_responses]
-      resource_params[:assessment_question_responses].each_value do |option_id|
-        option = AssessmentQuestionOption.find(option_id)
-        if option.is_a?(AssessmentQuestionOption) and
-            option.assessment_question.is_a?(AssessmentQuestion)
-          @resource.assessment_question_responses << AssessmentQuestionResponse.new(
-              assessment_question_option: option,
-              assessment_question: option.assessment_question)
-        end
-      end
-    end
   end
 
   def execute
