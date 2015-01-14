@@ -39,7 +39,7 @@ var ResourceAssessForm = { // TODO: replace with AssessmentForm in assesments.js
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     if (option['value']) { // TODO: why is option['value'] ever undefined?
-                        control += '<div class="radio">' +
+                        control += '<div class="radio-inline">' +
                         '<label>' +
                         '<input type="radio" ' +
                         'name="resource[assessment_question_responses][' + question_index + ']" ' +
@@ -56,7 +56,7 @@ var ResourceAssessForm = { // TODO: replace with AssessmentForm in assesments.js
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     if (option['value']) { // TODO: why is option['value'] ever undefined?
-                        control += '<div class="checkbox">' +
+                        control += '<div class="checkbox-inline">' +
                         '<label>' +
                         '<input type="checkbox" ' +
                         'name="resource[assessment_question_responses][' + question_index + ']" ' +

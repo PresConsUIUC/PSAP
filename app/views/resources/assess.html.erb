@@ -71,6 +71,7 @@
           </div>
         </div>
 
+        <hr>
         <% @assessment_sections.each_with_index do |section, index| %>
           <%= render partial: 'shared/section_form',
                      locals: { section: section,

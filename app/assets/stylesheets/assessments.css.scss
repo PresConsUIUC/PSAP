@@ -4,26 +4,20 @@
 }
 
 body#new_resource, body#edit_resource, body#assess_resource,
-body#new_location, body#edit_location, body#new_institution, body#edit_institution {
+body#new_location, body#edit_location, body#assess_location,
+body#new_institution, body#edit_institution, body#assess_institution {
   div.section {
     margin-bottom:2em;
+  }
+  div.assessment_question {
+    h3 {
+      margin-top:0px;
+    }
   }
   div#psap-affixed-menu {
     button.save {
       margin-top:1em;
     }
-  }
-  label.radio-inline {
-    border:1px solid #cccccc;
-    border-radius: 4px;
-    color: #333333;
-    font-size:14px;
-    line-height: 1.428571429;
-    margin:1em 0.5em;
-    padding: 6px 12px 6px 30px;
-  }
-  label.radio-inline:hover {
-    background-color:#ebebeb;
   }
   div.popover {
     @media screen and (min-width: 768px) {

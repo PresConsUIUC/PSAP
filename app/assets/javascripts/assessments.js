@@ -140,7 +140,7 @@ var AssessmentForm = {
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     if (option['value']) {
-                        control += '<div class="radio">' +
+                        control += '<div class="radio-inline">' +
                                 '<label>' +
                                     '<input type="radio" ' +
                                     'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +
@@ -157,7 +157,7 @@ var AssessmentForm = {
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
                     if (option['value']) {
-                        control += '<div class="checkbox">' +
+                        control += '<div class="checkbox-inline">' +
                                 '<label>' +
                                     '<input type="checkbox" ' +
                                     'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +

@@ -382,6 +382,24 @@ select.form-control {
   -webkit-appearance: none;
 }*/
 
+.radio-inline, .checkbox-inline {
+  border:1px solid #cccccc;
+  border-radius: 4px;
+  color: #333333;
+  display:inline-block;
+  margin:0.5em 0.5em;
+  padding: 8px 12px 9px 32px;
+  label {
+    font-size:14px;
+    font-weight:normal;
+    margin:0px;
+    padding:0px;
+  }
+}
+.radio-inline:hover, .checkbox-inline:hover {
+  background-color:#ebebeb;
+}
+
 textarea.form-control {
   height:8em;
 }
