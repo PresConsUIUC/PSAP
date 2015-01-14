@@ -1,19 +1,16 @@
 /**
- * Used in assess view for locations and institutions. Resource
- * assessment uses different code, in resources.js.
+ * Used in assess-location, assess-institution, and assess-resource view.
  */
 var AssessmentForm = {
 
-    clearAssessmentQuestions: function() {
-        PSAP.Popover.closeAll();
-        $('.assessment_question').remove();
-        AssessmentForm.updateProgress();
-    },
+    entity: null,
 
     /**
-     * @param entity 'location' or 'institution'
+     * @param entity 'location', 'institution', or 'resource'
      */
     init: function(entity) {
+        AssessmentForm.entity = entity;
+
         $(document).on('PSAPAssessmentQuestionsAdded', function() {
             $('[data-spy="scroll"]').each(function () {
                 $(this).scrollspy('refresh');
@@ -24,88 +21,8 @@ var AssessmentForm = {
             $('form.psap-assessment').submit();
         });
 
-        // populate assessment questions
-        var root_url = $('input[name="root-url"]').val();
-        var questions_url;
-        switch (entity) {
-            case 'location':
-                questions_url = root_url + 'locations/1/assessment-questions';
-                break;
-            case 'institution':
-                questions_url = root_url + 'institutions/1/assessment-questions';
-                break;
-        }
-
-        $.getJSON(questions_url, function (data) {
-            $.each(data, function (i, object) {
-                AssessmentForm.insertQuestionIn(
-                    AssessmentForm.nodeForQuestion(object, i, entity),
-                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
-            });
-            if (data.length > 0) {
-                var onOptionChanged = function() {
-                    // check for dependent (child) questions
-                    var selected_option_id = $(this).val();
-                    var question_elem = $(this).closest('div.assessment_question');
-                    var qid = question_elem.data('id');
-                    var child_questions_url;
-                    switch (entity) {
-                        case 'location':
-                            child_questions_url = root_url +
-                                'locations/1/assessment-questions?parent_id=' + qid;
-                            break;
-                        case 'institution':
-                            child_questions_url = root_url +
-                                'institutions/1/assessment-questions?parent_id=' + qid;
-                            break;
-                    }
-                    $.getJSON(child_questions_url, function(data) {
-                        $.each(data, function (i, object) {
-                            var child_question_elem =
-                                $('div.assessment_question[data-id=' + object['id'] + ']');
-                            var add = false;
-                            $.each(object['enabling_assessment_question_options'], function (i, opt) {
-                                if (opt['id'] == selected_option_id) {
-                                    add = true;
-                                }
-                            });
-                            if (add) {
-                                if (child_question_elem.length < 1) {
-                                    var depth = 0;
-                                    if (question_elem) {
-                                        depth = question_elem.data('depth') + 1;
-                                    }
-                                    AssessmentForm.insertQuestionAfter(
-                                        AssessmentForm.nodeForQuestion(object, i, entity, depth),
-                                        question_elem)
-                                }
-                            } else {
-                                child_question_elem.remove();
-                            }
-                        });
-                        $(document).trigger('PSAPAssessmentQuestionsAdded');
-
-                        $('.assessment_question input, .assessment_question select').
-                            off('change').on('change', onOptionChanged);
-                        $('[data-spy="scroll"]').each(function () {
-                            $(this).scrollspy('refresh');
-                        });
-                    });
-
-                    AssessmentForm.updateProgress();
-                };
-                $('.assessment_question input, .assessment_question select').
-                    on('change', onOptionChanged);
-            }
-            AssessmentForm.updateProgress();
-
-            $(document).trigger('PSAPAssessmentQuestionsAdded');
-
-            if ($('body#edit_location').length ||
-                $('body#edit_institution').length) {
-                AssessmentForm.setInitialSelections();
-            }
-        });
+        AssessmentForm.showAssessmentQuestions(
+            AssessmentForm.setInitialSelections);
     },
 
     insertQuestionAfter: function(questionNode, afterNode) {
@@ -125,25 +42,25 @@ var AssessmentForm = {
      *
      * @param object JSON AssessmentQuestion object
      * @param question_index
-     * @param entity 'institution' or 'location'
      * @param depth
      * @returns jQuery node
      */
-    nodeForQuestion: function(object, question_index, entity, depth) {
+    nodeForQuestion: function(object, question_index, depth) {
         if (!depth) {
             depth = 0;
         }
         var control = '';
+        var root_url = $('input[name="root-url"]').val();
 
         switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
             case 0: // radio
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) {
+                    if (option['value']) { // TODO: why is option['value'] ever undefined?
                         control += '<div class="radio-inline">' +
                                 '<label>' +
                                     '<input type="radio" ' +
-                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                    'name="' + AssessmentForm.entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
@@ -156,11 +73,11 @@ var AssessmentForm = {
             case 1: // checkbox
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) {
+                    if (option['value']) { // TODO: why is option['value'] ever undefined?
                         control += '<div class="checkbox-inline">' +
                                 '<label>' +
                                     '<input type="checkbox" ' +
-                                    'name="' + entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                    'name="' + AssessmentForm.entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
@@ -174,7 +91,7 @@ var AssessmentForm = {
 
         var adv_help_link = '';
         if (object['advanced_help_page']) {
-            adv_help_link = '<br><br><a href="/help/' + object['advanced_help_page'] + '#' +
+            adv_help_link = '<br><br><a href="' + root_url + '/help/' + object['advanced_help_page'] + '#' +
                 object['advanced_help_anchor'].replace(/#/g, '') + '" target="_blank">More information&hellip;</a>';
             adv_help_link = adv_help_link.replace(/"/g, "'");
         }
@@ -205,7 +122,6 @@ var AssessmentForm = {
     },
 
     setInitialSelections: function() {
-        // select the question response options
         $('input[name="selected_option_ids"]').each(function() {
             var selected_id = $(this).val();
             $('[data-type="option"]').each(function() {
@@ -214,10 +130,95 @@ var AssessmentForm = {
                 }
             });
         });
-        AssessmentForm.updateProgress();
     },
 
-    updateProgress: function() {
+    showAssessmentQuestions: function(onCompleteCallback) {
+        var root_url = $('input[name="root-url"]').val();
+        var questions_url;
+        switch (AssessmentForm.entity) {
+            case 'location':
+                questions_url = root_url + 'locations/1/assessment-questions';
+                break;
+            case 'institution':
+                questions_url = root_url + 'institutions/1/assessment-questions';
+                break;
+            case 'resource':
+                var format_id = $('input[name="format_id"]').val();
+                questions_url = root_url + 'formats/' + format_id +
+                '/assessment-questions';
+                break;
+        }
+
+        $.getJSON(questions_url, function (data) {
+            $.each(data, function (i, object) {
+                AssessmentForm.insertQuestionIn(
+                    AssessmentForm.nodeForQuestion(object, i),
+                    $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
+            });
+            if (data.length > 0) {
+                var onOptionChanged = function() {
+                    // check for dependent (child) questions
+                    var selected_option_id = $(this).val();
+                    var question_elem = $(this).closest('.assessment_question');
+                    var qid = question_elem.data('id');
+                    var child_questions_url;
+                    switch (AssessmentForm.entity) {
+                        case 'location':
+                            child_questions_url = root_url +
+                            'locations/1/assessment-questions?parent_id=' + qid;
+                            break;
+                        case 'institution':
+                            child_questions_url = root_url +
+                            'institutions/1/assessment-questions?parent_id=' + qid;
+                            break;
+                        case 'resource':
+                            child_questions_url = root_url + 'formats/' +
+                                format_id + '/assessment-questions?parent_id=' + qid;
+                            break;
+                    }
+                    $.getJSON(child_questions_url, function(data) {
+                        $.each(data, function (i, object) {
+                            var child_question_elem =
+                                $('.assessment_question[data-id=' + object['id'] + ']');
+                            var add = false;
+                            $.each(object['enabling_assessment_question_options'], function (i, opt) {
+                                if (opt['id'] == selected_option_id) {
+                                    add = true;
+                                }
+                            });
+                            if (add) {
+                                if (child_question_elem.length < 1) {
+                                    var depth = 0;
+                                    if (question_elem) {
+                                        depth = question_elem.data('depth') + 1;
+                                    }
+                                    AssessmentForm.insertQuestionAfter(
+                                        AssessmentForm.nodeForQuestion(object, i, depth),
+                                        question_elem)
+                                }
+                            } else {
+                                child_question_elem.remove();
+                            }
+                        });
+                        $('.assessment_question input').off('change').
+                            on('change', onOptionChanged);
+                        $(document).trigger('PSAPAssessmentQuestionsAdded');
+                    });
+
+                    AssessmentForm.updateQuestionCounts();
+                };
+                $('.assessment_question input').on('change', onOptionChanged);
+            }
+            AssessmentForm.updateQuestionCounts();
+
+            if (onCompleteCallback) {
+                onCompleteCallback();
+            }
+            $(document).trigger('PSAPAssessmentQuestionsAdded');
+        });
+    },
+
+    updateQuestionCounts: function() {
         // update question counts per-section
         $('div.section').each(function() {
             var count = $(this).find('.assessment_question').length;
@@ -233,6 +234,8 @@ var ready = function() {
         AssessmentForm.init('location');
     } else if ($('body#assess_institution').length) {
         AssessmentForm.init('institution');
+    } else if ($('body#assess_resource').length) {
+        AssessmentForm.init('resource');
     }
 };
 
