@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
              foreign_key: 'desired_institution_id'
   has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :users
-  has_many :resources, inverse_of: :user
+  has_many :resources, -> { order(:name) }, inverse_of: :user
   belongs_to :role, inverse_of: :users
 
   has_secure_password
