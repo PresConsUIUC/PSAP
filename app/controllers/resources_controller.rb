@@ -201,7 +201,7 @@ class ResourcesController < ApplicationController
     else
       flash[:success] = "Resource \"#{@resource.name}\" updated."
       respond_to do |format|
-        format.html { redirect_to edit_resource_url(@resource) }
+        format.html { redirect_to @resource }
         format.js { render 'edit' }
       end
     end
