@@ -212,14 +212,23 @@ nav.navbar {
   }
 
   li#help {
-    font-size:20px;
-    margin:0px;
-    padding:0px;
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
   }
-}
 
-.navbar-inverse .navbar-nav > li > a {
-  color: #c0c0c0;
+  ul.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.75);
+    a { color:#c0c0c0; }
+    li:hover a { background-color:black; }
+    li.divider {
+      background-color:#606060;
+    }
+  }
+
+  .navbar-nav > li > a {
+    color: #c0c0c0;
+  }
 }
 
 .affix {
