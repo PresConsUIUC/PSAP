@@ -269,15 +269,15 @@ class ResourcesControllerTest < ActionController::TestCase
     patch :update, resource: { name: 'New Name' }, id: 1
     resource = Resource.find(1)
     assert_equal 'New Name', resource.name
-    assert_redirected_to edit_resource_url(resource)
+    assert_redirected_to resource_url(resource)
   end
 
-  test 'admin users can update repositories in any institution' do
+  test 'admin users can update resources in any institution' do
     signin_as(users(:admin_user))
     patch :update, resource: { name: 'New Name' }, id: 5
     resource = Resource.find(5)
     assert_equal 'New Name', resource.name
-    assert_redirected_to edit_resource_url(resource)
+    assert_redirected_to resource_url(resource)
   end
 
   test 'updating resources should write to the event log' do

@@ -74,14 +74,15 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
 
-    command = DeleteUserCommand.new(user, current_user, request.remote_ip)
+    _current_user = current_user
+    command = DeleteUserCommand.new(user, _current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash[:error] = "#{e}"
       redirect_to users_url
     else
-      if user == current_user
+      if user == _current_user
         flash[:success] = 'Your account has been deleted.'
         command = SignOutCommand.new(user, request.remote_ip)
         command.execute
@@ -271,6 +272,7 @@ class UsersController < ApplicationController
         redirect_to dashboard_path
       end
     else # the user is changing their basic info
+      @user_role = Role.find_by_name('User')
       command = UpdateUserCommand.new(@user, user_update_params, current_user,
                                       request.remote_ip)
       begin
