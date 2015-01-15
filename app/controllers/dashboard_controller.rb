@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {
+      format.html do
         limit = 4
         @user = current_user
         @user_events = Event.where(user: @user).order(created_at: :desc).limit(limit)
@@ -25,13 +25,10 @@ class DashboardController < ApplicationController
               order(:updated_at => :desc).limit(limit)
         else
           @institutions = Institution.all.order(:name)
-          @institution_events = []
-          @institution_users = []
-          @recent_assessments = []
           render 'welcome'
         end
-      }
-      format.atom {
+      end
+      format.atom do
         limit = 20
         @user = User.find_by_feed_key params[:key]
         if @user
@@ -39,7 +36,7 @@ class DashboardController < ApplicationController
         else
           render status: :forbidden, text: 'Access denied.'
         end
-      }
+      end
     end
   end
 
