@@ -79,8 +79,6 @@ class InstitutionsController < ApplicationController
     command = CreateAndJoinInstitutionCommand.new(
         institution_params, current_user, request.remote_ip)
     @institution = command.object
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -89,10 +87,16 @@ class InstitutionsController < ApplicationController
       flash[:error] = "#{e}"
       render 'new'
     else
-      flash[:success] = "The institution \"#{@institution.name}\" has been "\
-        "created. An administrator has been notified and will review your "\
-        "request to join it momentarily,"
-      redirect_to dashboard_path
+      if current_user.is_admin?
+        flash[:success] = "The institution \"#{@institution.name}\" has been "\
+          "created."
+        redirect_to @institution
+      else
+        flash[:success] = "The institution \"#{@institution.name}\" has been "\
+          "created. An administrator has been notified and will review your "\
+          "request to join it momentarily,"
+        redirect_to dashboard_path
+      end
     end
   end
 
@@ -188,17 +192,15 @@ class InstitutionsController < ApplicationController
       end
       format.json
       format.html do
-        @resources = @resources.paginate(page: params[:page],
-                                         per_page: Psap::Application.config.results_per_page)
+        @resources = @resources.
+            paginate(page: params[:page],
+                     per_page: Psap::Application.config.results_per_page)
       end
     end
   end
 
   def show
     @institution = Institution.find(params[:id])
-
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
     @repositories = @institution.repositories.order(:name).
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
