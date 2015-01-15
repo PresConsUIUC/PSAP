@@ -1,6 +1,7 @@
 class FormatsController < ApplicationController
 
   before_action :signed_in_user
+  before_action :signed_in_user_json_only, only: :index
   before_action :admin_user, only: :show
 
   def index
@@ -35,6 +36,13 @@ class FormatsController < ApplicationController
     @institution_counts = ActiveRecord::Base.connection.execute(sql).
         map{ |row| { institution: Institution.find(row['inst_id']),
                      count: row['count'] } }
+  end
+
+  def signed_in_user_json_only
+    if !current_user.is_admin? and request.format.symbol != :json
+      flash[:error] = 'Access denied.'
+      redirect_to(root_url)
+    end
   end
 
 end

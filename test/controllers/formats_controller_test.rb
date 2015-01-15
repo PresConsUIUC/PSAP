@@ -17,6 +17,12 @@ class FormatsControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
+  test 'signed-in users can get the format list via JSON' do
+    signin_as(users(:normal_user))
+    get :index, format: :json
+    assert_response :success
+  end
+
   test 'admin users can view the format list' do
     signin_as(users(:admin_user))
     get :index
