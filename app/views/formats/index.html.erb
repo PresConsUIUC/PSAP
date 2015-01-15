@@ -4,14 +4,17 @@
   <li class="active">Formats</li>
 </ol>
 
-<h1>Formats <small class="entity_count"></small></h1>
+<h1>Formats</h1>
 
-<%= form_tag formats_path, method: 'get', class: 'psap-live-search',
-             style: 'float:right' do %>
-  <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                       class: 'form-control' %>
-<% end %>
-
-<div id="formats">
-  <%= render 'formats' %>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Class</th>
+      <th>Score / 1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'format_rows', locals: { formats: @formats, depth: 0 } %>
+  </tbody>
+</table>
