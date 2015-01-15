@@ -30,7 +30,7 @@ class EnableUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write failure to event log if unsuccessful' do
-    flunk 'Need to get this to happen'
+    skip 'Need to get this to happen'
   end
 
   test 'non-admin users should not be able to enable users' do

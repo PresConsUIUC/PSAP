@@ -33,11 +33,11 @@ class DeleteRepositoryCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do
-    flunk 'Need to get this to happen'
+    skip 'Need to get this to happen'
   end
 
   test 'execute method should write failure to event log if unsuccessful' do
-    flunk 'Need to get this to happen'
+    skip 'Need to get this to happen'
   end
 
   # object

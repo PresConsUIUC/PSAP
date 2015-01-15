@@ -24,7 +24,7 @@ class DeleteUserCommand < Command
         raise "Failed to delete user #{@user.username}: #{e.message}"
       end
     else
-      @institution.events << Event.create(
+      @user.institution.events << Event.create(
           description: "Deleted user #{@user.username}",
           user: @doing_user, address: @remote_ip)
     end

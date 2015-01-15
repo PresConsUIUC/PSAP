@@ -48,7 +48,7 @@ class UpdateResourceCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should update existing AQRs instead of creating new ones' do
-    flunk
+    skip 'Need to write this'
   end
 
   # object
