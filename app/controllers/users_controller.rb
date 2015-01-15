@@ -224,6 +224,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
+    @user_role = Role.find_by_name('User')
 
     if params[:user][:current_password] # the user is changing their password
       command = ChangePasswordCommand.new(
@@ -272,7 +273,6 @@ class UsersController < ApplicationController
         redirect_to dashboard_path
       end
     else # the user is changing their basic info
-      @user_role = Role.find_by_name('User')
       command = UpdateUserCommand.new(@user, user_update_params, current_user,
                                       request.remote_ip)
       begin
