@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212213932) do
+ActiveRecord::Schema.define(version: 20150108150117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,17 @@ ActiveRecord::Schema.define(version: 20141212213932) do
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
 
+  create_table "humidity_ranges", force: true do |t|
+    t.decimal  "min_rh",     precision: 3, scale: 0
+    t.decimal  "max_rh",     precision: 3, scale: 0
+    t.decimal  "score",      precision: 4, scale: 3
+    t.integer  "format_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "humidity_ranges", ["format_id"], name: "index_humidity_ranges_on_format_id", using: :btree
+
   create_table "institutions", force: true do |t|
     t.string   "name",                           null: false
     t.datetime "created_at"
@@ -236,9 +247,12 @@ ActiveRecord::Schema.define(version: 20141212213932) do
     t.text     "description"
     t.integer  "temperature_range_id"
     t.float    "assessment_score",     default: 0.0
+    t.integer  "humidity_range_id"
   end
 
+  add_index "locations", ["humidity_range_id"], name: "index_locations_on_humidity_range_id", using: :btree
   add_index "locations", ["repository_id"], name: "index_locations_on_repository_id", using: :btree
+  add_index "locations", ["temperature_range_id"], name: "index_locations_on_temperature_range_id", using: :btree
 
   create_table "permissions", force: true do |t|
     t.string   "key"
@@ -290,23 +304,24 @@ ActiveRecord::Schema.define(version: 20141212213932) do
   create_table "resources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "location_id",                                                       null: false
+    t.integer  "location_id",                                                    null: false
     t.integer  "parent_id"
-    t.integer  "resource_type",                                                     null: false
-    t.string   "name",                                                              null: false
+    t.integer  "resource_type",                                                  null: false
+    t.string   "name",                                                           null: false
     t.integer  "format_id"
-    t.integer  "user_id",                                                           null: false
+    t.integer  "user_id",                                                        null: false
     t.text     "description"
     t.string   "local_identifier"
     t.integer  "date_type"
     t.integer  "assessment_id"
     t.string   "rights"
     t.integer  "language_id"
-    t.float    "assessment_percent_complete",                         default: 0.0
-    t.float    "assessment_score",                                    default: 0.0
-    t.decimal  "significance",                precision: 2, scale: 1
+    t.float    "assessment_score",                                 default: 0.0
+    t.decimal  "significance",             precision: 2, scale: 1
     t.integer  "format_ink_media_type_id"
     t.integer  "format_support_type_id"
+    t.integer  "assessment_type"
+    t.boolean  "assessment_complete"
   end
 
   add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id", using: :btree
@@ -362,13 +377,14 @@ ActiveRecord::Schema.define(version: 20141212213932) do
     t.integer  "role_id"
     t.integer  "institution_id"
     t.string   "username"
-    t.boolean  "confirmed",          default: false
+    t.boolean  "confirmed",              default: false
     t.string   "confirmation_code"
     t.string   "password_reset_key"
     t.datetime "last_signin"
-    t.boolean  "enabled",            default: false
-    t.string   "feed_key",                           null: false
+    t.boolean  "enabled",                default: false
+    t.string   "feed_key",                               null: false
     t.text     "about"
+    t.integer  "desired_institution_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

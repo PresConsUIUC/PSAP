@@ -9,4 +9,11 @@ class FormatIdGuideControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  #### show ####
+
+  test 'should get show page' do
+    get :show, category: 'avmedia'
+    assert_response :success
+  end
+
 end

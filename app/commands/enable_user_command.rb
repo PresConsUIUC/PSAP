@@ -11,10 +11,11 @@ class EnableUserCommand < Command
       raise "#{@doing_user.username} has insufficient privileges to "\
         "enable users." unless @doing_user.is_admin?
 
-      UserMailer.welcome_email(@user).deliver unless @user.last_signin
-
-      @user.enabled = true
-      @user.save!
+      ActiveRecord::Base.transaction do
+        @user.enabled = true
+        @user.save!
+        UserMailer.welcome_email(@user).deliver unless @user.last_signin
+      end
     rescue => e
       @user.events << Event.create(
           description: "Attempted to enable user #{@user.username}, "\

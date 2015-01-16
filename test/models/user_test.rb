@@ -142,6 +142,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal @user.feed_key, initial
   end
 
+  # reset_password_reset_key
+  test 'reset_password_reset_key should work' do
+    initial = @user.reset_password_reset_key
+    @user.reset_password_reset_key
+    assert_not_equal @user.reset_password_reset_key, initial
+  end
+
   ########################### association tests ##############################
 
   # none

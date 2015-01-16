@@ -1,7 +1,5 @@
-<% provide(:title, "Assess #{@resource.name}") %>
+<% provide(:title, "Edit #{@resource.name}") %>
 <% provide(:body_id, 'edit_resource') %>
-
-<input type="hidden" name="root-url" value="<%= root_url %>">
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -20,68 +18,34 @@
                 polymorphic_path(@resource.location) %>
   </li>
   <li><%= link_to truncate(@resource.name, length: 50), polymorphic_path(@resource) %></li>
-  <li class="active">Assess</li>
+  <li class="active">Edit</li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-10">
-    <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
-  </div>
-  <div class="col-sm-2">
-    <div class="btn-group" style="float:right">
-      <!-- Save -->
-      <button type="button" class="btn btn-default save">
-        <span class="glyphicon glyphicon-cloud"></span> Save
-      </button>
-    </div>
-  </div>
-</div>
+<h1>Edit <%= @resource.readable_resource_type %>: <%= @resource.name %></h1>
 
-<div class="row">
+<%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
 
-  <!-- left column menu -->
-  <div class="col-sm-3">
-    <%= render partial: 'shared/assessment_sections',
-               locals: { assessment_sections: @assessment_sections } %>
-  </div>
+  <%= render partial: 'edit_form', locals: { f: f } %>
 
-  <div class="col-sm-9">
+  <%= hidden_field_tag('root-url', root_url) %>
+  <% # read by JS to select the relevant inputs %>
+  <%= hidden_field_tag('selected_format_class',
+                       @resource.format ? @resource.format.format_class : '') %>
+  <%= hidden_field_tag('selected_format_ink_media_type_id',
+                       @resource.format_ink_media_type ? @resource.format_ink_media_type.id : '') %>
+  <%= hidden_field_tag('selected_format_support_type_id',
+                       @resource.format_support_type ? @resource.format_support_type.id : '') %>
 
-    <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
+  <% format = @resource.format
+  while format do %>
+    <%= hidden_field_tag('selected_format_ids', format.id) %>
+    <%= hidden_field_tag('selected_format_fids', format.fid) %>
+    <% format = format.parent
+  end %>
 
-      <div id="basic_info" class="section">
-        <%= render partial: 'basic_info_form', locals: { f: f } %>
-      </div>
+  <%= hidden_field_tag('formats_json', Format.all.to_json) %>
+  <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
+  <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
 
-      <% # read by JS to select the relevant inputs %>
-      <%= hidden_field_tag('selected_format_class',
-                           @resource.format ? @resource.format.format_class : '') %>
-      <%= hidden_field_tag('selected_format_ink_media_type_id',
-                           @resource.format_ink_media_type ? @resource.format_ink_media_type.id : '') %>
-      <%= hidden_field_tag('selected_format_support_type_id',
-                           @resource.format_support_type ? @resource.format_support_type.id : '') %>
-
-      <% format = @resource.format
-      while format do %>
-        <%= hidden_field_tag('selected_format_ids', format.id) %>
-        <%= hidden_field_tag('selected_format_fids', format.fid) %>
-        <% format = format.parent
-      end %>
-
-      <% @resource.assessment_question_responses.each do |response| %>
-        <input type="hidden" name="selected_option_ids"
-               value="<%= response.assessment_question_option.id %>">
-      <% end %>
-
-      <% @assessment_sections.each do |section| %>
-        <%= render partial: 'shared/section_form', locals: { section: section } %>
-      <% end %>
-
-      <%= hidden_field_tag('formats_json', Format.all.to_json) %>
-      <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
-      <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
-
-    <% end %>
-
-  </div>
-</div>
+  <%= submit_tag('Edit Resource', class: 'btn btn-primary') %>
+<% end %>

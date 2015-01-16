@@ -74,6 +74,14 @@ class FormatTest < ActiveSupport::TestCase
     end
   end
 
+  test 'dependent humidity ranges should be destroyed on destroy' do
+    @format.resources.destroy_all
+    range = humidity_ranges(:rh_range_one)
+    @format.humidity_ranges << range
+    @format.destroy
+    assert range.destroyed?
+  end
+
   test 'dependent temperature ranges should be destroyed on destroy' do
     @format.resources.destroy_all
     range = temperature_ranges(:temp_range_one)

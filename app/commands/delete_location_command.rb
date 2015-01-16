@@ -19,9 +19,10 @@ class DeleteLocationCommand < Command
           event_level: EventLevel::ERROR)
       raise "Failed to delete location: #{e.message}"
     else
-      Event.create(description: "Deleted location \"#{@location.name}\" from "\
-      "repository \"#{@location.repository.name}\"",
-                   user: @doing_user, address: @remote_ip)
+      @location.repository.events << Event.create(
+          description: "Deleted location \"#{@location.name}\" from "\
+          "repository \"#{@location.repository.name}\"",
+          user: @doing_user, address: @remote_ip)
     end
   end
 

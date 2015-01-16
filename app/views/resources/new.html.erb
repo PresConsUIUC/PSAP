@@ -1,7 +1,5 @@
-<% provide(:title, 'Assess a Resource') %>
+<% provide(:title, 'New Resource') %>
 <% provide(:body_id, 'new_resource') %>
-
-<input type="hidden" name="root-url" value="<%= root_url %>">
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
@@ -19,51 +17,24 @@
     <%= link_to @resource.location.name,
                 polymorphic_path(@resource.location) %>
   </li>
-  <li class="active">Assess a Resource</li>
+  <li class="active">New Resource</li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-7">
-    <% if @resource.parent %>
-        <h1>Assess a Sub-Resource <small>of <%= @resource.parent.name %></small></h1>
-    <% else %>
-        <h1>Assess a Resource <small>in <%= @resource.location.name %></small></h1>
-    <% end %>
-  </div>
-  <div class="col-sm-5">
-    <div class="btn-group" style="float:right">
-      <!-- Save -->
-      <button type="button" class="btn btn-default save">
-        <span class="glyphicon glyphicon-cloud"></span> Save
-      </button>
-    </div>
-  </div>
-</div>
+<% if @resource.parent %>
+  <h1>New Sub-Resource <small>of <%= @resource.parent.name %></small></h1>
+<% else %>
+  <h1>New Resource <small>in <%= @resource.location.name %></small></h1>
+<% end %>
 
-<div class="row" id="assessment">
+<%= form_for(@resource, class: 'psap-assessment',
+             url: location_resources_path(@resource.location)) do |f| %>
 
-  <!-- left column menu -->
-  <div class="col-sm-3">
-    <%= render partial: 'shared/assessment_sections',
-               locals: { assessment_sections: @assessment_sections } %>
-  </div>
+  <%= render partial: 'edit_form', locals: { f: f } %>
 
-  <div class="col-sm-9">
-    <%= form_for(@resource, class: 'psap-assessment',
-                 url: location_resources_path(@resource.location)) do |f| %>
+  <%= hidden_field_tag('root-url', root_url) %>
+  <%= hidden_field_tag('formats_json', Format.all.to_json) %>
+  <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
+  <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
 
-      <div id="basic_info" class="section">
-        <%= render partial: 'basic_info_form', locals: { f: f } %>
-      </div>
-
-      <% @assessment_sections.each do |section| %>
-        <%= render partial: 'shared/section_form', locals: { section: section } %>
-      <% end %>
-
-      <%= hidden_field_tag('formats_json', Format.all.to_json) %>
-      <%= hidden_field_tag('format_ink_media_types_json', FormatInkMediaType.all.to_json) %>
-      <%= hidden_field_tag('format_support_types_json', FormatSupportType.all.to_json) %>
-
-    <% end %>
-  </div>
-</div>
+  <%= submit_tag('Create Resource', class: 'btn btn-primary') %>
+<% end %>

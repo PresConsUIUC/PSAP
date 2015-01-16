@@ -1,29 +1,20 @@
 <% if events.any? %>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Event</th>
-            <th>Entity</th>
-            <th>User</th>
-            <th>Occurred</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% events.each do |event| %>
-            <tr>
-                <td><%= event.description %></td>
-                <td><%= link_to_event_entity(event) %></td>
-                <td>
-                  <% if event.user %>
-                    <%= link_to(event.user) do %>
-                      <%= glyphicon(event.user) %>
-                      <%= event.user.full_name %>
-                    <% end %>
-                  <% end %>
-                </td>
-                <td><%= local_time_ago(event.created_at) %></td>
-            </tr>
-        <% end %>
-        </tbody>
-    </table>
+  <ol class="psap-entity-list psap-event-list">
+    <% events.each do |event| %>
+      <li>
+        <span class="title"><%= event.description %></span>
+        <br>
+        <span class="description">
+          <%= link_to_event_entity(event) %>
+          <% if event.user %>
+            by <%= entity_icon(event.user) %>
+            <%= link_to(event.user) do %>
+              <%= event.user.full_name %>
+            <% end %>
+          <% end %>
+          | <%= local_time_ago(event.created_at) %>
+        </span>
+      </li>
+    <% end %>
+  </ol>
 <% end %>

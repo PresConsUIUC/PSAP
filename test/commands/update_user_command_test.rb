@@ -61,6 +61,19 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
   end
 
+  test 'non-admin users should not be able to change roles' do
+    @user = users(:normal_user)
+    @valid_params = { role_id: roles(:admin_role).id }
+    @doing_user = users(:normal_user)
+    @remote_ip = '10.0.0.1'
+    @valid_command = UpdateUserCommand.new(@user, @valid_params,
+                                           @doing_user, @remote_ip)
+    e = assert_raises RuntimeError do
+      @valid_command.execute
+      assert_equal 'Insufficient privileges', e.message
+    end
+  end
+
   test 'execute method should fail if validation failed' do
     assert_raises ValidationError do
       assert_difference 'Event.count' do
@@ -84,7 +97,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
 
     event = Event.order(:created_at).last
     assert_equal "Attempted to update user #{@user.username}, "\
-      "but failed: #{@user.errors.full_messages[0]}",
+      "but failed: Username can't be blank",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

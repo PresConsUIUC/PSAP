@@ -1,0 +1,29 @@
+<%= render layout: 'institutions/show' do %>
+  <dl>
+    <dt>URL</dt>
+    <dd><%= link_to @institution.url, @institution.url %></dd>
+    <dt>Email</dt>
+    <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
+    <dt>Address</dt>
+    <dd>
+      <%= @institution.address1 %>
+      <% if @institution.address2 and !@institution.address2.empty? %>
+        <br><%= @institution.address2 %>
+      <% end %>
+      <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
+      <br><%= @institution.country %>
+    </dd>
+    <% if @institution.description %>
+      <dt>Description</dt>
+      <dd><%= @institution.description %></dd>
+    <% end %>
+    <% if @institution.language %>
+      <dt>Language</dt>
+      <dd><%= @institution.language.english_name %></dd>
+    <% end %>
+    <dt>Created</dt>
+    <dd><%= local_time_ago(@institution.created_at) %></dd>
+    <dt>Last Updated</dt>
+    <dd><%= local_time_ago(@institution.updated_at) %></dd>
+  </dl>
+<% end %>

@@ -4,9 +4,12 @@
 <ul class="psap-entity-list">
   <% @locations.each do |location| %>
     <li>
-      <span class="title"><%= link_to location.name, location %></span>
+      <span class="title">
+        <%= entity_icon(location) %>
+        <%= link_to location.name, location %>
+      </span>
       <small>
-        <%= glyphicon(Resource, pluralize(location.resources.count, 'resource')) %>
+        <%= entity_icon(Resource, pluralize(location.resources.count, 'resource')) %>
         <%= location.resources.count %>
       </small>
       <br>

@@ -1,0 +1,90 @@
+<% provide(:title, "Assess #{@resource.name}") %>
+<% provide(:body_id, 'assess_resource') %>
+
+<ol class="breadcrumb">
+  <% if current_user.is_admin? %>
+    <li><%= link_to 'Institutions', institutions_path %></li>
+  <% end %>
+  <li>
+    <%= link_to @resource.location.repository.institution.name,
+                polymorphic_path(@resource.location.repository.institution) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.repository.name,
+                polymorphic_path(@resource.location.repository) %>
+  </li>
+  <li>
+    <%= link_to @resource.location.name,
+                polymorphic_path(@resource.location) %>
+  </li>
+  <li><%= link_to truncate(@resource.name, length: 50), polymorphic_path(@resource) %></li>
+  <li class="active">Assess</li>
+</ol>
+
+<% if @resource.format %>
+
+  <div class="row">
+    <div class="col-sm-10">
+      <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
+    </div>
+    <div class="col-sm-2">
+      <div class="btn-group" style="float:right">
+        <!-- Save -->
+        <button type="button" class="btn btn-default save">
+          <span class="glyphicon glyphicon-cloud"></span> Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- left column menu -->
+    <div class="col-sm-3">
+      <%= render partial: 'shared/assessment_sections',
+                 locals: { assessment_sections: @assessment_sections } %>
+    </div>
+
+    <div class="col-sm-9">
+      <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
+        <%= hidden_field_tag('format_id', @resource.format.id) %>
+        <%= hidden_field_tag('root-url', root_url) %>
+
+        <% @resource.assessment_question_responses.each do |response| %>
+          <%= hidden_field_tag('selected_option_ids',
+                               response.assessment_question_option.id) %>
+        <% end %>
+
+        <div class="form-group" id="psap-assessment-type-group">
+          <%= f.label :assessment_type, 'Assessment Type' %>
+          <button type="button" class="btn btn-sm help" data-container="body"
+                  data-toggle="popover" data-placement="right"
+                  data-content="Is this collection assessed at the item level or on a sample basis? OPTIONAL.">
+            ?
+          </button>
+          <div class="radio">
+            <%= f.radio_button :assessment_type, AssessmentType::ITEM_LEVEL %>
+            <%= f.label :assessment_type, 'Item-Level', value: AssessmentType::ITEM_LEVEL %>
+          </div>
+          <div class="radio">
+            <%= f.radio_button :assessment_type, AssessmentType::SAMPLE %>
+            <%= f.label :assessment_type, 'Sample', value: AssessmentType::SAMPLE %>
+          </div>
+        </div>
+
+        <hr>
+        <% @assessment_sections.each_with_index do |section, index| %>
+          <%= render partial: 'shared/section_form',
+                     locals: { section: section,
+                               draw_bottom_rule: index < @assessment_sections.length - 1 } %>
+        <% end %>
+
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
+
+  <p>This resource is not yet assessable, as it is not yet associated with a
+    format. <%= link_to 'Edit the resource', edit_resource_path(@resource) %>
+    to rectify this.</p>
+<% end %>

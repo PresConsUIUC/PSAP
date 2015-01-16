@@ -35,292 +35,128 @@ module ApplicationHelper
     raw(crumb)
   end
 
+  ##
+  # Creates a Bootstrap button link.
+  #
+  # @param title string Button title
+  # @param url string Button URL
+  # @param icon string Name of Glyphicon (e.g. "glyphicon-x"), Font Awesome icon
+  # (e.g. "fa-x"), or return value of entity_icon()
+  # @param html_options Additional HTML attribute-value pairs
+  #
+  def button_link(title, url, icon = nil, html_options = {}) # TODO: use this more
+    html_options[:class] = '' unless html_options[:class]
+    html_options[:class] += ' btn ' unless html_options[:class].include?('btn ')
+    html_options[:class] += ' btn-default ' unless html_options[:class].include?('btn-')
+    if icon
+      link = link_to(url, html_options) do
+        if icon.include?('psap-entity-icon')
+          raw(icon.gsub('psap-entity-icon', '')) + ' ' + title
+        elsif icon.include?('glyphicon')
+          content_tag(:span, '', class: 'glyphicon ' + icon) + ' ' + title
+        else
+          content_tag(:i, '', class: 'fa ' + icon) + ' ' + title
+        end
+      end
+      return raw(link)
+    end
+    raw(link_to(title, url, html_options))
+  end
+
   def countries_for_select
-    [['United States of America', 'United States of America'],
-     ['Afghanistan', 'Afghanistan'],
-     ['Albania', 'Albania'],
-     ['Algeria', 'Algeria'],
-     ['American Samoa', 'American Samoa'],
-     ['Andorra', 'Andorra'],
-     ['Angola', 'Angola'],
-     ['Anguilla', 'Anguilla'],
-     ['Antigua & Barbuda', 'Antigua & Barbuda'],
-     ['Argentina', 'Argentina'],
-     ['Armenia', 'Armenia'],
-     ['Aruba', 'Aruba'],
-     ['Australia', 'Australia'],
-     ['Austria', 'Austria'],
-     ['Azerbaijan', 'Azerbaijan'],
-     ['Bahamas', 'Bahamas'],
-     ['Bahrain', 'Bahrain'],
-     ['Bangladesh', 'Bangladesh'],
-     ['Barbados', 'Barbados'],
-     ['Belarus', 'Belarus'],
-     ['Belgium', 'Belgium'],
-     ['Belize', 'Belize'],
-     ['Benin', 'Benin'],
-     ['Bermuda', 'Bermuda'],
-     ['Bhutan', 'Bhutan'],
-     ['Bolivia', 'Bolivia'],
-     ['Bonaire', 'Bonaire'],
-     ['Bosnia & Herzegovina', 'Bosnia & Herzegovina'],
-     ['Botswana', 'Botswana'],
-     ['Brazil', 'Brazil'],
-     ['British Indian Ocean Ter', 'British Indian Ocean Ter'],
-     ['Brunei', 'Brunei'],
-     ['Bulgaria', 'Bulgaria'],
-     ['Burkina Faso', 'Burkina Faso'],
-     ['Burundi', 'Burundi'],
-     ['Cambodia', 'Cambodia'],
-     ['Cameroon', 'Cameroon'],
-     ['Canada', 'Canada'],
-     ['Canary Islands', 'Canary Islands'],
-     ['Cape Verde', 'Cape Verde'],
-     ['Cayman Islands', 'Cayman Islands'],
-     ['Central African Republic', 'Central African Republic'],
-     ['Chad', 'Chad'],
-     ['Channel Islands', 'Channel Islands'],
-     ['Chile', 'Chile'],
-     ['China', 'China'],
-     ['Christmas Island', 'Christmas Island'],
-     ['Cocos Island', 'Cocos Island'],
-     ['Colombia', 'Colombia'],
-     ['Comoros', 'Comoros'],
-     ['Congo', 'Congo'],
-     ['Cook Islands', 'Cook Islands'],
-     ['Costa Rica', 'Costa Rica'],
-     ['Cote D\'Ivoire', 'Cote D\'Ivoire'],
-     ['Croatia', 'Croatia'],
-     ['Cuba', 'Cuba'],
-     ['Curaco', 'Curacao'],
-     ['Cyprus', 'Cyprus'],
-     ['Czech Republic', 'Czech Republic'],
-     ['Democratic People\'s Republic of Korea', 'Democratic People\'s Republic of Korea'],
-     ['Denmark', 'Denmark'],
-     ['Djibouti', 'Djibouti'],
-     ['Dominica', 'Dominica'],
-     ['Dominican Republic', 'Dominican Republic'],
-     ['East Timor', 'East Timor'],
-     ['Ecuador', 'Ecuador'],
-     ['Egypt', 'Egypt'],
-     ['El Salvador', 'El Salvador'],
-     ['Equatorial Guinea', 'Equatorial Guinea'],
-     ['Eritrea', 'Eritrea'],
-     ['Estonia', 'Estonia'],
-     ['Ethiopia', 'Ethiopia'],
-     ['Falkland Islands', 'Falkland Islands'],
-     ['Faroe Islands', 'Faroe Islands'],
-     ['Fiji', 'Fiji'],
-     ['Finland', 'Finland'],
-     ['France', 'France'],
-     ['French Guiana', 'French Guiana'],
-     ['French Polynesia', 'French Polynesia'],
-     ['French Southern Ter', 'French Southern Ter'],
-     ['Gabon', 'Gabon'],
-     ['Gambia', 'Gambia'],
-     ['Georgia', 'Georgia'],
-     ['Germany', 'Germany'],
-     ['Ghana', 'Ghana'],
-     ['Gibraltar', 'Gibraltar'],
-     ['Great Britain', 'Great Britain'],
-     ['Greece', 'Greece'],
-     ['Greenland', 'Greenland'],
-     ['Grenada', 'Grenada'],
-     ['Guadeloupe', 'Guadeloupe'],
-     ['Guam', 'Guam'],
-     ['Guatemala', 'Guatemala'],
-     ['Guinea', 'Guinea'],
-     ['Guyana', 'Guyana'],
-     ['Haiti', 'Haiti'],
-     ['Hawaii', 'Hawaii'],
-     ['Honduras', 'Honduras'],
-     ['Hong Kong', 'Hong Kong'],
-     ['Hungary', 'Hungary'],
-     ['Iceland', 'Iceland'],
-     ['India', 'India'],
-     ['Indonesia', 'Indonesia'],
-     ['Iran', 'Iran'],
-     ['Iraq', 'Iraq'],
-     ['Ireland', 'Ireland'],
-     ['Isle of Man', 'Isle of Man'],
-     ['Israel', 'Israel'],
-     ['Italy', 'Italy'],
-     ['Jamaica', 'Jamaica'],
-     ['Japan', 'Japan'],
-     ['Jordan', 'Jordan'],
-     ['Kazakhstan', 'Kazakhstan'],
-     ['Kenya', 'Kenya'],
-     ['Kiribati', 'Kiribati'],
-     ['Kuwait', 'Kuwait'],
-     ['Kyrgyzstan', 'Kyrgyzstan'],
-     ['Laos', 'Laos'],
-     ['Latvia', 'Latvia'],
-     ['Lebanon', 'Lebanon'],
-     ['Lesotho', 'Lesotho'],
-     ['Liberia', 'Liberia'],
-     ['Libya', 'Libya'],
-     ['Liechtenstein', 'Liechtenstein'],
-     ['Lithuania', 'Lithuania'],
-     ['Luxembourg', 'Luxembourg'],
-     ['Macau', 'Macau'],
-     ['Macedonia', 'Macedonia'],
-     ['Madagascar', 'Madagascar'],
-     ['Malaysia', 'Malaysia'],
-     ['Malawi', 'Malawi'],
-     ['Maldives', 'Maldives'],
-     ['Mali', 'Mali'],
-     ['Malta', 'Malta'],
-     ['Marshall Islands', 'Marshall Islands'],
-     ['Martinique', 'Martinique'],
-     ['Mauritania', 'Mauritania'],
-     ['Mauritius', 'Mauritius'],
-     ['Mayotte', 'Mayotte'],
-     ['Mexico', 'Mexico'],
-     ['Midway Islands', 'Midway Islands'],
-     ['Moldova', 'Moldova'],
-     ['Monaco', 'Monaco'],
-     ['Mongolia', 'Mongolia'],
-     ['Montserrat', 'Montserrat'],
-     ['Morocco', 'Morocco'],
-     ['Mozambique', 'Mozambique'],
-     ['Myanmar', 'Myanmar'],
-     ['Nambia', 'Nambia'],
-     ['Nauru', 'Nauru'],
-     ['Nepal', 'Nepal'],
-     ['Netherland Antilles', 'Netherland Antilles'],
-     ['Netherlands', 'Netherlands'],
-     ['Nevis', 'Nevis'],
-     ['New Caledonia', 'New Caledonia'],
-     ['New Zealand', 'New Zealand'],
-     ['Nicaragua', 'Nicaragua'],
-     ['Niger', 'Niger'],
-     ['Nigeria', 'Nigeria'],
-     ['Niue', 'Niue'],
-     ['Norfolk Island', 'Norfolk Island'],
-     ['Norway', 'Norway'],
-     ['Oman', 'Oman'],
-     ['Pakistan', 'Pakistan'],
-     ['Palau Island', 'Palau Island'],
-     ['Palestine', 'Palestine'],
-     ['Panama', 'Panama'],
-     ['Papua New Guinea', 'Papua New Guinea'],
-     ['Paraguay', 'Paraguay'],
-     ['Peru', 'Peru'],
-     ['Phillipines', 'Philippines'],
-     ['Pitcairn Island', 'Pitcairn Island'],
-     ['Poland', 'Poland'],
-     ['Portugal', 'Portugal'],
-     ['Puerto Rico', 'Puerto Rico'],
-     ['Qatar', 'Qatar'],
-     ['Republic of Montenegro', 'Republic of Montenegro'],
-     ['Republic of Serbia', 'Republic of Serbia'],
-     ['Reunion', 'Reunion'],
-     ['Romania', 'Romania'],
-     ['Russia', 'Russia'],
-     ['Rwanda', 'Rwanda'],
-     ['St. Barthelemy', 'St. Barthelemy'],
-     ['St. Eustatius', 'St. Eustatius'],
-     ['St. Helena', 'St. Helena'],
-     ['St. Kitts-Nevis', 'St. Kitts-Nevis'],
-     ['St. Lucia', 'St. Lucia'],
-     ['St. Maarten', 'St. Maarten'],
-     ['St. Pierre & Miquelon', 'St. Pierre & Miquelon'],
-     ['St. Vincent & Grenadines', 'St. Vincent & Grenadines'],
-     ['Saipan', 'Saipan'],
-     ['Samoa', 'Samoa'],
-     ['Samoa American', 'Samoa American'],
-     ['San Marino', 'San Marino'],
-     ['Sao Tome & Principe', 'Sao Tome & Principe'],
-     ['Saudi Arabia', 'Saudi Arabia'],
-     ['Senegal', 'Senegal'],
-     ['Serbia', 'Serbia'],
-     ['Seychelles', 'Seychelles'],
-     ['Sierra Leone', 'Sierra Leone'],
-     ['Singapore', 'Singapore'],
-     ['Slovakia', 'Slovakia'],
-     ['Slovenia', 'Slovenia'],
-     ['Solomon Islands', 'Solomon Islands'],
-     ['Somalia', 'Somalia'],
-     ['South Africa', 'South Africa'],
-     ['South Korea', 'South Korea'],
-     ['Spain', 'Spain'],
-     ['Sri Lanka', 'Sri Lanka'],
-     ['Sudan', 'Sudan'],
-     ['Suriname', 'Suriname'],
-     ['Swaziland', 'Swaziland'],
-     ['Sweden', 'Sweden'],
-     ['Switzerland', 'Switzerland'],
-     ['Syria', 'Syria'],
-     ['Tahiti', 'Tahiti'],
-     ['Taiwan', 'Taiwan'],
-     ['Tajikistan', 'Tajikistan'],
-     ['Tanzania', 'Tanzania'],
-     ['Thailand', 'Thailand'],
-     ['Togo', 'Togo'],
-     ['Tokelau', 'Tokelau'],
-     ['Tonga', 'Tonga'],
-     ['Trinidad & Tobago', 'Trinidad & Tobago'],
-     ['Tunisia', 'Tunisia'],
-     ['Turkey', 'Turkey'],
-     ['Turkmenistan', 'Turkmenistan'],
-     ['Turks & Caicos Is', 'Turks & Caicos Is'],
-     ['Tuvalu', 'Tuvalu'],
-     ['Uganda', 'Uganda'],
-     ['Ukraine', 'Ukraine'],
-     ['United Arab Erimates', 'United Arab Emirates'],
-     ['United Kingdom', 'United Kingdom'],
-     ['Uruguay', 'Uruguay'],
-     ['Uzbekistan', 'Uzbekistan'],
-     ['Vanuatu', 'Vanuatu'],
-     ['Vatican City State', 'Vatican City State'],
-     ['Venezuela', 'Venezuela'],
-     ['Vietnam', 'Vietnam'],
-     ['Virgin Islands (British)', 'Virgin Islands (British)'],
-     ['Virgin Islands (USA)', 'Virgin Islands (USA)'],
-     ['Wake Island', 'Wake Island'],
-     ['Wallis & Futana Is', 'Wallis & Futana Is'],
-     ['Yemen', 'Yemen'],
-     ['Zaire', 'Zaire'],
-     ['Zambia', 'Zambia'],
-     ['Zimbabwe', 'Zimbabwe']]
+    countries = [
+        'United States of America', 'Afghanistan', 'Albania', 'Algeria',
+        'American Samoa', 'Andorra', 'Angola', 'Anguilla', 'Antigua & Barbuda',
+        'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan',
+        'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium',
+        'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bonaire',
+        'Bosnia & Herzegovina', 'Botswana', 'Brazil',
+        'British Indian Ocean Ter', 'Brunei', 'Bulgaria', 'Burkina Faso',
+        'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Canary Islands',
+        'Cape Verde', 'Cayman Islands', 'Central African Republic',
+        'Chad', 'Channel Islands', 'Chile', 'China', 'Christmas Island',
+        'Cocos Island', 'Colombia', 'Comoros', 'Congo', 'Cook Islands',
+        'Costa Rica', 'Cote D\'Ivoire', 'Croatia', 'Cuba', 'Curacao', 'Cyprus',
+        'Czech Republic', 'Democratic People\'s Republic of Korea',
+        'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor',
+        'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea',
+        'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia',
+        'Falkland Islands', 'Faroe Islands', 'Fiji', 'Finland', 'France',
+        'French Guiana', 'French Polynesia', 'French Southern Ter',
+        'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar',
+        'Great Britain', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe',
+        'Guam', 'Guatemala', 'Guinea', 'Guyana', 'Haiti', 'Hawaii', 'Honduras',
+        'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia',
+        'Iran', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica',
+        'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait',
+        'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia',
+        'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau',
+        'Macedonia', 'Madagascar', 'Malaysia', 'Malawi', 'Maldives', 'Mali',
+        'Malta', 'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius',
+        'Mayotte', 'Mexico', 'Midway Islands', 'Moldova', 'Monaco', 'Mongolia',
+        'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Nambia', 'Nauru',
+        'Nepal', 'Netherland Antilles', 'Netherlands', 'Nevis', 'New Caledonia',
+        'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue',
+        'Norfolk Island', 'Norway', 'Oman', 'Pakistan', 'Palau Island',
+        'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru',
+        'Philippines', 'Pitcairn Island', 'Poland', 'Portugal', 'Puerto Rico',
+        'Qatar', 'Republic of Montenegro', 'Republic of Serbia', 'Reunion',
+        'Romania', 'Russia', 'Rwanda', 'St. Barthelemy', 'St. Eustatius',
+        'St. Helena', 'St. Kitts-Nevis', 'St. Lucia', 'St. Maarten',
+        'St. Pierre & Miquelon', 'St. Vincent & Grenadines', 'Saipan', 'Samoa',
+        'Samoa American', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia',
+        'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore',
+        'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa',
+        'South Korea', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland',
+        'Sweden', 'Switzerland', 'Syria', 'Tahiti', 'Taiwan', 'Tajikistan',
+        'Tanzania', 'Thailand', 'Togo', 'Tokelau', 'Tonga', 'Trinidad & Tobago',
+        'Tunisia', 'Turkey', 'Turkmenistan', 'Turks & Caicos Is', 'Tuvalu',
+        'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom',
+        'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City State', 'Venezuela',
+        'Vietnam', 'Virgin Islands (British)', 'Virgin Islands (USA)',
+        'Wake Island', 'Wallis & Futana Is', 'Yemen', 'Zaire' 'Zambia',
+        'Zimbabwe'
+    ]
+    countries.map{ |c| [c, c] }
   end
 
   ##
   # @param entity Some entity: Institution, Location, etc.
   # @param title Optional title for a tooltip
   #
-  def glyphicon(entity, title = '')
+  def entity_icon(entity, title = '')
+    # https://fortawesome.github.io/Font-Awesome/icons/
     class_ = ''
     if entity.kind_of?(Institution) or entity == Institution
-      class_ = '' # TODO: return an icon
+      class_ = 'fa-university'
     elsif entity.kind_of?(Location) or entity == Location
-      class_ = 'glyphicon-home'
+      class_ = 'fa-map-marker'
     elsif entity.kind_of?(Repository) or entity == Repository
-      class_ = '' # TODO: return an icon
+      class_ = 'fa-building-o'
     elsif entity.kind_of?(Resource)
       if entity.resource_type == ResourceType::COLLECTION
-        class_ = 'glyphicon-folder-open'
+        class_ = 'fa-folder-open-o'
       elsif entity.format
         case entity.format.format_class
           when FormatClass::AV
-            class_ = 'glyphicon-facetime-video'
+            class_ = 'fa-film'
           when FormatClass::IMAGE
-            class_ = 'glyphicon-picture'
+            class_ = 'fa-picture-o'
           when FormatClass::UNBOUND_PAPER
-            class_ = 'glyphicon-file'
+            class_ = 'fa-file-text-o'
           when FormatClass::BOUND_PAPER
-            class_ = 'glyphicon-book'
+            class_ = 'fa-book'
         end
       else
-        class_ = 'glyphicon-file'
+        class_ = 'fa-cube'
       end
     elsif entity == Resource
-      class_ = 'glyphicon-file'
+      class_ = 'fa-cube'
     elsif entity.kind_of?(User) or entity == User
-      class_ = 'glyphicon-user'
+      class_ = 'fa-user'
     end
-    raw("<span class=\"glyphicon #{class_}\" aria-hidden=\"true\" "\
-    "title=\"#{title}\"></span>")
+    raw("<i class=\"psap-entity-icon fa #{class_}\" "\
+    "aria-hidden=\"true\" title=\"#{title}\"></i>")
   end
 
   ##

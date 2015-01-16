@@ -20,11 +20,13 @@ class UpdateLocationCommand < Command
       @location.assessment_question_responses.destroy_all
 
       # the AQR params from the form are not in a rails-compatible format
-      @location_params[:assessment_question_responses].each_value do |option_id|
-        option = AssessmentQuestionOption.find(option_id)
-        @location.assessment_question_responses << AssessmentQuestionResponse.new(
-            assessment_question_option: option,
-            assessment_question: option.assessment_question)
+      if @location_params[:assessment_question_responses]
+        @location_params[:assessment_question_responses].each_value do |option_id|
+          option = AssessmentQuestionOption.find(option_id)
+          @location.assessment_question_responses << AssessmentQuestionResponse.new(
+              assessment_question_option: option,
+              assessment_question: option.assessment_question)
+        end
       end
 
       @location.update!(@location_params.except(:assessment_question_responses))

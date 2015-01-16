@@ -22,7 +22,7 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst[:name] = 'New Institution'
       post :create, institution: inst
     end
-    assert_redirected_to institution_url(assigns(:institution))
+    assert_redirected_to dashboard_url
   end
 
   test 'admin users can create institutions' do
@@ -173,7 +173,7 @@ class InstitutionsControllerTest < ActionController::TestCase
     get :show, id: 1
     assert_response :success
     assert_not_nil assigns(:institution)
-    assert_not_nil assigns(:resources)
+    assert_not_nil assigns(:repositories)
   end
 
   test 'signed-in users cannot view other institutions' do
@@ -187,7 +187,7 @@ class InstitutionsControllerTest < ActionController::TestCase
     get :show, id: 5
     assert_response :success
     assert_not_nil assigns(:institution)
-    assert_not_nil assigns(:resources)
+    assert_not_nil assigns(:repositories)
   end
 
   test 'attempting to view a nonexistent institution returns 404' do

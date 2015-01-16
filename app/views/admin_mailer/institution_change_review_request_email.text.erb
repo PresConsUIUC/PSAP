@@ -1,0 +1,22 @@
+A PSAP user has requested to change institutions:
+
+First Name: <%= @user.first_name %>
+Last Name: <%= @user.last_name %>
+Username: <%= @user.username %>
+Email: <%= @user.email %>
+
+<% if @user.institution %>
+The user's current institution is: <%= @user.institution.name %>.
+
+He/she wishes to move to <%= @user.desired_institution.name %>.
+<% else %>
+The user wishes to join <%= @user.desired_institution.name %>.
+<% end %>
+
+1) If this request seems legitimate, please sign in to the PSAP and approve
+   the user's request at your earliest convenience:
+
+<%= @user_url %>
+
+2) If you are not sure, please send the user an email requesting more
+   information.

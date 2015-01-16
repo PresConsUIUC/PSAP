@@ -10,39 +10,9 @@
   <li class="active">New Institution</li>
 </ol>
 
-<div class="row">
-  <div class="col-sm-7">
-    <h1>New Institution</h1>
-  </div>
-  <div class="col-sm-5">
-    <div class="btn-group" style="float:right">
-      <!-- Save -->
-      <button type="button" class="btn btn-default save">
-        <span class="glyphicon glyphicon-cloud"></span> Save
-      </button>
-    </div>
-  </div>
-</div>
+<h1>New Institution</h1>
 
-<div class="row" id="assessment">
-
-  <!-- left column menu -->
-  <div class="col-sm-3">
-    <%= render partial: 'shared/assessment_sections',
-               locals: { assessment_sections: @assessment_sections } %>
-  </div>
-
-  <div class="col-sm-9">
-    <%= form_for(@institution, class: 'psap-assessment') do |f| %>
-
-      <div id="basic_info" class="section">
-        <%= render partial: 'basic_info_form', locals: { f: f } %>
-      </div>
-
-      <% @assessment_sections.each do |section| %>
-        <%= render partial: 'shared/section_form', locals: { section: section } %>
-      <% end %>
-
-    <% end %>
-  </div>
-</div>
+<%= form_for(@institution, class: 'psap-assessment') do |f| %>
+  <%= render partial: 'basic_info_form', locals: { f: f } %>
+  <%= f.submit 'Create and Join Institution', class: 'btn btn-primary' %>
+<% end %>

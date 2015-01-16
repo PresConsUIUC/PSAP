@@ -20,11 +20,13 @@ class UpdateResourceCommand < Command
       @resource.assessment_question_responses.destroy_all
 
       # the AQR params from the form are not in a rails-compatible format
-      @resource_params[:assessment_question_responses].each_value do |option_id|
-        option = AssessmentQuestionOption.find(option_id)
-        @resource.assessment_question_responses << AssessmentQuestionResponse.new(
-            assessment_question_option: option,
-            assessment_question: option.assessment_question)
+      if @resource_params[:assessment_question_responses]
+        @resource_params[:assessment_question_responses].each_value do |option_id|
+          option = AssessmentQuestionOption.find(option_id)
+          @resource.assessment_question_responses << AssessmentQuestionResponse.new(
+              assessment_question_option: option,
+              assessment_question: option.assessment_question)
+        end
       end
 
       @resource.update!(@resource_params.except(:assessment_question_responses))

@@ -7,12 +7,6 @@ class SignInAndOutTest < ActionDispatch::IntegrationTest
     @valid_password = 'password'
   end
 
-  def signin(username, password)
-    post_via_redirect('/sessions',
-                      'session[username]' => username,
-                      'session[password]' => password)
-  end
-
   test 'signin with invalid credentials should fail' do
     signin('adfasdf', 'asdfasfafd')
     assert_equal '/signin', path

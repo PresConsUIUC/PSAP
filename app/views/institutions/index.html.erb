@@ -8,12 +8,8 @@
       <%= @institutions.total_entries %> total</small></h1>
   </div>
   <div class="col-sm-5" style="text-align:right">
-    <div class="btn-group">
-      <%= link_to new_institution_path, class: 'btn btn-default' do %>
-          <%= content_tag(:span, '', class: 'glyphicon glyphicon-plus') %>
-          Add Institution
-      <% end %>
-    </div>
+    <%= button_link('Add Institution', new_institution_path,
+                    entity_icon(Institution), class: 'btn-success') %>
   </div>
 </div>
 

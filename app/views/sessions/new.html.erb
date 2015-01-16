@@ -1,29 +1,6 @@
 <% provide(:title, 'Sign in') %>
+<% provide(:body_id, 'sign_in') %>
 
 <h1>Sign in</h1>
 
-<div class="signin_form">
-
-<%= form_for(:session, url: sessions_path, html: { class: 'form-horizontal' }) do |f| %>
-
-  <div class="form-group">
-    <%= f.label :username %>
-    <%= f.text_field :username, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :password %> <%= link_to '(Forgot?)', forgot_password_path %>
-    <%= f.password_field :password, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.submit 'Sign in', class: 'btn btn-primary' %>
-  </div>
-
-  <div class="form-group">
-    <p>New user? <%= link_to 'Sign up now.', new_user_path %></p>
-  </div>
-
-<% end %>
-
-</div>
+<%= render partial: 'sessions/sign_in_form' %>

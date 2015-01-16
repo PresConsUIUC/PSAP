@@ -1,0 +1,22 @@
+A user with the following information has just created a PSAP account, but is
+not yet able to sign in:
+
+First Name: Sally
+Last Name: NoConfirmy
+Username: unconfirmed
+Email: unconfirmed@example.org
+About: hi
+
+1) If this user looks legitimate, please sign in to the PSAP and enable the
+user at your earliest convenience. The user will not be able to sign in until
+you do this. Use the URL below:
+
+http://localhost:3000/users/unconfirmed
+
+2) If you are not sure, please send the user an email requesting more
+information.
+
+3) If you are pretty sure that this is not a legitimate user, feel free to
+sign in to PSAP and delete the user. Use the URL below:
+
+http://localhost:3000/users/unconfirmed

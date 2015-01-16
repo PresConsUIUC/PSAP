@@ -4,8 +4,8 @@ class Resource < ActiveRecord::Base
 
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
-  has_many :children, class_name: 'Resource', foreign_key: 'parent_id',
-           inverse_of: :parent, dependent: :destroy
+  has_many :children, -> { order(:name) }, class_name: 'Resource',
+           foreign_key: 'parent_id', inverse_of: :parent, dependent: :destroy
   has_many :creators, inverse_of: :resource, dependent: :destroy
   has_many :extents, inverse_of: :resource, dependent: :destroy
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
@@ -27,10 +27,9 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
-  validates :assessment_percent_complete, allow_blank: true,
-            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
-  validates :assessment_score, allow_blank: true,
-            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+  validates :assessment_type, allow_blank: true,
+            inclusion: { in: AssessmentType.all,
+                         message: 'must be a valid assessment type.' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   validates :resource_type, presence: true,
@@ -41,11 +40,60 @@ class Resource < ActiveRecord::Base
                          message: 'must be a valid resource significance.' }
   validates :user, presence: true
 
+  validate :validates_collections_not_assessable
   validate :validates_not_child_of_item
-  validate :validates_one_response_per_question
+  validate :validates_same_institution_as_user
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_percent_complete, :update_assessment_score
+  before_save :update_assessment_complete
+
+  def self.all_matching_query(params, starting_set = nil)
+    starting_set = Resource.all unless starting_set
+    resources = starting_set
+
+    # assessed
+    if params[:assessed] == '1'
+      resources = resources.where(assessment_complete: true)
+    elsif params[:assessed] == '0'
+      resources = resources.where(assessment_complete: false)
+    end
+    # format_id
+    resources = resources.where(format_id: params[:format_id]) unless
+        params[:format_id].blank?
+    # language_id
+    resources = resources.where(language_id: params[:language_id]) unless
+        params[:language_id].blank?
+    # repository_id
+    resources = resources.
+        where('locations.repository_id = ?', params[:repository_id]) unless
+        params[:repository_id].blank?
+    # q
+    unless params[:q].blank?
+      q = "%#{params[:q].strip.downcase}%"
+      resources = resources.joins(:resource_notes, :subjects).
+          where('LOWER(resources.description) LIKE ? '\
+          'OR LOWER(resources.local_identifier) LIKE ? '\
+          'OR LOWER(resources.name) LIKE ? '\
+          'OR LOWER(resources.rights) LIKE ? '\
+          'OR LOWER(resource_notes.value) LIKE ? '\
+          'OR LOWER(subjects.name) LIKE ?',
+                q, q, q, q, q, q)
+    end
+    # resource_type
+    resources = resources.where(resource_type: params[:resource_type]) unless
+        params[:resource_type].blank? or params[:resource_type] == 'any'
+    # score/score_direction
+    if !params[:score].blank? and !params[:score_direction].blank?
+      score = params[:score].to_f / 100
+      direction = params[:score_direction] == 'greater' ? '>' : '<'
+      resources = resources.
+          where("resources.assessment_score #{direction} #{score}")
+    end
+    # user_id
+    resources = resources.where(user_id: params[:user_id]) unless
+        params[:user_id].blank?
+    resources
+  end
 
   def self.from_ead(ead, user_id)
     doc = REXML::Document.new(ead)
@@ -152,12 +200,73 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # Returns a CSV representation of the given resources. Assessment questions
+  # are excluded for performance reasons.
+  #
+  # @param resource Array of Resources
+  #
+  def self.as_csv(resources)
+    # find the max number of one-to-many columns needed
+    num_columns = { creator: 0, date: 0, subject: 0, extent: 0, note: 0 }
+    resources.each do |resource|
+      num_columns[:creator] = [resource.creators.length, num_columns[:creator]].max
+      num_columns[:date] = [resource.resource_dates.length, num_columns[:date]].max
+      num_columns[:subject] = [resource.subjects.length, num_columns[:subject]].max
+      num_columns[:extent] = [resource.extents.length, num_columns[:extent]].max
+      num_columns[:note] = [resource.resource_notes.length, num_columns[:note]].max
+    end
+
+    require 'csv'
+    # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    CSV.generate do |csv|
+      csv << ['Local Identifier'] +
+          ['Title/Name'] +
+          ['PSAP Assessment Score'] +
+          ['Resource Type'] +
+          ['Parent Resource'] +
+          ['Format'] +
+          ['Significance'] +
+          (['Creator'] * num_columns[:creator]) +
+          (['Date'] * num_columns[:date]) +
+          ['Language'] +
+          (['Subject'] * num_columns[:subject]) +
+          (['Extent'] * num_columns[:extent]) +
+          ['Rights'] +
+          ['Description'] +
+          (['Note'] * num_columns[:note]) +
+          ['Created'] +
+          ['Updated']
+      resources.each do |resource|
+        # can't use Resource.as_csv because we need to pad the one-to-many
+        # properties with blanks
+        csv << [resource.local_identifier] +
+            [resource.name] +
+            [resource.total_assessment_score * 100] +
+            [resource.readable_resource_type] +
+            [resource.parent ? resource.parent.name : nil] +
+            [resource.format ? resource.format.name : nil] +
+            [resource.readable_significance] +
+            resource.creators.map { |r| r.name } + [nil] * (num_columns[:creator] - resource.creators.length) +
+            resource.resource_dates.map { |r| r.as_dublin_core_string } + [nil] * (num_columns[:date] - resource.resource_dates.length) +
+            [resource.language ? resource.language.english_name : nil] +
+            resource.subjects.map { |s| s.name } + [nil] * (num_columns[:subject] - resource.subjects.length) +
+            resource.extents.map { |e| e.name } + [nil] * (num_columns[:extent] - resource.extents.length) +
+            [resource.rights] +
+            [resource.description] +
+            resource.resource_notes.map { |n| n.value } + [nil] * (num_columns[:note] - resource.resource_notes.length) +
+            [resource.created_at.iso8601] +
+            [resource.updated_at.iso8601]
+      end
+    end
+  end
+
+  ##
   # @return Array of all assessed items in a collection, regardless of depth
   # in the hierarchy.
   #
   def all_assessed_items
     all_children.select{ |x| x.resource_type == ResourceType::ITEM and
-        x.assessment_percent_complete >= 0.999999 }
+        x.assessment_complete }
   end
 
   ##
@@ -191,9 +300,13 @@ class Resource < ActiveRecord::Base
       csv << ['Local Identifier'] +
           ['Title/Name'] +
           ['PSAP Assessment Score'] +
+          ['Assessment Type'] +
+          ['Location'] +
           ['Resource Type'] +
           ['Parent Resource'] +
           ['Format'] +
+          ['Format Ink/Media Type'] +
+          ['Format Support Type'] +
           ['Significance'] +
           (['Creator'] * self.creators.length) +
           (['Date'] * self.resource_dates.length) +
@@ -208,10 +321,14 @@ class Resource < ActiveRecord::Base
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [self.total_assessment_score * 100] +
+          [(self.total_assessment_score * 100).round(2)] +
+          [AssessmentType::name_for_type(self.assessment_type)] +
+          [self.location.name] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +
           [self.format ? self.format.name : nil] +
+          [self.format_ink_media_type ? self.format_ink_media_type.name : nil] +
+          [self.format_support_type ? self.format_support_type.name : nil] +
           [self.readable_significance] +
           self.creators.map { |r| r.name } +
           self.resource_dates.map { |r| r.as_dublin_core_string } +
@@ -250,18 +367,6 @@ class Resource < ActiveRecord::Base
     len = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
-  end
-
-  ##
-  # @return float
-  #
-  def assessment_percent_complete_in_section(section)
-    all_aqs = section.assessment_questions_for_format(self.format)
-    if all_aqs.length > 0
-      complete_aqs = self.complete_assessment_questions_in_section(section)
-      return complete_aqs.length.to_f / all_aqs.length.to_f
-    end
-    0.0
   end
 
   def filename
@@ -309,11 +414,12 @@ class Resource < ActiveRecord::Base
     self.assessment_score * 0.9 + self.location.assessment_score * 0.1
   end
 
-  def update_assessment_percent_complete
-    self.assessment_percent_complete =
+  def update_assessment_complete
+    self.assessment_complete =
         (self.format and self.format.all_assessment_questions.any?) ?
-            self.assessment_question_responses.length.to_f /
-            self.format.all_assessment_questions.length.to_f : 0
+            self.assessment_question_responses.length >=
+                self.format.all_assessment_questions.length : false
+    nil
   end
 
   ##
@@ -328,7 +434,7 @@ class Resource < ActiveRecord::Base
   def update_assessment_score
     # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     if self.format
-      question_score = 0
+      question_score = 0.0
       self.assessment_question_responses.each do |response|
         question_score += response.assessment_question_option.value *
             response.assessment_question.weight
@@ -340,7 +446,7 @@ class Resource < ActiveRecord::Base
           format_score = self.format_support_type.score * 0.6 +
               self.format_ink_media_type.score * 0.4
         else
-          format_score = 0
+          format_score = 0.0
         end
       else
         format_score = self.format.score * 0.45
@@ -348,7 +454,7 @@ class Resource < ActiveRecord::Base
 
       self.assessment_score = format_score + (question_score / 100) * 0.55
     else
-      self.assessment_score = 0
+      self.assessment_score = 0.0
     end
   end
 
@@ -363,17 +469,23 @@ class Resource < ActiveRecord::Base
     parts
   end
 
+  def validates_collections_not_assessable
+    if self.resource_type == ResourceType::COLLECTION and
+        self.assessment_question_responses.any?
+      errors[:base] << 'Collections are not assessable.'
+    end
+  end
+
   def validates_not_child_of_item
     if parent and parent.resource_type != ResourceType::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
     end
   end
 
-  def validates_one_response_per_question
-    if self.assessment_question_responses.uniq{ |r| r.assessment_question.qid }.length <
-        self.assessment_question_responses.length
-      # TODO: fix
-      #errors[:base] << 'Only one response allowed per assessment question.'
+  def validates_same_institution_as_user
+    if user and !user.is_admin? and
+        user.institution != self.location.repository.institution
+      errors[:base] << 'Owning user must be of the same institution.'
     end
   end
 

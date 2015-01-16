@@ -10,6 +10,16 @@ resource_one:
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
+uiuc_collection:
+  id: 14
+  name: 'Silly Nonsense Collection'
+  resource_type: <%= ResourceType::COLLECTION %>
+  format_id: 1
+  location_id: 1
+  user_id: 1
+  description: 'Lorem ipsum dolor sit amet'
+  local_identifier: 'qwertyuiop'
+
 resource_two:
   id: 2
   name: 'Dead Sea Scrolls'

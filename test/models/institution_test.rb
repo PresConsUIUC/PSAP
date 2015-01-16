@@ -126,16 +126,20 @@ class InstitutionTest < ActiveSupport::TestCase
 
   ############################# method tests #################################
 
+  test 'all_assessed_items works' do
+    flunk
+  end
+
+  test 'assessed_item_statistics works' do
+    flunk
+  end
+
   test 'most_active_users works' do
     @institution.id = 1
     most_active = @institution.most_active_users
     assert_equal 1, most_active.length
     assert_equal 4, most_active[0][:count]
     assert_kind_of User, most_active[0][:user]
-  end
-
-  test 'resources_as_csv works' do
-    flunk # TODO: write this
   end
 
   ########################### association tests ##############################
@@ -166,6 +170,10 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'attempting to destroy an institution without users in it should work' do
     @institution = institutions(:institution_four)
     assert @institution.destroy
+  end
+
+  test 'attempting to destroy an institution with desiring users in it should raise an exception' do
+    flunk
   end
 
 end

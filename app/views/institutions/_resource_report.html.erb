@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-6">
+    <ul>
+      <li><%= institution.resources.length %> total items</li>
+      <li><%= institution.all_assessed_items.length %> items assessed</li>
+      <% if institution_formats.any? %>
+        <li>Formats present:
+          <ul>
+            <% institution_formats.each do |format| %>
+                <li><%= link_to(format.name, format_id_guide_category_path(
+                                                   format.format_id_guide_page,
+                                                   anchor: format.format_id_guide_anchor)) %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+
+    <% if institution.all_assessed_items.any? %>
+      <table class="table">
+        <tr>
+          <td><%= (stats[:mean] * 100).round %></td>
+          <td>Average/Mean</td>
+        </tr>
+        <tr>
+          <td><%= (stats[:median] * 100).round %></td>
+          <td>Median</td>
+        </tr>
+        <tr>
+          <td><%= (stats[:high] * 100).round %></td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><%= (stats[:low] * 100).round %></td>
+          <td>Low</td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+
+  <!-- chart column -->
+  <div class="col-sm-6">
+    <% if institution.all_assessed_items.any? %>
+      <%= hidden_field_tag('chart_data', chart_data.to_json) %>
+      <svg id="psap-resources-chart" class="psap-chart" width="400" height="300"></svg>
+    <% end %>
+  </div>
+</div>

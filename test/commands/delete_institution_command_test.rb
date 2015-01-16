@@ -51,7 +51,7 @@ class DeleteInstitutionCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write failure to event log if unsuccessful' do
-    skip 'Need to get this to happen'
+    flunk 'Need to get this to happen'
   end
 
   # object

@@ -1,0 +1,21 @@
+<%= form_for(:session, url: sessions_path) do |f| %>
+
+  <div class="form-group">
+    <%= f.label :username %>
+    <%= f.text_field :username, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password %> <%= link_to '(Forgot?)', forgot_password_path %>
+    <%= f.password_field :password, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Sign in', class: 'btn btn-primary' %>
+  </div>
+
+  <div class="form-group">
+    <p>New user? <%= link_to 'Sign up now.', new_user_path %></p>
+  </div>
+
+<% end %>
