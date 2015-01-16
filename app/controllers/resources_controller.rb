@@ -111,12 +111,15 @@ class ResourcesController < ApplicationController
   ##
   # Responds to /institutions/:id/resources/names
   def names
-    render json: Resource.
-        joins('LEFT JOIN locations ON locations.id = resources.location_id').
-        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
-        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
-        where('institutions.id = ?', params[:institution_id]).
-        map{ |r| r.name }
+    sql = 'SELECT DISTINCT resources.name '\
+    'FROM resources '\
+    'LEFT JOIN locations ON locations.id = resources.location_id '\
+    'LEFT JOIN repositories ON locations.repository_id = repositories.id '\
+    'LEFT JOIN institutions ON repositories.institution_id = institutions.id '\
+    'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
+    conn = ActiveRecord::Base.connection
+    results = conn.execute(sql)
+    render json: results.map{ |r| r['name'] }
   end
 
   def new
@@ -175,12 +178,16 @@ class ResourcesController < ApplicationController
   ##
   # Responds to /institutions/:id/resources/subjects
   def subjects
-    render json: Subject.select('subjects.name').
-        joins('LEFT JOIN resources ON subjects.resource_id = resources.id').
-        joins('LEFT JOIN locations ON locations.id = resources.location_id').
-        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
-        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
-        where('institutions.id = ?', params[:institution_id]).distinct.map{ |r| r['name'] }
+    sql = 'SELECT DISTINCT subjects.name '\
+    'FROM subjects '\
+    'LEFT JOIN resources ON subjects.resource_id = resources.id '\
+    'LEFT JOIN locations ON locations.id = resources.location_id '\
+    'LEFT JOIN repositories ON locations.repository_id = repositories.id '\
+    'LEFT JOIN institutions ON repositories.institution_id = institutions.id '\
+    'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
+    conn = ActiveRecord::Base.connection
+    results = conn.execute(sql)
+    render json: results.map{ |r| r['name'] }
   end
 
   def update
