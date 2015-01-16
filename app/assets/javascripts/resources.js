@@ -80,6 +80,16 @@ var ResourceEditForm = {
     },
 
     attachEventListeners: function() {
+        // if the resource is an item, hide the format; otherwise, show it
+        var format_div = $('div.format');
+        $('input[name="resource[resource_type]"]').on('change', function() {
+            if ($(this).filter(':checked').val() == 1) { // 1 == item
+                format_div.show();
+            } else {
+                format_div.hide();
+            }
+        }).trigger('change');
+
         $('input[name="format_class"]').on('change', function() {
             ResourceEditForm.selectFormatClass($(this).val());
             ResourceEditForm.addFormatSelect();
@@ -298,7 +308,6 @@ var ResourceEditForm = {
                 }
             };
 
-            ResourceEditForm.addFormatSelect(null, onSelectAdded); // top-level formats
             var clone = selected_format_ids.slice();
             clone.shift();
             clone.forEach(function(id) {
