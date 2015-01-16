@@ -179,9 +179,8 @@ var ResourceEditForm = {
     init: function() {
         $(document).on('PSAPFormFieldAdded', function() {
             ResourceEditForm.attachEventListeners();
+            ResourceEditForm.initSuggestions();
         }).trigger('PSAPFormFieldAdded');
-
-        ResourceEditForm.initSuggestions();
 
         if ($('body#edit_resource').length) {
             ResourceEditForm.setInitialSelections();
@@ -189,7 +188,7 @@ var ResourceEditForm = {
     },
 
     initSuggestions: function() {
-        $('input#resource_name, input.resource_subject').typeahead('destroy');
+        $('input#resource_name, input.resource_subject').typeahead('destroy'); // TODO: this doesn't work
 
         var institution_url = $('input[name="institution_url"]').val();
 
@@ -234,10 +233,6 @@ var ResourceEditForm = {
         $('.typeahead').parent().css('display', '');
         $('.tt-hint').addClass('form-control');
         $('input.form-control.typeahead').css('background-color', 'white'); // fix text fields in wells
-
-        $(document).on('PSAPFormFieldAdded', function() {
-            ResourceEditForm.initSuggestions();
-        });
     },
 
     /**
