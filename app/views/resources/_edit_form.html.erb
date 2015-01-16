@@ -129,8 +129,10 @@
               <p>The language of the institution carries down to resources by default, but this can be altered.</p>">
     ?
   </button>
+  <% @institution_language = @resource.location.repository.institution.language ?
+          @resource.location.repository.institution.language.english_name : '' %>
   <%= f.collection_select :language_id, Language.all, :id, :english_name,
-                          { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
+                          { include_blank: "That of Institution (#{@institution_language})" },
                           { class: 'form-control' } %>
 </div>
 
