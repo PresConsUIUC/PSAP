@@ -9,8 +9,6 @@ var ResourceEditForm = function() {
     // lazy_loaded by formatSupportTypes()
     var format_support_types_json = null;
 
-    var self = this;
-
     /**
      * @param parentFormat Format object
      * @param onCompleteCallback
@@ -21,11 +19,11 @@ var ResourceEditForm = function() {
             return;
         }
 
-        var depth = $('div.format select').length;
+        var depth = $('div.format select.format').length;
 
         var new_select = $('<select></select>').
             attr('name', 'resource[format_id]').
-            attr('class', 'form-control input-md');
+            attr('class', 'form-control input-md format');
         var prompt = $('<option value="">Select&hellip;</option>');
         new_select.append(prompt);
 
@@ -69,8 +67,8 @@ var ResourceEditForm = function() {
             (new_select.find('option').length < 2) ? group.hide() : group.show();
 
             new_select.on('change', function() {
-                var format = format($(this).val());
-                selectFormat(format, null);
+                var fmt = format($(this).val());
+                selectFormat(fmt, null);
             });
 
             if (onCompleteCallback) {
@@ -129,10 +127,10 @@ var ResourceEditForm = function() {
     };
 
     var format = function(id) {
-        var formats = formats();
-        for (var i = 0; i < formats.length; i++) {
-            if (formats[i]['id'] == id) {
-                return formats[i];
+        var fts = formats();
+        for (var i = 0; i < fts.length; i++) {
+            if (fts[i]['id'] == id) {
+                return fts[i];
             }
         }
         return null;
@@ -140,8 +138,7 @@ var ResourceEditForm = function() {
 
     var formats = function() {
         if (!formats_json) {
-            formats_json = $.parseJSON(
-                $('input[name="formats_json"]').val());
+            formats_json = $.parseJSON($('input[name="formats_json"]').val());
         }
         return formats_json;
     };
@@ -227,9 +224,8 @@ var ResourceEditForm = function() {
 
     /**
      * @param format Format object (from format())
-     * @param onCompleteCallback Function
      */
-    var selectFormat = function(format, onCompleteCallback) {
+    var selectFormat = function(format) {
         if (!format) {
             return;
         }
@@ -314,19 +310,21 @@ var ResourceEditForm = function() {
 
                 // if the last select has been added
                 if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
-                    var format = format(select.val());
-                    selectFormat(format, null);
+                    var fmt = format(select.val());
+                    selectFormat(fmt, null);
                     if (is_original_document) {
                         setInitialFormatVectorSelections();
                     }
                 }
             };
 
-            var clone = selected_format_ids.slice();
-            clone.shift();
-            clone.forEach(function(id) {
-                addFormatSelect(format(id), onSelectAdded);
-            });
+            if (selected_format_ids.length > 0) {
+                addFormatSelect(null, onSelectAdded); // top-level formats
+                var clone = selected_format_ids.slice();
+                clone.forEach(function (id) {
+                    addFormatSelect(format(id), onSelectAdded);
+                });
+            }
         }
     };
 
