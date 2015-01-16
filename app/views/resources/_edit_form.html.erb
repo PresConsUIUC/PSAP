@@ -91,7 +91,7 @@
 </div>
 
 <hr>
-<h3>Additional Info (Optional)</h3>
+<h3>Optional Info</h3>
 
 <div class="form-group">
   <%= f.label :significance %>
@@ -120,6 +120,34 @@
   </div>
 </div>
 
+<div class="form-group">
+  <%= f.label :language %>
+  <button type="button" class="btn btn-sm help" data-container="body"
+          data-toggle="popover" data-placement="right"
+          data-content="<p>Indicate the primary language of the resource. OPTIONAL.</p>
+
+              <p>The language of the institution carries down to resources by default, but this can be altered.</p>">
+    ?
+  </button>
+  <%= f.collection_select :language_id, Language.all, :id, :english_name,
+                          { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
+                          { class: 'form-control' } %>
+</div>
+
+<div class="form-group">
+  <%= f.label :description %>
+  <button type="button" class="btn btn-sm help" data-container="body"
+          data-toggle="popover" data-placement="right"
+          data-content="<p>Describe the content of the resource. OPTIONAL.</p>
+
+              <p>Description may include but is not limited to: an abstract,
+              table of contents, reference to further documentation of the
+              resource’s content.</p>">
+    ?
+  </button>
+  <%= f.text_area :description, class: 'form-control' %>
+</div>
+
 <div class="form-group psap-addable-removable">
   <%= f.label :creators, 'Creator(s)' %>
   <button type="button" class="btn btn-sm help" data-container="body"
@@ -139,22 +167,28 @@
     ?
   </button>
 
-  <%= f.fields_for :creators do |g| %>
-    <div class="psap-addable-removable-input-group well">
-      <%= select('resource[creators_attributes][0]', 'creator_type',
-                 options_for_select([['Person', CreatorType::PERSON],
-                                     ['Company', CreatorType::COMPANY]]),
-                 { include_blank: false },
-                 { class: 'form-control input-md' }) %>
-      <%= g.text_field :name, class: 'form-control' %>
-      <button class="btn btn-default btn-sm remove" type="button">
-        <span class="glyphicon glyphicon-minus"></span>
-      </button>
-    </div>
-  <% end %>
-  <button class="btn btn-default btn-sm add" type="button">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
+  <div class="well">
+    <%= f.fields_for :creators do |g| %>
+      <div class="psap-addable-removable-input-group row">
+        <div class="col-sm-11">
+          <%= select('resource[creators_attributes][0]', 'creator_type',
+                     options_for_select([['Person', CreatorType::PERSON],
+                                         ['Company', CreatorType::COMPANY]]),
+                     { include_blank: false },
+                     { class: 'form-control input-md' }) %>
+          <%= g.text_field :name, class: 'form-control' %>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-default btn-sm remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+        </div>
+      </div>
+    <% end %>
+    <button class="btn btn-default btn-sm add" type="button">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
 </div>
 
 <div class="form-group psap-addable-removable">
@@ -183,97 +217,89 @@
     ?
   </button>
 
-  <%= f.fields_for :resource_dates do |g| %>
-    <div class="psap-addable-removable-input-group well">
-      <%= g.label 'Type' %>
-      <%= g.select('date_type',
-                   options_for_select(DateType::all.map{ |t| [ DateType::name_for_type(t), t ] },
-                                      selected: g.object.date_type),
-                   { include_blank: false },
-                   { class: 'form-control date_type' }) %>
-      <div class="input-group begin_date">
-        <%= g.label 'Begin date' %>
-        <div class="row">
-          <div class="col-sm-4">
-            <%= g.number_field :begin_year, class: 'form-control year',
-                               min: 1, max: Time.now.year, maxlength: 4,
-                               placeholder: 'YYYY' %>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :begin_month, class: 'form-control month',
-                               min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-            <span class="help-block">(optional)</span>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :begin_day, class: 'form-control day',
-                               min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-            <span class="help-block">(optional)</span>
-          </div>
-        </div>
-      </div>
-      <div class="input-group end_date">
-        <%= g.label 'End date' %>
-        <div class="row">
-          <div class="col-sm-4">
-            <%= g.number_field :end_year, class: 'form-control year',
-                               min: 1, max: Time.now.year, maxlength: 4,
-                               placeholder: 'YYYY' %>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :end_month, class: 'form-control month',
-                               min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-            <span class="help-block">(optional)</span>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :end_day, class: 'form-control day',
-                               min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-            <span class="help-block">(optional)</span>
+  <div class="well">
+    <%= f.fields_for :resource_dates do |g| %>
+      <div class="psap-addable-removable-input-group row">
+        <div class="col-sm-11">
+        <%= g.label 'Type' %>
+        <%= g.select('date_type',
+                     options_for_select(DateType::all.map{ |t| [ DateType::name_for_type(t), t ] },
+                                        selected: g.object.date_type),
+                     { include_blank: false },
+                     { class: 'form-control date_type' }) %>
+        <div class="input-group begin_date">
+          <%= g.label 'Begin date' %>
+          <div class="row">
+            <div class="col-sm-4">
+              <%= g.number_field :begin_year, class: 'form-control year',
+                                 min: 1, max: Time.now.year, maxlength: 4,
+                                 placeholder: 'YYYY' %>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :begin_month, class: 'form-control month',
+                                 min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :begin_day, class: 'form-control day',
+                                 min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="input-group date">
-        <%= g.label 'Date' %>
-        <div class="row">
-          <div class="col-sm-4">
-            <%= g.number_field :year, class: 'form-control year',
-                               min: 1, max: Time.now.year, maxlength: 4,
-                               placeholder: 'YYYY' %>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :month, class: 'form-control month',
-                               min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-            <span class="help-block">(optional)</span>
-          </div>
-          <div class="col-sm-4">
-            <%= g.number_field :day, class: 'form-control day',
-                               min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-            <span class="help-block">(optional)</span>
+        <div class="input-group end_date">
+          <%= g.label 'End date' %>
+          <div class="row">
+            <div class="col-sm-4">
+              <%= g.number_field :end_year, class: 'form-control year',
+                                 min: 1, max: Time.now.year, maxlength: 4,
+                                 placeholder: 'YYYY' %>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :end_month, class: 'form-control month',
+                                 min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :end_day, class: 'form-control day',
+                                 min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
           </div>
         </div>
+        <div class="input-group date">
+          <%= g.label 'Date' %>
+          <div class="row">
+            <div class="col-sm-4">
+              <%= g.number_field :year, class: 'form-control year',
+                                 min: 1, max: Time.now.year, maxlength: 4,
+                                 placeholder: 'YYYY' %>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :month, class: 'form-control month',
+                                 min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+              <span class="help-block">(optional)</span>
+            </div>
+            <div class="col-sm-4">
+              <%= g.number_field :day, class: 'form-control day',
+                                 min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+              <span class="help-block">(optional)</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-default btn-sm remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+        </div>
       </div>
-      <button class="btn btn-default btn-sm remove" type="button">
-        <span class="glyphicon glyphicon-minus"></span>
-      </button>
-    </div>
-  <% end %>
+    <% end %>
 
-  <button class="btn btn-default btn-sm add" type="button">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
-</div>
-
-<div class="form-group">
-  <%= f.label :language %>
-  <button type="button" class="btn btn-sm help" data-container="body"
-          data-toggle="popover" data-placement="right"
-          data-content="<p>Indicate the primary language of the resource. OPTIONAL.</p>
-
-              <p>The language of the institution carries down to resources by default, but this can be altered.</p>">
-    ?
-  </button>
-  <%= f.collection_select :language_id, Language.all, :id, :english_name,
-                          { include_blank: "That of Institution (#{@resource.location.repository.institution.language.english_name})" },
-                          { class: 'form-control' } %>
+    <button class="btn btn-default btn-sm add" type="button">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
 </div>
 
 <div class="form-group psap-addable-removable">
@@ -300,22 +326,24 @@
     ?
   </button>
 
-  <%= f.fields_for :subjects do |g| %>
-    <div class="psap-addable-removable-input-group">
-      <div class="col-sm-11">
-        <%= g.text_field :name, class: 'form-control typeahead resource_subject' %>
+  <div class="well">
+    <%= f.fields_for :subjects do |g| %>
+      <div class="psap-addable-removable-input-group row">
+        <div class="col-sm-11">
+          <%= g.text_field :name, class: 'form-control typeahead resource_subject' %>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-default remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+        </div>
       </div>
-      <div class="col-sm-1">
-        <button class="btn btn-default remove" type="button">
-          <span class="glyphicon glyphicon-minus"></span>
-        </button>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <button class="btn btn-default btn-sm add" type="button">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
+    <button class="btn btn-default btn-sm add" type="button">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
 </div>
 
 <div class="form-group psap-addable-removable">
@@ -341,22 +369,24 @@
     ?
   </button>
 
-  <%= f.fields_for :extents do |g| %>
-    <div class="psap-addable-removable-input-group">
-      <div class="col-sm-11">
-        <%= g.text_field :name, class: 'form-control' %>
+  <div class="well">
+    <%= f.fields_for :extents do |g| %>
+      <div class="psap-addable-removable-input-group row">
+        <div class="col-sm-11">
+          <%= g.text_field :name, class: 'form-control' %>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-default remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+        </div>
       </div>
-      <div class="col-sm-1">
-        <button class="btn btn-default remove" type="button">
-          <span class="glyphicon glyphicon-minus"></span>
-        </button>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <button class="btn btn-default btn-sm add" type="button">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
+    <button class="btn btn-default btn-sm add" type="button">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
 </div>
 
 <div class="form-group">
@@ -376,20 +406,6 @@
   <%= f.text_area :rights, class: 'form-control' %>
 </div>
 
-<div class="form-group">
-  <%= f.label :description %>
-  <button type="button" class="btn btn-sm help" data-container="body"
-          data-toggle="popover" data-placement="right"
-          data-content="<p>Describe the content of the resource. OPTIONAL.</p>
-
-              <p>Description may include but is not limited to: an abstract,
-              table of contents, reference to further documentation of the
-              resource’s content.</p>">
-    ?
-  </button>
-  <%= f.text_area :description, class: 'form-control' %>
-</div>
-
 <div class="form-group psap-addable-removable">
   <%= f.label :resource_notes, 'Note(s)' %>
   <button type="button" class="btn btn-sm help" data-container="body"
@@ -398,17 +414,21 @@
               that you would like to store here. OPTIONAL.</p>">
     ?
   </button>
-
-  <%= f.fields_for :resource_notes do |g| %>
-    <div class="psap-addable-removable-input-group">
-      <%= g.text_area :value, class: 'form-control' %>
-      <button class="btn btn-default remove" type="button">
-        <span class="glyphicon glyphicon-minus"></span>
-      </button>
-    </div>
-  <% end %>
-
-  <button class="btn btn-default btn-sm add" type="button">
-    <span class="glyphicon glyphicon-plus"></span>
-  </button>
+  <div class="well">
+    <%= f.fields_for :resource_notes do |g| %>
+      <div class="psap-addable-removable-input-group row">
+        <div class="col-sm-11">
+          <%= g.text_area :value, class: 'form-control' %>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-default remove" type="button">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+        </div>
+      </div>
+    <% end %>
+    <button class="btn btn-default btn-sm add" type="button">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </div>
 </div>
