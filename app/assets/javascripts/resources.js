@@ -9,8 +9,6 @@ var ResourceEditForm = function() {
     // lazy_loaded by formatSupportTypes()
     var format_support_types_json = null;
 
-    var initial_selections_set = false;
-
     var self = this;
 
     /**
@@ -83,9 +81,9 @@ var ResourceEditForm = function() {
 
     var attachEventListeners = function() {
         // if the resource is an item, hide the format; otherwise, show it
-        var format_div = $('div.format');
-        $('input[name="resource[resource_type]"]').on('change', function() {
-            if ($(this).filter(':checked').val() == 1) { // 1 == item
+        $('input[name="resource[resource_type]:checked"]').on('change', function() {
+            var format_div = $('div.format');
+            if ($(this).val() == '1') { // 1 == item
                 format_div.show();
             } else {
                 format_div.hide();
@@ -172,11 +170,11 @@ var ResourceEditForm = function() {
         $(document).on('PSAPFormFieldAdded', function() {
             attachEventListeners();
             initSuggestions();
-            if ($('body#edit_resource').length &&
-                !initial_selections_set) {
-                setInitialSelections();
-            }
         }).trigger('PSAPFormFieldAdded');
+
+        if ($('body#edit_resource').length) {
+            setInitialSelections();
+        }
     };
 
     var initSuggestions = function() {
@@ -330,7 +328,6 @@ var ResourceEditForm = function() {
                 addFormatSelect(format(id), onSelectAdded);
             });
         }
-        initial_selections_set = true;
     };
 
     var shouldShowFormatVectorMenus = function() {
@@ -380,8 +377,7 @@ var ResourceEditForm = function() {
 
 var ready = function() {
     if ($('body#new_resource').length || $('body#edit_resource').length) {
-        var form = new ResourceEditForm();
-        form.init();
+        new ResourceEditForm().init();
     } else if ($('body#assess_resource').length) {
         // handled by AssessmentForm in assessments.js
     }
