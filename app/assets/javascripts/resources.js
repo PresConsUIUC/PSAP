@@ -1,23 +1,27 @@
-var ResourceEditForm = {
+var ResourceEditForm = function() {
+
+    var ROOT_URL = $('input[name="root-url"]').val();
 
     // lazy-loaded by formats()
-    formats_json: null,
+    var formats_json = null;
     // lazy-loaded by formatInkMediaTypes()
-    format_ink_media_types_json: null,
+    var format_ink_media_types_json = null;
     // lazy_loaded by formatSupportTypes()
-    format_support_types_json: null,
+    var format_support_types_json = null;
+
+    var initial_selections_set = false;
+
+    var self = this;
 
     /**
      * @param parentFormat Format object
      * @param onCompleteCallback
      */
-    addFormatSelect: function(parentFormat, onCompleteCallback) {
+    var addFormatSelect = function(parentFormat, onCompleteCallback) {
         var format_class_id = $('input[name="format_class"]:checked').val();
-        if (ResourceEditForm.shouldShowFormatVectorMenus()) {
+        if (shouldShowFormatVectorMenus()) {
             return;
         }
-
-        var ROOT_URL = $('input[name="root-url"]').val();
 
         var depth = $('div.format select').length;
 
@@ -40,9 +44,7 @@ var ResourceEditForm = {
             // destroy all selects after the changed select
             $(this).parent().nextAll('div.form-inline').remove();
             // create a child select
-            ResourceEditForm.addFormatSelect(
-                ResourceEditForm.format($(this).val()),
-                onCompleteCallback);
+            addFormatSelect(format($(this).val()), onCompleteCallback);
         });
 
         var contents_url = ROOT_URL + '/format-classes/' + format_class_id +
@@ -69,17 +71,17 @@ var ResourceEditForm = {
             (new_select.find('option').length < 2) ? group.hide() : group.show();
 
             new_select.on('change', function() {
-                var format = ResourceEditForm.format($(this).val());
-                ResourceEditForm.selectFormat(format, null);
+                var format = format($(this).val());
+                selectFormat(format, null);
             });
 
             if (onCompleteCallback) {
                 onCompleteCallback(new_select);
             }
         });
-    },
+    };
 
-    attachEventListeners: function() {
+    var attachEventListeners = function() {
         // if the resource is an item, hide the format; otherwise, show it
         var format_div = $('div.format');
         $('input[name="resource[resource_type]"]').on('change', function() {
@@ -91,8 +93,8 @@ var ResourceEditForm = {
         }).trigger('change');
 
         $('input[name="format_class"]').on('change', function() {
-            ResourceEditForm.selectFormatClass($(this).val());
-            ResourceEditForm.addFormatSelect();
+            selectFormatClass($(this).val());
+            addFormatSelect();
         });
 
         $('select.date_type').on('change', function(event) {
@@ -126,68 +128,58 @@ var ResourceEditForm = {
             $(this).closest('.input-group').find('input.day').prop('disabled',
                 ($(this).val().length < 1));
         }).trigger('keyup');
-    },
+    };
 
-    format: function(id) {
-        var formats = ResourceEditForm.formats();
+    var format = function(id) {
+        var formats = formats();
         for (var i = 0; i < formats.length; i++) {
             if (formats[i]['id'] == id) {
                 return formats[i];
             }
         }
         return null;
-    },
+    };
 
-    formatByFID: function(fid) {
-        var formats = ResourceEditForm.formats();
-        for (var i = 0; i < formats.length; i++) {
-            if (formats[i]['fid'] == fid) {
-                return formats[i];
-            }
-        }
-        return null;
-    },
-
-    formats: function() {
-        if (!ResourceEditForm.formats_json) {
-            ResourceEditForm.formats_json = $.parseJSON(
+    var formats = function() {
+        if (!formats_json) {
+            formats_json = $.parseJSON(
                 $('input[name="formats_json"]').val());
         }
-        return ResourceEditForm.formats_json;
-    },
+        return formats_json;
+    };
 
-    formatInkMediaTypes: function() {
-        if (!ResourceEditForm.format_ink_media_types_json) {
-            ResourceEditForm.format_ink_media_types_json = $.parseJSON(
+    var formatInkMediaTypes = function() {
+        if (!format_ink_media_types_json) {
+            format_ink_media_types_json = $.parseJSON(
                 $('input[name="format_ink_media_types_json"]').val());
         }
-        return ResourceEditForm.format_ink_media_types_json;
-    },
+        return format_ink_media_types_json;
+    };
 
-    formatSupportTypes: function() {
-        if (!ResourceEditForm.format_support_types_json) {
-            ResourceEditForm.format_support_types_json = $.parseJSON(
+    var formatSupportTypes = function() {
+        if (!format_support_types_json) {
+            format_support_types_json = $.parseJSON(
                 $('input[name="format_support_types_json"]').val());
         }
-        return ResourceEditForm.format_support_types_json;
-    },
+        return format_support_types_json;
+    };
 
-    hideFormatVectorMenus: function() {
+    var hideFormatVectorMenus = function() {
         $('.format-vectors').remove();
-    },
+    };
 
-    init: function() {
+    this.init = function() {
         $(document).on('PSAPFormFieldAdded', function() {
-            ResourceEditForm.attachEventListeners();
-            ResourceEditForm.initSuggestions();
+            attachEventListeners();
+            initSuggestions();
+            if ($('body#edit_resource').length &&
+                !initial_selections_set) {
+                setInitialSelections();
+            }
         }).trigger('PSAPFormFieldAdded');
+    };
 
-        if ($('body#edit_resource').length) {
-            ResourceEditForm.setInitialSelections();
-        }
-    },
-
-    initSuggestions: function() {
+    var initSuggestions = function() {
         $('input#resource_name, input.resource_subject').typeahead('destroy'); // TODO: this doesn't work
 
         var institution_url = $('input[name="institution_url"]').val();
@@ -233,13 +225,13 @@ var ResourceEditForm = {
         $('.typeahead').parent().css('display', '');
         $('.tt-hint').addClass('form-control');
         $('input.form-control.typeahead').css('background-color', 'white'); // fix text fields in wells
-    },
+    };
 
     /**
-     * @param format Format object (from ResourceEditForm.format())
+     * @param format Format object (from format())
      * @param onCompleteCallback Function
      */
-    selectFormat: function(format, onCompleteCallback) {
+    var selectFormat = function(format, onCompleteCallback) {
         if (!format) {
             return;
         }
@@ -249,44 +241,43 @@ var ResourceEditForm = {
         if (format['fid'] == 159 || format['fid'] == 160) {
             $('div.format').append(
                 '<input type="hidden" name="resource[format_id]" value="' + format['id'] + '">');
-            ResourceEditForm.showFormatVectorMenus();
+            showFormatVectorMenus();
         } else {
-            ResourceEditForm.hideFormatVectorMenus();
+            hideFormatVectorMenus();
         }
 
         var select = $('select[name="resource[format_id]"]');
         select.val(format['id']);
 
-        var root_url = $('input[name="root-url"]').val();
         var help_page = select.find(':selected').data('help-page');
         help_page = help_page ? help_page : '';
         var help_anchor = select.find(':selected').data('help-anchor');
         help_anchor = help_anchor ? '#' + help_anchor : '';
         select.filter(':first').next('a').attr('href',
-                root_url + 'format-id-guide/' + help_page + help_anchor).show();
-    },
+                ROOT_URL + 'format-id-guide/' + help_page + help_anchor).show();
+    };
 
     /**
      * Format class is one of the radio buttons: A/V, Photo/Image...
      *
      * @param id Format class ID
      */
-    selectFormatClass: function(id) {
+    var selectFormatClass = function(id) {
         // destroy all selects
         $('div.format .form-inline').remove();
         // select the format class
         $('input[name="format_class"][value="' + id + '"]').attr('checked', true);
 
         if (id == 3) { // 3 == bound paper
-            ResourceEditForm.showFormatVectorMenus();
+            showFormatVectorMenus();
         } else {
             $('input[name="resource[format_id]"]').remove();
         }
-    },
+    };
 
-    setInitialSelections: function() {
+    var setInitialSelections = function() {
         var format_class_id = $('input[name="selected_format_class"]').val();
-        ResourceEditForm.selectFormatClass(format_class_id);
+        selectFormatClass(format_class_id);
 
         var selected_format_ids = $('input[name="selected_format_ids"]').map(function() {
             return $(this).val();
@@ -298,8 +289,8 @@ var ResourceEditForm = {
         var is_original_document = (selected_format_fids.indexOf(159) > -1);
         var is_bound_paper = (format_class_id == 3);
 
-        if (ResourceEditForm.shouldShowFormatVectorMenus()) {
-            ResourceEditForm.showFormatVectorMenus();
+        if (shouldShowFormatVectorMenus()) {
+            showFormatVectorMenus();
         }
 
         var setInitialFormatVectorSelections = function() {
@@ -325,8 +316,8 @@ var ResourceEditForm = {
 
                 // if the last select has been added
                 if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
-                    var format = ResourceEditForm.format(select.val());
-                    ResourceEditForm.selectFormat(format, null);
+                    var format = format(select.val());
+                    selectFormat(format, null);
                     if (is_original_document) {
                         setInitialFormatVectorSelections();
                     }
@@ -336,27 +327,28 @@ var ResourceEditForm = {
             var clone = selected_format_ids.slice();
             clone.shift();
             clone.forEach(function(id) {
-                ResourceEditForm.addFormatSelect(ResourceEditForm.format(id), onSelectAdded);
+                addFormatSelect(format(id), onSelectAdded);
             });
         }
-    },
+        initial_selections_set = true;
+    };
 
-    shouldShowFormatVectorMenus: function() {
+    var shouldShowFormatVectorMenus = function() {
         // if format class is Bound Paper or format is Unbound Paper -->
         // Original Document
         return ($('input[name="format_class"]:checked').val() == 3 ||
         $('[name="resource[format_id]"]').val() == 159);
-    },
+    };
 
-    showFormatVectorMenus: function() {
-        ResourceEditForm.hideFormatVectorMenus();
+    var showFormatVectorMenus = function() {
+        hideFormatVectorMenus();
 
         var ink_select = $('<select></select>').
             attr('id', 'resource[format_ink_media_type_id]').
             attr('name', 'resource[format_ink_media_type_id]').
             attr('class', 'form-control input-md').
             append($('<option value="">Select&hellip;</option>'));
-        $.each(ResourceEditForm.formatInkMediaTypes(), function(i, obj) {
+        $.each(formatInkMediaTypes(), function(i, obj) {
             ink_select.append($('<option data-score="' + obj['score'] + '">').
                 attr('value', obj['id']).text(obj['name']));
         });
@@ -370,7 +362,7 @@ var ResourceEditForm = {
             attr('name', 'resource[format_support_type_id]').
             attr('class', 'form-control input-md').
             append($('<option value="">Select&hellip;</option>'));
-        $.each(ResourceEditForm.formatSupportTypes(), function(i, obj) {
+        $.each(formatSupportTypes(), function(i, obj) {
             support_select.append($('<option data-score="' + obj['score'] + '">').
                 attr('value', obj['id']).text(obj['name']));
         });
@@ -382,13 +374,14 @@ var ResourceEditForm = {
         var group = $('<div class="format-vectors"></div>');
         group.append(ink_container).append(support_container);
         $('div.format').append(group);
-    }
+    };
 
 };
 
 var ready = function() {
     if ($('body#new_resource').length || $('body#edit_resource').length) {
-        ResourceEditForm.init();
+        var form = new ResourceEditForm();
+        form.init();
     } else if ($('body#assess_resource').length) {
         // handled by AssessmentForm in assessments.js
     }
