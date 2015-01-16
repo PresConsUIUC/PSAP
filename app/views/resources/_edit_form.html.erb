@@ -195,9 +195,7 @@
                 <div class="psap-addable-removable-input-group well">
                   <%= g.label 'Type' %>
                   <%= g.select('date_type',
-                               options_for_select([['Single', DateType::SINGLE],
-                                                   ['Span/Inclusive', DateType::SPAN],
-                                                   ['Bulk', DateType::BULK]],
+                               options_for_select(DateType::all.map{ |t| [ DateType::name_for_type(t), t ] },
                                                   selected: g.object.date_type),
                                { include_blank: false },
                                { class: 'form-control date_type' }) %>
