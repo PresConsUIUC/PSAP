@@ -13,26 +13,23 @@ class DashboardControllerTest < ActionController::TestCase
     signin_as(users(:normal_user))
     get :index
     assert_response :success
-    assert_not_nil assigns(:user)
-    assert_not_nil assigns(:resources)
   end
 
   test 'affiliated users have necessary ivars set' do
     signin_as(users(:normal_user))
     get :index
     assert_not_nil assigns(:user)
-    assert_not_nil assigns(:resources)
+    assert_not_nil assigns(:institution_events)
     assert_not_nil assigns(:institution_users)
-    assert_not_nil assigns(:recent_assessments)
+    assert_not_nil assigns(:most_active_institution_users)
+    assert_not_nil assigns(:recent_updated_resources)
   end
 
-  test 'unaffiliated users\' necessary ivars are set' do
+  test 'unaffiliated users have necessary ivars are set' do
     signin_as(users(:unaffiliated_user))
     get :index
     assert_not_nil assigns(:user)
-    assert_not_nil assigns(:resources)
-    assert_empty assigns(:institution_users)
-    assert_empty assigns(:recent_assessments)
+    assert_not_nil assigns(:institutions)
   end
 
   test 'users cannot view a dashboard feed without a key' do

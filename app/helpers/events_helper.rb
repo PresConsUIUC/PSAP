@@ -23,24 +23,21 @@ module EventsHelper
     end
   end
 
-  def level_buttons(current_level, params)
-    levels = EventLevel::all.sort do |a, b|
-      b <=> a
-    end
-
+  def event_level_buttons(current_level, params)
+    levels = EventLevel::all.sort{ |a, b| b <=> a }
     links = []
     levels.each do |level|
       params = params.dup
-      link_params = params.merge({ level: level })
+      link_params = params.merge(level: level).except(:page)
       events = Event.matching_params(link_params)
       level_count = events.where('event_level = ?', level).count
 
-      cssClass = 'btn btn-sm level_button '
-      cssClass.concat (current_level.to_i == level) ?
+      css_class = 'btn btn-sm level_button '
+      css_class.concat (current_level.to_i == level) ?
                           'btn-info active' : 'btn-default'
 
       links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge pull-right\">#{level_count}</span>"),
-                       link_params, class: cssClass, remote: true,
+                       link_params, class: css_class, remote: true,
                        'data-level' => level)
     end
     links.join
@@ -79,7 +76,7 @@ module EventsHelper
 
     end
     raw(link_to(entity) do
-      raw(glyphicon(event.associated_entity_class)) + ' ' + string
+      raw(entity_icon(event.associated_entity_class)) + ' ' + string
     end)
   end
 

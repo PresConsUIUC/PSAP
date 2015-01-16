@@ -7,7 +7,7 @@ xml.instruct!
 xml.feed(
     'xmlns' => 'http://www.w3.org/2005/Atom',
 ) {
-  xml.title('My PSAP Dashboard')
+  xml.title('PSAP Activity')
   xml.link('href' => events_url)
   if @events.any?
     xml.updated(@events[0].created_at.iso8601)

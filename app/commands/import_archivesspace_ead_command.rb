@@ -2,9 +2,8 @@ require 'rexml/document'
 
 class ImportArchivesspaceEadCommand < Command
 
-  def initialize(files, location, parent_resource, user, remote_ip)
+  def initialize(files, parent_resource, user, remote_ip)
     @files = files
-    @location = location
     @parent_resource = parent_resource
     @user = user
     @remote_ip = remote_ip
@@ -15,9 +14,11 @@ class ImportArchivesspaceEadCommand < Command
     begin
       ActiveRecord::Base.transaction do
         @files.each do |io|
-          if File.extname(io.original_filename) == '.xml'
+          if (io.respond_to?('original_filename') and
+              File.extname(io.original_filename) == '.xml') or
+              !io.respond_to?('original_filename')
             resource = Resource.from_ead(io.read, @user.id)
-            resource.location = @location
+            resource.location = @parent_resource.location
             resource.parent = @parent_resource
             resource.save!
             @resources << resource

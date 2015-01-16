@@ -2,16 +2,20 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:create, :destroy, :edit, :import, :names, :new,
+                only: [:assess, :create, :destroy, :edit, :import, :names, :new,
                        :show, :subjects, :update]
+
+  def assess
+    @resource = Resource.find(params[:resource_id])
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
+  end
 
   def create
     @location = Location.find(params[:location_id])
     command = CreateResourceCommand.new(@location, resource_params,
                                         current_user, request.remote_ip)
     @resource = command.object
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
@@ -40,7 +44,9 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # Responds to /resources/:id/assess
+  ##
+  # Responds to GET /resources/:id/assess
+  #
   def edit
     @resource = Resource.find(params[:id])
 
@@ -51,13 +57,11 @@ class ResourcesController < ApplicationController
     @resource.resource_dates.build unless @resource.resource_dates.any?
     @resource.resource_notes.build unless @resource.resource_notes.any?
     @resource.subjects.build unless @resource.subjects.any?
-
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
   end
 
   ##
   # Responds to POST /locations/:id/resources/import
+  #
   def import
     if params[:location_id]
       @location = Location.find(params[:location_id])
@@ -67,8 +71,7 @@ class ResourcesController < ApplicationController
     end
 
     command = ImportArchivesspaceEadCommand.new(
-        params[:files], @location, @parent_resource, current_user,
-        request.remote_ip)
+        params[:files], @parent_resource, current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
@@ -108,12 +111,15 @@ class ResourcesController < ApplicationController
   ##
   # Responds to /institutions/:id/resources/names
   def names
-    render json: Resource.
-        joins('LEFT JOIN locations ON locations.id = resources.location_id').
-        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
-        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
-        where('institutions.id = ?', params[:institution_id]).
-        map{ |r| r.name }
+    sql = 'SELECT DISTINCT resources.name '\
+    'FROM resources '\
+    'LEFT JOIN locations ON locations.id = resources.location_id '\
+    'LEFT JOIN repositories ON locations.repository_id = repositories.id '\
+    'LEFT JOIN institutions ON repositories.institution_id = institutions.id '\
+    'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
+    conn = ActiveRecord::Base.connection
+    results = conn.execute(sql)
+    render json: results.map{ |r| r['name'] }
   end
 
   def new
@@ -172,12 +178,16 @@ class ResourcesController < ApplicationController
   ##
   # Responds to /institutions/:id/resources/subjects
   def subjects
-    render json: Subject.select('subjects.name').
-        joins('LEFT JOIN resources ON subjects.resource_id = resources.id').
-        joins('LEFT JOIN locations ON locations.id = resources.location_id').
-        joins('LEFT JOIN repositories ON locations.repository_id = repositories.id').
-        joins('LEFT JOIN institutions ON repositories.institution_id = institutions.id').
-        where('institutions.id = ?', params[:institution_id]).distinct.map{ |r| r['name'] }
+    sql = 'SELECT DISTINCT subjects.name '\
+    'FROM subjects '\
+    'LEFT JOIN resources ON subjects.resource_id = resources.id '\
+    'LEFT JOIN locations ON locations.id = resources.location_id '\
+    'LEFT JOIN repositories ON locations.repository_id = repositories.id '\
+    'LEFT JOIN institutions ON repositories.institution_id = institutions.id '\
+    'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
+    conn = ActiveRecord::Base.connection
+    results = conn.execute(sql)
+    render json: results.map{ |r| r['name'] }
   end
 
   def update
@@ -196,7 +206,7 @@ class ResourcesController < ApplicationController
     else
       flash[:success] = "Resource \"#{@resource.name}\" updated."
       respond_to do |format|
-        format.html { redirect_to edit_resource_url(@resource) }
+        format.html { redirect_to @resource }
         format.js { render 'edit' }
       end
     end
@@ -219,14 +229,14 @@ class ResourcesController < ApplicationController
       institution = Institution.find(params[:institution_id])
     end
     if institution
-      redirect_to(root_url) unless institution.users.include?(current_user) ||
+      redirect_to(root_url) unless institution.users.include?(current_user) or
               current_user.is_admin?
     end
   end
 
   def resource_params
-    params.require(:resource).permit(:description, :format_id,
-                                     :format_ink_media_type_id,
+    params.require(:resource).permit(:assessment_type, :description,
+                                     :format_id, :format_ink_media_type_id,
                                      :format_support_type_id,
                                      :local_identifier, :location_id, :name,
                                      :notes, :parent_id, :resource_type,

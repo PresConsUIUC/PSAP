@@ -3,6 +3,7 @@ class Format < ActiveRecord::Base
            inverse_of: :parent, dependent: :destroy
   has_many :format_ink_media_types, inverse_of: :format
   has_many :format_support_types, inverse_of: :format
+  has_many :humidity_ranges, inverse_of: :format, dependent: :destroy
   has_many :resources, inverse_of: :format, dependent: :restrict_with_exception
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
   has_and_belongs_to_many :assessment_questions

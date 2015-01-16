@@ -164,7 +164,7 @@ var PSAP = {
 
         // Show the modal progress view after submitting an ajax form
         $(document).on('submit', 'form[data-remote="true"]', function() {
-            var view = $('#modal_progress_view');
+            var view = $('#psap-ajax-shade');
             view.height($(document).height());
             view.show();
         });
@@ -230,6 +230,37 @@ var PSAP = {
         }).trigger('change');
 
         PSAP.Form.enableDynamicNestedEntities();
+
+        // show the export notification panel after clicking an export option
+        $('.psap-export').on('click', function() {
+            var filename = $(this).attr('data-filename');
+            var format = $(this).attr('data-format');
+            setTimeout(function() {
+                var alert = $('div#psap-export-notification');
+                alert.find('.psap-filename').text(filename);
+                alert.find('.psap-format').text(format);
+                alert.modal();
+            }, 100);
+        });
+
+        // set up affixed left menu with scrollspy
+        var affixed = $('#psap-affixed-menu');
+        if (affixed.length) {
+            var body = $('body');
+            if (body.width() > 600) {
+                var navbar = $('nav.navbar.navbar-default');
+                affixed.width(affixed.parent().width());
+                affixed.affix({
+                    offset: {
+                        top: affixed.offset().top - navbar.height() - 15
+                    }
+                });
+                body.scrollspy({
+                    target: '#psap-affixed-menu',
+                    offset: navbar.height() + 15
+                });
+            }
+        }
 
         PSAP.smoothAnchorScroll(0);
     },

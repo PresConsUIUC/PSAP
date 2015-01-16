@@ -1,0 +1,18 @@
+A PSAP user has requested to change institutions:
+
+First Name: Norm
+Last Name: McNormal
+Username: normal
+Email: normal@example.org
+
+The user's current institution is: University of Illinois at Urbana-Champaign.
+
+He/she wishes to move to West Southeast Directional State University.
+
+1) If this request seems legitimate, please sign in to the PSAP and approve
+   the user's request at your earliest convenience:
+
+http://localhost:3000/users/normal/edit
+
+2) If you are not sure, please send the user an email requesting more
+   information.

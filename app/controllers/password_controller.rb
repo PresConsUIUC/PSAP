@@ -1,7 +1,7 @@
 class PasswordController < ApplicationController
 
   ##
-  # Responds to GET /forgot_password, displaying a form that will POST to
+  # Responds to GET /forgot-password, displaying a form that will POST to
   # /forgot_password.
   #
   def forgot_password
@@ -9,27 +9,32 @@ class PasswordController < ApplicationController
   end
 
   ##
-  # Responds to POST /forgot_password, sending an email containing a password
+  # Responds to POST /forgot-password, sending an email containing a password
   # reset link and redirecting to the root URL.
   #
   def send_email
-    if params[:user].kind_of?(Hash)
-      @user = User.find_by_email params[:user][:email]
+    if params[:email]
+      @user = User.find_by_email params[:email]
       if @user
-        @user.password_reset_key = SecureRandom.urlsafe_base64(nil, false) # TODO: put this in User.reset_reset_password_key
+        @user.reset_password_reset_key
         @user.save!
         UserMailer.password_reset_email(@user).deliver unless Rails.env.test?
         flash[:notice] = 'An email has been sent containing a link to reset '\
                           'your password.'
+        redirect_to root_url
+      else
+        flash[:error] = 'No user found with the given email address.'
+        redirect_to forgot_password_url
       end
+      return
     end
     redirect_to root_url
   end
 
   ##
-  # Responds to GET /new_password, which handles incoming links from password
+  # Responds to GET /new-password, which handles incoming links from password
   # reset emails, and contains a form with new-password fields that will POST
-  # to /new_password.
+  # to /new-password.
   #
   def new_password
     @user = User.find_by_username params[:username]
@@ -40,7 +45,7 @@ class PasswordController < ApplicationController
   end
 
   ##
-  # Responds to POST /new_password. Resets the password.
+  # Responds to POST /new-password. Resets the password.
   #
   def reset_password
     if params[:user].kind_of?(Hash)

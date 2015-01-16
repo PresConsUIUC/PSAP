@@ -15,6 +15,7 @@
 //= require bootstrap
 //= require jquery.cookie
 //= require bootstrap-typeahead-rails
+//= require d3
 //= require magnific-popup
 //= require local_time
 //= require_tree .

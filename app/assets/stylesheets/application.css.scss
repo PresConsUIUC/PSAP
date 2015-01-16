@@ -13,6 +13,9 @@
  *= require_self
  */
 
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
 @import "common.css.scss";
 
 @import "assessments.css.scss";
@@ -20,10 +23,11 @@
 @import "events.css.scss";
 @import "format_id_guide.css.scss";
 @import "formats.css.scss";
+@import "help.css.scss";
 @import "institutions.css.scss";
-@import "landing.css.scss";
 @import "locations.css.scss";
 @import "report.css.scss";
 @import "resources.css.scss";
+@import "sessions.css.scss";
 @import "static.css.scss";
 @import "users.css.scss";

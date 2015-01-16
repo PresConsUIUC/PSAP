@@ -1,0 +1,28 @@
+<%
+# Export notification modal panel
+# To use, include this partial, and create a tag like this to open it:
+# <a href="" class="psap-export" data-filename="something.jpg">JPEG</a>
+#
+# In the responding controller method, add something like:
+# response.headers['Content-Disposition'] = 'attachment; filename="something.jpg"'
+%>
+<div id="psap-export-notification" class="modal fade"
+     tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+     aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="exportModalLabel">
+          Exporting <span class="psap-format"></span>&hellip;</h4>
+      </div>
+      <div class="modal-body">
+        <p>Check your downloads folder for a file named
+          <strong class="psap-filename"></strong>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

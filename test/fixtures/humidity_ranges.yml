@@ -1,0 +1,15 @@
+rh_range_one:
+  max_rh: 30
+  score: 0.2
+  format_id: 1
+
+rh_range_two:
+  min_rh: 31
+  max_rh: 50
+  score: 0.4
+  format_id: 1
+
+rh_range_three:
+  min_rh: 51
+  score: 0.6
+  format_id: 1

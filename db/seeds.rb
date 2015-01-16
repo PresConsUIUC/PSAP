@@ -39,13 +39,39 @@ sheet.each_with_index do |row, i|
         end
       end
     end
-    Format.create!(fid: row[1],
-                   name: name,
-                   format_class: FormatClass::class_for_name(row[0]),
-                   parent: parent,
-                   score: row[6],
-                   format_id_guide_page: row[7],
-                   format_id_guide_anchor: row[8]) unless name.blank?
+    unless name.blank?
+      format = Format.new(
+          fid: row[1],
+          name: name,
+          format_class: FormatClass::class_for_name(row[0]),
+          parent: parent,
+          score: row[6],
+          format_id_guide_page: row[7],
+          format_id_guide_anchor: row[8])
+      unless row[9].blank? # temperature ranges
+        min_temps = row[9].split(',')
+        max_temps = row[10].split(',')
+        temp_scores = row[11].split(',')
+        min_temps.each_with_index do |min_temp, i|
+          format.temperature_ranges << TemperatureRange.create!(
+              min_temp_f: i == 0 ? nil : min_temp.strip.to_i,
+              max_temp_f: i == max_temps.length - 1 ? nil : max_temps[i].strip.to_i,
+              score: temp_scores[i].strip.to_f)
+        end
+      end
+      unless row[12].blank? # relative humidity ranges
+        min_rhs = row[12].split(',')
+        max_rhs = row[13].split(',')
+        rh_scores = row[14].split(',')
+        min_rhs.each_with_index do |min_rh, i|
+          format.humidity_ranges << HumidityRange.create!(
+              min_rh: min_rh.strip.to_i,
+              max_rh: max_rhs[i].strip.to_i,
+              score: rh_scores[i].strip.to_f)
+        end
+      end
+      format.save!
+    end
   end
 end
 
@@ -290,7 +316,7 @@ admin_user.role = admin_role
 admin_user.save!
 
 # UIUC institution
-command = CreateInstitutionCommand.new(
+command = CreateAndJoinInstitutionCommand.new(
     { name: 'University of Illinois at Urbana-Champaign',
       address1: '1408 W. Gregory Dr.',
       address2: nil,
@@ -301,7 +327,7 @@ command = CreateInstitutionCommand.new(
       url: 'http://www.library.illinois.edu/',
       email: 'test@example.org',
       language: languages[122],
-      description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1')
+      description: 'Lorem ipsum dolor sit amet' }, admin_user, '127.0.0.1')
 command.execute
 uiuc_institution = command.object
 admin_user.institution = uiuc_institution
@@ -324,7 +350,7 @@ case Rails.env
     uiuc_institution.save!
 
     # Institutions
-    CreateInstitutionCommand.new(
+    CreateAndJoinInstitutionCommand.new(
         { name: 'Hogwarts School of Witchcraft & Wizardry',
           address1: '123 Magical St.',
           address2: 'Suite 12',
@@ -335,6 +361,7 @@ case Rails.env
           url: 'http://example.org/',
           email: 'test@example.org',
           description: 'Lorem ipsum dolor sit amet' }, nil, '127.0.0.1').execute
+    hogwarts_institution = command.object
 
     # Normal user
     command = CreateUserCommand.new(
@@ -376,12 +403,23 @@ case Rails.env
     command.execute
     disabled_user = command.object
 
+    # User who desires to change institutions
+    command = CreateUserCommand.new(
+        { username: 'hpotter', email: 'harry@example.org',
+          first_name: 'Harry', last_name: 'Potter',
+          password: 'password', password_confirmation: 'password',
+          institution: hogwarts_institution,
+          desired_institution: Institution.find_by_city('Hogsmeade'),
+          role: normal_role,
+          confirmed: true, enabled: true }, '127.0.0.1', false)
+    command.execute
+
     # Repositories
     repository_commands = [
         CreateRepositoryCommand.new(uiuc_institution,
             { name: 'Sample Repository' }, nil, '127.0.0.1'),
         CreateRepositoryCommand.new(uiuc_institution,
-            { name: 'Another Sample Repository' }, nil, '127.0.0.1')
+            { name: 'Empty Repository' }, nil, '127.0.0.1')
     ]
 
     repositories = repository_commands.map{ |command| command.execute; command.object }
@@ -389,21 +427,21 @@ case Rails.env
     # Locations
     location_commands = [
         CreateLocationCommand.new(repositories[0],
-            { name: 'Secret Location',
+            { name: 'Sample Location',
               description: 'Sample description' }, nil, '127.0.0.1'),
         CreateLocationCommand.new(repositories[0],
-            { name: 'Even More Secret Location',
+            { name: 'Location With Lots of Stuff',
               description: 'Sample description' }, nil, '127.0.0.1'),
         CreateLocationCommand.new(repositories[0],
-            { name: 'Attic',
-              description: 'Sample description' }, nil, '127.0.0.1'),
+            { name: 'Empty Location',
+              description: 'Sample description' }, nil, '127.0.0.1')
     ]
 
     locations = location_commands.map{ |command| command.execute; command.object }
 
     locations.each do |location|
       location.temperature_range = TemperatureRange.create!(
-          min_temp_f: 0, max_temp_f: 100, score: 1)
+          min_temp_f: 60, max_temp_f: 70, score: 1)
       location.save!
     end
 
@@ -423,6 +461,7 @@ case Rails.env
         locations[0],
         { name: 'Sample Collection',
           resource_type: ResourceType::COLLECTION,
+          assessment_type: AssessmentType::ITEM_LEVEL,
           user: normal_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
@@ -466,32 +505,18 @@ case Rails.env
         locations[1],
         { name: 'Collection Containing Lots of Items',
           resource_type: ResourceType::COLLECTION,
+          assessment_type: AssessmentType::SAMPLE,
           user: admin_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           significance: 0,
           rights: 'Sample rights' }, nil, '127.0.0.1')
     resource_commands << CreateResourceCommand.new(
-        locations[2],
+        locations[0],
         { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
           resource_type: ResourceType::COLLECTION,
+          assessment_type: AssessmentType::ITEM_LEVEL,
           user: normal_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(
-        locations[2],
-        { name: 'Issue 1',
-          resource_type: ResourceType::ITEM,
-          user: admin_user,
-          description: 'Sample description',
-          local_identifier: 'sample_local_id',
-          rights: 'Sample rights' }, nil, '127.0.0.1')
-    resource_commands << CreateResourceCommand.new(
-        locations[2],
-        { name: 'Issue 2',
-          resource_type: ResourceType::ITEM,
-          user: disabled_user,
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
@@ -537,8 +562,6 @@ case Rails.env
     resources[1].parent = resources[0]
     resources[2].parent = resources[0]
     resources[3].parent = resources[0]
-    resources[6].parent = resources[5]
-    resources[7].parent = resources[5]
     resources.each{ |r| r.save! }
 
     # Dates
@@ -563,12 +586,6 @@ case Rails.env
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
                          year: 843)
-    ResourceDate.create!(resource: resources[6],
-                         date_type: DateType::SINGLE,
-                         year: 1856)
-    ResourceDate.create!(resource: resources[7],
-                         date_type: DateType::SINGLE,
-                         year: 1856)
 
     # Extents
     extents = []
@@ -603,18 +620,6 @@ case Rails.env
     for i in 0..resources.length - 1
       subjects << Subject.create!(name: 'Sample subject',
                                   resource: resources[i])
-    end
-
-    # Format temperature ranges
-    Format.all do |format|
-      TemperatureRange.create!(min_temp_f: nil, max_temp_f: 32, score: 1,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 33, max_temp_f: 54, score: 0.67,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 55, max_temp_f: 72, score: 0.33,
-                               format: format)
-      TemperatureRange.create!(min_temp_f: 73, max_temp_f: nil, score: 0,
-                               format: format)
     end
 
     # Events

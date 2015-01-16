@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
+  belongs_to :desired_institution, class_name: 'Institution',
+             foreign_key: 'desired_institution_id'
   has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :users
-  has_many :resources, inverse_of: :user
+  has_many :resources, -> { order(:name) }, inverse_of: :user
   belongs_to :role, inverse_of: :users
 
   has_secure_password
@@ -35,12 +37,14 @@ class User < ActiveRecord::Base
     sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
           "FROM users "\
           "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON events_users.event_id = events.id "\
-          "WHERE events.description LIKE 'Created resource%' "\
-            "OR events.description LIKE 'Updated resource%' "\
+          "LEFT JOIN events ON ("\
+            "events_users.event_id = events.id "\
+            "AND events.description LIKE 'Created resource%' "\
+              "OR events.description LIKE 'Updated resource%' "\
+              "OR events.description LIKE 'Moved resource%') "\
           "GROUP BY users.id "\
           "ORDER BY count DESC "\
-          "LIMIT #{limit}"  # TODO: is the GROUP BY right?
+          "LIMIT #{limit}"
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
@@ -78,6 +82,10 @@ class User < ActiveRecord::Base
 
   def reset_feed_key
     self.feed_key = SecureRandom.hex
+  end
+
+  def reset_password_reset_key
+    self.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
   end
 
   def validate_password?

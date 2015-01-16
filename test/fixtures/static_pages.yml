@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-page_one:
+fidg_page:
   id: 1
-  category: cats
+  category: avmedia
   html: <html><body><p>cats</p></body></html>
-  name: Cats
+  name: A/V Media
   searchable_html: cats
-  uri_fragment: cats
+  uri_fragment: avmedia
+
+help_page:
+  id: 2
+  category: help
+  html: <html><body><p>cats</p></body></html>
+  name: Help
+  searchable_html: cats
+  uri_fragment: help

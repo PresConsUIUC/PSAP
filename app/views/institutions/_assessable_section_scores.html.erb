@@ -1,13 +1,17 @@
-<h3><%= assessable.name %></h3>
-<h4>Score: <%= (assessable.assessment_score * 100).round %></h4>
-<table class="table">
-  <% assessable.assessment_section_scores.each do |section_id, score| %>
-    <% section = AssessmentSection.find(section_id) %>
-    <tr>
-      <td class="<%= bootstrap_bg_class_for_score(score) %>">
-        <%= assessment_score_characterization(score) %>
-      </td>
-      <td><%= section.name %>: <%= (score * 100).round %></td>
-    </tr>
+<% if assessable.assessment_question_responses.any? %>
+  <% if show_title %>
+    <h3><%= link_to assessable.name, assessable %></h3>
   <% end %>
-</table>
+  <h4>Score: <%= (assessable.assessment_score * 100).round %></h4>
+  <table class="table">
+    <% assessable.assessment_section_scores.each do |section_id, score| %>
+      <% section = AssessmentSection.find(section_id) %>
+      <tr>
+        <td class="<%= bootstrap_bg_class_for_score(score) %>">
+          <%= assessment_score_characterization(score) %>
+        </td>
+        <td><%= section.name %>: <%= (score * 100).round %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

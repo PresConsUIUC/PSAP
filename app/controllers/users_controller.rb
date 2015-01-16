@@ -4,9 +4,31 @@ class UsersController < ApplicationController
   before_action :before_new_user, only: [:new, :create]
   before_action :before_edit_user, only: [:edit, :update]
   before_action :before_show_user, only: :show
-  before_action :admin_user, only: [:index, :destroy, :enable, :disable]
+  before_action :admin_user, only: [:approve_institution, :index, :destroy,
+                                    :enable, :disable]
 
   helper_method :sort_column, :sort_direction
+
+  ##
+  # Counterpart of refuse_institution.
+  # Responds to PATCH /users/:username/approve-institution
+  #
+  def approve_institution
+    user = User.find_by_username(params[:username])
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = ApproveUserInstitutionCommand.new(user, current_user,
+                                                request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution change approved for user #{user.username}."
+    ensure
+      redirect_to :back
+    end
+  end
 
   def create
     command = CreateUserCommand.new(user_create_params, request.remote_ip)
@@ -52,14 +74,15 @@ class UsersController < ApplicationController
     user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless user
 
-    command = DeleteUserCommand.new(user, current_user, request.remote_ip)
+    _current_user = current_user
+    command = DeleteUserCommand.new(user, _current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash[:error] = "#{e}"
       redirect_to users_url
     else
-      if user == current_user
+      if user == _current_user
         flash[:success] = 'Your account has been deleted.'
         command = SignOutCommand.new(user, request.remote_ip)
         command.execute
@@ -73,6 +96,8 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @roles = Role.all.order(:name)
+    @user_role = Role.find_by_name('User')
   end
 
   ##
@@ -128,7 +153,8 @@ class UsersController < ApplicationController
     q = "%#{params[:q]}%"
     @users = User.
         joins('LEFT JOIN institutions ON users.institution_id = institutions.id').
-        where('users.username LIKE ? OR users.first_name LIKE ? OR users.last_name LIKE ?', q, q, q).
+        where('LOWER(users.username) LIKE ? OR LOWER(users.first_name) LIKE ? OR LOWER(users.last_name) LIKE ?',
+              q.downcase, q.downcase, q.downcase).
         order("#{sort_column} #{sort_direction}").
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
@@ -136,6 +162,27 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+  end
+
+  ##
+  # Counterpart of approve_institution.
+  # Responds to PATCH /users/:username/refuse-institution
+  #
+  def refuse_institution
+    user = User.find_by_username(params[:username])
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = RefuseUserInstitutionCommand.new(user, current_user,
+                                               request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash[:error] = "#{e}"
+    else
+      flash[:success] = "Institution change refused for user #{user.username}."
+    ensure
+      redirect_to :back
+    end
   end
 
   ##
@@ -165,18 +212,21 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
-    @resources = @user.resources.order(:name)
 
-    # @events_on_user = @user.events.order(created_at: :desc)
+    @resources = @user.resources.paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
     @events = Event.where(user: @user).order(created_at: :desc).limit(20)
   end
 
+  ##
+  # This action is meant to be invoked via ajax.
+  #
   def update
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
+    @user_role = Role.find_by_name('User')
 
-    # If the user is changing their password
-    if params[:user][:current_password]
+    if params[:user][:current_password] # the user is changing their password
       command = ChangePasswordCommand.new(
           @user, params[:user][:current_password],
           params[:user][:password],
@@ -194,15 +244,35 @@ class UsersController < ApplicationController
         flash[:success] = @user == current_user ?
             'Your password has been changed.' :
             "#{@user.username}'s password has been changed."
-
-        respond_to do |format|
-          format.html { redirect_to edit_user_url(@user) }
-          format.js { render 'edit' }
-        end
+        redirect_to edit_user_url(@user)
       end
-    else
-      was_unaffiliated = @user.institution.nil?
-
+    elsif params[:user][:desired_institution_id] # the user is changing their institution
+      new_institution = Institution.find(params[:user][:desired_institution_id])
+      command = JoinInstitutionCommand.new(@user, new_institution,
+                                           current_user, request.remote_ip)
+      begin
+        command.execute
+      rescue ValidationError
+        render 'edit'
+      rescue => e
+        flash[:error] = "#{e}"
+        render 'edit'
+      else
+        if @user.institution == new_institution # already joined, which means an admin did it
+          if @user == current_user
+            flash['success'] = "Your institution has been changed to "\
+            "#{new_institution.name}."
+          else
+            flash['success'] = "#{@user.username}'s institution has been "\
+            "changed to #{new_institution.name}."
+          end
+        else
+          flash['success'] = "An administrator has been notified and will "\
+          "review your request to join #{new_institution.name} momentarily,"
+        end
+        redirect_to dashboard_path
+      end
+    else # the user is changing their basic info
       command = UpdateUserCommand.new(@user, user_update_params, current_user,
                                       request.remote_ip)
       begin
@@ -213,26 +283,10 @@ class UsersController < ApplicationController
         flash[:error] = "#{e}"
         render 'edit'
       else
-        # If the user was not affiliated with an institution before the update,
-        # but now is, this implies that they have just joined an institution for
-        # the first time by following a link from their dashboard.
-        if was_unaffiliated && @user.institution
-          flash[:success] = @user == current_user ?
-              "You are now a member of #{@user.institution.name}." :
-              "#{@user.username} is now a member of #{@user.institution.name}."
-        else
-          flash[:success] = @user == current_user ?
-              'Your profile has been updated.' :
-              "#{@user.username}'s profile has been updated."
-        end
-
-        respond_to do |format|
-          format.html {
-            redirect_to was_unaffiliated && @user.institution ?
-                            dashboard_url : edit_user_url(@user)
-          }
-          format.js { render 'edit' }
-        end
+        flash[:success] = @user == current_user ?
+            'Your profile has been updated.' :
+            "#{@user.username}'s profile has been updated."
+        redirect_to edit_user_url(@user)
       end
     end
   end
@@ -273,9 +327,8 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:user).permit(:username, :email, :first_name, :last_name,
-                                 :institution_id, :enabled,
-                                 :show_contextual_help)
+    params.require(:user).permit(:desired_institution_id, :enabled, :email,
+                                 :first_name, :last_name, :role_id, :username)
   end
 
 end

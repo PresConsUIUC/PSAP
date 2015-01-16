@@ -17,6 +17,10 @@ class StaticPageImporter
   IMAGE_EXTENSIONS = %w(jpg jpeg png tif tiff)
   VIDEO_EXTENSIONS = %w(mp4 webm)
 
+  ##
+  # @param source_path Absolute path of the assets to import
+  # @param asset_page Absolute path of the destination assets folder
+  #
   def initialize(source_path, asset_path)
     @source_path = source_path
     @asset_path = asset_path
@@ -34,7 +38,7 @@ class StaticPageImporter
     FileUtils.mkdir_p(@asset_path)
 
     Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
-      File.open(htmlpath, 'r') { |content|
+      File.open(htmlpath, 'r') do |content|
         doc = Nokogiri::HTML(content)
         # images
         doc.css('img').each do |img|
@@ -50,7 +54,7 @@ class StaticPageImporter
             generate_videos_for(File.basename(video['src']))
           end
         end
-      }
+      end
     end
     puts "Missing images:\n" + @missing_images.join("\n") + "\n\n"
     puts "Unused images:\n" + unused_images.join("\n")
@@ -150,9 +154,11 @@ class StaticPageImporter
 
         page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
         page = StaticPage.new unless page
+        category = File.basename(File.dirname(file)).downcase
+        category = category == 'advhelp' ? 'help' : category
         page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
                      uri_fragment: File.basename(file, '.*'),
-                     category: File.basename(File.dirname(file)),
+                     category: category,
                      html: doc.xpath('//body/*').to_html)
       end
     end

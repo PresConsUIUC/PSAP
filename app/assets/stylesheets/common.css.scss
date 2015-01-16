@@ -25,6 +25,18 @@
 
 }
 
+@font-face {
+  font-family: 'montserrathairline';
+  src: font_url('Montserrat-Hairline.eot');
+  src: font_url('Montserrat-Hairline.eot?#iefix') format('embedded-opentype'),
+  font_url('Montserrat-Hairline.woff') format('woff'),
+  font_url('Montserrat-Hairline.ttf') format('truetype'),
+  font_url('Montserrat-Hairline.svg#montserrathairline') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 /* universal */
 
 html {
@@ -137,11 +149,7 @@ button.hovertip-fire {
   padding-top:1em;
 }
 
-div.container-fluid {
-  width:99%;
-}
-
-div#modal_progress_view {
+div#psap-ajax-shade {
   background-color:rgba(0, 0, 0, 0.4);
   display:none;
   position:absolute;
@@ -204,54 +212,54 @@ nav.navbar {
   }
 
   li#help {
-    margin-right:10px;
-    /* The help icon looks weird when the navbar collapses on narrow screens. */
-    @media screen and (min-width: 768px) {
-      a {
-        background: url(image_path('question-24.png')) center center no-repeat;
-        @include image-2x('question-24@2x.png', 24px, 24px);
-        content:url(image_path('1x1transparent.png'));
-        top:11px;
-        width:24px;
-        height:24px;
-        text-indent:-9999px;
-      }
-      a:hover {
-        background: url(image_path('question-white-24.png')) center center no-repeat;
-        @include image-2x('question-white-24@2x.png', 24px, 24px);
-      }
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  ul.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.75);
+    a { color:#c0c0c0; }
+    li:hover a { background-color:black; }
+    li.divider {
+      background-color:#606060;
     }
+  }
+
+  .navbar-nav > li > a {
+    color: #c0c0c0;
   }
 }
 
-.navbar-inverse .navbar-nav > li > a {
-  color: #c0c0c0;
+.affix {
+  top:70px;
+}
+
+@media screen and (max-width: 767px) {
+  .affix {
+    position: static;
+    width: 100%;
+  }
 }
 
 /* header */
 
 header {
   border-bottom:1px solid $gray-lighter;
-  height:90px;
-  margin:0px 0px 20px 0px;
-  padding:0px;
+  height:96px;
   h1 {
-    margin-bottom:0.4em;
+    font-family: 'montserrathairline';
+    font-size:1.5em;
+    letter-spacing:1px;
+    margin-bottom:8px;
+    padding-top:6px;
   }
   h1 a, h1 a:hover {
-    color:black;
-    font-weight:normal;
-    margin:0em;
-    text-decoration:none;
-  }
-  h1 small a, h1 small a:hover {
     color:#808080;
-    font-family: "Helvetica Neue Light", sans-serif;
-    font-size:0.9em;
-    font-weight:200;
+    text-decoration: none;
   }
   @media screen and (max-width: 450px) {
-    h1 small {
+    h1 {
       display:none;
     }
   }
@@ -266,7 +274,7 @@ header {
 
 @media print {
   .breadcrumb, .nav-tabs, .btn-group, h1 small, h2 small, h3 small, h4 small,
-  h5 small, h6 small, header, footer, .debug_dump {
+  h5 small, h6 small, header, footer {
     display:none;
   }
 }
@@ -283,15 +291,13 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
 }
 
-.psap-entity-list {
-  span.glyphicon {
-    color:#808080;
-    margin-left:0.45em;
-    padding-right:0.2em;
-  }
+.psap-entity-icon {
+  color:#909090;
+  margin-left:0.45em;
+  padding-right:0.2em;
 }
 
-ul.psap-entity-list {
+.psap-entity-list {
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;
@@ -312,16 +318,51 @@ ul.psap-entity-list {
     font-size:1.3em;
   }
   span.description {
-    color:#606060;
+    color:#707070;
+    margin-left: 1.95em;
   }
 }
 
-ul.users { /* TODO: replace with psap-entity-list */
+.psap-mini-entity-list {
+  list-style-type:none;
+  margin-left:0px;
+  padding-left:0px;
+}
+
+.psap-hierarchy-list {
+  list-style-type:none;
+  margin-left:1.8em;
+  padding-left:0px;
+  text-indent:-1em;
+  .psap-hierarchy-list {
+    margin-left:1.6em;
+    padding-left:0px;
+  }
+  .active {
+    font-weight:bold;
+  }
+}
+
+.psap-plain-list {
+  margin-left:1.5em;
+  padding-left:0px;
+}
+
+.psap-user-list {
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;
   li {
     margin:1em 0em 1em 0em;
+  }
+}
+
+.psap-event-list { /* extends .psap-entity-list */
+  span.title {
+    font-size:1em;
+  }
+  span.description {
+    margin-left:0px;
   }
 }
 
@@ -338,14 +379,37 @@ form {
   max-width:700px;
 }
 
-.form-group div.col-sm-11, .form-group div.col-sm-1 {
+.form-group {
+  margin-bottom: 2em;
+}
+
+.psap-addable-removable-input-group {
+  input, select, textarea, button {
+    margin-bottom: 0.5em;
+  }
+}
+
+.psap-addable-removable div.col-sm-1 {
   padding-left:0px;
 }
 
-select.form-control {
-  background: url(image_path('select-control.png')) no-repeat right center;
-  @include image-2x('select-control@2x.png', 17px, 14px);
-  -webkit-appearance: none;
+.radio-inline, .checkbox-inline {
+  background-color:white;
+  border:1px solid #cccccc;
+  border-radius: 4px;
+  color: #333333;
+  display:inline-block;
+  margin:0.5em 0.5em;
+  padding: 8px 12px 9px 32px;
+  label {
+    font-size:14px;
+    font-weight:normal;
+    margin:0px;
+    padding:0px;
+  }
+}
+.radio-inline:hover, .checkbox-inline:hover {
+  background-color:#ebebeb;
 }
 
 textarea.form-control {
@@ -373,15 +437,6 @@ div.psap-progress-container {
   @media screen and (min-width: 801px) {
     width:40%;
   }
-}
-
-div.signin_form {
-  margin:0 auto;
-  width:30%;
-}
-
-div#gravatar {
-  margin:0em 0em 1em 0em;
 }
 
 .panel.submission-error {
@@ -421,19 +476,20 @@ div#gravatar {
   width:23px;
 }
 .btn-sm.psap-rights {
-  background-color:#cacaca;
-  border:none;
-  border-radius:9px;
-  color:white;
+  background:none;
+  border-color:#cacaca;
+  border-radius:10px;
+  border-width:1px;
+  color:#a0a0a0;
   display:block;
   font-family:'Times', serif;
   font-size:13px;
   font-style:italic;
   font-weight:bold;
-  height:18px;
+  height:20px;
   margin:-8px auto;
-  padding:0px;
-  width:18px;
+  padding:0px 0px 3px 0px;
+  width:20px;
 }
 
 
@@ -442,8 +498,8 @@ div#gravatar {
 footer {
   font-size:0.85em;
   margin-top: 45px;
-  margin-bottom:2em;
-  padding-top: 1em;
+  margin-bottom:0em;
+  padding: 1em 0.5em 1em 0.5em;
   border-top: 1px solid #eaeaea;
   color: #999;
   a {

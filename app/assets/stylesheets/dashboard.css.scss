@@ -1,31 +1,33 @@
-body#dashboard div#page_content {
-  .col-sm-6 {
-    max-width:500px;
+body#dashboard {
+  small {
+    color: #606060;
   }
-  .dashboard {
-    ul {
-      margin-left:1.5em;
-      padding-left:0px;
+  .panel-body {
+    max-height:20em;
+    overflow-y:scroll;
+  }
+  div.institution_association {
+    input[type=submit], a {
+      margin:1.8em auto;
+      width:80%;
     }
-    .panel-body {
-      max-height:20em;
-      overflow-y:scroll;
+  }
+  .psap-user-list {
+    margin:0px;
+    padding:0px;
+    li {
+      list-style-type:none;
     }
-    div.institution_association {
-      input[type=submit], a {
-        margin:1.8em auto;
-        width:80%;
-      }
+    li:first-child {
+      margin-top:0px;
     }
-    div.users {
-      ul {
-        margin:0px;
-        padding:0px;
-        li {
-          list-style-type:none;
-        }
-      }
+    li:last-child {
+      margin-bottom:0px;
     }
+  }
+  .psap-mini-entity-list {
+    margin-left:1.5em;
+    text-indent:-1em;
   }
 }
 

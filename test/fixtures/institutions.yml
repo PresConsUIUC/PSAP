@@ -21,6 +21,7 @@ institution_two:
   postal_code: 12345
   country: 'United States of America'
   url: 'http://example.org/'
+  language_id: 1
   description: 'Lorem ipsum dolor sit amet'
 
 institution_three:
@@ -32,6 +33,7 @@ institution_three:
   postal_code: 12345
   country: 'United States of America'
   url: 'http://example.org/'
+  language_id: 1
   description: 'Lorem ipsum dolor sit amet'
 
 institution_four:
@@ -43,6 +45,7 @@ institution_four:
   postal_code: 90210
   country: 'United States of America'
   url: 'http://example.org/'
+  language_id: 1
   description: 'Lorem ipsum dolor sit amet'
 
 institution_five:
@@ -55,6 +58,7 @@ institution_five:
   postal_code: 99999
   country: 'United States of America'
   url: 'http://example.org/'
+  language_id: 1
   description: 'Lorem ipsum dolor sit amet'
 
 institution_six:
@@ -66,4 +70,5 @@ institution_six:
   postal_code: 99999
   country: 'Hogsmeade'
   url: 'http://example.org/'
+  language_id: 1
   description: 'Lorem ipsum dolor sit amet'

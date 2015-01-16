@@ -4,35 +4,31 @@ class DashboardController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {
-        limit = 5
+      format.html do
+        limit = 4
         @user = current_user
-        @resources = current_user.resources.order(:name)
         @user_events = Event.where(user: @user).order(created_at: :desc).limit(limit)
 
         if @user.is_admin?
-          @most_active_users = User.most_active(5)
-          @most_active_institutions = Institution.most_active(5)
+          @most_active_users = User.most_active(limit)
+          @most_active_institutions = Institution.most_active(limit)
           @confirmed_disabled_users = User.where(confirmed: true, enabled: false)
         end
         if @user.institution
-          @most_active_institution_users = @user.institution.most_active_users(5)
+          @most_active_institution_users = @user.institution.most_active_users(limit)
           @institution_events = events_for_institution(@user, limit)
           @institution_users = @user.institution.users.
               where('id != ?', @user.id).order(:last_name)
-          @recent_assessments = Resource.
+          @recent_updated_resources = Resource.
               joins(:location => { :repository => :institution }).
               where(:institutions => { :id => @user.institution.id }).
-              order(:updated_at => :desc).limit(5)
+              order(:updated_at => :desc).limit(limit)
         else
           @institutions = Institution.all.order(:name)
-          @institution_events = []
-          @institution_users = []
-          @recent_assessments = []
           render 'welcome'
         end
-      }
-      format.atom {
+      end
+      format.atom do
         limit = 20
         @user = User.find_by_feed_key params[:key]
         if @user
@@ -40,7 +36,7 @@ class DashboardController < ApplicationController
         else
           render status: :forbidden, text: 'Access denied.'
         end
-      }
+      end
     end
   end
 

@@ -87,10 +87,9 @@ class UsersControllerTest < ActionController::TestCase
 
     user = User.find_by_username 'normal'
     assert user.confirmed
-    assert user.enabled
+    assert !user.enabled
     assert_nil user.confirmation_code
-    assert_equal 'Your account has been confirmed. Please sign in.',
-                 flash[:success]
+    assert flash[:success].include?('Your account has been confirmed')
     assert_redirected_to signin_url
   end
 

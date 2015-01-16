@@ -28,12 +28,10 @@
           </ul>
         </li>
         <li <%= 'class=active' if current_page?(glossary_path) %>>
-          <%= link_to 'Glossary', glossary_path, class: 'nav-link', target: '_blank' %>
+          <%= link_to 'Glossary', glossary_path, class: 'nav-link' %>
         </li>
         <li <%= 'class=active' if current_page?(bibliography_path) %>>
-          <%= link_to 'Bibliography', bibliography_path,
-                      id: 'bibliographyLink', class: 'modal_view nav-link',
-                      data: { open: bibliography_path } %>
+          <%= link_to 'Bibliography', bibliography_path, class: 'nav-link' %>
         </li>
       </ul>
 

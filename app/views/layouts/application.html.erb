@@ -28,11 +28,11 @@
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
-<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>>
+<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
 
   <%= render 'layouts/header' %>
 
-  <div id="modal_progress_view">
+  <div id="psap-ajax-shade">
     <%= image_tag('progress_indicator.gif', size: '64x64', alt: 'Loading') %>
   </div>
 
@@ -44,7 +44,7 @@
                                      alt:'PSAP logo', id:'title_logo'), root_path %>
 
         <h1>
-          <small><%= link_to 'Preservation Self-Assessment Program', root_path %></small>
+          <%= link_to 'Preservation Self-Assessment Program', root_path %>
         </h1>
       </header>
     <% end %>

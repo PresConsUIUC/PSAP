@@ -7,4 +7,9 @@ class Language < ActiveRecord::Base
   validates :iso639_2_code, presence: true, length: { minimum: 3, maximum: 3 },
             uniqueness: { case_sensitive: false }
   validates :native_name, presence: true, length: { maximum: 255 }
+
+  def to_s
+    english_name
+  end
+
 end

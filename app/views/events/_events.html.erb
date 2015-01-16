@@ -2,7 +2,7 @@
 <input type="hidden" name="results_count" value="<%= @events.total_entries %>">
 
 <div class="center">
-  <%= raw(level_buttons(@event_level, params)) %>
+  <%= raw(event_level_buttons(@event_level, params)) %>
   <%= link_to params.merge(format: :atom, key: @user.feed_key),
               class: 'feed_link',
               title: 'Subscribe to a feed of events of this or greater severity' do
@@ -35,8 +35,8 @@
             <td><%= local_time_ago(event.created_at) %></td>
             <td>
               <% if event.user %>
+                <%= entity_icon(event.user) %>
                 <%= link_to event.user, title: event.user.full_name do %>
-                  <%= glyphicon(event.user) %>
                   <%= event.user.username %>
                 <% end %>
               <% end %>

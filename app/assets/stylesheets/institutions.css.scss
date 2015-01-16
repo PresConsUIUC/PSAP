@@ -1,10 +1,41 @@
 body#show_institution {
-  @media print {
-    div.col-sm-8 {
-      width:100%;
+  form {
+    max-width:100%; /* override */
+
+    select#score_direction {
+      display:inline;
+      max-width:12em;
     }
-    div.col-sm-4 {
-      display:none;
+    input#score {
+      display:inline;
+      width: 4em;
+    }
+    .psap-buttons {
+      float:right;
     }
   }
+
+  .axis path, .axis line {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+  }
+  .axis text {
+    font-family: Arial;
+    font-size: 13px;
+  }
+  .tick {
+    stroke-dasharray: 1, 2;
+  }
+  /* these should be kept in sync with AssessmentQuestionsHelper.css_color_for_score */
+  .bar-0 { fill: #d00000; } /* red */
+  .bar-10 { fill: #d00000; } /* red */
+  .bar-20 { fill: #d42800; }
+  .bar-30 { fill: #d85000; }
+  .bar-40 { fill: #dc7800; }
+  .bar-50 { fill: #e0a000; } /* orange */
+  .bar-60 { fill: #aba000; }
+  .bar-70 { fill: #70a000; }
+  .bar-80 { fill: #38a000; }
+  .bar-90 { fill: #00a000; } /* green */
 }

@@ -24,7 +24,7 @@ class SignInCommand < Command
       public_message = nil
       log_message = nil
 
-      unless @username.empty?
+      if !@username.empty?
         if @password
           @user = User.find_by(username: @username.downcase,
                               enabled: true,
