@@ -61,13 +61,13 @@
 </div>
 
 <div class="form-group">
-  <%= f.label :parent_id, 'Parent Resource' %>
+  <%= f.label :parent_id, 'Containing Collection' %>
   <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
-          data-content="Indicate the parent collection or group in which the resource resides. If this resource is a collection at the top-level, or is unassociated with any established collection or group, select <em>None (Top-Level)</em>. REQUIRED.">
+          data-content="Indicate the collection or group in which the resource resides. If this resource is a collection at the top-level, or is unassociated with any established collection or group, select <em>None (Top-Level)</em>. REQUIRED.">
     ?
   </button>
   <%= select('resource', 'parent_id',
-             resource_hierarchy_options_for_select(@resource.location),
+             collection_hierarchy_options_for_select(@resource.location),
              { include_blank: 'None (Top-Level)' },
              { class: 'form-control input-md' }) %>
 </div>
