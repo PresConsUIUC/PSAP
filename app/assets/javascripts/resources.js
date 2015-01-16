@@ -8,16 +8,18 @@ var ResourceEditForm = {
     format_support_types_json: null,
 
     /**
-     * @param parent_format Format object
+     * @param parentFormat Format object
      * @param onCompleteCallback
      */
-    addFormatSelect: function(parent_format, onCompleteCallback) {
+    addFormatSelect: function(parentFormat, onCompleteCallback) {
         var format_class_id = $('input[name="format_class"]:checked').val();
         if (ResourceEditForm.shouldShowFormatVectorMenus()) {
             return;
         }
 
         var ROOT_URL = $('input[name="root-url"]').val();
+
+        var depth = $('div.format select').length;
 
         var new_select = $('<select></select>').
             attr('name', 'resource[format_id]').
@@ -30,7 +32,7 @@ var ResourceEditForm = {
             attr('class', 'btn btn-default help').attr('target', '_blank').
             hide();
 
-        var group = $('<div class="form-inline"></div>').hide();
+        var group = $('<div class="form-inline depth-' + depth + '"></div>').hide();
         group.append(new_select).append(help_button);
         $('div.format').append(group);
 
@@ -45,8 +47,8 @@ var ResourceEditForm = {
 
         var contents_url = ROOT_URL + '/format-classes/' + format_class_id +
             '/formats';
-        if (parent_format) {
-            contents_url += '?parent_id=' + parent_format['id'];
+        if (parentFormat) {
+            contents_url += '?parent_id=' + parentFormat['id'];
         }
 
         $.getJSON(contents_url, function(data) {

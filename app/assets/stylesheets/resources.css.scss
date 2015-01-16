@@ -4,9 +4,16 @@ body#new_resource, body#edit_resource {
   }
   div.format select {
     margin: 0.5em 0em 0.5em 0em;
-    min-width:50%;
-    max-width:90%;
+    min-width: 50%;
+    max-width: 90%;
   }
+  .depth-1 { padding-left: 1em; }
+  .depth-2 { padding-left: 2em; }
+  .depth-3 { padding-left: 3em; }
+  .depth-4 { padding-left: 4em; }
+  .depth-5 { padding-left: 5em; }
+  .depth-1:before, .depth-2:before, .depth-3:before, .depth-4:before,
+  .depth-5:before { content: '\21b3\0020' }
 }
 
 body#show_resource {
