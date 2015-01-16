@@ -34,7 +34,7 @@ gem 'will_paginate', '3.0.4'
 gem 'will_paginate-bootstrap'
 gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
-gem 'bootstrap-typeahead-rails'
+gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'

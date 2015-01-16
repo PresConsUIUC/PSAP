@@ -176,7 +176,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby (~> 3.1.2)
   bootstrap-sass (= 3.1.1.0)
-  bootstrap-typeahead-rails
+  bootstrap-typeahead-rails (~> 0.10.5.1)
   capistrano
   capistrano-bundler
   capistrano-rails

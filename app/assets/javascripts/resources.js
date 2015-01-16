@@ -189,21 +189,51 @@ var ResourceEditForm = {
     },
 
     initSuggestions: function() {
+        $('input#resource_name, input.resource_subject').typeahead('destroy');
+
         var institution_url = $('input[name="institution_url"]').val();
-        $('input#resource_name').typeahead({
-            name: 'names',
-            prefetch: institution_url + '/resources/names.json',
-            limit: 10
+
+        var names = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            limit: 10,
+            prefetch: {
+                url: institution_url + '/resources/names.json',
+                filter: function(list) {
+                    return $.map(list, function(item) { return { name: item }; });
+                }
+            }
         });
-        $('input.resource_subject').typeahead({
+        names.initialize();
+
+        var subjects = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            limit: 10,
+            prefetch: {
+                url: institution_url + '/resources/subjects.json',
+                filter: function(list) {
+                    return $.map(list, function(item) { return { name: item }; });
+                }
+            }
+        });
+        subjects.initialize();
+
+        $('input#resource_name').typeahead(null, {
+            name: 'names',
+            displayKey: 'name',
+            source: names.ttAdapter()
+        });
+        $('input.resource_subject').typeahead(null, {
             name: 'subjects',
-            prefetch: institution_url + '/resources/subjects.json',
-            limit: 10
+            displayKey: 'name',
+            source: subjects.ttAdapter()
         });
 
-        // fix incompatibilities with bootstrap
+        // fix bugs/incompatibilities with bootstrap
         $('.typeahead').parent().css('display', '');
         $('.tt-hint').addClass('form-control');
+        $('input.form-control.typeahead').css('background-color', 'white'); // fix text fields in wells
 
         $(document).on('PSAPFormFieldAdded', function() {
             ResourceEditForm.initSuggestions();
