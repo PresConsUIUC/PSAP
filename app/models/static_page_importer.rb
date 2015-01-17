@@ -133,33 +133,37 @@ class StaticPageImporter
     # HTML pages
     Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |file| # File::FNM_CASEFOLD == case insensitive
       File.open(file) do |contents|
-        doc = Nokogiri::HTML(contents)
-        # inject image widths & heights
-        doc.css('img').each do |img|
-          thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
-          img['src'] = "#{File.basename(img['src'], '.*').gsub(' ', '_')}-"\
-          "#{thumb_width}#{File.extname(img['src']).downcase}"
-          dimensions = `convert "#{@asset_path}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
-          img['width'] = dimensions[0]
-          img['height'] = dimensions[1]
-        end
+        begin
+          doc = Nokogiri::HTML(contents)
+          # inject image widths & heights
+          doc.css('img').each do |img|
+            thumb_width = PROFILES.select{ |p| p[:type] == 'thumb' }[0][:width]
+            img['src'] = "#{File.basename(img['src'], '.*').gsub(' ', '_')}-"\
+            "#{thumb_width}#{File.extname(img['src']).downcase}"
+            dimensions = `convert "#{@asset_path}/#{File.basename(img['src'])}" -ping -format '%[fx:w]|%[fx:h]' info:`.strip.split('|')
+            img['width'] = dimensions[0]
+            img['height'] = dimensions[1]
+          end
 
-        # add other video formats
-        doc.css('video').each do |video|
-          source = Nokogiri::XML::Node.new('source', doc)
-          source['src'] = "#{File.basename(video.children[0]['src'], '.*')}.webm"
-          source['type'] = 'video/webm'
-          video.add_child(source)
-        end
+          # add other video formats
+          doc.css('video').each do |video|
+            source = Nokogiri::XML::Node.new('source', doc)
+            source['src'] = "#{File.basename(video.css('source')[0]['src'], '.*')}.webm"
+            source['type'] = 'video/webm'
+            video.add_child(source)
+          end
 
-        page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
-        page = StaticPage.new unless page
-        category = File.basename(File.dirname(file)).downcase
-        category = category == 'advhelp' ? 'help' : category
-        page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
-                     uri_fragment: File.basename(file, '.*'),
-                     category: category,
-                     html: doc.xpath('//body/*').to_html)
+          page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
+          page = StaticPage.new unless page
+          category = File.basename(File.dirname(file)).downcase
+          category = category == 'advhelp' ? 'help' : category
+          page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
+                       uri_fragment: File.basename(file, '.*'),
+                       category: category,
+                       html: doc.xpath('//body/*').to_html)
+        rescue => e
+          raise "#{file}: #{e}"
+        end
       end
     end
 

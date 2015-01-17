@@ -53,7 +53,7 @@ var ResourceEditForm = function() {
             if (data.length == 0) {
                 group.remove();
             } else {
-                group.prev().find('select').attr('name', 'noop');
+                group.prevAll('div').find('select').attr('name', 'noop');
             }
 
             $.each(data, function(i, object) {

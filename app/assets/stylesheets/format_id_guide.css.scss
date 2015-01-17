@@ -59,8 +59,14 @@ body#format_id_guide_page, body#help_page {
     padding-left:0em;
   }
   table {
+    @media screen and (min-width: 767px) {
+      max-width: 40%;
+    }
     border: 2px solid #ddd;
-    margin:1em 0em 1em 0em;
+    margin:1em 0em;
+    caption {
+      text-align:center;
+    }
     th, td {
       border-right: 1px solid #ddd;
       text-align: center;
