@@ -44,7 +44,7 @@ gem 'prawn' # used to generate a PDF version of the assessment report
 gem 'prawn-table'
 
 group :development do
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.2.1'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
