@@ -12,11 +12,11 @@ role :db,  staging_server
 
 set :rails_env, 'production'
 
-set :keep_releases, 0
+set :keep_releases, 2
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-set :branch, 'develop'
+set :branch, 'fork/format-id-guide'
 
 # Extended Server Syntax
 # ======================
