@@ -102,7 +102,7 @@ var AssessmentForm = {
                 '<hr>' +
                 '<div class="row">' +
                     '<div class="col-sm-11">' +
-                        '<h3>' + object['name'] + '</h3>' +
+                        '<p class="question">' + object['name'] + '</p>' +
                     '</div>' +
                     '<div class="col-sm-1" style="text-align:right">' +
                         '<button type="button" class="btn btn-default help hovertip-fire" ' +
