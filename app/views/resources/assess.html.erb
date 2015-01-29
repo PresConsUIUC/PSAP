@@ -84,7 +84,10 @@
 <% else %>
   <h1><%= @resource.readable_resource_type %> Assessment: <%= @resource.name %></h1>
 
-  <p>This resource is not yet assessable, as it is not yet associated with a
-    format. <%= link_to 'Edit the resource', edit_resource_path(@resource) %>
-    to rectify this.</p>
+  <p>This resource must be associated with a format before it can be
+    assessed. This can be done on the Edit Resource page.</p>
+  <%= link_to edit_resource_path(@resource), class: 'btn btn-default' do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+    Edit This Resource
+  <% end %>
 <% end %>
