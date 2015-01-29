@@ -291,22 +291,22 @@
 
       <% if @resource.resource_type == ResourceType::ITEM %>
         <div id="assessment_tab" class="tab-pane">
-          <div class="psap-progress-container">
-            Score: <%= number_to_human(@resource.total_assessment_score * 100) %>
-            <button type="button" data-container="body" data-placement="bottom"
-                    data-toggle="popover" class="btn btn-sm help"
-                    data-content="<%= score_help(@resource) %>">?</button>
-            <div class="progress">
-              <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.total_assessment_score) %> score"
-                   role="progressbar"
-                   aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
-                   aria-valuemin="0" aria-valuemax="100"
-                   style="width:<%= @resource.total_assessment_score * 100 %>%">
+          <% if @resource.assessment_complete %>
+            <div class="psap-progress-container">
+              Score: <%= number_to_human(@resource.total_assessment_score * 100) %>
+              <button type="button" data-container="body" data-placement="bottom"
+                      data-toggle="popover" class="btn btn-sm help"
+                      data-content="<%= score_help(@resource) %>">?</button>
+              <div class="progress">
+                <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.total_assessment_score) %> score"
+                     role="progressbar"
+                     aria-valuenow="<%= @resource.total_assessment_score * 100 %>"
+                     aria-valuemin="0" aria-valuemax="100"
+                     style="width:<%= @resource.total_assessment_score * 100 %>%">
+                </div>
               </div>
             </div>
-          </div>
 
-          <% if @resource.assessment_complete %>
             <% @assessment_sections.each do |section| %>
               <div class="panel panel-default">
                 <div class="panel-heading">
@@ -323,8 +323,11 @@
               </div>
             <% end %>
           <% else %>
-            <p>Once this resource has been assessed, a summary of its assessment
-              will appear here.</p>
+            <p>This resource has not yet been assessed.</p>
+            <%= link_to resource_assess_path(@resource), class: 'btn btn-default' do %>
+              <%= content_tag(:span, '', class: 'glyphicon glyphicon-stats') %>
+              Assess This Resource
+            <% end %>
           <% end %>
         </div> <!-- #assessment_tab -->
       <% end %>
