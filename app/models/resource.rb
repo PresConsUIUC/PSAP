@@ -418,7 +418,7 @@ class Resource < ActiveRecord::Base
     self.assessment_complete =
         (self.format and self.format.all_assessment_questions.any?) ?
             self.assessment_question_responses.length >=
-                self.format.all_assessment_questions.length : false
+                self.format.all_assessment_questions.where(parent_id: nil).length : false
     nil
   end
 
