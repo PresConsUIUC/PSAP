@@ -104,7 +104,7 @@ xml.ead(
                        'type' => 'inclusive'
           )
         elsif date.begin_year && date.end_year
-          xml.unitdate("#{date.begin_year}/#{date.end_year}",
+          xml.unitdate("#{date.begin_year}-#{date.end_year}",
                        'normal' => "#{date.begin_year}/#{date.end_year}",
                        'type' => date.readable_date_type.downcase
           )
