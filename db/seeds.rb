@@ -573,11 +573,11 @@ case Rails.env
                          year: 1986)
     ResourceDate.create!(resource: resources[2],
                          date_type: DateType::BULK,
-                         begin_year: 30,
-                         end_year: 50)
+                         begin_year: 1921,
+                         end_year: 1925)
     ResourceDate.create!(resource: resources[3],
                          date_type: DateType::SPAN,
-                         begin_year: 1920,
+                         begin_year: 1940,
                          end_year: 1990)
     ResourceDate.create!(resource: resources[4],
                          date_type: DateType::BULK,
@@ -585,7 +585,7 @@ case Rails.env
                          end_year: 1992)
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
-                         year: 843)
+                         year: 1843)
 
     # Extents
     extents = []
