@@ -16,11 +16,10 @@ class UpdateResourceCommand < Command
         raise 'Insufficient privileges'
       end
 
-      # delete existing AQRs
-      @resource.assessment_question_responses.destroy_all
-
-      # the AQR params from the form are not in a rails-compatible format
       if @resource_params[:assessment_question_responses]
+        # delete existing AQRs
+        @resource.assessment_question_responses.destroy_all
+        # the AQR params from the form are not in a rails-compatible format
         @resource_params[:assessment_question_responses].each_value do |option_id|
           option = AssessmentQuestionOption.find(option_id)
           @resource.assessment_question_responses << AssessmentQuestionResponse.new(

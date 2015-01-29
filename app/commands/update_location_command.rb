@@ -16,11 +16,10 @@ class UpdateLocationCommand < Command
         raise 'Insufficient privileges'
       end
 
-      # delete existing AQRs
-      @location.assessment_question_responses.destroy_all
-
-      # the AQR params from the form are not in a rails-compatible format
       if @location_params[:assessment_question_responses]
+        # delete existing AQRs
+        @location.assessment_question_responses.destroy_all
+        # the AQR params from the form are not in a rails-compatible format
         @location_params[:assessment_question_responses].each_value do |option_id|
           option = AssessmentQuestionOption.find(option_id)
           @location.assessment_question_responses << AssessmentQuestionResponse.new(
