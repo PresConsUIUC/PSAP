@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108150117) do
+ActiveRecord::Schema.define(version: 20150202165254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 20150108150117) do
     t.integer  "fid"
     t.string   "format_id_guide_page"
     t.string   "format_id_guide_anchor"
+    t.string   "dublin_core_format"
   end
 
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
