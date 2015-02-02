@@ -203,6 +203,10 @@
                   <% end %>
                 </dd>
               <% end %>
+              <% if @resource.language %>
+                <dt>Language</dt>
+                <dd><%= @resource.language %></dd>
+              <% end %>
               <% unless @resource.description.blank? %>
                 <dt>Description</dt>
                 <dd><%= @resource.description %></dd>
