@@ -45,7 +45,6 @@ class Resource < ActiveRecord::Base
   validate :validates_same_institution_as_user
 
   before_validation :prune_empty_submodels
-  before_save :update_assessment_complete
 
   def self.all_matching_query(params, starting_set = nil)
     starting_set = Resource.all unless starting_set

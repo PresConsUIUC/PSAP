@@ -7,6 +7,7 @@ module Assessable
               numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
     validate :validates_one_response_per_question
 
+    before_save :update_assessment_complete
     before_save :update_assessment_score
   end
 
@@ -53,6 +54,11 @@ module Assessable
   def response_to_question(assessment_question)
     self.assessment_question_responses.
         where(assessment_question_id: assessment_question.id).first
+  end
+
+  def update_assessment_complete
+    self.assessment_complete = self.assessment_question_responses.length > 0
+    nil
   end
 
   ##

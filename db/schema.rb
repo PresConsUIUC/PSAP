@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202165254) do
+ActiveRecord::Schema.define(version: 20150202180532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,20 +212,21 @@ ActiveRecord::Schema.define(version: 20150202165254) do
   add_index "humidity_ranges", ["format_id"], name: "index_humidity_ranges_on_format_id", using: :btree
 
   create_table "institutions", force: true do |t|
-    t.string   "name",                           null: false
+    t.string   "name",                              null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "address1",                       null: false
+    t.string   "address1",                          null: false
     t.string   "address2"
-    t.string   "city",                           null: false
-    t.string   "state",                          null: false
-    t.string   "postal_code",                    null: false
-    t.string   "country",                        null: false
+    t.string   "city",                              null: false
+    t.string   "state",                             null: false
+    t.string   "postal_code",                       null: false
+    t.string   "country",                           null: false
     t.string   "url"
     t.integer  "language_id"
     t.text     "description"
     t.string   "email"
-    t.float    "assessment_score", default: 0.0
+    t.float    "assessment_score",    default: 0.0
+    t.boolean  "assessment_complete"
   end
 
   add_index "institutions", ["language_id"], name: "index_institutions_on_language_id", using: :btree
@@ -249,6 +250,7 @@ ActiveRecord::Schema.define(version: 20150202165254) do
     t.integer  "temperature_range_id"
     t.float    "assessment_score",     default: 0.0
     t.integer  "humidity_range_id"
+    t.boolean  "assessment_complete"
   end
 
   add_index "locations", ["humidity_range_id"], name: "index_locations_on_humidity_range_id", using: :btree
