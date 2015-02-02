@@ -5,7 +5,6 @@ module Assessable
   included do
     validates :assessment_score, allow_blank: true,
               numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
-    validate :validates_one_response_per_question
 
     before_save :update_assessment_complete
     before_save :update_assessment_score
@@ -44,7 +43,7 @@ module Assessable
   def complete_assessment_questions_in_section(assessment_section)
     self.assessment_question_responses.
         select{ |r| !r.assessment_question_option.nil? }.
-        map{ |r| r.assessment_question }.
+        map(&:assessment_question).
         select{ |q| q.assessment_section.id == assessment_section.id }
   end
 
@@ -72,13 +71,6 @@ module Assessable
           response.assessment_question.weight
     end
     self.assessment_score *= 0.01
-  end
-
-  def validates_one_response_per_question
-    if self.assessment_question_responses.uniq{ |r| r.assessment_question.qid }.length <
-        self.assessment_question_responses.length
-      errors[:base] << 'Only one response is allowed per assessment question.'
-    end
   end
 
 end
