@@ -17,8 +17,12 @@ xml.tag!('oai_dc:dc',
   @resource.resource_dates.each do |date|
     xml.tag!('dc:date', date.as_dublin_core_string)
   end
-  xml.tag!('dc:type',
-           @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection')
+  if @resource.format
+    xml.tag!('dc:type', @resource.format.name)
+  else
+    xml.tag!('dc:type',
+             @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection')
+  end
   xml.tag!('dc:language', @resource.language ?
       @resource.language.iso639_2_code :
       @resource.location.repository.institution.language.iso639_2_code)
