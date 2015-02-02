@@ -25,6 +25,8 @@ xml.tag!('oai_dc:dc',
   @resource.extents.each do |extent|
     xml.tag!('dc:format', extent.name)
   end
+  xml.tag!('dc:format', @resource.format_ink_media_type.name) if @resource.format_ink_media_type
+  xml.tag!('dc:format', @resource.format_support_type.name) if @resource.format_support_type
   @resource.subjects.each do |subject|
     xml.tag!('dc:subject', subject.name)
   end
