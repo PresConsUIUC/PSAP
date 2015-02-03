@@ -9,30 +9,30 @@
   <%= render 'shared/error_messages', :object => f.object %>
 
   <div class="form-group">
-    <%= f.label :first_name %>
+    <%= f.label :first_name, class: 'required' %>
     <%= f.text_field :first_name, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.label :last_name %>
+    <%= f.label :last_name, class: 'required' %>
     <%= f.text_field :last_name, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.label :email %>
+    <%= f.label :email, class: 'required' %>
     <%= f.email_field :email, class: 'form-control' %>
   </div>
 
   <% if current_user.is_admin? %>
     <div class="form-group">
-      <%= f.label :username %>
+      <%= f.label :username, class: 'required' %>
       <%= f.text_field :username, class: 'form-control' %>
     </div>
   <% end %>
 
   <% if current_user.is_admin? %>
     <div class="form-group">
-      <%= f.label :role %>
+      <%= f.label :role, class: 'required' %>
       <%= collection_select(:user, :role_id, @roles, :id, :name, {},
                             { class: 'form-control' }) %>
     </div>
