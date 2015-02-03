@@ -50,9 +50,6 @@ class LocationsController < ApplicationController
   def new
     @repository = Repository.find(params[:repository_id])
     @location = @repository.locations.build
-    @location.temperature_range = TemperatureRange.new(min_temp_f: 0,
-                                                       max_temp_f: 100,
-                                                       score: 1)
     @assessment_sections = Assessment.find_by_key('location').
         assessment_sections.order(:index)
   end
@@ -114,10 +111,8 @@ class LocationsController < ApplicationController
   end
 
   def location_params
-    params.require(:location).permit(
-        :name, :description, :repository,
-        temperature_range_attributes:
-            [:id, :min_temp_f, :max_temp_f]).tap do |whitelisted|
+    params.require(:location).permit(:name, :description, :repository)
+        .tap do |whitelisted|
       # AQRs don't use Rails' nested params format, and will require additional
       # processing
       whitelisted[:assessment_question_responses] =

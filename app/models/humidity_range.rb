@@ -1,6 +1,5 @@
 class HumidityRange < ActiveRecord::Base
   belongs_to :format, inverse_of: :humidity_ranges
-  has_one :location, inverse_of: :humidity_range
 
   validates :max_rh, presence: true
   validates :min_rh, presence: true
