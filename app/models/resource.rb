@@ -369,11 +369,42 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # @return float between 0 and 1
+  #
+  def assessment_question_score
+    question_score = 0.0
+    self.assessment_question_responses.each do |response|
+      question_score += response.assessment_question_option.value *
+          response.assessment_question.weight
+    end
+    # scores are pre-weighted; max is 50 so have to multiply by 2
+    (question_score / 100) * 2
+  end
+
+  ##
   # @return Array of all assessment questions that have been answered for this
   # resource.
   #
   def assessment_questions
     assessment_question_responses.map(&:assessment_question).uniq
+  end
+
+  ##
+  # @return float between 0 and 1
+  #
+  def effective_format_score
+    format_score = 0.0
+    if self.format
+      format_score = self.format.score
+      if self.format.format_class == FormatClass::BOUND_PAPER or
+          self.format.fid == 159 # Unbound Paper -> Original Document
+        if self.format_support_type and self.format_ink_media_type
+          format_score = self.format_support_type.score * 0.6 +
+              self.format_ink_media_type.score * 0.4
+        end
+      end
+    end
+    format_score
   end
 
   def filename
@@ -413,12 +444,12 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Returns the assessment score of the resource, factoring in
-  # institution/location scores as well, unlike assessment_score which does not.
+  # Returns the assessment score of the resource, factoring in the location
+  # score as well, unlike assessment_score which does not.
   #
   def total_assessment_score
-    self.update_assessment_score
-    self.assessment_score * 0.9 + self.location.assessment_score * 0.1
+    self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
+        self.location.assessment_score * 0.1
   end
 
   ##
@@ -432,39 +463,17 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Updates the score of the resource only, without taking location/institution
-  # into account.
-  #
-  # Scores are stored (rather than being calculated on-the-fly) in order to
-  # make for simpler queries.
+  # Updates the score of the resource only, without taking location into
+  # account.
   #
   # Overrides Assessable mixin
   #
   def update_assessment_score
     # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-    if self.format
-      question_score = 0.0
-      self.assessment_question_responses.each do |response|
-        question_score += response.assessment_question_option.value *
-            response.assessment_question.weight
-      end
-
-      if self.format.format_class == FormatClass::BOUND_PAPER or
-          self.format.fid == 159 # Unbound Paper -> Original Document
-        if self.format_support_type and self.format_ink_media_type
-          format_score = self.format_support_type.score * 0.6 +
-              self.format_ink_media_type.score * 0.4
-        else
-          format_score = 0.0
-        end
-      else
-        format_score = self.format.score * 0.45
-      end
-
-      self.assessment_score = format_score + (question_score / 100) * 0.55
-    else
-      self.assessment_score = 0.0
-    end
+    self.assessment_score = self.format ?
+        self.effective_format_score * 0.444444 +
+            self.assessment_question_score * 0.555555 :
+        0.0
   end
 
   private

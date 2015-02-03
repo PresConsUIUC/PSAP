@@ -22,12 +22,11 @@ module ResourcesHelper
   end
 
   def score_help(resource)
-    assessment_score = (resource.assessment_score * 100).round(1)
-    format_score = (resource.format and resource.format.score) ?
-        (resource.format.score * 100).round(1) : 0
+    assessment_score = (resource.assessment_question_score * 100).round(1)
+    format_score = (resource.effective_format_score * 100).round(1)
     location_score = (resource.location.assessment_score * 100).round(1)
 
-    text = '<p>The PSAP uses the following formula to calculate a resource\'s '\
+    text = '<p>The following formula is used to calculate a resource\'s '\
     'assessment score:</p>'\
     '<p><em>Assessment score &times; 0.5 + format score &times; 0.4 + '\
     'location score &times; 0.1</em></p>'\
@@ -50,11 +49,11 @@ module ResourcesHelper
     end
 
     if resource.location.assessment_question_responses.length < 1
-      text += "<li>Its #{link_to('location', location_path(resource.location))}"\
-      " has not yet been assessed, which weighs down its score.</li>"
+      text += "<li>Its location has not yet been assessed, which weighs down "\
+      "its score.</li>"
     else
-      text += "<li>Its #{link_to('location', location_path(resource.location))}"\
-      " score is <strong>#{location_score}</strong>.</li>" # TODO: "this is good" or "consider moving" etc.
+      text += "<li>Its location score is "\
+      "<strong>#{location_score}</strong>.</li>" # TODO: "this is good" or "consider moving" etc.
     end
 
     text + '</ul>'
