@@ -15,6 +15,9 @@
     <h1><%= @location.name %>
       <small><%= entity_icon(@location) %>Location</small>
     </h1>
+    <% if @location.description %>
+      <p><%= @location.description %></p>
+    <% end %>
   </div>
   <div class="col-sm-6">
     <div class="btn-group" style="float:right">
@@ -190,15 +193,6 @@
             </div>
           </div>
         <% end %>
-      </div>
-
-      <div class="tab-pane" id="info_tab">
-        <dl>
-          <% if @location.description %>
-            <dt>Description</dt>
-            <dd><%= @location.description %></dd>
-          <% end %>
-        </dl>
       </div>
 
       <div class="tab-pane" id="activity_tab">
