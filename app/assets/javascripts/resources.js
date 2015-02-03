@@ -79,14 +79,20 @@ var ResourceEditForm = function() {
 
     var attachEventListeners = function() {
         // if the resource is an item, hide the format; otherwise, show it
-        $('input[name="resource[resource_type]:checked"]').on('change', function() {
-            var format_div = $('div.format');
+        var format_div = $('div.format');
+        $('input[name="resource[resource_type]"]').on('change', function() {
             if ($(this).val() == '1') { // 1 == item
                 format_div.show();
             } else {
                 format_div.hide();
             }
-        }).trigger('change');
+        });
+
+        if ($('input[name="resource[resource_type]"]:checked').val() == '1') {
+            format_div.show();
+        } else {
+            format_div.hide();
+        }
 
         $('input[name="format_class"]').on('change', function() {
             selectFormatClass($(this).val());
