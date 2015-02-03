@@ -21,9 +21,11 @@
 </ol>
 
 <% if @resource.parent %>
-  <h1>New Sub-Resource <small>of <%= @resource.parent.name %></small></h1>
+  <h1>New Sub-Resource <small>of
+    <%= entity_icon(@resource.parent) %><%= @resource.parent.name %></small></h1>
 <% else %>
-  <h1>New Resource <small>in <%= @resource.location.name %></small></h1>
+  <h1>New Resource <small>in
+    <%= entity_icon(@resource.location) %><%= @resource.location.name %></small></h1>
 <% end %>
 
 <%= form_for(@resource, class: 'psap-assessment',
