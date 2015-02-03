@@ -20,13 +20,15 @@
   <li class="active">New Resource</li>
 </ol>
 
-<% if @resource.parent %>
-  <h1>New Sub-Resource <small>of
-    <%= entity_icon(@resource.parent) %><%= @resource.parent.name %></small></h1>
-<% else %>
-  <h1>New Resource <small>in
-    <%= entity_icon(@resource.location) %><%= @resource.location.name %></small></h1>
-<% end %>
+<div class="psap-page-title">
+  <% if @resource.parent %>
+    <h1>New Sub-Resource <small>of
+      <%= entity_icon(@resource.parent) %><%= @resource.parent.name %></small></h1>
+  <% else %>
+    <h1>New Resource <small>in
+      <%= entity_icon(@resource.location) %><%= @resource.location.name %></small></h1>
+  <% end %>
+</div>
 
 <%= form_for(@resource, class: 'psap-assessment',
              url: location_resources_path(@resource.location)) do |f| %>

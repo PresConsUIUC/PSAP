@@ -6,16 +6,18 @@
   <li class="active"><%= @format.name %></li>
 </ol>
 
-<h1>
-  <%= @format.name %>
-  <% if @format.format_id_guide_page %>
-    <small>
-      <%= link_to('(Format ID Guide)',
-                  format_id_guide_category_path(@format.format_id_guide_page,
-                                                anchor: @format.format_id_guide_anchor)) %>
-    </small>
-  <% end %>
-</h1>
+<div class="psap-page-title">
+  <h1>
+    <%= @format.name %>
+    <% if @format.format_id_guide_page %>
+      <small>
+        <%= link_to('(Format ID Guide)',
+                    format_id_guide_category_path(@format.format_id_guide_page,
+                                                  anchor: @format.format_id_guide_anchor)) %>
+      </small>
+    <% end %>
+  </h1>
+</div>
 
 <div class="row">
 

@@ -21,7 +21,9 @@
   <li class="active">Edit</li>
 </ol>
 
-<h1>Edit <%= @resource.readable_resource_type %>: <%= @resource.name %></h1>
+<div class="psap-page-title">
+  <h1>Edit <%= @resource.readable_resource_type %>: <%= @resource.name %></h1>
+</div>
 
 <%= form_for(@resource, html: { class: 'psap-assessment' }) do |f| %>
 

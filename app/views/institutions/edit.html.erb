@@ -5,13 +5,15 @@
 
 <ol class="breadcrumb">
   <% if current_user.is_admin? %>
-      <li><%= link_to 'Institutions', institutions_path %></li>
+    <li><%= link_to 'Institutions', institutions_path %></li>
   <% end %>
   <li><%= link_to @institution.name, @institution %></li>
   <li class="active">Edit</li>
 </ol>
 
-<h1>Edit Institution: <%= @institution.name %></h1>
+<div class="psap-page-title">
+  <h1>Edit Institution: <%= @institution.name %></h1>
+</div>
 
 <%= form_for(@institution, html: { class: 'psap-assessment' }) do |f| %>
   <%= render partial: 'basic_info_form', locals: { f: f } %>

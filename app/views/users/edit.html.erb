@@ -2,18 +2,20 @@
 <% provide(:body_id, 'edit_user') %>
 
 <% if current_user.is_admin? %>
-    <ol class="breadcrumb">
-      <li><%= link_to 'Users', users_path %></li>
-      <li><%= link_to @user.username, @user %></li>
-      <li class="active">Edit</li>
-    </ol>
+  <ol class="breadcrumb">
+    <li><%= link_to 'Users', users_path %></li>
+    <li><%= link_to @user.username, @user %></li>
+    <li class="active">Edit</li>
+  </ol>
 <% end %>
 
-<% if @user == current_user %>
+<div class="psap-page-title">
+  <% if @user == current_user %>
     <h1>Edit your account</h1>
-<% else %>
+  <% else %>
     <h1>Edit user <%= @user.username %></h1>
-<% end %>
+  <% end %>
+</div>
 
 <div class="row">
 

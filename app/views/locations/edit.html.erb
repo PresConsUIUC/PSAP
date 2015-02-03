@@ -19,7 +19,9 @@
   <li class="active">Edit</li>
 </ol>
 
-<h1>Edit Location: <%= @location.name %></h1>
+<div class="psap-page-title">
+  <h1>Edit Location: <%= @location.name %></h1>
+</div>
 
 <%= form_for(@location, html: { class: 'psap-assessment' }) do |f| %>
   <div id="basic_info" class="section">

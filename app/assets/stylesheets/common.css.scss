@@ -74,19 +74,17 @@ h1 {
   font-size:2.5em;
 }
 h1:first-child {
-  margin-top: 0px;
-  margin-bottom: 0.8em;
+  margin-top:0em;
+  margin-bottom: 0.2em;
 }
 h2 {
   font-family: 'montserratregular';
   font-size:2em;
-
   color: rgb(80, 80, 80);
 }
 h3 {
   font-family: 'montserratregular';
   font-size:1.6em;
-
   color: rgb(100, 100, 100);
 }
 h4 {
@@ -270,6 +268,10 @@ header {
   div.btn-group {
     margin:0px;
   }
+}
+
+.psap-page-title {
+  padding-bottom: 0.8em;
 }
 
 @media print {
