@@ -439,12 +439,6 @@ case Rails.env
 
     locations = location_commands.map{ |command| command.execute; command.object }
 
-    locations.each do |location|
-      location.temperature_range = TemperatureRange.create!(
-          min_temp_f: 60, max_temp_f: 70, score: 1)
-      location.save!
-    end
-
     # Location assessment question responses
     Assessment.find_by_key('location').assessment_questions.each do |question|
         locations[0].assessment_question_responses <<
