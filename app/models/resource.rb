@@ -368,6 +368,14 @@ class Resource < ActiveRecord::Base
     stats
   end
 
+  ##
+  # @return Array of all assessment questions that have been answered for this
+  # resource.
+  #
+  def assessment_questions
+    assessment_question_responses.map(&:assessment_question).uniq
+  end
+
   def filename
     self.local_identifier ? self.local_identifier : self.id.to_s
   end
@@ -413,11 +421,13 @@ class Resource < ActiveRecord::Base
     self.assessment_score * 0.9 + self.location.assessment_score * 0.1
   end
 
+  ##
+  # Overrides Assessable mixin
+  #
   def update_assessment_complete
     self.assessment_complete =
         (self.format and self.format.all_assessment_questions.any?) ?
-            self.assessment_question_responses.length >=
-                self.format.all_assessment_questions.where(parent_id: nil).length : false
+            self.assessment_question_responses.length > 0 : false
     nil
   end
 

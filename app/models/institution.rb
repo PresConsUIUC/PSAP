@@ -89,6 +89,57 @@ class Institution < ActiveRecord::Base
   end
 
   ##
+  # @return Array of all assessed locations in an institution.
+  #
+  def assessed_locations
+    self.locations.where(assessment_complete: true)
+  end
+
+  ##
+  # @param section AssessmentSection
+  # @return float
+  #
+  def mean_assessed_item_score_in_section(section)
+    score = 0.0
+    assessed_items = all_assessed_items
+    return score if assessed_items.length < 1
+
+    assessed_items.each do |item|
+      score += item.assessment_score_in_section(section)
+    end
+    score.to_f / assessed_items.length.to_f
+  end
+
+  ##
+  # @param section AssessmentSection
+  # @return float
+  #
+  def mean_assessed_location_score_in_section(section)
+    score = 0.0
+    assessed_locations = self.assessed_locations
+    return score if assessed_locations.length < 1
+
+    assessed_locations.each do |location|
+      score += location.assessment_score_in_section(section)
+    end
+    score / assessed_locations.length.to_f
+  end
+
+  def mean_location_score
+    locations_ = locations.where(assessment_complete: true)
+    locations_.any? ?
+        locations_.map(&:assessment_score).reduce(:+).to_f / locations_.length.to_f :
+        0.0
+  end
+
+  def mean_resource_score
+    items = resources.where(resource_type: ResourceType::ITEM,
+                            assessment_complete: true)
+    items.any? ?
+        items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0
+  end
+
+  ##
   # Returns a list of the "most active" users in the institution, based on the
   # number of resources they've created/updated.
   #

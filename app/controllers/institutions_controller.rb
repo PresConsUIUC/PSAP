@@ -64,6 +64,8 @@ class InstitutionsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
+        @resource_assessment_sections = Assessment.find_by_key('resource').
+            assessment_sections.order(:index)
         pdf = pdf_assessment_report(@institution, current_user,
                                     @resource_chart_data,
                                     @collection_chart_datas,

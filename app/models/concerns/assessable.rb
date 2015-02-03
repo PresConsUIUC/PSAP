@@ -24,6 +24,21 @@ module Assessable
   end
 
   ##
+  # @param section AssessmentSection
+  # @return float between 0 and 1
+  #
+  def assessment_score_in_section(section)
+    responses = self.assessment_question_responses.
+        select{ |r| r.assessment_question.assessment_section == section }
+    score = 0.0
+    responses.each do |response|
+      score += response.assessment_question_option.value *
+          response.assessment_question.weight
+    end
+    score.to_f / section.max_score(self).to_f
+  end
+
+  ##
   # @return Hash of floats keyed by section id
   #
   def assessment_section_scores
@@ -49,6 +64,7 @@ module Assessable
 
   ##
   # @return AssessmentQuestionResponse or nil
+  # TODO: this should return an array (to support checkboxes)
   #
   def response_to_question(assessment_question)
     self.assessment_question_responses.
