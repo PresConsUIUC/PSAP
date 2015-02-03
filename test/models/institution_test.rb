@@ -92,9 +92,9 @@ class InstitutionTest < ActiveSupport::TestCase
   end
 
   # postal code
-  test 'postal code is required' do
+  test 'postal code is not required' do
     @institution.postal_code = nil
-    assert !@institution.save
+    assert @institution.save
   end
 
   test 'postal code is no longer than 30 characters' do

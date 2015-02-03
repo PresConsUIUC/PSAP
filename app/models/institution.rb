@@ -23,8 +23,8 @@ class Institution < ActiveRecord::Base
   validates :city, presence: true, length: { maximum: 255 }
   validates :name, presence: true, length: { minimum: 4, maximum: 255 },
             uniqueness: { case_sensitive: false }
-  validates :state, allow_blank: true, length: { maximum: 30 }
-  validates :postal_code, presence: true, length: { maximum: 30 }
+  validates :state, length: { maximum: 30 }
+  validates :postal_code, length: { maximum: 30 }
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
