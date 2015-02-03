@@ -64,11 +64,15 @@ class AssessmentSectionTest < ActiveSupport::TestCase
   end
 
   test 'assessment_questions_for_format works when a format is supplied' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   test 'max_score should work properly' do
     assert_equal 1, @section.max_score
+  end
+
+  test 'max_score should work properly with a resource supplied' do
+    assert_equal 1, @section.max_score(resources(:resource_one))
   end
 
   ########################### association tests ##############################

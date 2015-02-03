@@ -11,16 +11,15 @@ class AssessmentSection < ActiveRecord::Base
 
   def assessment_questions_for_format(format)
     format ? format.all_assessment_questions.where(assessment_section: self) :
-        AssessmentQuestion.where(id: 'cats') # empty set
+        AssessmentQuestion.where('1 = 2') # empty set
   end
 
-  def max_score
-    score = 0
-    self.assessment_questions.each do |question|
-      max = question.assessment_question_options.map{ |o| o.value }.max
-      score += max * question.weight if max
+  def max_score(resource = nil)
+    if resource and resource.kind_of?(Resource) and resource.format
+      return self.assessment_questions_for_format(resource.format).
+          map{ |q| q.max_score * q.weight }.reduce(:+)
     end
-    score
+    self.assessment_questions.map{ |q| q.max_score * q.weight }.reduce(:+)
   end
 
 end
