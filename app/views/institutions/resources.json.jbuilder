@@ -2,7 +2,7 @@ json.resources @resources do |resource|
   json.psap_id resource.id
   json.local_identifier resource.local_identifier
   json.name resource.name
-  json.assessment_score_percent resource.total_assessment_score
+  json.assessment_score_percent resource.effective_assessment_score
   json.assessment_type AssessmentType::name_for_type(resource.assessment_type)
   json.location resource.location.name
   json.resource_type resource.readable_resource_type

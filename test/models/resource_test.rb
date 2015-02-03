@@ -186,6 +186,11 @@ class ResourceTest < ActiveSupport::TestCase
     flunk # TODO: write this
   end
 
+  # effective_assessment_score
+  test 'effective_assessment_score should work' do
+    skip # TODO: write this
+  end
+
   # prune_empty_submodels
   test 'prune_empty_submodels should work' do
     resource = resources(:resource_twelve)
@@ -213,11 +218,6 @@ class ResourceTest < ActiveSupport::TestCase
     resource.subjects << Subject.new(name: '')
     resource.prune_empty_submodels
     assert_equal 1, resource.subjects.length
-  end
-
-  # total_assessment_score
-  test 'total_assessment_score should work' do
-    flunk # TODO: write this
   end
 
   # update_assessment_complete

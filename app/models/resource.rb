@@ -240,7 +240,7 @@ class Resource < ActiveRecord::Base
         # properties with blanks
         csv << [resource.local_identifier] +
             [resource.name] +
-            [resource.total_assessment_score * 100] +
+            [resource.effective_assessment_score * 100] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
             [resource.format ? resource.format.name : nil] +
@@ -320,7 +320,7 @@ class Resource < ActiveRecord::Base
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [(self.total_assessment_score * 100).round(2)] +
+          [(self.effective_assessment_score * 100).round(2)] +
           [AssessmentType::name_for_type(self.assessment_type)] +
           [self.location.name] +
           [self.readable_resource_type] +
@@ -357,12 +357,12 @@ class Resource < ActiveRecord::Base
     end
 
     all_items.each do |item|
-      stats[:high] = item.total_assessment_score if item.total_assessment_score > stats[:high]
-      stats[:low] = item.total_assessment_score if
-          stats[:low].nil? or item.total_assessment_score < stats[:low]
+      stats[:high] = item.effective_assessment_score if item.effective_assessment_score > stats[:high]
+      stats[:low] = item.effective_assessment_score if
+          stats[:low].nil? or item.effective_assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.total_assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.total_assessment_score }.sort
+    stats[:mean] = all_items.map{ |r| r.effective_assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.effective_assessment_score }.sort
     len = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
@@ -387,6 +387,15 @@ class Resource < ActiveRecord::Base
   #
   def assessment_questions
     assessment_question_responses.map(&:assessment_question).uniq
+  end
+
+  ##
+  # Returns the assessment score of the resource, factoring in the location
+  # score as well, unlike assessment_score which does not.
+  #
+  def effective_assessment_score
+    self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
+        self.location.assessment_score * 0.1
   end
 
   ##
@@ -441,15 +450,6 @@ class Resource < ActiveRecord::Base
       when ResourceSignificance::HIGH
         'High'
     end
-  end
-
-  ##
-  # Returns the assessment score of the resource, factoring in the location
-  # score as well, unlike assessment_score which does not.
-  #
-  def total_assessment_score
-    self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
-        self.location.assessment_score * 0.1
   end
 
   ##
