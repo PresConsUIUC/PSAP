@@ -383,6 +383,12 @@ form {
   margin-bottom: 2em;
 }
 
+label.required:after {
+  color:red;
+  content:' *';
+  font-weight: bold;
+}
+
 .psap-addable-removable-input-group {
   input, select, textarea, button {
     margin-bottom: 0.5em;
