@@ -469,9 +469,10 @@ class Resource < ActiveRecord::Base
   end
 
   def validates_collections_not_assessable
-    if self.resource_type == ResourceType::COLLECTION and
-        self.assessment_question_responses.any?
-      errors[:base] << 'Collections are not assessable.'
+    if self.resource_type == ResourceType::COLLECTION
+      if self.assessment_question_responses.any? or self.assessment_complete
+        errors[:base] << 'Collections are not assessable.'
+      end
     end
   end
 
