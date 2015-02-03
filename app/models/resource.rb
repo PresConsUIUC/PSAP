@@ -391,9 +391,17 @@ class Resource < ActiveRecord::Base
 
   ##
   # Returns the assessment score of the resource, factoring in the location
-  # score as well, unlike assessment_score which does not.
+  # score as well, unlike assessment_score which does not. If a collection,
+  # returns the average score of all resources.
+  #
+  # @return float between 0 and 1
   #
   def effective_assessment_score
+    if self.resource_type == ResourceType::COLLECTION
+      items = self.all_assessed_items
+      return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
+          self.location.assessment_score * 0.1
+    end
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.1
   end

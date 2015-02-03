@@ -119,9 +119,7 @@
       <li <%= @resource.children.any? ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
-      <% if @resource.resource_type == ResourceType::ITEM %>
-        <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
-      <% end %>
+      <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
       <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
@@ -293,8 +291,9 @@
         </div>
       </div> <!-- #info_tab -->
 
-      <% if @resource.resource_type == ResourceType::ITEM %>
-        <div id="assessment_tab" class="tab-pane">
+
+      <div id="assessment_tab" class="tab-pane">
+        <% if @resource.resource_type == ResourceType::ITEM %>
           <% if @resource.assessment_complete %>
             <div class="psap-progress-container">
               Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
@@ -333,8 +332,23 @@
               Assess This Resource
             <% end %>
           <% end %>
-        </div> <!-- #assessment_tab -->
-      <% end %>
+        <% else %>
+          <div class="psap-progress-container">
+            Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
+            <div class="progress">
+              <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
+                   role="progressbar"
+                   aria-valuenow="<%= @resource.effective_assessment_score * 100 %>"
+                   aria-valuemin="0" aria-valuemax="100"
+                   style="width:<%= @resource.effective_assessment_score * 100 %>%">
+              </div>
+            </div>
+          </div>
+          <p>This is the average score of the items within the collection.
+            (Collections themselves cannot be assessed.)</p>
+        <% end %>
+      </div> <!-- #assessment_tab -->
+
 
       <div id="activity_tab" class="tab-pane">
         <%= render 'shared/events', events: @events %>
