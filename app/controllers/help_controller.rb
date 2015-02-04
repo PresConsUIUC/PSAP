@@ -1,5 +1,8 @@
 class HelpController < ApplicationController
 
+  def index
+  end
+
   ##
   # Responds to GET /help/:category
   #

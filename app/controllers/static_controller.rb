@@ -11,9 +11,6 @@ class StaticController < ApplicationController
   def glossary
   end
 
-  def help
-  end
-
   def landing
   end
 

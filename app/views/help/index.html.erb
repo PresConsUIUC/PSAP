@@ -1,0 +1,126 @@
+<% provide(:title, 'Help') %>
+
+<div class="psap-page-title">
+  <h1>Help</h1>
+</div>
+
+<ul>
+  <li>Audiovisual Formats
+    <ul>
+      <li><%= link_to 'Audiocassettes', help_category_path('av-audiocassette') %></li>
+      <li><%= link_to 'Open Reel Audio', help_category_path('av-audioopenreel') %></li>
+      <li><%= link_to 'Cylinders', help_category_path('av-cylinder') %></li>
+      <li><%= link_to 'Film', help_category_path('av-film') %></li>
+      <li><%= link_to 'Optical Media', help_category_path('av-opticalmedia') %></li>
+      <li><%= link_to 'Phonographic Discs', help_category_path('av-phonodisc') %></li>
+      <li><%= link_to 'Open Reel Video', help_category_path('av-videoopenreel') %></li>
+      <li><%= link_to 'Wire Recordings', help_category_path('av-wire') %></li>
+    </ul>
+  </li>
+  <li>Digital Prints
+    <ul>
+      <li><%= link_to 'Inkjet', help_category_path('digital-inkjet') %></li>
+    </ul>
+  </li>
+  <li><%= link_to 'Photomechanical Prints', help_category_path('photomechanical') %></li>
+  <li>Photographic Images</li>
+  <ul>
+    <li>Color
+      <ul>
+        <li><%= link_to 'Chromogenic', help_category_path('photo-color-chromogenic') %></li>
+        <li><%= link_to 'Color Carbro', help_category_path('photo-color-colorcarbro') %></li>
+        <li><%= link_to 'Dye Transfer', help_category_path('photo-color-dyetransfer') %></li>
+        <li><%= link_to 'Silver Dye Bleach', help_category_path('photo-color-silverdyebleach') %></li>
+      </ul>
+    <li>Direct Photographic Prints
+      <ul>
+        <li><%= link_to 'Ambrotypes', help_category_path('direct-ambrotype') %></li>
+        <li><%= link_to 'Daguerreotypes', help_category_path('direct-daguerreotype') %></li>
+        <li><%= link_to 'Tintypes', help_category_path('direct-tintype') %></li>
+      </ul>
+    <li>Instant Photographs
+      <ul>
+        <li><%= link_to 'Black and White', help_category_path('photo-instant-bw') %></li>
+        <li><%= link_to 'Color', help_category_path('photo-instant-color') %></li>
+      </ul>
+    <li>Monochromatic
+      <ul>
+        <li><%= link_to 'Carbon/Woodburytype', help_category_path('photo-monochrome-carbon-woodburytype') %></li>
+        <li><%= link_to 'Cyanotype', help_category_path('photo-monochrome-cyanotype') %></li>
+        <li><%= link_to 'Glossy Collodion', help_category_path('photo-monochrome-glossycollodion') %></li>
+        <li><%= link_to 'Matte Collodion', help_category_path('photo-monochrome-mattecollodion') %></li>
+        <li><%= link_to 'Platinum/Palladium', help_category_path('photo-monochrome-platinum-palladium') %></li>
+        <li><%= link_to 'Salt', help_category_path('photo-monochrome-salt') %></li>
+        <li><%= link_to 'Silver Gelatin Printing Out Process (POP)', help_category_path('photo-monochrome-gelatinpop') %></li>
+        <li><%= link_to 'Silver Gelatin Developing Out Process (DOP)', help_category_path('photo-monochrome-silvergelatin') %></li>
+      </ul>
+    <li><%= link_to 'Microforms', help_category_path('microform') %></li>
+    <li>Negatives
+      <ul>
+        <li><%= link_to 'Chromogenic', help_category_path('negative-chromogenic') %></li>
+        <li><%= link_to 'Glass', help_category_path('negative-glass') %></li>
+        <li><%= link_to 'Silver Gelatin', help_category_path('negative-silvergelatin') %></li>
+      </ul>
+    </li>
+    <li>Transparencies/Slides
+      <ul>
+        <li>Film
+          <ul>
+            <li><%= link_to 'Black and White', help_category_path('slide-film-bw') %></li>
+            <li><%= link_to 'Color', help_category_path('slide-film-color') %></li>
+          </ul>
+        <li>Glass
+          <ul>
+            <li><%= link_to 'Autochrome', help_category_path('slide-glass-autochrome') %></li>
+            <li><%= link_to 'Black and White', help_category_path('slide-glass-bw') %></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  </li>
+  <li><%= link_to 'Paper (Bound)', help_category_path('paper-bound-book') %></li>
+  <li>Paper (Unbound)
+    <ul>
+      <li>Architectural Reproductions
+        <ul>
+          <li><%= link_to 'Aniline Prints', help_category_path('paper-unbound-architectural-aniline') %></li>
+          <li><%= link_to 'Blueprints', help_category_path('paper-unbound-architectural-blueprint') %></li>
+          <li><%= link_to 'Diazo', help_category_path('paper-unbound-architectural-diazo') %></li>
+          <li><%= link_to 'Ferrogallic', help_category_path('paper-unbound-architectural-ferrogallic') %></li>
+          <li><%= link_to 'Hectograph', help_category_path('paper-unbound-architectural-hectograph') %></li>
+          <li><%= link_to 'Photostatic', help_category_path('paper-unbound-architectural-photostat') %></li>
+          <li><%= link_to 'Unidentified Formats', help_category_path('paper-unbound-architectural-unidentified') %></li>
+          <li><%= link_to 'Vandyke', help_category_path('paper-unbound-architectural-vandyke') %></li>
+          <li><%= link_to 'Washoff', help_category_path('paper-unbound-architectural-washoff') %></li>
+        </ul>
+      <li>Office Copies
+        <ul>
+          <li><%= link_to 'Carbonless Paper', help_category_path('paper-unbound-officecopy-carbonless') %></li>
+          <li><%= link_to 'Copybooks', help_category_path('paper-unbound-officecopy-copybook') %></li>
+          <li><%= link_to 'Diazo Prints', help_category_path('paper-unbound-officecopy-diazo') %></li>
+          <li><%= link_to 'Dye Ink Transfer', help_category_path('paper-unbound-officecopy-dyeinktransfer') %></li>
+          <li><%= link_to 'Electrofax', help_category_path('paper-unbound-officecopy-electrofax') %></li>
+          <li><%= link_to 'Electrostatic/Photocopy (Black)', help_category_path('paper-unbound-officecopy-electrostatic') %></li>
+          <li><%= link_to 'Electrostatic/Photocopy (Color)', help_category_path('paper-unbound-officecopy-electrostatic-colorphotocopy') %></li>
+          <li><%= link_to 'Inkjet', help_category_path('paper-unbound-officecopy-inkjet') %></li>
+          <li><%= link_to 'Ink on Paper', help_category_path('paper-unbound-officecopy-inkonpaper') %></li>
+          <li>Photographic
+            <ul>
+              <li><%= link_to 'Diffusion Transfer', help_category_path('paper-unbound-officecopy-photographic-diffusiontransfer') %>
+              <li><%= link_to 'Photostatic', help_category_path('paper-unbound-officecopy-photographic-photostat') %>
+            </ul>
+          <li><%= link_to 'Thermal', help_category_path('paper-unbound-officecopy-thermal') %></li>
+          <li><%= link_to 'Unidentified Formats' , help_category_path('paper-unbound-officecopy-unidentified') %></li>
+        </ul>
+      <li><%= link_to 'Original Documents', help_category_path('paper-unbound-originaldoc')%></li>
+    </ul>
+  </li>
+  <li>Supplementary Documentation
+    <ul>
+      <li><%= link_to 'Institution', help_category_path('supplementary-institution') %></li>
+      <li><%= link_to 'Location', help_category_path('supplementary-location') %></li>
+      <li><%= link_to 'Significance', help_category_path('supplementary-significance') %></li>
+    </ul>
+  </li>
+</ul>
