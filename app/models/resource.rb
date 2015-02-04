@@ -399,8 +399,11 @@ class Resource < ActiveRecord::Base
   def effective_assessment_score
     if self.resource_type == ResourceType::COLLECTION
       items = self.all_assessed_items
-      return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
-          self.location.assessment_score * 0.1
+      if items.any?
+        return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
+            self.location.assessment_score * 0.1
+      end
+      return 0.0
     end
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.1
