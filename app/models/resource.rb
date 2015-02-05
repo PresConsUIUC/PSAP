@@ -41,6 +41,7 @@ class Resource < ActiveRecord::Base
   validates :user, presence: true
 
   validate :validates_collections_not_assessable
+  validate :validates_item_children
   validate :validates_not_child_of_item
   validate :validates_same_institution_as_user
 
@@ -503,6 +504,13 @@ class Resource < ActiveRecord::Base
       if self.assessment_question_responses.any? or self.assessment_complete
         errors[:base] << 'Collections are not assessable.'
       end
+    end
+  end
+
+  def validates_item_children
+    if self.resource_type == ResourceType::ITEM and self.children.any?
+      errors[:base] << 'This collection cannot be changed into an item, as it '\
+      'contains child resources.'
     end
   end
 
