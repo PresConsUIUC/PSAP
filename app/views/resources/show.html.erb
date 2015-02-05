@@ -1,17 +1,6 @@
 <% provide(:title, @resource.name) %>
 <% provide(:body_id, 'show_resource') %>
 
-<% breadcrumbs = []
-   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
-   breadcrumbs << { @resource.location.repository.institution.name =>
-                            @resource.location.repository.institution }
-   breadcrumbs << { @resource.location.repository.name =>
-                            @resource.location.repository }
-   breadcrumbs << { @resource.location.name => @resource.location }
-   breadcrumbs << @resource.name
-%>
-<%= breadcrumbs(breadcrumbs) %>
-
 <div id="psap-resource-page-content">
   <%= render partial: 'show' %>
 </div>
@@ -23,7 +12,8 @@
      aria-labelledby="importModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= form_tag(form_action, multipart: true, method: 'post') do %>
+      <%= form_tag(resource_import_post_path(@resource), multipart: true,
+                   method: 'post') do %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title" id="importModalLabel">Import Resources From ArchivesSpace</h4>
