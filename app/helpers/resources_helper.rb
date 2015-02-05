@@ -13,12 +13,34 @@ module ResourcesHelper
   end
 
   def human_readable_date(resource_date)
+    date = ''
     if resource_date.year
-      "#{resource_date.year} (#{resource_date.readable_date_type.downcase})"
-    elsif resource_date.begin_year || resource_date.end_year
-      "#{resource_date.begin_year}-#{resource_date.end_year} "\
-        "(#{resource_date.readable_date_type.downcase})"
+      date = "#{resource_date.year}"
+      if resource_date.month
+        date += "-#{resource_date.month}"
+        if resource_date.day
+          date += "-#{resource_date.day}"
+        end
+      end
+    elsif resource_date.begin_year
+      date += "#{resource_date.begin_year}"
+      if resource_date.begin_month
+        date += "#{resource_date.begin_month}"
+        if resource_date.begin_day
+          date += "#{resource_date.begin_day}"
+        end
+      end
+      if resource_date.end_year
+        date += " to #{resource_date.end_year}"
+        if resource_date.end_month
+          date += "#{resource_date.end_month}"
+          if resource_date.end_day
+            date += "#{resource_date.end_day}"
+          end
+        end
+      end
     end
+    date += " (#{resource_date.readable_date_type.downcase})"
   end
 
   def score_help(resource)
