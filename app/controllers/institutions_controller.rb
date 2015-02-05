@@ -86,15 +86,15 @@ class InstitutionsController < ApplicationController
     rescue ValidationError
       render 'new'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'new'
     else
       if current_user.is_admin?
-        flash[:success] = "The institution \"#{@institution.name}\" has been "\
+        flash['success'] = "The institution \"#{@institution.name}\" has been "\
           "created."
         redirect_to @institution
       else
-        flash[:success] = "The institution \"#{@institution.name}\" has been "\
+        flash['success'] = "The institution \"#{@institution.name}\" has been "\
           "created. An administrator has been notified and will review your "\
           "request to join it momentarily,"
         redirect_to dashboard_path
@@ -109,10 +109,10 @@ class InstitutionsController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to institution_url(@institution)
     else
-      flash[:success] = "Institution \"#{@institution.name}\" deleted."
+      flash['success'] = "Institution \"#{@institution.name}\" deleted."
       redirect_to institutions_url
     end
   end
@@ -220,10 +220,10 @@ class InstitutionsController < ApplicationController
     rescue ValidationError
       render 'edit'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'edit'
     else
-      flash[:success] = "Institution \"#{@institution.name}\" updated."
+      flash['success'] = "Institution \"#{@institution.name}\" updated."
       redirect_to @institution
     end
   end

@@ -33,7 +33,7 @@ class ResourcesControllerTest < ActionController::TestCase
       res[:name] = 'New Resource'
       post :create, resource: res, location_id: 1
     end
-    assert_equal 'Resource "New Resource" created.', flash[:success]
+    assert_equal 'Resource "New Resource" created.', flash['success']
     assert_redirected_to resource_url(assigns(:resource))
   end
 
@@ -45,7 +45,7 @@ class ResourcesControllerTest < ActionController::TestCase
       res[:name] = 'New Resource'
       post :create, resource: res, location_id: 3
     end
-    assert_equal 'Resource "New Resource" created.', flash[:success]
+    assert_equal 'Resource "New Resource" created.', flash['success']
     assert_redirected_to resource_url(assigns(:resource))
   end
 
@@ -101,7 +101,7 @@ class ResourcesControllerTest < ActionController::TestCase
       delete :destroy, id: resources(:resource_two).id
     end
     assert_equal "Resource \"#{resources(:resource_two).name}\" deleted.",
-                 flash[:success]
+                 flash['success']
     assert_redirected_to location_url(resources(:resource_two).location_id)
   end
 

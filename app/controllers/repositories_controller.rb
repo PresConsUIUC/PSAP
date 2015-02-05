@@ -15,10 +15,10 @@ class RepositoriesController < ApplicationController
     rescue ValidationError
       render 'new'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'new'
     else
-      flash[:success] = "Repository \"#{@repository.name}\" created."
+      flash['success'] = "Repository \"#{@repository.name}\" created."
       redirect_to @repository
     end
   end
@@ -30,10 +30,10 @@ class RepositoriesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to repository
     else
-      flash[:success] = "Repository \"#{repository.name}\" deleted."
+      flash['success'] = "Repository \"#{repository.name}\" deleted."
       redirect_to repository.institution
     end
   end
@@ -74,10 +74,10 @@ class RepositoriesController < ApplicationController
     rescue ValidationError
       render 'edit'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'edit'
     else
-      flash[:success] = "Repository \"#{@repository.name}\" updated."
+      flash['success'] = "Repository \"#{@repository.name}\" updated."
       redirect_to @repository
     end
   end

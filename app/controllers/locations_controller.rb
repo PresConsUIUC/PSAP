@@ -20,10 +20,10 @@ class LocationsController < ApplicationController
     rescue ValidationError
       render 'new'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'new'
     else
-      flash[:success] = "Location \"#{@location.name}\" created."
+      flash['success'] = "Location \"#{@location.name}\" created."
       redirect_to @location
     end
   end
@@ -35,10 +35,10 @@ class LocationsController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to location
     else
-      flash[:success] = "Location \"#{location.name}\" deleted."
+      flash['success'] = "Location \"#{location.name}\" deleted."
       redirect_to location.repository
     end
   end
@@ -83,10 +83,10 @@ class LocationsController < ApplicationController
     rescue ValidationError
       render 'edit'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'edit'
     else
-      flash[:success] = "Location \"#{@location.name}\" updated."
+      flash['success'] = "Location \"#{@location.name}\" updated."
       redirect_to @location
     end
   end

@@ -21,10 +21,10 @@ class ResourcesController < ApplicationController
     rescue ValidationError
       render 'new'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'new'
     else
-      flash[:success] = "Resource \"#{@resource.name}\" created."
+      flash['success'] = "Resource \"#{@resource.name}\" created."
       redirect_to @resource
     end
   end
@@ -36,10 +36,10 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to @resource
     else
-      flash[:success] = "Resource \"#{@resource.name}\" deleted."
+      flash['success'] = "Resource \"#{@resource.name}\" deleted."
       redirect_to @resource.location
     end
   end
@@ -75,11 +75,11 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to :back
     else
       if command.object.length > 0
-        flash[:success] = "Successfully imported #{command.object.length} "\
+        flash['success'] = "Successfully imported #{command.object.length} "\
         "resource(s)."
       else
         flash[:notice] = 'Unable to detect an ArchivesSpace EAD XML file in '\
@@ -100,9 +100,9 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = "Successfully moved resources to "\
+      flash['success'] = "Successfully moved resources to "\
       "\"#{command.object.name}\"."
     end
     redirect_to :back

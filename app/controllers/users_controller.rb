@@ -22,9 +22,9 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = "Institution change approved for user #{user.username}."
+      flash['success'] = "Institution change approved for user #{user.username}."
     ensure
       redirect_to :back
     end
@@ -38,10 +38,10 @@ class UsersController < ApplicationController
     rescue ValidationError
       render 'new'
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       render 'new'
     else
-      flash[:success] = 'Thanks for registering for PSAP! An email '\
+      flash['success'] = 'Thanks for registering for PSAP! An email '\
       'has been sent to the address you provided. Follow the link in the '\
       'email to confirm your account.'
       redirect_to root_url
@@ -60,9 +60,9 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = 'Your account has been confirmed, but before you can '\
+      flash['success'] = 'Your account has been confirmed, but before you can '\
       'sign in, it must be approved by an administrator. We\'ll get back to '\
       'you as soon as we can. Thanks for your interest in the PSAP!'
     ensure
@@ -79,17 +79,17 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to users_url
     else
       if user == _current_user
-        flash[:success] = 'Your account has been deleted.'
+        flash['success'] = 'Your account has been deleted.'
         command = SignOutCommand.new(user, request.remote_ip)
         command.execute
         sign_out
         redirect_to root_url
       else
-        flash[:success] = "User #{user.username} deleted."
+        flash['success'] = "User #{user.username} deleted."
         redirect_to users_url
       end
     end
@@ -111,9 +111,9 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = "User #{user.username} enabled."
+      flash['success'] = "User #{user.username} enabled."
     ensure
       redirect_to :back
     end
@@ -130,9 +130,9 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = "User #{user.username} disabled."
+      flash['success'] = "User #{user.username} disabled."
     ensure
       redirect_to :back
     end
@@ -177,9 +177,9 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
-      flash[:success] = "Institution change refused for user #{user.username}."
+      flash['success'] = "Institution change refused for user #{user.username}."
     ensure
       redirect_to :back
     end
@@ -196,13 +196,13 @@ class UsersController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
     else
       if user == current_user
-        flash[:success] = 'Your feed key has been reset. Click on a feed '\
+        flash['success'] = 'Your feed key has been reset. Click on a feed '\
         'icon within the application to re-subscribe.'
       else
-        flash[:success] = "Reset feed key for user #{user.username}."
+        flash['success'] = "Reset feed key for user #{user.username}."
       end
     ensure
       redirect_to :back
@@ -238,10 +238,10 @@ class UsersController < ApplicationController
       rescue ValidationError
         render 'edit'
       rescue => e
-        flash[:error] = "#{e}"
+        flash['error'] = "#{e}"
         render 'edit'
       else
-        flash[:success] = @user == current_user ?
+        flash['success'] = @user == current_user ?
             'Your password has been changed.' :
             "#{@user.username}'s password has been changed."
         redirect_to edit_user_url(@user)
@@ -255,7 +255,7 @@ class UsersController < ApplicationController
       rescue ValidationError
         render 'edit'
       rescue => e
-        flash[:error] = "#{e}"
+        flash['error'] = "#{e}"
         render 'edit'
       else
         if @user.institution == new_institution # already joined, which means an admin did it
@@ -280,10 +280,10 @@ class UsersController < ApplicationController
       rescue ValidationError
         render 'edit'
       rescue => e
-        flash[:error] = "#{e}"
+        flash['error'] = "#{e}"
         render 'edit'
       else
-        flash[:success] = @user == current_user ?
+        flash['success'] = @user == current_user ?
             'Your profile has been updated.' :
             "#{@user.username}'s profile has been updated."
         redirect_to edit_user_url(@user)

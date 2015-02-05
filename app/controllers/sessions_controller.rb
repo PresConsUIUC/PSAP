@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to signin_url
     else
       sign_in command.object

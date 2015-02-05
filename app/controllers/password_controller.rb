@@ -23,7 +23,7 @@ class PasswordController < ApplicationController
                           'your password.'
         redirect_to root_url
       else
-        flash[:error] = 'No user found with the given email address.'
+        flash['error'] = 'No user found with the given email address.'
         redirect_to forgot_password_url
       end
       return
@@ -54,7 +54,7 @@ class PasswordController < ApplicationController
           params[:user][:password_reset_key] == @user.password_reset_key
         @user.password_reset_key = nil
         @user.update_attributes(user_change_password_params)
-        flash[:success] = 'Password reset successfully.'
+        flash['success'] = 'Password reset successfully.'
         return redirect_to signin_url
       end
     end
