@@ -432,15 +432,15 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Submitted assessment forms will often have empty submodels such as creator,
+  # Submitted edit forms will often include empty submodels such as creator,
   # extent, etc. This method will remove them.
   #
   def prune_empty_submodels
-    self.creators = self.creators.select{ |c| c.name.length > 0 }
-    self.extents = self.extents.select{ |e| e.name.length > 0 }
-    self.resource_dates = self.resource_dates.select{ |r| r.year }
-    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
-    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
+    self.creators = self.creators.select{ |c| !c.name.blank? }
+    self.extents = self.extents.select{ |e| !e.name.blank? }
+    self.resource_dates = self.resource_dates.select{ |r| !r.year.blank? or !r.begin_year.blank? }
+    self.resource_notes = self.resource_notes.select{ |r| !r.value.blank? }
+    self.subjects = self.subjects.select{ |s| !s.name.blank? }
   end
 
   def readable_resource_type
