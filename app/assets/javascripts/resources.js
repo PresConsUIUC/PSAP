@@ -380,7 +380,7 @@ var ResourceEditForm = function() {
 };
 
 var ready = function() {
-    if ($('body#new_resource').length || $('body#edit_resource').length) {
+    if ($('body#new_resource').length || $('body#show_resource').length) {
         new ResourceEditForm().init();
     } else if ($('body#assess_resource').length) {
         // handled by AssessmentForm in assessments.js

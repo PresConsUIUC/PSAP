@@ -8,10 +8,8 @@ $(document).ajaxComplete(function(event, request, options) {
     // These headers are set by an ApplicationController after_filter, to
     // support ajax requests.
     var msg = request.getResponseHeader('X-Message');
+    console.log('ajaxComplete: X-Message header: ' + msg);
     if (msg) {
-        console.log('X-Message header: ' +
-            request.getResponseHeader('X-Message'));
-
         // remove any existing messages
         $('div.alert').remove();
 
@@ -45,7 +43,22 @@ $(document).ajaxComplete(function(event, request, options) {
     }
 });
 
+$(document).ajaxSuccess(function(event, request) {
+    console.log('ajaxSuccess');
+    var msg = request.getResponseHeader('X-Message');
+    var edit_panel = $('#psap-edit-panel');
+    // if there is a message, close the panel so we can display the flash
+    if (msg) {
+        if (edit_panel.length) {
+            if (edit_panel.hasClass('in')) {
+                edit_panel.modal('hide');
+            }
+        }
+    } else { // there is no message, so probably there was a validation error
+        edit_panel.animate({ scrollTop: 0 }, 'fast');
+    }
+});
+
 $(document).ajaxError(function(event, request) {
-    console.log('Error: X-Message header: ' +
-        request.getResponseHeader('X-Message'));
+    console.log('ajaxError');
 });

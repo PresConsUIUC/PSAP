@@ -2,9 +2,12 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:assess, :create, :destroy, :edit, :import, :names, :new,
+                only: [:assess, :create, :destroy, :import, :names, :new,
                        :show, :subjects, :update]
 
+  ##
+  # Responds to GET /resources/:id/assess
+  #
   def assess
     @resource = Resource.find(params[:resource_id])
     @assessment_sections = Assessment.find_by_key('resource').
@@ -42,21 +45,6 @@ class ResourcesController < ApplicationController
       flash['success'] = "Resource \"#{@resource.name}\" deleted."
       redirect_to @resource.location
     end
-  end
-
-  ##
-  # Responds to GET /resources/:id/assess
-  #
-  def edit
-    @resource = Resource.find(params[:id])
-
-    # The form JavaScript needs at least 1 of each dependent entity. Empty
-    # ones will be stripped in update().
-    @resource.creators.build unless @resource.creators.any?
-    @resource.extents.build unless @resource.extents.any?
-    @resource.resource_dates.build unless @resource.resource_dates.any?
-    @resource.resource_notes.build unless @resource.resource_notes.any?
-    @resource.subjects.build unless @resource.subjects.any?
   end
 
   ##
@@ -154,24 +142,43 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
 
     respond_to do |format|
-      format.csv {
+      format.csv do
         response.headers['Content-Disposition'] =
             "attachment; filename=\"#{@resource.filename}.csv\""
         render text: @resource.as_csv
-      }
-      format.html {
+      end
+      format.html do
+        # The edit form JavaScript needs at least 1 of each dependent entity.
+        # Empty ones will be stripped in update().
+        @resource.creators.build unless @resource.creators.any?
+        @resource.extents.build unless @resource.extents.any?
+        @resource.resource_dates.build unless @resource.resource_dates.any?
+        @resource.resource_notes.build unless @resource.resource_notes.any?
+        @resource.subjects.build unless @resource.subjects.any?
+
         @events = @resource.events.order(created_at: :desc)
-      }
-      format.dcxml {
+      end
+      format.dcxml do
         response.headers['Content-Disposition'] =
             "attachment; filename=\"#{@resource.filename}.xml\""
         @institution = @resource.location.repository.institution
-      }
-      format.ead {
+      end
+      format.ead do
         response.headers['Content-Disposition'] =
             "attachment; filename=\"#{@resource.filename}.xml\""
         @institution = @resource.location.repository.institution
-      }
+      end
+      format.js do
+        # The edit form JavaScript needs at least 1 of each dependent entity.
+        # Empty ones will be stripped in update().
+        @resource.creators.build unless @resource.creators.any?
+        @resource.extents.build unless @resource.extents.any?
+        @resource.resource_dates.build unless @resource.resource_dates.any?
+        @resource.resource_notes.build unless @resource.resource_notes.any?
+        @resource.subjects.build unless @resource.subjects.any?
+
+        @events = @resource.events.order(created_at: :desc)
+      end
     end
   end
 
@@ -187,7 +194,7 @@ class ResourcesController < ApplicationController
     'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
     conn = ActiveRecord::Base.connection
     results = conn.execute(sql)
-    render json: results.map{ |r| r['name'] }
+    render json: results.map(&:name)
   end
 
   def update
@@ -199,16 +206,13 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'edit'
+      render partial: 'show_error'
     rescue => e
-      flash[:error] = "#{e}"
-      render 'edit'
+      flash['error'] = "#{e}"
+      render 'show'
     else
-      flash[:success] = "Resource \"#{@resource.name}\" updated."
-      respond_to do |format|
-        format.html { redirect_to @resource }
-        format.js { render 'edit' }
-      end
+      flash['success'] = "Resource \"#{@resource.name}\" updated."
+      render 'show'
     end
   end
 
