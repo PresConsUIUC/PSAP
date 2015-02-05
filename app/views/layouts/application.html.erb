@@ -41,7 +41,8 @@
       <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
                                    alt:'PSAP logo', id:'title_logo'), root_path %>
 
-      <h1><%= link_to 'Preservation Self-Assessment Program', root_path %></h1>
+      <h1><%= link_to 'Preservation Self-Assessment Program', root_path %>
+        <span class="label label-warning">BETA</span></h1>
 
       <% if signed_in? && current_user.institution %>
         <div class="btn-group">
