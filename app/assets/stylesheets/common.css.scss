@@ -149,7 +149,7 @@ button.hovertip-fire {
 
 .popover {
   min-width:300px;
-  z-index:10000; /* fixes popovers in modal panels */
+  z-index:8999; /* fixes popovers in modal panels */
 }
 
 div#psap-ajax-shade {

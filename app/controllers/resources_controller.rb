@@ -176,8 +176,6 @@ class ResourcesController < ApplicationController
         @resource.resource_dates.build unless @resource.resource_dates.any?
         @resource.resource_notes.build unless @resource.resource_notes.any?
         @resource.subjects.build unless @resource.subjects.any?
-
-        @events = @resource.events.order(created_at: :desc)
       end
     end
   end
@@ -206,11 +204,15 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
+      response.headers['X-Psap-Action'] = 'error'
       render partial: 'show_error'
     rescue => e
+      response.headers['X-Psap-Action'] = 'error'
       flash['error'] = "#{e}"
       render 'show'
     else
+      @events = @resource.events.order(created_at: :desc)
+      response.headers['X-Psap-Action'] = 'success'
       flash['success'] = "Resource \"#{@resource.name}\" updated."
       render 'show'
     end

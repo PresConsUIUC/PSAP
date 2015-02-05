@@ -1,0 +1,27 @@
+<% # Used for both single-resource and multiple-resource import via
+   # show-resource and show-location pages.
+%>
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog"
+     aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_tag(form_action, multipart: true, method: 'post') do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="importModalLabel">Import Resources From ArchivesSpace</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="files">File(s) to Upload</label>
+            <input type="file" id="files" name="files[]" multiple>
+            <span class="help-block">PSAP supports ArchivesSpace EAD XML files.</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <input type="submit" value="Import" class="btn btn-primary">
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
