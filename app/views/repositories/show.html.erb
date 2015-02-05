@@ -34,24 +34,11 @@
 
 <div class="row">
   <div class="col-sm-4">
-    <ol class="psap-hierarchy-list">
-      <li>
-        <%= entity_icon(@repository.institution) %>
-        <%= link_to @repository.institution.name, @repository.institution %>
-        <ol class="psap-hierarchy-list">
-          <% @repository.institution.repositories.each do |repo| %>
-            <li>
-              <%= entity_icon repo %>
-              <% if repo == @repository %>
-                <span class="active"><%= repo.name %></span>
-              <% else %>
-                <%= link_to repo.name, repo %>
-              <% end %>
-            </li>
-          <% end %>
-        </ol>
-      </li>
-    </ol>
+    <%= render partial: 'shared/entity_hierarchy',
+               locals: { entities: [@repository],
+                         selected_entity: @repository,
+                         deepest_entity_class: Location,
+                         depth: 0 } %>
   </div>
 
   <div class="col-sm-8">

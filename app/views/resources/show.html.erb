@@ -84,29 +84,11 @@
 <div class="row">
 
   <div class="col-sm-4">
-    <ol class="psap-hierarchy-list"> <!-- TODO: display hierarchy accurately -->
-      <li>
-        <% if @resource.resource_type == ResourceType::COLLECTION or !@resource.parent %>
-          <%= entity_icon(@resource.location) %>
-          <%= link_to @resource.location.name, @resource.location %>
-        <% else %>
-          <%= entity_icon(@resource.parent) %>
-          <%= link_to @resource.parent.name, @resource.parent %>
-        <% end %>
-        <ol class="psap-hierarchy-list">
-          <% @resource.location.resources.where(parent_id: @resource.parent_id).each do |res| %>
-            <li>
-              <%= entity_icon res %>
-              <% if res == @resource %>
-                <span class="active"><%= res.name %></span>
-              <% else %>
-                <%= link_to res.name, res %>
-              <% end %>
-            </li>
-          <% end %>
-        </ol>
-      </li>
-    </ol>
+    <%= render partial: 'shared/entity_hierarchy',
+               locals: { entities: [@resource.location],
+                         selected_entity: @resource,
+                         deepest_entity_class: Resource,
+                         depth: 0 } %>
   </div>
 
   <div class="col-sm-8">
@@ -270,12 +252,12 @@
                 </dd>
               <% end %>
               <% if @resource.significance %>
-                  <dt>Significance</dt>
-                  <dd><%= @resource.readable_significance %></dd>
+                <dt>Significance</dt>
+                <dd><%= @resource.readable_significance %></dd>
               <% end %>
               <% if @resource.rights %>
-                  <dt>Rights</dt>
-                  <dd><%= @resource.rights %></dd>
+                <dt>Rights</dt>
+                <dd><%= @resource.rights %></dd>
               <% end %>
               <dt>Created</dt>
               <dd><%= local_time_ago(@resource.created_at) %> by
@@ -290,7 +272,6 @@
           </div>
         </div>
       </div> <!-- #info_tab -->
-
 
       <div id="assessment_tab" class="tab-pane">
         <% if @resource.resource_type == ResourceType::ITEM %>
@@ -348,7 +329,6 @@
             (Collections themselves cannot be assessed.)</p>
         <% end %>
       </div> <!-- #assessment_tab -->
-
 
       <div id="activity_tab" class="tab-pane">
         <%= render 'shared/events', events: @events %>
