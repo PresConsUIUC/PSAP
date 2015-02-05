@@ -130,7 +130,7 @@ var PSAP = {
         // lazy-load images that have a data-original attribute
         $('img[data-original]').each(function() {
             // provided by vendor/assets/javascripts/jquery.lazyload.js
-            $(this).lazyload({ effect: 'fadeIn' });
+            $(this).lazyload();
         });
 
         // Pagination links
