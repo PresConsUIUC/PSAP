@@ -138,7 +138,7 @@
                   <%= AssessmentType::name_for_type(@resource.assessment_type) %>
                 </dd>
               <% end %>
-              <% if @resource.creators.any? %>
+              <% if @resource.creators.select{ |e| !e.name.blank? }.any? %>
                 <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
                 <dd>
                   <% if @resource.creators.length == 1 %>
@@ -193,7 +193,7 @@
           </div>
           <div class="col-sm-6">
             <dl>
-              <% if @resource.resource_notes.any? %>
+              <% if @resource.resource_notes.select{ |e| !e.value.blank? }.any? %>
                 <dt>Notes</dt>
                 <dd>
                   <% if @resource.resource_notes.length == 1 %>
@@ -207,7 +207,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.resource_dates.any? %>
+              <% if @resource.resource_dates.select{ |e| !e.year.blank? or !e.begin_year.blank? }.any? %>
                 <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
                 <dd>
                   <% if @resource.resource_dates.length == 1 %>
@@ -221,7 +221,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.subjects.any? %>
+              <% if @resource.subjects.select{ |e| !e.name.blank? }.any? %>
                 <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
                 <dd>
                   <% if @resource.subjects.length == 1 %>
@@ -235,7 +235,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.extents.any? %>
+              <% if @resource.extents.select{ |e| !e.name.blank? }.any? %>
                 <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
                 <dd>
                   <% if @resource.extents.length == 1 %>
