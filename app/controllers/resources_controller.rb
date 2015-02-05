@@ -240,7 +240,7 @@ class ResourcesController < ApplicationController
                                      :format_support_type_id,
                                      :local_identifier, :location_id, :name,
                                      :notes, :parent_id, :resource_type,
-                                     :significance, :user_id,
+                                     :rights, :significance, :user_id,
                                      creators_attributes: [:id, :creator_type,
                                                            :name],
                                      extents_attributes: [:id, :name],
