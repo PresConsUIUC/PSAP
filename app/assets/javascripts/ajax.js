@@ -9,9 +9,9 @@ $(document).ajaxComplete(function(event, request, options) {
 
 $(document).ajaxSuccess(function(event, request) {
     var result = request.getResponseHeader('X-Psap-Result');
-    var edit_panel = $('.psap-edit-panel');
+    var edit_panel = $('.psap-edit-panel.in');
 
-    if (result && edit_panel.length && edit_panel.hasClass('in')) {
+    if (result && edit_panel.length) {
         if (result == 'success') {
             edit_panel.modal('hide');
         } else if (result == 'error') {
