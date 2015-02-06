@@ -2,7 +2,7 @@ class ResourcesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:assess, :create, :destroy, :import, :names, :new,
+                only: [:assess, :create, :destroy, :edit, :import, :names, :new,
                        :show, :subjects, :update]
 
   ##
@@ -44,6 +44,16 @@ class ResourcesController < ApplicationController
     else
       flash['success'] = "Resource \"#{@resource.name}\" deleted."
       redirect_to @resource.location
+    end
+  end
+
+  ##
+  # Responds to GET /resources/:id/edit
+  #
+  def edit
+    if request.xhr?
+      @resource = Resource.find(params[:id])
+      render partial: 'edit_form'
     end
   end
 
@@ -204,15 +214,15 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      response.headers['X-Psap-Action'] = 'error'
+      response.headers['X-Psap-Result'] = 'error'
       render partial: 'show_error'
     rescue => e
-      response.headers['X-Psap-Action'] = 'error'
+      response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
       render 'show'
     else
       @events = @resource.events.order(created_at: :desc)
-      response.headers['X-Psap-Action'] = 'success'
+      response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Resource \"#{@resource.name}\" updated."
       render 'show'
     end

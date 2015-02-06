@@ -191,6 +191,7 @@
                        { include_blank: false },
                        { class: 'form-control input-md' }) %>
             <%= g.text_field :name, class: 'form-control' %>
+            <%= g.hidden_field :_destroy, class: 'destroy' %>
           </div>
           <div class="col-sm-1">
             <button class="btn btn-default btn-sm remove" type="button">
@@ -235,72 +236,73 @@
       <%= f.fields_for :resource_dates do |g| %>
         <div class="psap-addable-removable-input-group row">
           <div class="col-sm-11">
-          <%= g.label 'Type' %>
-          <%= g.select('date_type',
-                       options_for_select(DateType::all.map{ |t| [ DateType::name_for_type(t), t ] },
-                                        selected: g.object.date_type),
-                       { include_blank: false },
-                       { class: 'form-control date_type' }) %>
-          <div class="input-group begin_date">
-            <%= g.label 'Begin date' %>
-            <div class="row">
-              <div class="col-sm-4">
-                <%= g.number_field :begin_year, class: 'form-control year',
-                                   min: 1, max: Time.now.year, maxlength: 4,
-                                   placeholder: 'YYYY' %>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :begin_month, class: 'form-control month',
-                                   min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-                <span class="help-block">(optional)</span>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :begin_day, class: 'form-control day',
-                                   min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-                <span class="help-block">(optional)</span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group end_date">
-            <%= g.label 'End date' %>
-            <div class="row">
-              <div class="col-sm-4">
-                <%= g.number_field :end_year, class: 'form-control year',
-                                   min: 1, max: Time.now.year, maxlength: 4,
-                                   placeholder: 'YYYY' %>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :end_month, class: 'form-control month',
-                                   min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-                <span class="help-block">(optional)</span>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :end_day, class: 'form-control day',
-                                   min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-                <span class="help-block">(optional)</span>
+            <%= g.label 'Type' %>
+            <%= g.select('date_type',
+                         options_for_select(DateType::all.map{ |t| [ DateType::name_for_type(t), t ] },
+                                            selected: g.object.date_type),
+                         { include_blank: false },
+                         { class: 'form-control date_type' }) %>
+            <div class="input-group begin_date">
+              <%= g.label 'Begin date' %>
+              <div class="row">
+                <div class="col-sm-4">
+                  <%= g.number_field :begin_year, class: 'form-control year',
+                                     min: 1, max: Time.now.year, maxlength: 4,
+                                     placeholder: 'YYYY' %>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :begin_month, class: 'form-control month',
+                                     min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+                  <span class="help-block">(optional)</span>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :begin_day, class: 'form-control day',
+                                     min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+                  <span class="help-block">(optional)</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="input-group date">
-            <%= g.label 'Date' %>
-            <div class="row">
-              <div class="col-sm-4">
-                <%= g.number_field :year, class: 'form-control year',
-                                   min: 1, max: Time.now.year, maxlength: 4,
-                                   placeholder: 'YYYY' %>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :month, class: 'form-control month',
-                                   min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
-                <span class="help-block">(optional)</span>
-              </div>
-              <div class="col-sm-4">
-                <%= g.number_field :day, class: 'form-control day',
-                                   min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
-                <span class="help-block">(optional)</span>
+            <div class="input-group end_date">
+              <%= g.label 'End date' %>
+              <div class="row">
+                <div class="col-sm-4">
+                  <%= g.number_field :end_year, class: 'form-control year',
+                                     min: 1, max: Time.now.year, maxlength: 4,
+                                     placeholder: 'YYYY' %>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :end_month, class: 'form-control month',
+                                     min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+                  <span class="help-block">(optional)</span>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :end_day, class: 'form-control day',
+                                     min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+                  <span class="help-block">(optional)</span>
+                </div>
               </div>
             </div>
-          </div>
+            <div class="input-group date">
+              <%= g.label 'Date' %>
+              <div class="row">
+                <div class="col-sm-4">
+                  <%= g.number_field :year, class: 'form-control year',
+                                     min: 1, max: Time.now.year, maxlength: 4,
+                                     placeholder: 'YYYY' %>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :month, class: 'form-control month',
+                                     min: 1, max: 12, maxlength: 2, placeholder: 'MM' %>
+                  <span class="help-block">(optional)</span>
+                </div>
+                <div class="col-sm-4">
+                  <%= g.number_field :day, class: 'form-control day',
+                                     min: 1, max: 31, maxlength: 2, placeholder: 'DD' %>
+                  <span class="help-block">(optional)</span>
+                </div>
+              </div>
+            </div>
+            <%= g.hidden_field :_destroy, class: 'destroy' %>
           </div>
           <div class="col-sm-1">
             <button class="btn btn-default btn-sm remove" type="button">
@@ -345,6 +347,7 @@
         <div class="psap-addable-removable-input-group row">
           <div class="col-sm-11">
             <%= g.text_field :name, class: 'form-control typeahead resource_subject' %>
+            <%= g.hidden_field :_destroy, class: 'destroy' %>
           </div>
           <div class="col-sm-1">
             <button class="btn btn-default remove" type="button">
@@ -388,6 +391,7 @@
         <div class="psap-addable-removable-input-group row">
           <div class="col-sm-11">
             <%= g.text_field :name, class: 'form-control' %>
+            <%= g.hidden_field :_destroy, class: 'destroy' %>
           </div>
           <div class="col-sm-1">
             <button class="btn btn-default remove" type="button">
@@ -433,6 +437,7 @@
         <div class="psap-addable-removable-input-group row">
           <div class="col-sm-11">
             <%= g.text_area :value, class: 'form-control' %>
+            <%= g.hidden_field :_destroy, class: 'destroy' %>
           </div>
           <div class="col-sm-1">
             <button class="btn btn-default remove" type="button">
@@ -452,7 +457,6 @@
 
 <% end %>
 
-<%= hidden_field_tag('root-url', root_url) %>
 <% # read by JS to select the relevant inputs %>
 <%= hidden_field_tag('selected_format_class',
                      @resource.format ? @resource.format.format_class : '') %>

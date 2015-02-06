@@ -189,10 +189,6 @@
                 <dt>Description</dt>
                 <dd><%= @resource.description %></dd>
               <% end %>
-            </dl>
-          </div>
-          <div class="col-sm-6">
-            <dl>
               <% if @resource.resource_notes.select{ |e| !e.value.blank? }.any? %>
                 <dt>Notes</dt>
                 <dd>
@@ -207,6 +203,10 @@
                   <% end %>
                 </dd>
               <% end %>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl>
               <% if @resource.resource_dates.select{ |e| !e.year.blank? or !e.begin_year.blank? }.any? %>
                 <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
                 <dd>

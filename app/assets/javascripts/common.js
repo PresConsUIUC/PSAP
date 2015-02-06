@@ -4,6 +4,51 @@ var ready = function() {
 
 var PSAP = {
 
+    Flash: {
+
+        /**
+         * @param text
+         * @param type Value of the X-Psap-Message-Type header
+         * @return void
+         */
+        set: function(text, type) {
+            var bootstrapClass;
+            switch (type) {
+                case 'success':
+                    bootstrapClass = 'alert-success';
+                    break;
+                case 'error':
+                    bootstrapClass = 'alert-danger';
+                    break;
+                case 'alert':
+                    bootstrapClass = 'alert-block';
+                    break;
+                default:
+                    bootstrapClass = 'alert-info';
+                    break;
+            }
+
+            // remove any existing messages
+            $('div.alert').remove();
+
+            // construct the message
+            var flash = $('<div class="alert ' + bootstrapClass + '"></div>');
+            var button = $('<button type="button" class="close"' +
+            ' data-dismiss="alert" aria-hidden="true">&times;</button>');
+            flash.append(button);
+            button.after(text);
+
+            // append the flash to the DOM
+            var edit_panel = $('#psap-edit-panel');
+            if (edit_panel.length && edit_panel.hasClass('in')) {
+                edit_panel.find('.modal-body').prepend(flash);
+            } else {
+                $('div.container header, div.container-fluid header').after(flash);
+            }
+        }
+
+    },
+
     Form: {
 
         TYPE_URL: 0,
@@ -11,11 +56,23 @@ var PSAP = {
         enableDynamicNestedEntities: function() {
             var updateIndexes = function() {
                 $('.psap-addable-removable').each(function() {
-                    $(this).find('.psap-addable-removable-input-group input[type="hidden"].index').each(function(index) {
-                        $(this).val(index);
+                    $(this).find('.psap-addable-removable-input-group').each(function(index) {
+                        // find all of its input elements
+                        $(this).find('input, select, textarea').each(function() {
+                            // update the element's indexes
+                            if (typeof($(this).attr('id')) !== 'undefined') {
+                                var currentIndex = parseInt($(this).attr('id').
+                                    match(/\d+/)[0]);
+                                $(this).attr('id',
+                                    $(this).attr('id').replace(currentIndex, index));
+                                $(this).attr('name',
+                                    $(this).attr('name').replace(currentIndex, index));
+                            }
+                        });
                     });
                 });
             };
+            updateIndexes();
 
             // enable certain form elements to be dynamically added and removed, as
             // in the case of a nested form with a 1..n relationship to its child
@@ -27,8 +84,6 @@ var PSAP = {
                 var group = $(this).closest('.psap-addable-removable-input-group');
                 group.hide();
                 group.find('input[type="hidden"].destroy').val(1);
-
-                updateIndexes();
             });
 
             $('.psap-addable-removable button.add').on('click', function() {
@@ -49,16 +104,9 @@ var PSAP = {
                 group.after(cloned_group);
                 cloned_group.show();
 
-                // find all of its input elements
                 cloned_group.find('input, select, textarea').each(function() {
                     // update the element's indexes within the form, for rails
                     if (typeof($(this).attr('id')) !== 'undefined') {
-                        var index = parseInt($(this).attr('id').match(/\d+/)[0]);
-                        $(this).attr('id',
-                            $(this).attr('id').replace(index, index + 1));
-                        $(this).attr('name',
-                            $(this).attr('name').replace(index, index + 1));
-
                         // reset its value
                         if ($(this).is('select')) {
                             $(this).val(
@@ -74,8 +122,14 @@ var PSAP = {
                 updateIndexes();
                 $(document).trigger('PSAPFormFieldAdded');
             });
+        },
 
-            updateIndexes();
+        /**
+         * Initializes a form. Called automatically by PSAP.init() but can be
+         * called again when a form is added dynamically.
+         */
+        init: function() {
+            PSAP.Form.enableDynamicNestedEntities();
         },
 
         validate: function(field_id, min_length, max_length, type) {
@@ -126,6 +180,9 @@ var PSAP = {
 
     },
 
+    /**
+     * Application-level initialization.
+     */
     init: function() {
         // lazy-load images that have a data-original attribute
         $('img[data-original]').each(function() {
@@ -229,7 +286,7 @@ var PSAP = {
             refreshCheckboxUI();
         }).trigger('change');
 
-        PSAP.Form.enableDynamicNestedEntities();
+        PSAP.Form.init();
 
         // show the export notification panel after clicking an export option
         $('.psap-export').on('click', function() {

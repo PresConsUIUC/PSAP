@@ -1,6 +1,6 @@
 var ResourceEditForm = function() {
 
-    var ROOT_URL = $('input[name="root-url"]').val();
+    var ROOT_URL = $('input[name="root_url"]').val();
 
     // lazy-loaded by formats()
     var formats_json = null;
@@ -175,9 +175,17 @@ var ResourceEditForm = function() {
             initSuggestions();
         }).trigger('PSAPFormFieldAdded');
 
-        if ($('body#edit_resource').length) {
-            setInitialSelections();
-        }
+        // Load the edit panel content via ajax when it appears
+        var resource_url = $('input[name="resource_url"]').val();
+        $('#psap-edit-panel').on('show.bs.modal', function (e) {
+            $.get(resource_url + '/edit', function(data) {
+                $(e.target).find('.modal-body').html(data);
+                attachEventListeners();
+                setInitialSelections();
+                initSuggestions();
+                PSAP.Form.init();
+            });
+        });
     };
 
     var initSuggestions = function() {

@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
       response.headers['X-Psap-Message-Type'] = 'success' unless flash['success'].blank?
       response.headers['X-Psap-Message'] = flash['error'] unless flash['error'].blank?
       response.headers['X-Psap-Message'] = flash['success'] unless flash['success'].blank?
+      flash.clear
     end
   end
 
