@@ -1,8 +1,4 @@
-<%= form_for(@resource, html: { class: 'psap-assessment' }, remote: true) do |f| %>
-
-  <% # required for autocompletion %>
-  <input type="hidden" name="institution_url"
-         value="<%= institution_url(@resource.location.repository.institution) %>">
+<%= form_for(@resource, remote: true) do |f| %>
 
   <div class="psap-error-messages">
     <% # populated via ajax by shared/_validation_messages.js.erb
