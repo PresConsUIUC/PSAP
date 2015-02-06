@@ -29,7 +29,7 @@ var ResourceCreateForm = function() {
 };
 
 var ready = function() {
-    if ($('body#new_location').length || $('body#show_location').length) {
+    if ($('body#show_location').length) {
         new LocationEditForm().init();
         new ResourceCreateForm().init();
     } else if ($('body#assess_location').length) {

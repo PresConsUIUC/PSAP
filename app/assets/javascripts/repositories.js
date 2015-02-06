@@ -29,7 +29,7 @@ var RepositoryEditForm = function() {
 };
 
 var ready = function() {
-    if ($('body#new_repository').length || $('body#show_repository').length) {
+    if ($('body#show_repository').length) {
         new RepositoryEditForm().init();
         new LocationCreateForm().init();
     }
