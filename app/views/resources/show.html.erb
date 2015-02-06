@@ -1,7 +1,7 @@
 <% provide(:title, @resource.name) %>
 <% provide(:body_id, 'show_resource') %>
 
-<%= hidden_field_tag(:resource_url, resource_url(@resource.id)) %>
+<%= hidden_field_tag(:resource_url, resource_url(@resource)) %>
 <%= hidden_field_tag(:institution_url,
                      institution_url(@resource.location.repository.institution)) %>
 <%= hidden_field_tag(:root_url, root_url) %>
