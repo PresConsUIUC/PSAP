@@ -1,3 +1,7 @@
 // Rendered by InstitutionsController upon a successful create by an
 // administrator
-window.location.href = '<%= institution_url(@institution) %>';
+<% if @institution.id and current_user.institution == @institution %>
+  window.location.href = '<%= institution_url(@institution) %>';
+<% else %>
+  $('div#associate').remove();
+<% end %>

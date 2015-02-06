@@ -330,8 +330,6 @@ command = CreateInstitutionCommand.new(
       description: 'Lorem ipsum dolor sit amet' }, admin_user, '127.0.0.1')
 command.execute
 uiuc_institution = command.object
-admin_user.institution = uiuc_institution
-admin_user.save!
 
 command = JoinInstitutionCommand.new(admin_user, uiuc_institution, admin_user,
                                      '127.0.0.1')
@@ -354,7 +352,7 @@ case Rails.env
     uiuc_institution.save!
 
     # Institutions
-    CreateAndJoinInstitutionCommand.new(
+    CreateInstitutionCommand.new(
         { name: 'Hogwarts School of Witchcraft & Wizardry',
           address1: '123 Magical St.',
           address2: 'Suite 12',
