@@ -1,9 +1,8 @@
 class RepositoriesController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new, :create,
-                                                           :edit, :update,
-                                                           :show, :destroy]
+  before_action :user_of_same_institution_or_admin,
+                only: [:new, :create, :edit, :update, :show, :destroy]
 
   def create
     @institution = Institution.find(params[:institution_id])
@@ -39,7 +38,10 @@ class RepositoriesController < ApplicationController
   end
 
   def edit
-    @repository = Repository.find(params[:id])
+    if request.xhr?
+      @repository = Repository.find(params[:id])
+      render partial: 'edit_form'
+    end
   end
 
   def new
@@ -48,6 +50,34 @@ class RepositoriesController < ApplicationController
   end
 
   def show
+    prepare_show_view
+  end
+
+  def update
+    @repository = Repository.find(params[:id])
+    command = UpdateRepositoryCommand.new(@repository, repository_params,
+                                          current_user, request.remote_ip)
+    begin
+      command.execute
+    rescue ValidationError
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @repository }
+    rescue => e
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'show'
+    else
+      prepare_show_view
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Repository \"#{@repository.name}\" updated."
+      render 'show'
+    end
+  end
+
+  private
+
+  def prepare_show_view
     @repository = Repository.find(params[:id])
     @locations = @repository.locations.order(:name).
         paginate(page: params[:page],
@@ -64,25 +94,6 @@ class RepositoriesController < ApplicationController
               @repository.locations.map{ |loc| loc.resources.map{ |res| res.id } }.flatten.compact).
         order(created_at: :desc)
   end
-
-  def update
-    @repository = Repository.find(params[:id])
-    command = UpdateRepositoryCommand.new(@repository, repository_params,
-                                          current_user, request.remote_ip)
-    begin
-      command.execute
-    rescue ValidationError
-      render 'edit'
-    rescue => e
-      flash['error'] = "#{e}"
-      render 'edit'
-    else
-      flash['success'] = "Repository \"#{@repository.name}\" updated."
-      redirect_to @repository
-    end
-  end
-
-  private
 
   def user_of_same_institution_or_admin
     # Normal users can only modify repositories in their own institution.

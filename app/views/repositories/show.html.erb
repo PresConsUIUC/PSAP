@@ -1,73 +1,10 @@
 <% provide(:title, @repository.name) %>
+<% provide(:body_id, 'show_repository') %>
 
-<% breadcrumbs = []
-   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
-   breadcrumbs << { @repository.institution.name => @repository.institution }
-   breadcrumbs << @repository.name %>
-<%= breadcrumbs(breadcrumbs) %>
+<%= hidden_field_tag(:repository_url, repository_url(@repository)) %>
 
-<div class="row">
-  <div class="col-sm-8 psap-page-title">
-    <h1><%= @repository.name %>
-      <small><%= entity_icon(@repository) %>Repository</small>
-    </h1>
-  </div>
-  <div class="col-sm-4">
-    <div class="btn-group" style="float:right">
-      <!-- Edit -->
-      <%= link_to edit_repository_path(@repository), class: 'btn btn-default' do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
-        Edit
-      <% end %>
-      <!-- Delete -->
-      <%= link_to repository_path(@repository), method: 'delete',
-                  class: 'btn btn-danger',
-                  data: { confirm: 'Deleting this repository will delete all '\
-                          'locations and resources it contains. '\
-                          'Are you sure you want to delete this repository?' } do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-        Delete
-      <% end %>
-    </div>
-  </div>
+<div id="psap-repository-page-content">
+  <%= render partial: 'show' %>
 </div>
 
-<div class="row">
-  <div class="col-sm-4">
-    <%= render partial: 'shared/entity_hierarchy',
-               locals: { entities: [@repository],
-                         selected_entity: @repository,
-                         deepest_entity_class: Location,
-                         depth: 0 } %>
-  </div>
-
-  <div class="col-sm-8">
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#locations_tab" data-toggle="tab">Locations</a>
-      </li>
-      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
-    </ul>
-
-    <div class="tab-content">
-
-      <div class="tab-pane active" id="locations_tab">
-        <div style="text-align:right">
-          <%= button_link('Add Location', new_repository_location_path(@repository),
-                          entity_icon(Location), { class: 'btn-success' }) %>
-        </div>
-        <% if @repository.locations.any? %>
-            <div id="locations">
-              <%= render 'locations' %>
-            </div>
-        <% else %>
-            <p>This repository has no locations.</p>
-        <% end %>
-      </div>
-
-      <div class="tab-pane" id="activity_tab">
-        <%= render 'shared/events', events: @events %>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: 'shared/edit_panel', locals: { entity_name: 'Repository' } %>
