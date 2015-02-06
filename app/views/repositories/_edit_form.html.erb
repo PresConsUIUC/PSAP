@@ -12,7 +12,12 @@
 
   <%= hidden_field_tag(:institution_id, @repository.institution.id) %>
 
-  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-    <%= f.submit(action == :create ? 'Create Repository' : 'Save Changes',
-                 class: 'btn btn-primary') %>
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <%= f.submit(action == :create ? 'Create Repository' : 'Save Changes',
+                     class: 'btn btn-primary') %>
+    </div>
+  </div>
+
 <% end %>
