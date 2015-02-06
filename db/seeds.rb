@@ -316,7 +316,7 @@ admin_user.role = admin_role
 admin_user.save!
 
 # UIUC institution
-command = CreateAndJoinInstitutionCommand.new(
+command = CreateInstitutionCommand.new(
     { name: 'University of Illinois at Urbana-Champaign',
       address1: '1408 W. Gregory Dr.',
       address2: nil,
@@ -332,6 +332,10 @@ command.execute
 uiuc_institution = command.object
 admin_user.institution = uiuc_institution
 admin_user.save!
+
+command = JoinInstitutionCommand.new(admin_user, uiuc_institution, admin_user,
+                                     '127.0.0.1')
+command.execute
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env

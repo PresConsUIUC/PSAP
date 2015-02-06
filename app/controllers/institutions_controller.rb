@@ -5,8 +5,8 @@ class InstitutionsController < ApplicationController
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
   before_action :same_institution_user,
-                only: [:assess, :assessment_report, :events, :info,
-                       :repositories, :resources, :show, :edit, :update, :users]
+                only: [:assess, :assessment_report, :edit, :events, :info,
+                       :repositories, :resources, :show, :update, :users]
 
   def assess
     @institution = Institution.find(params[:institution_id])
@@ -77,26 +77,37 @@ class InstitutionsController < ApplicationController
   end
 
   def create
-    command = CreateAndJoinInstitutionCommand.new(
+    create_command = CreateInstitutionCommand.new(
         institution_params, current_user, request.remote_ip)
-    @institution = command.object
+    @institution = create_command.object
     begin
-      command.execute
+      ActiveRecord::Base.transaction do
+        create_command.execute
+        unless current_user.is_admin?
+          join_command = JoinInstitutionCommand.new(current_user,
+                                                    @institution, current_user,
+                                                    request.remote_ip)
+          join_command.execute
+        end
+      end
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @institution }
     rescue => e
+      response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
-      render 'new'
+      render 'create'
     else
+      response.headers['X-Psap-Result'] = 'success'
       if current_user.is_admin?
         flash['success'] = "The institution \"#{@institution.name}\" has been "\
-          "created."
-        redirect_to @institution
+        "created."
+        render 'create'
       else
         flash['success'] = "The institution \"#{@institution.name}\" has been "\
           "created. An administrator has been notified and will review your "\
-          "request to join it momentarily,"
-        redirect_to dashboard_path
+          "request to join it soon."
       end
     end
   end
@@ -119,7 +130,7 @@ class InstitutionsController < ApplicationController
   def edit
     if request.xhr?
       @institution = Institution.find(params[:id])
-      render partial: 'edit_form'
+      render partial: 'edit_form', locals: { action: :edit }
     else
       render status: 406, text: 'Not Acceptable'
     end
@@ -156,9 +167,12 @@ class InstitutionsController < ApplicationController
   end
 
   def new
-    @institution = Institution.new
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @institution = Institution.new
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   ##

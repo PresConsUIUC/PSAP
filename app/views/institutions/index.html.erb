@@ -1,4 +1,7 @@
 <% provide(:title, 'Institutions') %>
+<% provide(:body_id, 'institutions') %>
+
+<%= hidden_field_tag(:new_institution_url, new_institution_url) %>
 
 <%= breadcrumbs('Institutions') %>
 
@@ -8,11 +11,17 @@
       <%= @institutions.total_entries %> total</small></h1>
   </div>
   <div class="col-sm-5" style="text-align:right">
-    <%= button_link('Add Institution', new_institution_path,
-                    entity_icon(Institution), class: 'btn-success') %>
+    <button type="button" class="btn btn-success" data-toggle="modal"
+            data-target="#psap-create-panel">
+      <%= entity_icon(Institution) %>
+      Add Institution
+    </button>
   </div>
 </div>
 
 <div id="institutions">
   <%= render 'institutions' %>
 </div>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :create, entity_name: 'Institution' } %>
