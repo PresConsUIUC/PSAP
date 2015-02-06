@@ -2,7 +2,7 @@ class RepositoriesController < ApplicationController
 
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
-                only: [:new, :create, :edit, :update, :show, :destroy]
+                only: [:create, :destroy, :edit, :new, :show, :update]
 
   def create
     @institution = Institution.find(params[:institution_id])
@@ -12,13 +12,17 @@ class RepositoriesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @repository }
     rescue => e
+      response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
-      render 'new'
+      render 'create'
     else
+      response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Repository \"#{@repository.name}\" created."
-      redirect_to @repository
+      render 'create'
     end
   end
 
@@ -47,8 +51,13 @@ class RepositoriesController < ApplicationController
   end
 
   def new
-    @institution = Institution.find(params[:institution_id])
-    @repository = @institution.repositories.build
+    if request.xhr?
+      @institution = Institution.find(params[:institution_id])
+      @repository = @institution.repositories.build
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def show

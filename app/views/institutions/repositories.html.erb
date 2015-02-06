@@ -1,9 +1,15 @@
 <%= render layout: 'institutions/layout' do %>
+
+  <%= hidden_field_tag(:subpage, 'repositories') %>
+  <%= hidden_field_tag(:new_repository_url, new_institution_repository_url(@institution)) %>
+
   <!-- Add Repository button -->
   <div style="text-align:right">
-    <%= button_link('Add Repository',
-                    new_institution_repository_path(@institution),
-                    entity_icon(Repository), { class: 'btn-success' }) %>
+    <button type="button" class="btn btn-success" data-toggle="modal"
+            data-target="#psap-create-panel">
+      <%= entity_icon(Repository) %>
+      Add Repository
+    </button>
   </div>
 
   <% if @repositories.any? %>

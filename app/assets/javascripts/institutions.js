@@ -13,6 +13,21 @@ var InstitutionEditForm = function() {
 
 };
 
+var RepositoryCreateForm = function() {
+
+    this.init = function() {
+        // Load the edit panel content via ajax when it appears
+        var new_repository_url = $('input[name="new_repository_url"]').val();
+        $('#psap-create-panel').on('show.bs.modal', function (e) {
+            $.get(new_repository_url, function(data) {
+                $(e.target).find('.modal-body').html(data);
+                PSAP.Form.init();
+            });
+        });
+    };
+
+};
+
 var ResourceSearchForm = {
 
     init: function() {
@@ -117,6 +132,9 @@ var ready = function() {
             break;
         case 'search':
             ResourceSearchForm.init();
+            break;
+        case 'repositories':
+            new RepositoryCreateForm().init();
             break;
     }
     new InstitutionEditForm().init();
