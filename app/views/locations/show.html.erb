@@ -10,7 +10,8 @@
 <%= render partial: 'resources/import_from_archivesspace',
            locals: { form_action: location_resource_import_post_path(@location) } %>
 
-<%= render partial: 'shared/edit_panel', locals: { entity_name: 'Location' } %>
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :edit, entity_name: 'Location' } %>
 
 <!-- Move Checked panel -->
 <div class="modal fade" id="moveModal" tabindex="-1" role="dialog"

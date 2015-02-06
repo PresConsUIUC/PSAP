@@ -94,7 +94,8 @@ class RepositoriesController < ApplicationController
               @repository.id,
               @repository.locations.map{ |loc| loc.id },
               @repository.locations.map{ |loc| loc.resources.map{ |res| res.id } }.flatten.compact).
-        order(created_at: :desc)
+        order(created_at: :desc).
+        limit(20)
   end
 
   def user_of_same_institution_or_admin

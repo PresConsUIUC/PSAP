@@ -18,13 +18,17 @@ class LocationsController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @location }
     rescue => e
+      response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
-      render 'new'
+      render 'create'
     else
+      response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Location \"#{@location.name}\" created."
-      redirect_to @location
+      render 'create'
     end
   end
 
@@ -46,17 +50,20 @@ class LocationsController < ApplicationController
   def edit
     if request.xhr?
       @location = Location.find(params[:id])
-      render partial: 'edit_form'
+      render partial: 'edit_form', locals: { action: :edit }
     else
       render status: 406, text: 'Not Acceptable'
     end
   end
 
   def new
-    @repository = Repository.find(params[:repository_id])
-    @location = @repository.locations.build
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @repository = Repository.find(params[:repository_id])
+      @location = @repository.locations.build
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def show
@@ -118,7 +125,7 @@ class LocationsController < ApplicationController
       repository = Repository.find(params[:repository_id])
     end
     redirect_to(root_url) unless
-        repository.institution.users.include?(current_user) ||
+        repository.institution.users.include?(current_user) or
             current_user.is_admin?
   end
 

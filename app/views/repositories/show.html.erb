@@ -2,9 +2,14 @@
 <% provide(:body_id, 'show_repository') %>
 
 <%= hidden_field_tag(:repository_url, repository_url(@repository)) %>
+<%= hidden_field_tag(:new_location_url, new_repository_location_url(@repository)) %>
 
 <div id="psap-repository-page-content">
   <%= render partial: 'show' %>
 </div>
 
-<%= render partial: 'shared/edit_panel', locals: { entity_name: 'Repository' } %>
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :edit, entity_name: 'Repository' } %>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :create, entity_name: 'Location' } %>

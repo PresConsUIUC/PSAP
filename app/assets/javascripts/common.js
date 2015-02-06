@@ -39,7 +39,7 @@ var PSAP = {
             button.after(text);
 
             // append the flash to the DOM
-            var edit_panel = $('#psap-edit-panel');
+            var edit_panel = $('.psap-edit-panel');
             if (edit_panel.length && edit_panel.hasClass('in')) {
                 edit_panel.find('.modal-body').prepend(flash);
             } else {

@@ -227,7 +227,7 @@ class ResourcesController < ApplicationController
     @resource.resource_notes.build unless @resource.resource_notes.any?
     @resource.subjects.build unless @resource.subjects.any?
 
-    @events = @resource.events.order(created_at: :desc)
+    @events = @resource.events.order(created_at: :desc).limit(20)
   end
 
   def user_of_same_institution_or_admin

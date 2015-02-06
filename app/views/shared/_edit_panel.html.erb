@@ -1,5 +1,6 @@
-<div class="modal fade" id="psap-edit-panel" data-backdrop="static"
-     data-keyboard="false" tabindex="-1" role="dialog"
+<div class="modal fade" class="psap-edit-panel"
+     id="<%= action == :create ? 'psap-create-panel' : 'psap-edit-panel' %>"
+     data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
      aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -8,7 +9,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title" id="editModalLabel">
-          Edit <%= entity_name %>
+          <%= action == :create ? 'Create' : 'Edit' %> <%= entity_name %>
         </h4>
       </div>
       <div class="modal-body">

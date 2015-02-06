@@ -15,7 +15,9 @@
     <%= f.text_area :description, class: 'form-control' %>
   </div>
 
+  <%= hidden_field_tag(:repository_id, @location.repository.id) %>
+
   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-  <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+  <%= f.submit(action == :create ? 'Create Location' : 'Save Changes', class: 'btn btn-primary') %>
 
 <% end %>
