@@ -94,11 +94,10 @@
             <i class="fa fa-share"></i> Move Checked
           </button>
           <!-- Add Resource button -->
-          <button type="button" class="btn btn-success" data-toggle="modal"
-                  data-target="#psap-create-panel">
-            <%= entity_icon(Resource) %>
-            Add Resource
-          </button>
+          <%= entity_button(Resource, 'Add Resource',
+                            { class: 'btn-success',
+                              'data-toggle' => 'modal',
+                              'data-target' => '#psap-create-panel' }) %>
         </div>
 
         <%= form_tag(resource_move_path) do %>

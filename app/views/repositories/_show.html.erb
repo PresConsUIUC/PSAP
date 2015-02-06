@@ -51,11 +51,10 @@
     <div class="tab-content">
       <div class="tab-pane active" id="locations_tab">
         <div style="text-align:right">
-          <button type="button" class="btn btn-success" data-toggle="modal"
-                  data-target="#psap-create-panel">
-            <%= entity_icon(Location) %>
-            Add Location
-          </button>
+          <%= entity_button(Location, 'Add Location',
+                            { class: 'btn-success',
+                              'data-toggle' => 'modal',
+                              'data-target' => '#psap-create-panel' }) %>
         </div>
         <% if @repository.locations.any? %>
           <div id="locations">

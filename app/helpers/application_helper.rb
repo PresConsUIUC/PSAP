@@ -120,11 +120,53 @@ module ApplicationHelper
     countries.map{ |c| [c, c] }
   end
 
+  def entity_button(entity, title, html_options = {})
+    html_options = html_options.stringify_keys
+    html_options['class'] = '' unless html_options['class']
+    html_options['class'] += ' btn ' unless html_options['class'].include?('btn ')
+    html_options['class'] += ' btn-default ' unless html_options['class'].include?('btn-')
+
+    raw('<button type="button" ' + html_options.map{ |k, v| "#{k}=\"#{v}\"" }.join(' ') + '>' +
+      "<i class=\"#{icon_class_for_entity(entity)}\"></i> " +
+      title +
+    '</button>')
+  end
+
   ##
   # @param entity Some entity: Institution, Location, etc.
   # @param title Optional title for a tooltip
   #
   def entity_icon(entity, title = '')
+    raw("<i class=\"psap-entity-icon fa #{icon_class_for_entity(entity)}\" "\
+    "aria-hidden=\"true\" title=\"#{title}\"></i>")
+  end
+
+  ##
+  # Works with retina.js. When using instead of retina_image_tag, you have
+  # to add a "data-at2x" to your <img> tag.
+  #
+  def retina_image_path(name_at_1x)
+    asset_path(name_at_1x.gsub(%r{\.\w+$}, '@2x\0'))
+  end
+
+  ##
+  # Works with retina.js
+  #
+  def retina_image_tag(name_at_1x, options={})
+    image_tag(name_at_1x,
+              options.merge('data-at2x' => retina_image_path(name_at_1x)))
+  end
+
+  def sortable(column, title = nil)
+    title ||= column.titleize
+    css_class = (column == sort_column) ? "current #{sort_direction}" : nil
+    direction = (column == sort_column && sort_direction == 'asc') ? 'desc' : 'asc'
+    link_to title, {sort: column, direction: direction}, {class: css_class}
+  end
+
+  private
+
+  def icon_class_for_entity(entity)
     # https://fortawesome.github.io/Font-Awesome/icons/
     class_ = ''
     if entity.kind_of?(Institution) or entity == Institution
@@ -155,31 +197,7 @@ module ApplicationHelper
     elsif entity.kind_of?(User) or entity == User
       class_ = 'fa-user'
     end
-    raw("<i class=\"psap-entity-icon fa #{class_}\" "\
-    "aria-hidden=\"true\" title=\"#{title}\"></i>")
-  end
-
-  ##
-  # Works with retina.js. When using instead of retina_image_tag, you have
-  # to add a "data-at2x" to your <img> tag.
-  #
-  def retina_image_path(name_at_1x)
-    asset_path(name_at_1x.gsub(%r{\.\w+$}, '@2x\0'))
-  end
-
-  ##
-  # Works with retina.js
-  #
-  def retina_image_tag(name_at_1x, options={})
-    image_tag(name_at_1x,
-              options.merge('data-at2x' => retina_image_path(name_at_1x)))
-  end
-
-  def sortable(column, title = nil)
-    title ||= column.titleize
-    css_class = (column == sort_column) ? "current #{sort_direction}" : nil
-    direction = (column == sort_column && sort_direction == 'asc') ? 'desc' : 'asc'
-    link_to title, {sort: column, direction: direction}, {class: css_class}
+    "fa #{class_}"
   end
 
 end

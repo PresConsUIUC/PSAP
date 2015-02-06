@@ -11,11 +11,10 @@
       <%= @institutions.total_entries %> total</small></h1>
   </div>
   <div class="col-sm-5" style="text-align:right">
-    <button type="button" class="btn btn-success" data-toggle="modal"
-            data-target="#psap-create-panel">
-      <%= entity_icon(Institution) %>
-      Add Institution
-    </button>
+    <%= entity_button(Institution, 'Add Institution',
+                      { class: 'btn-success',
+                        'data-toggle' => 'modal',
+                        'data-target' => '#psap-create-panel' }) %>
   </div>
 </div>
 
