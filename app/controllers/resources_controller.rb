@@ -148,9 +148,6 @@ class ResourcesController < ApplicationController
 
   def show
     @resource = Resource.find(params[:id])
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
-
     respond_to do |format|
       format.csv do
         response.headers['Content-Disposition'] =
@@ -158,15 +155,7 @@ class ResourcesController < ApplicationController
         render text: @resource.as_csv
       end
       format.html do
-        # The edit form JavaScript needs at least 1 of each dependent entity.
-        # Empty ones will be stripped in update().
-        @resource.creators.build unless @resource.creators.any?
-        @resource.extents.build unless @resource.extents.any?
-        @resource.resource_dates.build unless @resource.resource_dates.any?
-        @resource.resource_notes.build unless @resource.resource_notes.any?
-        @resource.subjects.build unless @resource.subjects.any?
-
-        @events = @resource.events.order(created_at: :desc)
+        prepare_show_view
       end
       format.dcxml do
         response.headers['Content-Disposition'] =
@@ -179,13 +168,7 @@ class ResourcesController < ApplicationController
         @institution = @resource.location.repository.institution
       end
       format.js do
-        # The edit form JavaScript needs at least 1 of each dependent entity.
-        # Empty ones will be stripped in update().
-        @resource.creators.build unless @resource.creators.any?
-        @resource.extents.build unless @resource.extents.any?
-        @resource.resource_dates.build unless @resource.resource_dates.any?
-        @resource.resource_notes.build unless @resource.resource_notes.any?
-        @resource.subjects.build unless @resource.subjects.any?
+        prepare_show_view
       end
     end
   end
@@ -215,13 +198,14 @@ class ResourcesController < ApplicationController
       command.execute
     rescue ValidationError
       response.headers['X-Psap-Result'] = 'error'
-      render partial: 'show_error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @resource }
     rescue => e
       response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
       render 'show'
     else
-      @events = @resource.events.order(created_at: :desc)
+      prepare_show_view
       response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Resource \"#{@resource.name}\" updated."
       render 'show'
@@ -229,6 +213,20 @@ class ResourcesController < ApplicationController
   end
 
   private
+
+  def prepare_show_view
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
+    # The edit form JavaScript needs at least 1 of each dependent entity.
+    # Empty ones will be stripped in update().
+    @resource.creators.build unless @resource.creators.any?
+    @resource.extents.build unless @resource.extents.any?
+    @resource.resource_dates.build unless @resource.resource_dates.any?
+    @resource.resource_notes.build unless @resource.resource_notes.any?
+    @resource.subjects.build unless @resource.subjects.any?
+
+    @events = @resource.events.order(created_at: :desc)
+  end
 
   def user_of_same_institution_or_admin
     # Normal users can only modify resources in their own institution.
