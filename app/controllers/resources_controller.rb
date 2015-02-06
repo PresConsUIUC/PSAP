@@ -22,13 +22,17 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @resource }
     rescue => e
+      response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
-      render 'new'
+      render 'create'
     else
+      response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Resource \"#{@resource.name}\" created."
-      redirect_to @resource
+      render 'create'
     end
   end
 
@@ -53,7 +57,7 @@ class ResourcesController < ApplicationController
   def edit
     if request.xhr?
       @resource = Resource.find(params[:id])
-      render partial: 'edit_form'
+      render partial: 'edit_form', locals: { action: :edit }
     else
       render status: 406, text: 'Not Acceptable'
     end
@@ -123,29 +127,33 @@ class ResourcesController < ApplicationController
   end
 
   def new
-    # if we are creating a resource within a location (for top-level resources)
-    if params[:location_id]
-      @location = Location.find(params[:location_id])
-      @resource = @location.resources.build
-    elsif params[:resource_id] # if we are creating a resource within a resource
-      parent_resource = Resource.find(params[:resource_id])
-      @location = parent_resource.location
-      @resource = @location.resources.build
-      @resource.parent = parent_resource
+    if request.xhr?
+      # if we are creating a resource within a location (for top-level resources)
+      if params[:location_id]
+        @location = Location.find(params[:location_id])
+        @resource = @location.resources.build
+      elsif params[:resource_id] # if we are creating a resource within a resource
+        parent_resource = Resource.find(params[:resource_id])
+        @location = parent_resource.location
+        @resource = @location.resources.build
+        @resource.parent = parent_resource
+      end
+
+      # New resources will get 1 of each dependent entity, to populate the form.
+      # Additional ones may be created in JavaScript.
+      # TODO: move this to the model
+      @resource.creators.build
+      @resource.extents.build
+      @resource.resource_dates.build
+      @resource.resource_notes.build
+      @resource.subjects.build
+
+      @resource.language = @resource.location.repository.institution.language
+
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
     end
-
-    # New resources will get 1 of each dependent entity, to populate the form.
-    # Additional ones may be created in JavaScript.
-    @resource.creators.build
-    @resource.extents.build
-    @resource.resource_dates.build
-    @resource.resource_notes.build
-    @resource.subjects.build
-
-    @resource.language = @resource.location.repository.institution.language
-
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
   end
 
   def show
@@ -187,7 +195,7 @@ class ResourcesController < ApplicationController
     'WHERE institutions.id = ' + params[:institution_id].to_i.to_s
     conn = ActiveRecord::Base.connection
     results = conn.execute(sql)
-    render json: results.map(&:name)
+    render json: results.map{ |r| r['name'] }
   end
 
   def update
