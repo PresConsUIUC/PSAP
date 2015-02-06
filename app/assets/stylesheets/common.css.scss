@@ -153,21 +153,16 @@ button.hovertip-fire {
 }
 
 div#psap-ajax-shade {
-  background-color:rgba(0, 0, 0, 0.4);
+  /* http://spiffygif.com */
+  /* TODO: expand image canvas adding more black padding */
+  background:rgba(0, 0, 0, 0.4) url(image_path('ajax-progress-indicator.gif')) no-repeat fixed center;
   display:none;
-  position:absolute;
+  position:fixed;
   height:100%;
+  left: 0px;
+  top: 0px;
   width:100%;
   z-index:9999;
-  img {
-    background-color:white;
-    display:block;
-    height:104px;
-    width:104px;
-    margin:0 auto;
-    margin-top:200px;
-    padding:20px;
-  }
 }
 
 .feed_link {
