@@ -15,22 +15,4 @@
 <%= render partial: 'resources/import_from_archivesspace',
            locals: { form_action: resource_import_post_path(@resource) } %>
 
-<!-- Edit panel -->
-<div class="modal fade" id="psap-edit-panel" data-backdrop="static"
-     data-keyboard="false" tabindex="-1" role="dialog"
-     aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="editModalLabel">Edit Resource</h4>
-      </div>
-      <div class="modal-body">
-        <% # the edit form will be appended here via ajax
-        %>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: 'shared/edit_panel', locals: { entity_name: 'Resource' } %>

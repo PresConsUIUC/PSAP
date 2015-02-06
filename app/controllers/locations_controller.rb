@@ -44,7 +44,10 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    @location = Location.find(params[:id])
+    if request.xhr?
+      @location = Location.find(params[:id])
+      render partial: 'edit_form'
+    end
   end
 
   def new
@@ -55,6 +58,36 @@ class LocationsController < ApplicationController
   end
 
   def show
+    prepare_show_view
+  end
+
+  def update
+    @location = Location.find(params[:id])
+    command = UpdateLocationCommand.new(@location, location_params,
+                                        current_user, request.remote_ip)
+    @assessment_sections = Assessment.find_by_key('location').
+        assessment_sections.order(:index)
+    begin
+      command.execute
+    rescue ValidationError
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @location }
+    rescue => e
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'show'
+    else
+      prepare_show_view
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Location \"#{@location.name}\" updated."
+      render 'show'
+    end
+  end
+
+  private
+
+  def prepare_show_view
     @location = Location.find(params[:id])
     # show only top-level resources
     @resources = @location.resources.where(parent_id: nil).order(:name).
@@ -71,27 +104,6 @@ class LocationsController < ApplicationController
         order(created_at: :desc).
         limit(20)
   end
-
-  def update
-    @location = Location.find(params[:id])
-    command = UpdateLocationCommand.new(@location, location_params,
-                                        current_user, request.remote_ip)
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
-    begin
-      command.execute
-    rescue ValidationError
-      render 'edit'
-    rescue => e
-      flash['error'] = "#{e}"
-      render 'edit'
-    else
-      flash['success'] = "Location \"#{@location.name}\" updated."
-      redirect_to @location
-    end
-  end
-
-  private
 
   def user_of_same_institution_or_admin
     # Normal users can only modify locations in their own institution.

@@ -1,4 +1,3 @@
-$('#resources').html('<%= escape_javascript(render partial: 'resources/resources', locals: { resources: @resources, show_checkboxes: false, show_hierarchy: true }) %>');
-$('.pagination a').attr('data-remote', 'true');
-
-PSAP.updateResultsCount();
+// refresh page content after a successful edit
+$('#psap-location-page-content').html("<%= j render partial: 'show' %>");
+$('.psap-error-messages').empty();
