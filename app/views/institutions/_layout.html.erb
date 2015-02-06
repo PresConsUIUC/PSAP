@@ -2,6 +2,8 @@
 <% provide(:title, @institution.name) %>
 <% provide(:body_id, 'show_institution') %>
 
+<%= hidden_field_tag(:institution_url, institution_url(@institution)) %>
+
 <% breadcrumbs = []
    breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
    breadcrumbs << @institution.name %>
@@ -16,11 +18,11 @@
   <div class="col-sm-4">
     <div class="btn-group" style="float:right">
       <!-- Edit -->
-      <%= link_to edit_institution_path(@institution),
-                  class: 'btn btn-default' do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-pencil') %>
+      <button type="button" class="btn btn-default" data-toggle="modal"
+              data-target="#psap-edit-panel">
+        <span class="glyphicon glyphicon-pencil"></span>
         Edit
-      <% end %>
+      </button>
       <!-- Assess -->
       <%= link_to institution_assess_path(@institution),
                   class: 'btn btn-default' do %>
@@ -68,3 +70,6 @@
 <div class="tab-content">
   <%= yield %>
 </div>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { entity_name: 'Institution' } %>

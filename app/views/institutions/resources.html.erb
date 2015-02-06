@@ -1,5 +1,7 @@
 <%= render layout: 'institutions/layout' do %>
 
+  <%= hidden_field_tag(:subpage, 'search') %>
+
   <div class="well">
     <%= form_tag(institution_resources_path(@institution), method: 'get',
                  class: 'psap-search') do %>
