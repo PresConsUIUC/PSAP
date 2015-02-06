@@ -54,6 +54,8 @@ class ResourcesController < ApplicationController
     if request.xhr?
       @resource = Resource.find(params[:id])
       render partial: 'edit_form'
+    else
+      render status: 406, text: 'Not Acceptable'
     end
   end
 
