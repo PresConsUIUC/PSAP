@@ -241,22 +241,19 @@ class ResourcesController < ApplicationController
   end
 
   def resource_params
-    params.require(:resource).permit(:assessment_type, :description,
-                                     :format_id, :format_ink_media_type_id,
-                                     :format_support_type_id,
-                                     :local_identifier, :location_id, :name,
-                                     :notes, :parent_id, :resource_type,
-                                     :rights, :significance, :user_id,
-                                     creators_attributes: [:id, :creator_type,
-                                                           :name],
-                                     extents_attributes: [:id, :name],
-                                     resource_dates_attributes:
-                                         [:id, :date_type, :begin_year,
-                                          :begin_month, :begin_day, :end_year,
-                                          :end_month, :end_day, :year, :month,
-                                          :day],
-                                     resource_notes_attributes: [:id, :value],
-                                     subjects_attributes: [:id, :name]).tap do |whitelisted|
+    params.require(:resource).
+        permit(:assessment_type, :description, :format_id,
+               :format_ink_media_type_id, :format_support_type_id,
+               :local_identifier, :location_id, :name, :notes, :parent_id,
+               :resource_type, :rights, :significance, :user_id,
+               creators_attributes: [:_destroy, :id, :creator_type, :name],
+               extents_attributes: [:_destroy, :id, :name],
+               resource_dates_attributes: [:_destroy, :id, :date_type,
+                                           :begin_year, :begin_month,
+                                           :begin_day, :end_year, :end_month,
+                                           :end_day, :year, :month, :day],
+               resource_notes_attributes: [:_destroy, :id, :value],
+               subjects_attributes: [:_destroy, :id, :name]).tap do |whitelisted|
       # AQRs don't use Rails' nested params format, and will require additional
       # processing
       whitelisted[:assessment_question_responses] =
