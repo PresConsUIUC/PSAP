@@ -109,6 +109,42 @@
                                    show_checkboxes: true,
                                    show_hierarchy: true } %>
             </div>
+            <!-- Move Checked panel -->
+            <div class="modal fade" id="moveModal" tabindex="-1" role="dialog"
+                 aria-labelledby="moveModalLabel" aria-hidden="true" data-keyboard="true"
+                 data-backdrop="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="moveModalLabel">Move Resources</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>Select a location to move the checked resources into. If any
+                      collections are checked, any resources they contain will be
+                      moved along with them, even if they are not checked.</p>
+                    <ul>
+                      <% @location.repository.institution.repositories.order(:name).each do |repo| %>
+                        <% if repo.locations.any? %>
+                          <li><%= repo.name %>
+                            <% repo.locations.where('id != ?', @location.id).order(:name).each do |loc| %>
+                              <ul>
+                                <li><label><input type="radio" name="location_id" value="<%= loc.id %>">
+                                  <%= loc.name %></label></li>
+                              </ul>
+                            <% end %>
+                          </li>
+                        <% end %>
+                      <% end %>
+                    </ul>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" value="Move Resources">
+                  </div>
+                </div>
+              </div>
+            </div>
           <% else %>
             <p>There are no resources in this location.</p>
           <% end %>
