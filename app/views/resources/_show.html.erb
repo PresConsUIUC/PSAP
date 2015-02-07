@@ -100,12 +100,12 @@
 
   <div class="col-sm-8">
     <ul class="nav nav-tabs">
-      <% if @resource.children.any? %>
+      <% if @resource.resource_type == ResourceType::COLLECTION %>
         <li class="active">
           <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
         </li>
       <% end %>
-      <li <%= @resource.children.any? ? '' : 'class=active' %>>
+      <li <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
       <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
@@ -114,19 +114,23 @@
 
     <div class="tab-content">
 
-      <% if @resource.children.any? %>
+      <% if @resource.resource_type == ResourceType::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
           <%= button_link('Add Sub-Resource',
                           new_resource_resource_path(@resource),
                           entity_icon(Resource), { class: 'btn-success', style: 'float:right' }) %>
-          <%= render partial: 'resources/resources',
-                     locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
-                               show_checkboxes: false, show_hierarchy: true } %>
+          <% if @resource.children.any? %>
+            <%= render partial: 'resources/resources',
+                       locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
+                                 show_checkboxes: false, show_hierarchy: true } %>
+          <% else %>
+            <p>This collection does not contain any sub-resources.</p>
+          <% end %>
         </div>
       <% end %>
 
-      <div id="info_tab" class="tab-pane <%= @resource.children.any? ? '' : 'active' %>">
+      <div id="info_tab" class="tab-pane <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'active' %>">
         <div class="row">
           <div class="col-sm-6">
             <dl>
