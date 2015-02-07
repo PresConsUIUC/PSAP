@@ -117,9 +117,11 @@
       <% if @resource.resource_type == ResourceType::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
-          <%= button_link('Add Sub-Resource',
-                          new_resource_resource_path(@resource),
-                          entity_icon(Resource), { class: 'btn-success', style: 'float:right' }) %>
+          <%= entity_button(Resource, 'Add Sub-Resource',
+                            { class: 'btn-success',
+                              style: 'float:right',
+                              'data-toggle' => 'modal',
+                              'data-target' => '#psap-create-panel' }) %>
           <% if @resource.children.any? %>
             <%= render partial: 'resources/resources',
                        locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
