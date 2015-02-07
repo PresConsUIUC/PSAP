@@ -35,15 +35,14 @@ class Resource < ActiveRecord::Base
 
   validates :assessment_type, allow_blank: true,
             inclusion: { in: AssessmentType.all,
-                         message: 'must be a valid assessment type.' }
+                         message: 'must be a valid assessment type' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :resource_type, presence: true,
-            inclusion: { in: ResourceType.all,
-                         message: 'must be a valid resource type.' }
+  validates :resource_type, inclusion: { in: ResourceType.all,
+                         message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
             inclusion: { in: ResourceSignificance.all,
-                         message: 'must be a valid resource significance.' }
+                         message: 'must be a valid resource significance' }
   validates :user, presence: true
 
   validate :validates_item_children
