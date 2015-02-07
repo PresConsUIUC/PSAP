@@ -40,6 +40,13 @@ class CloneResourceCommandTest < ActiveSupport::TestCase
     assert_equal 1, @command.object.events.length
   end
 
+  test 'execute method should truncate long names on cloned resource to max length' do
+    @resource.name = 'a' * 1000
+    @command = CloneResourceCommand.new(@resource, @doing_user, @remote_ip)
+    @command.execute
+    assert_equal 255, @command.object.name.length
+  end
+
   # object
   test 'object method should return the cloned Resource object' do
     assert_kind_of Resource, @command.object

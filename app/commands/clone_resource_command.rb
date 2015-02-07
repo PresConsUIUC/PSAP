@@ -5,7 +5,8 @@ class CloneResourceCommand < Command
     @doing_user = doing_user
     @remote_ip = remote_ip
     @cloned_resource = @resource.dup
-    @cloned_resource.name = 'Clone of ' + @cloned_resource.name
+    @cloned_resource.name = ('Clone of ' +
+        @cloned_resource.name)[0..@cloned_resource.class.max_length(:name) - 1]
   end
 
   def execute

@@ -4,6 +4,7 @@ class Resource < ActiveRecord::Base
   # them).
 
   include Assessable
+  include Introspection
 
   # When adding/removing has_many, has_one, or habtm associations, update
   # dup and update_submodels as well!
