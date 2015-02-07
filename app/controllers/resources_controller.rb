@@ -119,18 +119,22 @@ class ResourcesController < ApplicationController
   # Responds to POST /resources/move
   #
   def move
-    resources = Resource.where('id IN (?)', params[:resources])
-    location = Location.find(params[:location_id])
+    if params[:location_id]
+      resources = Resource.where('id IN (?)', params[:resources])
+      location = Location.find(params[:location_id])
 
-    command = MoveResourcesCommand.new(resources, location, current_user,
-                                       request.remote_ip)
-    begin
-      command.execute
-    rescue => e
-      flash['error'] = "#{e}"
+      command = MoveResourcesCommand.new(resources, location, current_user,
+                                         request.remote_ip)
+      begin
+        command.execute
+      rescue => e
+        flash['error'] = "#{e}"
+      else
+        flash['success'] = "Moved #{resources.length} resources to "\
+        "\"#{command.object.name}\"."
+      end
     else
-      flash['success'] = "Moved #{resources.length} resources to "\
-      "\"#{command.object.name}\"."
+      flash['error'] = 'No location selected.'
     end
     redirect_to :back
   end
