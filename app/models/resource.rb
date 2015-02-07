@@ -433,7 +433,7 @@ class Resource < ActiveRecord::Base
         return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
             self.location.assessment_score * 0.1
       end
-
+      return 0.0
     end
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.1
