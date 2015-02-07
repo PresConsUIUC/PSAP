@@ -26,18 +26,6 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :parent_id, 'Containing Collection', class: 'required' %>
-    <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
-            data-content="Indicate the collection or group in which the resource resides. If this resource is a collection at the top-level, or is unassociated with any established collection or group, select <em>None (Top-Level)</em>.">
-      ?
-    </button>
-    <%= select('resource', 'parent_id',
-               collection_hierarchy_options_for_select(@resource.location),
-               { include_blank: 'None (Top-Level)' },
-               { class: 'form-control input-md' }) %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :resource_type, 'Resource Type', class: 'required' %>
     <button type="button" class="btn btn-sm help" data-container="body" data-toggle="popover" data-placement="right"
             data-content="Is this an item or collection? Unlike items, collections can contain other items and collections, but are not assessable. Indicate the hierarchical level of the resource.">
