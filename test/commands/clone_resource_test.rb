@@ -1,0 +1,43 @@
+require 'test_helper'
+
+##
+# Tests only the cloning action; model-level validation is handled in
+# ResourceTest.
+#
+class CloneResourceCommandTest < ActiveSupport::TestCase
+
+  def setup
+    @resource = resources(:resource_one)
+    @doing_user = users(:admin_user)
+    @remote_ip = '10.0.0.1'
+    @command = CloneResourceCommand.new(@resource, @doing_user, @remote_ip)
+  end
+
+  # execute
+  test 'execute method should not raise errors' do
+    assert_nothing_raised do
+      @command.execute
+    end
+  end
+
+  test 'execute method should write success to event log if successful' do
+    assert_difference 'Event.count' do
+      @command.execute
+    end
+    event = Event.order(:created_at).last
+    assert event.description.include?('Cloned')
+    assert_equal @doing_user, event.user
+    assert_equal @remote_ip, event.address
+  end
+
+  test 'execute method should write failure to event log if unsuccessful' do
+    skip 'Need to get this to happen'
+  end
+
+  # object
+  test 'object method should return the cloned Resource object' do
+    assert_kind_of Resource, @command.object
+    assert_not_equal @command.object, @resource
+  end
+
+end
