@@ -68,7 +68,10 @@
 
       <!-- Clone -->
       <%= link_to resource_resource_clone_path(@resource),
-                  class: 'btn btn-default', method: :patch do %>
+                  class: 'btn btn-default', method: :patch,
+                  title: 'Creates a new resource with the same properties, '\
+                  'except for a slightly different title. Assessment data is '\
+                  'also preserved, but child resources (if any) are not.' do %>
         <%= content_tag(:span, '', class: 'fa fa-files-o') %>
         Clone
       <% end %>
