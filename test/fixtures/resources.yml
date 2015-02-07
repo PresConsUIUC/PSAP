@@ -61,7 +61,7 @@ resource_five:
 resource_six:
   id: 6
   name: 'Declaration of Paris'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= ResourceType::COLLECTION %>
   format_id: 6
   location_id: 3
   user_id: 5

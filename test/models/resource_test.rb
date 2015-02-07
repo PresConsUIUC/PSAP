@@ -173,7 +173,8 @@ class ResourceTest < ActiveSupport::TestCase
 
   # all_children
   test 'all_children should work' do
-    flunk # TODO: write this
+    assert_equal 0, resources(:uiuc_collection).all_children.length
+    assert_equal 5, resources(:resource_six).all_children.length
   end
 
   # as_csv
