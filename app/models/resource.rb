@@ -49,6 +49,8 @@ class Resource < ActiveRecord::Base
   validate :validates_not_child_of_item
   validate :validates_same_institution_as_user
 
+  validates_uniqueness_of :name, scope: :parent_id
+
   before_validation :prune_empty_submodels
   before_validation :prune_irrelevant_models
 

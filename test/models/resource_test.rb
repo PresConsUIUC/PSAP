@@ -55,11 +55,21 @@ class ResourceTest < ActiveSupport::TestCase
     skip # TODO: write this
   end
 
-  test 'collections are not assessable' do
+  test 'setting a resource to a collection should prune its AQRs' do
     response = assessment_question_responses(:assessment_question_response_one)
     @resource.assessment_question_responses << response
     @resource.resource_type = ResourceType::COLLECTION
-    assert !@resource.save
+    @resource.save
+    assert !@resource.assessment_question_responses.any?
+  end
+
+  test 'resource should have a unique name scoped to its parent' do
+    # same name and parent should fail
+    resource2 = @resource.dup
+    assert !resource2.save
+    # same name, different parent should succeed
+    resource2.parent = resources(:uiuc_collection)
+    assert resource2.save
   end
 
   ########################### property tests ################################

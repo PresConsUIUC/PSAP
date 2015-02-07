@@ -16,8 +16,17 @@ class LocationTest < ActiveSupport::TestCase
     assert @location.save
   end
 
-  test 'assessment score is updated on save' do
+  test 'assessment score should update on save' do
     skip # TODO: write this
+  end
+
+  test 'location should have a unique name scoped to its repository' do
+    # same name and repository should fail
+    location2 = @location.dup
+    assert !location2.save
+    # same name, different institution should succeed
+    location2.repository = repositories(:repository_four)
+    assert location2.save
   end
 
   ########################### property tests ################################

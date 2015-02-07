@@ -18,4 +18,6 @@ class Location < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 255 }
   validates :repository, presence: true
 
+  validates_uniqueness_of :name, scope: :repository_id
+
 end
