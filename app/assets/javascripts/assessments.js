@@ -50,7 +50,7 @@ var AssessmentForm = {
             depth = 0;
         }
         var control = '';
-        var root_url = $('input[name="root-url"]').val();
+        var root_url = $('input[name="root_url"]').val();
 
         switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
             case 0: // radio
@@ -133,7 +133,7 @@ var AssessmentForm = {
     },
 
     showAssessmentQuestions: function(onCompleteCallback) {
-        var root_url = $('input[name="root-url"]').val();
+        var root_url = $('input[name="root_url"]').val();
         var questions_url;
         switch (AssessmentForm.entity) {
             case 'location':
@@ -230,9 +230,7 @@ var AssessmentForm = {
 };
 
 var ready = function() {
-    if ($('body#assess_location').length) {
-        AssessmentForm.init('location');
-    } else if ($('body#assess_institution').length) {
+    if ($('body#assess_institution').length) {
         AssessmentForm.init('institution');
     } else if ($('body#assess_resource').length) {
         AssessmentForm.init('resource');

@@ -5,9 +5,14 @@ class LocationsController < ApplicationController
                 only: [:assess, :create, :destroy, :edit, :new, :show, :update]
 
   def assess
-    @location = Location.find(params[:location_id])
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @location = Location.find(params[:location_id])
+      @assessment_sections = Assessment.find_by_key('location').
+          assessment_sections.order(:index)
+      render partial: 'assess_form', locals: { action: :assess }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def create

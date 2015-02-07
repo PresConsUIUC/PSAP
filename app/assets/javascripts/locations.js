@@ -1,3 +1,19 @@
+var LocationAssessForm = function() {
+
+    this.init = function() {
+        // Load the edit panel content via ajax when it appears
+        var location_url = $('input[name="location_url"]').val();
+        $('#psap-assess-panel').on('show.bs.modal', function (e) {
+            $.get(location_url + '/assess', function(data) {
+                $(e.target).find('.modal-body').html(data);
+                //PSAP.Form.init();
+                AssessmentForm.init('location');
+            });
+        });
+    };
+
+};
+
 var LocationEditForm = function() {
 
     this.init = function() {
@@ -31,9 +47,8 @@ var ResourceCreateForm = function() {
 var ready = function() {
     if ($('body#show_location').length) {
         new LocationEditForm().init();
+        new LocationAssessForm().init();
         new ResourceCreateForm().init();
-    } else if ($('body#assess_location').length) {
-        // handled by AssessmentForm in assessments.js
     }
 };
 

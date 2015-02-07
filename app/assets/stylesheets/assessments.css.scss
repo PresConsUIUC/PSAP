@@ -1,22 +1,10 @@
-.assessment_question h3 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size:1.3em;
-}
-
-body#new_resource, body#edit_resource, body#assess_resource,
-body#new_location, body#edit_location, body#assess_location,
-body#new_institution, body#edit_institution, body#assess_institution {
+#psap-assess-panel {
   div.section {
     margin-bottom:2em;
   }
   div.assessment_question {
     h3 {
       margin-top:0px;
-    }
-  }
-  div#psap-affixed-menu {
-    button.save {
-      margin-top:1em;
     }
   }
   div.popover {
