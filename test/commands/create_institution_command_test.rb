@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
+class CreateInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
     @valid_institution_params = institutions(:institution_one).attributes
@@ -8,11 +8,11 @@ class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
     @valid_institution_params['name'] = 'asdfasfd'
     @user = users(:normal_user)
     @remote_ip = '10.0.0.1'
-    @valid_command = CreateAndJoinInstitutionCommand.new(
+    @valid_command = CreateInstitutionCommand.new(
         @valid_institution_params, @user, @remote_ip)
 
     @invalid_institution_params = @valid_institution_params.dup.except('name')
-    @invalid_command = CreateAndJoinInstitutionCommand.new(
+    @invalid_command = CreateInstitutionCommand.new(
         @invalid_institution_params, @user, @remote_ip)
   end
 
@@ -24,8 +24,7 @@ class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Created and joined institution "\
-    "\"#{@valid_command.object.name}\"",
+    assert_equal "Created institution \"#{@valid_command.object.name}\"",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address
@@ -38,7 +37,7 @@ class CreateAndJoinInstitutionCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Attempted to create and join institution, but failed: Name "\
+    assert_equal "Attempted to create institution, but failed: Name "\
     "can't be blank",
                  event.description
     assert_equal @user, event.user
