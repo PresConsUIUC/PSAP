@@ -1,0 +1,17 @@
+<% resources.each do |resource| %>
+  <tr>
+    <td>
+      <input type="radio" name="resource[parent_id]" value="<%= resource.id %>">
+    </td>
+    <td class="depth-<%= depth %>">
+      <%= depth > 0 ? raw('&#8627; ') : '' %>
+      <%= entity_icon(resource) %>
+      <%= truncate(resource.name, length: 150) %>
+    </td>
+  </tr>
+  <%= render partial: 'resources/collection_tree_rows',
+             locals: { resources: resource.children.
+                     where(resource_type: ResourceType::COLLECTION).
+                     where('id NOT IN (?)', exclude.id).order(:name),
+                       depth: depth + 1 } if resource.children.any? %>
+<% end %>

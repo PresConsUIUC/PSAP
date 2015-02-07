@@ -10,13 +10,13 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-6 psap-page-title">
+  <div class="col-sm-5 psap-page-title">
     <h1>
       <%= @resource.name %>
       <small><%= entity_icon(@resource) %><%= @resource.readable_resource_type %></small>
     </h1>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-7">
     <div class="btn-group" style="float:right">
       <% if @resource.resource_type == ResourceType::COLLECTION %>
         <!-- Import button -->
@@ -26,7 +26,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to 'From ArchivesSpace', '',
+            <li><%= link_to 'ArchivesSpace EAD', '',
                             'data-toggle' => 'modal', 'data-target' => '#importModal' %></li>
           </ul>
         </div>
@@ -65,6 +65,15 @@
           Assess
         </button>
       <% end %>
+
+      <!-- Move -->
+      <button type="button" class="btn btn-default" data-toggle="modal"
+              data-target="#psap-move-panel"
+              title="Move this resource (including all of its children, if any)
+              into a different collection or to the top level of the location.">
+        <span class="fa fa-share"></span>
+        Move
+      </button>
 
       <!-- Clone -->
       <%= link_to resource_resource_clone_path(@resource),
