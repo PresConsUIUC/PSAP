@@ -30,7 +30,7 @@ class ResourcesController < ApplicationController
     rescue => e
       flash['error'] = "#{e}"
     else
-      flash['success'] = "Successfully cloned #{@resource.name} as "\
+      flash['success'] = "Cloned #{@resource.name} as "\
       "\"#{command.object.name}\"."
     end
     redirect_to command.object
@@ -105,8 +105,7 @@ class ResourcesController < ApplicationController
       redirect_to :back
     else
       if command.object.length > 0
-        flash['success'] = "Successfully imported #{command.object.length} "\
-        "resource(s)."
+        flash['success'] = "Imported #{command.object.length} resource(s)."
       else
         flash[:notice] = 'Unable to detect an ArchivesSpace EAD XML file in '\
         'any of the uploaded files.'
@@ -129,7 +128,7 @@ class ResourcesController < ApplicationController
     rescue => e
       flash['error'] = "#{e}"
     else
-      flash['success'] = "Successfully moved resources to "\
+      flash['success'] = "Moved #{resources.length} resources to "\
       "\"#{command.object.name}\"."
     end
     redirect_to :back
