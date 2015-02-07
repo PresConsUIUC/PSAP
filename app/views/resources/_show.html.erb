@@ -145,7 +145,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.local_identifier %>
+              <% if !@resource.local_identifier.blank? %>
                 <dt>Local Identifier</dt>
                 <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
               <% end %>
@@ -202,7 +202,7 @@
                 <dt>Language</dt>
                 <dd><%= @resource.language %></dd>
               <% end %>
-              <% if @resource.description %>
+              <% if !@resource.description.blank? %>
                 <dt>Description</dt>
                 <dd><%= @resource.description %></dd>
               <% end %>
@@ -270,7 +270,7 @@
                 <dt>Significance</dt>
                 <dd><%= @resource.readable_significance %></dd>
               <% end %>
-              <% if @resource.rights %>
+              <% if !@resource.rights.blank? %>
                 <dt>Rights</dt>
                 <dd><%= @resource.rights %></dd>
               <% end %>
