@@ -79,6 +79,7 @@ class ResourcesController < ApplicationController
   def edit
     if request.xhr?
       @resource = Resource.find(params[:id])
+      add_dependent_entities
       render partial: 'edit_form', locals: { action: :edit }
     else
       render status: 406, text: 'Not Acceptable'
@@ -247,17 +248,22 @@ class ResourcesController < ApplicationController
 
   private
 
-  def prepare_show_view
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
-    # The edit form JavaScript needs at least 1 of each dependent entity.
-    # Empty ones will be stripped in update().
+  ##
+  # The edit form JavaScript needs at least 1 of each dependent entity.
+  # Empty ones will be stripped in update().
+  #
+  def add_dependent_entities
     @resource.creators.build unless @resource.creators.any?
     @resource.extents.build unless @resource.extents.any?
     @resource.resource_dates.build unless @resource.resource_dates.any?
     @resource.resource_notes.build unless @resource.resource_notes.any?
     @resource.subjects.build unless @resource.subjects.any?
+  end
 
+  def prepare_show_view
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
+    add_dependent_entities
     @events = @resource.events.order(created_at: :desc).limit(20)
   end
 
