@@ -52,7 +52,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'assessment score and percent complete should update before save' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   test 'collections are not assessable' do
@@ -168,7 +168,7 @@ class ResourceTest < ActiveSupport::TestCase
 
   # all_assessed_items
   test 'all_assessed_items should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   # all_children
@@ -179,12 +179,24 @@ class ResourceTest < ActiveSupport::TestCase
 
   # as_csv
   test 'as_csv should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   # assessed_item_statistics
   test 'assessed_item_statistics should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
+  end
+
+  # dup
+  test 'dup should produce a correct clone' do
+    clone = @resource.dup
+    assert_equal @resource.assessment_question_responses.length,
+                 clone.assessment_question_responses.length
+    assert_equal @resource.creators.length, clone.creators.length
+    assert_equal @resource.extents.length, clone.extents.length
+    assert_equal @resource.resource_dates.length, clone.resource_dates.length
+    assert_equal @resource.resource_notes.length, clone.resource_notes.length
+    assert_equal @resource.subjects.length, clone.subjects.length
   end
 
   # effective_assessment_score
@@ -247,11 +259,11 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'update_assessment_score should work for bound paper and original documents' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   test 'update_assessment_score should work for non-bound paper and non-original documents' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   ########################### association tests ##############################
