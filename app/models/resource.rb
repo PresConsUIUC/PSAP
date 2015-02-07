@@ -553,7 +553,7 @@ class Resource < ActiveRecord::Base
   end
 
   def validates_same_institution_as_user
-    if user and !user.is_admin? and
+    if user and !user.is_admin? and self.location and
         user.institution != self.location.repository.institution
       errors[:base] << 'Owning user must be of the same institution.'
     end
