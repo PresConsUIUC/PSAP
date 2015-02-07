@@ -9,9 +9,14 @@ class ResourcesController < ApplicationController
   # Responds to GET /resources/:id/assess
   #
   def assess
-    @resource = Resource.find(params[:resource_id])
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @resource = Resource.find(params[:resource_id])
+      @assessment_sections = Assessment.find_by_key('resource').
+          assessment_sections.order(:index)
+      render partial: 'assess_form', locals: { action: :assess }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def create

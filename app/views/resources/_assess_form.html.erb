@@ -1,0 +1,48 @@
+<% if @resource.format %>
+
+  <%= form_for(@resource, remote: true) do |f| %>
+    <%= hidden_field_tag('format_id', @resource.format.id) %>
+
+    <% @resource.assessment_question_responses.each do |response| %>
+      <%= hidden_field_tag('selected_option_ids',
+                           response.assessment_question_option.id) %>
+    <% end %>
+
+    <div class="form-group" id="psap-assessment-type-group">
+      <%= f.label :assessment_type, 'Assessment Type' %>
+      <button type="button" class="btn btn-sm help" data-container="body"
+              data-toggle="popover" data-placement="right"
+              data-content="Is this collection assessed at the item level or on a sample basis?">
+        ?
+      </button>
+      <div class="radio">
+        <%= f.radio_button :assessment_type, AssessmentType::ITEM_LEVEL %>
+        <%= f.label :assessment_type, 'Item-Level', value: AssessmentType::ITEM_LEVEL %>
+      </div>
+      <div class="radio">
+        <%= f.radio_button :assessment_type, AssessmentType::SAMPLE %>
+        <%= f.label :assessment_type, 'Sample', value: AssessmentType::SAMPLE %>
+      </div>
+    </div>
+
+    <hr>
+
+    <% @assessment_sections.each_with_index do |section, index| %>
+      <%= render partial: 'shared/section_form',
+                 locals: { section: section,
+                           draw_bottom_rule: index < @assessment_sections.length - 1 } %>
+    <% end %>
+
+    <div class="clearfix">
+      <div class="pull-right">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <%= f.submit 'Assess Resource', class: 'btn btn-primary' %>
+      </div>
+    </div>
+
+  <% end %>
+
+<% else %>
+  <p>This resource must be associated with a format before it can be
+    assessed. Use the edit button on the resource page.</p>
+<% end %>

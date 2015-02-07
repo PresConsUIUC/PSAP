@@ -59,10 +59,11 @@
       </button>
       <% if @resource.resource_type != ResourceType::COLLECTION %>
         <!-- Assess -->
-        <%= link_to resource_assess_path(@resource), class: 'btn btn-default' do %>
-            <%= content_tag(:span, '', class: 'glyphicon glyphicon-stats') %>
-            Assess
-        <% end %>
+        <button type="button" class="btn btn-default" data-toggle="modal"
+                data-target="#psap-assess-panel">
+          <span class="glyphicon glyphicon-stats"></span>
+          Assess
+        </button>
       <% end %>
 
       <!-- Delete -->

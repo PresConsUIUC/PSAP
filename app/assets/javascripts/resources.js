@@ -1,3 +1,18 @@
+var ResourceAssessForm = function() {
+
+    this.init = function() {
+        // Load the edit panel content via ajax when it appears
+        var resource_url = $('input[name="resource_url"]').val();
+        $('#psap-assess-panel').on('show.bs.modal', function (e) {
+            $.get(resource_url + '/assess', function(data) {
+                $(e.target).find('.modal-body').html(data);
+                AssessmentForm.init('resource');
+            });
+        });
+    };
+
+};
+
 var ResourceEditForm = function() {
 
     var ROOT_URL = $('input[name="root_url"]').val();
@@ -390,8 +405,7 @@ var ResourceEditForm = function() {
 var ready = function() {
     if ($('body#show_resource').length) {
         new ResourceEditForm().init();
-    } else if ($('body#assess_resource').length) {
-        // handled by AssessmentForm in assessments.js
+        new ResourceAssessForm().init();
     }
 };
 
