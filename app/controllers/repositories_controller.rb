@@ -44,7 +44,7 @@ class RepositoriesController < ApplicationController
   def edit
     if request.xhr?
       @repository = Repository.find(params[:id])
-      render partial: 'edit_form'
+      render partial: 'edit_form', locals: { action: :edit }
     else
       render status: 406, text: 'Not Acceptable'
     end
