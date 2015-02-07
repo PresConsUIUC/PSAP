@@ -8,7 +8,7 @@
     <td class="depth-<%= depth %>">
       <%= depth > 0 ? raw('&#8627; ') : '' %>
       <%= entity_icon(resource) %>
-      <%= link_to resource.name, resource %>
+      <%= link_to truncate(resource.name, length: 150), resource %>
     </td>
     <td><%= resource.assessment_complete ? raw('&check;') : '' %></td>
     <td><%= resource.resource_type == ResourceType::ITEM ?
