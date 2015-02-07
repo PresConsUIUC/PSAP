@@ -1,3 +1,18 @@
+var InstitutionAssessForm = function() {
+
+    this.init = function() {
+        // Load the edit panel content via ajax when it appears
+        var institution_url = $('input[name="institution_url"]').val();
+        $('#psap-assess-panel').on('show.bs.modal', function (e) {
+            $.get(institution_url + '/assess', function(data) {
+                $(e.target).find('.modal-body').html(data);
+                AssessmentForm.init('institution');
+            });
+        });
+    };
+
+};
+
 var InstitutionCreateForm = function() {
 
     this.init = function() {
@@ -157,6 +172,7 @@ var ready = function() {
                 break;
         }
         new InstitutionEditForm().init();
+        new InstitutionAssessForm().init();
     }
     if ($('body#institutions').length) {
         new InstitutionCreateForm().init();

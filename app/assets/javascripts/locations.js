@@ -6,7 +6,6 @@ var LocationAssessForm = function() {
         $('#psap-assess-panel').on('show.bs.modal', function (e) {
             $.get(location_url + '/assess', function(data) {
                 $(e.target).find('.modal-body').html(data);
-                //PSAP.Form.init();
                 AssessmentForm.init('location');
             });
         });

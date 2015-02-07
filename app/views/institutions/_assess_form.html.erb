@@ -1,0 +1,20 @@
+<%= form_for(@institution, remote: true) do |f| %>
+  <% @institution.assessment_question_responses.each do |response| %>
+    <input type="hidden" name="selected_option_ids"
+           value="<%= response.assessment_question_option.id %>">
+  <% end %>
+
+  <% @assessment_sections.each_with_index do |section, index| %>
+    <%= render partial: 'shared/section_form',
+               locals: { section: section,
+                         draw_bottom_rule: index < @assessment_sections.length - 1 } %>
+  <% end %>
+
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <%= f.submit 'Assess Institution', class: 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>
