@@ -34,6 +34,12 @@ class CloneResourceCommandTest < ActiveSupport::TestCase
     skip 'Need to get this to happen'
   end
 
+  test 'execute method should attach an event to both resources' do
+    @command.execute
+    assert_equal 1, @resource.events.length
+    assert_equal 1, @command.object.events.length
+  end
+
   # object
   test 'object method should return the cloned Resource object' do
     assert_kind_of Resource, @command.object

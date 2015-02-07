@@ -22,6 +22,9 @@ class CloneResourceCommand < Command
       @resource.events << Event.create(
           description: "Cloned resource #{@resource.name}",
           user: @doing_user, address: @remote_ip)
+      @cloned_resource.events << Event.create(
+          description: "Cloned resource #{@resource.name}",
+          user: @doing_user, address: @remote_ip)
     end
   end
 
