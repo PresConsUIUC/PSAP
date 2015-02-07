@@ -19,6 +19,23 @@ class ResourcesController < ApplicationController
     end
   end
 
+  ##
+  # Responds to PATCH /resources/:id/clone
+  #
+  def clone
+    @resource = Resource.find(params[:resource_id])
+    command = CloneResourceCommand.new(@resource, current_user, request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash['error'] = "#{e}"
+    else
+      flash['success'] = "Successfully cloned #{@resource.name} as "\
+      "\"#{command.object.name}\"."
+    end
+    redirect_to command.object
+  end
+
   def create
     @location = Location.find(params[:location_id])
     command = CreateResourceCommand.new(@location, resource_params,
@@ -99,7 +116,8 @@ class ResourcesController < ApplicationController
   end
 
   ##
-  # Responds to /resources/move
+  # Responds to POST /resources/move
+  #
   def move
     resources = Resource.where('id IN (?)', params[:resources])
     location = Location.find(params[:location_id])
@@ -118,7 +136,8 @@ class ResourcesController < ApplicationController
   end
 
   ##
-  # Responds to /institutions/:id/resources/names
+  # Responds to GET /institutions/:id/resources/names
+  #
   def names
     sql = 'SELECT DISTINCT resources.name '\
     'FROM resources '\

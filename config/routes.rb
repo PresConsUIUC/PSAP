@@ -102,6 +102,7 @@ Psap::Application.routes.draw do
   match '/resources/move', to: 'resources#move', via: 'post', as: 'resource_move'
   resources :resources, except: :index do
     match '/assess', to: 'resources#assess', via: 'get'
+    match '/clone', to: 'resources#clone', via: 'patch', as: 'resource_clone'
     match '/import', to: 'resources#import', via: 'post', as: 'import_post'
     resources :resources, only: [:new, :create]
   end

@@ -1,7 +1,12 @@
 class Resource < ActiveRecord::Base
 
+  # When adding/removing properties or associations, update as_csv (both of
+  # them).
+
   include Assessable
 
+  # When adding/removing has_many, has_one, or habtm associations, update
+  # dup and update_submodels as well!
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
   has_many :children, -> { order(:name) }, class_name: 'Resource',
@@ -388,6 +393,28 @@ class Resource < ActiveRecord::Base
   #
   def assessment_questions
     assessment_question_responses.map(&:assessment_question).uniq
+  end
+
+  ##
+  # Overrides parent
+  #
+  def dup
+    clone = super
+    self.assessment_question_responses.each do |response|
+      cloned_response = response.dup
+      cloned_response.assessment_question = response.assessment_question
+      cloned_response.assessment_question_option = response.assessment_question_option
+      cloned_response.location = response.location
+      cloned_response.institution = response.institution
+      cloned_response.resource = response.resource
+      clone.assessment_question_responses << cloned_response
+    end
+    self.creators.each { |c| clone.creators << c.dup }
+    self.extents.each { |c| clone.extents << c.dup }
+    self.resource_dates.each { |c| clone.resource_dates << c.dup }
+    self.resource_notes.each { |c| clone.resource_notes << c.dup }
+    self.subjects.each { |c| clone.subjects << c.dup }
+    clone
   end
 
   ##

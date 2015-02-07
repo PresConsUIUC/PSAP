@@ -10,13 +10,13 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="row">
-  <div class="col-sm-7 psap-page-title">
+  <div class="col-sm-6 psap-page-title">
     <h1>
       <%= @resource.name %>
       <small><%= entity_icon(@resource) %><%= @resource.readable_resource_type %></small>
     </h1>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <div class="btn-group" style="float:right">
       <% if @resource.resource_type == ResourceType::COLLECTION %>
         <!-- Import button -->
@@ -64,6 +64,13 @@
           <span class="glyphicon glyphicon-stats"></span>
           Assess
         </button>
+      <% end %>
+
+      <!-- Clone -->
+      <%= link_to resource_resource_clone_path(@resource),
+                  class: 'btn btn-default', method: :patch do %>
+        <%= content_tag(:span, '', class: 'fa fa-files-o') %>
+        Clone
       <% end %>
 
       <!-- Delete -->
