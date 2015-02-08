@@ -6,7 +6,7 @@ var ready = function() {
         page_content.find('img').addClass('img-thumbnail gallery-item');
 
         // move the header
-        page_content.find('div.col-sm-8:first').append(
+        page_content.find('.psap-page-title:first').append(
             page_content.find('h1:first'));
 
         // initialize Magnific Popup

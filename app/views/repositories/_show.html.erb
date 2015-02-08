@@ -4,31 +4,28 @@
    breadcrumbs << @repository.name %>
 <%= breadcrumbs(breadcrumbs) %>
 
-<div class="row">
-  <div class="col-sm-9 psap-page-title">
-    <h1><%= @repository.name %>
-      <small><%= entity_icon(@repository) %>Repository</small>
-    </h1>
-  </div>
-  <div class="col-sm-3">
-    <div class="btn-group" style="float:right">
-      <!-- Edit -->
-      <button type="button" class="btn btn-default" data-toggle="modal"
-              data-target="#psap-edit-panel">
-        <span class="glyphicon glyphicon-pencil"></span>
-        Edit
-      </button>
-      <!-- Delete -->
-      <%= link_to repository_path(@repository), method: 'delete',
-                  class: 'btn btn-danger',
-                  data: { confirm: 'Deleting this repository will delete all '\
-                          'locations and resources it contains. '\
-                          'Are you sure you want to delete this repository?' } do %>
-        <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
-        Delete
-      <% end %>
-    </div>
-  </div>
+<div class="btn-group pull-right">
+  <!-- Edit -->
+  <button type="button" class="btn btn-default" data-toggle="modal"
+          data-target="#psap-edit-panel">
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  </button>
+  <!-- Delete -->
+  <%= link_to repository_path(@repository), method: 'delete',
+              class: 'btn btn-danger',
+              data: { confirm: 'Deleting this repository will delete all '\
+                      'locations and resources it contains. '\
+                      'Are you sure you want to delete this repository?' } do %>
+    <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+    Delete
+  <% end %>
+</div>
+
+<div class="psap-page-title">
+  <h1><%= @repository.name %>
+    <small><%= entity_icon(@repository) %>Repository</small>
+  </h1>
 </div>
 
 <div class="row">
