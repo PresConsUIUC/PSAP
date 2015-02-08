@@ -1,7 +1,5 @@
 body#show_institution {
   form {
-    max-width:100%; /* override */
-
     select#score_direction {
       display:inline;
       max-width:12em;
@@ -12,6 +10,12 @@ body#show_institution {
     }
     .psap-buttons {
       float:right;
+    }
+  }
+
+  form.psap-search {
+    input[type=radio] {
+      margin-left:-20px;
     }
   }
 
