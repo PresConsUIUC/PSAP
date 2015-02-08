@@ -1,53 +1,31 @@
-var LocationAssessForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var location_url = $('input[name="location_url"]').val();
-        $('#psap-assess-panel').on('show.bs.modal', function (e) {
-            $.get(location_url + '/assess', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                AssessmentForm.init('location');
-            });
-        });
-    };
-
-};
-
-var LocationEditForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var location_url = $('input[name="location_url"]').val();
-        $('#psap-edit-panel').on('show.bs.modal', function (e) {
-            $.get(location_url + '/edit', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                PSAP.Form.init();
-            });
-        });
-    };
-
-};
-
-var ResourceCreateForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var new_resource_url = $('input[name="new_resource_url"]').val();
-        $('#psap-create-panel').on('show.bs.modal', function (e) {
-            $.get(new_resource_url, function(data) {
-                $(e.target).find('.modal-body').html(data);
-                new ResourceEditForm().init(); // resources.js
-            });
-        });
-    };
-
-};
-
 var ready = function() {
     if ($('body#show_location').length) {
-        new LocationEditForm().init();
-        new LocationAssessForm().init();
-        new ResourceCreateForm().init();
+        // initialize edit panel
+        PSAP.Panel.initRemote(
+            '#psap-edit-panel',
+            $('input[name="location_url"]').val() + '/edit',
+            function () {
+                PSAP.Form.init();
+            }
+        );
+
+        // initialize assess panel
+        PSAP.Panel.initRemote(
+            '#psap-assess-panel',
+            $('input[name="location_url"]').val() + '/assess',
+            function () {
+                new AssessmentForm().init('location'); // assessments.js
+            }
+        );
+
+        // initialize resource-create panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_resource_url"]').val(),
+            function () {
+                new ResourceEditForm().init(); // resources.js
+            }
+        );
     }
 };
 

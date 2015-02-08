@@ -1,15 +1,15 @@
 /**
  * Used in assess-location, assess-institution, and assess-resource view.
  */
-var AssessmentForm = {
+var AssessmentForm = function() {
 
-    entity: null,
+    var _entity = null;
 
     /**
      * @param entity 'location', 'institution', or 'resource'
      */
-    init: function(entity) {
-        AssessmentForm.entity = entity;
+    this.init = function(entity) {
+        _entity = entity;
 
         $(document).on('PSAPAssessmentQuestionsAdded', function() {
             $('[data-spy="scroll"]').each(function () {
@@ -17,21 +17,20 @@ var AssessmentForm = {
             });
         });
 
-        AssessmentForm.showAssessmentQuestions(
-            AssessmentForm.setInitialSelections);
-    },
+        showAssessmentQuestions(setInitialSelections);
+    };
 
-    insertQuestionAfter: function(questionNode, afterNode) {
+    var insertQuestionAfter = function(questionNode, afterNode) {
         $(questionNode).hide();
         afterNode.after(questionNode);
         $(questionNode).fadeIn();
         PSAP.Popover.refresh();
-    },
+    };
 
-    insertQuestionIn: function(questionNode, parentNode) {
+    var insertQuestionIn = function(questionNode, parentNode) {
         parentNode.append(questionNode);
         PSAP.Popover.refresh();
-    },
+    };
 
     /**
      * Transforms an assessment question into HTML for the assessment form.
@@ -41,7 +40,7 @@ var AssessmentForm = {
      * @param depth
      * @returns jQuery node
      */
-    nodeForQuestion: function(object, question_index, depth) {
+    var nodeForQuestion = function(object, question_index, depth) {
         if (!depth) {
             depth = 0;
         }
@@ -56,7 +55,7 @@ var AssessmentForm = {
                         control += '<div class="radio-inline">' +
                                 '<label>' +
                                     '<input type="radio" ' +
-                                    'name="' + AssessmentForm.entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                    'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
@@ -73,7 +72,7 @@ var AssessmentForm = {
                         control += '<div class="checkbox-inline">' +
                                 '<label>' +
                                     '<input type="checkbox" ' +
-                                    'name="' + AssessmentForm.entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                    'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
                                     'data-type="option" ' +
                                     'data-option-score="' + option['value'] + '" data-option-id="' +
                                     option['id'] + '" value="' + option['id'] + '"> ' +
@@ -115,9 +114,9 @@ var AssessmentForm = {
                     '</div>' +
                 '</div>' +
             '</div>');
-    },
+    };
 
-    setInitialSelections: function() {
+    var setInitialSelections = function() {
         $('input[name="selected_option_ids"]').each(function() {
             var selected_id = $(this).val();
             $('[data-type="option"]').each(function() {
@@ -126,12 +125,12 @@ var AssessmentForm = {
                 }
             });
         });
-    },
+    };
 
-    showAssessmentQuestions: function(onCompleteCallback) {
+    var showAssessmentQuestions = function(onCompleteCallback) {
         var root_url = $('input[name="root_url"]').val();
         var questions_url;
-        switch (AssessmentForm.entity) {
+        switch (_entity) {
             case 'location':
                 // all locations have the same set of assessment questions
                 questions_url = root_url + 'locations/1/assessment-questions';
@@ -149,8 +148,8 @@ var AssessmentForm = {
 
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
-                AssessmentForm.insertQuestionIn(
-                    AssessmentForm.nodeForQuestion(object, i),
+                insertQuestionIn(
+                    nodeForQuestion(object, i),
                     $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
             });
             if (data.length > 0) {
@@ -160,7 +159,7 @@ var AssessmentForm = {
                     var question_elem = $(this).closest('.assessment_question');
                     var qid = question_elem.data('id');
                     var child_questions_url;
-                    switch (AssessmentForm.entity) {
+                    switch (_entity) {
                         case 'location':
                             child_questions_url = root_url +
                             'locations/1/assessment-questions?parent_id=' + qid;
@@ -190,8 +189,8 @@ var AssessmentForm = {
                                     if (question_elem) {
                                         depth = question_elem.data('depth') + 1;
                                     }
-                                    AssessmentForm.insertQuestionAfter(
-                                        AssessmentForm.nodeForQuestion(object, i, depth),
+                                    insertQuestionAfter(
+                                        nodeForQuestion(object, i, depth),
                                         question_elem)
                                 }
                             } else {
@@ -202,39 +201,26 @@ var AssessmentForm = {
                             on('change', onOptionChanged);
                         $(document).trigger('PSAPAssessmentQuestionsAdded');
                     });
-
-                    AssessmentForm.updateQuestionCounts();
                 };
                 $('.assessment_question input').on('change', onOptionChanged);
             }
-            AssessmentForm.updateQuestionCounts();
 
             if (onCompleteCallback) {
                 onCompleteCallback();
             }
             $(document).trigger('PSAPAssessmentQuestionsAdded');
         });
-    },
-
-    updateQuestionCounts: function() {
-        // update question counts per-section
-        $('div.section').each(function() {
-            var count = $(this).find('.assessment_question').length;
-            $('.nav li[data-section-id="' + $(this).data('id') +
-                '"] .assessment-question-count').text(count);
-        });
-    }
+    };
 
 };
 
 var ready = function() {
     if ($('body#assess_institution').length) {
-        AssessmentForm.init('institution');
+        new AssessmentForm().init('institution');
     } else if ($('body#assess_resource').length) {
-        AssessmentForm.init('resource');
+        new AssessmentForm().init('resource');
     }
 };
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
-// TODO: destroy event listeners

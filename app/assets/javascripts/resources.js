@@ -1,33 +1,3 @@
-var ResourceAssessForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var resource_url = $('input[name="resource_url"]').val();
-        $('#psap-assess-panel').on('show.bs.modal', function (e) {
-            $.get(resource_url + '/assess', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                AssessmentForm.init('resource');
-            });
-        });
-    };
-
-};
-
-var ResourceCreateForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var new_resource_url = $('input[name="new_resource_url"]').val();
-        $('#psap-create-panel').on('show.bs.modal', function (e) {
-            $.get(new_resource_url, function(data) {
-                $(e.target).find('.modal-body').html(data);
-                new ResourceEditForm().init();
-            });
-        });
-    };
-
-};
-
 var ResourceEditForm = function() {
 
     var ROOT_URL = $('input[name="root_url"]').val();
@@ -205,17 +175,10 @@ var ResourceEditForm = function() {
             initSuggestions();
         }).trigger('PSAPFormFieldAdded');
 
-        // Load the edit panel content via ajax when it appears
-        var resource_url = $('input[name="resource_url"]').val();
-        $('#psap-edit-panel').on('show.bs.modal', function (e) {
-            $.get(resource_url + '/edit', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                attachEventListeners();
-                setInitialSelections();
-                initSuggestions();
-                PSAP.Form.init();
-            });
-        });
+        attachEventListeners();
+        setInitialSelections();
+        initSuggestions();
+        PSAP.Form.init();
     };
 
     var initSuggestions = function() {
@@ -417,23 +380,40 @@ var ResourceEditForm = function() {
 
 };
 
-var ResourceMoveForm = function() {
+var ready = function() {
+    if ($('body#show_resource').length) {
+        // initialize resource-edit panel
+        PSAP.Panel.initRemote(
+            '#psap-edit-panel',
+            $('input[name="resource_url"]').val() + '/edit',
+            function () {
+                new ResourceEditForm().init();
+            }
+        );
 
-    this.init = function() {
+        // initialize resource-assess panel
+        PSAP.Panel.initRemote(
+            '#psap-assess-panel',
+            $('input[name="resource_url"]').val() + '/assess',
+            function () {
+                new AssessmentForm().init('resource');
+            }
+        );
+
+        // initialize resource-create panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_resource_url"]').val(),
+            function () {
+                new ResourceEditForm().init();
+            }
+        );
+
+        // initialize resource-move panel
         $('input[name="resource[parent_id]"]').on('change', function() {
             $('input[name="resource[location_id]"]').val(
                 $(this).data('location-id'));
         });
-    };
-
-};
-
-var ready = function() {
-    if ($('body#show_resource').length) {
-        new ResourceEditForm().init();
-        new ResourceAssessForm().init();
-        new ResourceCreateForm().init();
-        new ResourceMoveForm().init();
     }
 };
 

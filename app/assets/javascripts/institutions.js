@@ -1,63 +1,3 @@
-var InstitutionAssessForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var institution_url = $('input[name="institution_url"]').val();
-        $('#psap-assess-panel').on('show.bs.modal', function (e) {
-            $.get(institution_url + '/assess', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                AssessmentForm.init('institution');
-            });
-        });
-    };
-
-};
-
-var InstitutionCreateForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var new_institution_url = $('input[name="new_institution_url"]').val();
-        $('#psap-create-panel').on('show.bs.modal', function (e) {
-            $.get(new_institution_url, function(data) {
-                $(e.target).find('.modal-body').html(data);
-                PSAP.Form.init();
-            });
-        });
-    };
-
-};
-
-var InstitutionEditForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var institution_url = $('input[name="institution_url"]').val();
-        $('#psap-edit-panel').on('show.bs.modal', function (e) {
-            $.get(institution_url + '/edit', function(data) {
-                $(e.target).find('.modal-body').html(data);
-                PSAP.Form.init();
-            });
-        });
-    };
-
-};
-
-var RepositoryCreateForm = function() {
-
-    this.init = function() {
-        // Load the edit panel content via ajax when it appears
-        var new_repository_url = $('input[name="new_repository_url"]').val();
-        $('#psap-create-panel').on('show.bs.modal', function (e) {
-            $.get(new_repository_url, function(data) {
-                $(e.target).find('.modal-body').html(data);
-                PSAP.Form.init();
-            });
-        });
-    };
-
-};
-
 var ResourceSearchForm = {
 
     init: function() {
@@ -168,14 +108,44 @@ var ready = function() {
                 ResourceSearchForm.init();
                 break;
             case 'repositories':
-                new RepositoryCreateForm().init();
+                // initialize create-repository panel
+                PSAP.Panel.initRemote(
+                    '#psap-create-panel',
+                    $('input[name="new_repository_url"]').val(),
+                    function () {
+                        PSAP.Form.init();
+                    }
+                );
                 break;
         }
-        new InstitutionEditForm().init();
-        new InstitutionAssessForm().init();
+
+        // initialize edit-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-edit-panel',
+            $('input[name="institution_url"]').val() + '/edit',
+            function () {
+                PSAP.Form.init();
+            }
+        );
+
+        // initialize assess-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-assess-panel',
+            $('input[name="institution_url"]').val() + '/assess',
+            function () {
+                new AssessmentForm().init('institution');
+            }
+        );
     }
     if ($('body#institutions').length) {
-        new InstitutionCreateForm().init();
+        // initialize create-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_institution_url"]').val(),
+            function () {
+                PSAP.Form.init();
+            }
+        );
     }
 };
 

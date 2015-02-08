@@ -324,10 +324,57 @@ var PSAP = {
         $('.psap-inner-scrolling').on('show.bs.modal', function (e) {
             var body = $(e.target).find('.modal-body');
             body.css('overflow', 'scroll');
-            body.css('height', $(window).height() * 0.7);
+            body.css('max-height', $(window).height() * 0.7);
         });
 
         PSAP.smoothAnchorScroll(0);
+    },
+
+    Panel: {
+
+        /**
+         * Loads HTML content for a panel and restructures its DOM
+         * appropriately.
+         *
+         * @param panel_selector jQuery selector
+         * @param template_url URL of panel HTML content
+         * @param on_content_loaded_fn Function
+         */
+        initRemote: function(panel_selector, template_url, on_content_loaded_fn) {
+            var panel = $(panel_selector);
+            panel.on('show.bs.modal', function (e) {
+                $.get(template_url, function (data) {
+                    var body = panel.find('.modal-body');
+                    body.html(data);
+                    // if the body contains a form, move its opening tag into the
+                    // .modal-content div and its submit buttons into a new
+                    // .modal-footer div so that the panel will be both more
+                    // structurally correct, and work with the
+                    // .psap-inner-scrolling class
+                    var form = body.find('form');
+                    if (form.length) {
+                        var container = panel.find('.modal-content');
+                        container.prepend(form);
+                        body.append(form.children());
+                        var header = panel.find('.modal-header');
+                        var footer = $('<div class="modal-footer"></div>');
+                        footer.append(body.find('[data-dismiss="modal"]'));
+                        footer.append(body.find('input[type="submit"]'));
+                        form.prepend(footer);
+                        form.prepend(body);
+                        form.prepend(header);
+                    } else {
+                        body.find('[data-dismiss="modal"]').remove();
+                        body.find('input[type="submit"]').remove();
+                    }
+
+                    if (on_content_loaded_fn) {
+                        on_content_loaded_fn();
+                    }
+                });
+            });
+        }
+
     },
 
     Popover: {
