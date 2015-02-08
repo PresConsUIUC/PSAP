@@ -481,6 +481,7 @@ class Resource < ActiveRecord::Base
       self.format_support_type = nil
       self.assessment_question_responses.destroy_all
       self.assessment_complete = nil
+      self.assessment_type = nil
     end
     if self.format and !self.format.requires_type_vectors?
       self.format_ink_media_type = nil
