@@ -101,10 +101,10 @@ var AssessmentForm = {
             '" data-weight="' + object['weight'] + '">' +
                 '<hr>' +
                 '<div class="row">' +
-                    '<div class="col-sm-11">' +
+                    '<div class="col-sm-10">' +
                         '<p class="question">' + object['name'] + '</p>' +
                     '</div>' +
-                    '<div class="col-sm-1" style="text-align:right">' +
+                    '<div class="col-sm-2" style="text-align:right">' +
                         '<button type="button" class="btn btn-default help hovertip-fire" ' +
                         'data-container="body" data-toggle="popover" ' +
                         'data-placement="left" data-html="true" ' +
