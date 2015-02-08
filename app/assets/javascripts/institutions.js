@@ -1,7 +1,7 @@
 var ResourceSearchForm = {
 
     init: function() {
-        var form = $('.psap-search');
+        var form = $('.psap-resource-search');
         var all_elements = form.find('textarea, input, select, button');
 
         $('.psap-clear').on('click', function() {
