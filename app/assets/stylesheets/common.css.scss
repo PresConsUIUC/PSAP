@@ -394,6 +394,11 @@ label.required:after {
   padding-left:0px;
 }
 
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] { /* bootstrap override */
+  margin-left:0px;
+}
+
 .radio-inline, .checkbox-inline {
   background-color:white;
   border:1px solid #cccccc;
