@@ -1,0 +1,55 @@
+<% # Similar to resource_tree_rows. Used in the move panel.
+name_length = 150
+%>
+
+<% entities.each do |entity| %>
+  <% if entity.kind_of?(Repository) %>
+    <tr>
+      <td></td>
+      <td class="depth-0">
+        <%= entity_icon(entity) %>
+        <%= truncate(entity.name, length: name_length) %>
+      </td>
+    </tr>
+    <%= render partial: 'resources/move_tree_rows',
+               locals: { entities: entity.locations,
+                         exclude: exclude,
+                         depth: 1 } %>
+  <% elsif entity.kind_of?(Location) %>
+    <tr>
+      <td>
+        <input type="radio" name="resource[parent_id]" value=""
+               data-location-id="<%= entity.id %>">
+      </td>
+      <td class="depth-1">
+        <%= raw('&#8627; ') %>
+        <%= entity_icon(entity) %>
+        <%= truncate(entity.name, length: name_length) %>
+      </td>
+    </tr>
+    <%= render partial: 'resources/move_tree_rows',
+               locals: { entities: entity.resources.
+                       where(resource_type: ResourceType::COLLECTION, parent_id: nil).
+                       where('id NOT IN (?)', exclude.id),
+                         exclude: exclude,
+                         depth: 2 } %>
+  <% elsif entity.kind_of?(Resource) %>
+    <tr>
+      <td>
+        <input type="radio" name="resource[parent_id]" value="<%= entity.id %>"
+               data-location-id="<%= entity.location.id %>">
+      </td>
+      <td class="depth-<%= depth %>">
+        <%= raw('&#8627; ') %>
+        <%= entity_icon(entity) %>
+        <%= truncate(entity.name, length: name_length) %>
+      </td>
+    </tr>
+    <%= render partial: 'resources/move_tree_rows',
+               locals: { entities: entity.children.
+                       where(resource_type: ResourceType::COLLECTION).
+                       where('id NOT IN (?)', exclude.id),
+                         exclude: exclude,
+                         depth: depth + 1 } %>
+  <% end %>
+<% end %>

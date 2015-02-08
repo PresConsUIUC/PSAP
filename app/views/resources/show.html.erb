@@ -38,14 +38,18 @@
           <h4 class="modal-title" id="moveModalLabel">Move Resource</h4>
         </div>
         <div class="modal-body">
-          <p>Select a containing collection. The resource will be moved intact with
-            all of its children (if any).</p>
-          <%= render partial: 'collections',
-                     locals: { resources: @resource.location.resources.
-                             where(resource_type: ResourceType::COLLECTION, parent_id: nil).
-                             where('id NOT IN (?)', @resource.id),
-                               exclude: @resource,
-                               depth: 0 } %>
+          <p>Select a containing collection, or location if moving to the top level.
+            The resource will be moved intact with all of its children, if any.</p>
+          <% # updated via js %>
+          <input type="hidden" name="resource[location_id]" value="">
+          <table class="table table-striped psap-entity-list">
+            <tbody>
+              <%= render partial: 'move_tree_rows',
+                         locals: { entities: @resource.location.repository.institution.repositories,
+                                   exclude: @resource,
+                                   depth: 0 } %>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

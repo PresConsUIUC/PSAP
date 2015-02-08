@@ -417,11 +417,23 @@ var ResourceEditForm = function() {
 
 };
 
+var ResourceMoveForm = function() {
+
+    this.init = function() {
+        $('input[name="resource[parent_id]"]').on('change', function() {
+            $('input[name="resource[location_id]"]').val(
+                $(this).data('location-id'));
+        });
+    };
+
+};
+
 var ready = function() {
     if ($('body#show_resource').length) {
         new ResourceEditForm().init();
         new ResourceAssessForm().init();
         new ResourceCreateForm().init();
+        new ResourceMoveForm().init();
     }
 };
 
