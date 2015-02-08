@@ -73,7 +73,12 @@
             </ul>
           </li>
 
-          <li id="help">
+          <li class="psap-icon-only">
+            <%= link_to(user_manual_path, title: 'User Manual') do %>
+              <i class="fa fa-book"></i>
+            <% end %>
+          </li>
+          <li class="psap-icon-only">
             <%= link_to(help_path, title: 'Help') do %>
               <i class="fa fa-question-circle"></i>
             <% end %>

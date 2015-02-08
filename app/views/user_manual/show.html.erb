@@ -1,0 +1,10 @@
+<% provide(:title, @page.name) %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'User Manual', user_manual_path %>
+  </li>
+  <li class="active"><%= @page.name %></li>
+</ol>
+
+<%= static_page_html(@page.html) %>

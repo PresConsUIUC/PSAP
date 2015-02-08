@@ -145,4 +145,9 @@ Psap::Application.routes.draw do
   match '/help', to: 'help#index', via: 'get', as: 'help'
   match '/help/:category', to: 'help#show', via: 'get', as: 'help_category'
 
+  # User Manual routes
+  match '/manual', to: 'user_manual#index', via: 'get', as: 'user_manual'
+  match '/manual/:category', to: 'user_manual#show', via: 'get',
+        as: 'user_manual_category'
+
 end
