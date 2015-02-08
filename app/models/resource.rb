@@ -33,6 +33,10 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
+  before_validation :prune_empty_submodels
+  before_validation :prune_irrelevant_models
+  before_validation :sync_location_with_parent
+
   validates :assessment_type, allow_blank: true,
             inclusion: { in: AssessmentType.all,
                          message: 'must be a valid assessment type' }
@@ -50,9 +54,6 @@ class Resource < ActiveRecord::Base
   validate :validates_same_institution_as_user
 
   validates_uniqueness_of :name, scope: :parent_id
-
-  before_validation :prune_empty_submodels
-  before_validation :prune_irrelevant_models
 
   def self.all_matching_query(params, starting_set = nil)
     starting_set = Resource.all unless starting_set
@@ -505,6 +506,10 @@ class Resource < ActiveRecord::Base
       when ResourceSignificance::HIGH
         'High'
     end
+  end
+
+  def sync_location_with_parent
+    self.location = self.parent.location if self.parent
   end
 
   ##

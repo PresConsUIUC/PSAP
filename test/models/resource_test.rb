@@ -72,6 +72,13 @@ class ResourceTest < ActiveSupport::TestCase
     assert resource2.save
   end
 
+  test 'location should be synched with parent location' do
+    @resource.parent = resources(:uiuc_collection)
+    @resource.location = locations(:location_three)
+    @resource.save!
+    assert_equal locations(:location_one), @resource.location
+  end
+
   ########################### property tests ################################
 
   test 'assessment_complete should update properly' do
