@@ -17,10 +17,6 @@ var AssessmentForm = {
             });
         });
 
-        $('button.save').on('click', function(event) {
-            $('form.psap-assessment').submit();
-        });
-
         AssessmentForm.showAssessmentQuestions(
             AssessmentForm.setInitialSelections);
     },
@@ -137,9 +133,11 @@ var AssessmentForm = {
         var questions_url;
         switch (AssessmentForm.entity) {
             case 'location':
+                // all locations have the same set of assessment questions
                 questions_url = root_url + 'locations/1/assessment-questions';
                 break;
             case 'institution':
+                // all institutions have the same set of assessment questions
                 questions_url = root_url + 'institutions/1/assessment-questions';
                 break;
             case 'resource':
