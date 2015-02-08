@@ -283,6 +283,10 @@
                 <dt>Rights</dt>
                 <dd><%= @resource.rights %></dd>
               <% end %>
+              <% if @resource.assessment_type %>
+                <dt>Assessment Type</dt>
+                <dd><%= AssessmentType::name_for_type(@resource.assessment_type) %></dd>
+              <% end %>
               <dt>Created</dt>
               <dd><%= local_time_ago(@resource.created_at) %> by
                 <%= link_to @resource.user do %>
