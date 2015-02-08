@@ -25,9 +25,10 @@
 <%= render partial: 'shared/edit_panel',
            locals: { action: :assess, entity_name: 'Resource' } %>
 
-<div class="modal fade psap-edit-panel" id="psap-move-panel" data-backdrop="true"
-     data-keyboard="true" tabindex="-1" role="dialog"
-     aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade psap-edit-panel psap-inner-scrolling"
+     id="psap-move-panel" data-backdrop="true" data-keyboard="true"
+     tabindex="-1" role="dialog" aria-labelledby="moveModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <%= form_for(@resource) do %>
@@ -42,11 +43,11 @@
             The resource will be moved intact with all of its children, if any.</p>
           <% # updated via js %>
           <input type="hidden" name="resource[location_id]" value="">
-          <table class="table table-striped psap-entity-list">
+          <table class="table psap-entity-list">
             <tbody>
               <%= render partial: 'move_tree_rows',
                          locals: { entities: @resource.location.repository.institution.repositories,
-                                   exclude: @resource,
+                                   exclude_resource: @resource,
                                    depth: 0 } %>
             </tbody>
           </table>

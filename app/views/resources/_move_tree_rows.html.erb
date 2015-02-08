@@ -13,10 +13,12 @@ name_length = 150
     </tr>
     <%= render partial: 'resources/move_tree_rows',
                locals: { entities: entity.locations,
-                         exclude: exclude,
+                         exclude_resource: exclude_resource,
                          depth: 1 } %>
   <% elsif entity.kind_of?(Location) %>
-    <tr>
+    <% active = (exclude_resource and entity == exclude_resource.location and
+            !exclude_resource.parent) %>
+    <tr class="<%= active ? 'bg-info' : '' %>">
       <td>
         <input type="radio" name="resource[parent_id]" value=""
                data-location-id="<%= entity.id %>">
@@ -25,16 +27,18 @@ name_length = 150
         <%= raw('&#8627; ') %>
         <%= entity_icon(entity) %>
         <%= truncate(entity.name, length: name_length) %>
+        <%= active ? '(current container)' : '' %>
       </td>
     </tr>
     <%= render partial: 'resources/move_tree_rows',
                locals: { entities: entity.resources.
                        where(resource_type: ResourceType::COLLECTION, parent_id: nil).
-                       where('id NOT IN (?)', exclude.id),
-                         exclude: exclude,
+                       where('id NOT IN (?)', exclude_resource.id),
+                         exclude_resource: exclude_resource,
                          depth: 2 } %>
   <% elsif entity.kind_of?(Resource) %>
-    <tr>
+    <% active = (exclude_resource and entity.parent == exclude_resource) %>
+    <tr class="<%= active ? 'bg-info' : '' %>">
       <td>
         <input type="radio" name="resource[parent_id]" value="<%= entity.id %>"
                data-location-id="<%= entity.location.id %>">
@@ -43,13 +47,14 @@ name_length = 150
         <%= raw('&#8627; ') %>
         <%= entity_icon(entity) %>
         <%= truncate(entity.name, length: name_length) %>
+        <%= active ? '(current container)' : '' %>
       </td>
     </tr>
     <%= render partial: 'resources/move_tree_rows',
                locals: { entities: entity.children.
                        where(resource_type: ResourceType::COLLECTION).
-                       where('id NOT IN (?)', exclude.id),
-                         exclude: exclude,
+                       where('id NOT IN (?)', exclude_resource.id),
+                         exclude_resource: exclude_resource,
                          depth: depth + 1 } %>
   <% end %>
 <% end %>

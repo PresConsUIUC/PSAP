@@ -319,6 +319,14 @@ var PSAP = {
             }
         }
 
+        // Panels with the "psap-inner-scrolling" class should be limited to
+        // window height and their body made scrollable.
+        $('.psap-inner-scrolling').on('show.bs.modal', function (e) {
+            var body = $(e.target).find('.modal-body');
+            body.css('overflow', 'scroll');
+            body.css('height', $(window).height() * 0.7);
+        });
+
         PSAP.smoothAnchorScroll(0);
     },
 
