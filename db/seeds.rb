@@ -516,10 +516,10 @@ case Rails.env
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    (0..100).each do
+    (0..100).each do |index|
       resource_commands << CreateResourceCommand.new(
           locations[1],
-          { name: 'Sample Multitudinous Top-Level Item',
+          { name: "Sample Multitudinous Top-Level Item #{index + 1}",
             resource_type: ResourceType::ITEM,
             user: normal_user,
             description: 'Sample description',
@@ -530,10 +530,10 @@ case Rails.env
     resources = resource_commands.map{ |command| command.execute; command.object }
     resource_commands = []
 
-    (0..100).each do
+    (0..100).each do |index|
       resource_commands << CreateResourceCommand.new(
           locations[1],
-          { name: 'Sample Multitudinous Child Item',
+          { name: "Sample Multitudinous Child Item #{index + 1}",
             resource_type: ResourceType::ITEM,
             user: normal_user,
             parent: resources[4],
