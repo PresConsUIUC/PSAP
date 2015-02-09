@@ -108,6 +108,7 @@ class InstitutionsController < ApplicationController
       if current_user.is_admin?
         flash['success'] = "The institution \"#{@institution.name}\" has been "\
         "created."
+        prepare_index_view
         render 'create'
       else
         flash['success'] = "The institution \"#{@institution.name}\" has been "\
@@ -162,9 +163,7 @@ class InstitutionsController < ApplicationController
   end
 
   def index
-    @institutions = Institution.order(:name).paginate(
-        page: params[:page],
-        per_page: Psap::Application.config.results_per_page)
+    prepare_index_view
   end
 
   def info
@@ -257,6 +256,12 @@ class InstitutionsController < ApplicationController
   end
 
   private
+
+  def prepare_index_view
+    @institutions = Institution.order(:name).paginate(
+        page: params[:page],
+        per_page: Psap::Application.config.results_per_page)
+  end
 
   def prepare_show_view
     @institution = Institution.find(params[:id])
