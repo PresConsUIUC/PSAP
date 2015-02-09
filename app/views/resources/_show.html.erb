@@ -90,7 +90,9 @@
 <div class="psap-page-title">
   <h1>
     <%= @resource.name %>
-    <small><%= entity_icon(@resource) %><%= @resource.readable_resource_type %></small>
+    <small class="text-nowrap">
+      <%= entity_icon(@resource) %><%= @resource.readable_resource_type %>
+    </small>
   </h1>
 </div>
 
