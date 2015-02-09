@@ -14,7 +14,19 @@ class ApplicationController < ActionController::Base
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
+  protected
+
+  ##
+  # Normally the flash is discarded after being added to the response headers.
+  # Calling this method will save it, enabling it to work with redirects.
+  #
+  def keep_flash
+    @keep_flash = true
+  end
+
   private
+
+  @keep_flash = false
 
   # Stores the flash message and type in the response headers for ajax
   # purposes.
@@ -24,7 +36,7 @@ class ApplicationController < ActionController::Base
       response.headers['X-Psap-Message-Type'] = 'success' unless flash['success'].blank?
       response.headers['X-Psap-Message'] = flash['error'] unless flash['error'].blank?
       response.headers['X-Psap-Message'] = flash['success'] unless flash['success'].blank?
-      flash.clear
+      flash.clear unless @keep_flash
     end
   end
 

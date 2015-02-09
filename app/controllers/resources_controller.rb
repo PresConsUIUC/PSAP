@@ -50,10 +50,12 @@ class ResourcesController < ApplicationController
     rescue => e
       response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
+      keep_flash
       render 'create'
     else
       response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Resource \"#{@resource.name}\" created."
+      keep_flash
       render 'create'
     end
   end
