@@ -103,61 +103,32 @@ class Resource < ActiveRecord::Base
     resources
   end
 
-  def self.from_ead(ead, user_id)
-    doc = REXML::Document.new(ead)
-
-    begin
-      User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
-      raise 'Invalid user ID'
-    end
-
-    attrs = {}
-
-    doc.elements.each('//archdesc/did/abstract[1]') do |element|
-      attrs[:description] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc/did/unitid[1]') do |element|
-      attrs[:local_identifier] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc/did/unittitle[1]') do |element|
-      attrs[:name] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc') do |type|
-      case type.attribute('level').value.strip
-        when 'collection'
-          attrs[:resource_type] = ResourceType::COLLECTION
-        when 'item'
-          attrs[:resource_type] = ResourceType::ITEM
-      end
-    end
-
-    attrs[:user_id] = user_id
+  ##
+  # @param ead EAD XML string
+  # @param user User
+  # @return Resource
+  #
+  def self.from_ead(ead, user)
+    doc = Nokogiri::XML(ead)
+    ead_ns = { 'ead' => 'urn:isbn:1-931666-22-9' }
+    params = {}
 
     # creators
-    attrs[:creators_attributes] = []
-    doc.elements.each('//archdesc/did/origination') do |element|
-      if element.attribute('label').value == 'creator'
-        attrs[:creators_attributes] << {
-            name: element.elements['persname'].text.strip }
+    params[:creators_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:origination[@label = \'creator\']', ead_ns).each do |element|
+      %w(persname corpname famname name).each do |name_elem|
+        element.xpath(name_elem).each do |name|
+          params[:creators_attributes] << { name: name.text.squish }
+        end
       end
-    end
-
-    # extents
-    attrs[:extents_attributes] = []
-    doc.elements.each('//archdesc/did/physdesc/extent') do |extent|
-      attrs[:extents_attributes] << { name: extent.text.strip }
     end
 
     # dates
-    attrs[:resource_dates_attributes] = []
-    doc.elements.each('//archdesc/did/unitdate') do |element|
+    params[:resource_dates_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:unitdate', ead_ns).each do |element|
       date_struct = {}
 
-      case element.attribute('type').value
+      case element.attribute('type').text
         when 'inclusive'
           date_struct[:date_type] = DateType::INCLUSIVE
         when 'bulk'
@@ -168,7 +139,7 @@ class Resource < ActiveRecord::Base
           date_struct[:date_type] = DateType::SINGLE
       end
 
-      date_text = element.attribute('normal').value
+      date_text = element.attribute('normal').text
       date_parts = date_text.split('/')
 
       case date_struct[:date_type]
@@ -195,16 +166,56 @@ class Resource < ActiveRecord::Base
           end
       end
 
-      attrs[:resource_dates_attributes] << date_struct
+      params[:resource_dates_attributes] << date_struct
+    end
+
+    # description
+    doc.xpath('//ead:archdesc/ead:did/ead:abstract[1]', ead_ns).each do |element|
+      params[:description] = element.text.squish
+    end
+
+    # extents
+    params[:extents_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:physdesc/ead:extent', ead_ns).each do |extent|
+      params[:extents_attributes] << { name: extent.text.squish }
+    end
+
+    # language (PSAP supports only one)
+    doc.xpath('//ead:archdesc/ead:did/ead:langmaterial/ead:language[1]', ead_ns).each do |element|
+      lang = Language.find_by_iso639_2_code(element.attribute('langcode').text)
+      params[:language_id] = lang.id if lang
+    end
+
+    # local identifier
+    doc.xpath('//ead:archdesc/ead:did/ead:unitid[1]', ead_ns).each do |element|
+      params[:local_identifier] = element.text.squish
+    end
+
+    # name
+    doc.xpath('//ead:archdesc/ead:did/ead:unittitle[1]', ead_ns).each do |element|
+      params[:name] = element.text.squish
+    end
+
+    # resource type
+    doc.xpath('//ead:archdesc', ead_ns).each do |element|
+      case element.attribute('level').text.strip
+        when 'collection'
+          params[:resource_type] = ResourceType::COLLECTION
+        else
+          params[:resource_type] = ResourceType::ITEM
+      end
     end
 
     # subjects
-    attrs[:subjects_attributes] = []
-    doc.elements.each('//archdesc/controlaccess/*') do |subject|
-      attrs[:subjects_attributes] << { name: subject.text.strip }
+    params[:subjects_attributes] = []
+    doc.xpath('//ead:archdesc/ead:controlaccess/*', ead_ns).each do |element|
+      params[:subjects_attributes] << { name: element.text.squish }
     end
 
-    Resource.new(attrs)
+    # user
+    params[:user_id] = user.id
+
+    Resource.new(params)
   end
 
   ##
