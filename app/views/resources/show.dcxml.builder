@@ -17,11 +17,11 @@ xml.tag!('oai_dc:dc',
   @resource.resource_dates.each do |date|
     xml.tag!('dc:date', date.as_dublin_core_string)
   end
-  if @resource.format
-    xml.tag!('dc:type', @resource.format.name)
-  else
+  if @resource.resource_type == ResourceType::COLLECTION
+    xml.tag!('dc:type', 'collection')
+  elsif @resource.format
     xml.tag!('dc:type',
-             @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection')
+             FormatClass::name_for_class(@resource.format.format_class))
   end
   xml.tag!('dc:language', @resource.language ?
       @resource.language.iso639_2_code :
@@ -29,6 +29,7 @@ xml.tag!('oai_dc:dc',
   @resource.extents.each do |extent|
     xml.tag!('dc:format', extent.name)
   end
+  xml.tag!('dc:format', @resource.format.name) if @resource.format
   xml.tag!('dc:format', @resource.format_ink_media_type.name) if @resource.format_ink_media_type
   xml.tag!('dc:format', @resource.format_support_type.name) if @resource.format_support_type
   @resource.subjects.each do |subject|
