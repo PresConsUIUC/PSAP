@@ -6,6 +6,8 @@ var PSAP = {
 
     Flash: {
 
+        FADE_OUT_DELAY: 8000,
+
         /**
          * @param text
          * @param type Value of the X-Psap-Message-Type header
@@ -45,6 +47,11 @@ var PSAP = {
             } else {
                 $('div.container header, div.container-fluid header').after(flash);
             }
+
+            // make it disappear after a delay
+            setTimeout(function() {
+                flash.fadeOut();
+            }, PSAP.Flash.FADE_OUT_DELAY);
         }
 
     },
@@ -326,6 +333,13 @@ var PSAP = {
             body.css('overflow', 'scroll');
             body.css('max-height', $(window).height() * 0.7);
         });
+
+        // make flash messages disappear after a delay
+        if ($('div.alert').length) {
+            setTimeout(function () {
+                $('div.alert').fadeOut();
+            }, PSAP.Flash.FADE_OUT_DELAY);
+        }
 
         PSAP.smoothAnchorScroll(0);
     },
