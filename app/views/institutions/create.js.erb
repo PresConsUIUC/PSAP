@@ -2,6 +2,8 @@
 // administrator
 <% if @institution.id and current_user.institution == @institution %>
   window.location.href = '<%= institution_url(@institution) %>';
+<% elsif current_user.is_admin? %>
+  window.location.reload();
 <% else %>
   $('div#associate').remove();
 <% end %>
