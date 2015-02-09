@@ -126,7 +126,7 @@
       ?
     </button>
     <% @institution_language = @resource.location.repository.institution.language ?
-            @resource.location.repository.institution.language.english_name : '' %>
+            @resource.location.repository.institution.language.english_name : 'Undefined' %>
     <%= f.collection_select :language_id, Language.all, :id, :english_name,
                             { include_blank: "That of Institution (#{@institution_language})" },
                             { class: 'form-control' } %>
@@ -437,6 +437,7 @@
   </div>
 
   <%= hidden_field_tag(:location_id, @resource.location.id) %>
+  <%= hidden_field_tag('resource[parent_id]', @resource.parent ? @resource.parent.id : nil) %>
 
   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
   <%= f.submit(action == :create ? 'Create Resource' : 'Save Changes',

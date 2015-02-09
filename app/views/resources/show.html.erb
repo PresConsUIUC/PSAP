@@ -4,7 +4,7 @@
 <%= hidden_field_tag(:resource_url, resource_url(@resource)) %>
 <%= hidden_field_tag(:institution_url,
                      institution_url(@resource.location.repository.institution)) %>
-<%= hidden_field_tag(:new_resource_url, new_location_resource_url(@resource.location)) %>
+<%= hidden_field_tag(:new_resource_url, new_location_resource_url(@resource.location, parent_id: @resource.id)) %>
 <%= hidden_field_tag(:root_url, root_url) %>
 
 <div id="psap-resource-page-content">
