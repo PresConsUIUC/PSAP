@@ -12,10 +12,6 @@
     <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
     <br><%= @institution.country %>
   </dd>
-  <% if @institution.description %>
-    <dt>Description</dt>
-    <dd><%= @institution.description %></dd>
-  <% end %>
   <% if @institution.language %>
     <dt>Language</dt>
     <dd><%= @institution.language.english_name %></dd>
