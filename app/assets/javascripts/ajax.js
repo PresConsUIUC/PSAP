@@ -15,7 +15,7 @@ $(document).ajaxSuccess(function(event, request) {
         if (result == 'success') {
             edit_panel.modal('hide');
         } else if (result == 'error') {
-            edit_panel.animate({ scrollTop: 0 }, 'fast');
+            edit_panel.find('.modal-body').animate({ scrollTop: 0 }, 'fast');
         }
         var message = request.getResponseHeader('X-Psap-Message');
         var message_type = request.getResponseHeader('X-Psap-Message-Type');
