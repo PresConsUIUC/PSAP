@@ -447,26 +447,57 @@ class Resource < ActiveRecord::Base
       end
       return 0.0
     end
+    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
-        self.location.assessment_score * 0.1
+        self.location.assessment_score * 0.05 +
+        self.effective_temperature_score * 0.025 +
+        self.effective_humidity_score * 0.025
   end
 
   ##
   # @return float between 0 and 1
   #
   def effective_format_score
-    format_score = 0.0
+    score = 0.0
     if self.format
-      format_score = self.format.score
+      score = self.format.score
       if self.format.format_class == FormatClass::BOUND_PAPER or
           self.format.fid == 159 # Unbound Paper -> Original Document
         if self.format_support_type and self.format_ink_media_type
-          format_score = self.format_support_type.score * 0.6 +
+          score = self.format_support_type.score * 0.6 +
               self.format_ink_media_type.score * 0.4
         end
       end
     end
-    format_score
+    score
+  end
+
+  def effective_humidity_score
+    score = 0.0
+    if self.format
+      location_range = self.location.humidity_range
+      if location_range
+        format_range = self.format.humidity_ranges.where(
+            min_rh: location_range.min_rh,
+            max_rh: location_range.max_rh).first
+        score = format_range.score if format_range
+      end
+    end
+    score
+  end
+
+  def effective_temperature_score
+    score = 0.0
+    if self.format
+      location_range = self.location.temperature_range
+      if location_range
+        format_range = self.format.temperature_ranges.where(
+            min_temp_f: location_range.min_temp_f,
+            max_temp_f: location_range.max_temp_f).first
+        score = format_range.score if format_range
+      end
+    end
+    score
   end
 
   def filename
@@ -535,16 +566,16 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Updates the score of the resource only, without taking location into
-  # account.
+  # Updates the score of the resource only, without taking location,
+  # temperature, or humidity into account.
   #
   # Overrides Assessable mixin
   #
   def update_assessment_score
     # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     self.assessment_score = self.format ?
-        self.effective_format_score * 0.444444 +
-            self.assessment_question_score * 0.555555 :
+        self.effective_format_score * 0.444444 + # 0.4 * 10/9
+            self.assessment_question_score * 0.555555 : # 0.5 * 10/9
         0.0
   end
 

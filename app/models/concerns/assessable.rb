@@ -33,7 +33,8 @@ module Assessable
     score = 0.0
     responses.each do |response|
       score += response.assessment_question_option.value *
-          response.assessment_question.weight
+          response.assessment_question.weight if
+          response.assessment_question_option.value
     end
     score.to_f / section.max_score(self).to_f
   end
@@ -47,7 +48,8 @@ module Assessable
       sections[section_id] = 0 unless sections[section_id]
       responses.each do |response|
         sections[section_id] += response.assessment_question_option.value *
-            response.assessment_question.weight
+            response.assessment_question.weight if
+            response.assessment_question_option.value
       end
       section = AssessmentSection.find(section_id)
       sections[section_id] = (sections[section_id] / section.max_score)
@@ -84,7 +86,8 @@ module Assessable
     self.assessment_score = 0.0
     self.assessment_question_responses.each do |response|
       self.assessment_score += response.assessment_question_option.value *
-          response.assessment_question.weight
+          response.assessment_question.weight if
+          response.assessment_question_option.value
     end
     self.assessment_score *= 0.01
   end

@@ -51,35 +51,37 @@ var AssessmentForm = function() {
             case 0: // radio
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) { // TODO: why is option['value'] ever undefined?
-                        control += '<div class="radio-inline">' +
-                                '<label>' +
-                                    '<input type="radio" ' +
-                                    'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
-                                    'data-type="option" ' +
-                                    'data-option-score="' + option['value'] + '" data-option-id="' +
-                                    option['id'] + '" value="' + option['id'] + '"> ' +
-                                    option['name'] +
-                                '</label>' +
-                            '</div>';
+                    if (!option['value']) {
+                        option['value'] = '0';
                     }
+                    control += '<div class="radio-inline">' +
+                            '<label>' +
+                                '<input type="radio" ' +
+                                'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                'data-type="option" ' +
+                                'data-option-score="' + option['value'] + '" data-option-id="' +
+                                option['id'] + '" value="' + option['id'] + '"> ' +
+                                option['name'] +
+                            '</label>' +
+                        '</div>';
                 }
                 break;
             case 1: // checkbox
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
-                    if (option['value']) { // TODO: why is option['value'] ever undefined?
-                        control += '<div class="checkbox-inline">' +
-                                '<label>' +
-                                    '<input type="checkbox" ' +
-                                    'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
-                                    'data-type="option" ' +
-                                    'data-option-score="' + option['value'] + '" data-option-id="' +
-                                    option['id'] + '" value="' + option['id'] + '"> ' +
-                                    option['name'] +
-                                '</label>' +
-                            '</div>';
+                    if (!option['value']) {
+                        option['value'] = '0';
                     }
+                    control += '<div class="checkbox-inline">' +
+                            '<label>' +
+                                '<input type="checkbox" ' +
+                                'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                'data-type="option" ' +
+                                'data-option-score="' + option['value'] + '" data-option-id="' +
+                                option['id'] + '" value="' + option['id'] + '"> ' +
+                                option['name'] +
+                            '</label>' +
+                        '</div>';
                 }
                 break;
         }

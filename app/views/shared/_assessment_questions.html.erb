@@ -15,7 +15,10 @@
         end
         %>
         <li class="<%= class_ %>">
-          <%= option.name %> <small>(<%= (option.value * 100).round %>)</small>
+          <%= option.name %>
+          <% if option.value %>
+            <small>(<%= (option.value * 100).round %>)</small>
+          <% end %>
         </li>
       <% end %>
     </ul>

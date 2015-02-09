@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203173121) do
+ActiveRecord::Schema.define(version: 20150209184230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20150203173121) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assessment_question_id",                         null: false
-    t.decimal  "value",                  precision: 4, scale: 3, null: false
+    t.decimal  "value",                  precision: 4, scale: 3
   end
 
   add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id", using: :btree

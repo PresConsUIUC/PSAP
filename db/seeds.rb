@@ -17,7 +17,7 @@ end
 
 puts 'Seeding formats...'
 
-xls = Roo::Spreadsheet.open('db/seed_data/assessment_questions.xlsx')
+xls = Roo::Spreadsheet.open('db/seed_data/questionDependencies.xlsx')
 
 # Formats
 sheet = xls.sheet('Format Scores')
@@ -167,13 +167,13 @@ aq_sheets.each do |sheet|
       params = {
           qid: row[6].to_i,
           name: row[7].strip,
-          question_type: (!row[12].blank? and row[12].downcase == 'checkboxes') ?
+          question_type: (!row[14].blank? and row[14].downcase == 'checkboxes') ?
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
-          weight: row[9].to_f,
+          weight: row[11].to_f,
           help_text: row[8].strip,
-          advanced_help_page: nil, # TODO: fix
-          advanced_help_anchor: nil # TODO: fix
+          advanced_help_page: row[9] ? row[9].strip.gsub('.html', '') : nil,
+          advanced_help_anchor: row[10] ? row[10].strip : nil
       }
       case row[5][0..2].strip.downcase
         when 'use'
@@ -184,10 +184,10 @@ aq_sheets.each do |sheet|
           params[:assessment_section] = sections[:condition]
       end
 
-      unless row[10].blank? or row[10].to_s.include?('TBD') or row[11].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[10].to_i)
+      unless row[12].blank? or row[12].to_s.include?('TBD') or row[13].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[12].to_i)
         params[:enabling_assessment_question_options] = []
-        row[11].split(';').map{ |x| x.strip }.each do |dep|
+        row[13].split(';').map{ |x| x.strip }.each do |dep|
           eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
           if eaqo
             params[:enabling_assessment_question_options] << eaqo
@@ -203,22 +203,22 @@ aq_sheets.each do |sheet|
       question = AssessmentQuestion.create!(params)
 
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[13], index: 0, value: row[14]) if row[13] and row[14]
+          name: row[15], index: 0, value: row[16]) if row[15] and row[16]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 1, value: row[16]) if row[15] and row[16]
+          name: row[17], index: 1, value: row[18]) if row[17] and row[18]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 2, value: row[18]) if row[17] and row[18]
+          name: row[19], index: 2, value: row[20]) if row[19] and row[20]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[19], index: 3, value: row[20]) if row[19] and row[20]
+          name: row[21], index: 3, value: row[22]) if row[21] and row[22]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[21], index: 4, value: row[22]) if row[21] and row[22]
+          name: row[23], index: 4, value: row[24]) if row[23] and row[24]
       question.save!
     end
   end
 end
 
 # Location & Institution assessment questions
-puts 'Seeding location assessment questions...'
+puts 'Seeding location & institution assessment questions...'
 aq_sheets = %w(Location Institution)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
@@ -268,15 +268,15 @@ aq_sheets.each do |sheet|
       question = AssessmentQuestion.create!(params)
 
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[9], index: 0, value: row[10]) if row[9] and row[10]
+          name: row[9], index: 0, value: row[10]) if row[9]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[11], index: 1, value: row[12]) if row[11] and row[12]
+          name: row[11], index: 1, value: row[12]) if row[11]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[13], index: 2, value: row[14]) if row[13] and row[14]
+          name: row[13], index: 2, value: row[14]) if row[13]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 3, value: row[16]) if row[15] and row[16]
+          name: row[15], index: 3, value: row[16]) if row[15]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 4, value: row[18]) if row[17] and row[18]
+          name: row[17], index: 4, value: row[18]) if row[17]
       question.save!
     end
   end

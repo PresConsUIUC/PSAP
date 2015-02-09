@@ -47,11 +47,17 @@ module ResourcesHelper
     assessment_score = (resource.assessment_question_score * 100).round(1)
     format_score = (resource.effective_format_score * 100).round(1)
     location_score = (resource.location.assessment_score * 100).round(1)
+    temp_score = (resource.effective_temperature_score * 100).round(1)
+    humidity_score = (resource.effective_humidity_score * 100).round(1)
 
     text = '<p>The following formula is used to calculate a resource\'s '\
     'assessment score:</p>'\
-    '<p><em>Assessment score &times; 0.5 + format score &times; 0.4 + '\
-    'location score &times; 0.1</em></p>'\
+    '<p><span class="label label-info">ASSESSMENT</span> &times; '\
+    '0.5 + <span class="label label-success">FORMAT</span> &times; 0.4 + '\
+    '<span class="label label-danger">LOCATION</span> &times; 0.05 + '\
+    '<span class="label label-primary">TEMPERATURE</span> &times; 0.025 + '\
+    '<span class="label label-warning">RELATIVE HUMIDITY</span> &times; '\
+    '0.025</p>'\
     '<ul>'
 
     if resource.assessment_question_responses.length < 1
@@ -66,8 +72,7 @@ module ResourcesHelper
       text += "<li>Its format score is <strong>#{format_score}</strong>.</li>" # TODO: "this is good" or "consider migrating..." etc.
     else
       text += "<li>It does not yet have a format specified, which heavily "\
-      "weighs down its score. You can do this during the "\
-      "#{link_to('assessment process', edit_resource_path(resource))}.</li>"
+      "weighs down its score.</li>"
     end
 
     if resource.location.assessment_question_responses.length < 1
@@ -77,6 +82,11 @@ module ResourcesHelper
       text += "<li>Its location score is "\
       "<strong>#{location_score}</strong>.</li>" # TODO: "this is good" or "consider moving" etc.
     end
+
+    text += "<li>Its temperature score is <strong>#{temp_score}</strong>.</li>"
+
+    text += "<li>Its relative humidity score is "\
+    "<strong>#{humidity_score}</strong>.</li>"
 
     text + '</ul>'
   end
