@@ -177,7 +177,7 @@ module ApplicationHelper
       class_ = 'fa-building-o'
     elsif entity.kind_of?(Resource)
       if entity.resource_type == ResourceType::COLLECTION
-        class_ = 'fa-folder-open-o'
+        class_ = 'fa-cubes'
       elsif entity.format
         case entity.format.format_class
           when FormatClass::AV
