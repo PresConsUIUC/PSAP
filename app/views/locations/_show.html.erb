@@ -148,34 +148,9 @@
         <% end %>
       </div>
 
-      <div class="tab-pane assessment" id="assessment_tab">
-
-        <div class="psap-progress-container">
-          Score: <%= number_to_human(@location.assessment_score * 100) %>
-          <div class="progress">
-            <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@location.assessment_score) %> score"
-                 role="progressbar"
-                 aria-valuenow="<%= @location.assessment_score * 100 %>"
-                 aria-valuemin="0" aria-valuemax="100"
-                 style="width:<%= @location.assessment_score * 100 %>%;">
-            </div>
-          </div>
-        </div>
-
-        <% @assessment_sections.each do |section| %>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title"><%= section.name %></h4>
-            </div>
-
-            <div class="panel-body">
-              <%= render partial: 'shared/assessment_questions',
-                         locals: { entity: @location,
-                                   assessment_questions: section.assessment_questions.where(parent_id: nil),
-                                   depth: 0 } %>
-            </div>
-          </div>
-        <% end %>
+      <div class="tab-pane" id="assessment_tab">
+        <%= render partial: 'shared/assessable_report',
+                   locals: { assessable: @location } %>
       </div>
 
       <div class="tab-pane" id="activity_tab">

@@ -107,8 +107,6 @@ class LocationsController < ApplicationController
     @resources = @location.resources.where(parent_id: nil).order(:name).
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
-    @assessment_sections = Assessment.find_by_key('location').
-        assessment_sections.order(:index)
     @events = Event.joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
         joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
         where('events_locations.location_id IN (?) '\

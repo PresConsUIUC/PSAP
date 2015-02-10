@@ -268,8 +268,6 @@ class InstitutionsController < ApplicationController
     @repositories = @institution.repositories.order(:name).
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
   end
 
   def same_institution_user

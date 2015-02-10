@@ -24,7 +24,7 @@
 
 /* Used in show view of assessable resources (locations, institutions,
 resources). */
-div.assessment {
+.psap-assessable-report {
   dt.depth-1, dd.depth-1 { padding-left:1.5em; }
   dt.depth-2, dd.depth-2 { padding-left:3em; }
   dt.depth-3, dd.depth-3 { padding-left:4.5em; }
@@ -37,7 +37,7 @@ div.assessment {
 
   ul {
     list-style:none;
-    margin-left:0.2em;
+    margin-left:0.5em;
     padding:0px;
     li {
       overflow:visible;

@@ -304,36 +304,39 @@
       <div id="assessment_tab" class="tab-pane">
         <% if @resource.resource_type == ResourceType::ITEM %>
           <% if @resource.assessment_complete %>
-            <div class="psap-progress-container">
-              Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
-              <button type="button" data-container="body" data-placement="bottom"
-                      data-toggle="popover" class="btn btn-sm help"
-                      data-content="<%= score_help(@resource) %>">?</button>
-              <div class="progress">
-                <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
-                     role="progressbar"
-                     aria-valuenow="<%= @resource.effective_assessment_score * 100 %>"
-                     aria-valuemin="0" aria-valuemax="100"
-                     style="width:<%= @resource.effective_assessment_score * 100 %>%">
+            <% # TODO: use the assessable_report partial %>
+            <div class="psap-assessable-report">
+              <div class="psap-progress-container">
+                Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
+                <button type="button" data-container="body" data-placement="bottom"
+                        data-toggle="popover" class="btn btn-sm help"
+                        data-content="<%= score_help(@resource) %>">?</button>
+                <div class="progress">
+                  <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
+                       role="progressbar"
+                       aria-valuenow="<%= @resource.effective_assessment_score * 100 %>"
+                       aria-valuemin="0" aria-valuemax="100"
+                       style="width:<%= @resource.effective_assessment_score * 100 %>%">
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <% @assessment_sections.each do |section| %>
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="panel-title"><%= section.name %></h4>
+              <% @assessment_sections.each do |section| %>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"><%= section.name %></h4>
+                  </div>
+                  <div class="panel-body">
+                    <%= render partial: 'shared/assessment_questions',
+                               locals: { entity: @resource,
+                                         assessment_questions: section.
+                                                 assessment_questions_for_format(@resource.format).
+                                                 where(parent_id: nil),
+                                         depth: 0 } %>
+                  </div>
                 </div>
-                <div class="panel-body assessment">
-                  <%= render partial: 'shared/assessment_questions',
-                             locals: { entity: @resource,
-                                       assessment_questions: section.
-                                               assessment_questions_for_format(@resource.format).
-                                               where(parent_id: nil),
-                                       depth: 0 } %>
-                </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           <% else %>
             <p>This resource has not yet been assessed.</p>
             <%= link_to resource_assess_path(@resource), class: 'btn btn-default' do %>
