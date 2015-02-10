@@ -150,9 +150,7 @@ button.hovertip-fire {
 }
 
 div#psap-ajax-shade {
-  /* http://spiffygif.com */
-  /* TODO: expand image canvas adding more black padding */
-  background:rgba(0, 0, 0, 0.4) url(image_path('ajax-progress-indicator.gif')) no-repeat fixed center;
+  background:rgba(0, 0, 0, 0.4);
   display:none;
   position:fixed;
   height:100%;
