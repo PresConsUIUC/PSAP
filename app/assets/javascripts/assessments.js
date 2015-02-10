@@ -205,6 +205,13 @@ var AssessmentForm = function() {
                     });
                 };
                 $('.assessment_question input').on('change', onOptionChanged);
+
+                // make assessment question options toggle no matter where clicked
+                $('.assessment_question .radio-inline').on('click', function() {
+                    var radio = $(this).find('input[type="radio"]');
+                    radio.prop('checked', !radio.prop('checked'));
+                    return false;
+                });
             }
 
             if (onCompleteCallback) {
