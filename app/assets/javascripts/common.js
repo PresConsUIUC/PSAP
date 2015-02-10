@@ -6,7 +6,7 @@ var PSAP = {
 
     Flash: {
 
-        FADE_OUT_DELAY: 8000,
+        FADE_OUT_DELAY: 10000,
 
         /**
          * @param text
