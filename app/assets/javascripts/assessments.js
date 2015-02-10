@@ -4,6 +4,7 @@
 var AssessmentForm = function() {
 
     var _entity = null;
+    var _question_node_index = 0;
 
     /**
      * @param entity 'location', 'institution', or 'resource'
@@ -36,11 +37,10 @@ var AssessmentForm = function() {
      * Transforms an assessment question into HTML for the assessment form.
      *
      * @param object JSON AssessmentQuestion object
-     * @param question_index
      * @param depth
      * @returns jQuery node
      */
-    var nodeForQuestion = function(object, question_index, depth) {
+    var nodeForQuestion = function(object, depth) {
         if (!depth) {
             depth = 0;
         }
@@ -57,7 +57,7 @@ var AssessmentForm = function() {
                     control += '<div class="radio-inline">' +
                             '<label>' +
                                 '<input type="radio" ' +
-                                'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                'name="' + _entity + '[assessment_question_responses][' + _question_node_index + ']" ' +
                                 'data-type="option" ' +
                                 'data-option-score="' + option['value'] + '" data-option-id="' +
                                 option['id'] + '" value="' + option['id'] + '"> ' +
@@ -75,7 +75,7 @@ var AssessmentForm = function() {
                     control += '<div class="checkbox-inline">' +
                             '<label>' +
                                 '<input type="checkbox" ' +
-                                'name="' + _entity + '[assessment_question_responses][' + question_index + ']" ' +
+                                'name="' + _entity + '[assessment_question_responses][' + _question_node_index + ']" ' +
                                 'data-type="option" ' +
                                 'data-option-score="' + option['value'] + '" data-option-id="' +
                                 option['id'] + '" value="' + option['id'] + '"> ' +
@@ -92,6 +92,8 @@ var AssessmentForm = function() {
                 object['advanced_help_anchor'].replace(/#/g, '') + '" target="_blank">More information&hellip;</a>';
             adv_help_link = adv_help_link.replace(/"/g, "'");
         }
+
+        _question_node_index++;
 
         return $.parseHTML('<div class="assessment_question depth-' + depth +
             '" data-id="' + object['id'] + '" data-depth="' + depth +
@@ -151,7 +153,7 @@ var AssessmentForm = function() {
         $.getJSON(questions_url, function (data) {
             $.each(data, function (i, object) {
                 insertQuestionIn(
-                    nodeForQuestion(object, i),
+                    nodeForQuestion(object),
                     $('div[data-id="' + object['assessment_section_id'] + '"] div.section-questions'));
             });
             if (data.length > 0) {
@@ -192,7 +194,7 @@ var AssessmentForm = function() {
                                         depth = question_elem.data('depth') + 1;
                                     }
                                     insertQuestionAfter(
-                                        nodeForQuestion(object, i, depth),
+                                        nodeForQuestion(object, depth),
                                         question_elem)
                                 }
                             } else {
