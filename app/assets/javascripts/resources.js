@@ -396,7 +396,7 @@ var ready = function() {
             '#psap-assess-panel',
             $('input[name="resource_url"]').val() + '/assess',
             function () {
-                new AssessmentForm().init('resource');
+                new AssessmentForm('resource');
             }
         );
 

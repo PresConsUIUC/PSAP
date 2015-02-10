@@ -133,7 +133,7 @@ var ready = function() {
             '#psap-assess-panel',
             $('input[name="institution_url"]').val() + '/assess',
             function () {
-                new AssessmentForm().init('institution');
+                new AssessmentForm('institution');
             }
         );
     }

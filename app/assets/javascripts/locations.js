@@ -14,7 +14,7 @@ var ready = function() {
             '#psap-assess-panel',
             $('input[name="location_url"]').val() + '/assess',
             function () {
-                new AssessmentForm().init('location'); // assessments.js
+                new AssessmentForm('location'); // assessments.js
             }
         );
 
