@@ -23,7 +23,7 @@
       <% end %>
     </ul>
   </dd>
-  <%= render partial: 'shared/assessment_questions',
+  <%= render partial: 'shared/assessable_report_questions',
              locals: { entity: entity,
                        assessment_questions: question.children,
                        depth: depth + 1 } if question.children.any? %>

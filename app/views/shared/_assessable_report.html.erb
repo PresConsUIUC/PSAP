@@ -22,7 +22,7 @@
       </div>
 
       <div class="panel-body">
-        <%= render partial: 'shared/assessment_questions',
+        <%= render partial: 'shared/assessable_report_questions',
                    locals: { entity: assessable,
                              assessment_questions: section.assessment_questions.where(parent_id: nil),
                              depth: 0 } %>

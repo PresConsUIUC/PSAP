@@ -327,7 +327,7 @@
                     <h4 class="panel-title"><%= section.name %></h4>
                   </div>
                   <div class="panel-body">
-                    <%= render partial: 'shared/assessment_questions',
+                    <%= render partial: 'shared/assessable_report_questions',
                                locals: { entity: @resource,
                                          assessment_questions: section.
                                                  assessment_questions_for_format(@resource.format).
