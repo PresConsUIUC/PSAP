@@ -132,7 +132,7 @@
 
       <div id="assessment-questions-tab" class="tab-pane">
         <ul>
-          <% @format.assessment_questions.order(:index).each do |question| %>
+          <% @format.all_assessment_questions.order(:index).each do |question| %>
             <li><%= question.name %></li> <!-- TODO: improve display & show hierarchy -->
           <% end %>
         </ul>
