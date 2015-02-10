@@ -212,7 +212,7 @@ var AssessmentForm = function(entity) {
                             }
                         });
                         $('.assessment_question [data-type="option"]').
-                            on('change', onOptionChanged);
+                            off('change').on('change', onOptionChanged);
                         $(document).trigger('PSAPAssessmentQuestionsAdded');
                     });
                 };
