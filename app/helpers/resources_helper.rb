@@ -52,12 +52,12 @@ module ResourcesHelper
 
     text = '<p>The following formula is used to calculate a resource\'s '\
     'assessment score:</p>'\
-    '<p><span class="label label-info">ASSESSMENT</span> &times; '\
-    '0.5 + <span class="label label-success">FORMAT</span> &times; 0.4 + '\
-    '<span class="label label-danger">LOCATION</span> &times; 0.05 + '\
-    '<span class="label label-primary">TEMPERATURE</span> &times; 0.025 + '\
-    '<span class="label label-warning">RELATIVE HUMIDITY</span> &times; '\
-    '0.025</p>'\
+    '<p><span class="label label-info">ASSESSMENT &times; 0.5</span> + '\
+    '<span class="label label-success">FORMAT &times; 0.4</span> + '\
+    '<span class="label label-danger">LOCATION &times; 0.05</span> + '\
+    '<span class="label label-primary">TEMPERATURE &times; 0.025</span> + '\
+    '<span class="label label-warning">RELATIVE HUMIDITY &times; 0.025</span> '\
+    '</p>'\
     '<ul>'
 
     if resource.assessment_question_responses.length < 1
