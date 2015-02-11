@@ -371,15 +371,16 @@ var PSAP = {
                         container.prepend(form);
                         body.append(form.children());
                         var header = panel.find('.modal-header');
-                        var footer = $('<div class="modal-footer"></div>');
-                        footer.append(body.find('[data-dismiss="modal"]'));
-                        footer.append(body.find('input[type="submit"]'));
-                        form.prepend(footer);
+                        if (!panel.find('.modal-footer').length) {
+                            var footer = $('<div class="modal-footer"></div>');
+                            footer.append(
+                                body.find('[data-dismiss="modal"], input[type="submit"]'));
+                            form.prepend(footer);
+                        } else {
+                            body.find('[data-dismiss="modal"], input[type="submit"]').remove();
+                        }
                         form.prepend(body);
                         form.prepend(header);
-                    } else {
-                        body.find('[data-dismiss="modal"]').remove();
-                        body.find('input[type="submit"]').remove();
                     }
 
                     if (on_content_loaded_fn) {
