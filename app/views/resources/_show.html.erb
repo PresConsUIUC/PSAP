@@ -339,10 +339,11 @@
             </div>
           <% else %>
             <p>This resource has not yet been assessed.</p>
-            <%= link_to resource_assess_path(@resource), class: 'btn btn-default' do %>
-              <%= content_tag(:span, '', class: 'glyphicon glyphicon-stats') %>
+            <button type="button" class="btn btn-default" data-toggle="modal"
+                    data-target="#psap-assess-panel">
+              <span class="glyphicon glyphicon-stats"></span>
               Assess This Resource
-            <% end %>
+            </button>
           <% end %>
         <% else %>
           <div class="psap-progress-container">
