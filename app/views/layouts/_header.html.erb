@@ -83,7 +83,7 @@
               <i class="fa fa-question-circle"></i>
             <% end %>
           </li>
-        <% else %>
+        <% elsif request.url != root_url %>
           <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
         <% end %>
       </ul>
