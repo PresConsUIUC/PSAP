@@ -68,7 +68,7 @@ var ResourceEditForm = function() {
 
             new_select.on('change', function() {
                 var fmt = format($(this).val());
-                selectFormat(fmt, null);
+                selectFormat(fmt);
             });
 
             if (onCompleteCallback) {
@@ -270,6 +270,7 @@ var ResourceEditForm = function() {
         $('input[name="format_class"][value="' + id + '"]').attr('checked', true);
 
         if (id == 3) { // 3 == bound paper
+            selectFormat(format(160));
             showFormatVectorMenus();
         } else {
             $('input[name="resource[format_id]"]').remove();
@@ -318,7 +319,7 @@ var ResourceEditForm = function() {
                 // if the last select has been added
                 if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
                     var fmt = format(select.val());
-                    selectFormat(fmt, null);
+                    selectFormat(fmt);
                     if (is_original_document) {
                         setInitialFormatVectorSelections();
                     }
