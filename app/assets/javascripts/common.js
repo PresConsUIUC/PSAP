@@ -237,7 +237,7 @@ var PSAP = {
 
         // Show the glossary, bibliography, help, etc. in a modal panel instead of
         // a new page
-        $('a.modal_view').on('click', function() {
+        $('a.psap-modal-view').on('click', function() {
             $('#appModal').modal('show');
 
             $.get($(this).attr('data-open'), function(data) {
