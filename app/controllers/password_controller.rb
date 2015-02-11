@@ -1,5 +1,7 @@
 class PasswordController < ApplicationController
 
+  invisible_captcha only: :send_email
+
   ##
   # Responds to GET /forgot-password, displaying a form that will POST to
   # /forgot_password.

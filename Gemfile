@@ -36,6 +36,7 @@ gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
+gem 'invisible_captcha' # used in public-facing forms
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
 gem 'd3-rails' # used for charts in assessment report

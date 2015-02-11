@@ -7,6 +7,8 @@ class UsersController < ApplicationController
   before_action :admin_user, only: [:approve_institution, :index, :destroy,
                                     :enable, :disable]
 
+  invisible_captcha only: :create
+
   helper_method :sort_column, :sort_direction
 
   ##
