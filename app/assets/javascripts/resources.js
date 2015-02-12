@@ -174,7 +174,6 @@ var ResourceEditForm = function() {
         setInitialSelections();
         initDynamicNestedForms();
         initSuggestions();
-        PSAP.Form.init();
     };
 
     var initDynamicNestedForms = function() {

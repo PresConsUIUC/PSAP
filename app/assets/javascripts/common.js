@@ -300,6 +300,8 @@ var PSAP = {
                         }
                         form.prepend(body);
                         form.prepend(header);
+                    } else {
+                        body.find('[data-dismiss="modal"], input[type="submit"]').remove();
                     }
 
                     if (on_content_loaded_fn) {
