@@ -296,6 +296,13 @@ p = StaticPageImporter.new(
     File.join(Rails.root, 'app', 'assets', 'advanced_help'))
 p.reseed
 
+# User Manual HTML pages
+puts 'Ingesting user manual content...'
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'UserManual'),
+    File.join(Rails.root, 'app', 'assets', 'user_manual'))
+p.reseed
+
 puts 'Creating the admin user...'
 
 # Admin role
