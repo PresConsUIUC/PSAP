@@ -164,14 +164,15 @@
                   <%= AssessmentType::name_for_type(@resource.assessment_type) %>
                 </dd>
               <% end %>
-              <% if @resource.creators.select{ |e| !e.name.blank? }.any? %>
-                <dt><%= @resource.creators.length == 1 ? 'Creator' : 'Creators' %></dt>
+              <% creators = @resource.creators.select{ |e| !e.name.blank? } %>
+              <% if creators.any? %>
+                <dt><%= creators.length == 1 ? 'Creator' : 'Creators' %></dt>
                 <dd>
-                  <% if @resource.creators.length == 1 %>
-                    <%= @resource.creators.first.name %>
+                  <% if creators.length == 1 %>
+                    <%= creators.first.name %>
                   <% else %>
                     <ul>
-                      <% @resource.creators.each do |creator| %>
+                      <% creators.each do |creator| %>
                         <li><%= creator.name %></li>
                       <% end %>
                     </ul>
@@ -222,7 +223,7 @@
                     <%= @resource.resource_notes[0].value %>
                   <% else %>
                     <ul>
-                      <% @resource.resource_notes.each do |note| %>
+                      <% @resource.resource_notes.select{ |e| !e.value.blank? }.each do |note| %>
                         <li><%= note.value %></li>
                       <% end %>
                     </ul>
@@ -233,42 +234,45 @@
           </div>
           <div class="col-sm-6">
             <dl>
-              <% if @resource.resource_dates.select{ |e| !e.year.blank? or !e.begin_year.blank? }.any? %>
-                <dt><%= @resource.resource_dates.length == 1 ? 'Date' : 'Dates' %></dt>
+              <% dates = @resource.resource_dates.select{ |e| !e.year.blank? or !e.begin_year.blank? } %>
+              <% if dates.any? %>
+                <dt><%= dates.length == 1 ? 'Date' : 'Dates' %></dt>
                 <dd>
-                  <% if @resource.resource_dates.length == 1 %>
-                    <%= human_readable_date(@resource.resource_dates[0]) %>
+                  <% if dates.length == 1 %>
+                    <%= human_readable_date(dates.first) %>
                   <% else %>
                     <ul>
-                      <% for date in @resource.resource_dates %>
+                      <% dates.each do |date| %>
                         <li><%= human_readable_date(date) %></li>
                       <% end %>
                     </ul>
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.subjects.select{ |e| !e.name.blank? }.any? %>
-                <dt><%= @resource.subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
+              <% subjects = @resource.subjects.select{ |e| !e.name.blank? } %>
+              <% if subjects.any? %>
+                <dt><%= subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
                 <dd>
-                  <% if @resource.subjects.length == 1 %>
-                    <%= @resource.subjects.first.name %>
+                  <% if subjects.length == 1 %>
+                    <%= subjects.first.name %>
                   <% else %>
                     <ul>
-                      <% for subject in @resource.subjects %>
+                      <% subjects.each do |subject| %>
                         <li><%= subject.name %></li>
                       <% end %>
                     </ul>
                   <% end %>
                 </dd>
               <% end %>
-              <% if @resource.extents.select{ |e| !e.name.blank? }.any? %>
-                <dt><%= @resource.extents.length == 1 ? 'Extent' : 'Extents' %></dt>
+              <% extents = @resource.extents.select{ |e| !e.name.blank? } %>
+              <% if extents.any? %>
+                <dt><%= extents.length == 1 ? 'Extent' : 'Extents' %></dt>
                 <dd>
-                  <% if @resource.extents.length == 1 %>
-                    <%= @resource.extents.first.name %>
+                  <% if extents.length == 1 %>
+                    <%= extents.first.name %>
                   <% else %>
                     <ul>
-                      <% for extent in @resource.extents %>
+                      <% extents.each do |extent| %>
                         <li><%= extent.name %></li>
                       <% end %>
                     </ul>

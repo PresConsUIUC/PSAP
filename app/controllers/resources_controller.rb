@@ -1,5 +1,7 @@
 class ResourcesController < ApplicationController
 
+  NUM_DEPENDENT_FORM_ENTITIES = 8
+
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
                 only: [:assess, :create, :destroy, :edit, :import, :names, :new,
@@ -166,13 +168,15 @@ class ResourcesController < ApplicationController
       # parent_id URL query parameter
       @resource.parent = Resource.find(params[:parent_id]) if params[:parent_id]
 
-      # New resources will get 1 of each dependent entity, to populate the form.
+      # New resources will get 8 of each dependent entity, to populate the form.
       # Additional ones may be created in JavaScript.
-      @resource.creators.build
-      @resource.extents.build
-      @resource.resource_dates.build
-      @resource.resource_notes.build
-      @resource.subjects.build
+      NUM_DEPENDENT_FORM_ENTITIES.times do
+        @resource.creators.build
+        @resource.extents.build
+        @resource.resource_dates.build
+        @resource.resource_notes.build
+        @resource.subjects.build
+      end
 
       @resource.language = @resource.location.repository.institution.language
 
@@ -251,15 +255,25 @@ class ResourcesController < ApplicationController
   private
 
   ##
-  # The edit form JavaScript needs at least 1 of each dependent entity.
+  # The edit form needs NUM_DEPENDENT_FORM_ENTITIES of each dependent entity.
   # Empty ones will be stripped in update().
   #
   def add_dependent_entities
-    @resource.creators.build unless @resource.creators.any?
-    @resource.extents.build unless @resource.extents.any?
-    @resource.resource_dates.build unless @resource.resource_dates.any?
-    @resource.resource_notes.build unless @resource.resource_notes.any?
-    @resource.subjects.build unless @resource.subjects.any?
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.creators.length).times do
+      @resource.creators.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.extents.length).times do
+      @resource.extents.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.resource_dates.length).times do
+      @resource.resource_dates.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.resource_notes.length).times do
+      @resource.resource_notes.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.subjects.length).times do
+      @resource.subjects.build
+    end
   end
 
   def prepare_show_view

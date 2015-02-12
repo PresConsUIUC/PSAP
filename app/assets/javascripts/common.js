@@ -60,85 +60,6 @@ var PSAP = {
 
         TYPE_URL: 0,
 
-        enableDynamicNestedEntities: function() {
-            var updateIndexes = function() {
-                $('.psap-addable-removable').each(function() {
-                    $(this).find('.psap-addable-removable-input-group').each(function(index) {
-                        // find all of its input elements
-                        $(this).find('input, select, textarea').each(function() {
-                            // update the element's indexes
-                            if (typeof($(this).attr('id')) !== 'undefined') {
-                                var currentIndex = parseInt($(this).attr('id').
-                                    match(/\d+/)[0]);
-                                $(this).attr('id',
-                                    $(this).attr('id').replace(currentIndex, index));
-                                $(this).attr('name',
-                                    $(this).attr('name').replace(currentIndex, index));
-                            }
-                        });
-                    });
-                });
-            };
-            updateIndexes();
-
-            // enable certain form elements to be dynamically added and removed, as
-            // in the case of a nested form with a 1..n relationship to its child
-            // object(s).
-            $('.psap-addable-removable button.remove').on('click', function() {
-                // Instead of removing it from the DOM, hide it and set its
-                // "_destroy" key to 1, so Rails knows to destroy its corresponding
-                // model.
-                var group = $(this).closest('.psap-addable-removable-input-group');
-                group.hide();
-                group.find('input[type="hidden"].destroy').val(1);
-            });
-
-            $('.psap-addable-removable button.add').on('click', function() {
-                // prohibit adding more than 10 fields
-                if ($(this).closest('.psap-addable-removable')
-                    .children('.psap-addable-removable-input-group').length >= 10) {
-                    return;
-                }
-
-                // clone the last input group and insert the clone into the DOM
-                // div input groups
-                var group = $(this).prevAll('.psap-addable-removable-input-group:first');
-                if (!group.length) {
-                    // table input groups
-                    group = $(this).prevAll('table:first').find('tr:last');
-                }
-                var cloned_group = group.clone(true);
-                group.after(cloned_group);
-                cloned_group.show();
-
-                cloned_group.find('input, select, textarea').each(function() {
-                    // update the element's indexes within the form, for rails
-                    if (typeof($(this).attr('id')) !== 'undefined') {
-                        // reset its value
-                        if ($(this).is('select')) {
-                            $(this).val(
-                                $(this).parent().prev().find('select:first').val());
-                        } else if (!$(this).is('input[type="hidden"]')) {
-                            $(this).val(null);
-                        } else if ($(this).is('input[type="hidden"].destroy')) {
-                            $(this).val(0);
-                        }
-                    }
-                });
-
-                updateIndexes();
-                $(document).trigger('PSAPFormFieldAdded');
-            });
-        },
-
-        /**
-         * Initializes a form. Called automatically by PSAP.init() but can be
-         * called again when a form is added dynamically.
-         */
-        init: function() {
-            PSAP.Form.enableDynamicNestedEntities();
-        },
-
         validate: function(field_id, min_length, max_length, type) {
             var elem = $('#' + field_id);
             elem.parent('div').removeClass('has-success');
@@ -292,8 +213,6 @@ var PSAP = {
         checkboxes.on('change', function() {
             refreshCheckboxUI();
         }).trigger('change');
-
-        PSAP.Form.init();
 
         // show the export notification panel after clicking an export option
         $('.psap-export').on('click', function() {
