@@ -14,6 +14,7 @@ module ResourcesHelper
 
   def human_readable_date(resource_date)
     date = ''
+    return date unless resource_date
     if resource_date.year
       date = "#{resource_date.year}"
       if resource_date.month
