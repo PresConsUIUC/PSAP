@@ -1,35 +1,40 @@
 namespace :psap do
-  desc 'Generate derivative images for the Format ID Guide. Should be run '\
-  'whenever the content in db/seed_data/FormatIDGuide changes, before psap:seed_fidg_content.'
-  task generate_fidg_derivatives: :environment do
-    p = StaticPageImporter.new(
-        File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
-        File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+
+  HELP_SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'AdvHelp')
+  HELP_DEST_PATH = File.join(Rails.root, 'app', 'assets', 'advanced_help')
+  FIDG_SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML')
+  FIDG_DEST_PATH = File.join(Rails.root, 'app', 'assets', 'format_id_guide')
+  MANUAL_SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'UserManual')
+  MANUAL_DEST_PATH = File.join(Rails.root, 'app', 'assets', 'user_manual')
+
+  ##
+  # Should be run before psap:seed_static_content whenever any images or videos
+  # change in any of the db/seed_data subfolders. The resulting images should
+  # then be committed to version control.
+  #
+  desc 'Generate derivative images for the static content'
+  task generate_derivatives: :environment do
+    p = StaticPageImporter.new(HELP_SOURCE_PATH, HELP_DEST_PATH)
+    p.generate_derivatives
+    p = StaticPageImporter.new(FIDG_SOURCE_PATH, FIDG_DEST_PATH)
+    p.generate_derivatives
+    p = StaticPageImporter.new(MANUAL_SOURCE_PATH, MANUAL_DEST_PATH)
     p.generate_derivatives
   end
 
-  desc 'Updates Format ID Guide content in the database.'
-  task seed_fidg_content: :environment do
-    p = StaticPageImporter.new(
-        File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
-        File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+  ##
+  # Should be run (after psap:generate_derivatives, if applicable) whenever
+  # content in any of the db/seed_data subfolders changes. Safe to run in
+  # production.
+  #
+  desc 'Reseed static content in the database'
+  task seed_static_content: :environment do
+    p = StaticPageImporter.new(HELP_SOURCE_PATH, HELP_DEST_PATH)
+    p.reseed
+    p = StaticPageImporter.new(FIDG_SOURCE_PATH, FIDG_DEST_PATH)
+    p.reseed
+    p = StaticPageImporter.new(MANUAL_SOURCE_PATH, MANUAL_DEST_PATH)
     p.reseed
   end
 
-  desc 'Generate derivative images for the advanced help. Should be run '\
-  'whenever the content in db/seed_data/AdvHelp changes, before psap:seed_help_content.'
-  task generate_help_derivatives: :environment do
-    p = StaticPageImporter.new(
-        File.join(Rails.root, 'db', 'seed_data', 'AdvHelp'),
-        File.join(Rails.root, 'app', 'assets', 'advanced_help'))
-    p.generate_derivatives
-  end
-
-  desc 'Updates advanced help content in the database.'
-  task seed_help_content: :environment do
-    p = StaticPageImporter.new(
-        File.join(Rails.root, 'db', 'seed_data', 'AdvHelp'),
-        File.join(Rails.root, 'app', 'assets', 'advanced_help'))
-    p.reseed
-  end
 end
