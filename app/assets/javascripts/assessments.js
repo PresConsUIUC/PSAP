@@ -183,7 +183,7 @@ var AssessmentForm = function(entity) {
             if (data.length) {
                 var onOptionChanged = function() {
                     // check for dependent (child) questions
-                    var selected_option_id = $(this).val();
+                    var selected_option_id = $(this).filter(':checked').val();
                     var question_elem = $(this).closest('.assessment_question');
                     var qid = question_elem.data('id');
                     var child_questions_url = questionsUrl(qid);
@@ -205,7 +205,7 @@ var AssessmentForm = function(entity) {
                                     }
                                     insertQuestionAfter(
                                         nodeForQuestion(object, depth),
-                                        question_elem)
+                                        question_elem);
                                 }
                             } else {
                                 child_question_elem.remove();
