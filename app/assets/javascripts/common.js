@@ -249,7 +249,7 @@ var PSAP = {
         // window height and their body made scrollable.
         $('.psap-inner-scrolling').on('show.bs.modal', function (e) {
             var body = $(e.target).find('.modal-body');
-            body.css('overflow', 'scroll');
+            body.css('overflow-y', 'scroll');
             body.css('max-height', $(window).height() * 0.7);
         });
 
