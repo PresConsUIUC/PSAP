@@ -322,6 +322,23 @@ admin_user = command.object
 admin_user.role = admin_role
 admin_user.save!
 
+# Demo institution
+command = CreateInstitutionCommand.new(
+    { name: 'Demo Institution',
+      address1: '123 Sample St.',
+      address2: nil,
+      city: 'Urbana',
+      state: 'IL',
+      postal_code: 61801,
+      country: 'United States of America',
+      url: 'http://example.org/',
+      email: 'demo@example.org',
+      language: languages[122],
+      description: 'New NetID-authenticated users are initially placed in '\
+      'this institution, which can be used for demo purposes.' },
+    admin_user, '127.0.0.1')
+command.execute
+
 # UIUC institution
 command = CreateInstitutionCommand.new(
     { name: 'University of Illinois at Urbana-Champaign',
