@@ -19,7 +19,7 @@ class StaticPageImporter
 
   ##
   # @param source_path Absolute path of the assets to import
-  # @param asset_page Absolute path of the destination assets folder
+  # @param asset_path Absolute path of the destination assets folder
   #
   def initialize(source_path, asset_path)
     @source_path = source_path
@@ -30,8 +30,8 @@ class StaticPageImporter
   end
 
   ##
-  # Iterates through all of the HTML files in search of <img> tags, and
-  # generates derivative images based on their "src" attributes.
+  # Iterates through all of the HTML files in search of <img> and <video> tags,
+  # and generates derivative images based on their "src" attributes.
   #
   def generate_derivatives
     FileUtils.rm_rf(@asset_path) if File.exists?(@asset_path)
@@ -64,9 +64,9 @@ class StaticPageImporter
   # Generates derivative images for a given image, saving them in the assets
   # folder.
   #
-  # @param image_filename An image filename from an <img src> tag
-  # @return Boolean True if the image was generated; false if the image in the
-  # src tag is missing on disk
+  # @param image_filename An image filename from an <img> "src" attribute
+  # @return Boolean True if the image was generated; false if the image
+  # referenced by the src attribute is missing on disk
   #
   def generate_images_for(image_filename)
     source_image_path = source_path_of_file(image_filename)
@@ -77,9 +77,11 @@ class StaticPageImporter
 
       PROFILES.each do |profile|
         non_retina_dest_pathname = File.join(
-            @asset_path, "#{imgsrcbasename}-#{profile[:width]}#{imgsrcextname.downcase}")
+            @asset_path,
+            "#{imgsrcbasename}-#{profile[:width]}#{imgsrcextname.downcase}")
         retina_dest_pathname = File.join(
-            @asset_path, "#{imgsrcbasename}-#{profile[:width]}@2x#{imgsrcextname.downcase}")
+            @asset_path,
+            "#{imgsrcbasename}-#{profile[:width]}@2x#{imgsrcextname.downcase}")
 
         unless File.exists?(non_retina_dest_pathname)
           # \> will resize only larger-to-smaller
@@ -100,9 +102,9 @@ class StaticPageImporter
   end
 
   ##
-  # @param video_filename A video filename from a <source src> tag
-  # @return Boolean True if the video was generated; false if the video in the
-  # src tag is missing on disk
+  # @param video_filename A video filename from a <video> "src" attribute
+  # @return Boolean True if the video was generated; false if the video
+  # referenced by the src attribute is missing on disk
   #
   def generate_videos_for(video_filename)
     videosrcpath = source_path_of_file(video_filename)
@@ -156,7 +158,7 @@ class StaticPageImporter
           page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
           page = StaticPage.new unless page
           category = File.basename(File.dirname(file)).downcase
-          category = category == 'advhelp' ? 'help' : category
+          category = (category == 'advhelp') ? 'help' : category
           page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
                        uri_fragment: File.basename(file, '.*'),
                        category: category,
