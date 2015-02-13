@@ -237,13 +237,20 @@ class Resource < ActiveRecord::Base
 
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    # Can't use Resource.as_csv here because we need to pad the one-to-many
+    # properties with blanks. So, when updating this, update Resource.as_csv as
+    # well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
           ['PSAP Assessment Score'] +
+          ['Assessment Type'] +
+          ['Location'] +
           ['Resource Type'] +
           ['Parent Resource'] +
           ['Format'] +
+          ['Format Ink/Media Type'] +
+          ['Format Support Type'] +
           ['Significance'] +
           (['Creator'] * num_columns[:creator]) +
           (['Date'] * num_columns[:date]) +
@@ -256,23 +263,25 @@ class Resource < ActiveRecord::Base
           ['Created'] +
           ['Updated']
       resources.each do |resource|
-        # can't use Resource.as_csv because we need to pad the one-to-many
-        # properties with blanks
         csv << [resource.local_identifier] +
             [resource.name] +
-            [resource.effective_assessment_score * 100] +
+            [(resource.effective_assessment_score * 100).round(2)] +
+            [AssessmentType::name_for_type(resource.assessment_type)] +
+            [resource.location.name] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
             [resource.format ? resource.format.name : nil] +
+            [resource.format_ink_media_type ? resource.format_ink_media_type.name : nil] +
+            [resource.format_support_type ? resource.format_support_type.name : nil] +
             [resource.readable_significance] +
-            resource.creators.map { |r| r.name } + [nil] * (num_columns[:creator] - resource.creators.length) +
-            resource.resource_dates.map { |r| r.as_dublin_core_string } + [nil] * (num_columns[:date] - resource.resource_dates.length) +
+            resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
+            resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
             [resource.language ? resource.language.english_name : nil] +
-            resource.subjects.map { |s| s.name } + [nil] * (num_columns[:subject] - resource.subjects.length) +
-            resource.extents.map { |e| e.name } + [nil] * (num_columns[:extent] - resource.extents.length) +
+            resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
+            resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
             [resource.description] +
-            resource.resource_notes.map { |n| n.value } + [nil] * (num_columns[:note] - resource.resource_notes.length) +
+            resource.resource_notes.map(&:value) + [nil] * (num_columns[:note] - resource.resource_notes.length) +
             [resource.created_at.iso8601] +
             [resource.updated_at.iso8601]
       end
