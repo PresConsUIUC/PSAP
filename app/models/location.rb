@@ -25,8 +25,8 @@ class Location < ActiveRecord::Base
   def humidity_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1024))
     if response
-      values = response.assessment_question_option.name.gsub('–', '-').split('-').
-          map{ |v| v.gsub(/\D/, '').to_i }
+      values = response.assessment_question_option.name.gsub('–', '-').
+          split('-').map{ |v| v.gsub(/\D/, '').to_i }
       if values.length == 2
         return HumidityRange.new(min_rh: values[0], max_rh: values[1])
       end
@@ -37,8 +37,8 @@ class Location < ActiveRecord::Base
   def temperature_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1022))
     if response
-      values = response.assessment_question_option.name.gsub('–', '-').split('-').
-          map{ |v| v.gsub(/\D/, '').to_i }
+      values = response.assessment_question_option.name.gsub('–', '-').
+          split('-').map{ |v| v.gsub(/\D/, '').to_i }
       if values.length == 2
         return TemperatureRange.new(min_temp_f: values[0], max_temp_f: values[1])
       end

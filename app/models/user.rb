@@ -47,12 +47,8 @@ class User < ActiveRecord::Base
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    results = []
-    counts.each do |row|
-      results << { count: row['count'].to_i,
-                   user: User.find(row['user_id']) } if row['user_id']
-    end
-    results
+    counts.select{ |r| r['user_id'] }.map{ |r| { count: r['count'].to_i,
+                                                 user: User.find(r['user_id']) }}
   end
 
   def to_param

@@ -607,11 +607,9 @@ class Resource < ActiveRecord::Base
   # Overrides Assessable mixin
   #
   def update_assessment_score
-    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     self.assessment_score = self.format ?
-        self.effective_format_score * 0.444444 + # 0.4 * 10/9
-            self.assessment_question_score * 0.555555 : # 0.5 * 10/9
-        0.0
+        self.effective_format_score * (10 / 9) +
+            self.assessment_question_score * (10 / 9) : 0.0
   end
 
   private
