@@ -42,7 +42,7 @@ class StaticPage < ActiveRecord::Base
       doc.search(tag).remove
     end
     self.searchable_html = ActionController::Base.helpers.
-        strip_tags(doc.to_html).gsub('  ', ' ').tr("\"\n", '').gsub('()', '')
+        strip_tags(doc.to_html).gsub(/\s+/, ' ').tr("\"\n", '').gsub('()', '')
   end
 
 end
