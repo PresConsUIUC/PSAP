@@ -7,8 +7,8 @@ class UserManualController < ApplicationController
   # Responds to GET /manual/:category
   #
   def show
-    @page = StaticPage.where(category: 'manual').
-        where(uri_fragment: params[:category]).first
+    @page = StaticPage.where(component: StaticPage::COMPONENT_USER_MANUAL,
+                             uri_fragment: params[:category]).first
     raise ActiveRecord::RecordNotFound unless @page
   end
 

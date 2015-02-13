@@ -157,10 +157,21 @@ class StaticPageImporter
 
           page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
           page = StaticPage.new unless page
-          category = File.basename(File.dirname(file)).downcase
-          category = (category == 'advhelp') ? 'help' : category
+          component = nil
+          dirname = File.dirname(file)
+          if dirname.downcase.include?('format')
+            component = StaticPage::COMPONENT_FORMAT_ID_GUIDE
+            category = File.basename(dirname).downcase
+          elsif dirname.downcase.include?('help')
+            component = StaticPage::COMPONENT_HELP
+            category = 'help'
+          elsif dirname.downcase.include?('manual')
+            component = StaticPage::COMPONENT_USER_MANUAL
+            category = 'user_manual'
+          end
           page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
                        uri_fragment: File.basename(file, '.*'),
+                       component: component,
                        category: category,
                        html: doc.xpath('//body/*').to_html)
         rescue => e

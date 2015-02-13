@@ -13,7 +13,7 @@ class FormatIdGuideController < ApplicationController
     @results = []
     if params[:q] and params[:q].length > 0
       @results = StaticPage.full_text_search(
-          params[:q], %w(avmedia papersbooks photosimages supplementary))
+          params[:q], StaticPage::COMPONENT_FORMAT_ID_GUIDE)
     end
     @query = params[:q].truncate(50)
     @results_summary = @query.length > 0 ?
@@ -24,9 +24,8 @@ class FormatIdGuideController < ApplicationController
   # Responds to GET /format-id-guide/:category
   #
   def show
-    categories = %w(avmedia papersbooks photosimages supplementary)
-    @page = StaticPage.where('category IN (?)', categories).
-        where(uri_fragment: params[:category]).first
+    @page = StaticPage.where(component: StaticPage::COMPONENT_FORMAT_ID_GUIDE,
+                             uri_fragment: params[:category]).first
     raise ActiveRecord::RecordNotFound unless @page
   end
 

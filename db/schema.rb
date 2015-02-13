@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210155207) do
+ActiveRecord::Schema.define(version: 20150213165445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -402,6 +402,7 @@ ActiveRecord::Schema.define(version: 20150210155207) do
     t.text     "html"
     t.text     "searchable_html"
     t.string   "category"
+    t.string   "component"
   end
 
   add_index "static_pages", ["category"], name: "index_static_pages_on_category", using: :btree

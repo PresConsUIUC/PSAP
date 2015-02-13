@@ -1,5 +1,9 @@
 class StaticPage < ActiveRecord::Base
 
+  COMPONENT_HELP = 'help'
+  COMPONENT_FORMAT_ID_GUIDE = 'format_id_guide'
+  COMPONENT_USER_MANUAL = 'user_manual'
+
   before_save :update_searchable_html
 
   def to_param
@@ -7,15 +11,20 @@ class StaticPage < ActiveRecord::Base
   end
 
   ##
-  # Requires PostgreSQL
+  # Performs a PostgreSQL full-text search on the static_pages table.
   #
-  def self.full_text_search(query, categories, min_words = 40, max_words = 41,
+  # @param query Query string
+  # @param component StaticPage component
+  # @param min_words
+  # @param max_words
+  # @return PG::Result
+  #
+  def self.full_text_search(query, component, min_words = 40, max_words = 41,
       max_fragments = 3)
     query = query.delete('\'":|!@#$%^*()') # strip certain characters
     query = query.gsub('&', ' ') # "B&W" won't return anything but "B W" will
     query = query.gsub(' ', ' & ') # replace spaces with boolean AND
     query = StaticPage.sanitize(query)
-    categories = categories.map{ |c| "'#{c}'" }.join(',')
 
     # limit/offset are not configurable because there are not enough potential
     # results to warrant it. And there is no need to explicitly call ts_rank
@@ -26,7 +35,7 @@ class StaticPage < ActiveRecord::Base
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\
         "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') AS highlight "\
     "FROM static_pages, to_tsquery(#{query}) as keywords "\
-    "WHERE searchable_html @@ keywords AND category IN (#{categories}) "\
+    "WHERE searchable_html @@ keywords AND component = '#{component}' "\
     "LIMIT 50;"
 
     ActiveRecord::Base.connection.execute(sql)
