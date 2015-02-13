@@ -9,21 +9,13 @@
 </ol>
 
 <div class="pull-right">
-  <form method="get" action="" class="form-inline psap-live-search psap-fidg-search"
+  <form method="get" action="" class="form-inline psap-live-search"
         style="float:right; max-width:100%">
-    <%= search_field_tag :q, params[:q], placeholder: 'Search', class: 'form-control' %>
-  </form>
-  <!--
-  <form method="get" action=""
-        class="form-inline" style="float:right; max-width:100%">
     <div class="input-group">
-      <%= search_field_tag :q, params[:q], class: 'form-control' %>
-      <span class="input-group-btn">
-        <input type="submit" value="Search" class="btn btn-default">
-      </span>
+      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+      <%= search_field_tag :q, params[:q], placeholder: 'Search', class: 'form-control' %>
     </div>
   </form>
-  -->
 </div>
 
 <div class="psap-page-title">

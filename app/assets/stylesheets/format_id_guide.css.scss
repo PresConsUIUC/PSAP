@@ -145,11 +145,3 @@ body#format_id_guide_results {
     vertical-align: middle;
   }
 }
-
-.psap-fidg-search {
-  input[type=search] {
-    background:#FFFFFF url(image_path('magnifier-21.png')) no-repeat 6px 6px;
-    @include image-2x('magnifier-21@2x.gif', 16px, 16px);
-    padding-left:33px;
-  }
-}
