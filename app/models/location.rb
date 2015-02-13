@@ -1,6 +1,8 @@
 ##
 # A Location exists within a Repository. It can contain zero or more Resources.
 #
+# Locations are assessable.
+#
 class Location < ActiveRecord::Base
 
   include Assessable

@@ -1,3 +1,9 @@
+##
+# A Repository exists within an Institution. It can contain zero or more
+# Locations.
+#
+# Repositories are not assessable.
+#
 class Repository < ActiveRecord::Base
 
   has_and_belongs_to_many :events

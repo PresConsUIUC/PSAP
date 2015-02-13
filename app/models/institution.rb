@@ -1,3 +1,10 @@
+##
+# An institution is a top-level entity containing zero or more Repositories.
+# Once assigned to an institution, users (except administrators) are restricted
+# to accessing entities related to that institution.
+#
+# Institutions are assessable.
+#
 class Institution < ActiveRecord::Base
 
   include Assessable

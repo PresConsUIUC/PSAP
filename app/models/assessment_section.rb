@@ -1,3 +1,8 @@
+##
+# A section of an assessment, such as "Use | Access", "Storage | Container",
+# etc. An assessment section contains zero or more assessment questions and an
+# "index" property to establish its order of appearance in the assessment form.
+#
 class AssessmentSection < ActiveRecord::Base
   belongs_to :assessment, inverse_of: :assessment_sections
   has_many :assessment_questions, inverse_of: :assessment_section,
@@ -11,7 +16,7 @@ class AssessmentSection < ActiveRecord::Base
 
   def assessment_questions_for_format(format)
     format ? format.all_assessment_questions.where(assessment_section: self) :
-        AssessmentQuestion.where('1 = 2') # empty set
+        AssessmentQuestion.none
   end
 
   def max_score(resource = nil)

@@ -8,9 +8,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  # This regex is very lenient, but at least forces the user to put in some
-  # effort. Strict email validation without rejecting valid addresses is
-  # difficult with regex, and pretty pointless anyway.
+  # Strict email validation without rejecting valid addresses is difficult,
+  # but this will at least require something vaguely email-like.
   validates :email, presence: true, format: { with: /\S+@\S+\.\S+/ },
             uniqueness: { case_sensitive: false }
   validates :feed_key, presence: true, length: { maximum: 255 }

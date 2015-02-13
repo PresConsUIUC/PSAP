@@ -1,7 +1,16 @@
+##
+# A Resource exists within a Location. It has a resource_type property which
+# must be set to either ResourceType::ITEM or ResourceType::COLLECTION.
+# Collections can contain zero or more child resources. Formats, ink/media
+# types, and support types can be ascribed only to items.
+#
+# Items are assessable, but collections are not. A collection's assessment
+# score is the mean of the item scores contained within.
+#
 class Resource < ActiveRecord::Base
 
-  # When adding/removing properties or associations, update as_csv (both of
-  # them).
+  # When adding/removing properties or associations, update both .as_csv and
+  # ::as_csv.
 
   include Assessable
   include Introspection
@@ -308,7 +317,6 @@ class Resource < ActiveRecord::Base
         accumulate_children(child, resource_bucket)
       end
     end
-
     resources = []
     accumulate_children(self, resources)
     resources
@@ -324,6 +332,7 @@ class Resource < ActiveRecord::Base
 
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    # When updating this, update Resource::as_csv as well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
@@ -376,7 +385,7 @@ class Resource < ActiveRecord::Base
   # Returns a hash containing statistics of all assessed items in the
   # collection.
   #
-  # @return hash with mean, median, low, and high keys
+  # @return hash with :mean, :median, :low, and :high keys
   #
   def assessed_item_statistics
     stats = { mean: 0, median: 0, low: nil, high: 0 }
@@ -419,7 +428,9 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Overrides parent
+  # Overrides parent to intelligently clone a resource. This implementation
+  # preserves assessment questions, creators, extents, dates, notes, and all
+  # properties. It does NOT clone child resources or events.
   #
   def dup
     clone = super
@@ -441,9 +452,11 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Returns the assessment score of the resource, factoring in the location
-  # score as well, unlike assessment_score which does not. If a collection,
-  # returns the average score of all resources.
+  # Returns the canonical assessment score of the resource, factoring in the
+  # location, temperature, and RH scores as well, unlike assessment_score which
+  # does not. If a collection, returns the average score of all resources.
+  #
+  # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
   # @return float between 0 and 1
   #
@@ -456,7 +469,6 @@ class Resource < ActiveRecord::Base
       end
       return 0.0
     end
-    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.05 +
         self.effective_temperature_score * 0.025 +
@@ -481,6 +493,9 @@ class Resource < ActiveRecord::Base
     score
   end
 
+  ##
+  # @return float between 0 and 1
+  #
   def effective_humidity_score
     score = 0.0
     if self.format
@@ -495,6 +510,9 @@ class Resource < ActiveRecord::Base
     score
   end
 
+  ##
+  # @return float between 0 and 1
+  #
   def effective_temperature_score
     score = 0.0
     if self.format
@@ -509,13 +527,21 @@ class Resource < ActiveRecord::Base
     score
   end
 
+  ##
+  # Returns the local identifier, or if that is not available, the database ID.
+  # This is just a base name, with no extension, and may contain filesystem-
+  # incompatible characters. Mostly it's intended to be used in a
+  # Content-Disposition HTTP response header.
+  #
+  # @return string
+  #
   def filename
     self.local_identifier ? self.local_identifier : self.id.to_s
   end
 
   ##
-  # Submitted edit forms will often include empty submodels such as creator,
-  # extent, etc. This method will remove them.
+  # Submitted edit forms will include empty submodels such as creator, extent,
+  # etc. This method will remove them.
   #
   def prune_empty_submodels
     self.creators = self.creators.select{ |c| !c.name.blank? }
