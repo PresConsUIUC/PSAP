@@ -17,7 +17,7 @@ class UsersControllerTest < ActionController::TestCase
     end
     assert_equal 'Thanks for registering for PSAP! An email has been '\
         'sent to the address you provided. Follow the link in the email to '\
-        'confirm your account.', flash[:success]
+        'confirm your account.', flash['success']
     assert_equal 'User', assigns(:user).role.name
     assert_redirected_to root_url
   end
@@ -89,7 +89,7 @@ class UsersControllerTest < ActionController::TestCase
     assert user.confirmed
     assert !user.enabled
     assert_nil user.confirmation_code
-    assert flash[:success].include?('Your account has been confirmed')
+    assert flash['success'].include?('Your account has been confirmed')
     assert_redirected_to signin_url
   end
 
@@ -127,7 +127,7 @@ class UsersControllerTest < ActionController::TestCase
       delete :destroy, username: users(:normal_user).username
     end
     assert_equal "User #{users(:normal_user).username} deleted.",
-                 flash[:success]
+                 flash['success']
     assert_redirected_to users_url
   end
 
@@ -136,7 +136,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_difference 'User.count', -1 do
       delete :destroy, username: users(:admin_user).username
     end
-    assert_equal 'Your account has been deleted.', flash[:success]
+    assert_equal 'Your account has been deleted.', flash['success']
     assert_redirected_to root_url
   end
 
@@ -194,7 +194,7 @@ class UsersControllerTest < ActionController::TestCase
     patch :enable, username: 'normal'
 
     assert User.find_by_username('normal').enabled
-    assert_equal 'User normal enabled.', flash[:success]
+    assert_equal 'User normal enabled.', flash['success']
     assert_response :redirect
   end
 
@@ -219,7 +219,7 @@ class UsersControllerTest < ActionController::TestCase
     patch :disable, username: 'normal'
 
     assert !User.find_by_username('normal').enabled
-    assert_equal 'User normal disabled.', flash[:success]
+    assert_equal 'User normal disabled.', flash['success']
     assert_response :redirect
   end
 
@@ -344,7 +344,7 @@ class UsersControllerTest < ActionController::TestCase
                            password_confirmation: 'password' },
           username: 'normal'
     assert_equal 'New', User.find(1).first_name
-    assert_equal 'Your profile has been updated.', flash[:success]
+    assert_equal 'Your profile has been updated.', flash['success']
     assert_redirected_to edit_user_url(assigns(:user))
   end
 
@@ -388,7 +388,7 @@ class UsersControllerTest < ActionController::TestCase
                            password_confirmation: 'password' },
           username: 'unaffiliated'
     assert_equal 'New', User.find_by_username('unaffiliated').first_name
-    assert_equal 'unaffiliated\'s profile has been updated.', flash[:success]
+    assert_equal 'unaffiliated\'s profile has been updated.', flash['success']
     assert_redirected_to edit_user_url(assigns(:user))
   end
 
@@ -417,7 +417,7 @@ class UsersControllerTest < ActionController::TestCase
     patch :update, user: { institution_id: 3 },
           username: 'unaffiliated'
     assert_equal 'You are now a member of Hamburger University.',
-                 flash[:success]
+                 flash['success']
     assert_redirected_to dashboard_url
   end
 

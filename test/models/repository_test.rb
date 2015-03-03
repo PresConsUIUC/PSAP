@@ -16,6 +16,16 @@ class RepositoryTest < ActiveSupport::TestCase
     assert @repository.save
   end
 
+  test 'repository should have a unique name scoped to its institution' do
+    # same name and institution should fail
+    repository2 = Repository.new(name: @repository.name,
+                                 institution: @repository.institution)
+    assert !repository2.save
+    # same name, different institution should succeed
+    repository2.institution = institutions(:institution_two)
+    assert repository2.save
+  end
+
   ########################### property tests ################################
 
   # name
@@ -33,15 +43,6 @@ class RepositoryTest < ActiveSupport::TestCase
   test 'institution is required' do
     @repository.institution = nil
     assert !@repository.save
-  end
-
-  ########################### association tests ##############################
-
-  test 'locations should be destroyed on destroy' do
-    location = locations(:location_two)
-    @repository.locations << location
-    @repository.destroy
-    assert location.destroyed?
   end
 
   ############################# method tests #################################

@@ -46,4 +46,15 @@ class Format < ActiveRecord::Base
         where('assessment_questions_formats.format_id IN (?)', format_ids)
   end
 
+  ##
+  # Returns true if the format is Paper-Unbound --> Original Document or
+  # Paper-Bound, as resources will have required ink/media type and support
+  # type properties for these two formats only.
+  #
+  # @return boolean
+  #
+  def requires_type_vectors?
+    [159, 160].include?(self.fid)
+  end
+
 end

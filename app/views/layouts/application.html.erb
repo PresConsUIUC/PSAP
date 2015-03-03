@@ -30,57 +30,74 @@
 </head>
 <body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
 
-  <%= render 'layouts/header' %>
+<%= render 'layouts/header' %>
 
-  <div id="psap-ajax-shade">
-    <%= image_tag('progress_indicator.gif', size: '64x64', alt: 'Loading') %>
-  </div>
+<div id="psap-ajax-shade"></div>
 
-  <div class="container-fluid">
+<div class="container-fluid">
+  <header class="page-header">
+    <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
+                                 alt:'PSAP logo', id:'title_logo'), root_path %>
 
-    <% unless current_page?(root_path) %>
-      <header class="page-header">
-        <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
-                                     alt:'PSAP logo', id:'title_logo'), root_path %>
+    <h1><%= link_to 'Preservation Self-Assessment Program', root_path %>
+      <span class="label label-warning">BETA</span></h1>
 
-        <h1>
-          <%= link_to 'Preservation Self-Assessment Program', root_path %>
-        </h1>
-      </header>
+    <% if signed_in? && current_user.institution %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                  data-toggle="dropdown">
+            <%= current_user.institution.name %> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to 'Home', current_user.institution %></li>
+            <li role="presentation" class="divider"></li>
+            <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
+            <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
+            <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
+            <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
+            <% if @user_institution_repositories.any? %>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation" class="dropdown-header">Repositories</li>
+                <% @user_institution_repositories.each do |repo| %>
+                    <li><%= link_to repo.name, repo %></a></li>
+                <% end %>
+            <% end %>
+          </ul>
+        </div>
     <% end %>
+  </header>
 
-    <% flash.each do |type, message| %>
+  <% flash.each do |type, message| %>
       <div class="alert alert-dismissable <%= bootstrap_class_for(type) %>">
         <button type="button" class="close" data-dismiss="alert"
                 aria-hidden="true">&times;</button>
         <%= message %>
       </div>
-    <% end %>
+  <% end %>
 
-    <div style="clear:both"></div>
+  <div style="clear:both"></div>
 
-    <%= render 'layouts/modal_panel' %>
+  <%= render 'layouts/modal_panel' %>
 
-    <div id="page_content">
-      <%= yield %>
-    </div>
-
-    <%= render 'layouts/footer' %>
-
+  <div id="page_content">
+    <%= yield %>
   </div>
 
-  <% if Rails.env.production? %>
+  <%= render 'layouts/footer' %>
+
+</div>
+
+<% if Rails.env.production? %>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
         ga('create', 'UA-56715538-1', 'auto');
         ga('send', 'pageview');
     </script>
-  <% end %>
+<% end %>
 
-  </body>
+</body>
 </html>

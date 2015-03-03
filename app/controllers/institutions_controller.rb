@@ -4,15 +4,19 @@ class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
-  before_action :same_institution_user, only: [:assess, :assessment_report,
-                                               :events, :info, :repositories,
-                                               :resources, :show, :edit,
-                                               :update, :users]
+  before_action :same_institution_user,
+                only: [:assess, :assessment_report, :edit, :events, :info,
+                       :repositories, :resources, :show, :update, :users]
 
   def assess
-    @institution = Institution.find(params[:institution_id])
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @institution = Institution.find(params[:institution_id])
+      @assessment_sections = Assessment.find_by_key('institution').
+          assessment_sections.order(:index)
+      render partial: 'assess_form', locals: { action: :assess }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   ##
@@ -64,6 +68,8 @@ class InstitutionsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
+        @resource_assessment_sections = Assessment.find_by_key('resource').
+            assessment_sections.order(:index)
         pdf = pdf_assessment_report(@institution, current_user,
                                     @resource_chart_data,
                                     @collection_chart_datas,
@@ -76,26 +82,38 @@ class InstitutionsController < ApplicationController
   end
 
   def create
-    command = CreateAndJoinInstitutionCommand.new(
+    create_command = CreateInstitutionCommand.new(
         institution_params, current_user, request.remote_ip)
-    @institution = command.object
+    @institution = create_command.object
     begin
-      command.execute
+      ActiveRecord::Base.transaction do
+        create_command.execute
+        unless current_user.is_admin?
+          join_command = JoinInstitutionCommand.new(current_user,
+                                                    @institution, current_user,
+                                                    request.remote_ip)
+          join_command.execute
+        end
+      end
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @institution }
     rescue => e
-      flash[:error] = "#{e}"
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'create'
     else
+      response.headers['X-Psap-Result'] = 'success'
       if current_user.is_admin?
-        flash[:success] = "The institution \"#{@institution.name}\" has been "\
-          "created."
-        redirect_to @institution
+        flash['success'] = "The institution \"#{@institution.name}\" has been "\
+        "created."
+        prepare_index_view
+        render 'create'
       else
-        flash[:success] = "The institution \"#{@institution.name}\" has been "\
+        flash['success'] = "The institution \"#{@institution.name}\" has been "\
           "created. An administrator has been notified and will review your "\
-          "request to join it momentarily,"
-        redirect_to dashboard_path
+          "request to join it soon."
       end
     end
   end
@@ -107,16 +125,21 @@ class InstitutionsController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to institution_url(@institution)
     else
-      flash[:success] = "Institution \"#{@institution.name}\" deleted."
+      flash['success'] = "Institution \"#{@institution.name}\" deleted."
       redirect_to institutions_url
     end
   end
 
   def edit
-    @institution = Institution.find(params[:id])
+    if request.xhr?
+      @institution = Institution.find(params[:id])
+      render partial: 'edit_form', locals: { action: :edit }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def events
@@ -140,9 +163,7 @@ class InstitutionsController < ApplicationController
   end
 
   def index
-    @institutions = Institution.order(:name).paginate(
-        page: params[:page],
-        per_page: Psap::Application.config.results_per_page)
+    prepare_index_view
   end
 
   def info
@@ -150,9 +171,12 @@ class InstitutionsController < ApplicationController
   end
 
   def new
-    @institution = Institution.new
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
+    if request.xhr?
+      @institution = Institution.new
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   ##
@@ -200,10 +224,7 @@ class InstitutionsController < ApplicationController
   end
 
   def show
-    @institution = Institution.find(params[:id])
-    @repositories = @institution.repositories.order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+    prepare_show_view
     render 'repositories'
   end
 
@@ -211,18 +232,21 @@ class InstitutionsController < ApplicationController
     @institution = Institution.find(params[:id])
     command = UpdateInstitutionCommand.new(@institution, institution_params,
                                            current_user, request.remote_ip)
-    @assessment_sections = Assessment.find_by_key('institution').
-        assessment_sections.order(:index)
     begin
       command.execute
     rescue ValidationError
-      render 'edit'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @institution }
     rescue => e
-      flash[:error] = "#{e}"
-      render 'edit'
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'info'
     else
-      flash[:success] = "Institution \"#{@institution.name}\" updated."
-      redirect_to @institution
+      prepare_show_view
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Institution \"#{@institution.name}\" updated."
+      render 'info'
     end
   end
 
@@ -233,6 +257,19 @@ class InstitutionsController < ApplicationController
 
   private
 
+  def prepare_index_view
+    @institutions = Institution.order(:name).paginate(
+        page: params[:page],
+        per_page: Psap::Application.config.results_per_page)
+  end
+
+  def prepare_show_view
+    @institution = Institution.find(params[:id])
+    @repositories = @institution.repositories.order(:name).
+        paginate(page: params[:page],
+                 per_page: Psap::Application.config.results_per_page)
+  end
+
   def same_institution_user
     # Normal users can only edit their own institution. Administrators can edit
     # any institution.
@@ -242,7 +279,7 @@ class InstitutionsController < ApplicationController
       institution = Institution.find(params[:institution_id])
     end
     redirect_to(root_url) unless
-        institution.users.include?(current_user) || current_user.is_admin?
+        institution.users.include?(current_user) or current_user.is_admin?
   end
 
   def institution_params

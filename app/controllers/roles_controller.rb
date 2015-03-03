@@ -5,7 +5,7 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(role_params)
     if @role.save
-      flash[:success] = 'Role created.'
+      flash['success'] = 'Role created.'
       redirect_to @role
     else
       render 'new'
@@ -16,7 +16,7 @@ class RolesController < ApplicationController
     role = Role.find(params[:id])
     name = role.name
     role.destroy
-    flash[:success] = "#{name} deleted."
+    flash['success'] = "#{name} deleted."
     redirect_to roles_url
   end
 
@@ -38,7 +38,7 @@ class RolesController < ApplicationController
 
   def update
     if @role.update_attributes(role_params)
-      flash[:success] = 'Role updated.'
+      flash['success'] = 'Role updated.'
       redirect_to @role
     else
       render 'edit'

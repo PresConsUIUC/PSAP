@@ -68,7 +68,10 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
 
   ############################ method tests #################################
 
-  # none
+  # max_score
+  test 'max_score should return the correct score' do
+    assert_equal 1, @question.max_score
+  end
 
   ########################### association tests ##############################
 

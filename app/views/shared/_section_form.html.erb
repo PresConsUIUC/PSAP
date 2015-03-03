@@ -1,9 +1,9 @@
-<% # assessment section container, appearing in the "edit/assess" view of all
+<% # assessment section container, appearing in the assess view of all
    # assessable entities (resources, institutions, locations). %>
 
 <div class="section" id="<%= section.name.tr('/ |', '') %>"
      data-id="<%= section.id %>">
-  <h2><%= section.name %></h2>
+  <h3><%= section.name %></h3>
   <p><%= section.description %></p>
   <div class="section-questions"></div>
   <% if draw_bottom_rule %>

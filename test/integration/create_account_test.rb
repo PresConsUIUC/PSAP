@@ -25,7 +25,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
 
     assert_equal('Thanks for registering for PSAP! An email has been sent to '\
     'the address you provided. Follow the link in the email to confirm your '\
-    'account.', flash[:success])
+    'account.', flash['success'])
   end
 
   test 'POSTing a correctly-filled form to /users should send an email' do
@@ -57,7 +57,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
     assert_equal('Your account has been confirmed, but before you can '\
       'sign in, it must be approved by an administrator. We\'ll get back to '\
       'you as soon as we can. Thanks for your interest in the PSAP!',
-                 flash[:success])
+                 flash['success'])
   end
 
   test 'Email confirmation link should send an email to the administrator' do

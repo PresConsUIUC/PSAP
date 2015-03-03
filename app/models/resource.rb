@@ -1,7 +1,22 @@
+##
+# A Resource exists within a Location. It has a resource_type property which
+# must be set to either ResourceType::ITEM or ResourceType::COLLECTION.
+# Collections can contain zero or more child resources. Formats, ink/media
+# types, and support types can be ascribed only to items.
+#
+# Items are assessable, but collections are not. A collection's assessment
+# score is the mean of the item scores contained within.
+#
 class Resource < ActiveRecord::Base
 
-  include Assessable
+  # When adding/removing properties or associations, update both .as_csv and
+  # ::as_csv.
 
+  include Assessable
+  include Introspection
+
+  # When adding/removing has_many, has_one, or habtm associations, update
+  # dup and update_submodels as well!
   has_many :assessment_question_responses, inverse_of: :resource,
            dependent: :destroy
   has_many :children, -> { order(:name) }, class_name: 'Resource',
@@ -27,25 +42,27 @@ class Resource < ActiveRecord::Base
   accepts_nested_attributes_for :resource_notes, allow_destroy: true
   accepts_nested_attributes_for :subjects, allow_destroy: true
 
+  before_validation :prune_empty_submodels
+  before_validation :prune_irrelevant_models
+  before_validation :sync_location_with_parent
+
   validates :assessment_type, allow_blank: true,
             inclusion: { in: AssessmentType.all,
-                         message: 'must be a valid assessment type.' }
+                         message: 'must be a valid assessment type' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :resource_type, presence: true,
-            inclusion: { in: ResourceType.all,
-                         message: 'must be a valid resource type.' }
+  validates :resource_type, inclusion: { in: ResourceType.all,
+                         message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
             inclusion: { in: ResourceSignificance.all,
-                         message: 'must be a valid resource significance.' }
+                         message: 'must be a valid resource significance' }
   validates :user, presence: true
 
-  validate :validates_collections_not_assessable
+  validate :validates_item_children
   validate :validates_not_child_of_item
   validate :validates_same_institution_as_user
 
-  before_validation :prune_empty_submodels
-  before_save :update_assessment_complete
+  validates_uniqueness_of :name, scope: :parent_id
 
   def self.all_matching_query(params, starting_set = nil)
     starting_set = Resource.all unless starting_set
@@ -95,61 +112,32 @@ class Resource < ActiveRecord::Base
     resources
   end
 
-  def self.from_ead(ead, user_id)
-    doc = REXML::Document.new(ead)
-
-    begin
-      User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
-      raise 'Invalid user ID'
-    end
-
-    attrs = {}
-
-    doc.elements.each('//archdesc/did/abstract[1]') do |element|
-      attrs[:description] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc/did/unitid[1]') do |element|
-      attrs[:local_identifier] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc/did/unittitle[1]') do |element|
-      attrs[:name] = element.text.strip
-    end
-
-    doc.elements.each('//archdesc') do |type|
-      case type.attribute('level').value.strip
-        when 'collection'
-          attrs[:resource_type] = ResourceType::COLLECTION
-        when 'item'
-          attrs[:resource_type] = ResourceType::ITEM
-      end
-    end
-
-    attrs[:user_id] = user_id
+  ##
+  # @param ead EAD XML string
+  # @param user User
+  # @return Resource
+  #
+  def self.from_ead(ead, user)
+    doc = Nokogiri::XML(ead)
+    ead_ns = { 'ead' => 'urn:isbn:1-931666-22-9' }
+    params = {}
 
     # creators
-    attrs[:creators_attributes] = []
-    doc.elements.each('//archdesc/did/origination') do |element|
-      if element.attribute('label').value == 'creator'
-        attrs[:creators_attributes] << {
-            name: element.elements['persname'].text.strip }
+    params[:creators_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:origination[@label = \'creator\']', ead_ns).each do |element|
+      %w(persname corpname famname name).each do |name_elem|
+        element.xpath(name_elem).each do |name|
+          params[:creators_attributes] << { name: name.text.squish }
+        end
       end
-    end
-
-    # extents
-    attrs[:extents_attributes] = []
-    doc.elements.each('//archdesc/did/physdesc/extent') do |extent|
-      attrs[:extents_attributes] << { name: extent.text.strip }
     end
 
     # dates
-    attrs[:resource_dates_attributes] = []
-    doc.elements.each('//archdesc/did/unitdate') do |element|
+    params[:resource_dates_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:unitdate', ead_ns).each do |element|
       date_struct = {}
 
-      case element.attribute('type').value
+      case element.attribute('type').text
         when 'inclusive'
           date_struct[:date_type] = DateType::INCLUSIVE
         when 'bulk'
@@ -160,7 +148,7 @@ class Resource < ActiveRecord::Base
           date_struct[:date_type] = DateType::SINGLE
       end
 
-      date_text = element.attribute('normal').value
+      date_text = element.attribute('normal').text
       date_parts = date_text.split('/')
 
       case date_struct[:date_type]
@@ -187,16 +175,56 @@ class Resource < ActiveRecord::Base
           end
       end
 
-      attrs[:resource_dates_attributes] << date_struct
+      params[:resource_dates_attributes] << date_struct
+    end
+
+    # description
+    doc.xpath('//ead:archdesc/ead:did/ead:abstract[1]', ead_ns).each do |element|
+      params[:description] = element.text.squish
+    end
+
+    # extents
+    params[:extents_attributes] = []
+    doc.xpath('//ead:archdesc/ead:did/ead:physdesc/ead:extent', ead_ns).each do |extent|
+      params[:extents_attributes] << { name: extent.text.squish }
+    end
+
+    # language (PSAP supports only one)
+    doc.xpath('//ead:archdesc/ead:did/ead:langmaterial/ead:language[1]', ead_ns).each do |element|
+      lang = Language.find_by_iso639_2_code(element.attribute('langcode').text)
+      params[:language_id] = lang.id if lang
+    end
+
+    # local identifier
+    doc.xpath('//ead:archdesc/ead:did/ead:unitid[1]', ead_ns).each do |element|
+      params[:local_identifier] = element.text.squish
+    end
+
+    # name
+    doc.xpath('//ead:archdesc/ead:did/ead:unittitle[1]', ead_ns).each do |element|
+      params[:name] = element.text.squish
+    end
+
+    # resource type
+    doc.xpath('//ead:archdesc', ead_ns).each do |element|
+      case element.attribute('level').text.strip
+        when 'collection'
+          params[:resource_type] = ResourceType::COLLECTION
+        else
+          params[:resource_type] = ResourceType::ITEM
+      end
     end
 
     # subjects
-    attrs[:subjects_attributes] = []
-    doc.elements.each('//archdesc/controlaccess/*') do |subject|
-      attrs[:subjects_attributes] << { name: subject.text.strip }
+    params[:subjects_attributes] = []
+    doc.xpath('//ead:archdesc/ead:controlaccess/*', ead_ns).each do |element|
+      params[:subjects_attributes] << { name: element.text.squish }
     end
 
-    Resource.new(attrs)
+    # user
+    params[:user_id] = user.id
+
+    Resource.new(params)
   end
 
   ##
@@ -218,13 +246,20 @@ class Resource < ActiveRecord::Base
 
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    # Can't use Resource.as_csv here because we need to pad the one-to-many
+    # properties with blanks. So, when updating this, update Resource.as_csv as
+    # well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
           ['PSAP Assessment Score'] +
+          ['Assessment Type'] +
+          ['Location'] +
           ['Resource Type'] +
           ['Parent Resource'] +
           ['Format'] +
+          ['Format Ink/Media Type'] +
+          ['Format Support Type'] +
           ['Significance'] +
           (['Creator'] * num_columns[:creator]) +
           (['Date'] * num_columns[:date]) +
@@ -237,23 +272,25 @@ class Resource < ActiveRecord::Base
           ['Created'] +
           ['Updated']
       resources.each do |resource|
-        # can't use Resource.as_csv because we need to pad the one-to-many
-        # properties with blanks
         csv << [resource.local_identifier] +
             [resource.name] +
-            [resource.total_assessment_score * 100] +
+            [(resource.effective_assessment_score * 100).round(2)] +
+            [AssessmentType::name_for_type(resource.assessment_type)] +
+            [resource.location.name] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
             [resource.format ? resource.format.name : nil] +
+            [resource.format_ink_media_type ? resource.format_ink_media_type.name : nil] +
+            [resource.format_support_type ? resource.format_support_type.name : nil] +
             [resource.readable_significance] +
-            resource.creators.map { |r| r.name } + [nil] * (num_columns[:creator] - resource.creators.length) +
-            resource.resource_dates.map { |r| r.as_dublin_core_string } + [nil] * (num_columns[:date] - resource.resource_dates.length) +
+            resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
+            resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
             [resource.language ? resource.language.english_name : nil] +
-            resource.subjects.map { |s| s.name } + [nil] * (num_columns[:subject] - resource.subjects.length) +
-            resource.extents.map { |e| e.name } + [nil] * (num_columns[:extent] - resource.extents.length) +
+            resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
+            resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
             [resource.description] +
-            resource.resource_notes.map { |n| n.value } + [nil] * (num_columns[:note] - resource.resource_notes.length) +
+            resource.resource_notes.map(&:value) + [nil] * (num_columns[:note] - resource.resource_notes.length) +
             [resource.created_at.iso8601] +
             [resource.updated_at.iso8601]
       end
@@ -280,7 +317,6 @@ class Resource < ActiveRecord::Base
         accumulate_children(child, resource_bucket)
       end
     end
-
     resources = []
     accumulate_children(self, resources)
     resources
@@ -296,6 +332,7 @@ class Resource < ActiveRecord::Base
 
     require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    # When updating this, update Resource::as_csv as well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
@@ -321,7 +358,7 @@ class Resource < ActiveRecord::Base
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [(self.total_assessment_score * 100).round(2)] +
+          [(self.effective_assessment_score * 100).round(2)] +
           [AssessmentType::name_for_type(self.assessment_type)] +
           [self.location.name] +
           [self.readable_resource_type] +
@@ -348,7 +385,7 @@ class Resource < ActiveRecord::Base
   # Returns a hash containing statistics of all assessed items in the
   # collection.
   #
-  # @return hash with mean, median, low, and high keys
+  # @return hash with :mean, :median, :low, and :high keys
   #
   def assessed_item_statistics
     stats = { mean: 0, median: 0, low: nil, high: 0 }
@@ -358,31 +395,175 @@ class Resource < ActiveRecord::Base
     end
 
     all_items.each do |item|
-      stats[:high] = item.total_assessment_score if item.total_assessment_score > stats[:high]
-      stats[:low] = item.total_assessment_score if
-          stats[:low].nil? or item.total_assessment_score < stats[:low]
+      stats[:high] = item.effective_assessment_score if item.effective_assessment_score > stats[:high]
+      stats[:low] = item.effective_assessment_score if
+          stats[:low].nil? or item.effective_assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.total_assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.total_assessment_score }.sort
+    stats[:mean] = all_items.map{ |r| r.effective_assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.effective_assessment_score }.sort
     len = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
   end
 
+  ##
+  # @return float between 0 and 1
+  #
+  def assessment_question_score
+    question_score = 0.0
+    self.assessment_question_responses.each do |response|
+      question_score += response.assessment_question_option.value *
+          response.assessment_question.weight
+    end
+    # scores are pre-weighted; max is 50 so have to multiply by 2
+    (question_score / 100) * 2
+  end
+
+  ##
+  # @return Array of all assessment questions that have been answered for this
+  # resource.
+  #
+  def assessment_questions
+    assessment_question_responses.map(&:assessment_question).uniq
+  end
+
+  ##
+  # Overrides parent to intelligently clone a resource. This implementation
+  # preserves assessment questions, creators, extents, dates, notes, and all
+  # properties. It does NOT clone child resources or events.
+  #
+  def dup
+    clone = super
+    self.assessment_question_responses.each do |response|
+      cloned_response = response.dup
+      cloned_response.assessment_question = response.assessment_question
+      cloned_response.assessment_question_option = response.assessment_question_option
+      cloned_response.location = response.location
+      cloned_response.institution = response.institution
+      cloned_response.resource = response.resource
+      clone.assessment_question_responses << cloned_response
+    end
+    self.creators.each { |c| clone.creators << c.dup }
+    self.extents.each { |c| clone.extents << c.dup }
+    self.resource_dates.each { |c| clone.resource_dates << c.dup }
+    self.resource_notes.each { |c| clone.resource_notes << c.dup }
+    self.subjects.each { |c| clone.subjects << c.dup }
+    clone
+  end
+
+  ##
+  # Returns the canonical assessment score of the resource, factoring in the
+  # location, temperature, and RH scores as well, unlike assessment_score which
+  # does not. If a collection, returns the average score of all resources.
+  #
+  # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
+  #
+  # @return float between 0 and 1
+  #
+  def effective_assessment_score
+    if self.resource_type == ResourceType::COLLECTION
+      items = self.all_assessed_items
+      if items.any?
+        return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
+            self.location.assessment_score * 0.1
+      end
+      return 0.0
+    end
+    self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
+        self.location.assessment_score * 0.05 +
+        self.effective_temperature_score * 0.025 +
+        self.effective_humidity_score * 0.025
+  end
+
+  ##
+  # @return float between 0 and 1
+  #
+  def effective_format_score
+    score = 0.0
+    if self.format
+      score = self.format.score
+      if self.format.format_class == FormatClass::BOUND_PAPER or
+          self.format.fid == 159 # Unbound Paper -> Original Document
+        if self.format_support_type and self.format_ink_media_type
+          score = self.format_support_type.score * 0.6 +
+              self.format_ink_media_type.score * 0.4
+        end
+      end
+    end
+    score
+  end
+
+  ##
+  # @return float between 0 and 1
+  #
+  def effective_humidity_score
+    score = 0.0
+    if self.format
+      location_range = self.location.humidity_range
+      if location_range
+        format_range = self.format.humidity_ranges.where(
+            min_rh: location_range.min_rh,
+            max_rh: location_range.max_rh).first
+        score = format_range.score if format_range
+      end
+    end
+    score
+  end
+
+  ##
+  # @return float between 0 and 1
+  #
+  def effective_temperature_score
+    score = 0.0
+    if self.format
+      location_range = self.location.temperature_range
+      if location_range
+        format_range = self.format.temperature_ranges.where(
+            min_temp_f: location_range.min_temp_f,
+            max_temp_f: location_range.max_temp_f).first
+        score = format_range.score if format_range
+      end
+    end
+    score
+  end
+
+  ##
+  # Returns the local identifier, or if that is not available, the database ID.
+  # This is just a base name, with no extension, and may contain filesystem-
+  # incompatible characters. Mostly it's intended to be used in a
+  # Content-Disposition HTTP response header.
+  #
+  # @return string
+  #
   def filename
     self.local_identifier ? self.local_identifier : self.id.to_s
   end
 
   ##
-  # Submitted assessment forms will often have empty submodels such as creator,
-  # extent, etc. This method will remove them.
+  # Submitted edit forms will include empty submodels such as creator, extent,
+  # etc. This method will remove them.
   #
   def prune_empty_submodels
-    self.creators = self.creators.select{ |c| c.name.length > 0 }
-    self.extents = self.extents.select{ |e| e.name.length > 0 }
-    self.resource_dates = self.resource_dates.select{ |r| r.year }
-    self.resource_notes = self.resource_notes.select{ |r| r.value.length > 0 }
-    self.subjects = self.subjects.select{ |s| s.name.length > 0 }
+    self.creators = self.creators.select{ |c| !c.name.blank? }
+    self.extents = self.extents.select{ |e| !e.name.blank? }
+    self.resource_dates = self.resource_dates.select{ |r| !r.year.blank? or !r.begin_year.blank? }
+    self.resource_notes = self.resource_notes.select{ |r| !r.value.blank? }
+    self.subjects = self.subjects.select{ |s| !s.name.blank? }
+  end
+
+  def prune_irrelevant_models
+    if self.resource_type == ResourceType::COLLECTION
+      self.format = nil
+      self.format_ink_media_type = nil
+      self.format_support_type = nil
+      self.assessment_question_responses.destroy_all
+      self.assessment_complete = nil
+      self.assessment_type = nil
+    end
+    if self.format and !self.format.requires_type_vectors?
+      self.format_ink_media_type = nil
+      self.format_support_type = nil
+    end
   end
 
   def readable_resource_type
@@ -405,57 +586,30 @@ class Resource < ActiveRecord::Base
     end
   end
 
-  ##
-  # Returns the assessment score of the resource, factoring in
-  # institution/location scores as well, unlike assessment_score which does not.
-  #
-  def total_assessment_score
-    self.update_assessment_score
-    self.assessment_score * 0.9 + self.location.assessment_score * 0.1
+  def sync_location_with_parent
+    self.location = self.parent.location if self.parent
   end
 
+  ##
+  # Overrides Assessable mixin
+  #
   def update_assessment_complete
     self.assessment_complete =
         (self.format and self.format.all_assessment_questions.any?) ?
-            self.assessment_question_responses.length >=
-                self.format.all_assessment_questions.length : false
+            self.assessment_question_responses.length > 0 : false
     nil
   end
 
   ##
-  # Updates the score of the resource only, without taking location/institution
-  # into account.
-  #
-  # Scores are stored (rather than being calculated on-the-fly) in order to
-  # make for simpler queries.
+  # Updates the score of the resource only, without taking location,
+  # temperature, or humidity into account.
   #
   # Overrides Assessable mixin
   #
   def update_assessment_score
-    # https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-    if self.format
-      question_score = 0.0
-      self.assessment_question_responses.each do |response|
-        question_score += response.assessment_question_option.value *
-            response.assessment_question.weight
-      end
-
-      if self.format.format_class == FormatClass::BOUND_PAPER or
-          self.format.fid == 159 # Unbound Paper -> Original Document
-        if self.format_support_type and self.format_ink_media_type
-          format_score = self.format_support_type.score * 0.6 +
-              self.format_ink_media_type.score * 0.4
-        else
-          format_score = 0.0
-        end
-      else
-        format_score = self.format.score * 0.45
-      end
-
-      self.assessment_score = format_score + (question_score / 100) * 0.55
-    else
-      self.assessment_score = 0.0
-    end
+    self.assessment_score = self.format ?
+        self.effective_format_score * (10 / 9) +
+            self.assessment_question_score * (10 / 9) : 0.0
   end
 
   private
@@ -469,10 +623,9 @@ class Resource < ActiveRecord::Base
     parts
   end
 
-  def validates_collections_not_assessable
-    if self.resource_type == ResourceType::COLLECTION and
-        self.assessment_question_responses.any?
-      errors[:base] << 'Collections are not assessable.'
+  def validates_item_children
+    if self.resource_type == ResourceType::ITEM and self.children.any?
+      errors[:base] << 'Non-empty collections cannot be changed into items.'
     end
   end
 
@@ -483,7 +636,7 @@ class Resource < ActiveRecord::Base
   end
 
   def validates_same_institution_as_user
-    if user and !user.is_admin? and
+    if user and !user.is_admin? and self.location and
         user.institution != self.location.repository.institution
       errors[:base] << 'Owning user must be of the same institution.'
     end

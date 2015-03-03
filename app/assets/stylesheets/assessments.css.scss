@@ -1,11 +1,4 @@
-.assessment_question h3 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size:1.3em;
-}
-
-body#new_resource, body#edit_resource, body#assess_resource,
-body#new_location, body#edit_location, body#assess_location,
-body#new_institution, body#edit_institution, body#assess_institution {
+#psap-assess-panel {
   div.section {
     margin-bottom:2em;
   }
@@ -14,30 +7,24 @@ body#new_institution, body#edit_institution, body#assess_institution {
       margin-top:0px;
     }
   }
-  div#psap-affixed-menu {
-    button.save {
-      margin-top:1em;
-    }
-  }
   div.popover {
     @media screen and (min-width: 768px) {
       min-width:500px;
     }
   }
-  .depth-1 { padding-left:1.5em; }
-  .depth-2 { padding-left:3em; }
-  .depth-3 { padding-left:4.5em; }
+  p.question {
+    font-size:1.2em;
+    font-weight:200;
+  }
+  .depth-1 { padding-left:2em; }
+  .depth-2 { padding-left:4em; }
+  .depth-3 { padding-left:6em; }
   .depth-4 { padding-left:6em; }
-  .depth-5 { padding-left:7.5em; }
-  .depth-6 { padding-left:9em; }
-  .depth-7 { padding-left:10.5em; }
-  .depth-8 { padding-left:12em; }
-  .depth-9 { padding-left:13.5em; }
 }
 
 /* Used in show view of assessable resources (locations, institutions,
 resources). */
-div.assessment {
+.psap-assessable-report {
   dt.depth-1, dd.depth-1 { padding-left:1.5em; }
   dt.depth-2, dd.depth-2 { padding-left:3em; }
   dt.depth-3, dd.depth-3 { padding-left:4.5em; }
@@ -50,7 +37,7 @@ div.assessment {
 
   ul {
     list-style:none;
-    margin-left:0.2em;
+    margin-left:0.5em;
     padding:0px;
     li {
       overflow:visible;

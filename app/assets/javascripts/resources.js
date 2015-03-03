@@ -1,6 +1,6 @@
 var ResourceEditForm = function() {
 
-    var ROOT_URL = $('input[name="root-url"]').val();
+    var ROOT_URL = $('input[name="root_url"]').val();
 
     // lazy-loaded by formats()
     var formats_json = null;
@@ -68,7 +68,7 @@ var ResourceEditForm = function() {
 
             new_select.on('change', function() {
                 var fmt = format($(this).val());
-                selectFormat(fmt, null);
+                selectFormat(fmt);
             });
 
             if (onCompleteCallback) {
@@ -79,14 +79,20 @@ var ResourceEditForm = function() {
 
     var attachEventListeners = function() {
         // if the resource is an item, hide the format; otherwise, show it
-        $('input[name="resource[resource_type]:checked"]').on('change', function() {
-            var format_div = $('div.format');
+        var format_div = $('div.format');
+        $('input[name="resource[resource_type]"]').on('change', function() {
             if ($(this).val() == '1') { // 1 == item
                 format_div.show();
             } else {
                 format_div.hide();
             }
-        }).trigger('change');
+        });
+
+        if ($('input[name="resource[resource_type]"]:checked').val() == '1') {
+            format_div.show();
+        } else {
+            format_div.hide();
+        }
 
         $('input[name="format_class"]').on('change', function() {
             selectFormatClass($(this).val());
@@ -164,19 +170,81 @@ var ResourceEditForm = function() {
     };
 
     this.init = function() {
-        $(document).on('PSAPFormFieldAdded', function() {
-            attachEventListeners();
-            initSuggestions();
-        }).trigger('PSAPFormFieldAdded');
+        attachEventListeners();
+        setInitialSelections();
+        initDynamicNestedForms();
+        initSuggestions();
+    };
 
-        if ($('body#edit_resource').length) {
-            setInitialSelections();
-        }
+    var initDynamicNestedForms = function() {
+        // enable certain form elements to be dynamically shown and hidden, as
+        // in the case of a nested form with a 1..n relationship to its child
+        // object(s).
+        var entities = $('.psap-addable-removable');
+        entities.find('button.remove').on('click', function() {
+            // Instead of removing it from the DOM, hide it and set its
+            // "_destroy" key to 1, so Rails knows to destroy its
+            // corresponding model.
+            var group = $(this).closest('.psap-addable-removable-input-group');
+            group.hide();
+            group.find('input[type="hidden"].destroy').val(1);
+            // also clear it, so it doesn't look weird when restored
+            group.find('input[type=text], textarea').val(null);
+            // and move it to the end, so it doesn't appear before others
+            group.parent().append(group);
+        });
+        entities.find('button.add').on('click', function() {
+            // unhide the first hidden input group
+            var node = $(this).parent().
+                find('.psap-addable-removable-input-group:hidden:first');
+            if (!node) {
+                // table input groups
+                node = $(this).parent().find('table:first tr:hidden:first');
+            }
+            node.show();
+            node.find('input[type="hidden"].destroy').val(0);
+        });
+
+        // hide empty input-groups
+        // creators
+        $('.psap-creators .psap-addable-removable-input-group').each(function() {
+            if (!$(this).find('input[type=text]').val().length) {
+                $(this).hide();
+            }
+        });
+        // dates
+        $('.psap-dates .psap-addable-removable-input-group').each(function() {
+            var show = false;
+            $(this).find('input.year').each(function() {
+                if ($(this).val()) {
+                    show = true;
+                }
+            });
+            if (!show) {
+                $(this).hide();
+            }
+        });
+        // subjects
+        $('.psap-subjects .psap-addable-removable-input-group').each(function() {
+            if (!$(this).find('input[type=text]').val().length) {
+                $(this).hide();
+            }
+        });
+        // extents
+        $('.psap-extents .psap-addable-removable-input-group').each(function() {
+            if (!$(this).find('input[type=text]').val().length) {
+                $(this).hide();
+            }
+        });
+        // notes
+        $('.psap-notes .psap-addable-removable-input-group').each(function() {
+            if (!$(this).find('textarea').val().length) {
+                $(this).hide();
+            }
+        });
     };
 
     var initSuggestions = function() {
-        $('input#resource_name, input.resource_subject').typeahead('destroy'); // TODO: this doesn't work
-
         var institution_url = $('input[name="institution_url"]').val();
 
         var names = new Bloodhound({
@@ -263,6 +331,7 @@ var ResourceEditForm = function() {
         $('input[name="format_class"][value="' + id + '"]').attr('checked', true);
 
         if (id == 3) { // 3 == bound paper
+            selectFormat(format(160));
             showFormatVectorMenus();
         } else {
             $('input[name="resource[format_id]"]').remove();
@@ -311,7 +380,7 @@ var ResourceEditForm = function() {
                 // if the last select has been added
                 if (select.val() == selected_format_ids[selected_format_ids.length - 1]) {
                     var fmt = format(select.val());
-                    selectFormat(fmt, null);
+                    selectFormat(fmt);
                     if (is_original_document) {
                         setInitialFormatVectorSelections();
                     }
@@ -374,10 +443,39 @@ var ResourceEditForm = function() {
 };
 
 var ready = function() {
-    if ($('body#new_resource').length || $('body#edit_resource').length) {
-        new ResourceEditForm().init();
-    } else if ($('body#assess_resource').length) {
-        // handled by AssessmentForm in assessments.js
+    if ($('body#show_resource').length) {
+        // initialize resource-edit panel
+        PSAP.Panel.initRemote(
+            '#psap-edit-panel',
+            $('input[name="resource_url"]').val() + '/edit',
+            function () {
+                new ResourceEditForm().init();
+            }
+        );
+
+        // initialize resource-assess panel
+        PSAP.Panel.initRemote(
+            '#psap-assess-panel',
+            $('input[name="resource_url"]').val() + '/assess',
+            function () {
+                new AssessmentForm('resource');
+            }
+        );
+
+        // initialize resource-create panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_resource_url"]').val(),
+            function () {
+                new ResourceEditForm().init();
+            }
+        );
+
+        // initialize resource-move panel
+        $('input[name="resource[parent_id]"]').on('change', function() {
+            $('input[name="resource[location_id]"]').val(
+                $(this).data('location-id'));
+        });
     }
 };
 

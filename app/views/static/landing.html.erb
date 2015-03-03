@@ -1,32 +1,14 @@
 <% provide(:title, 'Home') %>
 <% provide(:body_id, 'landing') %>
 
-<div id="landing">
-
-  <div class="center">
-    <%= retina_image_tag('psapLogo-450.png', width: 450, height: 201) %>
+<div class="row">
+  <div class="col-sm-8">
+    <p class="larger">The Preservation Self-Assessment Program (PSAP) is a free online tool that helps collection managers prioritize efforts to improve conditions of collections. Through guided evaluation of materials, storage/exhibit environments, and institutional policies, the PSAP produces reports on the factors that impact the health of cultural heritage materials, and defines the points from which to begin care.</p>
+    <p class="larger"><%= link_to(raw('More&hellip;'), about_path, class: 'psap-modal-view', data: { open: about_path }) %></p>
   </div>
-
-  <h1>Coming Spring 2015!</h1>
-
-  <h2>The Preservation Self-Assessment Program</h2>
-  <p class="larger">The <strong>Preservation Self-Assessment Program (PSAP)</strong> is a <i>free online tool</i> that helps collection managers prioritize efforts to improve conditions of collections. Through guided evaluation of materials, storage/exhibit environments, and institutional policies, the PSAP produces reports on the factors that impact the health of cultural heritage materials, and defines the points from which to begin care.</p>
-
-  <p class="larger">Any organization that collects <em>paper documents</em>, <em>books</em>, <em>photographic materials</em>, and <em>audiovisual media</em> will benefit from the PSAP, including library special collections, archives, museums, and historical societies. Like the <a href="http://www.library.illinois.edu/prescons/projects_grants/grants/avsap/" target="_blank">Audiovisual Self-Assessment Program (AvSAP)</a> which preceded it, the PSAP is designed to assist in organizations where little to no prior preservation training exists.</p>
-
-  <p class="larger">To learn about what the PSAP can do for your organization, see our <%= link_to 'About the PSAP', about_path, class: 'modal_view', data: { open: about_path } %> section. And to get an idea of the range of materials the PSAP covers, check out our educational resource, the <%= link_to 'Format ID Guide', format_id_guide_path %>.</p>
-
-  <p class="larger">For those interested in following our development, the project is open source; our code is <a href="https://github.com/PresConsUIUC/PSAP" target="_blank">hosted on GitHub</a>.</p>
-
-  <h2>Contact Us</h2>
-  <p class="larger">The PSAP team welcomes feedback and questions from the communities we serve. Please feel free to contact us at <a href="mailto:psap@library.illinois.edu">psap<span style="display:none">-removethis</span>@library.illinois.edu</a> or via Twitter <a href="https://twitter.com/PresCons" target="_blank">@PresCons</a>.</p>
-
-  <h3>Project Team</h3>
-  <ul class="people">
-    <li>Jennifer Hain Teper, Project Lead</li>
-    <li>Ryan Edge, Project Manager (2013&ndash;2014)</li>
-    <li>Amanda Eisemann, Project Manager (2015)</li>
-    <li>Alex Dolski, Programmer/Developer</li>
-  </ul>
-
+  <div class="col-sm-4">
+    <div class="well">
+      <%= render partial: 'sessions/sign_in_form' %>
+    </div>
+  </div>
 </div>

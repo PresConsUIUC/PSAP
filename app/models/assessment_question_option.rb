@@ -8,6 +8,6 @@ class AssessmentQuestionOption < ActiveRecord::Base
   validates :assessment_question, presence: true
   validates :index, presence: true
   validates :name, presence: true
-  validates :value, presence: true
+  # validates :value, presence: true # QIDs 1022 and 1024 have options with nil values
 end
 

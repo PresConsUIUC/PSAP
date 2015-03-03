@@ -14,9 +14,7 @@ class JoinInstitutionCommand < Command
         raise 'Insufficient privileges'
       end
 
-      if @institution == @user.institution
-        raise "#{@user.username} is already a member of #{@institution.name}."
-      end
+      return if @institution == @user.institution # nothing to do
 
       ActiveRecord::Base.transaction do
         if @doing_user
@@ -59,10 +57,12 @@ class JoinInstitutionCommand < Command
         "#{e.message}"
       end
     else
-      @user.events << Event.create(
-          description: "Changed institution of user #{@user.username} to "\
-          "#{@user.institution.name}",
-          user: @doing_user, address: @remote_ip)
+      if @user.institution
+        @user.events << Event.create(
+            description: "Changed institution of user #{@user.username} to "\
+            "#{@user.institution.name}",
+            user: @doing_user, address: @remote_ip)
+      end
     end
   end
 

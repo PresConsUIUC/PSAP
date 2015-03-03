@@ -13,24 +13,52 @@ module ResourcesHelper
   end
 
   def human_readable_date(resource_date)
+    date = ''
+    return date unless resource_date
     if resource_date.year
-      "#{resource_date.year} (#{resource_date.readable_date_type.downcase})"
-    elsif resource_date.begin_year || resource_date.end_year
-      "#{resource_date.begin_year}-#{resource_date.end_year} "\
-        "(#{resource_date.readable_date_type.downcase})"
+      date = "#{resource_date.year}"
+      if resource_date.month
+        date += "-#{resource_date.month}"
+        if resource_date.day
+          date += "-#{resource_date.day}"
+        end
+      end
+    elsif resource_date.begin_year
+      date += "#{resource_date.begin_year}"
+      if resource_date.begin_month
+        date += "#{resource_date.begin_month}"
+        if resource_date.begin_day
+          date += "#{resource_date.begin_day}"
+        end
+      end
+      if resource_date.end_year
+        date += " to #{resource_date.end_year}"
+        if resource_date.end_month
+          date += "#{resource_date.end_month}"
+          if resource_date.end_day
+            date += "#{resource_date.end_day}"
+          end
+        end
+      end
     end
+    date += " (#{resource_date.readable_date_type.downcase})"
   end
 
   def score_help(resource)
-    assessment_score = (resource.assessment_score * 100).round(1)
-    format_score = (resource.format and resource.format.score) ?
-        (resource.format.score * 100).round(1) : 0
+    assessment_score = (resource.assessment_question_score * 100).round(1)
+    format_score = (resource.effective_format_score * 100).round(1)
     location_score = (resource.location.assessment_score * 100).round(1)
+    temp_score = (resource.effective_temperature_score * 100).round(1)
+    humidity_score = (resource.effective_humidity_score * 100).round(1)
 
-    text = '<p>The PSAP uses the following formula to calculate a resource\'s '\
+    text = '<p>The following formula is used to calculate a resource\'s '\
     'assessment score:</p>'\
-    '<p><em>Assessment score &times; 0.5 + format score &times; 0.4 + '\
-    'location score &times; 0.1</em></p>'\
+    '<p><span class="label label-info">ASSESSMENT &times; 0.5</span> + '\
+    '<span class="label label-success">FORMAT &times; 0.4</span> + '\
+    '<span class="label label-danger">LOCATION &times; 0.05</span> + '\
+    '<span class="label label-primary">TEMPERATURE &times; 0.025</span> + '\
+    '<span class="label label-warning">RELATIVE HUMIDITY &times; 0.025</span> '\
+    '</p>'\
     '<ul>'
 
     if resource.assessment_question_responses.length < 1
@@ -45,17 +73,21 @@ module ResourcesHelper
       text += "<li>Its format score is <strong>#{format_score}</strong>.</li>" # TODO: "this is good" or "consider migrating..." etc.
     else
       text += "<li>It does not yet have a format specified, which heavily "\
-      "weighs down its score. You can do this during the "\
-      "#{link_to('assessment process', edit_resource_path(resource))}.</li>"
+      "weighs down its score.</li>"
     end
 
     if resource.location.assessment_question_responses.length < 1
-      text += "<li>Its #{link_to('location', location_path(resource.location))}"\
-      " has not yet been assessed, which weighs down its score.</li>"
+      text += "<li>Its location has not yet been assessed, which weighs down "\
+      "its score.</li>"
     else
-      text += "<li>Its #{link_to('location', location_path(resource.location))}"\
-      " score is <strong>#{location_score}</strong>.</li>" # TODO: "this is good" or "consider moving" etc.
+      text += "<li>Its location score is "\
+      "<strong>#{location_score}</strong>.</li>" # TODO: "this is good" or "consider moving" etc.
     end
+
+    text += "<li>Its temperature score is <strong>#{temp_score}</strong>.</li>"
+
+    text += "<li>Its relative humidity score is "\
+    "<strong>#{humidity_score}</strong>.</li>"
 
     text + '</ul>'
   end
