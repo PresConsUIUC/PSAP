@@ -156,8 +156,8 @@ var PSAP = {
 
         PSAP.updateResultsCount();
 
-        // Show the glossary, bibliography, help, etc. in a modal panel instead of
-        // a new page
+        // Links with the .psap-modal-view class will open in a modal panel
+        // instead of a new page
         $('a.psap-modal-view').on('click', function() {
             $('#appModal').modal('show');
 
