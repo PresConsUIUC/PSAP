@@ -182,6 +182,9 @@ var AssessmentForm = function(entity) {
             });
             if (data.length) {
                 var onOptionChanged = function() {
+                    $(this).closest('.assessment_question').
+                        nextUntil('[data-depth=0]', '[data-depth=1]').remove();
+
                     // check for dependent (child) questions
                     var selected_option_id = $(this).filter(':checked').val();
                     var question_elem = $(this).closest('.assessment_question');
@@ -207,8 +210,6 @@ var AssessmentForm = function(entity) {
                                         nodeForQuestion(object, depth),
                                         question_elem);
                                 }
-                            } else {
-                                child_question_elem.remove();
                             }
                         });
                         $('.assessment_question [data-type="option"]').
