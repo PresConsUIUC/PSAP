@@ -64,6 +64,8 @@ class Resource < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :parent_id
 
+  before_save :update_assessment_score, :update_assessment_complete
+
   def self.all_matching_query(params, starting_set = nil)
     starting_set = Resource.all unless starting_set
     resources = starting_set
@@ -453,8 +455,8 @@ class Resource < ActiveRecord::Base
 
   ##
   # Returns the canonical assessment score of the resource, factoring in the
-  # location, temperature, and RH scores as well, unlike assessment_score which
-  # does not. If a collection, returns the average score of all resources.
+  # location, temperature, and RH scores as well. If a collection, returns the
+  # average score of all resources.
   #
   # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
@@ -463,11 +465,8 @@ class Resource < ActiveRecord::Base
   def effective_assessment_score
     if self.resource_type == ResourceType::COLLECTION
       items = self.all_assessed_items
-      if items.any?
-        return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
-            self.location.assessment_score * 0.1
-      end
-      return 0.0
+      return items.any? ?
+          items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
     end
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.05 +
@@ -601,15 +600,10 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Updates the score of the resource only, without taking location,
-  # temperature, or humidity into account.
-  #
   # Overrides Assessable mixin
   #
   def update_assessment_score
-    self.assessment_score = self.format ?
-        self.effective_format_score * (10 / 9) +
-            self.assessment_question_score * (10 / 9) : 0.0
+    self.assessment_score = self.effective_assessment_score
   end
 
   private
