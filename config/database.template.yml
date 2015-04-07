@@ -4,8 +4,6 @@ development:
   database: psap_development
   min_messages: warning
   encoding: unicode
-  username: psap
-  password: psap
   template: template1
 
 # Warning: The database defined as "test" will be erased and
@@ -17,8 +15,6 @@ test:
   database: psap_test
   min_messages: warning
   encoding: unicode
-  username: psap
-  password: psap
   template: template1
 
 production:
