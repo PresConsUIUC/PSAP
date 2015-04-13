@@ -44,6 +44,15 @@ module ResourcesHelper
     date += " (#{resource_date.readable_date_type.downcase})"
   end
 
+  def score_formula
+    html = '<span class="label label-primary">ASSESSMENT &times; 0.5</span> + '\
+    '<span class="label label-primary">FORMAT &times; 0.4</span> + '\
+    '<span class="label label-primary">LOCATION &times; 0.05</span> + '\
+    '<span class="label label-primary">TEMPERATURE &times; 0.025</span> + '\
+    '<span class="label label-primary">RELATIVE HUMIDITY &times; 0.025</span>'
+    raw(html)
+  end
+
   def score_help(resource)
     assessment_score = (resource.assessment_question_score * 100).round(1)
     format_score = (resource.effective_format_score * 100).round(1)
@@ -53,12 +62,7 @@ module ResourcesHelper
 
     text = '<p>The following formula is used to calculate a resource\'s '\
     'assessment score:</p>'\
-    '<p><span class="label label-info">ASSESSMENT &times; 0.5</span> + '\
-    '<span class="label label-success">FORMAT &times; 0.4</span> + '\
-    '<span class="label label-danger">LOCATION &times; 0.05</span> + '\
-    '<span class="label label-primary">TEMPERATURE &times; 0.025</span> + '\
-    '<span class="label label-warning">RELATIVE HUMIDITY &times; 0.025</span> '\
-    '</p>'\
+    '<p>' + score_formula + '</p>'\
     '<ul>'
 
     if resource.assessment_question_responses.length < 1
