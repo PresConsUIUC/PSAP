@@ -6,7 +6,7 @@
     <div class="col-sm-10">
       <ul class="nav nav-pills">
         <li role="presentation" class="active">
-          <a href="#institution_assessment_tab" data-toggle="tab">Institution Assessment</a>
+          <a href="#institution_score_summary_tab" data-toggle="tab">Institution Score Summary</a>
         </li>
         <li role="presentation">
           <a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a>
@@ -33,8 +33,8 @@
   </div>
 
   <div class="tab-content">
-    <div class="tab-pane active" id="institution_assessment_tab">
-      <h2>Institution Assessment</h2>
+    <div class="tab-pane active" id="institution_score_summary_tab">
+      <h2>Institution Score Summary</h2>
       <%= render partial: 'shared/assessable_report',
                  locals: { assessable: @institution } %>
     </div>

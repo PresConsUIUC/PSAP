@@ -67,7 +67,7 @@
       <li role="presentation" class="active">
         <a href="#resources_tab" data-toggle="tab">Resources</a>
       </li>
-      <li role="presentation"><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
+      <li role="presentation"><a href="#score_summary_tab" data-toggle="tab">Score Summary</a></li>
       <li role="presentation"><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
@@ -148,7 +148,7 @@
         <% end %>
       </div>
 
-      <div class="tab-pane" id="assessment_tab">
+      <div class="tab-pane" id="score_summary_tab">
         <%= render partial: 'shared/assessable_report',
                    locals: { assessable: @location } %>
       </div>

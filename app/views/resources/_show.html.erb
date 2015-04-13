@@ -116,7 +116,7 @@
       <li <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
-      <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
+      <li><a href="#score_summary_tab" data-toggle="tab">Score Summary</a></li>
       <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
@@ -305,7 +305,7 @@
         </div>
       </div> <!-- #info_tab -->
 
-      <div id="assessment_tab" class="tab-pane">
+      <div id="score_summary_tab" class="tab-pane">
         <% if @resource.resource_type == ResourceType::ITEM %>
           <% if @resource.assessment_complete %>
             <% # TODO: use the assessable_report partial %>
@@ -364,7 +364,7 @@
           <p>This is the average score of the items within the collection.
             (Collections themselves cannot be assessed.)</p>
         <% end %>
-      </div> <!-- #assessment_tab -->
+      </div> <!-- #score_summary_tab -->
 
       <div id="activity_tab" class="tab-pane">
         <%= render partial: 'shared/events', locals: { events: @events } %>
