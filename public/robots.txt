@@ -1,6 +1,6 @@
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
 
 User-agent: *
-Disallow: /confirm
-Disallow: /forgot_password
-Disallow: /new_password
+Disallow: /forgot-password
+Disallow: /new-password
+Disallow: /signin
