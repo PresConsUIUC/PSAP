@@ -30,15 +30,124 @@
 </head>
 <body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
 
-  <%= render 'layouts/header' %>
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <ul class="nav navbar-nav navbar-left">
+          <% if signed_in? %>
+            <% if current_user.institution %>
+              <li class="dropdown <%= 'active' if current_page?(dashboard_path) or
+                      controller.controller_name == 'institutions' %>">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                  <i class="fa fa-university"></i> Home <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'Dashboard', dashboard_path %></li>
+                  <li role="presentation" class="divider"></li>
+                  <li><%= link_to current_user.institution.name, current_user.institution %></li>
+                  <li role="presentation" class="divider"></li>
+                  <li><%= link_to 'Repositories', institution_repositories_path(current_user.institution) %></li>
+                  <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
+                  <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
+                  <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
+                  <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li <%= 'class=active' if current_page?(dashboard_path) %>>
+                <%= link_to 'Home', dashboard_path, class: 'nav-link' %>
+              </li>
+            <% end %>
+          <% end %>
+
+          <li class="dropdown <%= 'active' if controller.controller_name == 'format_id_guide' %>">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+              Format ID Guide <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'All Formats', format_id_guide_path %></li>
+              <li class="divider"></li>
+              <li><%= link_to 'Audiovisual Media', format_id_guide_path(anchor: 'audiovisual') %></li>
+              <li><%= link_to 'Paper & Book', format_id_guide_path(anchor: 'paper_book') %></li>
+              <li><%= link_to 'Photo & Image Material', format_id_guide_path(anchor: 'photo_image') %></li>
+              <li><%= link_to 'Supplementary', format_id_guide_path(anchor: 'supplementary') %></li>
+            </ul>
+          </li>
+          <li <%= 'class=active' if current_page?(glossary_path) %>>
+            <%= link_to 'Glossary', glossary_path, class: 'nav-link' %>
+          </li>
+          <li <%= 'class=active' if current_page?(bibliography_path) %>>
+            <%= link_to 'Bibliography', bibliography_path, class: 'nav-link' %>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <% if signed_in? %>
+            <% if current_user.is_admin? %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                  Administration <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'Institutions', institutions_path %></li>
+                  <li><%= link_to 'Formats', formats_path %></li>
+                  <li><%= link_to 'Users', users_path %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to 'Event Log', events_path %></li>
+                </ul>
+              </li>
+            <% end %>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <%= current_user.username %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Profile', current_user %></li>
+                <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to 'Sign Out', signout_path, method: 'delete' %>
+                </li>
+              </ul>
+            </li>
+
+            <li class="psap-icon-only">
+              <%= link_to(user_manual_path, title: 'User Manual') do %>
+                <i class="fa fa-book"></i>
+              <% end %>
+            </li>
+            <li class="psap-icon-only">
+              <%= link_to(help_path, title: 'Help') do %>
+                <i class="fa fa-question-circle"></i>
+              <% end %>
+            </li>
+          <% elsif request.url != root_url %>
+            <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
   <div id="psap-ajax-shade"></div>
 
   <div class="container-fluid">
     <header class="page-header">
-      <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
-                                   alt:'PSAP logo', id:'title_logo'), root_path %>
-
       <div class="pull-right">
         <%= link_to 'mailto:nobody@example.org?subject=I found a bug in '\
         'the PSAP&body=Please enter a description of the bug, the URL of the '\
@@ -54,33 +163,10 @@
           </script>
         <% end %>
       </div>
-
-      <h1><%= link_to 'Preservation Self-Assessment Program', root_path %>
+      <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
+                                   alt:'PSAP logo', id:'title_logo'), root_path %>
+      <h1><%= link_to 'Preservation Self-Assessment Program', root_path, class: 'psap-title' %>
         <span class="label label-warning">BETA</span></h1>
-
-      <% if signed_in? && current_user.institution %>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                  data-toggle="dropdown">
-            <%= current_user.institution.name %> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'Home', current_user.institution %></li>
-            <li role="presentation" class="divider"></li>
-            <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
-            <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
-            <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
-            <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
-            <% if @user_institution_repositories.any? %>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation" class="dropdown-header">Repositories</li>
-              <% @user_institution_repositories.each do |repo| %>
-                <li><%= link_to repo.name, repo %></a></li>
-              <% end %>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
     </header>
 
     <% flash.each do |type, message| %>
