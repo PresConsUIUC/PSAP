@@ -34,7 +34,7 @@ var PSAP = {
             $('div.alert').remove();
 
             // construct the message
-            var flash = $('<div class="alert ' + bootstrapClass + '"></div>');
+            var flash = $('<div class="psap-flash alert ' + bootstrapClass + '"></div>');
             var button = $('<button type="button" class="close"' +
             ' data-dismiss="alert" aria-hidden="true">&times;</button>');
             flash.append(button);
@@ -254,9 +254,9 @@ var PSAP = {
         });
 
         // make flash messages disappear after a delay
-        if ($('div.alert').length) {
+        if ($('.psap-flash').length) {
             setTimeout(function () {
-                $('div.alert').fadeOut();
+                $('.psap-flash').fadeOut();
             }, PSAP.Flash.FADE_OUT_DELAY);
         }
 
