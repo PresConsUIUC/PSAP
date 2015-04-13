@@ -262,6 +262,7 @@ module PrawnCharting
   # @return void
   #
   def bar_chart(pdf, data, width, height)
+    return if data.length <= 10
     x_margin = 20
     label_size = 8
     label_height = pdf.height_of('bla', size: label_size)
