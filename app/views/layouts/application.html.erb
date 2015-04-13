@@ -51,12 +51,12 @@
               <li class="dropdown <%= 'active' if current_page?(dashboard_path) or
                       controller.controller_name == 'institutions' %>">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                  <i class="fa fa-university"></i> Home <b class="caret"></b>
+                  <i class="fa fa-university"></i> My Institution <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to 'Dashboard', dashboard_path %></li>
+                  <li><%= link_to 'Home', current_user.institution %></li>
                   <li role="presentation" class="divider"></li>
-                  <li><%= link_to current_user.institution.name, current_user.institution %></li>
+                  <li><%= link_to 'Dashboard', dashboard_path %></li>
                   <li role="presentation" class="divider"></li>
                   <li><%= link_to 'Repositories', institution_repositories_path(current_user.institution) %></li>
                   <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
