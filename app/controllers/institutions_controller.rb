@@ -41,7 +41,8 @@ class InstitutionsController < ApplicationController
           "LEFT JOIN repositories ON repositories.id = locations.repository_id "\
           "WHERE repositories.institution_id = #{@institution.id} "\
           "AND resources.assessment_score >= #{i * 0.1} "\
-          "AND resources.assessment_score < #{(i + 1) * 0.1} "
+          "AND resources.assessment_score < #{(i + 1) * 0.1} "\
+          "AND resources.assessment_score > 0.00001 " # virtually all of these will be non-assessed
       @resource_chart_data << ActiveRecord::Base.connection.execute(sql).
           map{ |r| r['count'].to_i }.first
     end
@@ -58,7 +59,8 @@ class InstitutionsController < ApplicationController
           "FROM resources "\
           "WHERE resources.parent_id IN (#{parent_ids}) "\
           "AND resources.assessment_score >= #{i * 0.1} "\
-          "AND resources.assessment_score < #{(i + 1) * 0.1} "
+          "AND resources.assessment_score < #{(i + 1) * 0.1} "\
+          "AND resources.assessment_score > 0.00001 " # virtually all of these will be non-assessed
         data << ActiveRecord::Base.connection.execute(sql).
             map{ |r| r['count'].to_i }.first
       end
