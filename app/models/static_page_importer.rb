@@ -114,7 +114,7 @@ class StaticPageImporter
 
       # WebM/VP8
       unless File.exists?(videodestpath)
-        `ffmpeg -i #{videosrcpath} -loglevel panic -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k #{videodestpath}`
+        `ffmpeg -i #{videosrcpath} -loglevel fatal -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k #{videodestpath}`
       end
       return true
     end
