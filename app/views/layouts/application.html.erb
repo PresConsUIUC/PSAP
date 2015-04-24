@@ -84,7 +84,7 @@
     </header>
 
     <% flash.each do |type, message| %>
-      <div class="alert alert-dismissable psap-flash <%= bootstrap_class_for(type) %>">
+      <div class="alert alert-dismissable psap-flash <%= bootstrap_class_for_alert(type) %>">
         <button type="button" class="close" data-dismiss="alert"
                 aria-hidden="true">&times;</button>
         <%= message %>
