@@ -315,9 +315,11 @@
             <% # TODO: use the assessable_report partial %>
             <div class="psap-assessable-report">
               <div class="psap-progress-container">
-                Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
+                <span class="psap-score <%= bootstrap_fg_class_for_score(@resource.effective_assessment_score) %>">
+                  <%= number_to_human(@resource.effective_assessment_score * 100) %>
+                </span>
                 <button type="button" data-container="body" data-placement="bottom"
-                        data-toggle="popover" class="btn btn-sm help"
+                        data-toggle="popover" class="btn btn-default help"
                         data-content="<%= score_help(@resource) %>">?</button>
                 <div class="progress">
                   <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
@@ -355,7 +357,9 @@
           <% end %>
         <% else %>
           <div class="psap-progress-container">
-            Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
+            <span class="psap-score <%= bootstrap_fg_class_for_score(@resource.effective_assessment_score) %>">
+              <%= number_to_human(@resource.effective_assessment_score * 100) %>
+            </span>
             <div class="progress">
               <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
                    role="progressbar"
