@@ -116,7 +116,11 @@
       <li <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
-      <li><a href="#score_summary_tab" data-toggle="tab">Score Summary</a></li>
+      <li>
+        <a href="#score_summary_tab" data-toggle="tab">Score Summary
+          <span class="badge"><%= number_to_human(@resource.effective_assessment_score * 100) %></span>
+        </a>
+      </li>
       <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
