@@ -22,7 +22,7 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     admin_user.reload
     assert_equal(admin_user.institution, original_institution)
 
-    assert flash[:error].include?('failed')
+    assert flash['error'].include?('failed')
   end
 
   test 'changing an institution to the same institution should fail' do
@@ -31,7 +31,7 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     @user.save
     patch_via_redirect("/users/#{@user.username}",
                        'user' => @user.attributes)
-    assert flash[:error].include?('failed')
+    assert flash['error'].include?('failed')
   end
 
   test 'admin users can change institutions with no review' do
@@ -48,7 +48,7 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     assert_equal(@new_institution, @user.desired_institution)
 
     # test the flash
-    assert flash[:success].include?('An administrator has been notified')
+    assert flash['success'].include?('An administrator has been notified')
 
     # test that an email was sent
     email = AdminMailer.institution_change_review_request_email(@user).deliver

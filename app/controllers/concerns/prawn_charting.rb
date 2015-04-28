@@ -45,7 +45,13 @@ module PrawnCharting
     # heading
     heading(pdf, institution, font, h1_size)
 
-    # institution overview
+    # page 1: executive summary
+    pdf.font font, style: :bold
+    pdf.text 'Executive Summary', size: h1_size
+    pdf.font font, style: :normal
+    pdf.move_down 20
+
+    # institution
     pdf.font font, style: :bold
     pdf.text 'Institution', size: h2_size
     pdf.font font, style: :normal
@@ -54,8 +60,8 @@ module PrawnCharting
       pdf.text "Score: #{(institution.assessment_score * 100).round}"
 
       data = []
-      institution.assessment_section_scores.each do |section_id, score|
-        section = AssessmentSection.find(section_id)
+      Assessment.find_by_key('institution').assessment_sections.each do |section|
+        score = institution.assessment_score_in_section(section)
         data << [ section.name, (score * 100).round,
                   assessment_score_characterization(score) ]
       end
@@ -63,8 +69,47 @@ module PrawnCharting
     else
       pdf.text 'The institution has not been assessed yet.'
     end
+    pdf.move_down 20
 
-    # locations summary
+    # locations
+    pdf.font font, style: :bold
+    pdf.text 'Storage Environments', size: h2_size
+    pdf.font font, style: :normal
+
+    data = []
+    Assessment.find_by_key('location').assessment_sections.each do |section|
+      score = institution.mean_assessed_location_score_in_section(section)
+      data << [ section.name, (score * 100).round,
+                assessment_score_characterization(score) ]
+    end
+    if institution.assessed_locations.any?
+      pdf.text "Score: #{(institution.mean_location_score * 100).round}"
+      pdf.table(data, cell_style: { border_lines: [:dotted] })
+    else
+      pdf.text 'No storage environments have been assessed yet.'
+    end
+
+    pdf.move_down 20
+
+    # resources
+    pdf.font font, style: :bold
+    pdf.text 'Resources', size: h2_size
+    pdf.font font, style: :normal
+
+    data = []
+    Assessment.find_by_key('resource').assessment_sections.each do |section|
+      score = institution.mean_assessed_item_score_in_section(section)
+      data << [ section.name, (score * 100).round,
+                assessment_score_characterization(score) ]
+    end
+    if institution.all_assessed_items.any?
+      pdf.text "Score: #{(institution.mean_resource_score * 100).round}"
+      pdf.table(data, cell_style: { border_lines: [:dotted] })
+    else
+      pdf.text 'No items have been assessed yet.'
+    end
+
+    # page 2+: locations summary
     pdf.start_new_page
     heading(pdf, institution, font, h1_size)
     pdf.font font, style: :bold
@@ -84,8 +129,8 @@ module PrawnCharting
       institution.locations.order(:name).each do |location|
         if location.assessment_question_responses.any?
           row = [ location.name ]
-          location.assessment_section_scores.each do |section_id, score|
-            row << (score * 100).round
+          Assessment.find_by_key('location').assessment_sections.each do |section|
+            row << (location.assessment_score_in_section(section) * 100).round
           end
           row << (location.assessment_score * 100).round
           data << row
@@ -217,6 +262,7 @@ module PrawnCharting
   # @return void
   #
   def bar_chart(pdf, data, width, height)
+    return if data.length <= 10
     x_margin = 20
     label_size = 8
     label_height = pdf.height_of('bla', size: label_size)

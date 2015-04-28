@@ -30,7 +30,7 @@ class LocationsControllerTest < ActionController::TestCase
                                 description: 'Test Description' },
            repository_id: 1
     end
-    assert_equal 'Location "Test Location" created.', flash[:success]
+    assert_equal 'Location "Test Location" created.', flash['success']
     assert_redirected_to location_url(assigns(:location))
   end
 
@@ -41,7 +41,7 @@ class LocationsControllerTest < ActionController::TestCase
                                 description: 'Test Description' },
            repository_id: 5
     end
-    assert_equal 'Location "Test Location" created.', flash[:success]
+    assert_equal 'Location "Test Location" created.', flash['success']
     assert_redirected_to location_url(assigns(:location))
   end
 
@@ -95,7 +95,7 @@ class LocationsControllerTest < ActionController::TestCase
       delete :destroy, id: locations(:location_two).id
     end
     assert_equal "Location \"#{locations(:location_two).name}\" deleted.",
-                 flash[:success]
+                 flash['success']
     assert_redirected_to repository_url(locations(:location_two).repository_id)
   end
 

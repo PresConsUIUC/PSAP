@@ -1,3 +1,10 @@
+##
+# An institution is a top-level entity containing zero or more Repositories.
+# Once assigned to an institution, users (except administrators) are restricted
+# to accessing entities related to that institution.
+#
+# Institutions are assessable.
+#
 class Institution < ActiveRecord::Base
 
   include Assessable
@@ -23,8 +30,8 @@ class Institution < ActiveRecord::Base
   validates :city, presence: true, length: { maximum: 255 }
   validates :name, presence: true, length: { minimum: 4, maximum: 255 },
             uniqueness: { case_sensitive: false }
-  validates :state, presence: true, length: { maximum: 30 }
-  validates :postal_code, presence: true, length: { maximum: 30 }
+  validates :state, length: { maximum: 30 }
+  validates :postal_code, length: { maximum: 30 }
   validates :country, presence: true, length: { maximum: 255 }
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
@@ -77,15 +84,66 @@ class Institution < ActiveRecord::Base
     end
 
     all_items.each do |item|
-      stats[:high] = item.total_assessment_score if item.total_assessment_score > stats[:high]
-      stats[:low] = item.total_assessment_score if
-          stats[:low].nil? or item.total_assessment_score < stats[:low]
+      stats[:high] = item.effective_assessment_score if item.effective_assessment_score > stats[:high]
+      stats[:low] = item.effective_assessment_score if
+          stats[:low].nil? or item.effective_assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.total_assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.total_assessment_score }.sort
+    stats[:mean] = all_items.map{ |r| r.effective_assessment_score }.sum.to_f / all_items.length.to_f
+    sorted = all_items.map{ |r| r.effective_assessment_score }.sort
     len = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
+  end
+
+  ##
+  # @return Array of all assessed locations in an institution.
+  #
+  def assessed_locations
+    self.locations.where(assessment_complete: true)
+  end
+
+  ##
+  # @param section AssessmentSection
+  # @return float
+  #
+  def mean_assessed_item_score_in_section(section)
+    score = 0.0
+    assessed_items = all_assessed_items
+    return score if assessed_items.length < 1
+
+    assessed_items.each do |item|
+      score += item.assessment_score_in_section(section)
+    end
+    score.to_f / assessed_items.length.to_f
+  end
+
+  ##
+  # @param section AssessmentSection
+  # @return float
+  #
+  def mean_assessed_location_score_in_section(section)
+    score = 0.0
+    assessed_locations = self.assessed_locations
+    return score if assessed_locations.length < 1
+
+    assessed_locations.each do |location|
+      score += location.assessment_score_in_section(section)
+    end
+    score / assessed_locations.length.to_f
+  end
+
+  def mean_location_score
+    locations_ = locations.where(assessment_complete: true)
+    locations_.any? ?
+        locations_.map(&:assessment_score).reduce(:+).to_f / locations_.length.to_f :
+        0.0
+  end
+
+  def mean_resource_score
+    items = resources.where(resource_type: ResourceType::ITEM,
+                            assessment_complete: true)
+    items.any? ?
+        items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0
   end
 
   ##

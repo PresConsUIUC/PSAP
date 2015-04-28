@@ -1,68 +1,83 @@
 <% provide(:title, 'Register') %>
+<% provide(:body_id, 'new_user') %>
 
 <%= # pass the root URL to the username checker for ajax purposes
     javascript_tag do %>
     window.pageURL = '<%= root_url %>';
 <% end %>
 
-<h1>Sign up</h1>
+<div class="psap-page-title">
+  <h1>Sign up</h1>
+</div>
 
-<section class="center-block">
-  <%= form_for(@user) do |f| %>
-    <%= render 'shared/error_messages', :object => f.object %>
+<p>The sign-up process is as follows:</p>
+<ol>
+  <li>Complete and submit the form below. Shortly thereafter, you will
+    receive an email asking you to confirm your account.</li>
+  <li>Once you have confirmed your account, a PSAP administrator will be
+    notified and will decide whether to approve your account.</li>
+  <li>Once approved, you will be notified by email that you are now able to
+    sign in and get started.</li>
+</ol>
 
-    <div class="form-group has-feedback">
-      <%= f.label :first_name %>
-      <%= f.text_field :first_name, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :last_name %>
-      <%= f.text_field :last_name, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+<%= form_for(@user) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
 
-    <div class="form-group has-feedback">
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-    </div>
+  <div class="form-group has-feedback">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+  </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :username, 'Desired Username' %>
-      <%= f.text_field :username, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-      <p id="username_status"></p>
-    </div>
+  <div class="form-group has-feedback">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :about, 'About You and Your Interest in the PSAP' %>
-      <%= f.text_area :about, class: 'form-control' %>
-      <span class="help-block">This will help us validate your account.</span>
-    </div>
+  <div class="form-group has-feedback">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+  </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-      <div class="progress">
-        <div class="progress-bar progress-bar-warning" role="progressbar"
-             aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
-             style="width: 0%">
-          <span class="sr-only"></span>
-        </div>
+  <div class="form-group has-feedback">
+    <%= f.label :username, 'Desired Username' %>
+    <%= f.text_field :username, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+    <p id="username_status"></p>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :about, 'About You and Your Interest in the PSAP' %>
+    <%= f.text_area :about, class: 'form-control' %>
+    <span class="help-block">This will help us validate your account.</span>
+  </div>
+
+  <div class="form-group has-feedback">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning" role="progressbar"
+           aria-valuenow="0" aria-valuemin="0" aria-valuemax="1"
+           style="width: 0%">
+        <span class="sr-only"></span>
       </div>
-      <p id="password_status" class="text-warning"></p>
     </div>
+    <p id="password_status" class="text-warning"></p>
+  </div>
 
-    <div class="form-group has-feedback">
-      <%= f.label :password_confirmation, 'Confirm Password' %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
-      <span class="glyphicon form-control-feedback"></span>
-      <p id="password_confirmation_status"></p>
-    </div>
+  <div class="form-group has-feedback">
+    <%= f.label :password_confirmation, 'Confirm Password' %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
+    <span class="glyphicon form-control-feedback"></span>
+    <p id="password_confirmation_status"></p>
+  </div>
 
-    <%= f.submit 'Create Account', class: 'btn btn-primary' %>
-  <% end %>
-</section>
+  <% # provided by invisible_captcha gem %>
+  <%= invisible_captcha %>
+
+  <%= f.submit 'Create Account', class: 'btn btn-primary' %>
+<% end %>

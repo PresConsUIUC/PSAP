@@ -8,9 +8,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  # This regex is very lenient, but at least forces the user to put in some
-  # effort. Strict email validation without rejecting valid addresses is
-  # difficult with regex, and pretty pointless anyway.
+  # Strict email validation without rejecting valid addresses is difficult,
+  # but this will at least require something vaguely email-like.
   validates :email, presence: true, format: { with: /\S+@\S+\.\S+/ },
             uniqueness: { case_sensitive: false }
   validates :feed_key, presence: true, length: { maximum: 255 }
@@ -48,12 +47,8 @@ class User < ActiveRecord::Base
     connection = ActiveRecord::Base.connection
     counts = connection.execute(sql)
 
-    results = []
-    counts.each do |row|
-      results << { count: row['count'].to_i,
-                   user: User.find(row['user_id']) } if row['user_id']
-    end
-    results
+    counts.select{ |r| r['user_id'] }.map{ |r| { count: r['count'].to_i,
+                                                 user: User.find(r['user_id']) }}
   end
 
   def to_param

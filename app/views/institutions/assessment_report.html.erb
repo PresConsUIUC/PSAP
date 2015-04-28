@@ -1,11 +1,25 @@
-<%= render layout: 'institutions/show' do %>
+<%= render layout: 'institutions/layout' do %>
+
+  <%= hidden_field_tag(:subpage, 'assessment_report') %>
+
   <div class="row">
     <div class="col-sm-10">
       <ul class="nav nav-pills">
-        <li role="presentation" class="active"><a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a></li>
-        <li role="presentation"><a href="#storage_environments_tab" data-toggle="tab">Storage Environments</a></li>
-        <li role="presentation"><a href="#resources_tab" data-toggle="tab">Resources</a></li>
-        <li role="presentation"><a href="#collections_tab" data-toggle="tab">Collections</a></li>
+        <li role="presentation" class="active">
+          <a href="#institution_score_summary_tab" data-toggle="tab">Institution Score Summary</a>
+        </li>
+        <li role="presentation">
+          <a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a>
+        </li>
+        <li role="presentation">
+          <a href="#storage_environments_tab" data-toggle="tab">Storage Environments</a>
+        </li>
+        <li role="presentation">
+          <a href="#resources_tab" data-toggle="tab">Resources</a>
+        </li>
+        <li role="presentation">
+          <a href="#collections_tab" data-toggle="tab">Collections</a>
+        </li>
       </ul>
     </div>
 
@@ -19,7 +33,13 @@
   </div>
 
   <div class="tab-content">
-    <div class="tab-pane active" id="preservation_infrastructure_tab">
+    <div class="tab-pane active" id="institution_score_summary_tab">
+      <h2>Institution Score Summary</h2>
+      <%= render partial: 'shared/assessable_report',
+                 locals: { assessable: @institution } %>
+    </div>
+
+    <div class="tab-pane" id="preservation_infrastructure_tab">
       <h2>Preservation Infrastructure</h2>
       <% if @institution.assessment_question_responses.any? %>
         <%= render partial: 'assessable_section_scores',

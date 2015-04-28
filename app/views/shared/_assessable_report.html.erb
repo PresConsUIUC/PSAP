@@ -1,0 +1,34 @@
+<% # renders a score bar and question summary for Assessable entities. %>
+
+<div class="psap-assessable-report">
+  <div class="psap-progress-container">
+    <span class="psap-score <%= bootstrap_fg_class_for_score(assessable.assessment_score) %>">
+      <%= number_to_human(assessable.assessment_score * 100) %>
+    </span>
+    <div class="progress">
+      <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(assessable.assessment_score) %> score"
+           role="progressbar"
+           aria-valuenow="<%= assessable.assessment_score * 100 %>"
+           aria-valuemin="0" aria-valuemax="100"
+           style="width:<%= assessable.assessment_score * 100 %>%;">
+      </div>
+    </div>
+  </div>
+
+  <% assessment_sections = Assessment.find_by_key(assessable.class.to_s.downcase).
+  assessment_sections.order(:index) %>
+  <% assessment_sections.each do |section| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title"><%= section.name %></h4>
+      </div>
+
+      <div class="panel-body">
+        <%= render partial: 'shared/assessable_report_questions',
+                   locals: { entity: assessable,
+                             assessment_questions: section.assessment_questions.where(parent_id: nil),
+                             depth: 0 } %>
+      </div>
+    </div>
+  <% end %>
+</div>

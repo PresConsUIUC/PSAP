@@ -52,14 +52,31 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'assessment score and percent complete should update before save' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
-  test 'collections are not assessable' do
+  test 'setting a resource to a collection should prune its AQRs' do
     response = assessment_question_responses(:assessment_question_response_one)
     @resource.assessment_question_responses << response
     @resource.resource_type = ResourceType::COLLECTION
-    assert !@resource.save
+    @resource.save
+    assert !@resource.assessment_question_responses.any?
+  end
+
+  test 'resource should have a unique name scoped to its parent' do
+    # same name and parent should fail
+    resource2 = @resource.dup
+    assert !resource2.save
+    # same name, different parent should succeed
+    resource2.parent = resources(:uiuc_collection)
+    assert resource2.save
+  end
+
+  test 'location should be synched with parent location' do
+    @resource.parent = resources(:uiuc_collection)
+    @resource.location = locations(:location_three)
+    @resource.save!
+    assert_equal locations(:location_one), @resource.location
   end
 
   ########################### property tests ################################
@@ -168,22 +185,40 @@ class ResourceTest < ActiveSupport::TestCase
 
   # all_assessed_items
   test 'all_assessed_items should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   # all_children
   test 'all_children should work' do
-    flunk # TODO: write this
+    assert_equal 0, resources(:uiuc_collection).all_children.length
+    assert_equal 5, resources(:resource_six).all_children.length
   end
 
   # as_csv
   test 'as_csv should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   # assessed_item_statistics
   test 'assessed_item_statistics should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
+  end
+
+  # dup
+  test 'dup should produce a correct clone' do
+    clone = @resource.dup
+    assert_equal @resource.assessment_question_responses.length,
+                 clone.assessment_question_responses.length
+    assert_equal @resource.creators.length, clone.creators.length
+    assert_equal @resource.extents.length, clone.extents.length
+    assert_equal @resource.resource_dates.length, clone.resource_dates.length
+    assert_equal @resource.resource_notes.length, clone.resource_notes.length
+    assert_equal @resource.subjects.length, clone.subjects.length
+  end
+
+  # effective_assessment_score
+  test 'effective_assessment_score should work' do
+    skip # TODO: write this
   end
 
   # prune_empty_submodels
@@ -215,11 +250,6 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal 1, resource.subjects.length
   end
 
-  # total_assessment_score
-  test 'total_assessment_score should work' do
-    flunk # TODO: write this
-  end
-
   # update_assessment_complete
   test 'update_assessment_complete should set false if no format' do
     @resource.format = nil
@@ -246,11 +276,11 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'update_assessment_score should work for bound paper and original documents' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   test 'update_assessment_score should work for non-bound paper and non-original documents' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   ########################### association tests ##############################

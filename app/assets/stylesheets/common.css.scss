@@ -1,6 +1,3 @@
-/* Twitter Bootstrap is the foundation of the style. */
-@import "bootstrap";
-
 @mixin image-2x($image, $width, $height) {
   @media (min--moz-device-pixel-ratio: 1.3),
   (-o-min-device-pixel-ratio: 2.6/2),
@@ -74,19 +71,17 @@ h1 {
   font-size:2.5em;
 }
 h1:first-child {
-  margin-top: 0px;
-  margin-bottom: 0.8em;
+  margin-top:0em;
+  margin-bottom: 0.2em;
 }
 h2 {
   font-family: 'montserratregular';
   font-size:2em;
-
   color: rgb(80, 80, 80);
 }
 h3 {
   font-family: 'montserratregular';
   font-size:1.6em;
-
   color: rgb(100, 100, 100);
 }
 h4 {
@@ -144,30 +139,23 @@ button.hovertip-fire {
   margin-bottom:1em;
 }
 
-/* right-side info panels */
-.panel.col-sm-4 {
-  padding-top:1em;
+.popover {
+  min-width:300px;
+  z-index:8999; /* fixes popovers in modal panels */
 }
 
 div#psap-ajax-shade {
-  background-color:rgba(0, 0, 0, 0.4);
+  background:rgba(0, 0, 0, 0.4);
   display:none;
-  position:absolute;
+  position:fixed;
   height:100%;
+  left: 0px;
+  top: 0px;
   width:100%;
   z-index:9999;
-  img {
-    background-color:white;
-    display:block;
-    height:104px;
-    width:104px;
-    margin:0 auto;
-    margin-top:200px;
-    padding:20px;
-  }
 }
 
-.feed_link {
+.psap-feed-link {
   float:right
 }
 
@@ -211,7 +199,7 @@ nav.navbar {
     text-transform: uppercase;
   }
 
-  li#help {
+  li.psap-icon-only {
     font-size: 20px;
     margin: 0px;
     padding: 0px;
@@ -270,6 +258,10 @@ header {
   div.btn-group {
     margin:0px;
   }
+}
+
+.psap-page-title {
+  padding-bottom: 0.8em;
 }
 
 @media print {
@@ -375,12 +367,14 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
 
 /* forms */
 
-form {
-  max-width:700px;
-}
-
 .form-group {
   margin-bottom: 2em;
+}
+
+label.required:after {
+  color:red;
+  content:' *';
+  font-weight: bold;
 }
 
 .psap-addable-removable-input-group {
@@ -393,13 +387,18 @@ form {
   padding-left:0px;
 }
 
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] { /* bootstrap override */
+  margin-left:0px;
+}
+
 .radio-inline, .checkbox-inline {
   background-color:white;
   border:1px solid #cccccc;
   border-radius: 4px;
   color: #333333;
   display:inline-block;
-  margin:0.5em 0.5em;
+  margin:0em 0.5em;
   padding: 8px 12px 9px 32px;
   label {
     font-size:14px;

@@ -27,7 +27,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
 
   test 'POSTing an invalid email to /forgot-password should set the flash' do
     post_via_redirect('/forgot-password', email: 'asdlfjkljk@example.org')
-    assert_equal('No user found with the given email address.', flash[:error])
+    assert_equal('No user found with the given email address.', flash['error'])
   end
 
   test 'POSTing a valid password to /forgot-password should redirect to /' do
@@ -79,7 +79,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
   test 'following confirmation link should redirect to /signin and set the flash' do
     post_via_redirect('/new-password', user: @user.attributes)
     assert_equal '/signin', path
-    assert_equal('Password reset successfully.', flash[:success])
+    assert_equal('Password reset successfully.', flash['success'])
   end
 
 end

@@ -2,25 +2,27 @@
 <% provide(:body_id, 'edit_user') %>
 
 <% if current_user.is_admin? %>
-    <ol class="breadcrumb">
-      <li><%= link_to 'Users', users_path %></li>
-      <li><%= link_to @user.username, @user %></li>
-      <li class="active">Edit</li>
-    </ol>
+  <ol class="breadcrumb">
+    <li><%= link_to 'Users', users_path %></li>
+    <li><%= link_to @user.username, @user %></li>
+    <li class="active">Edit</li>
+  </ol>
 <% end %>
 
-<% if @user == current_user %>
+<div class="psap-page-title">
+  <% if @user == current_user %>
     <h1>Edit your account</h1>
-<% else %>
+  <% else %>
     <h1>Edit user <%= @user.username %></h1>
-<% end %>
+  <% end %>
+</div>
 
 <div class="row">
 
   <!-- left column menu -->
   <div class="col-sm-3">
     <nav>
-      <ul class="nav nav-pills nav-stacked" role="tablist">
+      <ul id="psap-affixed-menu" class="nav nav-pills nav-stacked" role="tablist">
         <li role="presentation" class="active">
           <a href="#basic_info" data-toggle="tab" aria-controls="basic_info">
             Basic Information

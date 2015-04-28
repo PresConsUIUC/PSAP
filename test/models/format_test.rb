@@ -58,6 +58,19 @@ class FormatTest < ActiveSupport::TestCase
                  @format.all_assessment_questions[0]
   end
 
+  # requires_type_vectors?
+  test 'requires_type_vectors? should return true for Original Document and Bound Paper' do
+    @format.fid = 159
+    assert @format.requires_type_vectors?
+    @format.fid = 160
+    assert @format.requires_type_vectors?
+  end
+
+  test 'requires_type_vectors? should return false for all other formats' do
+    @format.fid = 120
+    assert !@format.requires_type_vectors?
+  end
+
   ########################## association tests ##############################
 
   test 'children should be destroyed on destroy' do

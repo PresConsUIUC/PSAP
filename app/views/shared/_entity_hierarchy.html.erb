@@ -1,0 +1,44 @@
+<% # Displays a nested tree of entities. %>
+
+<ol class="psap-hierarchy-list hidden-xs">
+  <% entities.each do |entity| %>
+    <li class="depth-<%= depth %>">
+      <%= entity_icon(entity) %>
+      <% if selected_entity == entity %>
+        <span class="active"><%= entity.name %></span>
+      <% else %>
+        <%= link_to entity.name, entity %>
+      <% end %>
+
+      <% if entity.kind_of?(Resource) and entity.children.any? and
+              ![Institution, Repository, Location].include?(deepest_entity_class) %>
+        <%= render partial: 'shared/entity_hierarchy',
+                   locals: { entities: entity.children,
+                             selected_entity: selected_entity,
+                             deepest_entity_class: deepest_entity_class,
+                             depth: depth + 1 } %>
+      <% elsif entity.kind_of?(Location) and entity.resources.any? and
+              ![Institution, Repository, Location].include?(deepest_entity_class) %>
+        <%= render partial: 'shared/entity_hierarchy',
+                   locals: { entities: entity.resources.where(parent_id: nil),
+                             selected_entity: selected_entity,
+                             deepest_entity_class: deepest_entity_class,
+                             depth: depth + 1 } %>
+      <% elsif entity.kind_of?(Repository) and entity.locations.any? and
+              ![Institution, Repository].include?(deepest_entity_class) %>
+        <%= render partial: 'shared/entity_hierarchy',
+                   locals: { entities: entity.locations,
+                             selected_entity: selected_entity,
+                             deepest_entity_class: deepest_entity_class,
+                             depth: depth + 1 } %>
+      <% elsif entity.kind_of?(Institution) and entity.repositories.any? and
+              ![Institution].include?(deepest_entity_class) %>
+        <%= render partial: 'shared/entity_hierarchy',
+                   locals: { entities: entity.repositories,
+                             selected_entity: selected_entity,
+                             deepest_entity_class: deepest_entity_class,
+                             depth: depth + 1 } %>
+      <% end %>
+    </li>
+  <% end %>
+</ol>

@@ -1,77 +1,7 @@
-var ready = function() {
-    if ($('body#show_institution')) {
-        ShowInstitutionForm.attachEventListeners();
+var ResourceSearchForm = {
 
-        $('.psap-chart').each(function() {
-            // transform the json source data for D3
-            var sourceData = $.parseJSON($(this).prev('input[name="chart_data"]').val());
-            var barData = [];
-            for (var i = 0; i < sourceData.length; i++) {
-                barData.push({ 'x': i * 10, 'y': sourceData[i] });
-            }
-
-            var vis = d3.select('#' + $(this).attr('id')),
-                WIDTH = $(this).width(),
-                HEIGHT = $(this).height(),
-                MARGINS = {
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 50
-                },
-                xRange = d3.scale.ordinal().rangeRoundBands([MARGINS.left, WIDTH - MARGINS.right], 0.1).domain(barData.map(function (d) {
-                    return d.x;
-                })),
-                yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,
-                    d3.max(barData, function (d) {
-                        return d.y;
-                    })
-                ]),
-                xAxis = d3.svg.axis()
-                    .scale(xRange)
-                    .tickSize(5)
-                    .tickSubdivide(true),
-                yAxis = d3.svg.axis()
-                    .scale(yRange)
-                    .tickSize(5)
-                    .orient('left')
-                    .tickSubdivide(true);
-
-            vis.append('svg:g')
-                .attr('class', 'x axis')
-                .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
-                .call(xAxis);
-            vis.append('svg:g')
-                .attr('class', 'y axis')
-                .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
-                .call(yAxis); /*
-            vis.append('text')
-                .attr('x', WIDTH / 2)
-                .attr('y',  HEIGHT)
-                .style('text-anchor', 'middle')
-                .text('Score'); */
-            vis.selectAll('rect')
-                .data(barData)
-                .enter()
-                .append('rect')
-                .attr('x', function (d) {
-                    return xRange(d.x);
-                })
-                .attr('y', function (d) {
-                    return yRange(d.y);
-                })
-                .attr('class', function (d) { return 'bar bar-' + d.x })
-                .attr('width', xRange.rangeBand())
-                .attr('height', function (d) {
-                    return ((HEIGHT - MARGINS.bottom) - yRange(d.y));
-                });
-        });
-    }
-};
-
-var ShowInstitutionForm = {
-    attachEventListeners: function() {
-        var form = $('.psap-search');
+    init: function() {
+        var form = $('.psap-resource-search');
         var all_elements = form.find('textarea, input, select, button');
 
         $('.psap-clear').on('click', function() {
@@ -100,6 +30,123 @@ var ShowInstitutionForm = {
         }).filter(':checked').trigger('change');
     }
 
+};
+
+var ready = function() {
+    if ($('body#show_institution').length) {
+        switch ($('input[name="subpage"]').val()) {
+            case 'assessment_report':
+                $('.psap-chart').each(function () {
+                    // transform the json source data for D3
+                    var sourceData = $.parseJSON($(this).prev('input[name="chart_data"]').val());
+                    var barData = [];
+                    for (var i = 0; i < sourceData.length; i++) {
+                        barData.push({'x': i * 10, 'y': sourceData[i]});
+                    }
+
+                    var vis = d3.select('#' + $(this).attr('id')),
+                        WIDTH = $(this).width(),
+                        HEIGHT = $(this).height(),
+                        MARGINS = {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 50
+                        },
+                        xRange = d3.scale.ordinal().rangeRoundBands([MARGINS.left, WIDTH - MARGINS.right], 0.1).domain(barData.map(function (d) {
+                            return d.x;
+                        })),
+                        yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,
+                            d3.max(barData, function (d) {
+                                return d.y;
+                            })
+                        ]),
+                        xAxis = d3.svg.axis()
+                            .scale(xRange)
+                            .tickSize(5)
+                            .tickSubdivide(true),
+                        yAxis = d3.svg.axis()
+                            .scale(yRange)
+                            .tickSize(5)
+                            .orient('left')
+                            .tickSubdivide(true);
+
+                    vis.append('svg:g')
+                        .attr('class', 'x axis')
+                        .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
+                        .call(xAxis);
+                    vis.append('svg:g')
+                        .attr('class', 'y axis')
+                        .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
+                        .call(yAxis);
+                    /*
+                     vis.append('text')
+                     .attr('x', WIDTH / 2)
+                     .attr('y',  HEIGHT)
+                     .style('text-anchor', 'middle')
+                     .text('Score'); */
+                    vis.selectAll('rect')
+                        .data(barData)
+                        .enter()
+                        .append('rect')
+                        .attr('x', function (d) {
+                            return xRange(d.x);
+                        })
+                        .attr('y', function (d) {
+                            return yRange(d.y);
+                        })
+                        .attr('class', function (d) {
+                            return 'bar bar-' + d.x
+                        })
+                        .attr('width', xRange.rangeBand())
+                        .attr('height', function (d) {
+                            return ((HEIGHT - MARGINS.bottom) - yRange(d.y));
+                        });
+                });
+                break;
+            case 'search':
+                ResourceSearchForm.init();
+                break;
+            case 'repositories':
+                // initialize create-repository panel
+                PSAP.Panel.initRemote(
+                    '#psap-create-panel',
+                    $('input[name="new_repository_url"]').val(),
+                    function () {
+                        PSAP.Form.init();
+                    }
+                );
+                break;
+        }
+
+        // initialize edit-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-edit-panel',
+            $('input[name="institution_url"]').val() + '/edit',
+            function () {
+                PSAP.Form.init();
+            }
+        );
+
+        // initialize assess-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-assess-panel',
+            $('input[name="institution_url"]').val() + '/assess',
+            function () {
+                new AssessmentForm('institution');
+            }
+        );
+    }
+    if ($('body#institutions').length) {
+        // initialize create-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_institution_url"]').val(),
+            function () {
+                PSAP.Form.init();
+            }
+        );
+    }
 };
 
 $(document).ready(ready);

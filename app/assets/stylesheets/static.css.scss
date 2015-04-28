@@ -66,9 +66,6 @@
 }
 
 #landing {
-  h2 {
-    margin-bottom: 0.8em;
-  }
   .larger {
     font-size:1.4em;
     font-weight:200;
@@ -84,5 +81,8 @@
   #page_content img {
     margin-top: 40px;
     margin-bottom: 10px;
+  }
+  .well {
+    padding-bottom:0px;
   }
 }

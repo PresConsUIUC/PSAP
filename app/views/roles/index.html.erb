@@ -1,25 +1,27 @@
 <% provide(:title, 'All Roles') %>
 
-<h1>All Roles</h1>
+<div class="psap-page-title">
+  <h1>All Roles</h1>
+</div>
 
 <table class="roles table table-striped">
   <thead>
-  <tr>
-    <th style="width:25%">Role</th>
-    <th>Permissions</th>
-  </tr>
+    <tr>
+      <th style="width:25%">Role</th>
+      <th>Permissions</th>
+    </tr>
   </thead>
   <tbody>
-  <% @roles.each do |role| %>
+    <% @roles.each do |role| %>
       <tr>
         <td><%= link_to role.name, role %></td>
         <td><%= role.permissions.empty? ? '(none)' :
                         role.permissions.each.map{ |p| p.key }.join(', ') %></td>
       </tr>
-  <% end %>
+    <% end %>
   </tbody>
 </table>
 
 <div class="text-center">
-    <%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
+  <%= will_paginate @roles, renderer: BootstrapPagination::Rails %>
 </div>

@@ -17,7 +17,7 @@ end
 
 puts 'Seeding formats...'
 
-xls = Roo::Spreadsheet.open('db/seed_data/assessment_questions.xlsx')
+xls = Roo::Spreadsheet.open('db/seed_data/questionDependencies.xlsx')
 
 # Formats
 sheet = xls.sheet('Format Scores')
@@ -167,13 +167,13 @@ aq_sheets.each do |sheet|
       params = {
           qid: row[6].to_i,
           name: row[7].strip,
-          question_type: (!row[12].blank? and row[12].downcase == 'checkboxes') ?
+          question_type: (!row[14].blank? and row[14].downcase == 'checkboxes') ?
               AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
           index: index,
-          weight: row[9].to_f,
+          weight: row[11].to_f,
           help_text: row[8].strip,
-          advanced_help_page: nil, # TODO: fix
-          advanced_help_anchor: nil # TODO: fix
+          advanced_help_page: row[9] ? row[9].strip.gsub('.html', '') : nil,
+          advanced_help_anchor: row[10] ? row[10].strip : nil
       }
       case row[5][0..2].strip.downcase
         when 'use'
@@ -184,10 +184,10 @@ aq_sheets.each do |sheet|
           params[:assessment_section] = sections[:condition]
       end
 
-      unless row[10].blank? or row[10].to_s.include?('TBD') or row[11].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[10].to_i)
+      unless row[12].blank? or row[12].to_s.include?('TBD') or row[13].blank?
+        params[:parent] = AssessmentQuestion.find_by_qid(row[12].to_i)
         params[:enabling_assessment_question_options] = []
-        row[11].split(';').map{ |x| x.strip }.each do |dep|
+        row[13].split(';').map{ |x| x.strip }.each do |dep|
           eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
           if eaqo
             params[:enabling_assessment_question_options] << eaqo
@@ -203,22 +203,22 @@ aq_sheets.each do |sheet|
       question = AssessmentQuestion.create!(params)
 
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[13], index: 0, value: row[14]) if row[13] and row[14]
+          name: row[15], index: 0, value: row[16]) if row[15] and row[16]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 1, value: row[16]) if row[15] and row[16]
+          name: row[17], index: 1, value: row[18]) if row[17] and row[18]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 2, value: row[18]) if row[17] and row[18]
+          name: row[19], index: 2, value: row[20]) if row[19] and row[20]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[19], index: 3, value: row[20]) if row[19] and row[20]
+          name: row[21], index: 3, value: row[22]) if row[21] and row[22]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[21], index: 4, value: row[22]) if row[21] and row[22]
+          name: row[23], index: 4, value: row[24]) if row[23] and row[24]
       question.save!
     end
   end
 end
 
 # Location & Institution assessment questions
-puts 'Seeding location assessment questions...'
+puts 'Seeding location & institution assessment questions...'
 aq_sheets = %w(Location Institution)
 aq_sheets.each do |sheet|
   xls.sheet(sheet).each_with_index do |row, index|
@@ -268,15 +268,15 @@ aq_sheets.each do |sheet|
       question = AssessmentQuestion.create!(params)
 
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[9], index: 0, value: row[10]) if row[9] and row[10]
+          name: row[9], index: 0, value: row[10]) if row[9]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[11], index: 1, value: row[12]) if row[11] and row[12]
+          name: row[11], index: 1, value: row[12]) if row[11]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[13], index: 2, value: row[14]) if row[13] and row[14]
+          name: row[13], index: 2, value: row[14]) if row[13]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 3, value: row[16]) if row[15] and row[16]
+          name: row[15], index: 3, value: row[16]) if row[15]
       question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 4, value: row[18]) if row[17] and row[18]
+          name: row[17], index: 4, value: row[18]) if row[17]
       question.save!
     end
   end
@@ -294,6 +294,13 @@ puts 'Ingesting advanced help content...'
 p = StaticPageImporter.new(
     File.join(Rails.root, 'db', 'seed_data', 'AdvHelp'),
     File.join(Rails.root, 'app', 'assets', 'advanced_help'))
+p.reseed
+
+# User Manual HTML pages
+puts 'Ingesting user manual content...'
+p = StaticPageImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'UserManual'),
+    File.join(Rails.root, 'app', 'assets', 'user_manual'))
 p.reseed
 
 puts 'Creating the admin user...'
@@ -315,8 +322,25 @@ admin_user = command.object
 admin_user.role = admin_role
 admin_user.save!
 
+# Demo institution
+command = CreateInstitutionCommand.new(
+    { name: 'Demo Institution',
+      address1: '123 Sample St.',
+      address2: nil,
+      city: 'Urbana',
+      state: 'IL',
+      postal_code: 61801,
+      country: 'United States of America',
+      url: 'http://example.org/',
+      email: 'demo@example.org',
+      language: languages[122],
+      description: 'New NetID-authenticated users are initially placed in '\
+      'this institution, which can be used for demo purposes.' },
+    admin_user, '127.0.0.1')
+command.execute
+
 # UIUC institution
-command = CreateAndJoinInstitutionCommand.new(
+command = CreateInstitutionCommand.new(
     { name: 'University of Illinois at Urbana-Champaign',
       address1: '1408 W. Gregory Dr.',
       address2: nil,
@@ -330,8 +354,10 @@ command = CreateAndJoinInstitutionCommand.new(
       description: 'Lorem ipsum dolor sit amet' }, admin_user, '127.0.0.1')
 command.execute
 uiuc_institution = command.object
-admin_user.institution = uiuc_institution
-admin_user.save!
+
+command = JoinInstitutionCommand.new(admin_user, uiuc_institution, admin_user,
+                                     '127.0.0.1')
+command.execute
 
 # From here, we seed the database differently depending on the environment.
 case Rails.env
@@ -350,7 +376,7 @@ case Rails.env
     uiuc_institution.save!
 
     # Institutions
-    CreateAndJoinInstitutionCommand.new(
+    CreateInstitutionCommand.new(
         { name: 'Hogwarts School of Witchcraft & Wizardry',
           address1: '123 Magical St.',
           address2: 'Suite 12',
@@ -439,12 +465,6 @@ case Rails.env
 
     locations = location_commands.map{ |command| command.execute; command.object }
 
-    locations.each do |location|
-      location.temperature_range = TemperatureRange.create!(
-          min_temp_f: 60, max_temp_f: 70, score: 1)
-      location.save!
-    end
-
     # Location assessment question responses
     Assessment.find_by_key('location').assessment_questions.each do |question|
         locations[0].assessment_question_responses <<
@@ -520,10 +540,10 @@ case Rails.env
           description: 'Sample description',
           local_identifier: 'sample_local_id',
           rights: 'Sample rights' }, nil, '127.0.0.1')
-    (0..100).each do
+    (0..100).each do |index|
       resource_commands << CreateResourceCommand.new(
           locations[1],
-          { name: 'Sample Multitudinous Top-Level Item',
+          { name: "Sample Multitudinous Top-Level Item #{index + 1}",
             resource_type: ResourceType::ITEM,
             user: normal_user,
             description: 'Sample description',
@@ -534,10 +554,10 @@ case Rails.env
     resources = resource_commands.map{ |command| command.execute; command.object }
     resource_commands = []
 
-    (0..100).each do
+    (0..100).each do |index|
       resource_commands << CreateResourceCommand.new(
           locations[1],
-          { name: 'Sample Multitudinous Child Item',
+          { name: "Sample Multitudinous Child Item #{index + 1}",
             resource_type: ResourceType::ITEM,
             user: normal_user,
             parent: resources[4],
@@ -573,11 +593,11 @@ case Rails.env
                          year: 1986)
     ResourceDate.create!(resource: resources[2],
                          date_type: DateType::BULK,
-                         begin_year: 30,
-                         end_year: 50)
+                         begin_year: 1921,
+                         end_year: 1925)
     ResourceDate.create!(resource: resources[3],
                          date_type: DateType::SPAN,
-                         begin_year: 1920,
+                         begin_year: 1940,
                          end_year: 1990)
     ResourceDate.create!(resource: resources[4],
                          date_type: DateType::BULK,
@@ -585,7 +605,7 @@ case Rails.env
                          end_year: 1992)
     ResourceDate.create!(resource: resources[5],
                          date_type: DateType::SINGLE,
-                         year: 843)
+                         year: 1843)
 
     # Extents
     extents = []

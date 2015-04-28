@@ -1,6 +1,0 @@
-$('div#basic_info').html("<%= j render 'basic_info_form', form_url: @resource %>");
-
-<% @assessment_sections.each do |section| %>
-  $('div#<%= section.name.gsub(' ', '_') %>').html(
-          "<%= j render partial: 'section_form', locals: { section: section } %>");
-<% end %>

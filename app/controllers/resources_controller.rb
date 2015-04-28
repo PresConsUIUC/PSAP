@@ -1,14 +1,41 @@
 class ResourcesController < ApplicationController
 
+  NUM_DEPENDENT_FORM_ENTITIES = 8
+
   before_action :signed_in_user
   before_action :user_of_same_institution_or_admin,
                 only: [:assess, :create, :destroy, :edit, :import, :names, :new,
                        :show, :subjects, :update]
 
+  ##
+  # Responds to GET /resources/:id/assess
+  #
   def assess
+    if request.xhr?
+      @resource = Resource.find(params[:resource_id])
+      @assessment_sections = Assessment.find_by_key('resource').
+          assessment_sections.order(:index)
+      render partial: 'assess_form', locals: { action: :assess }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
+  end
+
+  ##
+  # Responds to PATCH /resources/:id/clone
+  #
+  def clone
     @resource = Resource.find(params[:resource_id])
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
+    command = CloneResourceCommand.new(@resource, current_user, request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash['error'] = "#{e}"
+    else
+      flash['success'] = "Cloned #{@resource.name} as "\
+      "\"#{command.object.name}\"."
+    end
+    redirect_to command.object
   end
 
   def create
@@ -19,13 +46,19 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @resource }
     rescue => e
-      flash[:error] = "#{e}"
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      keep_flash
+      render 'create'
     else
-      flash[:success] = "Resource \"#{@resource.name}\" created."
-      redirect_to @resource
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Resource \"#{@resource.name}\" created."
+      keep_flash
+      render 'create'
     end
   end
 
@@ -36,27 +69,25 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to @resource
     else
-      flash[:success] = "Resource \"#{@resource.name}\" deleted."
+      flash['success'] = "Resource \"#{@resource.name}\" deleted."
       redirect_to @resource.location
     end
   end
 
   ##
-  # Responds to GET /resources/:id/assess
+  # Responds to GET /resources/:id/edit
   #
   def edit
-    @resource = Resource.find(params[:id])
-
-    # The form JavaScript needs at least 1 of each dependent entity. Empty
-    # ones will be stripped in update().
-    @resource.creators.build unless @resource.creators.any?
-    @resource.extents.build unless @resource.extents.any?
-    @resource.resource_dates.build unless @resource.resource_dates.any?
-    @resource.resource_notes.build unless @resource.resource_notes.any?
-    @resource.subjects.build unless @resource.subjects.any?
+    if request.xhr?
+      @resource = Resource.find(params[:id])
+      add_dependent_entities
+      render partial: 'edit_form', locals: { action: :edit }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   ##
@@ -71,16 +102,16 @@ class ResourcesController < ApplicationController
     end
 
     command = ImportArchivesspaceEadCommand.new(
-        params[:files], @parent_resource, current_user, request.remote_ip)
+        params[:files], @parent_resource, @location, current_user,
+        request.remote_ip)
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to :back
     else
       if command.object.length > 0
-        flash[:success] = "Successfully imported #{command.object.length} "\
-        "resource(s)."
+        flash['success'] = "Imported #{command.object.length} resource(s)."
       else
         flash[:notice] = 'Unable to detect an ArchivesSpace EAD XML file in '\
         'any of the uploaded files.'
@@ -90,26 +121,32 @@ class ResourcesController < ApplicationController
   end
 
   ##
-  # Responds to /resources/move
+  # Responds to POST /resources/move
+  #
   def move
-    resources = Resource.where('id IN (?)', params[:resources])
-    location = Location.find(params[:location_id])
+    if params[:location_id]
+      resources = Resource.where('id IN (?)', params[:resources])
+      location = Location.find(params[:location_id])
 
-    command = MoveResourcesCommand.new(resources, location, current_user,
-                                       request.remote_ip)
-    begin
-      command.execute
-    rescue => e
-      flash[:error] = "#{e}"
+      command = MoveResourcesCommand.new(resources, location, current_user,
+                                         request.remote_ip)
+      begin
+        command.execute
+      rescue => e
+        flash['error'] = "#{e}"
+      else
+        flash['success'] = "Moved #{resources.length} resources to "\
+        "\"#{command.object.name}\"."
+      end
     else
-      flash[:success] = "Successfully moved resources to "\
-      "\"#{command.object.name}\"."
+      flash['error'] = 'No location selected.'
     end
     redirect_to :back
   end
 
   ##
-  # Responds to /institutions/:id/resources/names
+  # Responds to GET /institutions/:id/resources/names
+  #
   def names
     sql = 'SELECT DISTINCT resources.name '\
     'FROM resources '\
@@ -123,55 +160,56 @@ class ResourcesController < ApplicationController
   end
 
   def new
-    # if we are creating a resource within a location (for top-level resources)
-    if params[:location_id]
+    if request.xhr?
       @location = Location.find(params[:location_id])
       @resource = @location.resources.build
-    elsif params[:resource_id] # if we are creating a resource within a resource
-      parent_resource = Resource.find(params[:resource_id])
-      @location = parent_resource.location
-      @resource = @location.resources.build
-      @resource.parent = parent_resource
+
+      # if we are creating a resource within a resource, we should expect a
+      # parent_id URL query parameter
+      @resource.parent = Resource.find(params[:parent_id]) if params[:parent_id]
+
+      # New resources will get 8 of each dependent entity, to populate the form.
+      # Additional ones may be created in JavaScript.
+      NUM_DEPENDENT_FORM_ENTITIES.times do
+        @resource.creators.build
+        @resource.extents.build
+        @resource.resource_dates.build
+        @resource.resource_notes.build
+        @resource.subjects.build
+      end
+
+      @resource.language = @resource.location.repository.institution.language
+
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
     end
-
-    # New resources will get 1 of each dependent entity, to populate the form.
-    # Additional ones may be created in JavaScript.
-    @resource.creators.build
-    @resource.extents.build
-    @resource.resource_dates.build
-    @resource.resource_notes.build
-    @resource.subjects.build
-
-    @resource.language = @resource.location.repository.institution.language
-
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
   end
 
   def show
     @resource = Resource.find(params[:id])
-    @assessment_sections = Assessment.find_by_key('resource').
-        assessment_sections.order(:index)
-
     respond_to do |format|
-      format.csv {
+      format.csv do
         response.headers['Content-Disposition'] =
-            "attachment; filename=\"#{@resource.filename}\""
+            "attachment; filename=\"#{@resource.filename}.csv\""
         render text: @resource.as_csv
-      }
-      format.html {
-        @events = @resource.events.order(created_at: :desc)
-      }
-      format.dcxml {
+      end
+      format.html do
+        prepare_show_view
+      end
+      format.dcxml do
         response.headers['Content-Disposition'] =
-            "attachment; filename=\"#{@resource.filename}\""
+            "attachment; filename=\"#{@resource.filename}.xml\""
         @institution = @resource.location.repository.institution
-      }
-      format.ead {
+      end
+      format.ead do
         response.headers['Content-Disposition'] =
-            "attachment; filename=\"#{@resource.filename}\""
+            "attachment; filename=\"#{@resource.filename}.xml\""
         @institution = @resource.location.repository.institution
-      }
+      end
+      format.js do
+        prepare_show_view
+      end
     end
   end
 
@@ -199,20 +237,51 @@ class ResourcesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'edit'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @resource }
     rescue => e
-      flash[:error] = "#{e}"
-      render 'edit'
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'show'
     else
-      flash[:success] = "Resource \"#{@resource.name}\" updated."
-      respond_to do |format|
-        format.html { redirect_to @resource }
-        format.js { render 'edit' }
-      end
+      prepare_show_view
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Resource \"#{@resource.name}\" updated."
+      render 'show'
     end
   end
 
   private
+
+  ##
+  # The edit form needs NUM_DEPENDENT_FORM_ENTITIES of each dependent entity.
+  # Empty ones will be stripped in update().
+  #
+  def add_dependent_entities
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.creators.length).times do
+      @resource.creators.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.extents.length).times do
+      @resource.extents.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.resource_dates.length).times do
+      @resource.resource_dates.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.resource_notes.length).times do
+      @resource.resource_notes.build
+    end
+    (NUM_DEPENDENT_FORM_ENTITIES - @resource.subjects.length).times do
+      @resource.subjects.build
+    end
+  end
+
+  def prepare_show_view
+    @assessment_sections = Assessment.find_by_key('resource').
+        assessment_sections.order(:index)
+    add_dependent_entities
+    @events = @resource.events.order(created_at: :desc).limit(20)
+  end
 
   def user_of_same_institution_or_admin
     # Normal users can only modify resources in their own institution.
@@ -235,22 +304,19 @@ class ResourcesController < ApplicationController
   end
 
   def resource_params
-    params.require(:resource).permit(:assessment_type, :description,
-                                     :format_id, :format_ink_media_type_id,
-                                     :format_support_type_id,
-                                     :local_identifier, :location_id, :name,
-                                     :notes, :parent_id, :resource_type,
-                                     :significance, :user_id,
-                                     creators_attributes: [:id, :creator_type,
-                                                           :name],
-                                     extents_attributes: [:id, :name],
-                                     resource_dates_attributes:
-                                         [:id, :date_type, :begin_year,
-                                          :begin_month, :begin_day, :end_year,
-                                          :end_month, :end_day, :year, :month,
-                                          :day],
-                                     resource_notes_attributes: [:id, :value],
-                                     subjects_attributes: [:id, :name]).tap do |whitelisted|
+    params.require(:resource).
+        permit(:assessment_type, :description, :format_id,
+               :format_ink_media_type_id, :format_support_type_id,
+               :local_identifier, :location_id, :name, :notes, :parent_id,
+               :resource_type, :rights, :significance, :user_id,
+               creators_attributes: [:_destroy, :id, :creator_type, :name],
+               extents_attributes: [:_destroy, :id, :name],
+               resource_dates_attributes: [:_destroy, :id, :date_type,
+                                           :begin_year, :begin_month,
+                                           :begin_day, :end_year, :end_month,
+                                           :end_day, :year, :month, :day],
+               resource_notes_attributes: [:_destroy, :id, :value],
+               subjects_attributes: [:_destroy, :id, :name]).tap do |whitelisted|
       # AQRs don't use Rails' nested params format, and will require additional
       # processing
       whitelisted[:assessment_question_responses] =

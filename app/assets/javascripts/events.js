@@ -10,13 +10,13 @@ var ready = function() {
 
             updateFeedLink: function() {
                 var new_url = document.createElement('a');
-                new_url.href = $('.feed_link:first').attr('href');
+                new_url.href = $('.psap-feed-link:first').attr('href');
 
                 var new_level = $('.level_button.active').attr('data-level');
                 new_url = updateQueryStringParameter(new_url.toString(), 'level',
                     new_level);
 
-                $('.feed_link:first').attr('href', new_url);
+                $('.psap-feed-link:first').attr('href', new_url);
 
                 $('input[name="level"]').val(new_level);
 

@@ -98,7 +98,7 @@ class PasswordControllerTest < ActionController::TestCase
     post :reset_password, user: { username: 'normal' }
 
     assert_nil users(:normal_user).password_reset_key
-    assert_equal 'Password reset successfully.', flash[:success]
+    assert_equal 'Password reset successfully.', flash['success']
     assert_redirected_to signin_url
   end
 

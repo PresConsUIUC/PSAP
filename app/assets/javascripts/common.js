@@ -4,79 +4,61 @@ var ready = function() {
 
 var PSAP = {
 
+    Flash: {
+
+        FADE_OUT_DELAY: 10000,
+
+        /**
+         * @param text
+         * @param type Value of the X-Psap-Message-Type header
+         * @return void
+         */
+        set: function(text, type) {
+            var bootstrapClass;
+            switch (type) {
+                case 'success':
+                    bootstrapClass = 'alert-success';
+                    break;
+                case 'error':
+                    bootstrapClass = 'alert-danger';
+                    break;
+                case 'alert':
+                    bootstrapClass = 'alert-block';
+                    break;
+                default:
+                    bootstrapClass = 'alert-info';
+                    break;
+            }
+
+            // remove any existing messages
+            $('div.alert').remove();
+
+            // construct the message
+            var flash = $('<div class="psap-flash alert ' + bootstrapClass + '"></div>');
+            var button = $('<button type="button" class="close"' +
+            ' data-dismiss="alert" aria-hidden="true">&times;</button>');
+            flash.append(button);
+            button.after(text);
+
+            // append the flash to the DOM
+            var edit_panel = $('.psap-edit-panel');
+            if (edit_panel.length && edit_panel.hasClass('in')) {
+                edit_panel.find('.modal-body').prepend(flash);
+            } else {
+                $('div.container header, div.container-fluid header').after(flash);
+            }
+
+            // make it disappear after a delay
+            setTimeout(function() {
+                flash.fadeOut();
+            }, PSAP.Flash.FADE_OUT_DELAY);
+        }
+
+    },
+
     Form: {
 
         TYPE_URL: 0,
-
-        enableDynamicNestedEntities: function() {
-            var updateIndexes = function() {
-                $('.psap-addable-removable').each(function() {
-                    $(this).find('.psap-addable-removable-input-group input[type="hidden"].index').each(function(index) {
-                        $(this).val(index);
-                    });
-                });
-            };
-
-            // enable certain form elements to be dynamically added and removed, as
-            // in the case of a nested form with a 1..n relationship to its child
-            // object(s).
-            $('.psap-addable-removable button.remove').on('click', function() {
-                // Instead of removing it from the DOM, hide it and set its
-                // "_destroy" key to 1, so Rails knows to destroy its corresponding
-                // model.
-                var group = $(this).closest('.psap-addable-removable-input-group');
-                group.hide();
-                group.find('input[type="hidden"].destroy').val(1);
-
-                updateIndexes();
-            });
-
-            $('.psap-addable-removable button.add').on('click', function() {
-                // prohibit adding more than 10 fields
-                if ($(this).closest('.psap-addable-removable')
-                    .children('.psap-addable-removable-input-group').length >= 10) {
-                    return;
-                }
-
-                // clone the last input group and insert the clone into the DOM
-                // div input groups
-                var group = $(this).prevAll('.psap-addable-removable-input-group:first');
-                if (!group.length) {
-                    // table input groups
-                    group = $(this).prevAll('table:first').find('tr:last');
-                }
-                var cloned_group = group.clone(true);
-                group.after(cloned_group);
-                cloned_group.show();
-
-                // find all of its input elements
-                cloned_group.find('input, select, textarea').each(function() {
-                    // update the element's indexes within the form, for rails
-                    if (typeof($(this).attr('id')) !== 'undefined') {
-                        var index = parseInt($(this).attr('id').match(/\d+/)[0]);
-                        $(this).attr('id',
-                            $(this).attr('id').replace(index, index + 1));
-                        $(this).attr('name',
-                            $(this).attr('name').replace(index, index + 1));
-
-                        // reset its value
-                        if ($(this).is('select')) {
-                            $(this).val(
-                                $(this).parent().prev().find('select:first').val());
-                        } else if (!$(this).is('input[type="hidden"]')) {
-                            $(this).val(null);
-                        } else if ($(this).is('input[type="hidden"].destroy')) {
-                            $(this).val(0);
-                        }
-                    }
-                });
-
-                updateIndexes();
-                $(document).trigger('PSAPFormFieldAdded');
-            });
-
-            updateIndexes();
-        },
 
         validate: function(field_id, min_length, max_length, type) {
             var elem = $('#' + field_id);
@@ -126,11 +108,14 @@ var PSAP = {
 
     },
 
+    /**
+     * Application-level initialization.
+     */
     init: function() {
         // lazy-load images that have a data-original attribute
         $('img[data-original]').each(function() {
             // provided by vendor/assets/javascripts/jquery.lazyload.js
-            $(this).lazyload({ effect: 'fadeIn' });
+            $(this).lazyload();
         });
 
         // Pagination links
@@ -171,9 +156,9 @@ var PSAP = {
 
         PSAP.updateResultsCount();
 
-        // Show the glossary, bibliography, help, etc. in a modal panel instead of
-        // a new page
-        $('a.modal_view').on('click', function() {
+        // Links with the .psap-modal-view class will open in a modal panel
+        // instead of a new page
+        $('a.psap-modal-view').on('click', function() {
             $('#appModal').modal('show');
 
             $.get($(this).attr('data-open'), function(data) {
@@ -229,8 +214,6 @@ var PSAP = {
             refreshCheckboxUI();
         }).trigger('change');
 
-        PSAP.Form.enableDynamicNestedEntities();
-
         // show the export notification panel after clicking an export option
         $('.psap-export').on('click', function() {
             var filename = $(this).attr('data-filename');
@@ -262,7 +245,72 @@ var PSAP = {
             }
         }
 
+        // Panels with the "psap-inner-scrolling" class should be limited to
+        // window height and their body made scrollable.
+        $('.psap-inner-scrolling').on('show.bs.modal', function (e) {
+            var body = $(e.target).find('.modal-body');
+            body.css('overflow-y', 'scroll');
+            body.css('max-height', $(window).height() * 0.7);
+        });
+
+        // make flash messages disappear after a delay
+        if ($('.psap-flash').length) {
+            setTimeout(function () {
+                $('.psap-flash').fadeOut();
+            }, PSAP.Flash.FADE_OUT_DELAY);
+        }
+
         PSAP.smoothAnchorScroll(0);
+    },
+
+    Panel: {
+
+        /**
+         * Loads HTML content for a panel and restructures its DOM
+         * appropriately.
+         *
+         * @param panel_selector jQuery selector
+         * @param template_url URL of panel HTML content
+         * @param on_content_loaded_fn Function
+         */
+        initRemote: function(panel_selector, template_url, on_content_loaded_fn) {
+            var panel = $(panel_selector);
+            panel.on('show.bs.modal', function (e) {
+                $.get(template_url, function (data) {
+                    var body = panel.find('.modal-body');
+                    body.html(data);
+                    // if the body contains a form, move its opening tag into the
+                    // .modal-content div and its submit buttons into a new
+                    // .modal-footer div so that the panel will be both more
+                    // structurally correct, and work with the
+                    // .psap-inner-scrolling class
+                    var form = body.find('form');
+                    if (form.length) {
+                        var container = panel.find('.modal-content');
+                        container.prepend(form);
+                        body.append(form.children());
+                        var header = panel.find('.modal-header');
+                        if (!panel.find('.modal-footer').length) {
+                            var footer = $('<div class="modal-footer"></div>');
+                            footer.append(
+                                body.find('[data-dismiss="modal"], input[type="submit"]'));
+                            form.prepend(footer);
+                        } else {
+                            body.find('[data-dismiss="modal"], input[type="submit"]').remove();
+                        }
+                        form.prepend(body);
+                        form.prepend(header);
+                    } else {
+                        body.find('[data-dismiss="modal"], input[type="submit"]').remove();
+                    }
+
+                    if (on_content_loaded_fn) {
+                        on_content_loaded_fn();
+                    }
+                });
+            });
+        }
+
     },
 
     Popover: {

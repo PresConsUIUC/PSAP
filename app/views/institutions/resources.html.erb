@@ -1,8 +1,10 @@
-<%= render layout: 'institutions/show' do %>
+<%= render layout: 'institutions/layout' do %>
+
+  <%= hidden_field_tag(:subpage, 'search') %>
 
   <div class="well">
     <%= form_tag(institution_resources_path(@institution), method: 'get',
-                 class: 'psap-search') do %>
+                 class: 'psap-resource-search') do %>
       <div class="row">
         <div class="col-sm-2">
           <!-- Repository -->
@@ -45,21 +47,21 @@
           <div class="form-group">
             <%= label_tag :resource_type, 'Resource Type' %>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('resource_type', 'any',
                           !ResourceType::all.include?(params[:resource_type])) +
                         'Any'
               end %>
             </div>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('resource_type', ResourceType::ITEM,
                              (params[:resource_type] == ResourceType::ITEM.to_s)) +
                         'Item'
             end %>
             </div>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('resource_type', ResourceType::COLLECTION,
                               (params[:resource_type] == ResourceType::COLLECTION.to_s)) +
                         'Collection'
@@ -73,21 +75,21 @@
           <div class="form-group">
             <%= label_tag :assessed, 'Assessed' %>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('assessed', 'any',
-                                 !%w(0, 1).include?(params[:assessed])) +
+                                 !%w(0 1).include?(params[:assessed])) +
                         'Any'
               end %>
             </div>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('assessed', '1',
                               (params[:assessed] and params[:assessed] == '1')) +
                         'Assessed'
               end %>
             </div>
             <div class="radio">
-              <%= label_tag('', class: 'radio') do
+              <%= label_tag do
                 radio_button_tag('assessed', '0',
                               (params[:assessed] and params[:assessed] == '0')) +
                         'Not Assessed'
@@ -111,7 +113,7 @@
             <%= number_field_tag(:score, params[:score], class: 'form-control input-sm', id: 'score') %>
           </div>
 
-          <div class="form-group psap-buttons">
+          <div class="pull-right">
             <input type="reset" value="Clear" class="btn btn-default psap-clear">
             <%= submit_tag('Filter', class: 'btn btn-primary') %>
           </div>

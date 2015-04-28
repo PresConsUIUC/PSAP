@@ -8,7 +8,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create
     end
-    assert_equal 'Sign-in failed.', flash[:error]
+    assert_equal 'Sign-in failed.', flash['error']
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -17,7 +17,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'adsfasdfasfd', password: 'password' }
     end
-    assert_equal 'Sign-in failed.', flash[:error]
+    assert_equal 'Sign-in failed.', flash['error']
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -26,7 +26,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'disabled', password: 'password' }
     end
-    assert_equal 'Sign-in failed.', flash[:error]
+    assert_equal 'Sign-in failed.', flash['error']
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -35,7 +35,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'unconfirmed', password: 'password' }
     end
-    assert_equal 'Sign-in failed.', flash[:error]
+    assert_equal 'Sign-in failed.', flash['error']
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end
@@ -44,7 +44,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, session: { username: 'normal', password: 'adfafsafd' }
     end
-    assert_equal 'Sign-in failed.', flash[:error]
+    assert_equal 'Sign-in failed.', flash['error']
     assert_equal 'Sign-in failed', Event.last.description[0..13]
     assert_redirected_to signin_url
   end

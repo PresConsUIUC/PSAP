@@ -82,7 +82,7 @@ class InstitutionsControllerTest < ActionController::TestCase
     end
     assert_equal "The institution \"University of Illinois at "\
     "Urbana-Champaign\" cannot be deleted, as there are one or more users "\
-    "affiliated with it.", flash[:error]
+    "affiliated with it.", flash['error']
     assert_redirected_to institution
   end
 
@@ -92,7 +92,7 @@ class InstitutionsControllerTest < ActionController::TestCase
       delete :destroy, id: institutions(:institution_five).id
     end
     assert_equal "Institution \"#{institutions(:institution_five).name}\" deleted.",
-                 flash[:success]
+                 flash['success']
     assert_redirected_to institutions_path
   end
 
