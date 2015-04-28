@@ -81,9 +81,9 @@ class InstitutionTest < ActiveSupport::TestCase
   end
 
   # state
-  test 'state is required' do
+  test 'state is not required' do
     @institution.state = nil
-    assert !@institution.save
+    assert @institution.save
   end
 
   test 'state is no longer than 30 characters' do
@@ -92,9 +92,9 @@ class InstitutionTest < ActiveSupport::TestCase
   end
 
   # postal code
-  test 'postal code is required' do
+  test 'postal code is not required' do
     @institution.postal_code = nil
-    assert !@institution.save
+    assert @institution.save
   end
 
   test 'postal code is no longer than 30 characters' do
@@ -127,11 +127,11 @@ class InstitutionTest < ActiveSupport::TestCase
   ############################# method tests #################################
 
   test 'all_assessed_items works' do
-    flunk
+    skip # TODO: write this
   end
 
   test 'assessed_item_statistics works' do
-    flunk
+    skip # TODO: write this
   end
 
   test 'most_active_users works' do
@@ -173,7 +173,7 @@ class InstitutionTest < ActiveSupport::TestCase
   end
 
   test 'attempting to destroy an institution with desiring users in it should raise an exception' do
-    flunk
+    skip # TODO: write this
   end
 
 end

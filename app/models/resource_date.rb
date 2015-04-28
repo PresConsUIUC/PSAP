@@ -85,6 +85,8 @@ class ResourceDate < ActiveRecord::Base
         'Bulk'
       when DateType::SPAN
         'Span'
+      else
+        ''
     end
   end
 

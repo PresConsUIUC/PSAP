@@ -5,8 +5,8 @@ module Assessable
   included do
     validates :assessment_score, allow_blank: true,
               numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
-    validate :validates_one_response_per_question
 
+    before_save :update_assessment_complete
     before_save :update_assessment_score
   end
 
@@ -24,6 +24,22 @@ module Assessable
   end
 
   ##
+  # @param section AssessmentSection
+  # @return float between 0 and 1
+  #
+  def assessment_score_in_section(section)
+    responses = self.assessment_question_responses.
+        select{ |r| r.assessment_question.assessment_section == section }
+    score = 0.0
+    responses.each do |response|
+      score += response.assessment_question_option.value *
+          response.assessment_question.weight if
+          response.assessment_question_option.value
+    end
+    score.to_f / section.max_score(self).to_f
+  end
+
+  ##
   # @return Hash of floats keyed by section id
   #
   def assessment_section_scores
@@ -32,7 +48,8 @@ module Assessable
       sections[section_id] = 0 unless sections[section_id]
       responses.each do |response|
         sections[section_id] += response.assessment_question_option.value *
-            response.assessment_question.weight
+            response.assessment_question.weight if
+            response.assessment_question_option.value
       end
       section = AssessmentSection.find(section_id)
       sections[section_id] = (sections[section_id] / section.max_score)
@@ -43,16 +60,22 @@ module Assessable
   def complete_assessment_questions_in_section(assessment_section)
     self.assessment_question_responses.
         select{ |r| !r.assessment_question_option.nil? }.
-        map{ |r| r.assessment_question }.
+        map(&:assessment_question).
         select{ |q| q.assessment_section.id == assessment_section.id }
   end
 
   ##
   # @return AssessmentQuestionResponse or nil
+  # TODO: this should return an array (to support checkboxes)
   #
   def response_to_question(assessment_question)
     self.assessment_question_responses.
         where(assessment_question_id: assessment_question.id).first
+  end
+
+  def update_assessment_complete
+    self.assessment_complete = self.assessment_question_responses.length > 0
+    nil
   end
 
   ##
@@ -63,16 +86,10 @@ module Assessable
     self.assessment_score = 0.0
     self.assessment_question_responses.each do |response|
       self.assessment_score += response.assessment_question_option.value *
-          response.assessment_question.weight
+          response.assessment_question.weight if
+          response.assessment_question_option.value
     end
     self.assessment_score *= 0.01
-  end
-
-  def validates_one_response_per_question
-    if self.assessment_question_responses.uniq{ |r| r.assessment_question.qid }.length <
-        self.assessment_question_responses.length
-      errors[:base] << 'Only one response is allowed per assessment question.'
-    end
   end
 
 end

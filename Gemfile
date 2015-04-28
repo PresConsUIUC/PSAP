@@ -28,7 +28,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-gem 'bootstrap-sass', '3.1.1.0'
+gem 'bootstrap-sass', '3.2.0.2'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'will_paginate', '3.0.4'
 gem 'will_paginate-bootstrap'
@@ -36,6 +36,7 @@ gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
+gem 'invisible_captcha' # used in public-facing forms
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
 gem 'd3-rails' # used for charts in assessment report
@@ -44,7 +45,7 @@ gem 'prawn' # used to generate a PDF version of the assessment report
 gem 'prawn-table'
 
 group :development do
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.2.1'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'

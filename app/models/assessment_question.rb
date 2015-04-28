@@ -26,4 +26,9 @@ class AssessmentQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :assessment_question_options,
                                 allow_destroy: true
 
+  def max_score
+    #self.assessment_question_options.map(&:value).max
+    1
+  end
+
 end

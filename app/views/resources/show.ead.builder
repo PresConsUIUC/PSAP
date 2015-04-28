@@ -97,18 +97,23 @@ xml.ead(
           end
         }
       end
-      for date in @resource.resource_dates
+      @resource.resource_dates.each do |date|
         if date.year
           xml.unitdate(date.year,
                        'normal' => "#{date.year}/#{date.year}",
                        'type' => 'inclusive'
           )
         elsif date.begin_year && date.end_year
-          xml.unitdate("#{date.begin_year}/#{date.end_year}",
+          xml.unitdate("#{date.begin_year}-#{date.end_year}",
                        'normal' => "#{date.begin_year}/#{date.end_year}",
                        'type' => date.readable_date_type.downcase
           )
         end
+      end
+      @resource.resource_notes.each do |note|
+        xml.note {
+          xml.p(note.value)
+        }
       end
       xml.physloc(@resource.location.name, 'label' => 'Location')
       xml.abstract(@resource.description, 'label' => 'Abstract/Summary')
@@ -120,6 +125,11 @@ xml.ead(
         }
       end
     }
+    if @resource.rights
+      xml.userestrict {
+        xml.p(@resource.rights)
+      }
+    end
     if @resource.creators.any? || @resource.subjects.any? # TODO: controlled subject vocab from ArchivesSpace (see template EAD)
       xml.controlaccess {
         for creator in @resource.creators

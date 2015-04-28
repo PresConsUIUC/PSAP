@@ -27,7 +27,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       post :create, repository: { name: 'Test Repository' },
            institution_id: 1
     end
-    assert_equal 'Repository "Test Repository" created.', flash[:success]
+    assert_equal 'Repository "Test Repository" created.', flash['success']
     assert_redirected_to repository_url(assigns(:repository))
   end
 
@@ -37,7 +37,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       post :create, repository: { name: 'Test Repository' },
            institution_id: 5
     end
-    assert_equal 'Repository "Test Repository" created.', flash[:success]
+    assert_equal 'Repository "Test Repository" created.', flash['success']
     assert_redirected_to repository_url(assigns(:repository))
   end
 
@@ -89,7 +89,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       delete :destroy, id: repositories(:repository_two).id
     end
     assert_equal "Repository \"#{repositories(:repository_two).name}\" deleted.",
-                 flash[:success]
+                 flash['success']
     assert_redirected_to institution_url(institutions(:institution_two).id)
   end
 

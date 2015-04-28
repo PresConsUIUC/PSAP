@@ -1,9 +1,8 @@
 class RepositoriesController < ApplicationController
 
   before_action :signed_in_user
-  before_action :user_of_same_institution_or_admin, only: [:new, :create,
-                                                           :edit, :update,
-                                                           :show, :destroy]
+  before_action :user_of_same_institution_or_admin,
+                only: [:create, :destroy, :edit, :new, :show, :update]
 
   def create
     @institution = Institution.find(params[:institution_id])
@@ -13,13 +12,19 @@ class RepositoriesController < ApplicationController
     begin
       command.execute
     rescue ValidationError
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @repository }
     rescue => e
-      flash[:error] = "#{e}"
-      render 'new'
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      keep_flash
+      render 'create'
     else
-      flash[:success] = "Repository \"#{@repository.name}\" created."
-      redirect_to @repository
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Repository \"#{@repository.name}\" created."
+      keep_flash
+      render 'create'
     end
   end
 
@@ -30,24 +35,62 @@ class RepositoriesController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to repository
     else
-      flash[:success] = "Repository \"#{repository.name}\" deleted."
+      flash['success'] = "Repository \"#{repository.name}\" deleted."
       redirect_to repository.institution
     end
   end
 
   def edit
-    @repository = Repository.find(params[:id])
+    if request.xhr?
+      @repository = Repository.find(params[:id])
+      render partial: 'edit_form', locals: { action: :edit }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def new
-    @institution = Institution.find(params[:institution_id])
-    @repository = @institution.repositories.build
+    if request.xhr?
+      @institution = Institution.find(params[:institution_id])
+      @repository = @institution.repositories.build
+      render partial: 'edit_form', locals: { action: :create }
+    else
+      render status: 406, text: 'Not Acceptable'
+    end
   end
 
   def show
+    prepare_show_view
+  end
+
+  def update
+    @repository = Repository.find(params[:id])
+    command = UpdateRepositoryCommand.new(@repository, repository_params,
+                                          current_user, request.remote_ip)
+    begin
+      command.execute
+    rescue ValidationError
+      response.headers['X-Psap-Result'] = 'error'
+      render partial: 'shared/validation_messages',
+             locals: { entity: @repository }
+    rescue => e
+      response.headers['X-Psap-Result'] = 'error'
+      flash['error'] = "#{e}"
+      render 'show'
+    else
+      prepare_show_view
+      response.headers['X-Psap-Result'] = 'success'
+      flash['success'] = "Repository \"#{@repository.name}\" updated."
+      render 'show'
+    end
+  end
+
+  private
+
+  def prepare_show_view
     @repository = Repository.find(params[:id])
     @locations = @repository.locations.order(:name).
         paginate(page: params[:page],
@@ -62,27 +105,9 @@ class RepositoriesController < ApplicationController
               @repository.id,
               @repository.locations.map{ |loc| loc.id },
               @repository.locations.map{ |loc| loc.resources.map{ |res| res.id } }.flatten.compact).
-        order(created_at: :desc)
+        order(created_at: :desc).
+        limit(20)
   end
-
-  def update
-    @repository = Repository.find(params[:id])
-    command = UpdateRepositoryCommand.new(@repository, repository_params,
-                                          current_user, request.remote_ip)
-    begin
-      command.execute
-    rescue ValidationError
-      render 'edit'
-    rescue => e
-      flash[:error] = "#{e}"
-      render 'edit'
-    else
-      flash[:success] = "Repository \"#{@repository.name}\" updated."
-      redirect_to @repository
-    end
-  end
-
-  private
 
   def user_of_same_institution_or_admin
     # Normal users can only modify repositories in their own institution.

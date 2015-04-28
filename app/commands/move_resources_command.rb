@@ -26,20 +26,17 @@ class MoveResourcesCommand < Command
       ActiveRecord::Base.transaction do
         @resources.each do |resource|
           resource.location = @location
-          resource.save!
           # move all of its children as well
           resource.all_children.each do |child|
             child.location = @location
             child.save!
           end
-        end
+          # If the resource is a child resource and its parent is not in (or
+          # being moved to) the same location, break its parent relationship
+          resource.parent = nil if resource.parent and
+              resource.parent.location != @location
 
-        # Fail if the resource is a child resource and its parent is not in (or
-        # being moved to) the same location
-        if @resources.select{
-            |r| r.parent and r.parent.location.id != @location.id }.any?
-          raise 'Cannot move a child resource to a different location than its '\
-          'parent'
+          resource.save!
         end
       end
     rescue => e

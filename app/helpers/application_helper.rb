@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def bootstrap_class_for flash_type
+  def bootstrap_class_for_alert flash_type
     case flash_type.to_sym
       when :success
         'alert-success'
@@ -120,42 +120,24 @@ module ApplicationHelper
     countries.map{ |c| [c, c] }
   end
 
+  def entity_button(entity, title, html_options = {})
+    html_options = html_options.stringify_keys
+    html_options['class'] = '' unless html_options['class']
+    html_options['class'] += ' btn ' unless html_options['class'].include?('btn ')
+    html_options['class'] += ' btn-default ' unless html_options['class'].include?('btn-')
+
+    raw('<button type="button" ' + html_options.map{ |k, v| "#{k}=\"#{v}\"" }.join(' ') + '>' +
+      "<i class=\"#{icon_class_for_entity(entity)}\"></i> " +
+      title +
+    '</button>')
+  end
+
   ##
   # @param entity Some entity: Institution, Location, etc.
   # @param title Optional title for a tooltip
   #
   def entity_icon(entity, title = '')
-    # https://fortawesome.github.io/Font-Awesome/icons/
-    class_ = ''
-    if entity.kind_of?(Institution) or entity == Institution
-      class_ = 'fa-university'
-    elsif entity.kind_of?(Location) or entity == Location
-      class_ = 'fa-map-marker'
-    elsif entity.kind_of?(Repository) or entity == Repository
-      class_ = 'fa-building-o'
-    elsif entity.kind_of?(Resource)
-      if entity.resource_type == ResourceType::COLLECTION
-        class_ = 'fa-folder-open-o'
-      elsif entity.format
-        case entity.format.format_class
-          when FormatClass::AV
-            class_ = 'fa-film'
-          when FormatClass::IMAGE
-            class_ = 'fa-picture-o'
-          when FormatClass::UNBOUND_PAPER
-            class_ = 'fa-file-text-o'
-          when FormatClass::BOUND_PAPER
-            class_ = 'fa-book'
-        end
-      else
-        class_ = 'fa-cube'
-      end
-    elsif entity == Resource
-      class_ = 'fa-cube'
-    elsif entity.kind_of?(User) or entity == User
-      class_ = 'fa-user'
-    end
-    raw("<i class=\"psap-entity-icon fa #{class_}\" "\
+    raw("<i class=\"psap-entity-icon fa #{icon_class_for_entity(entity)}\" "\
     "aria-hidden=\"true\" title=\"#{title}\"></i>")
   end
 
@@ -180,6 +162,42 @@ module ApplicationHelper
     css_class = (column == sort_column) ? "current #{sort_direction}" : nil
     direction = (column == sort_column && sort_direction == 'asc') ? 'desc' : 'asc'
     link_to title, {sort: column, direction: direction}, {class: css_class}
+  end
+
+  private
+
+  def icon_class_for_entity(entity)
+    # https://fortawesome.github.io/Font-Awesome/icons/
+    class_ = ''
+    if entity.kind_of?(Institution) or entity == Institution
+      class_ = 'fa-university'
+    elsif entity.kind_of?(Location) or entity == Location
+      class_ = 'fa-map-marker'
+    elsif entity.kind_of?(Repository) or entity == Repository
+      class_ = 'fa-building-o'
+    elsif entity.kind_of?(Resource)
+      if entity.resource_type == ResourceType::COLLECTION
+        class_ = 'fa-cubes'
+      elsif entity.format
+        case entity.format.format_class
+          when FormatClass::AV
+            class_ = 'fa-film'
+          when FormatClass::IMAGE
+            class_ = 'fa-picture-o'
+          when FormatClass::UNBOUND_PAPER
+            class_ = 'fa-file-text-o'
+          when FormatClass::BOUND_PAPER
+            class_ = 'fa-book'
+        end
+      else
+        class_ = 'fa-cube'
+      end
+    elsif entity == Resource
+      class_ = 'fa-cube'
+    elsif entity.kind_of?(User) or entity == User
+      class_ = 'fa-user'
+    end
+    "fa #{class_}"
   end
 
 end

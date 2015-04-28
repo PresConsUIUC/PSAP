@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :destroy
 
   def new
+    redirect_to root_url
   end
 
   def create
@@ -14,7 +15,7 @@ class SessionsController < ApplicationController
     begin
       command.execute
     rescue => e
-      flash[:error] = "#{e}"
+      flash['error'] = "#{e}"
       redirect_to signin_url
     else
       sign_in command.object

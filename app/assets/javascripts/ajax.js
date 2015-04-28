@@ -1,51 +1,30 @@
-/**
- Displays a flash message based on the contents of the X-Message and
- X-Message-Type headers.
- */
+// The X-Psap-Message and X-Psap-Message-Type headers are set by an
+// ApplicationController after_filter to support ajax requests.
+// X-Psap-Result is an other header that, if set, can contain "success" or
+// "error", indicating the result of a form submission.
+
 $(document).ajaxComplete(function(event, request, options) {
     $('#psap-ajax-shade').hide();
+});
 
-    // These headers are set by an ApplicationController after_filter, to
-    // support ajax requests.
-    var msg = request.getResponseHeader('X-Message');
-    if (msg) {
-        console.log('X-Message header: ' +
-            request.getResponseHeader('X-Message'));
+$(document).ajaxSuccess(function(event, request) {
+    var result = request.getResponseHeader('X-Psap-Result');
+    var edit_panel = $('.psap-edit-panel.in');
 
-        // remove any existing messages
-        $('div.alert').remove();
-
-        // determine which CSS class to use for the message
-        var type = request.getResponseHeader('X-Message-Type');
-        var bootstrapClass;
-        switch (type) {
-            case 'success':
-                bootstrapClass = 'alert-success';
-                break;
-            case 'error':
-                bootstrapClass = 'alert-danger';
-                break;
-            case 'alert':
-                bootstrapClass = 'alert-block';
-                break;
-            default:
-                bootstrapClass = 'alert-info';
-                break;
+    if (result && edit_panel.length) {
+        if (result == 'success') {
+            edit_panel.modal('hide');
+        } else if (result == 'error') {
+            edit_panel.find('.modal-body').animate({ scrollTop: 0 }, 'fast');
         }
-
-        // construct the message
-        var flash = $('<div class="alert ' + bootstrapClass + '"></div>');
-        var button = $('<button type="button" class="close"' +
-        ' data-dismiss="alert" aria-hidden="true">&times;</button>');
-        flash.append(button);
-        button.after(msg);
-
-        // append it to the DOM
-        $('div.container header, div.container-fluid header').after(flash);
+        var message = request.getResponseHeader('X-Psap-Message');
+        var message_type = request.getResponseHeader('X-Psap-Message-Type');
+        if (message && message_type) {
+            PSAP.Flash.set(message, message_type);
+        }
     }
 });
 
 $(document).ajaxError(function(event, request) {
-    console.log('Error: X-Message header: ' +
-        request.getResponseHeader('X-Message'));
+    console.log('ajaxError');
 });

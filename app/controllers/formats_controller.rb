@@ -40,7 +40,7 @@ class FormatsController < ApplicationController
 
   def signed_in_user_json_only
     if !current_user.is_admin? and request.format.symbol != :json
-      flash[:error] = 'Access denied.'
+      flash['error'] = 'Access denied.'
       redirect_to(root_url)
     end
   end

@@ -1,24 +1,23 @@
 <% provide(:title, 'Users') %>
 
 <% if current_user.is_admin? %>
-    <ol class="breadcrumb">
-      <li class="active">Users</li>
-    </ol>
+  <ol class="breadcrumb">
+    <li class="active">Users</li>
+  </ol>
 <% end %>
 
-<div class="row">
-  <div class="col-sm-8">
-    <h1>Users <small class="entity_count"></small></h1>
-  </div>
-  <div class="col-sm-4" style="text-align:right">
-    <%= form_tag users_path, method: 'get', class: 'psap-live-search',
-                 style: 'float:right' do %>
-        <%= hidden_field_tag :direction, params[:direction] %>
-        <%= hidden_field_tag :sort, params[:sort] %>
-        <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                             class: 'form-control' %>
-    <% end %>
-  </div>
+<div class="pull-right">
+  <%= form_tag users_path, method: 'get', class: 'psap-live-search',
+               style: 'float:right' do %>
+    <%= hidden_field_tag :direction, params[:direction] %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+    <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                         class: 'form-control' %>
+  <% end %>
+</div>
+
+<div class="psap-page-title">
+  <h1>Users <small class="entity_count"></small></h1>
 </div>
 
 <div id="users">

@@ -1,0 +1,19 @@
+<%= form_for(@repository, remote: true) do |f| %>
+
+  <div class="psap-error-messages">
+    <% # populated via ajax by _show_error.js.erb
+    %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name, class: 'required' %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <%= hidden_field_tag(:institution_id, @repository.institution.id) %>
+
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <%= f.submit(action == :create ? 'Create Repository' : 'Save Changes',
+               class: 'btn btn-primary') %>
+
+<% end %>

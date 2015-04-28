@@ -34,6 +34,7 @@ module AssessmentQuestionsHelper
   # @return Human-readable characterization of the score, e.g. "High," "Low,"
   # etc.
   def assessment_score_characterization(score)
+    return SCORES[0][:characterization] if score.nil?
     SCORES.each do |s|
       if s[:cutoff] <= score
         return s[:characterization]
@@ -43,6 +44,7 @@ module AssessmentQuestionsHelper
   end
 
   def bootstrap_bg_class_for_score(score)
+    return SCORES[0][:bootstrap_bg_class] if score.nil?
     SCORES.each do |s|
       if s[:cutoff] <= score
         return s[:bootstrap_bg_class]
@@ -52,6 +54,7 @@ module AssessmentQuestionsHelper
   end
 
   def bootstrap_fg_class_for_score(score)
+    return SCORES[0][:bootstrap_fg_class] if score.nil?
     SCORES.each do |s|
       if s[:cutoff] <= score
         return s[:bootstrap_fg_class]
@@ -61,6 +64,7 @@ module AssessmentQuestionsHelper
   end
 
   def bootstrap_progress_bar_class_for_score(score)
+    return SCORES[0][:bootstrap_progress_bar_class] if score.nil?
     SCORES.each do |s|
       if s[:cutoff] <= score
         return s[:bootstrap_progress_bar_class]
@@ -73,6 +77,7 @@ module AssessmentQuestionsHelper
     # 10-stop gradient from red -> orange -> green
     # these should be kept in sync with institutions.css.scss
     colors = %w(d00000 d00000 d42800 d85000 dc7800 e0a000 aba000 70a000 38a000 00a000)
+    return colors[0] if score.nil?
     colors.each_with_index do |color, index|
       return color if index.to_f * 0.1 >= score
     end

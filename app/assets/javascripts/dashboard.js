@@ -9,6 +9,8 @@ var ready = function() {
             $('#welcome_panel').modal('show');
             $.removeCookie('show_welcome_panel');
         }
+
+        new InstitutionCreateForm().init();
     }
 };
 
