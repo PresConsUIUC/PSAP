@@ -14,6 +14,10 @@ set :rails_env, 'production'
 
 set :keep_releases, 2
 
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+set :branch, 'master-fidg'
+
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server definition into the
