@@ -1,3 +1,5 @@
+<% # the "unaffiliated dashboard" for users who are not yet affiliated with
+   # an institution. %>
 <% provide(:title, 'Dashboard') %>
 <% provide(:body_id, 'dashboard_welcome') %>
 
@@ -9,7 +11,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title">Welcome to PSAP, <%= @user.first_name %>!</h2>
+        <h2 class="modal-title">
+          Welcome to the PSAP, <%= @user.first_name %>!
+        </h2>
       </div>
       <div class="modal-body">
         <p>This is your dashboard. You'll arrive here every time you sign in.

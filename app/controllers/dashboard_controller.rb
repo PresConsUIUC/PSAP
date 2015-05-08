@@ -25,7 +25,7 @@ class DashboardController < ApplicationController
               order(:updated_at => :desc).limit(limit)
         else
           @institutions = Institution.all.order(:name)
-          render 'welcome'
+          render 'unaffiliated'
         end
       end
       format.atom do

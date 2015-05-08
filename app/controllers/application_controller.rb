@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   # Centralized index of all cookies used by the application.
   #
   class Cookies
-    SHOW_WELCOME_PANEL = :show_welcome_panel
+    FIRST_SIGNIN = :first_signin
   end
 
   def sort_direction

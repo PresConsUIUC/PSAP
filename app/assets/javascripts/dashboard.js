@@ -3,14 +3,11 @@ var ready = function() {
     // appear when the user is not affiliated with an institution (which will
     // be immediately after they have created an account).
     if ($('body#dashboard_welcome').length) {
-        // This cookie is set in SessionsController when the user is not
-        // affiliated with an institution.
-        if ($.cookie('show_welcome_panel')) {
+        // This cookie is set in SessionsController when the user has signed
+        // in for the first time.
+        if ($.cookie('first_signin')) {
             $('#welcome_panel').modal('show');
-            $.removeCookie('show_welcome_panel');
         }
-
-        new InstitutionCreateForm().init();
     }
 };
 
