@@ -2,44 +2,36 @@
 
   <%= hidden_field_tag(:subpage, 'assessment_report') %>
 
-  <div class="row">
-    <div class="col-sm-10">
-      <ul class="nav nav-pills">
-        <li role="presentation" class="active">
-          <a href="#institution_score_summary_tab" data-toggle="tab">Institution Score Summary</a>
-        </li>
-        <li role="presentation">
-          <a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a>
-        </li>
-        <li role="presentation">
-          <a href="#storage_environments_tab" data-toggle="tab">Storage Environments</a>
-        </li>
-        <li role="presentation">
-          <a href="#resources_tab" data-toggle="tab">Resources</a>
-        </li>
-        <li role="presentation">
-          <a href="#collections_tab" data-toggle="tab">Collections</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="col-sm-2">
-      <div class="btn-group" style="float:right">
-        <%= button_link('Export PDF',
-                        institution_assessment_report_path(@institution) + '.pdf',
-                        'fa-file-pdf-o') %>
-      </div>
-    </div>
-  </div>
+  <ul class="nav nav-pills">
+    <li role="presentation" class="active">
+      <a href="#institution_score_summary_tab" data-toggle="tab">Institution Score Summary</a>
+    </li>
+    <li role="presentation">
+      <a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a>
+    </li>
+    <li role="presentation">
+      <a href="#storage_environments_tab" data-toggle="tab">Storage Environments</a>
+    </li>
+    <li role="presentation">
+      <a href="#resources_tab" data-toggle="tab">Resources</a>
+    </li>
+    <li role="presentation">
+      <a href="#collections_tab" data-toggle="tab">Collections</a>
+    </li>
+  </ul>
 
   <div class="tab-content">
     <div class="tab-pane active" id="institution_score_summary_tab">
+      <%= render partial: 'export_assessment_report_pdf',
+                 locals: { section: nil } %>
       <h2>Institution Score Summary</h2>
       <%= render partial: 'shared/assessable_report',
                  locals: { assessable: @institution } %>
     </div>
 
     <div class="tab-pane" id="preservation_infrastructure_tab">
+      <%= render partial: 'export_assessment_report_pdf',
+                 locals: { section: 'preservation' } %>
       <h2>Preservation Infrastructure</h2>
       <% if @institution.assessment_question_responses.any? %>
         <%= render partial: 'assessable_section_scores',
@@ -50,6 +42,8 @@
     </div>
 
     <div class="tab-pane" id="storage_environments_tab">
+      <%= render partial: 'export_assessment_report_pdf',
+                 locals: { section: 'storage' } %>
       <h2>Storage Environments</h2>
       <% if @institution.locations.any? %>
         <table class="table">
@@ -89,6 +83,8 @@
     </div>
 
     <div class="tab-pane" id="resources_tab">
+      <%= render partial: 'export_assessment_report_pdf',
+                 locals: { section: 'resources' } %>
       <h2>Resources</h2>
       <%= render partial: 'resource_report',
                  locals: { institution: @institution, stats: @stats,
@@ -97,6 +93,8 @@
     </div>
 
     <div class="tab-pane" id="collections_tab">
+      <%= render partial: 'export_assessment_report_pdf',
+                 locals: { section: 'collections' } %>
       <h2>Collections</h2>
       <% if @collections.any? %>
         <% @collections.each do |resource| %>
