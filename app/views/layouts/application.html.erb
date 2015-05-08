@@ -28,7 +28,8 @@
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
-<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
+<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>
+      data-spy="scroll" lang="en-US">
 
   <%= render 'layouts/header' %>
 
