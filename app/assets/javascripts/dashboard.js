@@ -9,6 +9,10 @@ var ready = function() {
             $('#psap-welcome-panel').modal('show');
         }
 
+        $('#psap-welcome-panel').on('hide.bs.modal', function(e) {
+            $(this).find('video').get(0).pause();
+        });
+
         // after the user has closed the welcome panel, we want to nag them
         // about taking the pre-usage survey.
         $('#psap-welcome-panel').on('hidden.bs.modal', function(e) {
