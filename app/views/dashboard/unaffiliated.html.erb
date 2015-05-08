@@ -5,9 +5,9 @@
 
 <%= hidden_field_tag(:new_institution_url, new_institution_url) %>
 
-<div class="modal fade" id="welcome_panel" tabindex="-1"
-     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-     data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="psap-welcome-panel" tabindex="-1"
+     role="dialog" aria-hidden="true" data-keyboard="false"
+     data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -25,7 +25,38 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
-                data-dismiss="modal">Got it</button>
+                data-dismiss="modal">Got It</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="psap-pre-survey-panel" tabindex="-1"
+     role="dialog" aria-hidden="true" data-keyboard="false"
+     data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          Sorry to bother you again, but&hellip;
+        </h2>
+      </div>
+      <div class="modal-body">
+        <p>Please take our pre-use survey. There are only four questions, and
+          it will help us... [insert more here]</p>
+        <p>The button below will open the survey in a new window.</p>
+        <div class="text-center">
+          <%= link_to('Take the Survey',
+                      'https://uiuc.qualtrics.com/SE/?SID=SV_6lrKdPbrcXBVfH7',
+                      class: 'btn btn-success btn-lg',
+                      target: '_blank') %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">No Thanks</button>
+        <button type="button" class="btn btn-primary"
+                data-dismiss="modal">I'm Awesome</button>
       </div>
     </div>
   </div>

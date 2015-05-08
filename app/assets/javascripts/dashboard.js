@@ -6,8 +6,16 @@ var ready = function() {
         // This cookie is set in SessionsController when the user has signed
         // in for the first time.
         if ($.cookie('first_signin')) {
-            $('#welcome_panel').modal('show');
+            $('#psap-welcome-panel').modal('show');
         }
+
+        // after the user has closed the welcome panel, we want to nag them
+        // about taking the pre-usage survey.
+        $('#psap-welcome-panel').on('hidden.bs.modal', function(e) {
+            setTimeout(function() {
+                $('#psap-pre-survey-panel').modal('show');
+            }, 800);
+        })
     }
 };
 
