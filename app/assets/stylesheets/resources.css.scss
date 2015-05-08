@@ -27,6 +27,9 @@ body#show_location #psap-create-panel {
   .depth-5:before {
     content: '\21b3\0020'
   }
+  #psap-optional-info {
+    display:none;
+  }
 }
 
 body#show_resource {

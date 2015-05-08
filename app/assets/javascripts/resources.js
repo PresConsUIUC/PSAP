@@ -94,6 +94,16 @@ var ResourceEditForm = function() {
             format_div.hide();
         }
 
+        $('#psap-optional-info-title > a').on('click', function() {
+            var optional_info = $('#psap-optional-info');
+            if (optional_info.is(':visible')) {
+                optional_info.fadeOut();
+            } else {
+                optional_info.fadeIn();
+            }
+            return false;
+        });
+
         $('input[name="format_class"]').on('change', function() {
             selectFormatClass($(this).val());
             addFormatSelect();
