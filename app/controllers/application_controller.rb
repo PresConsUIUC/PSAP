@@ -10,8 +10,15 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
 
+  ##
+  # Centralized index of all cookies used by the application.
+  #
+  class Cookies
+    SHOW_WELCOME_PANEL = :show_welcome_panel
+  end
+
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
   end
 
   protected
