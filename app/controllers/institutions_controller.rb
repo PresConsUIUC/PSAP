@@ -206,7 +206,8 @@ class InstitutionsController < ApplicationController
       # no search query input present; show only top-level resources
       @resources = @resources.where(parent_id: nil).order(:name)
     else
-      @resources = Resource.all_matching_query(params, @resources)
+      @resources = Resource.all_matching_query(current_user.institution,
+                                               params, @resources)
       @searching = true
     end
 
