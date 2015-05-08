@@ -213,17 +213,24 @@ class InstitutionsController < ApplicationController
       @searching = true
     end
 
-    respond_to do |format|
-      format.csv do
-        response.headers['Content-Disposition'] =
-            'attachment; filename="resources.csv"'
-        render text: Resource.as_csv(@resources)
-      end
-      format.json
-      format.html do
-        @resources = @resources.
-            paginate(page: params[:page],
-                     per_page: Psap::Application.config.results_per_page)
+    if request.xhr?
+      @resources = @resources.
+          paginate(page: params[:page],
+                   per_page: Psap::Application.config.results_per_page)
+      render 'resources'
+    else
+      respond_to do |format|
+        format.csv do
+          response.headers['Content-Disposition'] =
+              'attachment; filename="resources.csv"'
+          render text: Resource.as_csv(@resources)
+        end
+        format.json
+        format.html do
+          @resources = @resources.
+              paginate(page: params[:page],
+                       per_page: Psap::Application.config.results_per_page)
+        end
       end
     end
   end
