@@ -204,10 +204,12 @@ class InstitutionsController < ApplicationController
                   :resource_type, :score, :score_direction, :user_id]
     if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
       # no search query input present; show only top-level resources
+      @resource_count = @resources.count
       @resources = @resources.where(parent_id: nil).order(:name)
     else
       @resources = Resource.all_matching_query(current_user.institution,
                                                params, @resources)
+      @resource_count = @resources.count
       @searching = true
     end
 
