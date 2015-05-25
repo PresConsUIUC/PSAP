@@ -242,8 +242,7 @@ header {
     font-family: 'montserrathairline';
     font-size:1.5em;
     letter-spacing:1px;
-    margin-bottom:8px;
-    padding-top:6px;
+    margin-top: 12px;
   }
   h1 a, h1 a:hover {
     color:#808080;
@@ -258,8 +257,17 @@ header {
     float:left;
     margin-right:1em;
   }
-  div.btn-group {
-    margin:0px;
+}
+
+.psap-header-assessment-help {
+  margin-left:0.5em;
+  padding-left:0px;
+  ul {
+    margin-left:1.2em;
+    padding-left:0px;
+  }
+  li {
+    list-style:none;
   }
 }
 
