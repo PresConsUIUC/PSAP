@@ -56,8 +56,6 @@
                 <ul class="dropdown-menu">
                   <li><%= link_to 'Home', current_user.institution %></li>
                   <li role="presentation" class="divider"></li>
-                  <li><%= link_to 'Dashboard', dashboard_path %></li>
-                  <li role="presentation" class="divider"></li>
                   <li><%= link_to 'Repositories', institution_repositories_path(current_user.institution) %></li>
                   <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
                   <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
