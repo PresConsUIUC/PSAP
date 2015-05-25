@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def bootstrap_class_for flash_type
+  def bootstrap_class_for_alert flash_type
     case flash_type.to_sym
       when :success
         'alert-success'

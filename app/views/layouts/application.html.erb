@@ -20,15 +20,15 @@
   <%= favicon_link_tag 'touch-icon-76@2x.png', rel: 'apple-touch-icon',
                        sizes: '152x152', type: 'image/png' %>
 
-  <%= stylesheet_link_tag 'application', media: 'all',
-                          'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="https://raw.githubusercontent.com/aFarkas/html5shiv/master/src/html5shiv.js"></script>
   <![endif]-->
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
-<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
+<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>
+      data-spy="scroll" lang="en-US">
 
   <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 
@@ -170,7 +170,7 @@
     </header>
 
     <% flash.each do |type, message| %>
-      <div class="alert alert-dismissable psap-flash <%= bootstrap_class_for(type) %>">
+      <div class="alert alert-dismissable psap-flash <%= bootstrap_class_for_alert(type) %>">
         <button type="button" class="close" data-dismiss="alert"
                 aria-hidden="true">&times;</button>
         <%= message %>

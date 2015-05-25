@@ -17,6 +17,7 @@ class SignInCommand < Command
     @password = password
     @remote_ip = remote_ip
     @user = nil
+    @first_signin = false
   end
 
   def execute
@@ -33,6 +34,7 @@ class SignInCommand < Command
             @user.events << Event.create(
                 description: "User #{@user.username} signed in",
                 user: @user, address: @remote_ip)
+            @first_signin = @user.last_signin.blank?
             @user.last_signin = Time.now
             @user.save!
           else
@@ -63,6 +65,10 @@ class SignInCommand < Command
                                    event_level: EventLevel::NOTICE) if @user
       raise e
     end
+  end
+
+  def first_signin?
+    @first_signin
   end
 
   def object

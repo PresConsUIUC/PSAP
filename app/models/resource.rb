@@ -66,7 +66,7 @@ class Resource < ActiveRecord::Base
 
   before_save :update_assessment_score, :update_assessment_complete
 
-  def self.all_matching_query(params, starting_set = nil)
+  def self.all_matching_query(institution, params, starting_set = nil)
     starting_set = Resource.all unless starting_set
     resources = starting_set
 
@@ -77,17 +77,23 @@ class Resource < ActiveRecord::Base
       resources = resources.where(assessment_complete: false)
     end
     # format_id
-    resources = resources.where(format_id: params[:format_id]) unless
-        params[:format_id].blank?
+    resources = resources.where(format_id: params[:format_id]) if
+        params[:format_id].present?
     # language_id
-    resources = resources.where(language_id: params[:language_id]) unless
-        params[:language_id].blank?
+    if params[:language_id].present?
+      if params[:language_id].to_i == institution.language.id
+        resources = resources.where('language_id = ? OR language_id IS NULL',
+                                    params[:language_id])
+      else
+        resources = resources.where(language_id: params[:language_id])
+      end
+    end
     # repository_id
     resources = resources.
-        where('locations.repository_id = ?', params[:repository_id]) unless
-        params[:repository_id].blank?
+        where('locations.repository_id = ?', params[:repository_id]) if
+        params[:repository_id].present?
     # q
-    unless params[:q].blank?
+    if params[:q].present?
       q = "%#{params[:q].strip.downcase}%"
       resources = resources.joins(:resource_notes, :subjects).
           where('LOWER(resources.description) LIKE ? '\
@@ -99,18 +105,18 @@ class Resource < ActiveRecord::Base
                 q, q, q, q, q, q)
     end
     # resource_type
-    resources = resources.where(resource_type: params[:resource_type]) unless
-        params[:resource_type].blank? or params[:resource_type] == 'any'
+    resources = resources.where(resource_type: params[:resource_type]) if
+        params[:resource_type].present? and params[:resource_type] != 'any'
     # score/score_direction
-    if !params[:score].blank? and !params[:score_direction].blank?
+    if params[:score].present? and params[:score_direction].present?
       score = params[:score].to_f / 100
       direction = params[:score_direction] == 'greater' ? '>' : '<'
       resources = resources.
           where("resources.assessment_score #{direction} #{score}")
     end
     # user_id
-    resources = resources.where(user_id: params[:user_id]) unless
-        params[:user_id].blank?
+    resources = resources.where(user_id: params[:user_id]) if
+        params[:user_id].present?
     resources
   end
 

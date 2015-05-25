@@ -67,7 +67,11 @@
       <li role="presentation" class="active">
         <a href="#resources_tab" data-toggle="tab">Resources</a>
       </li>
-      <li role="presentation"><a href="#score_summary_tab" data-toggle="tab">Score Summary</a></li>
+      <li role="presentation">
+        <a href="#score_summary_tab" data-toggle="tab">Score Summary
+          <span class="badge"><%= number_to_human(@location.assessment_score * 100) %></span>
+        </a>
+      </li>
       <li role="presentation"><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 

@@ -156,20 +156,6 @@ var PSAP = {
 
         PSAP.updateResultsCount();
 
-        // Links with the .psap-modal-view class will open in a modal panel
-        // instead of a new page
-        $('a.psap-modal-view').on('click', function() {
-            $('#appModal').modal('show');
-
-            $.get($(this).attr('data-open'), function(data) {
-                var content = $(data).find('div#page_content');
-                $('div.modal-body').html(content.html());
-                $('#appModalTitle').text($('div.modal-body h1:first').text());
-                $('div.modal-body h1').remove();
-            });
-            return false;
-        });
-
         var checkboxes = $('input[type="checkbox"]');
 
         /**

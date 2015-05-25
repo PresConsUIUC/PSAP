@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
       redirect_to signin_url
     else
       sign_in command.object
-      cookies[:show_welcome_panel] = 1 if command.object.institution.nil?
+      cookies[Cookies::FIRST_SIGNIN] = command.first_signin? ? 1 : nil
       redirect_back_or dashboard_path
     end
   end

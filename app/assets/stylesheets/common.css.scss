@@ -137,6 +137,9 @@ button.hovertip-fire {
 
 .nav-tabs {
   margin-bottom:1em;
+  .active {
+    font-weight: bold;
+  }
 }
 
 .popover {
