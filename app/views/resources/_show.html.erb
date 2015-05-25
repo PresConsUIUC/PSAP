@@ -68,14 +68,26 @@
   </button>
 
   <!-- Clone -->
-  <%= link_to resource_resource_clone_path(@resource),
-              class: 'btn btn-default', method: :patch,
-              title: 'Creates a new resource with the same properties, '\
-              'except for a slightly different title. Assessment data is '\
-              'also preserved, but child resources (if any) are not.' do %>
-    <%= content_tag(:span, '', class: 'fa fa-copy') %>
-    Clone
-  <% end %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="fa fa-copy"> Clone
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      <li><%= link_to 'With Assessment Data',
+                      resource_resource_clone_path(@resource),
+                      method: :patch,
+                      title: 'Creates a new resource with the same properties, '\
+                      'except for a slightly different title. Assessment data is '\
+                      'also preserved, but child resources (if any) are not.' %></li>
+      <li><%= link_to 'Without Assessment Data',
+                      resource_resource_clone_path(@resource, omit_assessment_data: true),
+                      method: :patch,
+                      title: 'Creates a new resource with the same properties, '\
+                      'except for a slightly different title. Neither assessment '\
+                      'data nor child resources are preserved.' %></li>
+    </ul>
+  </div>
 
   <!-- Delete -->
   <%= link_to resource_path(@resource), method: 'delete',

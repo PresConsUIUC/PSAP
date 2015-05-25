@@ -23,19 +23,23 @@ class ResourcesController < ApplicationController
 
   ##
   # Responds to PATCH /resources/:id/clone
+  # Supports ?omit_assessment_data=[true/false] to optionally omit assessment
+  # data
   #
   def clone
     @resource = Resource.find(params[:resource_id])
-    command = CloneResourceCommand.new(@resource, current_user, request.remote_ip)
+    command = CloneResourceCommand.new(@resource, params[:omit_assessment_data],
+                                       current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash['error'] = "#{e}"
+      redirect_to :back
     else
       flash['success'] = "Cloned #{@resource.name} as "\
       "\"#{command.object.name}\"."
+      redirect_to command.object
     end
-    redirect_to command.object
   end
 
   def create

@@ -437,19 +437,22 @@ class Resource < ActiveRecord::Base
 
   ##
   # Overrides parent to intelligently clone a resource. This implementation
-  # preserves assessment questions, creators, extents, dates, notes, and all
-  # properties. It does NOT clone child resources or events.
+  # does NOT clone child resources or events.
   #
-  def dup
-    clone = super
-    self.assessment_question_responses.each do |response|
-      cloned_response = response.dup
-      cloned_response.assessment_question = response.assessment_question
-      cloned_response.assessment_question_option = response.assessment_question_option
-      cloned_response.location = response.location
-      cloned_response.institution = response.institution
-      cloned_response.resource = response.resource
-      clone.assessment_question_responses << cloned_response
+  # @param omit_assessment_questions [Boolean]
+  #
+  def dup(omit_assessment_questions = false)
+    clone = super()
+    unless omit_assessment_questions
+      self.assessment_question_responses.each do |response|
+        cloned_response = response.dup
+        cloned_response.assessment_question = response.assessment_question
+        cloned_response.assessment_question_option = response.assessment_question_option
+        cloned_response.location = response.location
+        cloned_response.institution = response.institution
+        cloned_response.resource = response.resource
+        clone.assessment_question_responses << cloned_response
+      end
     end
     self.creators.each { |c| clone.creators << c.dup }
     self.extents.each { |c| clone.extents << c.dup }
