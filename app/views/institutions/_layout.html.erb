@@ -49,29 +49,36 @@
   <% end %>
 </div>
 
-<ul class="nav nav-tabs">
-  <li class="<%= action_name == 'show' ? 'active' : '' %>">
-    <%= link_to 'Repositories', @institution %>
-  </li>
-  <li class="<%= action_name == 'resources' ? 'active' : '' %>">
-    <%= link_to 'Resource Search', institution_resources_path(@institution) %>
-  </li>
-  <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
-    <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
-  </li>
-  <li class="<%= action_name == 'info' ? 'active' : '' %>">
-    <%= link_to 'Info', institution_info_path(@institution) %>
-  </li>
-  <li class="<%= action_name == 'users' ? 'active' : '' %>">
-    <%= link_to 'Users', institution_users_path(@institution) %>
-  </li>
-  <li class="<%= action_name == 'events' ? 'active' : '' %>">
-    <%= link_to 'Activity', institution_events_path(@institution) %>
-  </li>
-</ul>
-
-<div class="tab-content">
-  <%= yield %>
+<div class="row">
+  <div class="col-sm-4 psap-entity-nav-menu">
+    <%= render partial: 'shared/entity_hierarchy',
+               locals: { selected_entity: @institution } %>
+  </div>
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs">
+      <li class="<%= action_name == 'show' ? 'active' : '' %>">
+        <%= link_to 'Repositories', @institution %>
+      </li>
+      <li class="<%= action_name == 'resources' ? 'active' : '' %>">
+        <%= link_to 'Resource Search', institution_resources_path(@institution) %>
+      </li>
+      <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
+        <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
+      </li>
+      <li class="<%= action_name == 'info' ? 'active' : '' %>">
+        <%= link_to 'Info', institution_info_path(@institution) %>
+      </li>
+      <li class="<%= action_name == 'users' ? 'active' : '' %>">
+        <%= link_to 'Users', institution_users_path(@institution) %>
+      </li>
+      <li class="<%= action_name == 'events' ? 'active' : '' %>">
+        <%= link_to 'Activity', institution_events_path(@institution) %>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <%= yield %>
+    </div>
+  </div>
 </div>
 
 <%= render partial: 'shared/edit_panel',

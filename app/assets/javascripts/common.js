@@ -147,6 +147,30 @@ var PSAP = {
             return false;
         });
 
+        // set up the entity nav menu
+        // hook up expand buttons
+        $('#psap-entity-nav-menu .psap-expand').on('click', function() {
+            if ($(this).hasClass('fa-chevron-right')) {
+                // it's not expanded; expand it
+                $(this).removeClass('fa-chevron-right').
+                    addClass('fa-chevron-down');
+                $(this).parent().next('ul:first').show();
+            } else {
+                // it's expanded; un-expand it
+                $(this).removeClass('fa-chevron-down').
+                    addClass('fa-chevron-right');
+                $(this).parent().next('ul:first').hide();
+            }
+        });
+        // set its initial expansion
+        var active_li = $('#psap-entity-nav-menu li.active');
+        active_li.parentsUntil('#psap-entity-nav-menu', 'ul').each(function() {
+            $(this).show();
+            $(this).prev().find('.psap-expand').removeClass('fa-chevron-right').
+                addClass('fa-chevron-down');
+        });
+        active_li.find('.psap-expand:first').trigger('click');
+
         // Show the modal progress view after submitting an ajax form
         $(document).on('submit', 'form[data-remote="true"]', function() {
             var view = $('#psap-ajax-shade');

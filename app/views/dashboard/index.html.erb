@@ -10,191 +10,196 @@
 </div>
 
 <div class="psap-page-title">
-  <h1><%= @user.first_name %>'s Dashboard</h1>
+  <h1>My Dashboard</h1>
 </div>
 
-<% if current_user.is_admin? %>
+<div class="row">
+  <div class="col-sm-4 psap-entity-nav-menu">
+    <%= render partial: 'shared/entity_hierarchy' %>
+  </div>
+  <div class="col-sm-8">
+    <% if current_user.is_admin? %>
 
-  <% if @confirmed_disabled_users.any? %>
-    <div class="col-sm-4">
+      <% if @confirmed_disabled_users.any? %>
+        <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Users awaiting approval</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="psap-user-list">
+                <% @confirmed_disabled_users.each do |user| %>
+                  <li>
+                    <%= link_to user do %>
+                      <%= gravatar_for user, size: 52 %>
+                      <%= link_to user.full_name, user %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Most active users</h3>
+          </div>
+          <div class="panel-body">
+            <% if @most_active_users.any? %>
+              <ol class="psap-user-list">
+                <% @most_active_users.each do |row| %>
+                  <li>
+                    <%= link_to row[:user] do %>
+                      <%= gravatar_for row[:user], size: 52 %>
+                      <%= link_to row[:user].full_name, row[:user] %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ol>
+            <% else %>
+              <p>Nothing to show right now.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Most active institutions</h3>
+          </div>
+          <div class="panel-body">
+            <% if @most_active_institutions.any? %>
+              <ol class="psap-plain-list">
+                <% @most_active_institutions.each do |row| %>
+                  <li>
+                    <%= entity_icon(row[:institution]) %>
+                    <%= link_to row[:institution].name, row[:institution] %>
+                  </li>
+                <% end %>
+              </ol>
+            <% else %>
+              <p>Nothing to show right now.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+
+    <div class="col-sm-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Users awaiting approval</h3>
+          <h3 class="panel-title">Most active users in my institution</h3>
         </div>
         <div class="panel-body">
-          <ul class="psap-user-list">
-            <% @confirmed_disabled_users.each do |user| %>
-              <li>
-                <%= link_to user do %>
-                  <%= gravatar_for user, size: 52 %>
-                  <%= link_to user.full_name, user %>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
+          <% if @most_active_institution_users.any? %>
+            <ol class="psap-user-list">
+              <% @most_active_institution_users.each do |row| %>
+                <li>
+                  <%= link_to row[:user] do %>
+                    <%= gravatar_for row[:user], size: 52 %>
+                    <%= link_to row[:user].full_name, row[:user] %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ol>
+          <% else %>
+            <p>Nothing to show right now.</p>
+          <% end %>
         </div>
       </div>
     </div>
-  <% end %>
 
-  <div class="col-sm-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Most active users</h3>
-      </div>
-      <div class="panel-body">
-        <% if @most_active_users.any? %>
-          <ol class="psap-user-list">
-            <% @most_active_users.each do |row| %>
-              <li>
-                <%= link_to row[:user] do %>
-                  <%= gravatar_for row[:user], size: 52 %>
-                  <%= link_to row[:user].full_name, row[:user] %>
-                <% end %>
-              </li>
-            <% end %>
-          </ol>
-        <% else %>
-          <p>Nothing to show right now.</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Most active institutions</h3>
-      </div>
-      <div class="panel-body">
-        <% if @most_active_institutions.any? %>
-          <ol class="psap-plain-list">
-            <% @most_active_institutions.each do |row| %>
-              <li>
-                <%= entity_icon(row[:institution]) %>
-                <%= link_to row[:institution].name, row[:institution] %>
-              </li>
-            <% end %>
-          </ol>
-        <% else %>
-          <p>Nothing to show right now.</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-<% end %>
-
-<div class="col-sm-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Most active users in my institution</h3>
-    </div>
-    <div class="panel-body">
-      <% if @most_active_institution_users.any? %>
-        <ol class="psap-user-list">
-          <% @most_active_institution_users.each do |row| %>
-            <li>
-              <%= link_to row[:user] do %>
-                <%= gravatar_for row[:user], size: 52 %>
-                <%= link_to row[:user].full_name, row[:user] %>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Recently updated resources</h3>
+        </div>
+        <div class="panel-body">
+          <% if @recent_updated_resources.any? %>
+            <ul class="psap-mini-entity-list">
+              <% @recent_updated_resources.each do |resource| %>
+                <li>
+                  <%= entity_icon(resource) %>
+                  <%= link_to resource.name, resource %><br>
+                  <small>updated <%= local_time_ago resource.updated_at %></small>
+                </li>
               <% end %>
-            </li>
+            </ul>
+          <% else %>
+            <p>This institution does not yet have any resources.</p>
           <% end %>
-        </ol>
-      <% else %>
-        <p>Nothing to show right now.</p>
-      <% end %>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="col-sm-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Recently updated resources</h3>
-    </div>
-    <div class="panel-body">
-      <% if @recent_updated_resources.any? %>
-        <ul class="psap-mini-entity-list">
-          <% @recent_updated_resources.each do |resource| %>
-            <li>
-              <%= entity_icon(resource) %>
-              <%= link_to resource.name, resource %><br>
-              <small>updated <%= local_time_ago resource.updated_at %></small>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>This institution does not yet have any resources.</p>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<div class="col-sm-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">My recent activity</h3>
-    </div>
-    <div class="panel-body">
-      <% if @user_events.any? %>
-        <ul class="psap-plain-list">
-          <% @user_events.each do |event| %>
-            <li><%= event.description %>
-              <small>(<%= local_time_ago event.created_at %>)</small></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>You haven't done anything yet&hellip;</p>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<div class="col-sm-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Other users at my institution</h3>
-    </div>
-    <div class="panel-body">
-      <% if @institution_users.any? %>
-        <ul class="psap-user-list">
-          <% @institution_users.each do |user| %>
-            <li>
-              <%= link_to user do %>
-                <%= gravatar_for user, size: 52 %>
-                <%= link_to user.full_name, user %>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">My recent activity</h3>
+        </div>
+        <div class="panel-body">
+          <% if @user_events.any? %>
+            <ul class="psap-plain-list">
+              <% @user_events.each do |event| %>
+                <li><%= event.description %>
+                  <small>(<%= local_time_ago event.created_at %>)</small></li>
               <% end %>
-            </li>
+            </ul>
+          <% else %>
+            <p>You haven't done anything yet&hellip;</p>
           <% end %>
-        </ul>
-      <% else %>
-        <p>You're the only one here&hellip;</p>
-      <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Other users at my institution</h3>
+        </div>
+        <div class="panel-body">
+          <% if @institution_users.any? %>
+            <ul class="psap-user-list">
+              <% @institution_users.each do |user| %>
+                <li>
+                  <%= link_to user do %>
+                    <%= gravatar_for user, size: 52 %>
+                    <%= link_to user.full_name, user %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>You're the only one here&hellip;</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Recent activity at my institution</h3>
+        </div>
+        <div class="panel-body">
+          <% if @institution_events.any? %>
+            <ul class="psap-plain-list">
+              <% @institution_events.each do |event| %>
+                <li><%= event.description %>
+                  <small>(<%= local_time_ago event.created_at %> by
+                    <%= event.user.full_name %>)</small></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>It's pretty quiet here&hellip;</p>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-<div class="col-sm-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Recent activity at my institution</h3>
-    </div>
-    <div class="panel-body">
-      <% if @institution_events.any? %>
-        <ul class="psap-plain-list">
-          <% @institution_events.each do |event| %>
-            <li><%= event.description %>
-              <small>(<%= local_time_ago event.created_at %> by
-                <%= event.user.full_name %>)</small></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>It's pretty quiet here&hellip;</p>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<div style="clear:both"></div>
