@@ -149,38 +149,39 @@
       <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
                                    alt:'PSAP logo', id:'title_logo'), root_path %>
       <div class="btn-group">
-        <button type="button" class="btn btn-default btn-sm"
-                data-container="body" data-toggle="popover"
-                data-placement="bottom" data-content="<p>Before you can assess
-                an item, you must first add it to a location. Resources in the
-                PSAP are structured like this:</p>
+        <% if signed_in? and current_user.institution %>
+          <button type="button" class="btn btn-default btn-sm"
+                  data-container="body" data-toggle="popover"
+                  data-placement="bottom" data-content="<p>Before you can assess
+                  an item, you must first add it to a location. Resources in the
+                  PSAP are structured like this:</p>
 
-                <ul class=&quot;psap-header-assessment-help&quot;>
-                  <li><%= escape_once(entity_icon(Institution)) %> Institution
-                    <ul>
-                      <li><%= escape_once(entity_icon(Repository)) %>Repository
-                        <ul>
-                          <li><%= escape_once(entity_icon(Location)) %>Location
-                            <ul>
-                              <li><%= escape_once(entity_icon(Resource)) %>Resource (Item or
-                              Collection)</li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul class=&quot;psap-header-assessment-help&quot;>
+                    <li><%= escape_once(entity_icon(Institution)) %> Institution
+                      <ul>
+                        <li><%= escape_once(entity_icon(Repository)) %>Repository
+                          <ul>
+                            <li><%= escape_once(entity_icon(Location)) %>Location
+                              <ul>
+                                <li><%= escape_once(entity_icon(Resource)) %>Resource (Item or
+                                Collection)</li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
 
-                <p>To create an item, navigate to the location you want it to
-                 reside in, and then click the &quot;Add Resource&quot; button.
-                 Once it has been added, it is ready to assess.">
-          <span class="glyphicon glyphicon-stats"></span> Assess an Item
-        </button>
-
-        <%= link_to institution_assessment_report_path(current_user.institution),
-                    class: 'btn btn-default btn-sm' do %>
-          <span class="glyphicon glyphicon-stats"></span> Assessment Report
+                  <p>To create an item, navigate to the location you want it to
+                   reside in, and then click the &quot;Add Resource&quot; button.
+                   Once it has been added, it is ready to assess.">
+            <span class="glyphicon glyphicon-stats"></span> Assess an Item
+          </button>
+          <%= link_to institution_assessment_report_path(current_user.institution),
+                      class: 'btn btn-default btn-sm' do %>
+            <span class="glyphicon glyphicon-stats"></span> Assessment Report
+          <% end %>
         <% end %>
         <%= link_to 'mailto:nobody@example.org?subject=I found a bug in '\
         'the PSAP&body=Please enter a description of the bug, the URL of the '\
