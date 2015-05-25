@@ -333,9 +333,7 @@ command = CreateInstitutionCommand.new(
       country: 'United States of America',
       url: 'http://example.org/',
       email: 'demo@example.org',
-      language: languages[122],
-      description: 'New NetID-authenticated users are initially placed in '\
-      'this institution, which can be used for demo purposes.' },
+      language: languages[122] },
     admin_user, '127.0.0.1')
 command.execute
 
