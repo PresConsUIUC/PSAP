@@ -79,12 +79,18 @@ var ready = function() {
                         .attr('class', 'y axis')
                         .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
                         .call(yAxis);
-                    /*
-                     vis.append('text')
-                     .attr('x', WIDTH / 2)
-                     .attr('y',  HEIGHT)
-                     .style('text-anchor', 'middle')
-                     .text('Score'); */
+
+                     vis.append('text') // x-axis label
+                        .attr('x', WIDTH / 2)
+                        .attr('y',  HEIGHT + MARGINS.bottom)
+                        .style('text-anchor', 'middle')
+                        .text('Score');
+                    vis.append("text") // y-axis label
+                        .attr('transform', 'rotate(-90)')
+                        .attr('x', 0 - HEIGHT / 2)
+                        .attr('y', 0)
+                        .style('text-anchor', 'middle')
+                        .text('Frequency');
                     vis.selectAll('rect')
                         .data(barData)
                         .enter()

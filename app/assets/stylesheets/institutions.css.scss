@@ -19,6 +19,10 @@ body#show_institution {
     }
   }
 
+  svg {
+    overflow: visible; /* prevent axis labels from getting cut off */
+  }
+
   .axis path, .axis line {
     fill: none;
     stroke: #777;
