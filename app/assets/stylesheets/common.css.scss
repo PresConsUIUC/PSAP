@@ -357,6 +357,15 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
       margin-left: 0px;
     }
   }
+  .text-success {
+    color:#00b000;
+  }
+  .text-warning {
+    color:orange;
+  }
+  .text-danger {
+    color:#d00000;
+  }
 }
 
 .psap-entity-list {

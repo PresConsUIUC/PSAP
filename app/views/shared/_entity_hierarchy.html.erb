@@ -28,6 +28,9 @@ selected_entity ||= nil
         <% end %>
         <%= entity_icon(entity) %>
         <%= link_to entity.name, entity %>
+        <% if entity.kind_of?(Resource) %>
+          <i class="fa fa-circle <%= bootstrap_fg_class_for_score(entity.effective_assessment_score) %>"></i>
+        <% end %>
       </div>
       <% if entity.kind_of?(Resource) and entity.children.any? %>
         <%= render partial: 'shared/entity_hierarchy',
