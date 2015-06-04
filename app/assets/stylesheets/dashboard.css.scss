@@ -2,6 +2,20 @@ body#dashboard {
   small {
     color: #606060;
   }
+  button.psap-assess-item {
+    margin-bottom: 1em;
+  }
+  .psap-assessment-help {
+    margin-left:0.5em;
+    padding-left:0px;
+    ul {
+      margin-left:1.2em;
+      padding-left:0px;
+    }
+    li {
+      list-style:none;
+    }
+  }
   .panel-body {
     max-height:20em;
     overflow-y:scroll;

@@ -18,6 +18,39 @@
     <%= render partial: 'shared/entity_hierarchy' %>
   </div>
   <div class="col-sm-8">
+    <% if signed_in? and current_user.institution %>
+      <div class="text-center">
+        <button type="button" class="btn btn-default btn-lg psap-assess-item"
+                data-container="body" data-toggle="popover"
+                data-placement="bottom" data-content="<p>Before you can assess
+                  an item, you must first add it to a location. Entities in the
+                  PSAP are structured like this:</p>
+
+                  <ul class=&quot;psap-assessment-help&quot;>
+                    <li><%= escape_once(entity_icon(Institution)) %> Institution
+                      <ul>
+                        <li><%= escape_once(entity_icon(Repository)) %>Repository
+                          <ul>
+                            <li><%= escape_once(entity_icon(Location)) %>Location
+                              <ul>
+                                <li><%= escape_once(entity_icon(Resource)) %>Resource (Item or
+                                Collection)</li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+
+                  <p>To create an item, navigate to the location you want it to
+                   reside in, and then click the &quot;Add Resource&quot; button.
+                   Once it has been added, it is ready to assess.">
+          <span class="glyphicon glyphicon-stats"></span> Assess an Item
+        </button>
+      </div>
+    <% end %>
+
     <% if current_user.is_admin? %>
 
       <% if @confirmed_disabled_users.any? %>
