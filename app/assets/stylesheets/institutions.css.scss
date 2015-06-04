@@ -1,24 +1,4 @@
 body#show_institution {
-  form.psap-resource-search {
-    select#score_direction {
-      display:inline;
-      max-width:12em;
-    }
-    input#score {
-      display:inline;
-      width: 4em;
-    }
-    div.form-group {
-      margin-bottom:1em;
-    }
-    div.form-group:last-child {
-      margin-bottom:0em;
-    }
-    input[type=radio] {
-      margin-left:-20px;
-    }
-  }
-
   svg {
     overflow: visible; /* prevent axis labels from getting cut off */
   }

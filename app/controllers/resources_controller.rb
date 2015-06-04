@@ -190,6 +190,50 @@ class ResourcesController < ApplicationController
     end
   end
 
+  ##
+  # Responds to GET /resources/search
+  #
+  def search
+    @institution = current_user.institution
+    @resources = @institution.resources
+    @searching = false
+
+    # all available URL query parameters
+    query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
+                  :resource_type, :score, :score_direction, :user_id]
+    if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
+      # no search query input present; show only top-level resources
+      @resource_count = @resources.count
+      @resources = @resources.where(parent_id: nil).order(:name)
+    else
+      @resources = Resource.all_matching_query(current_user.institution,
+                                               params, @resources)
+      @resource_count = @resources.count
+      @searching = true
+    end
+
+    if request.xhr?
+      @resources = @resources.
+          paginate(page: params[:page],
+                   per_page: Psap::Application.config.results_per_page)
+      render 'search'
+    else
+      respond_to do |format|
+        format.csv do
+          response.headers['Content-Disposition'] =
+              'attachment; filename="resources.csv"'
+          render text: Resource.as_csv(@resources)
+        end
+        format.json
+        format.html do
+          @resources = @resources.
+              paginate(page: params[:page],
+                       per_page: Psap::Application.config.results_per_page)
+        end
+      end
+    end
+  end
+
   def show
     @resource = Resource.find(params[:id])
     respond_to do |format|

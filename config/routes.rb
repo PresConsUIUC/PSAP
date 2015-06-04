@@ -80,7 +80,6 @@ Psap::Application.routes.draw do
     match '/events', to: 'institutions#events', via: 'get'
     match '/info', to: 'institutions#info', via: 'get'
     match '/repositories', to: 'institutions#repositories', via: 'get'
-    match '/resources', to: 'institutions#resources', via: 'get'
     match '/users', to: 'institutions#users', via: 'get'
     # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: 'get'
@@ -99,7 +98,10 @@ Psap::Application.routes.draw do
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     resources :resources, except: :index
   end
-  match '/resources/move', to: 'resources#move', via: 'post', as: 'resource_move'
+  match '/resources/move', to: 'resources#move', via: 'post',
+        as: 'resource_move'
+  match '/resources/search', to: 'resources#search', via: 'get',
+        as: 'resource_search'
   resources :resources, except: :index do
     match '/assess', to: 'resources#assess', via: 'get'
     match '/clone', to: 'resources#clone', via: 'patch', as: 'resource_clone'

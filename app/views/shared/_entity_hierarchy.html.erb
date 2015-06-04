@@ -12,6 +12,12 @@ selected_entity ||= nil
         <%= link_to 'Dashboard', dashboard_path %>
       </div>
     </li>
+    <li <%= controller_name == 'resources' and controller.action_name == 'search' ? 'class=active' : '' %>>
+      <div>
+        <i class="fa fa-search"></i>
+        <%= link_to 'Resource Search', resource_search_path %>
+      </div>
+    </li>
     <li <%= (controller_name == 'institutions' and controller_path != 'index') ? 'class=active' : '' %>>
       <div>
         <%= entity_icon(current_user.institution) %>
