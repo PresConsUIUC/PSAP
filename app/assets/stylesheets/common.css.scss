@@ -307,6 +307,9 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
     $item-height: 10px;
     margin-left: 0px;
     padding-left: 0px;
+    a:hover {
+      text-decoration: none;
+    }
     ul {
       display: none;
       margin-left: $item-indent;
