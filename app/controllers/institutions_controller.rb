@@ -78,32 +78,8 @@ class InstitutionsController < ApplicationController
     end
   end
 
-  def events
-    @institution = Institution.find(params[:institution_id])
-    @events = Event.
-        joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
-        joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
-        joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
-        joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
-        where('events_institutions.institution_id = ? '\
-        'OR events_repositories.repository_id IN (?) '\
-        'OR events_locations.location_id IN (?)'\
-        'OR events_resources.resource_id IN (?)',
-              @institution.id,
-              @institution.repositories.map { |repo| repo.id },
-              @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
-              @institution.repositories.map { |repo| repo.locations.map {
-                  |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
-        order(created_at: :desc).
-        limit(20)
-  end
-
   def index
     prepare_index_view
-  end
-
-  def info
-    @institution = Institution.find(params[:institution_id])
   end
 
   def new
@@ -115,23 +91,8 @@ class InstitutionsController < ApplicationController
     end
   end
 
-  ##
-  # Responds to GET /institutions/:id/repositories
-  #
-  def repositories
-    @institution = Institution.find(params[:institution_id])
-    @repositories = @institution.repositories.order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
-  end
-
-  def score_summary
-    @institution = Institution.find(params[:institution_id])
-  end
-
   def show
     prepare_show_view
-    render 'repositories'
   end
 
   def update
@@ -156,11 +117,6 @@ class InstitutionsController < ApplicationController
     end
   end
 
-  def users
-    @institution = Institution.find(params[:institution_id])
-    @institution_users = @institution.users.where(confirmed: true).order(:last_name)
-  end
-
   private
 
   def prepare_index_view
@@ -171,9 +127,32 @@ class InstitutionsController < ApplicationController
 
   def prepare_show_view
     @institution = Institution.find(params[:id])
+
+    # data for repositories tab
     @repositories = @institution.repositories.order(:name).
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
+
+    # data for users tab
+    @institution_users = @institution.users.where(confirmed: true).order(:last_name)
+
+    # data for events tab
+    @events = Event.
+        joins('LEFT JOIN events_institutions ON events_institutions.event_id = events.id').
+        joins('LEFT JOIN events_repositories ON events_repositories.event_id = events.id').
+        joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
+        joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
+        where('events_institutions.institution_id = ? '\
+        'OR events_repositories.repository_id IN (?) '\
+        'OR events_locations.location_id IN (?)'\
+        'OR events_resources.resource_id IN (?)',
+              @institution.id,
+              @institution.repositories.map { |repo| repo.id },
+              @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
+              @institution.repositories.map { |repo| repo.locations.map {
+                  |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
+        order(created_at: :desc).
+        limit(20)
   end
 
   def same_institution_user
