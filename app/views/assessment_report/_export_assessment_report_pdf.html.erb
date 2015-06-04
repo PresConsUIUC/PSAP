@@ -8,12 +8,12 @@
     <% if section %>
       <li role="presentation">
         <a role="menuitem" tabindex="-1"
-           href="<%= "#{institution_assessment_report_path(@institution)}.pdf?section=#{section}" %>">This Section</a>
+           href="<%= "#{assessment_report_path(@institution)}.pdf?section=#{section}" %>">This Section</a>
       </li>
     <% end %>
     <li role="presentation">
       <a role="menuitem" tabindex="-1"
-         href="<%= institution_assessment_report_path(@institution) + '.pdf' %>">Entire Report</a>
+         href="<%= assessment_report_path + '.pdf' %>">Entire Report</a>
     </li>
   </ul>
 </div>

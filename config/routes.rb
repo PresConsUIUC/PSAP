@@ -56,6 +56,8 @@ Psap::Application.routes.draw do
 
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get', as: 'about'
+  match '/assessment-report', to: 'assessment_report#index', via: 'get',
+        as: 'assessment_report'
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
@@ -74,12 +76,12 @@ Psap::Application.routes.draw do
   end
   resources :institutions do
     match '/assess', to: 'institutions#assess', via: 'get'
-    match '/assessment-report', to: 'institutions#assessment_report', via: 'get'
     resources :repositories, except: :index
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     match '/events', to: 'institutions#events', via: 'get'
     match '/info', to: 'institutions#info', via: 'get'
     match '/repositories', to: 'institutions#repositories', via: 'get'
+    match '/score-summary', to: 'institutions#score_summary', via: 'get'
     match '/users', to: 'institutions#users', via: 'get'
     # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: 'get'

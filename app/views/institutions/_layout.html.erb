@@ -56,19 +56,19 @@
   </div>
   <div class="col-sm-8">
     <ul class="nav nav-tabs">
-      <li class="<%= action_name == 'show' ? 'active' : '' %>">
+      <li role="presentation" class="<%= action_name == 'show' ? 'active' : '' %>">
         <%= link_to 'Repositories', @institution %>
       </li>
-      <li class="<%= action_name == 'assessment_report' ? 'active' : '' %>">
-        <%= link_to 'Assessment Report', institution_assessment_report_path(@institution) %>
-      </li>
-      <li class="<%= action_name == 'info' ? 'active' : '' %>">
+      <li role="presentation" class="<%= action_name == 'info' ? 'active' : '' %>">
         <%= link_to 'Info', institution_info_path(@institution) %>
       </li>
-      <li class="<%= action_name == 'users' ? 'active' : '' %>">
+      <li role="presentation" class="<%= action_name == 'score_summary' ? 'active' : '' %>">
+        <%= link_to 'Score Summary', institution_score_summary_path(@institution) %>
+      </li>
+      <li role="presentation" class="<%= action_name == 'users' ? 'active' : '' %>">
         <%= link_to 'Users', institution_users_path(@institution) %>
       </li>
-      <li class="<%= action_name == 'events' ? 'active' : '' %>">
+      <li role="presentation" class="<%= action_name == 'events' ? 'active' : '' %>">
         <%= link_to 'Activity', institution_events_path(@institution) %>
       </li>
     </ul>

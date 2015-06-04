@@ -154,8 +154,7 @@
                    Once it has been added, it is ready to assess.">
             <span class="glyphicon glyphicon-stats"></span> Assess an Item
           </button>
-          <%= link_to institution_assessment_report_path(current_user.institution),
-                      class: 'btn btn-default btn-sm' do %>
+          <%= link_to assessment_report_path, class: 'btn btn-default btn-sm' do %>
             <span class="glyphicon glyphicon-stats"></span> Assessment Report
           <% end %>
         <% end %>

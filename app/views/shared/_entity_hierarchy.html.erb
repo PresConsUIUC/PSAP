@@ -8,14 +8,20 @@ selected_entity ||= nil
   <% if entities == current_user.institution.repositories %>
     <li <%= controller_name == 'dashboard' ? 'class=active' : '' %>>
       <div>
-        <i class="fa fa-tachometer"></i>
+        <i class="fa fa-tachometer psap-entity-icon"></i>
         <%= link_to 'Dashboard', dashboard_path %>
       </div>
     </li>
     <li <%= controller_name == 'resources' and controller.action_name == 'search' ? 'class=active' : '' %>>
       <div>
-        <i class="fa fa-search"></i>
+        <i class="fa fa-search psap-entity-icon"></i>
         <%= link_to 'Resource Search', resource_search_path %>
+      </div>
+    </li>
+    <li <%= controller_name == 'assessment_report' ? 'class=active' : '' %>>
+      <div>
+        <i class="glyphicon glyphicon-stats psap-entity-icon"></i>
+        <%= link_to 'Assessment Report', assessment_report_path %>
       </div>
     </li>
     <li <%= (controller_name == 'institutions' and controller_path != 'index') ? 'class=active' : '' %>>
