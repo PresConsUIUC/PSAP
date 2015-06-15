@@ -242,7 +242,6 @@ var PSAP = {
             var body = $('body');
             if (body.width() > 600) {
                 var navbar = $('nav.navbar.navbar-default');
-                affixed.width(affixed.parent().width());
                 affixed.affix({
                     offset: {
                         top: affixed.offset().top - navbar.height() - 15
