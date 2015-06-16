@@ -30,7 +30,6 @@ module StaticPageHelper
         button = Nokogiri::XML::Node.new('button', doc)
         button['type'] = 'button'
         button['class'] = 'btn btn-sm psap-rights'
-        button['data-container'] = 'body'
         button['data-toggle'] = 'popover'
         button['data-placement'] = 'bottom'
         button['data-content'] = caption.inner_html     
