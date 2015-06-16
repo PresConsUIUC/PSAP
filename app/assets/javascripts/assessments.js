@@ -108,7 +108,7 @@ var AssessmentForm = function(entity) {
                     '</div>' +
                     '<div class="col-sm-2" style="text-align:right">' +
                         '<button type="button" class="btn btn-default help hovertip-fire" ' +
-                        'data-container="body" data-toggle="popover" ' +
+                        'data-toggle="popover" ' +
                         'data-placement="left" data-html="true" ' +
                         'data-content="' + object['help_text'].replace(/"/g, "&quot;").
                         replace("\n", "<br><br>") + adv_help_link + '">?' +
