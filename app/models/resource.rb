@@ -9,6 +9,16 @@
 #
 class Resource < ActiveRecord::Base
 
+  class Significance
+    LOW = 0
+    MODERATE = 0.5
+    HIGH = 1
+
+    def self.all
+      return [0, 0.5, 1]
+    end
+  end
+
   class Type
     COLLECTION = 0
     ITEM = 1
@@ -63,7 +73,7 @@ class Resource < ActiveRecord::Base
   validates :resource_type, inclusion: { in: ResourceType.all,
                          message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
-            inclusion: { in: ResourceSignificance.all,
+            inclusion: { in: Resource::Significance.all,
                          message: 'must be a valid resource significance' }
   validates :user, presence: true
 
@@ -594,11 +604,11 @@ class Resource < ActiveRecord::Base
 
   def readable_significance
     case significance
-      when ResourceSignificance::LOW
+      when Resource::Significance::LOW
         'Low'
-      when ResourceSignificance::MODERATE
+      when Resource::Significance::MODERATE
         'Moderate'
-      when ResourceSignificance::HIGH
+      when Resource::Significance::HIGH
         'High'
     end
   end

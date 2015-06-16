@@ -145,11 +145,11 @@ class ResourceTest < ActiveSupport::TestCase
 
   # readable_resource_significance
   test 'readable_significance should work' do
-    @resource.significance = ResourceSignificance::LOW
+    @resource.significance = Resource::Significance::LOW
     assert_equal 'Low', @resource.readable_significance
-    @resource.significance = ResourceSignificance::MODERATE
+    @resource.significance = Resource::Significance::MODERATE
     assert_equal 'Moderate', @resource.readable_significance
-    @resource.significance = ResourceSignificance::HIGH
+    @resource.significance = Resource::Significance::HIGH
     assert_equal 'High', @resource.readable_significance
   end
 
@@ -171,7 +171,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'significance is in bounds' do
-    @resource.significance = ResourceSignificance.all.last + 1
+    @resource.significance = Resource::Significance.all.last + 1
     assert !@resource.save
   end
 
