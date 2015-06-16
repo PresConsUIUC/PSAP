@@ -20,6 +20,15 @@ var ready = function() {
                 $('#psap-pre-survey-panel').modal('show');
             }, 800);
         })
+
+        // initialize create-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_institution_url"]').val(),
+            function () {
+                PSAP.Form.init();
+            }
+        );
     }
 };
 
