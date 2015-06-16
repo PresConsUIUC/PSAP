@@ -1,4 +1,14 @@
 class AssessmentQuestion < ActiveRecord::Base
+
+  class Type
+    RADIO = 0
+    CHECKBOX = 1
+
+    def self.all
+      (0..1)
+    end
+  end
+
   belongs_to :assessment_section, inverse_of: :assessment_questions
   belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
   has_and_belongs_to_many :enabling_assessment_question_options,
@@ -19,7 +29,7 @@ class AssessmentQuestion < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 255 }
   validates :qid, presence: true
   validates :question_type, presence: true,
-            inclusion: { in: AssessmentQuestionType.all,
+            inclusion: { in: AssessmentQuestion::Type.all,
                          message: 'Must be a valid assessment question type.' }
   validates_numericality_of :weight, greater_than_or_equal_to: 0, presence: true
 

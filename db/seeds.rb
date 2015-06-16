@@ -168,7 +168,7 @@ aq_sheets.each do |sheet|
           qid: row[6].to_i,
           name: row[7].strip,
           question_type: (!row[14].blank? and row[14].downcase == 'checkboxes') ?
-              AssessmentQuestionType::CHECKBOX : AssessmentQuestionType::RADIO,
+              AssessmentQuestion::Type::CHECKBOX : AssessmentQuestion::Type::RADIO,
           index: index,
           weight: row[11].to_f,
           help_text: row[8].strip,
@@ -226,7 +226,7 @@ aq_sheets.each do |sheet|
       params = {
           qid: row[1].to_i,
           name: row[2].strip,
-          question_type: AssessmentQuestionType::RADIO,
+          question_type: AssessmentQuestion::Type::RADIO,
           index: index,
           weight: row[6].to_f,
           help_text: row[3].strip,

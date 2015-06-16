@@ -48,7 +48,7 @@ var AssessmentForm = function(entity) {
         var control = '';
         var root_url = $('input[name="root_url"]').val();
 
-        switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
+        switch (object['question_type']) { // corresponds to the AssessmentQuestion::Type constants
             case 0: // radio
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
