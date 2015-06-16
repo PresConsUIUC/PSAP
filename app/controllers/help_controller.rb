@@ -22,6 +22,15 @@ class HelpController < ApplicationController
   end
 
   ##
+  # Responds to GET /manual
+  #
+  def manual
+    # there is only one user manual page
+    @page = StaticPage.where(component: StaticPage::COMPONENT_USER_MANUAL).first
+    raise ActiveRecord::RecordNotFound unless @page
+  end
+
+  ##
   # Responds to GET /simple-help
   #
   def simple_index
