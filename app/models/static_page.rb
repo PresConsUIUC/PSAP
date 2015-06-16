@@ -1,8 +1,10 @@
 class StaticPage < ActiveRecord::Base
 
-  COMPONENT_HELP = 'help'
-  COMPONENT_FORMAT_ID_GUIDE = 'format_id_guide'
-  COMPONENT_USER_MANUAL = 'user_manual'
+  class Component
+    HELP = 'help'
+    FORMAT_ID_GUIDE = 'format_id_guide'
+    USER_MANUAL = 'user_manual'
+  end
 
   before_save :update_searchable_html
 
@@ -13,11 +15,11 @@ class StaticPage < ActiveRecord::Base
   ##
   # Performs a PostgreSQL full-text search on the static_pages table.
   #
-  # @param query Query string
-  # @param component StaticPage component
-  # @param min_words
-  # @param max_words
-  # @return PG::Result
+  # @param query [String] Query string
+  # @param component [StaticPage::Component]
+  # @param min_words [Integer]
+  # @param max_words [Integer]
+  # @return [PG::Result]
   #
   def self.full_text_search(query, component, min_words = 40, max_words = 41,
       max_fragments = 3)

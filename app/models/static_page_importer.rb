@@ -157,13 +157,13 @@ class StaticPageImporter
           component = nil
           dirname = File.dirname(file)
           if dirname.downcase.include?('format')
-            component = StaticPage::COMPONENT_FORMAT_ID_GUIDE
+            component = StaticPage::Component::FORMAT_ID_GUIDE
             category = File.basename(dirname).downcase
           elsif dirname.downcase.include?('help')
-            component = StaticPage::COMPONENT_HELP
+            component = StaticPage::Component::HELP
             category = 'help'
           elsif dirname.downcase.include?('manual')
-            component = StaticPage::COMPONENT_USER_MANUAL
+            component = StaticPage::Component::USER_MANUAL
             category = 'user_manual'
           end
           page = StaticPage.where(uri_fragment: File.basename(file, '.*')).

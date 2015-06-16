@@ -10,7 +10,7 @@ class HelpController < ApplicationController
   # Responds to GET /advanced-help/:category
   #
   def advanced_show
-    @page = StaticPage.where(component: StaticPage::COMPONENT_HELP,
+    @page = StaticPage.where(component: StaticPage::Component::HELP,
                              uri_fragment: params[:category]).first
     raise ActiveRecord::RecordNotFound unless @page
   end
@@ -26,7 +26,8 @@ class HelpController < ApplicationController
   #
   def manual
     # there is only one user manual page
-    @page = StaticPage.where(component: StaticPage::COMPONENT_USER_MANUAL).first
+    @page = StaticPage.
+        where(component: StaticPage::Component::USER_MANUAL).first
     raise ActiveRecord::RecordNotFound unless @page
   end
 
