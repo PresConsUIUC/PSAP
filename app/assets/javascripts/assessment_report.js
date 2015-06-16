@@ -44,7 +44,7 @@ var AssessmentChart = {
                 .attr('x', WIDTH / 2)
                 .attr('y',  HEIGHT + MARGINS.bottom)
                 .style('text-anchor', 'middle')
-                .text('Score');
+                .text('Assessment Score Range');
             vis.append('text') // y-axis label
                 .attr('transform', 'rotate(-90)')
                 .attr('x', 0 - HEIGHT / 2)
