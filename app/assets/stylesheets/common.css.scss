@@ -19,7 +19,6 @@
     font_url('Montserrat-Regular-webfont.svg#montserratregular') format('svg');
   font-weight: normal;
   font-style: normal;
-
 }
 
 @font-face {
@@ -31,7 +30,6 @@
   font_url('Montserrat-Hairline.svg#montserrathairline') format('svg');
   font-weight: normal;
   font-style: normal;
-
 }
 
 /* universal */
@@ -573,22 +571,4 @@ footer {
       margin-left: 10px;
     }
   }
-}
-
-/* mixins, variables, etc. */
-
-@mixin box_sizing {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/* miscellaneous */
-
-.debug_dump {
-  clear: both;
-  float: left;
-  width: 100%;
-  margin-top: 45px;
-  @include box_sizing;
 }
