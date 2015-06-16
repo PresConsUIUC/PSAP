@@ -8,6 +8,9 @@ class StaticController < ApplicationController
   def bibliography
   end
 
+  def getting_started
+  end
+
   def glossary
   end
 

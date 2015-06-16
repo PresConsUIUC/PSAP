@@ -31,6 +31,35 @@
   }
 }
 
+#getting_started {
+  p, .psap-steps {
+    font-size: 1.4em;
+    font-weight: 200;
+    strong {
+      font-weight: normal;
+    }
+  }
+  ol.psap-steps {
+    list-style: none;
+    margin: 1em auto;
+    text-align:center;
+  }
+  .psap-main-icons {
+    font-size: 8em;
+    text-align: center;
+  }
+  .well {
+    margin: 0 auto;
+    @media screen and (min-width: 800px) {
+      max-width: 50%;
+    }
+  }
+  figure {
+    margin: 1em;
+    text-align: center;
+  }
+}
+
 #glossary {
   h2 {
     margin-top: 1em;

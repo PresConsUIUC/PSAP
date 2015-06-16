@@ -1,0 +1,163 @@
+<% provide :body_id, 'getting_started' %>
+<% provide :title, 'Getting Started' %>
+
+<h1>Getting Started</h1>
+
+<p>Want to jump right in? Use this guide.</p>
+
+<p>If you find that you need more comprehensive support, visit our
+  <i class="fa fa-book"></i> <%= link_to 'user manual', user_manual_path %>.</p>
+
+<p>Here are the basic steps to get you going:</p>
+
+<hr>
+
+<h2>1. Assess your institution</h2>
+
+<div class="psap-main-icons">
+  <i class="glyphicon glyphicon-stats psap-entity-icon"></i>
+  <%= entity_icon(Institution) %>
+</div>
+
+<ol class="psap-steps well">
+  <li>Begin at the <i class="fa fa-tachometer psap-entity-icon"></i>Dashboard</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select your <%= entity_icon(Institution) %>institution</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select
+    <i class="glyphicon glyphicon-stats psap-entity-icon"></i><strong>Assess Institution</strong></li>
+  <li><i class="fa fa-check-square-o psap-entity-icon"></i> Complete the form</li>
+</ol>
+
+<p>TODO: needs clip</p>
+
+<hr>
+
+<h2>2. Create a new repository</h2>
+
+<div class="psap-main-icons">
+  <%= entity_icon(Repository) %>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select <%= entity_icon(Repository) %><strong>Add Repository.</strong></li>
+  <li>Give your repository a name.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-repo.gif', alt: 'gif of new repository action' %>
+  <figcaption>
+    Repositories are containers for locations.
+  </figcaption>
+</figure>
+
+<hr>
+
+<h2>3. Add a location to your repository</h2>
+
+<div class="psap-main-icons">
+  <%= entity_icon(Location) %>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select your <%= entity_icon(Repository) %>repository.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select <%= entity_icon(Location) %><strong>Add Location</strong>.</li>
+  <li>Give your location a name.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-location.gif', alt: 'gif of new location action' %>
+  <figcaption>
+    Click 'Add Location' to create a new location for your resources.
+  </figcaption>
+</figure>
+
+<hr>
+
+<h2>4. Assess the location you just created</h2>
+
+<div class="psap-main-icons">
+  <i class="glyphicon glyphicon-stats psap-entity-icon"></i><%= entity_icon(Location) %>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select your <%= entity_icon(Location) %>location.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select
+    <i class="glyphicon glyphicon-stats psap-entity-icon"></i><strong>Assess Location</strong>.</li>
+  <li><i class="fa fa-check-square-o psap-entity-icon"></i> Complete the form.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-assess-location.gif', alt: 'gif of new repository action' %>
+  <figcaption>
+    This way, as you add resources, the scores you see will be accurate. <br> (Plus, you won't have to do it later).
+  </figcaption>
+</figure>
+
+<hr>
+
+<h2>5. Add your first resource</h2>
+
+<div class="psap-main-icons">
+  <%= entity_icon(Resource) %>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select your <%= entity_icon(Location) %>location.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select <%= entity_icon(Resource) %><strong>Add Resource to Assess</strong>.</li>
+  <li><i class="fa fa-check-square-o psap-entity-icon"></i> Complete the form.</li>
+  <li>Optional information is&hellip; optional.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-add-resource.gif', alt: 'gif of new resource action' %>
+  <figcaption>
+    Add your resource, assess, repeat. <br>(Pro tip: Use the <i class="fa fa-files-o"></i> <strong>clone button</strong> to duplicate similar resources.)
+  </figcaption>
+</figure>
+
+<hr>
+
+<h2>6. Assess the resource you just created</h2>
+
+<div class="psap-main-icons">
+  <i class="glyphicon glyphicon-stats psap-entity-icon"></i><%= entity_icon(Resource) %>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select your <%= entity_icon(Resource) %> resource.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select <i class="glyphicon glyphicon-stats psap-entity-icon"></i><strong> Assess</strong>.</li>
+  <li><i class="fa fa-check-square-o psap-entity-icon"></i> Complete the form.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-assess-resource.gif', alt: 'gif of assess resource action' %>
+  <figcaption>
+    It's easier if you assess resources as you go. Trust us.
+  </figcaption>
+</figure>
+
+<hr>
+
+<h2>7. Generate an institutional report</h2>
+
+<div class="psap-main-icons">
+  <i class="fa fa-file-pdf-o psap-entity-icon"></i>
+</div>
+
+<ol class="psap-steps well">
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Navigate to your <i class="fa fa-tachometer psap-entity-icon"></i> Dashboard.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select the <i class="glyphicon glyphicon-stats psap-entity-icon"></i> Assessment Report menu item.</li>
+  <li><i class="fa fa-hand-o-up psap-entity-icon"></i> Select <strong>Assessment Report</strong>.</li>
+</ol>
+
+<figure>
+  <%= image_tag 'getting-started-report.gif', alt: 'gif of new repository action' %>
+  <figcaption>
+    Generate reports to see your preservation assessment summarized!
+  </figcaption>
+</figure>
+
+<hr>
+
+<p>Looking for an answer that you didn't find? Visit our
+  <i class="fa fa-question-circle psap-entity-icon"></i>
+  <%= link_to 'help landing page', help_path %>.</p>

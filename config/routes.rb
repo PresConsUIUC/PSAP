@@ -61,6 +61,7 @@ Psap::Application.routes.draw do
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
+  match '/getting-started', to: 'static#getting_started', via: 'get'
   match '/glossary', to: 'static#glossary', via: 'get'
 
   match '/signin', to: 'sessions#new', via: 'get'
