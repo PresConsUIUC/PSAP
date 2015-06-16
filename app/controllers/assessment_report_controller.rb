@@ -19,11 +19,11 @@ class AssessmentReportController < ApplicationController
     end
     if [nil, 'collections'].include?(params[:section])
       @collections = @institution.resources.
-          where(resource_type: ResourceType::COLLECTION)
+          where(resource_type: Resource::Type::COLLECTION)
       @collection_chart_datas = {}
       @collections.each do |collection|
         sub_collections = collection.all_children.select{ |r|
-          r.resource_type == ResourceType::COLLECTION }
+          r.resource_type == Resource::Type::COLLECTION }
         sub_collections << collection
         parent_ids = sub_collections.map{ |r| r.id }.join(', ')
         data = []

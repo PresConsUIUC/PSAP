@@ -56,21 +56,21 @@
                 <div class="radio">
                   <%= label_tag do
                     radio_button_tag('resource_type', 'any',
-                                     !ResourceType::all.include?(params[:resource_type])) +
+                                     !Resource::Type::all.include?(params[:resource_type])) +
                             'Any'
                   end %>
                 </div>
                 <div class="radio">
                   <%= label_tag do
-                    radio_button_tag('resource_type', ResourceType::ITEM,
-                                     (params[:resource_type] == ResourceType::ITEM.to_s)) +
+                    radio_button_tag('resource_type', Resource::Type::ITEM,
+                                     (params[:resource_type] == Resource::Type::ITEM.to_s)) +
                             'Item'
                   end %>
                 </div>
                 <div class="radio">
                   <%= label_tag do
-                    radio_button_tag('resource_type', ResourceType::COLLECTION,
-                                     (params[:resource_type] == ResourceType::COLLECTION.to_s)) +
+                    radio_button_tag('resource_type', Resource::Type::COLLECTION,
+                                     (params[:resource_type] == Resource::Type::COLLECTION.to_s)) +
                             'Collection'
                   end %>
                 </div>

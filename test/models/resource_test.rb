@@ -58,7 +58,7 @@ class ResourceTest < ActiveSupport::TestCase
   test 'setting a resource to a collection should prune its AQRs' do
     response = assessment_question_responses(:assessment_question_response_one)
     @resource.assessment_question_responses << response
-    @resource.resource_type = ResourceType::COLLECTION
+    @resource.resource_type = Resource::Type::COLLECTION
     @resource.save
     assert !@resource.assessment_question_responses.any?
   end
@@ -137,9 +137,9 @@ class ResourceTest < ActiveSupport::TestCase
 
   # readable_resource_type
   test 'readable_resource_type should work' do
-    @resource.resource_type = ResourceType::COLLECTION
+    @resource.resource_type = Resource::Type::COLLECTION
     assert_equal 'Collection', @resource.readable_resource_type
-    @resource.resource_type = ResourceType::ITEM
+    @resource.resource_type = Resource::Type::ITEM
     assert_equal 'Item', @resource.readable_resource_type
   end
 

@@ -32,12 +32,12 @@
       ?
     </button>
     <div class="radio">
-      <%= f.radio_button :resource_type, ResourceType::ITEM %>
-      <%= f.label :resource_type, 'Item', value: ResourceType::ITEM %>
+      <%= f.radio_button :resource_type, Resource::Type::ITEM %>
+      <%= f.label :resource_type, 'Item', value: Resource::Type::ITEM %>
     </div>
     <div class="radio">
-      <%= f.radio_button :resource_type, ResourceType::COLLECTION %>
-      <%= f.label :resource_type, 'Collection', value: ResourceType::COLLECTION %>
+      <%= f.radio_button :resource_type, Resource::Type::COLLECTION %>
+      <%= f.label :resource_type, 'Collection', value: Resource::Type::COLLECTION %>
     </div>
   </div>
 

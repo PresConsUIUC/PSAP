@@ -478,7 +478,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[0],
         { name: 'Sample Collection',
-          resource_type: ResourceType::COLLECTION,
+          resource_type: Resource::Type::COLLECTION,
           assessment_type: Assessment::Type::ITEM_LEVEL,
           user: normal_user,
           description: 'Sample description',
@@ -488,7 +488,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[0],
         { name: 'Sample Assessed Albumen Print Resource',
-          resource_type: ResourceType::ITEM,
+          resource_type: Resource::Type::ITEM,
           format: Format.find_by_fid(7),
           user: normal_user,
           description: 'Sample description',
@@ -498,7 +498,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[0],
         { name: 'Sample Assessed Bound Paper Resource',
-          resource_type: ResourceType::ITEM,
+          resource_type: Resource::Type::ITEM,
           format: Format.find_by_fid(160),
           format_ink_media_type: FormatInkMediaType.find(2),
           format_support_type: FormatSupportType.find(2),
@@ -510,7 +510,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[0],
         { name: 'Sample Assessed Original Document Resource',
-          resource_type: ResourceType::ITEM,
+          resource_type: Resource::Type::ITEM,
           format: Format.find_by_fid(159),
           format_ink_media_type: FormatInkMediaType.find(3),
           format_support_type: FormatSupportType.find(3),
@@ -522,7 +522,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[1],
         { name: 'Collection Containing Lots of Items',
-          resource_type: ResourceType::COLLECTION,
+          resource_type: Resource::Type::COLLECTION,
           assessment_type: Assessment::Type::SAMPLE,
           user: admin_user,
           description: 'Sample description',
@@ -532,7 +532,7 @@ case Rails.env
     resource_commands << CreateResourceCommand.new(
         locations[0],
         { name: 'Sample collection with a really long name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut lorem leo. Phasellus varius vitae lorem eget facilisis. Suspendisse nulla massa, pretium nec lorem eget, sodales bibendum magna. Interdum et mal',
-          resource_type: ResourceType::COLLECTION,
+          resource_type: Resource::Type::COLLECTION,
           assessment_type: Assessment::Type::ITEM_LEVEL,
           user: normal_user,
           description: 'Sample description',
@@ -542,7 +542,7 @@ case Rails.env
       resource_commands << CreateResourceCommand.new(
           locations[1],
           { name: "Sample Multitudinous Top-Level Item #{index + 1}",
-            resource_type: ResourceType::ITEM,
+            resource_type: Resource::Type::ITEM,
             user: normal_user,
             description: 'Sample description',
             local_identifier: 'sample_local_id',
@@ -556,7 +556,7 @@ case Rails.env
       resource_commands << CreateResourceCommand.new(
           locations[1],
           { name: "Sample Multitudinous Child Item #{index + 1}",
-            resource_type: ResourceType::ITEM,
+            resource_type: Resource::Type::ITEM,
             user: normal_user,
             parent: resources[4],
             description: 'Sample description',

@@ -140,7 +140,7 @@ class Institution < ActiveRecord::Base
   end
 
   def mean_resource_score
-    items = resources.where(resource_type: ResourceType::ITEM,
+    items = resources.where(resource_type: Resource::Type::ITEM,
                             assessment_complete: true)
     items.any? ?
         items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0

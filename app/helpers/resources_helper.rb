@@ -2,7 +2,7 @@ module ResourcesHelper
 
   def collection_hierarchy_options_for_select(location)
     collections = location.resources.
-        where(resource_type: ResourceType::COLLECTION, parent_id: nil).
+        where(resource_type: Resource::Type::COLLECTION, parent_id: nil).
         order(:name)
     options = []
     collections.each do |collection|
@@ -102,7 +102,7 @@ module ResourcesHelper
     options << [raw(('&nbsp;&nbsp;&nbsp;&nbsp;' * level) +
                         (level > 0 ? raw('&#8627; ') : '') + collection.name),
                 collection.id]
-    collection.children.where(resource_type: ResourceType::COLLECTION).each do |child|
+    collection.children.where(resource_type: Resource::Type::COLLECTION).each do |child|
       add_option_for_collection(child, options, level + 1)
     end
   end

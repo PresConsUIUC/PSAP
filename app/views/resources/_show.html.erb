@@ -10,7 +10,7 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="btn-group pull-right">
-  <% if @resource.resource_type == ResourceType::COLLECTION %>
+  <% if @resource.resource_type == Resource::Type::COLLECTION %>
     <!-- Import button -->
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -49,7 +49,7 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   </button>
-  <% if @resource.resource_type != ResourceType::COLLECTION %>
+  <% if @resource.resource_type != Resource::Type::COLLECTION %>
     <!-- Assess -->
     <button type="button" class="btn btn-default" data-toggle="modal"
             data-target="#psap-assess-panel">
@@ -117,12 +117,12 @@
 
   <div class="col-sm-8">
     <ul class="nav nav-tabs">
-      <% if @resource.resource_type == ResourceType::COLLECTION %>
+      <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <li class="active">
           <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
         </li>
       <% end %>
-      <li <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'class=active' %>>
+      <li <%= @resource.resource_type == Resource::Type::COLLECTION ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
       <li>
@@ -135,7 +135,7 @@
 
     <div class="tab-content">
 
-      <% if @resource.resource_type == ResourceType::COLLECTION %>
+      <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
           <div class="pull-right">
@@ -154,7 +154,7 @@
         </div>
       <% end %>
 
-      <div id="info_tab" class="tab-pane <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'active' %>">
+      <div id="info_tab" class="tab-pane <%= @resource.resource_type == Resource::Type::COLLECTION ? '' : 'active' %>">
         <div class="row">
           <div class="col-sm-6">
             <dl>
@@ -171,7 +171,7 @@
                 <dt>Local Identifier</dt>
                 <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
               <% end %>
-              <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
+              <% if @resource.resource_type == Resource::Type::COLLECTION and !@resource.assessment_type.nil? %>
                 <dt>Assessment Type</dt>
                 <dd>
                   <%= Assessment::Type::name_for_type(@resource.assessment_type) %>
@@ -319,7 +319,7 @@
       </div> <!-- #info_tab -->
 
       <div id="score_summary_tab" class="tab-pane">
-        <% if @resource.resource_type == ResourceType::ITEM %>
+        <% if @resource.resource_type == Resource::Type::ITEM %>
           <% if @resource.assessment_complete %>
             <% # TODO: use the assessable_report partial %>
             <div class="psap-assessable-report">

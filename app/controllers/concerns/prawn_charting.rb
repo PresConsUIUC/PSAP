@@ -27,7 +27,7 @@ module PrawnCharting
   # @param location_assessment_sections Array of AssessmentSections
   # @param institution_formats
   # @param collections Array of Resources of
-  # resource_type == ResourceType::COLLECTION
+  # resource_type == Resource::Type::COLLECTION
   #
   def pdf_assessment_report(institution, user, institution_data,
                             collection_datas, location_assessment_sections,

@@ -176,7 +176,7 @@ module ApplicationHelper
     elsif entity.kind_of?(Repository) or entity == Repository
       class_ = 'fa-building-o'
     elsif entity.kind_of?(Resource)
-      if entity.resource_type == ResourceType::COLLECTION
+      if entity.resource_type == Resource::Type::COLLECTION
         class_ = 'fa-cubes'
       elsif entity.format
         case entity.format.format_class

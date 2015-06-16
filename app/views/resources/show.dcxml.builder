@@ -17,7 +17,7 @@ xml.tag!('oai_dc:dc',
   @resource.resource_dates.each do |date|
     xml.tag!('dc:date', date.as_dublin_core_string)
   end
-  if @resource.resource_type == ResourceType::COLLECTION
+  if @resource.resource_type == Resource::Type::COLLECTION
     xml.tag!('dc:type', 'collection')
   elsif @resource.format
     xml.tag!('dc:type',
@@ -43,7 +43,7 @@ xml.tag!('oai_dc:dc',
   if @resource.parent
     xml.tag!('dc:relation', "isPartOf #{@resource.parent.name} (#{@resource.parent.local_identifier})")
   end
-  if @resource.resource_type == ResourceType::COLLECTION
+  if @resource.resource_type == Resource::Type::COLLECTION
     @resource.children.each do |child|
       xml.tag!('dc:relation', "hasPart #{child.name} (#{child.local_identifier})")
     end

@@ -32,7 +32,7 @@ xml.ead(
       }
     }
   }
-  xml.archdesc('level' => @resource.resource_type == ResourceType::ITEM ? 'item' : 'collection') {
+  xml.archdesc('level' => @resource.resource_type == Resource::Type::ITEM ? 'item' : 'collection') {
     xml.did {
       xml.repository(
           'label' => 'Institution/Subunit',

@@ -1,6 +1,6 @@
 ##
 # A Resource exists within a Location. It has a resource_type property which
-# must be set to either ResourceType::ITEM or ResourceType::COLLECTION.
+# must be set to either Resource::Type::ITEM or Resource::Type::COLLECTION.
 # Collections can contain zero or more child resources. Formats, ink/media
 # types, and support types can be ascribed only to items.
 #
@@ -8,6 +8,15 @@
 # score is the mean of the item scores contained within.
 #
 class Resource < ActiveRecord::Base
+
+  class Type
+    COLLECTION = 0
+    ITEM = 1
+
+    def self.all
+      return (0..1)
+    end
+  end
 
   # When adding/removing properties or associations, update both .as_csv and
   # ::as_csv.
@@ -217,9 +226,9 @@ class Resource < ActiveRecord::Base
     doc.xpath('//ead:archdesc', ead_ns).each do |element|
       case element.attribute('level').text.strip
         when 'collection'
-          params[:resource_type] = ResourceType::COLLECTION
+          params[:resource_type] = Resource::Type::COLLECTION
         else
-          params[:resource_type] = ResourceType::ITEM
+          params[:resource_type] = Resource::Type::ITEM
       end
     end
 
@@ -310,7 +319,7 @@ class Resource < ActiveRecord::Base
   # in the hierarchy.
   #
   def all_assessed_items
-    all_children.select{ |x| x.resource_type == ResourceType::ITEM and
+    all_children.select{ |x| x.resource_type == Resource::Type::ITEM and
         x.assessment_complete }
   end
 
@@ -472,7 +481,7 @@ class Resource < ActiveRecord::Base
   # @return float between 0 and 1
   #
   def effective_assessment_score
-    if self.resource_type == ResourceType::COLLECTION
+    if self.resource_type == Resource::Type::COLLECTION
       items = self.all_assessed_items
       return items.any? ?
           items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
@@ -560,7 +569,7 @@ class Resource < ActiveRecord::Base
   end
 
   def prune_irrelevant_models
-    if self.resource_type == ResourceType::COLLECTION
+    if self.resource_type == Resource::Type::COLLECTION
       self.format = nil
       self.format_ink_media_type = nil
       self.format_support_type = nil
@@ -576,9 +585,9 @@ class Resource < ActiveRecord::Base
 
   def readable_resource_type
     case resource_type
-      when ResourceType::COLLECTION
+      when Resource::Type::COLLECTION
         'Collection'
-      when ResourceType::ITEM
+      when Resource::Type::ITEM
         'Item'
     end
   end
@@ -627,13 +636,13 @@ class Resource < ActiveRecord::Base
   end
 
   def validates_item_children
-    if self.resource_type == ResourceType::ITEM and self.children.any?
+    if self.resource_type == Resource::Type::ITEM and self.children.any?
       errors[:base] << 'Non-empty collections cannot be changed into items.'
     end
   end
 
   def validates_not_child_of_item
-    if parent and parent.resource_type != ResourceType::COLLECTION
+    if parent and parent.resource_type != Resource::Type::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
     end
   end
