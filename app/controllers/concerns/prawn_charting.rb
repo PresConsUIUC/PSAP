@@ -10,6 +10,7 @@ module PrawnCharting
   extend ActiveSupport::Concern
   include AssessmentQuestionsHelper
 
+  CHART_HEIGHT = 200
   FONT = 'Helvetica'
   H1_SIZE = 18
   H2_SIZE = 16
@@ -232,7 +233,7 @@ module PrawnCharting
       end
     end
     pdf.move_down 20
-    bar_chart(pdf, institution_data, pdf.bounds.right, 200)
+    bar_chart(pdf, institution_data, pdf.bounds.right, CHART_HEIGHT)
 
     add_page_numbers(pdf) if page_numbers
     pdf
@@ -294,10 +295,14 @@ module PrawnCharting
   # @return void
   #
   def bar_chart(pdf, data, width, height)
+    # horrible hack to compensate for using step_size with a too-small number
+    # of items (better to show an empty chart than an error page)
     return if data.length <= 10
-    x_margin = 20
-    label_size = 8
-    label_height = pdf.height_of('bla', size: label_size)
+    x_margin = 30
+    axis_label_size = 10
+    axis_label_height = pdf.height_of('bla', size: axis_label_size)
+    data_label_size = 8
+    data_label_height = pdf.height_of('bla', size: data_label_size)
     bar_spacing = width / 50
     bar_width = width / data.length - bar_spacing
     target_num_steps = 11
@@ -331,19 +336,27 @@ module PrawnCharting
     step_spacing = height / num_steps
     0.upto(num_steps).each do |i|
       label_text = "#{(i * step_size).round}"
-      label_width = pdf.width_of(label_text, size: label_size)
-      pdf.draw_text label_text, size: label_size,
-                    at: [x_margin - label_width - label_height / 2,
+      label_width = pdf.width_of(label_text, size: data_label_size)
+      pdf.draw_text label_text, size: data_label_size,
+                    at: [x_margin - label_width - data_label_height / 2,
                          origin[1] + step_spacing * i]
+    end
+
+    # draw y axis label
+    label_origin = origin.dup
+    label_origin[0] = 0
+    pdf.rotate(90, origin: label_origin) do
+      pdf.text_box 'Number of Items', at: label_origin, width: height, # because it's rotated
+                   size: axis_label_size, align: :center
     end
 
     # draw x axis labels & bars
     data.each_with_index do |count, i|
       label_text = "#{i * 10}+"
-      label_width = pdf.width_of(label_text, size: label_size)
-      pdf.draw_text label_text, size: label_size, width: label_width,
+      label_width = pdf.width_of(label_text, size: data_label_size)
+      pdf.draw_text label_text, size: data_label_size, width: label_width,
                     at: [origin[0] + i * bar_width + (bar_width - label_width) / 2 + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
-                         origin[1] - label_height]
+                         origin[1] - data_label_height]
       if count > 0
         pdf.fill_color hex_color_for_score(i * 0.1)
         pdf.fill_rectangle [origin[0] + i * bar_width + i * bar_spacing - x_margin * (i.to_f / num_steps.to_f),
@@ -353,9 +366,12 @@ module PrawnCharting
       end
     end
 
-    origin[1] -= label_height * 1.5
+    # draw x axis label
+    label_origin = origin.dup
+    label_origin[0] = 0
+    label_origin[1] -= axis_label_height + data_label_height
     pdf.text_box 'Assessment Score Range',
-             at: origin, width: width, size: label_size, align: :center
+             at: label_origin, width: width, size: axis_label_size, align: :center
   end
 
   ##
