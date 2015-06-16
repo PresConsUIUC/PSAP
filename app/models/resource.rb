@@ -47,7 +47,7 @@ class Resource < ActiveRecord::Base
   before_validation :sync_location_with_parent
 
   validates :assessment_type, allow_blank: true,
-            inclusion: { in: AssessmentType.all,
+            inclusion: { in: Assessment::Type.all,
                          message: 'must be a valid assessment type' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
@@ -283,7 +283,7 @@ class Resource < ActiveRecord::Base
         csv << [resource.local_identifier] +
             [resource.name] +
             [(resource.effective_assessment_score * 100).round(2)] +
-            [AssessmentType::name_for_type(resource.assessment_type)] +
+            [Assessment::Type::name_for_type(resource.assessment_type)] +
             [resource.location.name] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
@@ -367,7 +367,7 @@ class Resource < ActiveRecord::Base
       csv << [self.local_identifier] +
           [self.name] +
           [(self.effective_assessment_score * 100).round(2)] +
-          [AssessmentType::name_for_type(self.assessment_type)] +
+          [Assessment::Type::name_for_type(self.assessment_type)] +
           [self.location.name] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +

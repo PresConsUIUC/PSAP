@@ -109,7 +109,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'assessment_type should be within bounds' do
-    @resource.assessment_type = AssessmentType.all.last + 1
+    @resource.assessment_type = Assessment::Type.all.last + 1
     assert !@resource.save
   end
 

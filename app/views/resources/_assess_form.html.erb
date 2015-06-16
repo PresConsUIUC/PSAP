@@ -19,12 +19,12 @@
         ?
       </button>
       <div class="radio">
-        <%= f.radio_button :assessment_type, AssessmentType::ITEM_LEVEL %>
-        <%= f.label :assessment_type, 'Item-Level', value: AssessmentType::ITEM_LEVEL %>
+        <%= f.radio_button :assessment_type, Assessment::Type::ITEM_LEVEL %>
+        <%= f.label :assessment_type, 'Item-Level', value: Assessment::Type::ITEM_LEVEL %>
       </div>
       <div class="radio">
-        <%= f.radio_button :assessment_type, AssessmentType::SAMPLE %>
-        <%= f.label :assessment_type, 'Sample', value: AssessmentType::SAMPLE %>
+        <%= f.radio_button :assessment_type, Assessment::Type::SAMPLE %>
+        <%= f.label :assessment_type, 'Sample', value: Assessment::Type::SAMPLE %>
       </div>
     </div>
 

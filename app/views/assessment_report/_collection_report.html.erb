@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-sm-6">
       <ul>
-        <li>Assessment: <%= AssessmentType::name_for_type(resource.assessment_type) %></li>
+        <li>Assessment: <%= Assessment::Type::name_for_type(resource.assessment_type) %></li>
         <li><%= all_assessed_items.length %> items assessed</li>
         <li>Assessed by:
           <ul>

@@ -174,7 +174,7 @@
               <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
                 <dt>Assessment Type</dt>
                 <dd>
-                  <%= AssessmentType::name_for_type(@resource.assessment_type) %>
+                  <%= Assessment::Type::name_for_type(@resource.assessment_type) %>
                 </dd>
               <% end %>
               <% creators = @resource.creators.select{ |e| !e.name.blank? } %>
@@ -302,7 +302,7 @@
               <% end %>
               <% if @resource.assessment_type %>
                 <dt>Assessment Type</dt>
-                <dd><%= AssessmentType::name_for_type(@resource.assessment_type) %></dd>
+                <dd><%= Assessment::Type::name_for_type(@resource.assessment_type) %></dd>
               <% end %>
               <dt>Created</dt>
               <dd><%= local_time_ago(@resource.created_at) %> by

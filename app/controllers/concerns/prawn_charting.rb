@@ -130,7 +130,7 @@ module PrawnCharting
           col_height = pdf.bounds.top / 2 - pdf.height_of('bla', size: H2_SIZE) -
               pdf.height_of('bla', size: H3_SIZE) * 2
           pdf.bounding_box([0, y_pos], width: pdf.bounds.right / 2, height: col_height) do
-            pdf.text "Assessment: #{AssessmentType::name_for_type(collection.assessment_type)}"
+            pdf.text "Assessment: #{Assessment::Type::name_for_type(collection.assessment_type)}"
             pdf.text "#{all_assessed_items.length} items assessed"
             pdf.text "Assessed by:"
             all_assessed_items.sort{ |x,y| x.updated_at <=> y.updated_at }.
