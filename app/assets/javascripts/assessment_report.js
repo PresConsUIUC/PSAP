@@ -48,9 +48,9 @@ var AssessmentChart = {
             vis.append('text') // y-axis label
                 .attr('transform', 'rotate(-90)')
                 .attr('x', 0 - HEIGHT / 2)
-                .attr('y', 0)
+                .attr('y', 10)
                 .style('text-anchor', 'middle')
-                .text('Frequency');
+                .text('Number of Items');
             vis.selectAll('rect').data(barData).enter().append('rect')
                 .attr('x', function (d) { return xRange(d.x); })
                 .attr('y', function (d) { return yRange(d.y); })
