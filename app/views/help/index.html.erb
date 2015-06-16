@@ -1,0 +1,49 @@
+<% provide :title, 'Help' %>
+<% provide :body_id, 'help' %>
+
+<h1>Help</h1>
+<p>You have arrived at the hub for PSAP help. Depending on your needs, the PSAP offers several levels of help. See the sections below to determine which feature is best suited to your circumstance.</p>
+
+<ul>
+  <li><%= link_to 'Getting Started', getting_started_path %> is a graphic guide for new users navigating the application for the first time.</li>
+  <li><%= link_to 'Simple Help', simple_help_path %> is designed to provide basic assistance in understanding how to answer assessment questions.</li>
+  <li><%= link_to 'Advanced Help', advanced_help_path %> is designed to provide in-depth guidance and context for each question asked during assessment.</li>
+  <li>The <%= link_to 'Format ID Guide', format_id_guide_path %> is designed to assist with identifying the format and base materials of your resources.  It also provides a number of reference and supplementary guides to help establish institutional policies and to support continuing education of staff and volunteers.</li>
+  <li>The <%= link_to 'User Manual', user_manual_path %> is designed to assist with understanding and using the application.</li>
+</ul>
+
+<h2>Tutorial Videos</h2>
+
+<p>Take a look at our short instructional videos to orient yourself if you are new to the application.</p>
+
+<iframe width="560" height="315"
+        src="https://www.youtube.com/embed/videoseries?list=PL2KBG6GWVkS-kCHb5iljwIZALS4Hxzkum" frameborder="0" allowfullscreen></iframe>
+
+<h2>Which help feature is right for me?</h2>
+
+<p>Do you need a quick, graphic guide to get you started with the tool?</p>
+
+<p><%= link_to 'Click through to Getting Started.', getting_started_path %></p>
+
+<p>Do you need help using the PSAP tool, understanding how to enter your resources, generating reports, or navigating the application?</p>
+
+<p><%= link_to 'Click through to the User Manual.', user_manual_path %></p>
+
+<p>Do you need help understanding how to answer the assessment questions you are being asked, or do you need to know more about why we are asking particular questions?</p>
+
+<p><%= link_to 'Click through to Simple Help.', simple_help_path %></p>
+<p><%= link_to 'Click through to Advanced Help.', advanced_help_path %></p>
+
+<p>Do you need help identifying the format of your resource, or do you need to learn more about the history and best practices associated with a format?</p>
+
+<p><%= link_to 'Click through to the Format ID Guide.', format_id_guide_path %></p>
+<p><%= link_to 'Click through to Advanced Help.', advanced_help_path %></p>
+
+<h2>Other Resources</h2>
+<ul>
+  <li>The PSAP <%= link_to 'Glossary', glossary_path %> provides definitions of terms that are commonly used in the application.</li>
+  <li>The PSAP <%= link_to 'Bibliography', bibliography_path %> contains all of the reference material used in the development of preservation recommendations.</li>
+  <li>The PSAP project <a href="http://www.library.illinois.edu/prescons/projects_grants/grants/PSAP/">website</a> on the University of Illinois' library page provides information about support, partners, and project development.</li>
+  <li>The PSAP <a href="https://github.com/PresConsUIUC/PSAP/">GitHub</a> contains the openly available code for the application.</li>
+  <li>The contact email for the project is <a href="mailto:psap@library.illinois.edu?Subject=Assistance%20requested">psap@library.illinois.edu</a> - please contact us if you have a question that cannot be resolved with our help features. Comments and bug reports are also gratefully accepted.</li>
+</ul>
