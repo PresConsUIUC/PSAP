@@ -86,12 +86,12 @@ xml.ead(
       if @resource.creators.any?
         xml.origination('label' => 'Creator') {
           for creator in @resource.creators
-            if creator.creator_type == CreatorType::PERSON
+            if creator.creator_type == Creator::Type::PERSON
               xml.persname(creator.name,
                            'source' => 'local',
                            'normal' => creator.name
               )
-            elsif creator.creator_type == CreatorType::COMPANY
+            elsif creator.creator_type == Creator::Type::COMPANY
               xml.corpname(creator.name, 'source' => 'local')
             end
           end
@@ -133,12 +133,12 @@ xml.ead(
     if @resource.creators.any? || @resource.subjects.any? # TODO: controlled subject vocab from ArchivesSpace (see template EAD)
       xml.controlaccess {
         for creator in @resource.creators
-          if creator.creator_type == CreatorType::PERSON
+          if creator.creator_type == Creator::Type::PERSON
             xml.persname(creator.name,
                          'source' => 'local',
                          'normal' => creator.name
             )
-          elsif creator.creator_type == CreatorType::COMPANY
+          elsif creator.creator_type == Creator::Type::COMPANY
             xml.corpname(creator.name, 'source' => 'local')
           end
         end

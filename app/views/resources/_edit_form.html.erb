@@ -179,8 +179,8 @@
           <div class="psap-addable-removable-input-group row">
             <div class="col-sm-11">
               <%= select('resource[creators_attributes][0]', 'creator_type',
-                         options_for_select([['Person', CreatorType::PERSON],
-                                             ['Company', CreatorType::COMPANY]]),
+                         options_for_select([['Person', Creator::Type::PERSON],
+                                             ['Company', Creator::Type::COMPANY]]),
                          { include_blank: false },
                          { class: 'form-control input-md' }) %>
               <%= g.text_field :name, class: 'form-control' %>

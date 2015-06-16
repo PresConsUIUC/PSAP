@@ -36,7 +36,7 @@ class CreatorTest < ActiveSupport::TestCase
   end
 
   test 'creator type should be valid' do
-    @creator.creator_type = CreatorType.all.last + 10
+    @creator.creator_type = Creator::Type.all.last + 10
     assert !@creator.save
   end
 
@@ -49,9 +49,9 @@ class CreatorTest < ActiveSupport::TestCase
   ############################ method tests #################################
 
   test 'readable_creator_type should work' do
-    @creator.creator_type = CreatorType::PERSON
+    @creator.creator_type = Creator::Type::PERSON
     assert_equal 'Person', @creator.readable_creator_type
-    @creator.creator_type = CreatorType::COMPANY
+    @creator.creator_type = Creator::Type::COMPANY
     assert_equal 'Company', @creator.readable_creator_type
   end
 

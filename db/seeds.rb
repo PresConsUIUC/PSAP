@@ -620,7 +620,7 @@ case Rails.env
     creators = []
     for i in 0..resources.length - 1
       creators << Creator.create!(name: 'Sample creator',
-                                  creator_type: i.odd? ? CreatorType::PERSON : CreatorType::COMPANY,
+                                  creator_type: i.odd? ? Creator::Type::PERSON : Creator::Type::COMPANY,
                                   resource: resources[i])
     end
 
