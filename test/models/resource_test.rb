@@ -160,7 +160,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'resource_type is in bounds' do
-    @resource.resource_type = ResourceType.all.last + 1
+    @resource.resource_type = Resource::Type.all.last + 1
     assert !@resource.save
   end
 

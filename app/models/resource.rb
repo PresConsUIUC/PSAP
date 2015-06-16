@@ -70,7 +70,7 @@ class Resource < ActiveRecord::Base
                          message: 'must be a valid assessment type' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :resource_type, inclusion: { in: ResourceType.all,
+  validates :resource_type, inclusion: { in: Resource::Type.all,
                          message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
             inclusion: { in: Resource::Significance.all,
