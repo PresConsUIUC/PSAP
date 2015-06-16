@@ -1,15 +1,30 @@
 class HelpController < ApplicationController
 
+  ##
+  # Responds to GET /advanced-help
+  #
+  def advanced_index
+  end
+
+  ##
+  # Responds to GET /advanced-help/:category
+  #
+  def advanced_show
+    @page = StaticPage.where(component: StaticPage::COMPONENT_HELP,
+                             uri_fragment: params[:category]).first
+    raise ActiveRecord::RecordNotFound unless @page
+  end
+
+  ##
+  # Main help landing page. Responds to GET /help
+  #
   def index
   end
 
   ##
-  # Responds to GET /help/:category
+  # Responds to GET /simple-help
   #
-  def show
-    @page = StaticPage.where(component: StaticPage::COMPONENT_HELP,
-                             uri_fragment: params[:category]).first
-    raise ActiveRecord::RecordNotFound unless @page
+  def simple_index
   end
 
 end

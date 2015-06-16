@@ -141,9 +141,13 @@ Psap::Application.routes.draw do
   match '/format-id-guide/:category', to: 'format_id_guide#show',
         via: 'get', as: 'format_id_guide_category'
 
-  # Advanced Help routes
+  # Help routes
   match '/help', to: 'help#index', via: 'get', as: 'help'
-  match '/help/:category', to: 'help#show', via: 'get', as: 'help_category'
+  match '/simple-help', to: 'help#simple_index', via: 'get', as: 'simple_help'
+  match '/advanced-help', to: 'help#advanced_index', via: 'get',
+        as: 'advanced_help'
+  match '/advanced-help/:category', to: 'help#advanced_show', via: 'get',
+        as: 'advanced_help_category'
 
   # User Manual routes
   match '/manual', to: 'user_manual#index', via: 'get', as: 'user_manual'
