@@ -196,7 +196,6 @@ class ResourcesController < ApplicationController
   def search
     @institution = current_user.institution
     @resources = @institution.resources
-    @searching = false
 
     # all available URL query parameters
     query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
@@ -206,10 +205,8 @@ class ResourcesController < ApplicationController
       @resource_count = @resources.count
       @resources = @resources.where(parent_id: nil).order(:name)
     else
-      @resources = Resource.all_matching_query(current_user.institution,
-                                               params, @resources)
+      @resources = Resource.all_matching_query(@institution, params, @resources)
       @resource_count = @resources.count
-      @searching = true
     end
 
     if request.xhr?
