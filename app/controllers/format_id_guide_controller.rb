@@ -13,7 +13,7 @@ class FormatIdGuideController < ApplicationController
     @results = []
     if params[:q] and params[:q].length > 0
       @results = StaticPage.full_text_search(
-          params[:q], StaticPage::Component::FORMAT_ID_GUIDE)
+          params[:q], [StaticPage::Component::FORMAT_ID_GUIDE])
     end
     @query = params[:q].truncate(50)
     @results_summary = @query.length > 0 ?

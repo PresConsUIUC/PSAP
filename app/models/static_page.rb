@@ -16,13 +16,13 @@ class StaticPage < ActiveRecord::Base
   # Performs a PostgreSQL full-text search on the static_pages table.
   #
   # @param query [String] Query string
-  # @param component [StaticPage::Component]
+  # @param components [Array<StaticPage::Component>]
   # @param min_words [Integer]
   # @param max_words [Integer]
   # @return [PG::Result]
   #
-  def self.full_text_search(query, component, min_words = 40, max_words = 41,
-      max_fragments = 3)
+  def self.full_text_search(query, components = [], min_words = 40,
+      max_words = 41, max_fragments = 3)
     query = query.delete('\'":|!@#$%^*()') # strip certain characters
     query = query.gsub('&', ' ') # "B&W" won't return anything but "B W" will
     query = query.gsub(' ', ' & ') # replace spaces with boolean AND
@@ -37,8 +37,11 @@ class StaticPage < ActiveRecord::Base
         "'MaxFragments=#{max_fragments},MaxWords=#{max_words},"\
         "MinWords=#{min_words},StartSel=<mark>,StopSel=</mark>') AS highlight "\
     "FROM static_pages, to_tsquery(#{query}) as keywords "\
-    "WHERE searchable_html @@ keywords AND component = '#{component}' "\
-    "LIMIT 50;"
+    "WHERE searchable_html @@ keywords "
+    if components.any?
+      sql += "AND component IN (#{components.map{ |c| "'#{c}'" }.join(', ')}) "
+    end
+    sql += 'LIMIT 50;'
 
     ActiveRecord::Base.connection.execute(sql)
   end

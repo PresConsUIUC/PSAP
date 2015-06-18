@@ -32,6 +32,21 @@ class HelpController < ApplicationController
   end
 
   ##
+  # Responds to GET /search?q=...
+  #
+  def search
+    @results = []
+    if params[:q] and params[:q].length > 0
+      @results = StaticPage.full_text_search(
+          params[:q],
+          [StaticPage::Component::HELP, StaticPage::Component::USER_MANUAL])
+    end
+    @query = params[:q].truncate(50)
+    @results_summary = @query.length > 0 ?
+        "Results for \"#{@query}\"" : "Help Search"
+  end
+
+  ##
   # Responds to GET /simple-help
   #
   def simple_index

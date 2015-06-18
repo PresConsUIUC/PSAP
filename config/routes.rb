@@ -143,6 +143,7 @@ Psap::Application.routes.draw do
 
   # Help routes
   match '/help', to: 'help#index', via: 'get', as: 'help'
+  match '/help/search', to: 'help#search', via: 'get', as: 'help_search'
   match '/simple-help', to: 'help#simple_index', via: 'get', as: 'simple_help'
   match '/advanced-help', to: 'help#advanced_index', via: 'get',
         as: 'advanced_help'
