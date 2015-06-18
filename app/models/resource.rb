@@ -312,7 +312,7 @@ class Resource < ActiveRecord::Base
             [resource.readable_significance] +
             resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
             resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
-            [resource.language ? resource.language.english_name : nil] +
+            [resource.language ? resource.language.english_name : resource.location.repository.institution.language.english_name] +
             resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
             resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
