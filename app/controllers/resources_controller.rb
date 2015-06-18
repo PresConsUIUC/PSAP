@@ -351,7 +351,7 @@ class ResourcesController < ApplicationController
   def resource_params
     params.require(:resource).
         permit(:assessment_type, :description, :format_id,
-               :format_ink_media_type_id, :format_support_type_id,
+               :format_ink_media_type_id, :format_support_type_id, :language_id,
                :local_identifier, :location_id, :name, :notes, :parent_id,
                :resource_type, :rights, :significance, :user_id,
                creators_attributes: [:_destroy, :id, :creator_type, :name],
