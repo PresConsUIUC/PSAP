@@ -47,7 +47,7 @@ namespace :deploy do
 
   task :stop_passenger do
     on roles(:app), in: :sequence, wait: 5 do
-      execute "#{fetch(:bin)}/stop-psap"
+      execute "#{fetch(:bin)}/stop-rails"
     end
   end
 
@@ -56,7 +56,7 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       #execute :touch, release_path.join('tmp/restart.txt')
-      execute "#{fetch(:bin)}/start-psap"
+      execute "#{fetch(:bin)}/start-rails"
     end
   end
 
