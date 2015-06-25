@@ -26,7 +26,7 @@ class DeleteUserCommand < Command
     else
       @user.institution.events << Event.create(
           description: "Deleted user #{@user.username}",
-          user: @doing_user, address: @remote_ip)
+          user: @doing_user, address: @remote_ip) if @user.institution
     end
   end
 
