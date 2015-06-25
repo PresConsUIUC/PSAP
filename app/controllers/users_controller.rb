@@ -227,6 +227,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user
     @user_role = Role.find_by_name('User')
+    @roles = Role.all.order(:name)
 
     if params[:user][:current_password] # the user is changing their password
       command = ChangePasswordCommand.new(
@@ -246,6 +247,7 @@ class UsersController < ApplicationController
         flash['success'] = @user == current_user ?
             'Your password has been changed.' :
             "#{@user.username}'s password has been changed."
+        keep_flash
         redirect_to edit_user_url(@user)
       end
     elsif params[:user][:desired_institution_id] # the user is changing their institution
@@ -272,6 +274,7 @@ class UsersController < ApplicationController
           flash['success'] = "An administrator has been notified and will "\
           "review your request to join #{new_institution.name} momentarily,"
         end
+        keep_flash
         redirect_to dashboard_path
       end
     else # the user is changing their basic info
@@ -288,6 +291,7 @@ class UsersController < ApplicationController
         flash['success'] = @user == current_user ?
             'Your profile has been updated.' :
             "#{@user.username}'s profile has been updated."
+        keep_flash
         redirect_to edit_user_url(@user)
       end
     end
