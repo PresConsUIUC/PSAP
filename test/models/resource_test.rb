@@ -58,7 +58,7 @@ class ResourceTest < ActiveSupport::TestCase
   test 'setting a resource to a collection should prune its AQRs' do
     response = assessment_question_responses(:assessment_question_response_one)
     @resource.assessment_question_responses << response
-    @resource.resource_type = ResourceType::COLLECTION
+    @resource.resource_type = Resource::Type::COLLECTION
     @resource.save
     assert !@resource.assessment_question_responses.any?
   end
@@ -109,7 +109,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'assessment_type should be within bounds' do
-    @resource.assessment_type = AssessmentType.all.last + 1
+    @resource.assessment_type = Assessment::Type.all.last + 1
     assert !@resource.save
   end
 
@@ -137,19 +137,19 @@ class ResourceTest < ActiveSupport::TestCase
 
   # readable_resource_type
   test 'readable_resource_type should work' do
-    @resource.resource_type = ResourceType::COLLECTION
+    @resource.resource_type = Resource::Type::COLLECTION
     assert_equal 'Collection', @resource.readable_resource_type
-    @resource.resource_type = ResourceType::ITEM
+    @resource.resource_type = Resource::Type::ITEM
     assert_equal 'Item', @resource.readable_resource_type
   end
 
   # readable_resource_significance
   test 'readable_significance should work' do
-    @resource.significance = ResourceSignificance::LOW
+    @resource.significance = Resource::Significance::LOW
     assert_equal 'Low', @resource.readable_significance
-    @resource.significance = ResourceSignificance::MODERATE
+    @resource.significance = Resource::Significance::MODERATE
     assert_equal 'Moderate', @resource.readable_significance
-    @resource.significance = ResourceSignificance::HIGH
+    @resource.significance = Resource::Significance::HIGH
     assert_equal 'High', @resource.readable_significance
   end
 
@@ -160,7 +160,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'resource_type is in bounds' do
-    @resource.resource_type = ResourceType.all.last + 1
+    @resource.resource_type = Resource::Type.all.last + 1
     assert !@resource.save
   end
 
@@ -171,7 +171,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'significance is in bounds' do
-    @resource.significance = ResourceSignificance.all.last + 1
+    @resource.significance = Resource::Significance.all.last + 1
     assert !@resource.save
   end
 

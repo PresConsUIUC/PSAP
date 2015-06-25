@@ -34,7 +34,7 @@ var PSAP = {
             $('div.alert').remove();
 
             // construct the message
-            var flash = $('<div class="alert ' + bootstrapClass + '"></div>');
+            var flash = $('<div class="psap-flash alert ' + bootstrapClass + '"></div>');
             var button = $('<button type="button" class="close"' +
             ' data-dismiss="alert" aria-hidden="true">&times;</button>');
             flash.append(button);
@@ -147,6 +147,30 @@ var PSAP = {
             return false;
         });
 
+        // set up the entity nav menu
+        // hook up expand buttons
+        $('#psap-entity-nav-menu .psap-expand').on('click', function() {
+            if ($(this).hasClass('fa-chevron-right')) {
+                // it's not expanded; expand it
+                $(this).removeClass('fa-chevron-right').
+                    addClass('fa-chevron-down');
+                $(this).parent().next('ul:first').show();
+            } else {
+                // it's expanded; un-expand it
+                $(this).removeClass('fa-chevron-down').
+                    addClass('fa-chevron-right');
+                $(this).parent().next('ul:first').hide();
+            }
+        });
+        // set its initial expansion
+        var active_li = $('#psap-entity-nav-menu li.active');
+        active_li.parentsUntil('#psap-entity-nav-menu', 'ul').each(function() {
+            $(this).show();
+            $(this).prev().find('.psap-expand').removeClass('fa-chevron-right').
+                addClass('fa-chevron-down');
+        });
+        active_li.find('.psap-expand:first').trigger('click');
+
         // Show the modal progress view after submitting an ajax form
         $(document).on('submit', 'form[data-remote="true"]', function() {
             var view = $('#psap-ajax-shade');
@@ -155,20 +179,6 @@ var PSAP = {
         });
 
         PSAP.updateResultsCount();
-
-        // Show the glossary, bibliography, help, etc. in a modal panel instead of
-        // a new page
-        $('a.psap-modal-view').on('click', function() {
-            $('#appModal').modal('show');
-
-            $.get($(this).attr('data-open'), function(data) {
-                var content = $(data).find('div#page_content');
-                $('div.modal-body').html(content.html());
-                $('#appModalTitle').text($('div.modal-body h1:first').text());
-                $('div.modal-body h1').remove();
-            });
-            return false;
-        });
 
         var checkboxes = $('input[type="checkbox"]');
 
@@ -232,7 +242,6 @@ var PSAP = {
             var body = $('body');
             if (body.width() > 600) {
                 var navbar = $('nav.navbar.navbar-default');
-                affixed.width(affixed.parent().width());
                 affixed.affix({
                     offset: {
                         top: affixed.offset().top - navbar.height() - 15
@@ -254,9 +263,9 @@ var PSAP = {
         });
 
         // make flash messages disappear after a delay
-        if ($('div.alert').length) {
+        if ($('.psap-flash').length) {
             setTimeout(function () {
-                $('div.alert').fadeOut();
+                $('.psap-flash').fadeOut();
             }, PSAP.Flash.FADE_OUT_DELAY);
         }
 

@@ -19,7 +19,6 @@
     font_url('Montserrat-Regular-webfont.svg#montserratregular') format('svg');
   font-weight: normal;
   font-style: normal;
-
 }
 
 @font-face {
@@ -31,7 +30,6 @@
   font_url('Montserrat-Hairline.svg#montserrathairline') format('svg');
   font-weight: normal;
   font-style: normal;
-
 }
 
 /* universal */
@@ -137,6 +135,9 @@ button.hovertip-fire {
 
 .nav-tabs {
   margin-bottom:1em;
+  .active {
+    font-weight: bold;
+  }
 }
 
 .popover {
@@ -239,8 +240,7 @@ header {
     font-family: 'montserrathairline';
     font-size:1.5em;
     letter-spacing:1px;
-    margin-bottom:8px;
-    padding-top:6px;
+    margin-top: 12px;
   }
   h1 a, h1 a:hover {
     color:#808080;
@@ -254,9 +254,6 @@ header {
   img#title_logo {
     float:left;
     margin-right:1em;
-  }
-  div.btn-group {
-    margin:0px;
   }
 }
 
@@ -289,6 +286,77 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   padding-right:0.2em;
 }
 
+.psap-entity-nav-menu {
+  padding-right: 0px;
+  #psap-entity-nav-menu {
+    $item-indent: 10px;
+    $item-height: 10px;
+    margin-left: 0px;
+    padding-left: 0px;
+    a:hover, a:active {
+      text-decoration: none;
+    }
+    ul {
+      display: none;
+      margin-left: $item-indent;
+      margin-top: $item-height;
+      padding-left: 0px;
+    }
+    li {
+      border-radius: 4px;
+      list-style: none;
+      padding: $item-height 0px $item-height 10px;
+    }
+    li.active {
+      padding:0px;
+    }
+    li.active > div:first-child {
+      background-color: #428bca;
+      border-radius: 4px;
+      color: white;
+      padding: $item-height;
+      a {
+        color: white;
+      }
+      .psap-entity-icon {
+        color: white;
+      }
+    }
+    li.active > ul {
+      background-color:white;
+      color:black;
+      a {
+        color:#428bca;
+      }
+      li {
+        .psap-expand {
+          color: #909090;
+        }
+      }
+    }
+    .psap-expand {
+      color: #909090;
+      margin-right: 6px;
+      width: 16px;
+    }
+    .psap-expand:hover {
+      text-decoration: none;
+    }
+    .psap-entity-icon {
+      margin-left: 0px;
+    }
+  }
+  .text-success {
+    color:#00b000;
+  }
+  .text-warning {
+    color:orange;
+  }
+  .text-danger {
+    color:#d00000;
+  }
+}
+
 .psap-entity-list {
   list-style-type:none;
   margin-left:0px;
@@ -319,20 +387,6 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   list-style-type:none;
   margin-left:0px;
   padding-left:0px;
-}
-
-.psap-hierarchy-list {
-  list-style-type:none;
-  margin-left:1.8em;
-  padding-left:0px;
-  text-indent:-1em;
-  .psap-hierarchy-list {
-    margin-left:1.6em;
-    padding-left:0px;
-  }
-  .active {
-    font-weight:bold;
-  }
 }
 
 .psap-plain-list {
@@ -445,11 +499,6 @@ div.psap-progress-container {
   }
 }
 
-.field_with_errors {
-  @extend .control-group;
-  @extend .error;
-}
-
 .btn-sm.help {
   background-color:#cacaca;
   border:none;
@@ -522,22 +571,4 @@ footer {
       margin-left: 10px;
     }
   }
-}
-
-/* mixins, variables, etc. */
-
-@mixin box_sizing {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/* miscellaneous */
-
-.debug_dump {
-  clear: both;
-  float: left;
-  width: 100%;
-  margin-top: 45px;
-  @include box_sizing;
 }

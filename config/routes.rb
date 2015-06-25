@@ -1,10 +1,67 @@
 Psap::Application.routes.draw do
+  # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes".
+
+  # You can have the root of your site routed with "root"
+  # root 'welcome#index'
+
+  # Example of regular route:
+  #   get 'products/:id' => 'catalog#view'
+
+  # Example of named route that can be invoked with purchase_url(id: product.id)
+  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+
+  # Example resource route (maps HTTP verbs to controller actions automatically):
+  #   resources :products
+
+  # Example resource route with options:
+  #   resources :products do
+  #     member do
+  #       get 'short'
+  #       post 'toggle'
+  #     end
+  #
+  #     collection do
+  #       get 'sold'
+  #     end
+  #   end
+
+  # Example resource route with sub-resources:
+  #   resources :products do
+  #     resources :comments, :sales
+  #     resource :seller
+  #   end
+
+  # Example resource route with more complex sub-resources:
+  #   resources :products do
+  #     resources :comments
+  #     resources :sales do
+  #       get 'recent', on: :collection
+  #     end
+  #   end
+
+  # Example resource route with concerns:
+  #   concern :toggleable do
+  #     post 'toggle'
+  #   end
+  #   resources :posts, concerns: :toggleable
+  #   resources :photos, concerns: :toggleable
+
+  # Example resource route within a namespace:
+  #   namespace :admin do
+  #     # Directs /admin/products/* to Admin::ProductsController
+  #     # (app/controllers/admin/products_controller.rb)
+  #     resources :products
+  #   end
 
   root 'static#landing'
   match '/about', to: 'static#about', via: 'get', as: 'about'
+  match '/assessment-report', to: 'assessment_report#index', via: 'get',
+        as: 'assessment_report'
   match '/bibliography', to: 'static#bibliography', via: 'get'
   match '/dashboard', to: 'dashboard#index', via: 'get'
   match '/events', to: 'events#index', via: 'get'
+  match '/getting-started', to: 'static#getting_started', via: 'get'
   match '/glossary', to: 'static#glossary', via: 'get'
 
   match '/signin', to: 'sessions#new', via: 'get'
@@ -20,14 +77,8 @@ Psap::Application.routes.draw do
   end
   resources :institutions do
     match '/assess', to: 'institutions#assess', via: 'get'
-    match '/assessment-report', to: 'institutions#assessment_report', via: 'get'
     resources :repositories, except: :index
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
-    match '/events', to: 'institutions#events', via: 'get'
-    match '/info', to: 'institutions#info', via: 'get'
-    match '/repositories', to: 'institutions#repositories', via: 'get'
-    match '/resources', to: 'institutions#resources', via: 'get'
-    match '/users', to: 'institutions#users', via: 'get'
     # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: 'get'
     match '/resources/subjects', to: 'resources#subjects', via: 'get'
@@ -45,7 +96,10 @@ Psap::Application.routes.draw do
     match '/assessment-questions', to: 'assessment_questions#index', via: 'get'
     resources :resources, except: :index
   end
-  match '/resources/move', to: 'resources#move', via: 'post', as: 'resource_move'
+  match '/resources/move', to: 'resources#move', via: 'post',
+        as: 'resource_move'
+  match '/resources/search', to: 'resources#search', via: 'get',
+        as: 'resource_search'
   resources :resources, except: :index do
     match '/assess', to: 'resources#assess', via: 'get'
     match '/clone', to: 'resources#clone', via: 'patch', as: 'resource_clone'
@@ -87,12 +141,14 @@ Psap::Application.routes.draw do
   match '/format-id-guide/:category', to: 'format_id_guide#show',
         via: 'get', as: 'format_id_guide_category'
 
-  # Advanced Help routes
+  # Help routes
   match '/help', to: 'help#index', via: 'get', as: 'help'
-  match '/help/:category', to: 'help#show', via: 'get', as: 'help_category'
+  match '/help/search', to: 'help#search', via: 'get', as: 'help_search'
+  match '/simple-help', to: 'help#simple_index', via: 'get', as: 'simple_help'
+  match '/advanced-help', to: 'help#advanced_index', via: 'get',
+        as: 'advanced_help'
+  match '/advanced-help/:category', to: 'help#advanced_show', via: 'get',
+        as: 'advanced_help_category'
+  match '/manual', to: 'help#manual', via: 'get', as: 'user_manual'
 
-  # User Manual routes
-  match '/manual', to: 'user_manual#index', via: 'get', as: 'user_manual'
-  match '/manual/:category', to: 'user_manual#show', via: 'get',
-        as: 'user_manual_category'
 end

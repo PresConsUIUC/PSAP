@@ -3,7 +3,7 @@ var ready = function() {
         $('body#user_manual_page').length) {
         // dynamically add some needed classes
         $('table').addClass('table table-striped');
-        var page_content = $('div#page_content');
+        var page_content = $('div#psap-page-content');
         page_content.find('img').addClass('img-thumbnail gallery-item');
 
         // move the header

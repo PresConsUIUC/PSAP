@@ -1,0 +1,161 @@
+<div class="btn-group pull-right">
+  <!-- Edit -->
+  <button type="button" class="btn btn-default" data-toggle="modal"
+          data-target="#psap-edit-panel">
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  </button>
+  <!-- Assess -->
+  <button type="button" class="btn btn-default" data-toggle="modal"
+          data-target="#psap-assess-panel">
+    <span class="glyphicon glyphicon-stats"></span>
+    Assess Institution
+  </button>
+  <!-- Delete -->
+  <% if current_user.is_admin? %>
+      <%= link_to institution_path(@institution), method: 'delete',
+                  class: 'btn btn-danger',
+                  disabled: @institution.users.any?,
+                  data: { confirm: 'Deleting this institution will '\
+                'delete ALL of its repositories, locations, and '\
+                'resources along with it. Are you sure you want '\
+                'to do this?' } do %>
+          <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
+          Delete
+      <% end %>
+  <% end %>
+</div>
+
+<div class="psap-page-title">
+  <h1><span id="institution_name"><%= @institution.name %></span>
+    <small class="text-nowrap">
+      <%= entity_icon(@institution) %>Institution
+    </small>
+  </h1>
+  <% if @institution.description %>
+      <p><%= @institution.description %></p>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-sm-4 psap-entity-nav-menu">
+    <%= render partial: 'shared/entity_hierarchy',
+               locals: { selected_entity: @institution } %>
+  </div>
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active">
+        <a href="#repositories_tab" data-toggle="tab">Repositories</a>
+      </li>
+      <li role="presentation">
+        <a href="#info_tab" data-toggle="tab">Info</a>
+      </li>
+      <li role="presentation">
+        <a href="#score_summary_tab" data-toggle="tab">Score Summary</a>
+      </li>
+      <li role="presentation">
+        <a href="#users_tab" data-toggle="tab">Users</a>
+      </li>
+      <li role="presentation">
+        <a href="#events_tab" data-toggle="tab">Activity</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="repositories_tab">
+        <%= hidden_field_tag(:new_repository_url, new_institution_repository_url(@institution)) %>
+
+        <!-- Add Repository button -->
+        <div style="text-align:right">
+          <%= entity_button(Repository, 'Add Repository',
+                            { class: 'btn-success',
+                              'data-toggle' => 'modal',
+                              'data-target' => '#psap-create-panel' }) %>
+        </div>
+
+        <% if @repositories.any? %>
+            <div id="repositories">
+              <ul class="psap-entity-list">
+                <% @repositories.each do |repository| %>
+                    <li>
+                    <span class="title">
+                      <%= entity_icon(repository) %>
+                      <%= link_to repository.name, repository %>
+                    </span>
+                      <small>
+                        <%= entity_icon(Location, pluralize(repository.locations.count, 'location')) %>
+                        <%= repository.locations.count %>
+
+                        <%= entity_icon(Resource, pluralize(repository.resources.count, 'resource')) %>
+                        <%= repository.resources.count %>
+                      </small>
+                    </li>
+                <% end %>
+              </ul>
+              <div class="text-center">
+                <%= will_paginate @repositories, renderer: BootstrapPagination::Rails %>
+              </div>
+            </div>
+        <% else %>
+            <p>This institution has no repositories.</p>
+        <% end %>
+      </div>
+
+      <div class="tab-pane" id="info_tab">
+        <dl>
+          <dt>URL</dt>
+          <dd><%= link_to @institution.url, @institution.url %></dd>
+          <dt>Email</dt>
+          <dd><a href="mailto:<%= @institution.email %>"><%= @institution.email %></a></dd>
+          <dt>Address</dt>
+          <dd>
+            <%= @institution.address1 %>
+            <% if @institution.address2 and !@institution.address2.empty? %>
+                <br><%= @institution.address2 %>
+            <% end %>
+            <br><%= @institution.city %>, <%= @institution.state %> <%= @institution.postal_code %>
+            <br><%= @institution.country %>
+          </dd>
+          <% if @institution.language %>
+              <dt>Language</dt>
+              <dd><%= @institution.language.english_name %></dd>
+          <% end %>
+          <dt>Created</dt>
+          <dd><%= local_time_ago(@institution.created_at) %></dd>
+          <dt>Last Updated</dt>
+          <dd><%= local_time_ago(@institution.updated_at) %></dd>
+        </dl>
+      </div>
+
+      <div class="tab-pane" id="score_summary_tab">
+        <%= render partial: 'shared/assessable_report',
+                   locals: { assessable: @institution } %>
+      </div>
+
+      <div class="tab-pane" id="users_tab">
+        <% if @institution.users.any? %>
+            <ul class="psap-user-list">
+              <% @institution_users.each do |user| %>
+                  <li>
+                    <%= link_to user do %>
+                        <%= gravatar_for user, size: 52 %>
+                    <% end %>
+                    <%= link_to user.full_name, user %>
+                    <small><%= user.username %></small>
+                  </li>
+              <% end %>
+            </ul>
+        <% else %>
+            <p>There are no users affiliated with this institution.</p>
+        <% end %>
+      </div>
+
+      <div class="tab-pane" id="events_tab">
+        <%= render 'shared/events', events: @events %>
+      </div>
+
+    </div>
+
+  </div>
+</div>

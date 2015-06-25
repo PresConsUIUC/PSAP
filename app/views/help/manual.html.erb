@@ -1,0 +1,19 @@
+<% provide(:title, 'User Manual') %>
+<% provide(:body_id, 'user_manual_page') %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Help', help_path %>
+  </li>
+  <li class="active">User Manual</li>
+</ol>
+
+<div class="pull-right">
+  <%= render partial: 'search_field' %>
+</div>
+
+<div class="psap-page-title">
+  <h1>User Manual</h1>
+</div>
+
+<%= static_page_html(@page.html) %>

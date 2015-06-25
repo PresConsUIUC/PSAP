@@ -23,19 +23,23 @@ class ResourcesController < ApplicationController
 
   ##
   # Responds to PATCH /resources/:id/clone
+  # Supports ?omit_assessment_data=[true/false] to optionally omit assessment
+  # data
   #
   def clone
     @resource = Resource.find(params[:resource_id])
-    command = CloneResourceCommand.new(@resource, current_user, request.remote_ip)
+    command = CloneResourceCommand.new(@resource, params[:omit_assessment_data],
+                                       current_user, request.remote_ip)
     begin
       command.execute
     rescue => e
       flash['error'] = "#{e}"
+      redirect_to :back
     else
       flash['success'] = "Cloned #{@resource.name} as "\
       "\"#{command.object.name}\"."
+      redirect_to command.object
     end
-    redirect_to command.object
   end
 
   def create
@@ -186,6 +190,47 @@ class ResourcesController < ApplicationController
     end
   end
 
+  ##
+  # Responds to GET /resources/search
+  #
+  def search
+    @institution = current_user.institution
+    @resources = @institution.resources
+
+    # all available URL query parameters
+    query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
+                  :resource_type, :score, :score_direction, :user_id]
+    if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
+      # no search query input present; show only top-level resources
+      @resource_count = @resources.count
+      @resources = @resources.where(parent_id: nil).order(:name)
+    else
+      @resources = Resource.all_matching_query(@institution, params, @resources)
+      @resource_count = @resources.count
+    end
+
+    if request.xhr?
+      @resources = @resources.
+          paginate(page: params[:page],
+                   per_page: Psap::Application.config.results_per_page)
+      render 'search'
+    else
+      respond_to do |format|
+        format.csv do
+          response.headers['Content-Disposition'] =
+              'attachment; filename="resources.csv"'
+          render text: Resource.as_csv(@resources)
+        end
+        format.json
+        format.html do
+          @resources = @resources.
+              paginate(page: params[:page],
+                       per_page: Psap::Application.config.results_per_page)
+        end
+      end
+    end
+  end
+
   def show
     @resource = Resource.find(params[:id])
     respond_to do |format|
@@ -306,7 +351,7 @@ class ResourcesController < ApplicationController
   def resource_params
     params.require(:resource).
         permit(:assessment_type, :description, :format_id,
-               :format_ink_media_type_id, :format_support_type_id,
+               :format_ink_media_type_id, :format_support_type_id, :language_id,
                :local_identifier, :location_id, :name, :notes, :parent_id,
                :resource_type, :rights, :significance, :user_id,
                creators_attributes: [:_destroy, :id, :creator_type, :name],

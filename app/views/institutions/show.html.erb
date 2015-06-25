@@ -1,0 +1,23 @@
+<% provide(:title, @institution.name) %>
+<% provide(:body_id, 'show_institution') %>
+
+<%= hidden_field_tag(:root_url, root_url) %>
+<%= hidden_field_tag(:institution_url, institution_url(@institution)) %>
+
+<% breadcrumbs = []
+   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+   breadcrumbs << @institution.name %>
+<%= breadcrumbs(breadcrumbs) %>
+
+<div id="psap-institution-page-content">
+  <%= render partial: 'show' %>
+</div>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :edit, entity_name: 'Institution' } %>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :assess, entity_name: 'Institution' } %>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :create, entity_name: 'Repository' } %>

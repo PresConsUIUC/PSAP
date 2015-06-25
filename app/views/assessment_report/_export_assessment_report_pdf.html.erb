@@ -1,0 +1,19 @@
+<div class="dropdown pull-right">
+  <button class="btn btn-default dropdown-toggle" type="button"
+          id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+    <i class="fa fa-file-pdf-o"></i> Export PDF
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+    <% if section %>
+      <li role="presentation">
+        <a role="menuitem" tabindex="-1"
+           href="<%= "#{assessment_report_path}.pdf?section=#{section}" %>">This Section</a>
+      </li>
+    <% end %>
+    <li role="presentation">
+      <a role="menuitem" tabindex="-1"
+         href="<%= assessment_report_path + '.pdf' %>">Entire Report</a>
+    </li>
+  </ul>
+</div>

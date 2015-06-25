@@ -48,7 +48,7 @@ var AssessmentForm = function(entity) {
         var control = '';
         var root_url = $('input[name="root_url"]').val();
 
-        switch (object['question_type']) { // corresponds to the AssessmentQuestionType constants
+        switch (object['question_type']) { // corresponds to the AssessmentQuestion::Type constants
             case 0: // radio
                 for (var key in object['assessment_question_options']) {
                     var option = object['assessment_question_options'][key];
@@ -108,7 +108,7 @@ var AssessmentForm = function(entity) {
                     '</div>' +
                     '<div class="col-sm-2" style="text-align:right">' +
                         '<button type="button" class="btn btn-default help hovertip-fire" ' +
-                        'data-container="body" data-toggle="popover" ' +
+                        'data-toggle="popover" ' +
                         'data-placement="left" data-html="true" ' +
                         'data-content="' + object['help_text'].replace(/"/g, "&quot;").
                         replace("\n", "<br><br>") + adv_help_link + '">?' +
@@ -182,6 +182,9 @@ var AssessmentForm = function(entity) {
             });
             if (data.length) {
                 var onOptionChanged = function() {
+                    $(this).closest('.assessment_question').
+                        nextUntil('[data-depth=0]', '[data-depth=1]').remove();
+
                     // check for dependent (child) questions
                     var selected_option_id = $(this).filter(':checked').val();
                     var question_elem = $(this).closest('.assessment_question');
@@ -207,8 +210,6 @@ var AssessmentForm = function(entity) {
                                         nodeForQuestion(object, depth),
                                         question_elem);
                                 }
-                            } else {
-                                child_question_elem.remove();
                             }
                         });
                         $('.assessment_question [data-type="option"]').

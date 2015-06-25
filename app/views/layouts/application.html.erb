@@ -20,84 +20,161 @@
   <%= favicon_link_tag 'touch-icon-76@2x.png', rel: 'apple-touch-icon',
                        sizes: '152x152', type: 'image/png' %>
 
-  <%= stylesheet_link_tag 'application', media: 'all',
-                          'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="https://raw.githubusercontent.com/aFarkas/html5shiv/master/src/html5shiv.js"></script>
   <![endif]-->
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
-<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %> data-spy="scroll">
+<body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>
+      data-spy="scroll" lang="en-US">
 
-<%= render 'layouts/header' %>
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 
-<div id="psap-ajax-shade"></div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
 
-<div class="container-fluid">
-  <header class="page-header">
-    <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
-                                 alt:'PSAP logo', id:'title_logo'), root_path %>
+    <div class="container-fluid">
 
-    <h1><%= link_to 'Preservation Self-Assessment Program', root_path %>
-      <span class="label label-warning">BETA</span></h1>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-    <% if signed_in? && current_user.institution %>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                  data-toggle="dropdown">
-            <%= current_user.institution.name %> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'Home', current_user.institution %></li>
-            <li role="presentation" class="divider"></li>
-            <li><%= link_to 'Resource Search', institution_resources_path(current_user.institution) %></li>
-            <li><%= link_to 'Assessment Report', institution_assessment_report_path(current_user.institution) %></li>
-            <li><%= link_to 'Users', institution_users_path(current_user.institution) %></li>
-            <li><%= link_to 'Activity', institution_events_path(current_user.institution) %></li>
-            <% if @user_institution_repositories.any? %>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation" class="dropdown-header">Repositories</li>
-                <% @user_institution_repositories.each do |repo| %>
-                    <li><%= link_to repo.name, repo %></a></li>
-                <% end %>
+        <ul class="nav navbar-nav navbar-left">
+          <li class="dropdown <%= 'active' if controller.controller_name == 'format_id_guide' %>">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+              Format ID Guide <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'All Formats', format_id_guide_path %></li>
+              <li class="divider"></li>
+              <li><%= link_to 'Audiovisual Media', format_id_guide_path(anchor: 'audiovisual') %></li>
+              <li><%= link_to 'Paper & Book', format_id_guide_path(anchor: 'paper_book') %></li>
+              <li><%= link_to 'Photo & Image Material', format_id_guide_path(anchor: 'photo_image') %></li>
+              <li><%= link_to 'Supplementary', format_id_guide_path(anchor: 'supplementary') %></li>
+            </ul>
+          </li>
+          <li <%= 'class=active' if current_page?(glossary_path) %>>
+            <%= link_to 'Glossary', glossary_path, class: 'nav-link' %>
+          </li>
+          <li <%= 'class=active' if current_page?(bibliography_path) %>>
+            <%= link_to 'Bibliography', bibliography_path, class: 'nav-link' %>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <% if signed_in? %>
+            <% if current_user.is_admin? %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                  Administration <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'Institutions', institutions_path %></li>
+                  <li><%= link_to 'Formats', formats_path %></li>
+                  <li><%= link_to 'Users', users_path %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to 'Event Log', events_path %></li>
+                </ul>
+              </li>
             <% end %>
-          </ul>
-        </div>
-    <% end %>
-  </header>
 
-  <% flash.each do |type, message| %>
-      <div class="alert alert-dismissable <%= bootstrap_class_for(type) %>">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <%= current_user.username %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Profile', current_user %></li>
+                <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to 'Sign Out', signout_path, method: 'delete' %>
+                </li>
+              </ul>
+            </li>
+          <% elsif request.url != root_url %>
+            <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
+          <% end %>
+          <li class="psap-icon-only">
+            <%= link_to(user_manual_path, title: 'User Manual') do %>
+              <i class="fa fa-book"></i>
+            <% end %>
+          </li>
+          <li class="psap-icon-only">
+            <%= link_to(help_path, title: 'Help') do %>
+              <i class="fa fa-question-circle"></i>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div id="psap-ajax-shade"></div>
+
+  <div class="container-fluid">
+    <header class="page-header">
+      <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
+                                   alt:'PSAP logo', id:'title_logo'), root_path %>
+
+      <div class="pull-right">
+        <%= link_to 'mailto:nobody@example.org?subject=I found a bug in '\
+        'the PSAP&body=Please enter a description of the bug, the URL of the '\
+        'page on which it occurs, and instructions on how to reproduce it. Thanks!',
+                    class: 'btn btn-default btn-sm psap-report-bug' do %>
+          <span class="fa fa-bug"></span> Report a Bug
+          <script type="text/javascript">
+              var anchor = $('.psap-report-bug');
+              var href = anchor.attr('href');
+              var addr = 'psap';
+              addr += '@library.illinois.edu';
+              anchor.attr('href', href.replace('nobody@example.org', addr));
+          </script>
+        <% end %>
+      </div>
+      <h1><%= link_to 'Preservation Self-Assessment Program', root_path, class: 'psap-title' %>
+        <span class="label label-warning">BETA</span></h1>
+    </header>
+
+    <% flash.each do |type, message| %>
+      <div class="alert alert-dismissable psap-flash <%= bootstrap_class_for_alert(type) %>">
         <button type="button" class="close" data-dismiss="alert"
                 aria-hidden="true">&times;</button>
         <%= message %>
       </div>
-  <% end %>
+    <% end %>
 
-  <div style="clear:both"></div>
+    <div style="clear:both"></div>
 
-  <%= render 'layouts/modal_panel' %>
+    <%= render 'layouts/modal_panel' %>
 
-  <div id="page_content">
-    <%= yield %>
+    <div id="psap-page-content">
+      <%= yield %>
+    </div>
+
+    <%= render 'layouts/footer' %>
+
   </div>
 
-  <%= render 'layouts/footer' %>
-
-</div>
-
-<% if Rails.env.production? %>
+  <% if Rails.env.production? %>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
         ga('create', 'UA-56715538-1', 'auto');
         ga('send', 'pageview');
     </script>
-<% end %>
+  <% end %>
 
-</body>
+  </body>
 </html>

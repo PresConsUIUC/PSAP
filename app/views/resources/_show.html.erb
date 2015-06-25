@@ -10,7 +10,7 @@
 <%= breadcrumbs(breadcrumbs) %>
 
 <div class="btn-group pull-right">
-  <% if @resource.resource_type == ResourceType::COLLECTION %>
+  <% if @resource.resource_type == Resource::Type::COLLECTION %>
     <!-- Import button -->
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -49,7 +49,7 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   </button>
-  <% if @resource.resource_type != ResourceType::COLLECTION %>
+  <% if @resource.resource_type != Resource::Type::COLLECTION %>
     <!-- Assess -->
     <button type="button" class="btn btn-default" data-toggle="modal"
             data-target="#psap-assess-panel">
@@ -68,14 +68,26 @@
   </button>
 
   <!-- Clone -->
-  <%= link_to resource_resource_clone_path(@resource),
-              class: 'btn btn-default', method: :patch,
-              title: 'Creates a new resource with the same properties, '\
-              'except for a slightly different title. Assessment data is '\
-              'also preserved, but child resources (if any) are not.' do %>
-    <%= content_tag(:span, '', class: 'fa fa-copy') %>
-    Clone
-  <% end %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="fa fa-copy"></span> Clone
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      <li><%= link_to 'With Assessment Data',
+                      resource_resource_clone_path(@resource),
+                      method: :patch,
+                      title: 'Creates a new resource with the same properties, '\
+                      'except for a slightly different title. Assessment data is '\
+                      'also preserved, but child resources (if any) are not.' %></li>
+      <li><%= link_to 'Without Assessment Data',
+                      resource_resource_clone_path(@resource, omit_assessment_data: true),
+                      method: :patch,
+                      title: 'Creates a new resource with the same properties, '\
+                      'except for a slightly different title. Neither assessment '\
+                      'data nor child resources are preserved.' %></li>
+    </ul>
+  </div>
 
   <!-- Delete -->
   <%= link_to resource_path(@resource), method: 'delete',
@@ -98,31 +110,32 @@
 
 <div class="row">
 
-  <div class="col-sm-4">
+  <div class="col-sm-4 psap-entity-nav-menu">
     <%= render partial: 'shared/entity_hierarchy',
-               locals: { entities: [@resource.location],
-                         selected_entity: @resource,
-                         deepest_entity_class: Resource,
-                         depth: 0 } %>
+               locals: { selected_entity: @resource }%>
   </div>
 
   <div class="col-sm-8">
     <ul class="nav nav-tabs">
-      <% if @resource.resource_type == ResourceType::COLLECTION %>
+      <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <li class="active">
           <a href="#sub_resources" data-toggle="tab">Sub-Resources</a>
         </li>
       <% end %>
-      <li <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'class=active' %>>
+      <li <%= @resource.resource_type == Resource::Type::COLLECTION ? '' : 'class=active' %>>
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
-      <li><a href="#assessment_tab" data-toggle="tab">Assessment</a></li>
+      <li>
+        <a href="#score_summary_tab" data-toggle="tab">Score Summary
+          <span class="badge"><%= number_to_human(@resource.effective_assessment_score * 100) %></span>
+        </a>
+      </li>
       <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
 
-      <% if @resource.resource_type == ResourceType::COLLECTION %>
+      <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
           <div class="pull-right">
@@ -141,7 +154,7 @@
         </div>
       <% end %>
 
-      <div id="info_tab" class="tab-pane <%= @resource.resource_type == ResourceType::COLLECTION ? '' : 'active' %>">
+      <div id="info_tab" class="tab-pane <%= @resource.resource_type == Resource::Type::COLLECTION ? '' : 'active' %>">
         <div class="row">
           <div class="col-sm-6">
             <dl>
@@ -158,10 +171,10 @@
                 <dt>Local Identifier</dt>
                 <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
               <% end %>
-              <% if @resource.resource_type == ResourceType::COLLECTION and !@resource.assessment_type.nil? %>
+              <% if @resource.resource_type == Resource::Type::COLLECTION and !@resource.assessment_type.nil? %>
                 <dt>Assessment Type</dt>
                 <dd>
-                  <%= AssessmentType::name_for_type(@resource.assessment_type) %>
+                  <%= Assessment::Type::name_for_type(@resource.assessment_type) %>
                 </dd>
               <% end %>
               <% creators = @resource.creators.select{ |e| !e.name.blank? } %>
@@ -289,7 +302,7 @@
               <% end %>
               <% if @resource.assessment_type %>
                 <dt>Assessment Type</dt>
-                <dd><%= AssessmentType::name_for_type(@resource.assessment_type) %></dd>
+                <dd><%= Assessment::Type::name_for_type(@resource.assessment_type) %></dd>
               <% end %>
               <dt>Created</dt>
               <dd><%= local_time_ago(@resource.created_at) %> by
@@ -305,15 +318,17 @@
         </div>
       </div> <!-- #info_tab -->
 
-      <div id="assessment_tab" class="tab-pane">
-        <% if @resource.resource_type == ResourceType::ITEM %>
+      <div id="score_summary_tab" class="tab-pane">
+        <% if @resource.resource_type == Resource::Type::ITEM %>
           <% if @resource.assessment_complete %>
             <% # TODO: use the assessable_report partial %>
             <div class="psap-assessable-report">
               <div class="psap-progress-container">
-                Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
-                <button type="button" data-container="body" data-placement="bottom"
-                        data-toggle="popover" class="btn btn-sm help"
+                <span class="psap-score <%= bootstrap_fg_class_for_score(@resource.effective_assessment_score) %>">
+                  <%= number_to_human(@resource.effective_assessment_score * 100) %>
+                </span>
+                <button type="button" data-placement="bottom"
+                        data-toggle="popover" class="btn btn-default help"
                         data-content="<%= score_help(@resource) %>">?</button>
                 <div class="progress">
                   <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
@@ -351,7 +366,9 @@
           <% end %>
         <% else %>
           <div class="psap-progress-container">
-            Score: <%= number_to_human(@resource.effective_assessment_score * 100) %>
+            <span class="psap-score <%= bootstrap_fg_class_for_score(@resource.effective_assessment_score) %>">
+              <%= number_to_human(@resource.effective_assessment_score * 100) %>
+            </span>
             <div class="progress">
               <div class="progress-bar <%= bootstrap_progress_bar_class_for_score(@resource.effective_assessment_score) %> score"
                    role="progressbar"
@@ -364,7 +381,7 @@
           <p>This is the average score of the items within the collection.
             (Collections themselves cannot be assessed.)</p>
         <% end %>
-      </div> <!-- #assessment_tab -->
+      </div> <!-- #score_summary_tab -->
 
       <div id="activity_tab" class="tab-pane">
         <%= render partial: 'shared/events', locals: { events: @events } %>

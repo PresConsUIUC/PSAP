@@ -22,6 +22,8 @@ class Location < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :repository_id
 
+  after_save :update_resource_assessment_scores
+
   def humidity_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1024))
     if response
@@ -44,6 +46,18 @@ class Location < ActiveRecord::Base
       end
     end
     nil
+  end
+
+  private
+
+  ##
+  # Updates the assessment scores of all resources contained within the
+  # instance, since they are dependent upon the assessment score of the
+  # instance.
+  #
+  def update_resource_assessment_scores
+    # TODO: only do this if the location assessment has changed
+    self.resources.select{ |r| r.assessment_complete }.each{ |r| r.save! }
   end
 
 end

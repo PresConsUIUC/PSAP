@@ -114,7 +114,7 @@ class StaticPageImporter
 
       # WebM/VP8
       unless File.exists?(videodestpath)
-        `ffmpeg -i #{videosrcpath} -loglevel panic -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k #{videodestpath}`
+        `ffmpeg -i #{videosrcpath} -loglevel fatal -acodec libvorbis -ab 64k -c:v vp8 -b:v 1500k #{videodestpath}`
       end
       return true
     end
@@ -154,21 +154,21 @@ class StaticPageImporter
             source['type'] = 'video/webm'
             video.add_child(source)
           end
-
-          page = StaticPage.find_by_uri_fragment(File.basename(file, '.*'))
-          page = StaticPage.new unless page
           component = nil
           dirname = File.dirname(file)
           if dirname.downcase.include?('format')
-            component = StaticPage::COMPONENT_FORMAT_ID_GUIDE
+            component = StaticPage::Component::FORMAT_ID_GUIDE
             category = File.basename(dirname).downcase
           elsif dirname.downcase.include?('help')
-            component = StaticPage::COMPONENT_HELP
+            component = StaticPage::Component::HELP
             category = 'help'
           elsif dirname.downcase.include?('manual')
-            component = StaticPage::COMPONENT_USER_MANUAL
+            component = StaticPage::Component::USER_MANUAL
             category = 'user_manual'
           end
+          page = StaticPage.where(uri_fragment: File.basename(file, '.*')).
+              where(component: component).limit(1).first
+          page = StaticPage.new unless page
           page.update!(name: doc.at_css('h1') ? doc.at_css('h1').text : 'Untitled',
                        uri_fragment: File.basename(file, '.*'),
                        component: component,

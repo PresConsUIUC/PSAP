@@ -3,7 +3,7 @@
 resource_one:
   id: 1
   name: 'Magna Carta'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   format_id: 1
   location_id: 1
   user_id: 1
@@ -13,7 +13,7 @@ resource_one:
 uiuc_collection:
   id: 14
   name: 'Silly Nonsense Collection'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   format_id: 1
   location_id: 1
   user_id: 1
@@ -23,7 +23,7 @@ uiuc_collection:
 resource_two:
   id: 2
   name: 'Dead Sea Scrolls'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   format_id: 2
   location_id: 2
   user_id: 1
@@ -33,7 +33,7 @@ resource_two:
 resource_three:
   id: 3
   name: 'Sears Catalog Collection'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   location_id: 3
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
@@ -42,7 +42,7 @@ resource_three:
 resource_four:
   id: 4
   name: 'My Old Baseball Card Collection'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   location_id: 4
   user_id: 2
   description: 'Lorem ipsum dolor sit amet'
@@ -51,7 +51,7 @@ resource_four:
 resource_five:
   id: 5
   name: 'Treaty of Verdun'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   format_id: 5
   location_id: 3
   user_id: 1
@@ -61,7 +61,7 @@ resource_five:
 resource_six:
   id: 6
   name: 'Declaration of Paris'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   format_id: 6
   location_id: 3
   user_id: 5
@@ -71,7 +71,7 @@ resource_six:
 resource_seven:
   id: 7
   name: 'Cat Fancy Collection'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   location_id: 4
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'
@@ -80,7 +80,7 @@ resource_seven:
 resource_eight:
   id: 8
   name: 'Issue 1'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   location_id: 3
   parent_id: 6
   user_id: 2
@@ -90,7 +90,7 @@ resource_eight:
 resource_nine:
   id: 9
   name: 'Issue 2'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   location_id: 3
   parent_id: 6
   user_id: 5
@@ -100,7 +100,7 @@ resource_nine:
 resource_ten:
   id: 10
   name: 'Special Editions'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   location_id: 3
   parent_id: 6
   user_id: 2
@@ -110,7 +110,7 @@ resource_ten:
 resource_eleven:
   id: 11
   name: '1972 Presidential Election Special Issue'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   location_id: 3
   parent_id: 9
   user_id: 1
@@ -120,7 +120,7 @@ resource_eleven:
 resource_twelve:
   id: 12
   name: 'Issue 3'
-  resource_type: <%= ResourceType::ITEM %>
+  resource_type: <%= Resource::Type::ITEM %>
   location_id: 3
   parent_id: 6
   user_id: 1
@@ -130,7 +130,7 @@ resource_twelve:
 resource_thirteen:
   id: 13
   name: 'Reader''s Digest Collection'
-  resource_type: <%= ResourceType::COLLECTION %>
+  resource_type: <%= Resource::Type::COLLECTION %>
   location_id: 5
   user_id: 1
   description: 'Lorem ipsum dolor sit amet'

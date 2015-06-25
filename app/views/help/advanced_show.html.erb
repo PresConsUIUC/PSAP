@@ -1,0 +1,20 @@
+<% provide(:body_id, 'help_page') %>
+<% provide(:title, @page.name) %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Help', help_path %>
+  </li>
+  <li>
+    <%= link_to 'Advanced Help', advanced_help_path %>
+  </li>
+  <li class="active"><%= @page.name %></li>
+</ol>
+
+<div class="pull-right">
+  <%= render partial: 'search_field' %>
+</div>
+
+<div class="psap-page-title"></div>
+
+<%= static_page_html(@page.html) %>

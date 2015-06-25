@@ -1,19 +1,19 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.2'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 4.0.5'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+#gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer', '0.11.3', platforms: :ruby
+gem 'therubyracer', '0.12.2', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -40,6 +40,7 @@ gem 'invisible_captcha' # used in public-facing forms
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
 gem 'd3-rails' # used for charts in assessment report
+gem 'responders', '~> 2.0'
 gem 'roo' # used to import seed data from xlsx
 gem 'prawn' # used to generate a PDF version of the assessment report
 gem 'prawn-table'

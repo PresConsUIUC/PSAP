@@ -1,0 +1,5 @@
+$('#resources').html('<%= escape_javascript(render partial: 'resources/resources',
+                 locals: { resources: @resources,
+                           show_checkboxes: false,
+                           show_hierarchy: false }) %>');
+$('.pagination a').attr('data-remote', 'true');

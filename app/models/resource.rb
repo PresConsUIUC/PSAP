@@ -1,6 +1,6 @@
 ##
 # A Resource exists within a Location. It has a resource_type property which
-# must be set to either ResourceType::ITEM or ResourceType::COLLECTION.
+# must be set to either Resource::Type::ITEM or Resource::Type::COLLECTION.
 # Collections can contain zero or more child resources. Formats, ink/media
 # types, and support types can be ascribed only to items.
 #
@@ -8,6 +8,25 @@
 # score is the mean of the item scores contained within.
 #
 class Resource < ActiveRecord::Base
+
+  class Significance
+    LOW = 0
+    MODERATE = 0.5
+    HIGH = 1
+
+    def self.all
+      return [0, 0.5, 1]
+    end
+  end
+
+  class Type
+    COLLECTION = 0
+    ITEM = 1
+
+    def self.all
+      return (0..1)
+    end
+  end
 
   # When adding/removing properties or associations, update both .as_csv and
   # ::as_csv.
@@ -47,14 +66,14 @@ class Resource < ActiveRecord::Base
   before_validation :sync_location_with_parent
 
   validates :assessment_type, allow_blank: true,
-            inclusion: { in: AssessmentType.all,
+            inclusion: { in: Assessment::Type.all,
                          message: 'must be a valid assessment type' }
   validates :location, presence: true
   validates :name, presence: true, length: { maximum: 255 }
-  validates :resource_type, inclusion: { in: ResourceType.all,
+  validates :resource_type, inclusion: { in: Resource::Type.all,
                          message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
-            inclusion: { in: ResourceSignificance.all,
+            inclusion: { in: Resource::Significance.all,
                          message: 'must be a valid resource significance' }
   validates :user, presence: true
 
@@ -64,7 +83,9 @@ class Resource < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :parent_id
 
-  def self.all_matching_query(params, starting_set = nil)
+  before_save :update_assessment_score, :update_assessment_complete
+
+  def self.all_matching_query(institution, params, starting_set = nil)
     starting_set = Resource.all unless starting_set
     resources = starting_set
 
@@ -75,17 +96,23 @@ class Resource < ActiveRecord::Base
       resources = resources.where(assessment_complete: false)
     end
     # format_id
-    resources = resources.where(format_id: params[:format_id]) unless
-        params[:format_id].blank?
+    resources = resources.where(format_id: params[:format_id]) if
+        params[:format_id].present?
     # language_id
-    resources = resources.where(language_id: params[:language_id]) unless
-        params[:language_id].blank?
+    if params[:language_id].present?
+      if params[:language_id].to_i == institution.language.id
+        resources = resources.where('language_id = ? OR language_id IS NULL',
+                                    params[:language_id])
+      else
+        resources = resources.where(language_id: params[:language_id])
+      end
+    end
     # repository_id
     resources = resources.
-        where('locations.repository_id = ?', params[:repository_id]) unless
-        params[:repository_id].blank?
+        where('locations.repository_id = ?', params[:repository_id]) if
+        params[:repository_id].present?
     # q
-    unless params[:q].blank?
+    if params[:q].present?
       q = "%#{params[:q].strip.downcase}%"
       resources = resources.joins(:resource_notes, :subjects).
           where('LOWER(resources.description) LIKE ? '\
@@ -97,18 +124,18 @@ class Resource < ActiveRecord::Base
                 q, q, q, q, q, q)
     end
     # resource_type
-    resources = resources.where(resource_type: params[:resource_type]) unless
-        params[:resource_type].blank? or params[:resource_type] == 'any'
+    resources = resources.where(resource_type: params[:resource_type]) if
+        params[:resource_type].present? and params[:resource_type] != 'any'
     # score/score_direction
-    if !params[:score].blank? and !params[:score_direction].blank?
+    if params[:score].present? and params[:score_direction].present?
       score = params[:score].to_f / 100
       direction = params[:score_direction] == 'greater' ? '>' : '<'
       resources = resources.
           where("resources.assessment_score #{direction} #{score}")
     end
     # user_id
-    resources = resources.where(user_id: params[:user_id]) unless
-        params[:user_id].blank?
+    resources = resources.where(user_id: params[:user_id]) if
+        params[:user_id].present?
     resources
   end
 
@@ -209,9 +236,9 @@ class Resource < ActiveRecord::Base
     doc.xpath('//ead:archdesc', ead_ns).each do |element|
       case element.attribute('level').text.strip
         when 'collection'
-          params[:resource_type] = ResourceType::COLLECTION
+          params[:resource_type] = Resource::Type::COLLECTION
         else
-          params[:resource_type] = ResourceType::ITEM
+          params[:resource_type] = Resource::Type::ITEM
       end
     end
 
@@ -275,7 +302,7 @@ class Resource < ActiveRecord::Base
         csv << [resource.local_identifier] +
             [resource.name] +
             [(resource.effective_assessment_score * 100).round(2)] +
-            [AssessmentType::name_for_type(resource.assessment_type)] +
+            [Assessment::Type::name_for_type(resource.assessment_type)] +
             [resource.location.name] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
@@ -285,7 +312,7 @@ class Resource < ActiveRecord::Base
             [resource.readable_significance] +
             resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
             resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
-            [resource.language ? resource.language.english_name : nil] +
+            [resource.language ? resource.language.english_name : resource.location.repository.institution.language.english_name] +
             resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
             resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
@@ -302,7 +329,7 @@ class Resource < ActiveRecord::Base
   # in the hierarchy.
   #
   def all_assessed_items
-    all_children.select{ |x| x.resource_type == ResourceType::ITEM and
+    all_children.select{ |x| x.resource_type == Resource::Type::ITEM and
         x.assessment_complete }
   end
 
@@ -359,7 +386,7 @@ class Resource < ActiveRecord::Base
       csv << [self.local_identifier] +
           [self.name] +
           [(self.effective_assessment_score * 100).round(2)] +
-          [AssessmentType::name_for_type(self.assessment_type)] +
+          [Assessment::Type::name_for_type(self.assessment_type)] +
           [self.location.name] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +
@@ -429,19 +456,22 @@ class Resource < ActiveRecord::Base
 
   ##
   # Overrides parent to intelligently clone a resource. This implementation
-  # preserves assessment questions, creators, extents, dates, notes, and all
-  # properties. It does NOT clone child resources or events.
+  # does NOT clone child resources or events.
   #
-  def dup
-    clone = super
-    self.assessment_question_responses.each do |response|
-      cloned_response = response.dup
-      cloned_response.assessment_question = response.assessment_question
-      cloned_response.assessment_question_option = response.assessment_question_option
-      cloned_response.location = response.location
-      cloned_response.institution = response.institution
-      cloned_response.resource = response.resource
-      clone.assessment_question_responses << cloned_response
+  # @param omit_assessment_questions [Boolean]
+  #
+  def dup(omit_assessment_questions = false)
+    clone = super()
+    unless omit_assessment_questions
+      self.assessment_question_responses.each do |response|
+        cloned_response = response.dup
+        cloned_response.assessment_question = response.assessment_question
+        cloned_response.assessment_question_option = response.assessment_question_option
+        cloned_response.location = response.location
+        cloned_response.institution = response.institution
+        cloned_response.resource = response.resource
+        clone.assessment_question_responses << cloned_response
+      end
     end
     self.creators.each { |c| clone.creators << c.dup }
     self.extents.each { |c| clone.extents << c.dup }
@@ -453,21 +483,18 @@ class Resource < ActiveRecord::Base
 
   ##
   # Returns the canonical assessment score of the resource, factoring in the
-  # location, temperature, and RH scores as well, unlike assessment_score which
-  # does not. If a collection, returns the average score of all resources.
+  # location, temperature, and RH scores as well. If a collection, returns the
+  # average score of all resources.
   #
   # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
   # @return float between 0 and 1
   #
   def effective_assessment_score
-    if self.resource_type == ResourceType::COLLECTION
+    if self.resource_type == Resource::Type::COLLECTION
       items = self.all_assessed_items
-      if items.any?
-        return (items.map(&:assessment_score).reduce(:+) / items.length.to_f) * 0.9 +
-            self.location.assessment_score * 0.1
-      end
-      return 0.0
+      return items.any? ?
+          items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
     end
     self.assessment_question_score * 0.5 + self.effective_format_score * 0.4 +
         self.location.assessment_score * 0.05 +
@@ -552,7 +579,7 @@ class Resource < ActiveRecord::Base
   end
 
   def prune_irrelevant_models
-    if self.resource_type == ResourceType::COLLECTION
+    if self.resource_type == Resource::Type::COLLECTION
       self.format = nil
       self.format_ink_media_type = nil
       self.format_support_type = nil
@@ -568,20 +595,20 @@ class Resource < ActiveRecord::Base
 
   def readable_resource_type
     case resource_type
-      when ResourceType::COLLECTION
+      when Resource::Type::COLLECTION
         'Collection'
-      when ResourceType::ITEM
+      when Resource::Type::ITEM
         'Item'
     end
   end
 
   def readable_significance
     case significance
-      when ResourceSignificance::LOW
+      when Resource::Significance::LOW
         'Low'
-      when ResourceSignificance::MODERATE
+      when Resource::Significance::MODERATE
         'Moderate'
-      when ResourceSignificance::HIGH
+      when Resource::Significance::HIGH
         'High'
     end
   end
@@ -601,15 +628,10 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Updates the score of the resource only, without taking location,
-  # temperature, or humidity into account.
-  #
   # Overrides Assessable mixin
   #
   def update_assessment_score
-    self.assessment_score = self.format ?
-        self.effective_format_score * (10 / 9) +
-            self.assessment_question_score * (10 / 9) : 0.0
+    self.assessment_score = self.effective_assessment_score
   end
 
   private
@@ -624,13 +646,13 @@ class Resource < ActiveRecord::Base
   end
 
   def validates_item_children
-    if self.resource_type == ResourceType::ITEM and self.children.any?
+    if self.resource_type == Resource::Type::ITEM and self.children.any?
       errors[:base] << 'Non-empty collections cannot be changed into items.'
     end
   end
 
   def validates_not_child_of_item
-    if parent and parent.resource_type != ResourceType::COLLECTION
+    if parent and parent.resource_type != Resource::Type::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
     end
   end

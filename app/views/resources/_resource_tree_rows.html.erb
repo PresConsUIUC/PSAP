@@ -11,7 +11,7 @@
       <%= link_to truncate(resource.name, length: 150), resource %>
     </td>
     <td><%= resource.assessment_complete ? raw('&check;') : '' %></td>
-    <td><%= resource.resource_type == ResourceType::ITEM ?
+    <td><%= resource.resource_type == Resource::Type::ITEM ?
                     number_to_human(resource.effective_assessment_score * 100) : '' %></td>
   </tr>
   <% if show_hierarchy %>

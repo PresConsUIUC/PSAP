@@ -29,12 +29,9 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-4 psap-entity-nav-menu">
     <%= render partial: 'shared/entity_hierarchy',
-               locals: { entities: [@repository],
-                         selected_entity: @repository,
-                         deepest_entity_class: Location,
-                         depth: 0 } %>
+               locals: { selected_entity: @repository }%>
   </div>
 
   <div class="col-sm-8">

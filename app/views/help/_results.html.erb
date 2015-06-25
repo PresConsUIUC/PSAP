@@ -1,0 +1,29 @@
+<% if @query.length > 0 %>
+  <% if @results.any? %>
+    <table class="table">
+      <tbody>
+        <% @results.each_with_index do |result, index| %>
+          <% page = StaticPage.find(result['id']) %>
+          <tr>
+            <td class="psap-index"><%= index + 1 %></td>
+            <td>
+              <% dest = nil %>
+              <% case page.component %>
+                <% when StaticPage::Component::HELP %>
+                  <% dest = advanced_help_category_path(page) %>
+                <% when StaticPage::Component::USER_MANUAL %>
+                  <% dest = user_manual_path %>
+              <% end %>
+              <%= link_to page.name, dest %>
+            </td>
+            <td><%= raw(result['highlight']) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No results.</p>
+  <% end %>
+<% else %>
+  <p>Enter a query in the text field above.</p>
+<% end %>

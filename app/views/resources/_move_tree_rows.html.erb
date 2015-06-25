@@ -32,7 +32,7 @@ name_length = 150
     </tr>
     <%= render partial: 'resources/move_tree_rows',
                locals: { entities: entity.resources.
-                       where(resource_type: ResourceType::COLLECTION, parent_id: nil).
+                       where(resource_type: Resource::Type::COLLECTION, parent_id: nil).
                        where('id NOT IN (?)', exclude_resource.id),
                          exclude_resource: exclude_resource,
                          depth: 2 } %>
@@ -52,7 +52,7 @@ name_length = 150
     </tr>
     <%= render partial: 'resources/move_tree_rows',
                locals: { entities: entity.children.
-                       where(resource_type: ResourceType::COLLECTION).
+                       where(resource_type: Resource::Type::COLLECTION).
                        where('id NOT IN (?)', exclude_resource.id),
                          exclude_resource: exclude_resource,
                          depth: depth + 1 } %>

@@ -1,3 +1,25 @@
+body#resource_search {
+  form.psap-resource-search {
+    select#score_direction {
+      display:inline;
+      max-width:12em;
+    }
+    input#score {
+      display:inline;
+      width: 4em;
+    }
+    div.form-group {
+      margin-bottom:1em;
+    }
+    div.form-group:last-child {
+      margin-bottom:0em;
+    }
+    input[type=radio] {
+      margin-left:-20px;
+    }
+  }
+}
+
 body#show_resource #psap-edit-panel, body#show_resource #psap-create-panel,
 body#show_location #psap-create-panel {
   div.format label {
@@ -26,6 +48,9 @@ body#show_location #psap-create-panel {
   .depth-1:before, .depth-2:before, .depth-3:before, .depth-4:before,
   .depth-5:before {
     content: '\21b3\0020'
+  }
+  #psap-optional-info {
+    display:none;
   }
 }
 
