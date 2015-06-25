@@ -17,7 +17,7 @@ class AdminMailer < ActionMailer::Base
   #
   def institution_change_review_request_email(user)
     @user = user
-    @user_url = edit_user_url(user)
+    @user_url = url_for(user)
     mail(to: Psap::Application.config.psap_email_address,
          subject: 'PSAP user requests to change institutions')
   end
