@@ -29,17 +29,6 @@ test:
   authentication: plain
   enable_starttls_auto: false
 
-staging:
-  address: psap@library.illinois.edu
-  from: 'Preservation Self-Assessment Program <psap@library.illinois.edu>'
-  delivery_method: smtp
-  smtp_host:
-  smtp_port:
-  username:
-  password:
-  authentication: plain
-  enable_starttls_auto: false
-
 production:
   address: psap@library.illinois.edu
   from: 'Preservation Self-Assessment Program <psap@library.illinois.edu>'
