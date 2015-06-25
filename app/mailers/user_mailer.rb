@@ -56,6 +56,15 @@ class UserMailer < ActionMailer::Base
   end
 
   ##
+  # Sends a test email to the given address.
+  #
+  # @param to_address [String]
+  #
+  def test(to_address)
+    mail(to: to_address, subject: 'Test email')
+  end
+
+  ##
   # Sent to the user after they have been approved by an admin and are clear
   # to sign in and get started.
   #
