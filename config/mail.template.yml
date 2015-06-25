@@ -33,10 +33,10 @@ staging:
   address: psap@library.illinois.edu
   from: 'Preservation Self-Assessment Program <psap@library.illinois.edu>'
   delivery_method: smtp
-  smtp_host: <%= begin IO.read("/home/psap/.mail_host") rescue "" end %>
-  smtp_port: <%= begin IO.read("/home/psap/.mail_port") rescue "" end %>
-  username: <%= begin IO.read("/home/psap/.mail_username") rescue "" end %>
-  password: <%= begin IO.read("/home/psap/.mail_password") rescue "" end %>
+  smtp_host:
+  smtp_port:
+  username:
+  password:
   authentication: plain
   enable_starttls_auto: false
 
@@ -44,9 +44,9 @@ production:
   address: psap@library.illinois.edu
   from: 'Preservation Self-Assessment Program <psap@library.illinois.edu>'
   delivery_method: smtp
-  smtp_host: <%= begin IO.read("/home/psap/.mail_host") rescue "" end %>
-  smtp_port: <%= begin IO.read("/home/psap/.mail_port") rescue "" end %>
-  username: <%= begin IO.read("/home/psap/.mail_username") rescue "" end %>
-  password: <%= begin IO.read("/home/psap/.mail_password") rescue "" end %>
+  smtp_host:
+  smtp_port:
+  username:
+  password:
   authentication: plain
   enable_starttls_auto: false
