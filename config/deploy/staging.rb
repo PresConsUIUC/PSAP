@@ -16,7 +16,7 @@ set :keep_releases, 2
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-set :branch, 'fork/format-id-guide'
+#set :branch, 'fork/format-id-guide'
 
 # Extended Server Syntax
 # ======================

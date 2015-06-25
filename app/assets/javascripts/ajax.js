@@ -8,19 +8,18 @@ $(document).ajaxComplete(function(event, request, options) {
 });
 
 $(document).ajaxSuccess(function(event, request) {
-    var result = request.getResponseHeader('X-Psap-Result');
+    var result_type = request.getResponseHeader('X-Psap-Message-Type');
     var edit_panel = $('.psap-edit-panel.in');
 
-    if (result && edit_panel.length) {
-        if (result == 'success') {
+    if (result_type && (edit_panel.length || $('body#edit_user').length)) {
+        if (result_type == 'success') {
             edit_panel.modal('hide');
-        } else if (result == 'error') {
+        } else if (result_type == 'error') {
             edit_panel.find('.modal-body').animate({ scrollTop: 0 }, 'fast');
         }
         var message = request.getResponseHeader('X-Psap-Message');
-        var message_type = request.getResponseHeader('X-Psap-Message-Type');
-        if (message && message_type) {
-            PSAP.Flash.set(message, message_type);
+        if (message && result_type) {
+            PSAP.Flash.set(message, result_type);
         }
     }
 });
