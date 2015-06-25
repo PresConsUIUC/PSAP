@@ -1,4 +1,12 @@
 <% provide(:title, 'User Manual') %>
+<% provide(:body_id, 'user_manual_page') %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Help', help_path %>
+  </li>
+  <li class="active">User Manual</li>
+</ol>
 
 <div class="pull-right">
   <%= render partial: 'search_field' %>
