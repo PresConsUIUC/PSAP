@@ -1,4 +1,4 @@
 // refresh info page content after a successful edit
-$('#psap-institution-info-page-content').html("<%= j render partial: 'info' %>");
+$('#psap-institution-page-content').html("<%= j render partial: 'show' %>");
 $('.psap-error-messages').empty();
 $('.psap-page-title span#institution_name').text('<%= j @institution.name %>');
