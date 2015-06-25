@@ -7,6 +7,7 @@ var ready = function() {
         // in for the first time.
         if ($.cookie('first_signin')) {
             $('#psap-welcome-panel').modal('show');
+            $.removeCookie('first_signin'); // prevent it from being shown again
         }
 
         $('#psap-welcome-panel').on('hide.bs.modal', function(e) {
@@ -18,7 +19,7 @@ var ready = function() {
         $('#psap-welcome-panel').on('hidden.bs.modal', function(e) {
             setTimeout(function() {
                 $('#psap-pre-survey-panel').modal('show');
-            }, 800);
+            }, 700);
         })
 
         // initialize create-institution panel
