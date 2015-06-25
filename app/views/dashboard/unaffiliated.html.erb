@@ -98,8 +98,10 @@
           <% else %>
             <p>To unlock all of PSAP's functionality, you will need to
                 associate your account with an institution.</p>
-            <%= link_to 'Get Started', new_institution_path,
-                        class: 'btn btn-primary btn-block' %>
+            <button type="button" class="btn btn-primary btn-block"
+                    data-toggle="modal" data-target="#psap-create-panel">
+              Get Started
+            </button>
           <% end %>
         </div>
       </div>
