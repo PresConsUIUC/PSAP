@@ -75,9 +75,13 @@ module EventsHelper
         string = entity.full_name
 
     end
-    raw(link_to(entity) do
-      raw(entity_icon(event.associated_entity_class)) + ' ' + string
-    end)
+    url = url_for(entity) rescue nil
+    if url
+      link = link_to(url) do
+        raw(entity_icon(event.associated_entity_class)) + ' ' + string
+      end
+    end
+    raw(link)
   end
 
 end
