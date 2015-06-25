@@ -17,14 +17,8 @@
     <%= @institutions.total_entries %> total</small></h1>
 </div>
 
-<div class="row">
-  <div class="col-sm-4 psap-entity-nav-menu">
-    <%= render partial: 'shared/entity_hierarchy',
-               locals: { selected_entity: @institutions.first }%>
-  </div>
-  <div class="col-sm-8" id="psap-institutions-page-content">
-    <%= render 'institutions' %>
-  </div>
+<div id="psap-institutions-page-content">
+  <%= render 'institutions' %>
 </div>
 
 <%= render partial: 'shared/edit_panel',
