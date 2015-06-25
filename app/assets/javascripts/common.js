@@ -60,6 +60,10 @@ var PSAP = {
 
         TYPE_URL: 0,
 
+        init: function() {
+            // noop
+        },
+
         validate: function(field_id, min_length, max_length, type) {
             var elem = $('#' + field_id);
             elem.parent('div').removeClass('has-success');
