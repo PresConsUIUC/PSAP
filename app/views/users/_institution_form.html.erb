@@ -1,5 +1,7 @@
 <h2>Institution</h2>
 
+<%= hidden_field_tag(:new_institution_url, new_institution_url) %>
+
 <%= form_for @user, remote: true do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
 
@@ -18,8 +20,13 @@
   <div class="center">
     <%= f.submit (current_user.is_admin? and current_user != @user) ? 'Change' : 'My institution is selected above',
                  class: 'btn btn-primary' %>
-    <%= link_to (current_user.is_admin? and current_user != @user) ? 'Institution is not listed here' : 'My institution is not listed here',
-                new_institution_path,
-                class: 'btn btn-default' %>
+
+    <button type="button" class="btn btn-default"
+            data-toggle="modal" data-target="#psap-create-panel">
+      <%= (current_user.is_admin? and current_user != @user) ? 'Institution is not listed here' : 'My institution is not listed here' %>
+    </button>
   </div>
 <% end %>
+
+<%= render partial: 'shared/edit_panel',
+           locals: { action: :create, entity_name: 'Institution' } %>

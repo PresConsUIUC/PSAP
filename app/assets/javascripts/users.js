@@ -6,6 +6,15 @@ var ready = function() {
             return false;
         });
         UserForm.attachEventListeners();
+
+        // initialize create-institution panel
+        PSAP.Panel.initRemote(
+            '#psap-create-panel',
+            $('input[name="new_institution_url"]').val(),
+            function () {
+                PSAP.Form.init();
+            }
+        );
     }
 };
 
