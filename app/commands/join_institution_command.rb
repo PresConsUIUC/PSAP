@@ -24,7 +24,7 @@ class JoinInstitutionCommand < Command
           else # non-admin institution changes require review
             @user.desired_institution = @institution
             @user.save!
-            AdminMailer.institution_change_review_request_email(@user).deliver
+            AdminMailer.institution_change_review_request_email(@user).deliver_now
           end
         end
         @institution.reload

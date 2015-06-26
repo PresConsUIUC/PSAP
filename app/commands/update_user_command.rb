@@ -65,7 +65,7 @@ class UpdateUserCommand < Command
       # If the user is changing their email address, we should notify the
       # previous address, in case their account was hijacked.
       if old_email != new_email
-        UserMailer.change_email(@user, old_email, new_email).deliver
+        UserMailer.change_email(@user, old_email, new_email).deliver_now
       end
     end
   end

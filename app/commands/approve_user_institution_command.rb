@@ -18,7 +18,7 @@ class ApproveUserInstitutionCommand < Command
         @user.institution = @user.desired_institution
         @user.desired_institution = nil
         @user.save!
-        UserMailer.institution_change_approved_email(@user).deliver
+        UserMailer.institution_change_approved_email(@user).deliver_now
       end
     rescue => e
       @user.events << Event.create(

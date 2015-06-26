@@ -20,7 +20,8 @@ class PasswordController < ApplicationController
       if @user
         @user.reset_password_reset_key
         @user.save!
-        UserMailer.password_reset_email(@user).deliver unless Rails.env.test?
+        UserMailer.password_reset_email(@user).deliver_now unless
+            Rails.env.test?
         flash[:notice] = 'An email has been sent containing a link to reset '\
                           'your password.'
         redirect_to root_url

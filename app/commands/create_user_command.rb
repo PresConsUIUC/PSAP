@@ -14,7 +14,7 @@ class CreateUserCommand < Command
       @user.role = role
       ActiveRecord::Base.transaction do
         @user.save!
-        UserMailer.confirm_account_email(@user).deliver if @send_email
+        UserMailer.confirm_account_email(@user).deliver_now if @send_email
       end
     rescue ActiveRecord::RecordInvalid
       @user.events << Event.create(
