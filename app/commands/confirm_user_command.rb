@@ -15,7 +15,7 @@ class ConfirmUserCommand < Command
       @user.events << Event.create(
           description: "Confirmed user #{@user.username}",
           user: @user, address: @remote_ip)
-      AdminMailer.account_approval_request_email(@user).deliver
+      AdminMailer.account_approval_request_email(@user).deliver_now
     elsif @confirmation_code != @user.confirmation_code
       @user.events << Event.create(
           description: "Invalid confirmation code supplied for user "\

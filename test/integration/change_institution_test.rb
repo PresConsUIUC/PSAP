@@ -51,7 +51,7 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     assert flash['success'].include?('An administrator has been notified')
 
     # test that an email was sent
-    email = AdminMailer.institution_change_review_request_email(@user).deliver
+    email = AdminMailer.institution_change_review_request_email(@user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from

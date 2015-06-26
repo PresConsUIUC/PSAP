@@ -17,7 +17,7 @@ class RefuseUserInstitutionCommand < Command
       ActiveRecord::Base.transaction do
         @user.desired_institution = nil
         @user.save!
-        UserMailer.institution_change_refused_email(@user).deliver
+        UserMailer.institution_change_refused_email(@user).deliver_now
       end
     rescue => e
       @user.events << Event.create(

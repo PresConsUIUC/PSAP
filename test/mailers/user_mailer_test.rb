@@ -8,7 +8,7 @@ class UserMailerTest < ActionMailer::TestCase
     # Send the email, then test that it got queued
     email = UserMailer.change_email(users(:normal_user),
                                     'old@example.org',
-                                    'new@example.org').deliver
+                                    'new@example.org').deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -22,7 +22,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'changed_feed_key_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.changed_feed_key_email(users(:normal_user)).deliver
+    email = UserMailer.changed_feed_key_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -36,7 +36,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'confirm_account_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.confirm_account_email(users(:normal_user)).deliver
+    email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -50,7 +50,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'institution_change_approved_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.institution_change_approved_email(users(:normal_user)).deliver
+    email = UserMailer.institution_change_approved_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -64,7 +64,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'institution_change_refused_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.institution_change_refused_email(users(:normal_user)).deliver
+    email = UserMailer.institution_change_refused_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -79,7 +79,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'password_reset_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.password_reset_email(users(:normal_user)).deliver
+    email = UserMailer.password_reset_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from

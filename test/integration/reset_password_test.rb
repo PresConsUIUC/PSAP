@@ -44,7 +44,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
   test 'POSTing a valid password to /forgot-password should send an email' do
     post_via_redirect('/forgot-password', email: @user.email)
 
-    email = UserMailer.password_reset_email(@user).deliver
+    email = UserMailer.password_reset_email(@user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from

@@ -31,7 +31,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
   test 'POSTing a correctly-filled form to /users should send an email' do
     post_via_redirect('/users', 'user' => @new_user_attributes)
 
-    email = UserMailer.confirm_account_email(users(:normal_user)).deliver
+    email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from
@@ -63,7 +63,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
   test 'Email confirmation link should send an email to the administrator' do
     post_via_redirect('/users', 'user' => @new_user_attributes)
 
-    email = AdminMailer.account_approval_request_email(users(:normal_user)).deliver
+    email = AdminMailer.account_approval_request_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Psap::Application.config.psap_email_address], email.from

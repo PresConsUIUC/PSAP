@@ -14,7 +14,7 @@ class EnableUserCommand < Command
       ActiveRecord::Base.transaction do
         @user.enabled = true
         @user.save!
-        UserMailer.welcome_email(@user).deliver unless @user.last_signin
+        UserMailer.welcome_email(@user).deliver_now unless @user.last_signin
       end
     rescue => e
       @user.events << Event.create(
