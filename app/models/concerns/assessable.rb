@@ -66,11 +66,13 @@ module Assessable
 
   ##
   # @return AssessmentQuestionResponse or nil
-  # TODO: this should return an array (to support checkboxes)
   #
   def response_to_question(assessment_question)
-    self.assessment_question_responses.
-        where(assessment_question_id: assessment_question.id).first
+    if assessment_question
+      self.assessment_question_responses.
+          where(assessment_question_id: assessment_question.id).first
+    end
+    nil
   end
 
   def update_assessment_complete
