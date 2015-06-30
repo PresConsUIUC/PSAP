@@ -3,17 +3,18 @@
 
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th></th>
-    <th><%= sortable 'username' %></th>
-    <th><%= sortable 'last_name', 'Name' %></th>
-    <th><%= sortable 'institutions.name', 'Institution' %></th>
-    <th><%= sortable 'confirmed' %></th>
-    <th><%= sortable 'enabled' %></th>
-  </tr>
+    <tr>
+      <th></th>
+      <th><%= sortable 'username' %></th>
+      <th><%= sortable 'last_name', 'Name' %></th>
+      <th><%= sortable 'institutions.name', 'Institution' %></th>
+      <th><%= sortable 'confirmed' %></th>
+      <th><%= sortable 'enabled' %></th>
+      <th>Admin</th>
+    </tr>
   </thead>
   <tbody>
-  <% @users.each do |user| %>
+    <% @users.each do |user| %>
       <tr>
         <td>
           <%= link_to user do %>
@@ -28,8 +29,9 @@
         </td>
         <td><%= user.confirmed ? raw('&check;') : '' %></td>
         <td><%= user.enabled ? raw('&check;') : '' %></td>
+        <td><%= user.is_admin? ? raw('&check;') : '' %></td>
       </tr>
-  <% end %>
+    <% end %>
   </tbody>
 
 </table>
