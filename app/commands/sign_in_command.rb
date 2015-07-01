@@ -27,7 +27,7 @@ class SignInCommand < Command
 
       if !@username.empty?
         if @password
-          @user = User.find_by(username: @username.downcase,
+          @user = User.find_by(username: @username,
                               enabled: true,
                               confirmed: true)
           if @user && @user.authenticate(@password)
