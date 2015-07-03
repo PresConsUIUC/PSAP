@@ -33,11 +33,13 @@
             Institution
           </a>
         </li>
-        <li role="presentation">
-          <a href="#change_password" data-toggle="tab" aria-controls="change_password">
-            Change Password
-          </a>
-        </li>
+        <% if @user == current_user %>
+          <li role="presentation">
+            <a href="#change_password" data-toggle="tab" aria-controls="change_password">
+              Change Password
+            </a>
+          </li>
+        <% end %>
       </ul>
     </nav>
   </div>
@@ -52,9 +54,11 @@
       <%= render 'institution_form' %>
     </div>
 
-    <div role="tabpanel" id="change_password" class="tab-pane">
-      <%= render 'change_password_form' %>
-    </div>
+    <% if @user == current_user %>
+      <div role="tabpanel" id="change_password" class="tab-pane">
+        <%= render 'change_password_form' %>
+      </div>
+    <% end %>
 
   </div>
 
