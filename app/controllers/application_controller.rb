@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :init
-  after_filter :flash_in_response_headers
+  before_action :init
+  after_action :flash_in_response_headers
 
   layout 'application'
 
