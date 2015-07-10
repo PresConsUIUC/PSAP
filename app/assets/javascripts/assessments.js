@@ -89,7 +89,7 @@ var AssessmentForm = function(entity) {
 
         var adv_help_link = '';
         if (object['advanced_help_page']) {
-            adv_help_link = '<br><br><a href="' + root_url + 'help/' +
+            adv_help_link = '<br><br><a href="' + root_url + 'advanced-help/' +
                 object['advanced_help_page'] + '#' +
                 object['advanced_help_anchor'].replace(/#/g, '') +
                 '" target="_blank">More information&hellip;</a>';
