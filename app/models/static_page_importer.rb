@@ -24,6 +24,7 @@ class StaticPageImporter
   def initialize(source_path, asset_path)
     @source_path = source_path
     @asset_path = asset_path
+    @public_path = File.join(Rails.root, 'public')
 
     @referenced_images = [] # images that are referenced in src attributes
     @missing_images = [] # referenced images that don't exist on disk
@@ -187,6 +188,16 @@ class StaticPageImporter
       dest_path = File.join(@asset_path, File.basename(file))
       FileUtils.cp(file, dest_path)
       File.chmod(0644, dest_path)
+    end
+
+    # Copy static files
+    Dir.glob(File.join(@source_path, '**', 'files')).each do |file|
+      if File.dirname(file).end_with?('UserManual')
+        dest_path = File.join(@public_path, 'files')
+        FileUtils.rm_rf(dest_path)
+        FileUtils.cp_r(file, dest_path)
+        File.chmod(0755, dest_path)
+      end
     end
   end
 
