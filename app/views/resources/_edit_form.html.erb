@@ -108,19 +108,19 @@
       </button>
 
       <div class="radio">
-        <%= f.radio_button :significance, '' %>
+        <%= f.radio_button :significance, '', checked: f.object.significance.nil? %>
         <%= f.label :significance, 'None', value: '' %>
       </div>
       <div class="radio">
-        <%= f.radio_button :significance, '0' %>
+        <%= f.radio_button :significance, '0', checked: f.object.significance == 0 %>
         <%= f.label :significance, 'Low', value: '0' %>
       </div>
       <div class="radio">
-        <%= f.radio_button :significance, '0.5' %>
+        <%= f.radio_button :significance, '0.5', checked: f.object.significance == 0.5 %>
         <%= f.label :significance, 'Moderate', value: '0.5' %>
       </div>
       <div class="radio">
-        <%= f.radio_button :significance, '1' %>
+        <%= f.radio_button :significance, '1', checked: f.object.significance == 1 %>
         <%= f.label :significance, 'High', value: '1' %>
       </div>
     </div>
