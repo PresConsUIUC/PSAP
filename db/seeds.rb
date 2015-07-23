@@ -116,7 +116,7 @@ sections[:location_environment] = AssessmentSection.create!(
     description: 'This section addresses the climate (temperature, humidity) '\
     'of this location, as well as your ability to monitor and respond to it.',
     assessment: assessments[:location])
-sections[:location_emergency_preparedness] = AssessmentSection.new(
+sections[:location_emergency_preparedness] = AssessmentSection.create!(
     name: 'Emergency Preparedness', index: 1,
     description: 'This section concerns the safety mechanisms and disaster '\
     'readiness of this facility in the event of a disaster.',
