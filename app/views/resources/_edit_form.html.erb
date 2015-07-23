@@ -178,11 +178,12 @@
         <%= f.fields_for :creators do |g| %>
           <div class="psap-addable-removable-input-group row">
             <div class="col-sm-11">
-              <%= select('resource[creators_attributes][0]', 'creator_type',
-                         options_for_select([['Person', Creator::Type::PERSON],
-                                             ['Company', Creator::Type::COMPANY]]),
-                         { include_blank: false },
-                         { class: 'form-control input-md' }) %>
+              <%= g.select('creator_type',
+                           options_for_select([['Person', Creator::Type::PERSON],
+                                               ['Company', Creator::Type::COMPANY]],
+                                              selected: g.object.creator_type),
+                           { include_blank: false },
+                           { class: 'form-control input-md' }) %>
               <%= g.text_field :name, class: 'form-control' %>
               <%= g.hidden_field :_destroy, class: 'destroy' %>
             </div>
