@@ -138,11 +138,13 @@
       <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
-          <div class="pull-right">
-            <%= entity_button(Resource, 'Add Sub-Resource',
-                              { class: 'btn-success',
-                                'data-toggle' => 'modal',
-                                'data-target' => '#psap-create-panel' }) %>
+          <div class="clearfix">
+            <div class="pull-right">
+              <%= entity_button(Resource, 'Add Sub-Resource',
+                                { class: 'btn-success',
+                                  'data-toggle' => 'modal',
+                                  'data-target' => '#psap-create-panel' }) %>
+            </div>
           </div>
           <% if @resource.children.any? %>
             <%= render partial: 'resources/resources',
