@@ -6,26 +6,31 @@
   </ol>
 <% end %>
 
-<div class="pull-right">
-  <%= link_to "mailto:psap@library.illinois.edu?bcc=#{@emailable_addresses.map{ |a| CGI::escape(a) }.join(',')}",
-              class: 'btn btn-default' do %>
-    <i class="fa fa-envelope"></i> Email Confirmed Users
-  <% end %>
+<div class="clearfix">
+  <div class="pull-right">
+    <%= link_to "mailto:psap@library.illinois.edu?bcc=#{@emailable_addresses.map{ |a| CGI::escape(a) }.join(',')}",
+                class: 'btn btn-default' do %>
+      <i class="fa fa-envelope"></i> Email Confirmed Users
+    <% end %>
 
-  &nbsp;
+    &nbsp;
 
-  <%= form_tag users_path, method: 'get', class: 'psap-live-search',
-               style: 'float:right' do %>
-    <%= hidden_field_tag :direction, params[:direction] %>
-    <%= hidden_field_tag :sort, params[:sort] %>
-    <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                         class: 'form-control' %>
-  <% end %>
+    <%= form_tag users_path, method: 'get', class: 'psap-live-search',
+                 style: 'float:right' do %>
+      <%= hidden_field_tag :direction, params[:direction] %>
+      <%= hidden_field_tag :sort, params[:sort] %>
+      <%= search_field_tag :q, params[:q], placeholder: 'Search',
+                           class: 'form-control' %>
+    <% end %>
+  </div>
+
+  <div class="psap-page-title">
+    <h1>Users <small class="entity_count"></small></h1>
+  </div>
+
 </div>
 
-<div class="psap-page-title">
-  <h1>Users <small class="entity_count"></small></h1>
-</div>
+<%= users_requiring_action_panel %>
 
 <div id="users">
   <%= render 'users' %>

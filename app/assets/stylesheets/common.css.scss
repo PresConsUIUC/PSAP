@@ -403,6 +403,17 @@ form.psap-live-search { /* may be overridden in page-specific stylesheets */
   }
 }
 
+.psap-users-requiring-action {
+  :nth-child(3) {
+    margin-top: 0.8em;
+  }
+  ul {
+    list-style-type: none;
+    margin-left: 1em;
+    padding-left: 0em;
+  }
+}
+
 .psap-event-list { /* extends .psap-entity-list */
   span.title {
     font-size:1em;
