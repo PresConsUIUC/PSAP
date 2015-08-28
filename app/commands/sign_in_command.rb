@@ -27,10 +27,17 @@ class SignInCommand < Command
 
       if !@username.empty?
         if @password
-          @user = User.find_by(username: @username,
-                              enabled: true,
-                              confirmed: true)
-          if @user && @user.authenticate(@password)
+          @user = User.find_by_username(@username)
+          if @user and !@user.enabled and !@user.last_signin
+            @user = nil # could be an impostor
+            public_message = 'Your account has been confirmed, but it has not '\
+            'yet been enabled by PSAP staff. We try to do this as quickly as '\
+            'possible, but if you have been waiting a while, please feel free '\
+            'to contact us.'
+            log_message = "Sign-in failed for #{@username}: account not "\
+            "enabled."
+          elsif @user and @user.enabled and @user.confirmed and
+              @user.authenticate(@password)
             @user.events << Event.create(
                 description: "User #{@user.username} signed in",
                 user: @user, address: @remote_ip)
