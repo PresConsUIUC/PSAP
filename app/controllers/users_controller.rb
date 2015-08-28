@@ -62,12 +62,9 @@ class UsersController < ApplicationController
       command.execute
     rescue => e
       flash['error'] = "#{e}"
-    else
-      flash['success'] = 'Your account has been confirmed, but before you can '\
-      'sign in, it must be approved by an administrator. We\'ll get back to '\
-      'you as soon as we can. Thanks for your interest in the PSAP!'
-    ensure
       redirect_to signin_url
+    else
+      render 'confirmed'
     end
   end
 
