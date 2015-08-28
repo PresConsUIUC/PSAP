@@ -1,30 +1,32 @@
 <% # Displays a summary of assessment questions and responses to them. %>
 
 <% assessment_questions.order(:index).each do |question| %>
-  <% response = entity.assessment_question_responses.where(assessment_question_id: question.id).first %>
-  <dt class="depth-<%= depth %>"><%= question.name %> <small>(<%= question.weight %>)</small></dt>
-  <dd class="depth-<%= depth %>">
-    <ul>
-      <% question.assessment_question_options.each do |option| %>
-        <%
-        class_ = ''
-        if response and response.assessment_question_option and
-                option.id == response.assessment_question_option.id
-          class_ = 'selected ' + bootstrap_fg_class_for_score(
-                  response.assessment_question_option.value)
-        end
-        %>
-        <li class="<%= class_ %>">
-          <%= option.name %>
-          <% if option.value %>
-            <small>(<%= (option.value * 100).round %>)</small>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  </dd>
-  <%= render partial: 'shared/assessable_report_questions',
-             locals: { entity: entity,
-                       assessment_questions: question.children,
-                       depth: depth + 1 } if question.children.any? %>
+  <% response = entity.assessment_question_responses.
+        where(assessment_question_id: question.id).first %>
+  <% if response %>
+    <dt class="depth-<%= depth %>"><%= question.name %>
+      <small>(<%= question.weight %>)</small></dt>
+    <dd class="depth-<%= depth %>">
+      <ul>
+        <% question.assessment_question_options.each do |option| %>
+          <% class_ = ''
+          if response and response.assessment_question_option and
+                  option.id == response.assessment_question_option.id
+            class_ = 'selected ' + bootstrap_fg_class_for_score(
+                    response.assessment_question_option.value)
+          end %>
+          <li class="<%= class_ %>" data-response-id="<%= response.id %>">
+            <%= option.name %>
+            <% if option.value %>
+              <small>(<%= (option.value * 100).round %>)</small>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </dd>
+    <%= render partial: 'shared/assessable_report_questions',
+               locals: { entity: entity,
+                         assessment_questions: question.children,
+                         depth: depth + 1 } if question.children.any? %>
+  <% end %>
 <% end %>
