@@ -32,7 +32,7 @@ gem 'bootstrap-sass', '3.2.0.2'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'will_paginate', '3.0.4'
 gem 'will_paginate-bootstrap'
-gem 'bcrypt-ruby', '~> 3.1.2' # Use ActiveModel has_secure_password
+gem 'bcrypt', '~> 3.1.9' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
