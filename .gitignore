@@ -21,6 +21,7 @@ Thumbs.db
 
 database.yml
 mail.yml
+psap.yml
 .secret
 
 # ffmpeg generates this

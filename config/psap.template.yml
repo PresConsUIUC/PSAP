@@ -1,0 +1,19 @@
+# Create a copy of this file called psap.yml, with settings filled in depending
+# on which environment the app is running in (development or production).
+#
+# DO NOT COMMIT PSAP.YML TO VERSION CONTROL.
+
+development:
+  :recaptcha:
+    :public_key: ''
+    :secret_key: ''
+
+test:
+  :recaptcha:
+    :public_key: ''
+    :secret_key: ''
+
+production:
+  :recaptcha:
+    :public_key: ''
+    :secret_key: ''
