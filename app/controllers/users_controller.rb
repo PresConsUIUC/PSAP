@@ -45,10 +45,7 @@ class UsersController < ApplicationController
       flash['error'] = "#{e}"
       render 'new'
     else
-      flash['success'] = 'Thanks for registering for PSAP! An email '\
-      'has been sent to the address you provided. Follow the link in the '\
-      'email to confirm your account.'
-      redirect_to root_url
+      render 'registration_success'
     end
   end
 
