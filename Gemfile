@@ -36,10 +36,11 @@ gem 'bcrypt', '~> 3.1.9' # Use ActiveModel has_secure_password
 gem 'local_time'
 gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
-gem 'invisible_captcha' # used in public-facing forms
+gem 'invisible_captcha' # used in forgot-password form
 gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
 gem 'pg'
 gem 'd3-rails' # used for charts in assessment report
+gem 'recaptcha' # used in new-user signup form
 gem 'responders', '~> 2.0'
 gem 'roo' # used to import seed data from xlsx
 gem 'prawn' # used to generate a PDF version of the assessment report

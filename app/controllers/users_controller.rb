@@ -7,8 +7,6 @@ class UsersController < ApplicationController
   before_action :admin_user, only: [:approve_institution, :index, :destroy,
                                     :enable, :disable]
 
-  invisible_captcha only: :create
-
   helper_method :sort_column, :sort_direction
 
   ##
@@ -36,6 +34,10 @@ class UsersController < ApplicationController
     command = CreateUserCommand.new(user_create_params, request.remote_ip)
     @user = command.object
     begin
+      unless verify_recaptcha(model: @user, message: 'The data you entered '\
+          'for the CAPTCHA wasn\'t correct. Please try again.')
+        raise ValidationError
+      end
       command.execute
     rescue ValidationError
       render 'new'
