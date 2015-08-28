@@ -160,6 +160,7 @@ class UsersController < ApplicationController
         order("#{sort_column} #{sort_direction}").
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
+    @emailable_addresses = User.where(confirmed: true).map(&:email)
   end
 
   def new

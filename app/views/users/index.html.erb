@@ -7,6 +7,13 @@
 <% end %>
 
 <div class="pull-right">
+  <%= link_to "mailto:psap@library.illinois.edu?bcc=#{@emailable_addresses.map{ |a| CGI::escape(a) }.join(',')}",
+              class: 'btn btn-default' do %>
+    <i class="fa fa-envelope"></i> Email Confirmed Users
+  <% end %>
+
+  &nbsp;
+
   <%= form_tag users_path, method: 'get', class: 'psap-live-search',
                style: 'float:right' do %>
     <%= hidden_field_tag :direction, params[:direction] %>
