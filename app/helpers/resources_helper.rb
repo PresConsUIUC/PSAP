@@ -65,9 +65,9 @@ module ResourcesHelper
     '<p>' + score_formula + '</p>'\
     '<ul>'
 
-    if resource.assessment_question_responses.length < 1
-      text += "<li>This resource has not been assessed yet, which heavily "\
-      "weighs down its score.</li>"
+    if @resource.assessment_percent_complete < 1
+      text += "<li>This resource's assessment is not yet complete, which "\
+      "heavily weighs down its score.</li>"
     else
       text += "<li>This resource's assessment score is "\
       "<strong>#{assessment_score}</strong>.</li>" # TODO: "this is good" etc.

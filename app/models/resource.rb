@@ -325,7 +325,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return Array of all assessed items in a collection, regardless of depth
+  # @return [Array] of all assessed items in a collection, regardless of depth
   # in the hierarchy.
   #
   def all_assessed_items
@@ -334,7 +334,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return Array of all children of a resource, regardless of depth in the
+  # @return [Array] of all children of a resource, regardless of depth in the
   # hierarchy.
   #
   def all_children
@@ -412,7 +412,7 @@ class Resource < ActiveRecord::Base
   # Returns a hash containing statistics of all assessed items in the
   # collection.
   #
-  # @return hash with :mean, :median, :low, and :high keys
+  # @return [Hash] with :mean, :median, :low, and :high keys
   #
   def assessed_item_statistics
     stats = { mean: 0, median: 0, low: nil, high: 0 }
@@ -434,7 +434,23 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return float between 0 and 1
+  # @return [Float] between 0 and 1
+  #
+  def assessment_percent_complete
+    if self.format
+      # Technically this is not 100% accurate as it doesn't factor in child
+      # questions. But it's 99% accurate and much less expensive.
+      format_aqs = self.format.all_assessment_questions.reject(&:parent)
+      if format_aqs.any?
+        return [1, self.assessment_question_responses.length /
+                     format_aqs.length.to_f].min
+      end
+    end
+    0.0
+  end
+
+  ##
+  # @return [float] between 0 and 1
   #
   def assessment_question_score
     question_score = 0.0
@@ -447,7 +463,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return Array of all assessment questions that have been answered for this
+  # @return [Array] of all assessment questions that have been answered for this
   # resource.
   #
   def assessment_questions
@@ -488,7 +504,7 @@ class Resource < ActiveRecord::Base
   #
   # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
-  # @return float between 0 and 1
+  # @return [float] between 0 and 1
   #
   def effective_assessment_score
     if self.resource_type == Resource::Type::COLLECTION
@@ -503,7 +519,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return float between 0 and 1
+  # @return [float] between 0 and 1
   #
   def effective_format_score
     score = 0.0
@@ -521,7 +537,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return float between 0 and 1
+  # @return [float] between 0 and 1
   #
   def effective_humidity_score
     score = 0.0
@@ -538,7 +554,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return float between 0 and 1
+  # @return [float] between 0 and 1
   #
   def effective_temperature_score
     score = 0.0
@@ -621,9 +637,7 @@ class Resource < ActiveRecord::Base
   # Overrides Assessable mixin
   #
   def update_assessment_complete
-    self.assessment_complete =
-        (self.format and self.format.all_assessment_questions.any?) ?
-            self.assessment_question_responses.length > 0 : false
+    self.assessment_complete = (self.assessment_percent_complete == 1)
     nil
   end
 
