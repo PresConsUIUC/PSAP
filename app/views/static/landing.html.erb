@@ -3,8 +3,16 @@
 
 <div class="row">
   <div class="col-sm-8">
-    <p class="larger">The Preservation Self-Assessment Program (PSAP) is a free online tool that helps collection managers prioritize efforts to improve conditions of collections. Through guided evaluation of materials, storage/exhibit environments, and institutional policies, the PSAP produces reports on the factors that impact the health of cultural heritage materials, and defines the points from which to begin care.</p>
-    <p class="larger"><%= link_to(raw('More&hellip;'), about_path) %></p>
+    <p class="larger">The Preservation Self-Assessment Program (PSAP) is a
+      free online tool that helps collection managers prioritize efforts to
+      improve conditions of collections. Through guided evaluation of
+      materials, storage/exhibit environments, and institutional policies, the
+      PSAP produces reports on the factors that impact the health of cultural
+      heritage materials, and defines the points from which to begin care.</p>
+    <%= link_to(raw('More&hellip;'), about_path, class: 'btn btn-default btn-md') %>
+    &nbsp;
+    <%= link_to(raw('Skip to Format ID Guide'), format_id_guide_path,
+                class: 'btn btn-default btn-md') %>
   </div>
   <div class="col-sm-4">
     <div class="well">
