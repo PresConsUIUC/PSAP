@@ -69,9 +69,9 @@
 </div>
 
 <% if current_user.desired_institution %>
-  <p>An administrator is reviewing your request to join
-    <%= current_user.desired_institution.name %>. When approved, you will
-    be notified by email.</p>
+  <div class="alert alert-warning">An administrator is reviewing your request
+    to join <%= current_user.desired_institution.name %>. When approved, you
+    will be notified by email.</div>
 <% else %>
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
