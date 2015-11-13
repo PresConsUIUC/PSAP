@@ -76,8 +76,7 @@
     <p id="password_confirmation_status"></p>
   </div>
 
-  <% # provided by invisible_captcha gem %>
-  <%= invisible_captcha %>
+  <%= recaptcha_tags %>
 
   <%= f.submit 'Create Account', class: 'btn btn-primary' %>
 <% end %>

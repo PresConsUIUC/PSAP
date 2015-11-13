@@ -123,24 +123,8 @@
     <header class="page-header">
       <%= link_to retina_image_tag('psap_logo.png', size:'156x70',
                                    alt:'PSAP logo', id:'title_logo'), root_path %>
-
-      <div class="pull-right">
-        <%= link_to 'mailto:nobody@example.org?subject=I found a bug in '\
-        'the PSAP&body=Please enter a description of the bug, the URL of the '\
-        'page on which it occurs, and instructions on how to reproduce it. Thanks!',
-                    class: 'btn btn-default btn-sm psap-report-bug' do %>
-          <span class="fa fa-bug"></span> Report a Bug
-          <script type="text/javascript">
-              var anchor = $('.psap-report-bug');
-              var href = anchor.attr('href');
-              var addr = 'psap';
-              addr += '@library.illinois.edu';
-              anchor.attr('href', href.replace('nobody@example.org', addr));
-          </script>
-        <% end %>
-      </div>
-      <h1><%= link_to 'Preservation Self-Assessment Program', root_path, class: 'psap-title' %>
-        <span class="label label-warning">BETA</span></h1>
+      <h1><%= link_to 'Preservation Self-Assessment Program', root_path,
+                      class: 'psap-title' %></h1>
     </header>
 
     <% flash.each do |type, message| %>

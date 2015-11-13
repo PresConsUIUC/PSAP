@@ -138,11 +138,13 @@
       <% if @resource.resource_type == Resource::Type::COLLECTION %>
         <div id="sub_resources" class="tab-pane active">
           <!-- Add Sub-Resource button -->
-          <div class="pull-right">
-            <%= entity_button(Resource, 'Add Sub-Resource',
-                              { class: 'btn-success',
-                                'data-toggle' => 'modal',
-                                'data-target' => '#psap-create-panel' }) %>
+          <div class="clearfix">
+            <div class="pull-right">
+              <%= entity_button(Resource, 'Add Sub-Resource',
+                                { class: 'btn-success',
+                                  'data-toggle' => 'modal',
+                                  'data-target' => '#psap-create-panel' }) %>
+            </div>
           </div>
           <% if @resource.children.any? %>
             <%= render partial: 'resources/resources',
@@ -320,12 +322,16 @@
 
       <div id="score_summary_tab" class="tab-pane">
         <% if @resource.resource_type == Resource::Type::ITEM %>
-          <% if @resource.assessment_complete %>
+          <% pct_complete = @resource.assessment_percent_complete %>
+          <% if pct_complete > 0 %>
             <% # TODO: use the assessable_report partial %>
             <div class="psap-assessable-report">
               <div class="psap-progress-container">
                 <span class="psap-score <%= bootstrap_fg_class_for_score(@resource.effective_assessment_score) %>">
                   <%= number_to_human(@resource.effective_assessment_score * 100) %>
+                  <% if pct_complete < 1 %>
+                    *
+                  <% end %>
                 </span>
                 <button type="button" data-placement="bottom"
                         data-toggle="popover" class="btn btn-default help"

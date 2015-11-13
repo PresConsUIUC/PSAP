@@ -10,7 +10,20 @@
       <br>
       University of Illinois at Urbana-Champaign
       <br>
-      <%= link_to 'About', about_path %>
+      <%= link_to 'About', about_path %> |
+      <%= link_to 'mailto:nobody@example.org?subject=I found a bug in '\
+        'the PSAP&body=Please enter a description of the bug, the URL of the '\
+        'page on which it occurs, and instructions on how to reproduce it. Thanks!',
+                  class: 'psap-report-bug' do %>
+        Report a Bug
+        <script type="text/javascript">
+          var anchor = $('.psap-report-bug');
+          var href = anchor.attr('href');
+          var addr = 'psap';
+          addr += '@library.illinois.edu';
+          anchor.attr('href', href.replace('nobody@example.org', addr));
+        </script>
+      <% end %>
     </div>
 
     <div class="col-sm-4">

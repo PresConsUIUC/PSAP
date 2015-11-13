@@ -14,13 +14,17 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+.DS_Store
 Thumbs.db
 ~$*
 
+# Ignore RubyMine config
+.idea
 /public/assets/**
 
 database.yml
 mail.yml
+psap.yml
 .secret
 
 # ffmpeg generates this

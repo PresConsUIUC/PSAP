@@ -7,8 +7,6 @@ class UsersController < ApplicationController
   before_action :admin_user, only: [:approve_institution, :index, :destroy,
                                     :enable, :disable]
 
-  invisible_captcha only: :create
-
   helper_method :sort_column, :sort_direction
 
   ##
@@ -36,6 +34,10 @@ class UsersController < ApplicationController
     command = CreateUserCommand.new(user_create_params, request.remote_ip)
     @user = command.object
     begin
+      unless verify_recaptcha(model: @user, message: 'The data you entered '\
+          'for the CAPTCHA wasn\'t correct. Please try again.')
+        raise ValidationError
+      end
       command.execute
     rescue ValidationError
       render 'new'
@@ -43,10 +45,7 @@ class UsersController < ApplicationController
       flash['error'] = "#{e}"
       render 'new'
     else
-      flash['success'] = 'Thanks for registering for PSAP! An email '\
-      'has been sent to the address you provided. Follow the link in the '\
-      'email to confirm your account.'
-      redirect_to root_url
+      render 'registration_success'
     end
   end
 
@@ -63,12 +62,9 @@ class UsersController < ApplicationController
       command.execute
     rescue => e
       flash['error'] = "#{e}"
-    else
-      flash['success'] = 'Your account has been confirmed, but before you can '\
-      'sign in, it must be approved by an administrator. We\'ll get back to '\
-      'you as soon as we can. Thanks for your interest in the PSAP!'
-    ensure
       redirect_to signin_url
+    else
+      render 'confirmed'
     end
   end
 
@@ -160,6 +156,7 @@ class UsersController < ApplicationController
         order("#{sort_column} #{sort_direction}").
         paginate(page: params[:page],
                  per_page: Psap::Application.config.results_per_page)
+    @emailable_addresses = User.where(confirmed: true).map(&:email)
   end
 
   def new
