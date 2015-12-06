@@ -12,7 +12,7 @@ He/she wishes to move to West Southeast Directional State University.
 1) If this request seems legitimate, please sign in to the PSAP and approve
    the user's request at your earliest convenience:
 
-http://localhost:3000/users/normal/edit
+http://localhost:3000/users/normal
 
 2) If you are not sure, please send the user an email requesting more
    information.
