@@ -4,6 +4,7 @@ First Name: Norm
 Last Name: McNormal
 Username: normal
 Email: normal@example.org
+About: All about me
 
 The user's current institution is: University of Illinois at Urbana-Champaign.
 

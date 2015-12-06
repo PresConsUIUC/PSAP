@@ -9,6 +9,7 @@ normal_user:
   username: normal
   confirmed: true
   enabled: true
+  about: All about me
   feed_key: sdfjasdfsdfsdf
   institution_id: 1
   role_id: 2
