@@ -33,8 +33,8 @@ var UserForm = {
         $('input#user_username').bind('keyup input paste', function() {
             UserForm.validateUsername();
         });
-        $('input#user_about').bind('keyup input paste', function() {
-            PSAP.Form.validate('user_last_name', 1, 0);
+        $('textarea#user_about').bind('keyup input paste', function() {
+            PSAP.Form.validate('user_about', 1, 0);
         });
         $('input#user_password').bind('keyup input paste', function() {
             UserForm.validatePassword();
