@@ -112,6 +112,10 @@
         <%= confirmation_status(@user) %>
         <%= enabled_status(@user) %>
       </dd>
+      <% if @user.about %>
+        <dt>About</dt>
+        <dd>&quot;<%= @user.about %>&quot;</dd>
+      <% end %>
       <dt>Account Created</dt>
       <dd><%= local_time_ago(@user.created_at) %></dd>
       <dt>Last Sign-In</dt>
