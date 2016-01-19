@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  validates :about, presence: true, on: :create
+  validates :about, presence: true
   # Strict email validation without rejecting valid addresses is difficult,
   # but this will at least require something vaguely email-like.
   validates :email, presence: true, format: { with: /\S+@\S+\.\S+/ },

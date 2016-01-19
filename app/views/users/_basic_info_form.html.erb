@@ -30,6 +30,11 @@
     </div>
   <% end %>
 
+  <div class="form-group">
+    <%= f.label :about, class: 'required' %>
+    <%= f.text_area :about, class: 'form-control' %>
+  </div>
+
   <% if current_user.is_admin? %>
     <div class="form-group">
       <%= f.label :role, class: 'required' %>

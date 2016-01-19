@@ -330,8 +330,9 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:user).permit(:desired_institution_id, :enabled, :email,
-                                 :first_name, :last_name, :role_id, :username)
+    params.require(:user).permit(:about, :desired_institution_id, :enabled,
+                                 :email, :first_name, :last_name, :role_id,
+                                 :username)
   end
 
 end
