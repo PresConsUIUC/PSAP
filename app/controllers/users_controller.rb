@@ -96,6 +96,13 @@ class UsersController < ApplicationController
   def edit
     @roles = Role.all.order(:name)
     @user_role = Role.find_by_name('User')
+
+    # Gather institutions for the institution select menu. Put the test
+    # institution at the top per GitHub issue #336.
+    test_institution_id = Psap::Application.psap_config[:test_institution_id]
+    @institutions = Institution.where('id != ?', test_institution_id).
+        order(:name)
+    @institutions.unshift(Institution.find(test_institution_id))
   end
 
   ##
@@ -330,8 +337,9 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:user).permit(:desired_institution_id, :enabled, :email,
-                                 :first_name, :last_name, :role_id, :username)
+    params.require(:user).permit(:about, :desired_institution_id, :enabled,
+                                 :email, :first_name, :last_name, :role_id,
+                                 :username)
   end
 
 end

@@ -90,7 +90,7 @@
 
 <div class="row">
 
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <dl>
       <dt>Institution</dt>
       <dd>
@@ -112,6 +112,10 @@
         <%= confirmation_status(@user) %>
         <%= enabled_status(@user) %>
       </dd>
+      <% if @user.about %>
+        <dt>About</dt>
+        <dd>&quot;<%= @user.about %>&quot;</dd>
+      <% end %>
       <dt>Account Created</dt>
       <dd><%= local_time_ago(@user.created_at) %></dd>
       <dt>Last Sign-In</dt>
@@ -125,7 +129,7 @@
     </dl>
   </div>
 
-  <div class="col-sm-8">
+  <div class="col-sm-7">
 
     <% if current_user.is_admin? and @user.desired_institution %>
       <div id="psap-institution-change-alert" class="alert alert-info">

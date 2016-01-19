@@ -1,10 +1,6 @@
 <% # Will be read by PSAP.updateResultsCount() in JS %>
 <input type="hidden" name="results_count" value="<%= @institutions.total_entries %>">
 
-<div class="text-center">
-  <%= will_paginate @institutions, renderer: BootstrapPagination::Rails %>
-</div>
-
 <ul class="institutions psap-entity-list">
   <% @institutions.each do |institution| %>
       <li>

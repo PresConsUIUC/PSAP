@@ -14,6 +14,9 @@ He/she wishes to move to <%= @user.desired_institution.name %>.
 The user wishes to join <%= @user.desired_institution.name %>.
 <% end %>
 
+Current users at this institution:
+<%= word_wrap(@user.desired_institution.users.map(&:email).join(', ')) %>
+
 1) If this request seems legitimate, please sign in to the PSAP and approve
    the user's request at your earliest convenience:
 

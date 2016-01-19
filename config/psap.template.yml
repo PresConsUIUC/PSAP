@@ -4,16 +4,19 @@
 # DO NOT COMMIT PSAP.YML TO VERSION CONTROL.
 
 development:
+  :test_institution_id: 1
   :recaptcha:
     :public_key: ''
     :secret_key: ''
 
 test:
+  :test_institution_id: 1
   :recaptcha:
     :public_key: ''
     :secret_key: ''
 
 production:
+  :test_institution_id: 1
   :recaptcha:
     :public_key: ''
     :secret_key: ''

@@ -7,7 +7,7 @@
 
   <div class="form-group">
     <%= f.collection_select :desired_institution_id,
-                            Institution.all.order(:name), :id, :name,
+                            @institutions, :id, :name,
                             { selected: @user.institution_id },
                             { class: 'form-control' } %>
     <% unless current_user.is_admin? %>
