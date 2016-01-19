@@ -29,6 +29,9 @@
     <strong><%= @user.desired_institution.name %></strong>.</p>
 <% end %>
 
+<p>Current users at this institution:
+  <%= @user.desired_institution.users.map(&:email).join(', ') %></p>
+
 <ol>
   <li>If this request seems legitimate, please
     <%= link_to('sign in to the PSAP and approve the user\'s request', @user_url) %> at

@@ -10,6 +10,9 @@ The user's current institution is: University of Illinois at Urbana-Champaign.
 
 He/she wishes to move to West Southeast Directional State University.
 
+Current users at this institution:
+admin@example.net, unconfirmed@example.org
+
 1) If this request seems legitimate, please sign in to the PSAP and approve
    the user's request at your earliest convenience:
 
