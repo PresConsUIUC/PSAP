@@ -299,6 +299,13 @@ class Resource < ActiveRecord::Base
           ['Created'] +
           ['Updated']
       resources.each do |resource|
+        if resource.language
+          language_name = resource.language.english_name
+        elsif resource.location.repository.institution.language
+          language_name = resource.location.repository.institution.language.english_name
+        else
+          language_name = 'Not Specified'
+        end
         csv << [resource.local_identifier] +
             [resource.name] +
             [(resource.effective_assessment_score * 100).round(2)] +
@@ -312,7 +319,7 @@ class Resource < ActiveRecord::Base
             [resource.readable_significance] +
             resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
             resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
-            [resource.language ? resource.language.english_name : resource.location.repository.institution.language.english_name] +
+            [language_name] +
             resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
             resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
