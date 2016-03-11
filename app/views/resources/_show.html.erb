@@ -92,8 +92,9 @@
   <!-- Delete -->
   <%= link_to resource_path(@resource), method: 'delete',
               class: 'btn btn-danger',
-              data: { confirm: 'Are you sure you want to delete this '\
-                      'resource?' } do %>
+              data: { confirm: "Are you sure you want to delete this "\
+                      "resource? Any child resources will also be deleted.\n\n"\
+                      "⚠️ WARNING: THIS CANNOT BE UNDONE! ⚠️" } do %>
     <%= content_tag(:span, '', class: 'glyphicon glyphicon-trash') %>
     Delete
   <% end %>
