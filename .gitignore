@@ -22,6 +22,9 @@ Thumbs.db
 .idea
 /public/assets/**
 
+# Ignore .chkbit files
+.chkbit
+
 database.yml
 mail.yml
 psap.yml
