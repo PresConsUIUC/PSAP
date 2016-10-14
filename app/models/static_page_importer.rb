@@ -157,7 +157,7 @@ class StaticPageImporter
           end
           component = nil
           dirname = File.dirname(file)
-          if dirname.downcase.include?('format')
+          if dirname.downcase.include?('collectionidguide')
             component = StaticPage::Component::COLLECTION_ID_GUIDE
             category = File.basename(dirname).downcase
           elsif dirname.downcase.include?('help')
