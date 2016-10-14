@@ -6,7 +6,7 @@
           <% format = StaticPage.find(result['id']) %>
             <tr>
               <td class="psap-index"><%= index + 1 %></td>
-              <td><%= link_to format.name, format_id_guide_category_path(format) %></td>
+              <td><%= link_to format.name, collection_id_guide_category_path(format) %></td>
               <td><%= raw(result['highlight']) %></td>
             </tr>
         <% end %>

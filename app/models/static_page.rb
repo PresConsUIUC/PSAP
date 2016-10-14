@@ -2,7 +2,7 @@ class StaticPage < ActiveRecord::Base
 
   class Component
     HELP = 'help'
-    FORMAT_ID_GUIDE = 'format_id_guide'
+    COLLECTION_ID_GUIDE = 'collection_id_guide'
     USER_MANUAL = 'user_manual'
   end
 

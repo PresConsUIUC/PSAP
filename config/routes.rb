@@ -133,13 +133,18 @@ Psap::Application.routes.draw do
   match '/new-password', to: 'password#new_password', via: 'get'
   match '/new-password', to: 'password#reset_password', via: 'post'
 
-  # Format ID Guide routes
-  match '/format-id-guide', to: 'format_id_guide#index', via: 'get',
+  # Collection ID Guide (formerly Format ID Guide) routes
+  match '/collection-id-guide', to: 'format_id_guide#index', via: 'get',
         as: 'format_id_guide'
-  match '/format-id-guide/search', to: 'format_id_guide#search',
+  match '/collection-id-guide/search', to: 'format_id_guide#search',
         via: 'get', as: 'format_id_guide_search'
-  match '/format-id-guide/:category', to: 'format_id_guide#show',
+  match '/collection-id-guide/:category', to: 'format_id_guide#show',
         via: 'get', as: 'format_id_guide_category'
+
+  # Redirect old Format ID Guide paths to Collection ID Guide paths
+  get '/format-id-guide', to: redirect('/collection-id-guide')
+  get '/format-id-guide/search', to: redirect('/collection-id-guide/search')
+  get '/format-id-guide/:category', to: redirect('/collection-id-guide/:category')
 
   # Help routes
   match '/help', to: 'help#index', via: 'get', as: 'help'

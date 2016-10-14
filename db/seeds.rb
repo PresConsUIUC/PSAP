@@ -46,8 +46,8 @@ sheet.each_with_index do |row, i|
           format_class: FormatClass::class_for_name(row[0]),
           parent: parent,
           score: row[6],
-          format_id_guide_page: row[7],
-          format_id_guide_anchor: row[8])
+          collection_id_guide_page: row[7],
+          collection_id_guide_anchor: row[8])
       unless row[9].blank? # temperature ranges
         min_temps = row[9].split(',')
         max_temps = row[10].split(',')
@@ -282,11 +282,11 @@ aq_sheets.each do |sheet|
   end
 end
 
-# Format ID Guide HTML pages
-puts 'Ingesting Format ID Guide content...'
+# Collection ID Guide HTML pages
+puts 'Ingesting Collection ID Guide content...'
 p = StaticPageImporter.new(
-    File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
-    File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+    File.join(Rails.root, 'db', 'seed_data', 'CollectionIDGuide-HTML'),
+    File.join(Rails.root, 'app', 'assets', 'collection_id_guide'))
 p.reseed
 
 # Advanced Help HTML pages

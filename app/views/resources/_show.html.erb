@@ -200,11 +200,11 @@
                 <dd>
                   <% if current_user.is_admin? %>
                     <%= link_to @resource.format.name, @resource.format %>
-                    <%= link_to('(Format ID Guide)', format_id_guide_category_path(@resource.format.format_id_guide_page,
-                                                                                   anchor: @resource.format.format_id_guide_anchor)) %>
+                    <%= link_to('(Collection ID Guide)', collection_id_guide_category_path(@resource.format.collection_id_guide_page,
+                                                                                   anchor: @resource.format.collection_id_guide_anchor)) %>
                   <% else %>
-                    <%= link_to(@resource.format.name, format_id_guide_category_path(@resource.format.format_id_guide_page,
-                                                                                     anchor: @resource.format.format_id_guide_anchor)) %>
+                    <%= link_to(@resource.format.name, collection_id_guide_category_path(@resource.format.collection_id_guide_page,
+                                                                                     anchor: @resource.format.collection_id_guide_anchor)) %>
                   <% end %>
                   <% if @resource.format_ink_media_type or @resource.format_support_type %>
                     <dl>

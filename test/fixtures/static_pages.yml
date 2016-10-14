@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-fidg_page:
+cidg_page:
   id: 1
   category: avmedia
   html: <html><body><p>cats</p></body></html>

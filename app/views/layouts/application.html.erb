@@ -46,17 +46,17 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav navbar-left">
-          <li class="dropdown <%= 'active' if controller.controller_name == 'format_id_guide' %>">
+          <li class="dropdown <%= 'active' if controller.controller_name == 'collection_id_guide' %>">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-              Format ID Guide <b class="caret"></b>
+              Collection ID Guide <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to 'All Formats', format_id_guide_path %></li>
+              <li><%= link_to 'All Formats', collection_id_guide_path %></li>
               <li class="divider"></li>
-              <li><%= link_to 'Audiovisual Media', format_id_guide_path(anchor: 'audiovisual') %></li>
-              <li><%= link_to 'Paper & Book', format_id_guide_path(anchor: 'paper_book') %></li>
-              <li><%= link_to 'Photo & Image Material', format_id_guide_path(anchor: 'photo_image') %></li>
-              <li><%= link_to 'Supplementary', format_id_guide_path(anchor: 'supplementary') %></li>
+              <li><%= link_to 'Audiovisual Media', collection_id_guide_path(anchor: 'audiovisual') %></li>
+              <li><%= link_to 'Paper & Book', collection_id_guide_path(anchor: 'paper_book') %></li>
+              <li><%= link_to 'Photo & Image Material', collection_id_guide_path(anchor: 'photo_image') %></li>
+              <li><%= link_to 'Supplementary', collection_id_guide_path(anchor: 'supplementary') %></li>
             </ul>
           </li>
           <li <%= 'class=active' if current_page?(glossary_path) %>>
