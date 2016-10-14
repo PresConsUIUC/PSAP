@@ -1,4 +1,4 @@
-body#format_id_guide {
+body#collection_id_guide {
   h3 {
     font-size:1.3em;
     img {
@@ -22,7 +22,7 @@ body#format_id_guide {
   }
 }
 
-body#format_id_guide_page, body#help_page, body#user_manual_page {
+body#collection_id_guide_page, body#help_page, body#user_manual_page {
   h2 a, h3 a, h4 a, h5 a, h6 a {
     color:black;
   }
@@ -119,7 +119,7 @@ body#format_id_guide_page, body#help_page, body#user_manual_page {
   }
 }
 
-body#format_id_guide_results, body#help_results {
+body#collection_id_guide_results, body#help_results {
   form.psap-live-search { /* overrides common.css.scss */
     input.active {
       background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 208px 8px;

@@ -1,5 +1,5 @@
 var ready = function() {
-    if ($('body#format_id_guide_page').length || $('body#help_page').length ||
+    if ($('body#collection_id_guide_page').length || $('body#help_page').length ||
         $('body#user_manual_page').length) {
         // dynamically add some needed classes
         $('table').addClass('table table-striped');
