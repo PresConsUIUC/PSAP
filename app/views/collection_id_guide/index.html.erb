@@ -534,6 +534,46 @@
       </div>
     </div> <!-- #photo_image -->
 
+    <div id="objects">
+      <h2>Objects</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= retina_image_tag('stonewaresugarbowl-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+            Objects
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Objects in General', collection_id_guide_category_path('museumobjects') %></h4>
+              <ul>
+                <li><%= link_to 'Is it glass, stone, or ceramic?', collection_id_guide_category_path('museumobjects', anchor: 'whatisit') %></li>
+                <li><%= link_to 'Object Surfaces', collection_id_guide_category_path('museumobjects', anchor: 'objectsurfaces') %></li>
+                <li><%= link_to 'Previous Residue', collection_id_guide_category_path('museumobjects', anchor: 'previousresidue') %></li>
+                <li><%= link_to 'Previous Repairs', collection_id_guide_category_path('museumobjects', anchor: 'previousrepairs') %></li>
+                <li><%= link_to 'Storage of Objects', collection_id_guide_category_path('museumobjects', anchor: 'objectstorage') %></li>
+                <li><%= link_to 'Handling Objects', collection_id_guide_category_path('museumobjects', anchor: 'handleobjects') %></li>
+                <li><%= link_to 'Labelling Objects', collection_id_guide_category_path('museumobjects', anchor: 'labelobjects') %></li>
+                <li><%= link_to 'Display Objects', collection_id_guide_category_path('museumobjects', anchor: 'display') %></li>
+                <li><%= link_to 'Archaeological Objects', collection_id_guide_category_path('museumobjects', anchor: 'archobjects') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Object Materials', collection_id_guide_category_path('objectmaterials') %></h4>
+              <ul>
+                <li><%= link_to 'Ceramic', collection_id_guide_category_path('objectmaterials', anchor: 'ceramic') %></li>
+                <li><%= link_to 'Glass', collection_id_guide_category_path('objectmaterials', anchor: 'glass') %></li>
+                <li><%= link_to 'Stone', collection_id_guide_category_path('objectmaterials', anchor: 'stone') %></li>
+                <li><%= link_to 'Metal', collection_id_guide_category_path('objectmaterials', anchor: 'metal') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="supplementary">
       <h2>Supplementary</h2>
 
