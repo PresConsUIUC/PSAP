@@ -13,18 +13,20 @@ module StaticPageHelper
       if anchor['href'] and !anchor['href'].start_with?('http') and
           !anchor['href'].start_with?('mailto:') and anchor['href'][0] != '#'
         pre_hash = anchor['href'].split('#')
-        if File.basename(pre_hash[0], '.*') == 'bibliography'
-          anchor['href'] = bibliography_path
-        elsif anchor['href'].start_with?('files/')
-          anchor['href'] = root_path + 'files/' + File.basename(pre_hash[0])
-        elsif pre_hash[0] == collection_id_guide_path
-          anchor['href'] = collection_id_guide_path
-        else
-          # TODO: this should be root_path + File.basename(parts[0])
-          anchor['href'] = collection_id_guide_path + '/' +
-              File.basename(pre_hash[0], '.*')
+        if pre_hash[0]
+          if File.basename(pre_hash[0], '.*') == 'bibliography'
+            anchor['href'] = bibliography_path
+          elsif anchor['href'].start_with?('files/')
+            anchor['href'] = root_path + 'files/' + File.basename(pre_hash[0])
+          elsif pre_hash[0] == collection_id_guide_path
+            anchor['href'] = collection_id_guide_path
+          else
+            # TODO: this should be root_path + File.basename(parts[0])
+            anchor['href'] = collection_id_guide_path + '/' +
+                File.basename(pre_hash[0], '.*')
+          end
+          anchor['href'] += '#' + pre_hash[1] if pre_hash.length > 1
         end
-        anchor['href'] += '#' + pre_hash[1] if pre_hash.length > 1
       end
     end
 
