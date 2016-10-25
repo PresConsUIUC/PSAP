@@ -11,7 +11,6 @@ class DashboardController < ApplicationController
 
         if @user.is_admin?
           @most_active_users = User.most_active(limit)
-          @most_active_institutions = Institution.most_active(limit)
         end
         if @user.institution
           @most_active_institution_users = @user.institution.most_active_users(limit)

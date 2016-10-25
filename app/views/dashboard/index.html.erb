@@ -46,28 +46,6 @@
         </div>
       </div>
 
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Most active institutions</h3>
-          </div>
-          <div class="panel-body">
-            <% if @most_active_institutions.any? %>
-              <ol class="psap-plain-list">
-                <% @most_active_institutions.each do |row| %>
-                  <li>
-                    <%= entity_icon(row[:institution]) %>
-                    <%= link_to row[:institution].name, row[:institution] %>
-                  </li>
-                <% end %>
-              </ol>
-            <% else %>
-              <p>Nothing to show right now.</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
     <% end %>
 
     <div class="col-sm-6">

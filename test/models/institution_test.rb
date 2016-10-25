@@ -6,15 +6,6 @@ class InstitutionTest < ActiveSupport::TestCase
     @institution = institutions(:institution_one)
   end
 
-  ######################### class method tests ##############################
-
-  test 'most_active works' do
-    most_active = Institution.most_active
-    assert_equal 1, most_active.length
-    assert_equal 4, most_active[0][:count]
-    assert_kind_of Institution, most_active[0][:institution]
-  end
-
   ############################ object tests #################################
 
   test 'valid institution saves' do
