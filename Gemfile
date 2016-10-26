@@ -51,6 +51,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
+  gem 'unicorn-rails' # faster web server than WEBrick.
 end
 
 group :production do
