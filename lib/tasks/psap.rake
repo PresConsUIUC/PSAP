@@ -6,11 +6,17 @@ namespace :psap do
   HELP_DEST_PATH = File.join(Rails.root, 'app', 'assets', 'advanced_help')
   MANUAL_SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data', 'UserManual')
   MANUAL_DEST_PATH = File.join(Rails.root, 'app', 'assets', 'user_manual')
+  QUESTIONS_SOURCE_PATH = File.join(Rails.root, 'db', 'seed_data',
+                                    'questionDependencies.xlsx')
 
   ##
   # Should be run before psap:seed_static_content whenever any images or videos
   # change in any of the db/seed_data subfolders. The resulting images should
   # then be committed to version control.
+  #
+  # Note: this will generate a lot of nearly-identical images that git
+  # recognizes as changed, but that haven't, practically speaking. These
+  # should be reverted.
   #
   desc 'Generate derivative images for the static content'
   task generate_derivatives: :environment do
@@ -23,9 +29,18 @@ namespace :psap do
   end
 
   ##
+  # Seeds format & assessment question content. Should be run whenever new
+  # formats ore questions are added.
+  #
+  desc 'Seed assessment questions in the database'
+  task seed_assessment_questions: :environment do
+    p = AssessmentQuestionImporter.new(QUESTIONS_SOURCE_PATH)
+    p.import_all
+  end
+
+  ##
   # Should be run (after psap:generate_derivatives, if applicable) whenever
-  # content in any of the db/seed_data subfolders changes. Safe to run in
-  # production.
+  # content in any of the db/seed_data subfolders changes.
   #
   desc 'Reseed static content in the database'
   task seed_static_content: :environment do

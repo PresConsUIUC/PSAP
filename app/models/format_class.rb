@@ -8,9 +8,10 @@ class FormatClass
   IMAGE = 1
   UNBOUND_PAPER = 2
   BOUND_PAPER = 3
+  OBJECT = 4
 
   def self.all
-    return (0..3)
+    return (0..4)
   end
 
   def self.name_for_class(clazz)
@@ -25,12 +26,16 @@ class FormatClass
         'Paper-Unbound'
       when FormatClass::BOUND_PAPER
         'Paper-Bound/Book'
+      when FormatClass::OBJECT
+        'Object'
     end
   end
 
   def self.class_for_name(name)
     if %w(audiovisual a/v).include?(name.downcase)
       FormatClass::AV
+    elsif name[0..5].downcase == 'object'
+      FormatClass::OBJECT
     elsif name[0..2].downcase == 'pho'
       FormatClass::PHOTO
     elsif name.downcase.include?('unbound')
