@@ -129,7 +129,7 @@ command = CreateUserCommand.new(
     { username: 'admin', email: 'admin@example.org',
       first_name: 'Admin', last_name: 'Admin',
       password: 'password', password_confirmation: 'password',
-      confirmed: true, enabled: true }, '127.0.0.1', false)
+      confirmed: true, enabled: true, about: 'admin' }, '127.0.0.1', false)
 command.execute
 admin_user = command.object
 admin_user.role = admin_role
@@ -206,7 +206,7 @@ case Rails.env
           first_name: 'Norm', last_name: 'McNormal',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'normal' }, '127.0.0.1', false)
     command.execute
     normal_user = command.object
 
@@ -216,7 +216,7 @@ case Rails.env
           first_name: 'Clara', last_name: 'NoInstitution',
           password: 'password', password_confirmation: 'password',
           institution: nil, role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'unaffiliated' }, '127.0.0.1', false)
     command.execute
     unaffiliated_user = command.object
 
@@ -226,7 +226,7 @@ case Rails.env
           first_name: 'Sally', last_name: 'NoConfirmy',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: false, enabled: false }, '127.0.0.1', false)
+          confirmed: false, enabled: false, about: 'unconfirmed' }, '127.0.0.1', false)
     command.execute
     unconfirmed_user = command.object
 
@@ -236,7 +236,7 @@ case Rails.env
           first_name: 'Johnny', last_name: 'CantDoNothin',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: true, enabled: false }, '127.0.0.1', false)
+          confirmed: true, enabled: false, about: 'disabled' }, '127.0.0.1', false)
     command.execute
     disabled_user = command.object
 
@@ -248,7 +248,7 @@ case Rails.env
           institution: hogwarts_institution,
           desired_institution: Institution.find_by_city('Hogsmeade'),
           role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'about' }, '127.0.0.1', false)
     command.execute
 
     # Repositories
