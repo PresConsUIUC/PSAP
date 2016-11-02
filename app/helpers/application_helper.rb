@@ -188,6 +188,8 @@ module ApplicationHelper
             class_ = 'fa-file-text-o'
           when FormatClass::BOUND_PAPER
             class_ = 'fa-book'
+          else
+            class_ = 'fa-cube'
         end
       else
         class_ = 'fa-cube'
