@@ -21,9 +21,7 @@ module StaticPageHelper
           elsif pre_hash[0] == collection_id_guide_path
             anchor['href'] = collection_id_guide_path
           else
-            # TODO: this should be root_path + File.basename(parts[0])
-            anchor['href'] = collection_id_guide_path + '/' +
-                File.basename(pre_hash[0], '.*')
+            anchor['href'] = root_path + File.basename(pre_hash[0])
           end
           anchor['href'] += '#' + pre_hash[1] if pre_hash.length > 1
         end
