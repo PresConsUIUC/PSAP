@@ -18,8 +18,8 @@ module StaticPageHelper
             anchor['href'] = bibliography_path
           elsif anchor['href'].start_with?('files/')
             anchor['href'] = root_path + 'files/' + File.basename(pre_hash[0])
-          elsif pre_hash[0] == collection_id_guide_path
-            anchor['href'] = collection_id_guide_path
+          elsif pre_hash[0].start_with?(collection_id_guide_path)
+            anchor['href'] = pre_hash[0]
           else
             anchor['href'] = root_path + File.basename(pre_hash[0])
           end
