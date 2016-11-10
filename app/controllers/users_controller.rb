@@ -215,6 +215,26 @@ class UsersController < ApplicationController
     end
   end
 
+  ##
+  # Responds to PATCH /users/:id/send-confirmation-email
+  #
+  def send_confirmation_email
+    user = User.find_by_username params[:username]
+    raise ActiveRecord::RecordNotFound unless user
+
+    command = SendConfirmationEmailCommand.new(user, current_user,
+                                               request.remote_ip)
+    begin
+      command.execute
+    rescue => e
+      flash['error'] = "#{e}"
+    else
+      flash['success'] = 'Confirmation email sent.'
+    ensure
+      redirect_to :back
+    end
+  end
+
   def show
     @user = User.find_by_username params[:username]
     raise ActiveRecord::RecordNotFound unless @user

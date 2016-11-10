@@ -30,6 +30,13 @@
               <% end %>
             </li>
           <% end %>
+          <% if current_user.is_admin? %>
+            <li>
+              <%= link_to 'Resend Confirmation Email',
+                          send_confirmation_email_path(@user),
+                          method: :patch %>
+            </li>
+          <% end %>
           <li>
             <% if current_user == @user %>
               <%= link_to 'Reset Feed Key', reset_user_feed_key_path,

@@ -123,6 +123,9 @@ Psap::Application.routes.draw do
         via: 'patch', as: 'approve_user_institution'
   match '/users/:username/refuse-institution', to: 'users#refuse_institution',
         via: 'patch', as: 'refuse_user_institution'
+  match '/users/:username/send-confirmation-email',
+        to: 'users#send_confirmation_email',
+        via: 'patch', as: 'send_confirmation_email'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot-password
