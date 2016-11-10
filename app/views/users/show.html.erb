@@ -30,8 +30,8 @@
               <% end %>
             </li>
           <% end %>
-          <% if current_user.is_admin? and !@user.confirmed %>
-            <li>
+          <% if current_user.is_admin? %>
+            <li class="<%= @user.confirmed ? 'disabled' : '' %>">
               <%= link_to 'Resend Confirmation Email',
                           send_confirmation_email_path(@user),
                           method: :patch %>
