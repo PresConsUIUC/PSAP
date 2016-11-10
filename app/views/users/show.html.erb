@@ -30,7 +30,7 @@
               <% end %>
             </li>
           <% end %>
-          <% if current_user.is_admin? %>
+          <% if current_user.is_admin? and !@user.confirmed %>
             <li>
               <%= link_to 'Resend Confirmation Email',
                           send_confirmation_email_path(@user),
