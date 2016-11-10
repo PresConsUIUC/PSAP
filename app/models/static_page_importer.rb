@@ -35,8 +35,7 @@ class StaticPageImporter
   # and generates derivative images based on their "src" attributes.
   #
   def generate_derivatives
-    FileUtils.rm_rf(@asset_path) if File.exists?(@asset_path)
-    FileUtils.mkdir_p(@asset_path)
+    FileUtils.mkdir_p(@asset_path) unless File.directory?(@asset_path)
 
     Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
       File.open(htmlpath, 'r') do |content|
