@@ -62,11 +62,19 @@
               <li><%= link_to 'Supplementary', collection_id_guide_path(anchor: 'supplementary') %></li>
             </ul>
           </li>
-          <li <%= 'class=active' if current_page?(glossary_path) %>>
-            <%= link_to 'Glossary', glossary_path, class: 'nav-link' %>
-          </li>
-          <li <%= 'class=active' if current_page?(bibliography_path) %>>
-            <%= link_to 'Bibliography', bibliography_path, class: 'nav-link' %>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+              User Guide <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <% # these should be kept in sync with the supplementary section of the CIDG %>
+              <li><%= link_to 'About the PSAP', about_path %></li>
+              <li><%= link_to 'User Manual', user_manual_path %></li>
+              <li><%= link_to 'Glossary', glossary_path %></li>
+              <li><%= link_to 'Bibliography', bibliography_path %></li>
+              <li><%= link_to 'Advanced Help', advanced_help_path %></li>
+            </ul>
           </li>
         </ul>
 
@@ -105,11 +113,6 @@
           <% elsif request.url != root_url %>
             <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
           <% end %>
-          <li class="psap-icon-only">
-            <%= link_to(user_manual_path, title: 'User Manual') do %>
-              <i class="fa fa-book"></i>
-            <% end %>
-          </li>
           <li class="psap-icon-only">
             <%= link_to(help_path, title: 'Help') do %>
               <i class="fa fa-question-circle"></i>
