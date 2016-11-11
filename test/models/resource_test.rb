@@ -198,6 +198,11 @@ class ResourceTest < ActiveSupport::TestCase
     skip # TODO: write this
   end
 
+  # assessment_question_score
+  test 'assessment_question_score should calculate properly' do
+    assert_equal 0.025, @resource.assessment_question_score
+  end
+
   # dup
   test 'dup should produce a correct clone' do
     clone = @resource.dup
