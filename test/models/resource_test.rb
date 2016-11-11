@@ -17,15 +17,9 @@ class ResourceTest < ActiveSupport::TestCase
     end
   end
 
-  test 'from_ead should raise an exception if given an invalid user ID' do
-    assert_raises RuntimeError do
-      Resource.from_ead('<?xml version="1.0" ?><cats></cats>', 999999999)
-    end
-  end
-
   test 'from_ead should return correct resource attributes' do
     xml = File.read('test/models/archivesspace_ead_export.xml')
-    resource = Resource.from_ead(xml, users(:normal_user).id)
+    resource = Resource.from_ead(xml, users(:normal_user))
 
     assert_equal 'Here is a brief', resource.description[0..14]
     assert_nil resource.format
