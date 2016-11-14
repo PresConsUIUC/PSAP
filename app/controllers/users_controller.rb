@@ -347,7 +347,8 @@ class UsersController < ApplicationController
   end
 
   def sort_column
-    allowed_columns = User.column_names << 'institutions.name'
+    allowed_columns = User.column_names + ['institutions.country',
+                                           'institutions.name']
     allowed_columns.include?(params[:sort]) ? params[:sort] : 'last_name'
   end
 
