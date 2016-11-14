@@ -51,7 +51,9 @@
   </button>
   <% if @resource.resource_type != Resource::Type::COLLECTION %>
     <!-- Assess -->
-    <button type="button" class="btn btn-default" data-toggle="modal"
+    <button type="button"
+            class="btn btn-default <%= @resource.assessment_complete ? '' : 'btn-success' %>"
+            data-toggle="modal"
             data-target="#psap-assess-panel">
       <span class="glyphicon glyphicon-stats"></span>
       Assess
