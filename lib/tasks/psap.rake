@@ -34,11 +34,6 @@ namespace :psap do
   #
   desc 'Seed assessment questions in the database'
   task seed_assessment_questions: :environment do
-    puts 'Deleting existing object formats...'
-    Format.where('fid > ?', 999).destroy_all
-    puts 'Deleting existing object assessment questions...'
-    AssessmentQuestion.where('qid > ?', 1999).destroy_all
-
     p = AssessmentQuestionImporter.new(QUESTIONS_SOURCE_PATH)
     p.import_all
   end
