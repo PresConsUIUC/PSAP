@@ -173,7 +173,9 @@ class StaticPageImporter
                        uri_fragment: File.basename(file, '.*'),
                        component: component,
                        category: category,
-                       html: doc.xpath('//body/*').to_html)
+                       html: doc.xpath('//body/*').to_html.encode(
+                           Encoding.find('UTF-8'),
+                           { invalid: :replace, undef: :replace, replace: '' }))
         rescue => e
           raise "#{file}: #{e}"
         end
