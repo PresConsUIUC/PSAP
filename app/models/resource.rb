@@ -565,13 +565,8 @@ class Resource < ActiveRecord::Base
   def effective_temperature_score
     score = 0.0
     if self.format
-      location_range = self.location.temperature_range
-      if location_range
-        format_range = self.format.temperature_ranges.where(
-            min_temp_f: location_range.min_temp_f,
-            max_temp_f: location_range.max_temp_f).first
-        score = format_range.score if format_range
-      end
+      format_range = self.format.temperature_range_in_location(self.location)
+      score = format_range.score if format_range
     end
     score
   end

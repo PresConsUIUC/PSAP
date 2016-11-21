@@ -57,4 +57,27 @@ class Format < ActiveRecord::Base
     [159, 160].include?(self.fid)
   end
 
+  ##
+  # @param location [Location]
+  # @return [TemperatureRange] The effective temperature range of the format
+  #                            when it is in the given location.
+  #
+  def temperature_range_in_location(location)
+    temp_range = nil
+    if location
+      location_range = location.temperature_range
+      if location_range
+        # Format temperature ranges have a nil min/max temp, but location ranges
+        # have a min/max of 0/120.
+        min_temp = location_range.min_temp_f
+        min_temp = nil if min_temp == 0
+        max_temp = location_range.max_temp_f
+        max_temp = nil if max_temp == 120
+        temp_range = self.temperature_ranges.where(min_temp_f: min_temp,
+                                                   max_temp_f: max_temp).first
+      end
+    end
+    temp_range
+  end
+
 end

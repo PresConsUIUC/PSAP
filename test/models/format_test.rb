@@ -71,6 +71,11 @@ class FormatTest < ActiveSupport::TestCase
     assert !@format.requires_type_vectors?
   end
 
+  test 'temperature_range_in_location should work properly' do
+    # TODO: write this
+    flunk
+  end
+
   ########################## association tests ##############################
 
   test 'children should be destroyed on destroy' do
