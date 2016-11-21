@@ -10,7 +10,7 @@ namespace :psap do
                                     'questionDependencies.xlsx')
 
   ##
-  # Should be run before psap:seed_static_content whenever any images or videos
+  # Should be run before psap:seed_html_bundles whenever any images or videos
   # change in any of the db/seed_data subfolders. The resulting images should
   # then be committed to version control.
   #
@@ -47,8 +47,8 @@ namespace :psap do
   # Should be run (after psap:generate_derivatives, if applicable) whenever
   # content in any of the db/seed_data subfolders changes.
   #
-  desc 'Reseed static content in the database'
-  task seed_static_content: :environment do
+  desc 'Reseed HTML bundles in the database'
+  task seed_html_bundles: :environment do
     p = StaticPageImporter.new(HELP_SOURCE_PATH, HELP_DEST_PATH)
     p.reseed
     p = StaticPageImporter.new(CIDG_SOURCE_PATH, CIDG_DEST_PATH)
