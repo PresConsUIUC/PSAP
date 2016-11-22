@@ -57,8 +57,8 @@ var ResourceEditForm = function() {
             }
 
             $.each(data, function(i, object) {
-                var option = $('<option data-help-page="' + object['format_id_guide_page'] + '" ' +
-                    'data-help-anchor="' + object['format_id_guide_anchor'] + '" ' +
+                var option = $('<option data-help-page="' + object['collection_id_guide_page'] + '" ' +
+                    'data-help-anchor="' + object['collection_id_guide_anchor'] + '" ' +
                     'data-score="' + object['score'] + '">').
                     attr('value', object['id']).
                     text(object['name']);
@@ -327,7 +327,7 @@ var ResourceEditForm = function() {
         var help_anchor = select.find(':selected').data('help-anchor');
         help_anchor = help_anchor ? '#' + help_anchor : '';
         select.filter(':first').next('a').attr('href',
-                ROOT_URL + 'format-id-guide/' + help_page + help_anchor).show();
+                ROOT_URL + 'collection-id-guide/' + help_page + help_anchor).show();
     };
 
     /**

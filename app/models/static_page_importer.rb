@@ -35,8 +35,7 @@ class StaticPageImporter
   # and generates derivative images based on their "src" attributes.
   #
   def generate_derivatives
-    FileUtils.rm_rf(@asset_path) if File.exists?(@asset_path)
-    FileUtils.mkdir_p(@asset_path)
+    FileUtils.mkdir_p(@asset_path) unless File.directory?(@asset_path)
 
     Dir.glob(File.join(@source_path, '**', '*.htm*'), File::FNM_CASEFOLD).each do |htmlpath|
       File.open(htmlpath, 'r') do |content|
@@ -157,8 +156,8 @@ class StaticPageImporter
           end
           component = nil
           dirname = File.dirname(file)
-          if dirname.downcase.include?('format')
-            component = StaticPage::Component::FORMAT_ID_GUIDE
+          if dirname.downcase.include?('collectionidguide')
+            component = StaticPage::Component::COLLECTION_ID_GUIDE
             category = File.basename(dirname).downcase
           elsif dirname.downcase.include?('help')
             component = StaticPage::Component::HELP
@@ -174,7 +173,9 @@ class StaticPageImporter
                        uri_fragment: File.basename(file, '.*'),
                        component: component,
                        category: category,
-                       html: doc.xpath('//body/*').to_html)
+                       html: doc.xpath('//body/*').to_html.encode(
+                           Encoding.find('UTF-8'),
+                           { invalid: :replace, undef: :replace, replace: '' }))
         rescue => e
           raise "#{file}: #{e}"
         end

@@ -19,55 +19,7 @@
   </div>
   <div class="col-sm-8">
     <% if current_user.is_admin? %>
-
       <%= users_requiring_action_panel %>
-
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Most active users</h3>
-          </div>
-          <div class="panel-body">
-            <% if @most_active_users.any? %>
-              <ol class="psap-user-list">
-                <% @most_active_users.each do |row| %>
-                  <li>
-                    <%= link_to row[:user] do %>
-                      <%= gravatar_for row[:user], size: 52 %>
-                      <%= link_to row[:user].full_name, row[:user] %>
-                    <% end %>
-                  </li>
-                <% end %>
-              </ol>
-            <% else %>
-              <p>Nothing to show right now.</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Most active institutions</h3>
-          </div>
-          <div class="panel-body">
-            <% if @most_active_institutions.any? %>
-              <ol class="psap-plain-list">
-                <% @most_active_institutions.each do |row| %>
-                  <li>
-                    <%= entity_icon(row[:institution]) %>
-                    <%= link_to row[:institution].name, row[:institution] %>
-                  </li>
-                <% end %>
-              </ol>
-            <% else %>
-              <p>Nothing to show right now.</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
     <% end %>
 
     <div class="col-sm-6">

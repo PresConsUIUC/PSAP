@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FormatIdGuideControllerTest < ActionController::TestCase
+class CollectionIdGuideControllerTest < ActionController::TestCase
 
   #### index ####
 

@@ -1,0 +1,17 @@
+<% provide(:body_id, 'collection_id_guide_page') %>
+<% provide(:title, @page.name) %>
+
+<ol class="breadcrumb">
+  <li>
+    <%= link_to 'Collection ID Guide', collection_id_guide_path %>
+  </li>
+  <li class="active"><%= @page.name %></li>
+</ol>
+
+<div class="pull-right">
+  <%= render partial: 'search_field' %>
+</div>
+
+<div class="psap-page-title"></div>
+
+<%= static_page_html(@page.html) %>

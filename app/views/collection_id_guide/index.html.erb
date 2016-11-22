@@ -1,0 +1,666 @@
+<% provide(:body_id, 'collection_id_guide') %>
+<% provide(:title, 'Collection ID Guide') %>
+<% thumbs = { height: 60, width: 60 } %>
+
+<div class="pull-right">
+  <%= render partial: 'search_field' %>
+</div>
+
+<div class="psap-page-title">
+  <h1>Collection ID Guide</h1>
+</div>
+
+<div class="row">
+  <!-- left column menu -->
+  <div class="col-sm-3">
+    <div id="psap-affixed-menu">
+      <nav>
+        <ul class="nav nav-pills nav-stacked">
+          <li class="active"><a href="#audiovisual">Audiovisual Media</a></li>
+          <li><a href="#paper_book">Paper &amp; Book</a></li>
+          <li><a href="#photo_image">Photo &amp; Image Material</a></li>
+          <li><a href="#objects">Objects</a></li>
+          <li><a href="#supplementary">Supplementary</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="tab-content col-sm-9">
+
+    <div id="audiovisual">
+      <h2>Audiovisual Media</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('film') do %>
+              <%= retina_image_tag('film-16mm-reversalfilm-ucla-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Film
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to '8mm', collection_id_guide_category_path('film', anchor: 'film8mm') %></li>
+            <li><%= link_to 'Super 8mm', collection_id_guide_category_path('film', anchor: 'filmsuper8') %></li>
+            <li><%= link_to '9.5mm', collection_id_guide_category_path('film', anchor: 'film9point5mm') %></li>
+            <li><%= link_to '16mm', collection_id_guide_category_path('film', anchor: 'film16mm') %></li>
+            <li><%= link_to '35mm', collection_id_guide_category_path('film', anchor: 'film35mm') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('audiotape') do %>
+              <%= retina_image_tag('audio-quarterin-or-group-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Audiotape
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '¼" Open Reel', collection_id_guide_category_path('audiotape', anchor: 'audioquarterinOR') %></li>
+                <li><%= link_to '½" Open Reel', collection_id_guide_category_path('audiotape', anchor: 'audiohalfinOR') %></li>
+                <li><%= link_to '1" Open Reel', collection_id_guide_category_path('audiotape', anchor: 'audio1inOR') %></li>
+                <li><%= link_to '2" Open Reel', collection_id_guide_category_path('audiotape', anchor: 'audio2inOR') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette/ Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to '8-Track', collection_id_guide_category_path('audiotape', anchor: '8track') %></li>
+                <li><%= link_to 'Compact Cassette', collection_id_guide_category_path('audiotape', anchor: 'compactcassette') %></li>
+                <li><%= link_to 'Continuous Loop Cartridge (Cart)', collection_id_guide_category_path('audiotape', anchor: 'cart') %></li>
+                <li><%= link_to 'Digital Audio Tape (DAT)', collection_id_guide_category_path('audiotape', anchor: 'dat') %></li>
+                <li><%= link_to 'Digital Compact Cassette (DCC)', collection_id_guide_category_path('audiotape', anchor: 'dcc') %></li>
+                <li><%= link_to 'Microcassette', collection_id_guide_category_path('audiotape', anchor: 'microcassette') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('videotape') do %>
+              <%= retina_image_tag('vhs-apple-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Videotape
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Open Reel</h4>
+              <ul>
+                <li><%= link_to '½" Open Reel', collection_id_guide_category_path('videotape', anchor: 'videohalfinOR') %></li>
+                <li><%= link_to '1" Open Reel', collection_id_guide_category_path('videotape', anchor: 'video1inOR') %></li>
+                <li><%= link_to '2" Open Reel', collection_id_guide_category_path('videotape', anchor: 'video2inOR') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Cassette / Cartridge-Based</h4>
+              <ul>
+                <li><%= link_to 'Betacam / BetacamSP', collection_id_guide_category_path('videotape', anchor: 'betacam') %></li>
+                <li><%= link_to 'Betamax', collection_id_guide_category_path('videotape', anchor: 'betamax') %></li>
+                <li><%= link_to 'D-2', collection_id_guide_category_path('videotape', anchor: 'd2') %></li>
+                <li><%= link_to 'D-3', collection_id_guide_category_path('videotape', anchor: 'd3') %></li>
+                <li><%= link_to 'Digital Betacam', collection_id_guide_category_path('videotape', anchor: 'digibeta') %></li>
+                <li><%= link_to 'DVCAM', collection_id_guide_category_path('videotape', anchor: 'dvcam') %></li>
+                <li><%= link_to 'DVCPRO', collection_id_guide_category_path('videotape', anchor: 'dvcpro') %></li>
+                <li><%= link_to 'MiniDV', collection_id_guide_category_path('videotape', anchor: 'minidv') %></li>
+                <li><%= link_to 'Other Digital Video', collection_id_guide_category_path('videotape', anchor: 'othervideo') %></li>
+                <li><%= link_to 'U-matic / U-matic SP', collection_id_guide_category_path('videotape', anchor: 'umatic') %></li>
+                <li><%= link_to 'VHS', collection_id_guide_category_path('videotape', anchor: 'vhs') %></li>
+                <li><%= link_to 'Video8 / Hi8', collection_id_guide_category_path('videotape', anchor: 'video8') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('phonodisc') do %>
+              <%= retina_image_tag('record-vinyl-microgrooves02-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Phonograph Record
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Aluminum Disc', collection_id_guide_category_path('phonodisc', anchor: 'aluminumdisc') %></li>
+            <li><%= link_to 'Lacquer Disc', collection_id_guide_category_path('phonodisc', anchor: 'lacquerdisc') %></li>
+            <li><%= link_to 'Shellac Disc', collection_id_guide_category_path('phonodisc', anchor: 'shellacdisc') %></li>
+            <li><%= link_to 'Vinyl Disc', collection_id_guide_category_path('phonodisc', anchor: 'vinyldisc') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('opticalmedia') do %>
+              <%= retina_image_tag('compactdisc-gold-jewelcase-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Optical Media
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Compact Disc (CD)', collection_id_guide_category_path('opticalmedia', anchor: 'cd') %></li>
+            <li><%= link_to 'DVD', collection_id_guide_category_path('opticalmedia', anchor: 'dvd') %></li>
+            <li><%= link_to 'Laserdisc (LD)', collection_id_guide_category_path('opticalmedia', anchor: 'laserdisc') %></li>
+            <li><%= link_to 'MiniDisc (MD)', collection_id_guide_category_path('opticalmedia', anchor: 'minidisc') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('cylinder') do %>
+              <%= retina_image_tag('cylinder-plastic-onside-edge-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Grooved Cylinder
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Plastic Cylinder', collection_id_guide_category_path('cylinder', anchor: 'plasticcylinder') %></li>
+            <li><%= link_to 'Wax Cylinder', collection_id_guide_category_path('cylinder', anchor: 'waxcylinder') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('wire') do %>
+              <%= retina_image_tag('wire-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Wire Recording
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Wire Audio', collection_id_guide_category_path('wire') %></li>
+          </ul>
+        </div>
+      </div>
+
+    </div> <!-- #audiovisual -->
+
+    <div id="paper_book">
+      <h2>Paper &amp; Book</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= retina_image_tag('paper-fibers-inkonpage-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+            Unbound Paper
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Paper', collection_id_guide_category_path('paper') %></h4>
+              <ul>
+                <li><%= link_to 'Acid-Free Paper', collection_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
+                <li><%= link_to 'Coated Paper', collection_id_guide_category_path('paper', anchor: 'coatedpaper') %></li>
+                <li><%= link_to 'Newsprint', collection_id_guide_category_path('paper', anchor: 'newsprint') %></li>
+                <li><%= link_to 'Proprietary Paper', collection_id_guide_category_path('paper', anchor: 'proprietarypaper') %></li>
+                <li><%= link_to 'Tracing/Transparent Paper', collection_id_guide_category_path('paper', anchor: 'tracingpaper') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Ink & Other Media', collection_id_guide_category_path('inkothermedia') %></h4>
+              <ul>
+                <li><%= link_to 'Ball-Point Pen', collection_id_guide_category_path('inkothermedia', anchor: 'ballpointink') %></li>
+                <li><%= link_to 'Carbon Black Ink', collection_id_guide_category_path('inkothermedia', anchor: 'carbonblackink') %></li>
+                <li><%= link_to 'Colored Pencils', collection_id_guide_category_path('inkothermedia', anchor: 'coloredpencil') %></li>
+                <li><%= link_to 'Copying Pencil', collection_id_guide_category_path('inkothermedia', anchor: 'copypencil') %></li>
+                <li><%= link_to 'Dye-Based Ink', collection_id_guide_category_path('inkothermedia', anchor: 'dyeink') %></li>
+                <li><%= link_to 'Felt-Tip Pen/Marker', collection_id_guide_category_path('inkothermedia', anchor: 'felttipink') %></li>
+                <li><%= link_to 'Graphite', collection_id_guide_category_path('inkothermedia', anchor: 'graphite') %></li>
+                <li><%= link_to 'Iron Gall Ink', collection_id_guide_category_path('inkothermedia', anchor: 'irongallink') %></li>
+                <li><%= link_to 'Pigment-Based Ink', collection_id_guide_category_path('inkothermedia', anchor: 'pigmentink') %></li>
+                <li><%= link_to 'Typewriter Ribbon Ink', collection_id_guide_category_path('inkothermedia', anchor: 'typewriterink') %></li>
+                <li><%= link_to 'Wax-Based Pencil/Crayon', collection_id_guide_category_path('inkothermedia', anchor: 'waxcrayon') %></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Architectural Drawing Reproduction', collection_id_guide_category_path('archdrawingrepro') %></h4>
+              <ul>
+                <li><%= link_to 'Aniline Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'anilineprint') %></li>
+                <li><%= link_to 'Blueprint', collection_id_guide_category_path('archdrawingrepro', anchor: 'blueprint') %></li>
+                <li><%= link_to 'Diazo Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'diazoprint-arch') %></li>
+                <li><%= link_to 'Electrostatic Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'electrostatic-arch') %></li>
+                <li><%= link_to 'Ferro-Gallic Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'ferrogallicprint') %></li>
+                <li><%= link_to 'Gel-Lithograph', collection_id_guide_category_path('archdrawingrepro', anchor: 'gel-litho') %></li>
+                <li><%= link_to 'Hectograph', collection_id_guide_category_path('archdrawingrepro', anchor: 'hectograph-arch') %></li>
+                <li><%= link_to 'Photostat', collection_id_guide_category_path('archdrawingrepro', anchor: 'photostat-arch') %></li>
+                <li><%= link_to 'VanDyke Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'vandykeprint') %></li>
+                <li><%= link_to 'Wash-Off Print', collection_id_guide_category_path('archdrawingrepro', anchor: 'washoffprint') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Office Copy/Print', collection_id_guide_category_path('officeprintcopy') %></h4>
+              <ul>
+                <li><%= link_to 'Carbon Copy', collection_id_guide_category_path('officeprintcopy', anchor: 'carboncopy') %></li>
+                <li><%= link_to 'Carbonless Copy (NCR)', collection_id_guide_category_path('officeprintcopy', anchor: 'ncrcopy') %></li>
+                <li><%= link_to 'Color Photocopy', collection_id_guide_category_path('officeprintcopy', anchor: 'colorxerox') %></li>
+                <li><%= link_to 'Copybook / Roller Copy', collection_id_guide_category_path('officeprintcopy', anchor: 'copybookroller') %></li>
+                <li><%= link_to 'Diazo Print', collection_id_guide_category_path('officeprintcopy', anchor: 'diazoprint-office') %></li>
+                <li><%= link_to 'Diffusion Transfer', collection_id_guide_category_path('officeprintcopy', anchor: 'diffusiontransfer') %></li>
+                <li><%= link_to 'Dual Spectrum', collection_id_guide_category_path('officeprintcopy', anchor: 'dualspectrum') %></li>
+                <li><%= link_to 'Electrofax', collection_id_guide_category_path('officeprintcopy', anchor: 'electrofax') %></li>
+                <li><%= link_to 'Electrostatic/Xerox Copy', collection_id_guide_category_path('officeprintcopy', anchor: 'electrostatic-office') %></li>
+                <li><%= link_to 'Hectograph', collection_id_guide_category_path('officeprintcopy', anchor: 'hectograph-office') %></li>
+                <li><%= link_to 'Impact Print', collection_id_guide_category_path('officeprintcopy', anchor: 'impactprint') %></li>
+                <li><%= link_to 'Inkjet Print', collection_id_guide_category_path('officeprintcopy', anchor: 'inkjet-office') %></li>
+                <li><%= link_to 'Laser Print', collection_id_guide_category_path('officeprintcopy', anchor: 'laserprint') %></li>
+                <li><%= link_to 'Lithograph (Office Litho)', collection_id_guide_category_path('officeprintcopy', anchor: 'lithography-office') %></li>
+                <li><%= link_to 'Photostat', collection_id_guide_category_path('officeprintcopy', anchor: 'photostat-office') %></li>
+                <li><%= link_to 'Spirit Duplicate', collection_id_guide_category_path('officeprintcopy', anchor: 'spiritduplicate') %></li>
+                <li><%= link_to 'Stencil Copy', collection_id_guide_category_path('officeprintcopy', anchor: 'stencilcopy') %></li>
+                <li><%= link_to 'Thermal Print / Thermofax', collection_id_guide_category_path('officeprintcopy', anchor: 'thermalprint') %></li>
+                <li><%= link_to 'Typography', collection_id_guide_category_path('officeprintcopy', anchor: 'typography') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= retina_image_tag('binding-periodical-handsewthroughfoldontape2a_cropped-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+            Bound/Book
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Paper', collection_id_guide_category_path('paper') %></h4>
+              <ul>
+                <li><%= link_to 'Acid-Free Paper', collection_id_guide_category_path('paper', anchor: 'acidfreepaper') %> (Rag paper; Permanent paper)</li>
+                <li><%= link_to 'Coated Paper', collection_id_guide_category_path('paper', anchor: 'coatedpaper') %></li>
+                <li><%= link_to 'Newsprint', collection_id_guide_category_path('paper', anchor: 'newsprint') %></li>
+                <li><%= link_to 'Proprietary Paper', collection_id_guide_category_path('paper', anchor: 'proprietarypaper') %></li>
+                <li><%= link_to 'Tracing/Transparent Paper', collection_id_guide_category_path('paper', anchor: 'tracingpaper') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Cover & Binding Materials', collection_id_guide_category_path('bookbound', anchor: 'coverbindmat') %></h4>
+              <ul>
+                <li><%= link_to 'Cloth', collection_id_guide_category_path('bookbound', anchor: 'clothcover') %> (starch-filled, pyroxylin-treated, acrylic-coated)</li>
+                <li><%= link_to 'Leather', collection_id_guide_category_path('bookbound', anchor: 'leather') %> (sheep, goat, calf)</li>
+                <li><%= link_to 'Paper', collection_id_guide_category_path('bookbound', anchor: 'papercover') %></li>
+                <li><%= link_to 'Parchment', collection_id_guide_category_path('bookbound', anchor: 'parchment') %> (vellum, etc.)</li>
+                <li><%= link_to 'Tawed Skin', collection_id_guide_category_path('bookbound', anchor: 'tawedskin') %></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Board Materials', collection_id_guide_category_path('bookbound', anchor: 'boardmat') %></h4>
+              <ul>
+                <li><%= link_to 'Paper Board', collection_id_guide_category_path('bookbound', anchor: 'paperboard') %></li>
+                <li><%= link_to 'Wood Board', collection_id_guide_category_path('bookbound', anchor: 'woodboard') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Binding Types', collection_id_guide_category_path('bookbound', anchor: 'bindtype') %></h4>
+              <ul>
+                <li><%= link_to 'Adhesive Bindings', collection_id_guide_category_path('bookbound', anchor: 'adhesivebind') %> ("perfect" binding, double fan adhesive)</li>
+                <li><%= link_to 'Other Bindings', collection_id_guide_category_path('bookbound', anchor: 'otherbind') %> (punch-and-bind, stapled, accordion)</li>
+                <li><%= link_to 'Sewn Bindings', collection_id_guide_category_path('bookbound', anchor: 'sewnbind') %> (through-the-fold, oversewn, stab)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- #paper_book -->
+
+
+    <div id="photo_image">
+      <h2>Photographic &amp; Image Material</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('photoprint') do %>
+              <%= retina_image_tag('Silver-DyeBleach_01_front_45_8x10_ULTRALARGE-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Photographic Print
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Monochrome Print</h4>
+              <ul>
+                <li><%= link_to 'Albumen Print', collection_id_guide_category_path('photoprint', anchor: 'albumenprint') %></li>
+                <li><%= link_to 'Carbon Print', collection_id_guide_category_path('photoprint', anchor: 'carbonprint') %></li>
+                <li><%= link_to 'Cyanotype', collection_id_guide_category_path('photoprint', anchor: 'cyanotype') %></li>
+                <li><%= link_to 'Gelatin POP Print', collection_id_guide_category_path('photoprint', anchor: 'gelatinpop') %></li>
+                <li><%= link_to 'Glossy Collodion Print', collection_id_guide_category_path('photoprint', anchor: 'collodionpop') %></li>
+                <li><%= link_to 'Matte Collodion Print', collection_id_guide_category_path('photoprint', anchor: 'mattecollodion') %></li>
+                <li><%= link_to 'Platinum/Palladium Print', collection_id_guide_category_path('photoprint', anchor: 'platinumprint') %></li>
+                <li><%= link_to 'Salt Print', collection_id_guide_category_path('photoprint', anchor: 'saltprint') %></li>
+                <li><%= link_to 'Silver Gelatin Print (DOP)', collection_id_guide_category_path('photoprint', anchor: 'silvergelprint') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Color Print</h4>
+              <ul>
+                <li><%= link_to 'Chromogenic Color Print', collection_id_guide_category_path('photoprint', anchor: 'chromoprint') %></li>
+                <li><%= link_to 'Color Carbro Print', collection_id_guide_category_path('photoprint', anchor: 'colorcarbro') %></li>
+                <li><%= link_to 'Dye Transfer Print', collection_id_guide_category_path('photoprint', anchor: 'dyetransfer') %></li>
+                <li><%= link_to 'Silver Dye-Bleach Print', collection_id_guide_category_path('photoprint', anchor: 'silverdyebleach') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Instant Photo</h4>
+              <ul>
+                <li><%= link_to 'Instant Photo, B&W', collection_id_guide_category_path('photoprint', anchor: 'instantbw') %></li>
+                <li><%= link_to 'Instant Photo, Color', collection_id_guide_category_path('photoprint', anchor: 'instantcolor') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('directimage') do %>
+              <%= retina_image_tag('tintype2_hand_tinted-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Cased/Direct Photograph
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Ambrotype', collection_id_guide_category_path('directimage', anchor: 'ambrotype') %></li>
+            <li><%= link_to 'Daguerreotype', collection_id_guide_category_path('directimage', anchor: 'daguerreotype') %></li>
+            <li><%= link_to 'Tintype', collection_id_guide_category_path('directimage', anchor: 'tintype') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('negative') do %>
+              <%= retina_image_tag('negative-silvergelatin-nitrate-backlit-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Negative
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Negative</h4>
+              <ul>
+                <li><%= link_to 'Albumen Glass Negative', collection_id_guide_category_path('negative', anchor: 'glassalbumen') %></li>
+                <li><%= link_to 'Collodion Glass Negative', collection_id_guide_category_path('negative', anchor: 'glasscollodion') %></li>
+                <li><%= link_to 'Gelatin Glass Negative', collection_id_guide_category_path('negative', anchor: 'glassgelatin') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Negative</h4>
+              <ul>
+                <li><%= link_to 'Chromogenic Color Negative', collection_id_guide_category_path('negative', anchor: 'chromocolorneg') %></li>
+                <li><%= link_to 'Silver Gelatin Negative', collection_id_guide_category_path('negative', anchor: 'silvergelneg') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('slide') do %>
+              <%= retina_image_tag('filmslide-color-03_d-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Slide/Transparency
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Glass Slide</h4>
+              <ul>
+                <li><%= link_to 'Autochrome', collection_id_guide_category_path('slide', anchor: 'autochrome') %></li>
+                <li><%= link_to 'Glass Slide, B&W', collection_id_guide_category_path('slide', anchor: 'bwglassslide') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4>Plastic Film Slide</h4>
+              <ul>
+                <li><%= link_to 'B&W Film Slide', collection_id_guide_category_path('slide', anchor: 'bwfilmslide') %></li>
+                <li><%= link_to 'Color Film Slide', collection_id_guide_category_path('slide', anchor: 'colorfilmslide') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('photomechanical') do %>
+              <%= retina_image_tag('photomechanical-thumb-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Photomechanical Print
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Collotype', collection_id_guide_category_path('photomechanical', anchor: 'collotype') %></li>
+            <li><%= link_to 'Gravure', collection_id_guide_category_path('photomechanical', anchor: 'gravure') %></li>
+            <li><%= link_to 'Letterpress Halftone', collection_id_guide_category_path('photomechanical', anchor: 'halftone') %></li>
+            <li><%= link_to 'Offset Lithography', collection_id_guide_category_path('photomechanical', anchor: 'litho') %></li>
+            <li><%= link_to 'Woodburytype', collection_id_guide_category_path('photomechanical', anchor: 'woodburytype') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('digitalprint') do %>
+              <%= retina_image_tag('inkjet-uncoatedpaper-macro1-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Digital Print
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Inkjet Print', collection_id_guide_category_path('digitalprint', anchor: 'inkjet') %></li>
+            <li><%= link_to 'Laser Print', collection_id_guide_category_path('officeprintcopy', anchor: 'laserprint') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= link_to collection_id_guide_category_path('microform') do %>
+              <%= retina_image_tag('microfilm01-unspooled-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+              Microform
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h4>Plastic Film</h4>
+              <ul>
+                <li><%= link_to 'Microfiche', collection_id_guide_category_path('microform', anchor: 'microfiche') %></li>
+                <li><%= link_to 'Microfilm', collection_id_guide_category_path('microform', anchor: 'microfilm') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Paper</h4>
+              <ul>
+                <li><%= link_to 'Microcard', collection_id_guide_category_path('microform', anchor: 'microcard') %></li>
+                <li><%= link_to 'Microprint', collection_id_guide_category_path('microform', anchor: 'microprint') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h4>Mixed</h4>
+              <ul>
+                <li><%= link_to 'Aperture Card', collection_id_guide_category_path('microform', anchor: 'aperture') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- #photo_image -->
+
+    <div id="objects">
+      <h2>Objects</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= retina_image_tag('stonewaresugarbowl-60.jpg', height: thumbs[:height], width: thumbs[:width]) %>
+            Objects
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4><%= link_to 'Objects in General', collection_id_guide_category_path('museumobjects') %></h4>
+              <ul>
+                <li><%= link_to 'Is it glass, stone, or ceramic?', collection_id_guide_category_path('museumobjects', anchor: 'whatisit') %></li>
+                <li><%= link_to 'Object Surfaces', collection_id_guide_category_path('museumobjects', anchor: 'objectsurfaces') %></li>
+                <li><%= link_to 'Previous Residue', collection_id_guide_category_path('museumobjects', anchor: 'previousresidue') %></li>
+                <li><%= link_to 'Previous Repairs', collection_id_guide_category_path('museumobjects', anchor: 'previousrepairs') %></li>
+                <li><%= link_to 'Storage of Objects', collection_id_guide_category_path('museumobjects', anchor: 'objectstorage') %></li>
+                <li><%= link_to 'Handling Objects', collection_id_guide_category_path('museumobjects', anchor: 'handleobjects') %></li>
+                <li><%= link_to 'Labelling Objects', collection_id_guide_category_path('museumobjects', anchor: 'labelobjects') %></li>
+                <li><%= link_to 'Display Objects', collection_id_guide_category_path('museumobjects', anchor: 'display') %></li>
+                <li><%= link_to 'Archaeological Objects', collection_id_guide_category_path('museumobjects', anchor: 'archobjects') %></li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <h4><%= link_to 'Object Materials', collection_id_guide_category_path('objectmaterials') %></h4>
+              <ul>
+                <li><%= link_to 'Ceramic', collection_id_guide_category_path('objectmaterials', anchor: 'ceramic') %></li>
+                <li><%= link_to 'Glass', collection_id_guide_category_path('objectmaterials', anchor: 'glass') %></li>
+                <li><%= link_to 'Stone', collection_id_guide_category_path('objectmaterials', anchor: 'stone') %></li>
+                <li><%= link_to 'Metal', collection_id_guide_category_path('objectmaterials', anchor: 'metal') %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="supplementary">
+      <h2>Supplementary</h2>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Preservation Self-Assessment Program
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <% # these should be kept in sync with the items in the header menu %>
+            <li><%= link_to 'About the PSAP', about_path %></li>
+            <li><%= link_to 'User Manual', user_manual_path %></li>
+            <li><%= link_to 'Glossary', glossary_path %></li>
+            <li><%= link_to 'Bibliography', bibliography_path %></li>
+            <li><%= link_to 'Advanced Help', advanced_help_path %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Policy | Procedure
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Collection Material Inspection and Cleaning', collection_id_guide_category_path('materialinspectclean') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Material | Format
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Adhesives', collection_id_guide_category_path('adhesives') %></li>
+            <li><%= link_to 'Drawing Reproduction: Support Materials', collection_id_guide_category_path('supportsarchrepros') %></li>
+            <li><%= link_to 'Inks and Other Media', collection_id_guide_category_path('inkothermedia') %></li>
+            <li><%= link_to 'Lamination vs. Encapsulation', collection_id_guide_category_path('laminationencapsulation') %></li>
+            <li><%= link_to 'Papyrus', collection_id_guide_category_path('papyrus') %></li>
+            <li><%= link_to 'Parchment', collection_id_guide_category_path('parchment') %></li>
+            <li><%= link_to 'Plastic Transparencies', collection_id_guide_category_path('plastictransparencies') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Audiovisual-Specific
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Magnetic Tape Binder Breakdown', collection_id_guide_category_path('softbindersyn') %></li>
+            <li><%= link_to 'Other AV Media Types', collection_id_guide_category_path('otherav') %></li>
+            <li><%= link_to 'Playback Equipment', collection_id_guide_category_path('playback') %></li>
+            <li><%= link_to 'Record Protection Mechanisms', collection_id_guide_category_path('recordprotection') %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Identification Cheatsheets
+          </h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><%= link_to 'Audiovisual Media', collection_id_guide_category_path('summary-avmedia') %></li>
+            <li><%= link_to 'Architectural Drawing Reproductions', collection_id_guide_category_path('summary-archdrawrepro') %></li>
+            <li><%= link_to 'Office Prints/Copies', collection_id_guide_category_path('summary-officeprintcopy') %></li>
+            <li><%= link_to 'Photographic & Image Materials', collection_id_guide_category_path('summary-photo') %></li>
+          </ul>
+        </div>
+      </div>
+
+    </div> <!-- #supplementary -->
+
+  </div> <!-- .tab-content -->
+</div>

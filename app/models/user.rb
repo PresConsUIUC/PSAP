@@ -27,31 +27,6 @@ class User < ActiveRecord::Base
   after_initialize :setup, if: :new_record?
   before_save { self.email = email.downcase }
 
-  ##
-  # Returns a list of "most active users" based on the number of
-  # resources they've created/updated.
-  #
-  # @return Array of hashes containing :count and :user keys
-  #
-  def self.most_active(limit = 5)
-    sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
-          "FROM users "\
-          "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON ("\
-            "events_users.event_id = events.id "\
-            "AND events.description LIKE 'Created resource%' "\
-              "OR events.description LIKE 'Updated resource%' "\
-              "OR events.description LIKE 'Moved resource%') "\
-          "GROUP BY users.id "\
-          "ORDER BY count DESC "\
-          "LIMIT #{limit}"
-    connection = ActiveRecord::Base.connection
-    counts = connection.execute(sql)
-
-    counts.select{ |r| r['user_id'] }.map{ |r| { count: r['count'].to_i,
-                                                 user: User.find(r['user_id']) }}
-  end
-
   def to_param
     username
   end

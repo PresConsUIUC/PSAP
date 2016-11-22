@@ -18,7 +18,7 @@ module Psap
     config.autoload_paths += %W(#{config.root}/app/commands)
     config.autoload_paths += %W(#{config.root}/app/errors)
 
-    config.assets.paths << "#{Rails.root}/app/assets/format_id_guide"
+    config.assets.paths << "#{Rails.root}/app/assets/collection_id_guide"
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.

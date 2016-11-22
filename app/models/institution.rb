@@ -36,33 +36,6 @@ class Institution < ActiveRecord::Base
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
   ##
-  # Returns a list of "most active" institutions based on the number of
-  # resources their users have created/updated.
-  #
-  # @return Array of hashes containing :count and :institution keys
-  #
-  def self.most_active(limit = 5)
-    sql = "SELECT COUNT(events.description) AS count, "\
-            "users.institution_id AS institution_id "\
-          "FROM users "\
-          "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON ("\
-            "events_users.event_id = events.id "\
-            "AND events.description LIKE 'Created resource%' "\
-              "OR events.description LIKE 'Updated resource%' "\
-              "OR events.description LIKE 'Moved resource%') "\
-          "WHERE users.institution_id IS NOT NULL "\
-          "GROUP BY institution_id "\
-          "ORDER BY count DESC "\
-          "LIMIT #{limit}"
-    connection = ActiveRecord::Base.connection
-    counts = connection.execute(sql)
-
-    counts.map{ |row| { count: row['count'].to_i,
-                        institution: Institution.find(row['institution_id']) } }
-  end
-
-  ##
   # @return Array of all assessed items in an institution, regardless of depth
   # in the hierarchy.
   #

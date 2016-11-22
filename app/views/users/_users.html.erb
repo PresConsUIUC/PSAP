@@ -8,6 +8,7 @@
       <th><%= sortable 'username' %></th>
       <th><%= sortable 'last_name', 'Name' %></th>
       <th><%= sortable 'institutions.name', 'Institution' %></th>
+      <th><%= sortable 'institutions.country', 'Country' %></th>
       <th><%= sortable 'confirmed' %></th>
       <th><%= sortable 'enabled' %></th>
       <th>Admin</th>
@@ -27,6 +28,7 @@
           <%= entity_icon(user.institution) %>
           <%= user.institution ? link_to(user.institution.name, user.institution) : '' %>
         </td>
+        <td><%= user.institution ? user.institution.country : '' %></td>
         <td><%= user.confirmed ? raw('&check;') : '' %></td>
         <td><%= user.enabled ? raw('&check;') : '' %></td>
         <td><%= user.is_admin? ? raw('&check;') : '' %></td>

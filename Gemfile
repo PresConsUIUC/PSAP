@@ -37,7 +37,7 @@ gem 'local_time'
 gem 'bootstrap-typeahead-rails', '~> 0.10.5.1'
 gem 'nokogiri'
 gem 'invisible_captcha' # used in forgot-password form
-gem 'magnific-popup-rails' # image viewer used in the Format ID Guide
+gem 'magnific-popup-rails' # image viewer used in the Collection ID Guide
 gem 'pg'
 gem 'd3-rails' # used for charts in assessment report
 gem 'recaptcha' # used in new-user signup form
@@ -51,6 +51,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
+  gem 'thin' # faster web server than WEBrick.
 end
 
 group :production do

@@ -123,6 +123,9 @@ Psap::Application.routes.draw do
         via: 'patch', as: 'approve_user_institution'
   match '/users/:username/refuse-institution', to: 'users#refuse_institution',
         via: 'patch', as: 'refuse_user_institution'
+  match '/users/:username/send-confirmation-email',
+        to: 'users#send_confirmation_email',
+        via: 'patch', as: 'send_confirmation_email'
 
   # Password routes
   # Step 1: "I forgot my password," click a button to POST to /forgot-password
@@ -133,13 +136,18 @@ Psap::Application.routes.draw do
   match '/new-password', to: 'password#new_password', via: 'get'
   match '/new-password', to: 'password#reset_password', via: 'post'
 
-  # Format ID Guide routes
-  match '/format-id-guide', to: 'format_id_guide#index', via: 'get',
-        as: 'format_id_guide'
-  match '/format-id-guide/search', to: 'format_id_guide#search',
-        via: 'get', as: 'format_id_guide_search'
-  match '/format-id-guide/:category', to: 'format_id_guide#show',
-        via: 'get', as: 'format_id_guide_category'
+  # Collection ID Guide (formerly Format ID Guide) routes
+  match '/collection-id-guide', to: 'collection_id_guide#index',
+        via: 'get', as: 'collection_id_guide'
+  match '/collection-id-guide/search', to: 'collection_id_guide#search',
+        via: 'get', as: 'collection_id_guide_search'
+  match '/collection-id-guide/:category', to: 'collection_id_guide#show',
+        via: 'get', as: 'collection_id_guide_category'
+
+  # Redirect old Format ID Guide paths to Collection ID Guide paths
+  get '/format-id-guide', to: redirect('/collection-id-guide')
+  get '/format-id-guide/search', to: redirect('/collection-id-guide/search')
+  get '/format-id-guide/:category', to: redirect('/collection-id-guide/%{category}')
 
   # Help routes
   match '/help', to: 'help#index', via: 'get', as: 'help'

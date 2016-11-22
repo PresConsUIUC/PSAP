@@ -1,11 +1,5 @@
 <% provide(:title, 'Users') %>
 
-<% if current_user.is_admin? %>
-  <ol class="breadcrumb">
-    <li class="active">Users</li>
-  </ol>
-<% end %>
-
 <div class="clearfix">
   <div class="pull-right">
     <%= link_to "mailto:psap@library.illinois.edu?bcc=#{@emailable_addresses.map{ |a| CGI::escape(a) }.join(',')}",

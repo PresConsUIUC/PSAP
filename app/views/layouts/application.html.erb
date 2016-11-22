@@ -39,6 +39,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <%= link_to retina_image_tag('psap_logo_navbar.png', size:'56x25',
+                                   alt:'PSAP logo', id: 'psap-nav-logo'), root_path %>
     </div>
 
     <div class="container-fluid">
@@ -46,24 +48,33 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav navbar-left">
-          <li class="dropdown <%= 'active' if controller.controller_name == 'format_id_guide' %>">
+          <li class="dropdown <%= 'active' if controller.controller_name == 'collection_id_guide' %>">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-              Format ID Guide <b class="caret"></b>
+              Collection ID Guide <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to 'All Formats', format_id_guide_path %></li>
+              <li><%= link_to 'All Materials', collection_id_guide_path %></li>
               <li class="divider"></li>
-              <li><%= link_to 'Audiovisual Media', format_id_guide_path(anchor: 'audiovisual') %></li>
-              <li><%= link_to 'Paper & Book', format_id_guide_path(anchor: 'paper_book') %></li>
-              <li><%= link_to 'Photo & Image Material', format_id_guide_path(anchor: 'photo_image') %></li>
-              <li><%= link_to 'Supplementary', format_id_guide_path(anchor: 'supplementary') %></li>
+              <li><%= link_to 'Audiovisual Media', collection_id_guide_path(anchor: 'audiovisual') %></li>
+              <li><%= link_to 'Paper & Book', collection_id_guide_path(anchor: 'paper_book') %></li>
+              <li><%= link_to 'Photo & Image Material', collection_id_guide_path(anchor: 'photo_image') %></li>
+              <li><%= link_to 'Objects', collection_id_guide_path(anchor: 'objects') %></li>
+              <li><%= link_to 'Supplementary', collection_id_guide_path(anchor: 'supplementary') %></li>
             </ul>
           </li>
-          <li <%= 'class=active' if current_page?(glossary_path) %>>
-            <%= link_to 'Glossary', glossary_path, class: 'nav-link' %>
-          </li>
-          <li <%= 'class=active' if current_page?(bibliography_path) %>>
-            <%= link_to 'Bibliography', bibliography_path, class: 'nav-link' %>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+              User Guide <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <% # these should be kept in sync with the supplementary section of the CIDG %>
+              <li><%= link_to 'About the PSAP', about_path %></li>
+              <li><%= link_to 'User Manual', user_manual_path %></li>
+              <li><%= link_to 'Glossary', glossary_path %></li>
+              <li><%= link_to 'Bibliography', bibliography_path %></li>
+              <li><%= link_to 'Advanced Help', advanced_help_path %></li>
+            </ul>
           </li>
         </ul>
 
@@ -102,11 +113,6 @@
           <% elsif request.url != root_url %>
             <li><%= link_to 'Sign in', signin_path, class: 'nav-link' %></li>
           <% end %>
-          <li class="psap-icon-only">
-            <%= link_to(user_manual_path, title: 'User Manual') do %>
-              <i class="fa fa-book"></i>
-            <% end %>
-          </li>
           <li class="psap-icon-only">
             <%= link_to(help_path, title: 'Help') do %>
               <i class="fa fa-question-circle"></i>

@@ -1,0 +1,20 @@
+<% if @query.length > 0 %>
+  <% if @results.any? %>
+    <table class="table">
+      <tbody>
+        <% @results.each_with_index do |result, index| %>
+          <% format = StaticPage.find(result['id']) %>
+            <tr>
+              <td class="psap-index"><%= index + 1 %></td>
+              <td><%= link_to format.name, collection_id_guide_category_path(format) %></td>
+              <td><%= raw(result['highlight']) %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No results.</p>
+  <% end %>
+<% else %>
+  <p>Enter a query in the text field above.</p>
+<% end %>

@@ -4,8 +4,8 @@
 # Languages
 
 puts 'Seeding languages...'
-
 languages = []
+# Create languages based on ISO-639-2 language codes.
 # This file is from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
 File.open('db/seed_data/ISO-639-2_utf-8.txt', 'r') do |file|
   while line = file.gets
@@ -13,76 +13,6 @@ File.open('db/seed_data/ISO-639-2_utf-8.txt', 'r') do |file|
     languages << Language.create(english_name: parts[3], native_name: parts[4],
                                  iso639_2_code: parts[0])
   end
-end
-
-puts 'Seeding formats...'
-
-xls = Roo::Spreadsheet.open('db/seed_data/questionDependencies.xlsx')
-
-# Formats
-sheet = xls.sheet('Format Scores')
-sheet.each_with_index do |row, i|
-  if i > 0 # skip header row
-    name = parent = nil
-    (2..5).reverse_each do |col|
-      if name.blank? and !row[col].blank?
-        name = row[col]
-        if col > 2 # find its parent FID by iterating backwards
-          (0..i).reverse_each do |j|
-            if sheet.row(j)[col].blank?
-              parent = Format.find_by_fid(sheet.row(j)[1])
-              break
-            end
-          end
-        else
-          parent = nil
-        end
-      end
-    end
-    unless name.blank?
-      format = Format.new(
-          fid: row[1],
-          name: name,
-          format_class: FormatClass::class_for_name(row[0]),
-          parent: parent,
-          score: row[6],
-          format_id_guide_page: row[7],
-          format_id_guide_anchor: row[8])
-      unless row[9].blank? # temperature ranges
-        min_temps = row[9].split(',')
-        max_temps = row[10].split(',')
-        temp_scores = row[11].split(',')
-        min_temps.each_with_index do |min_temp, i|
-          format.temperature_ranges << TemperatureRange.create!(
-              min_temp_f: i == 0 ? nil : min_temp.strip.to_i,
-              max_temp_f: i == max_temps.length - 1 ? nil : max_temps[i].strip.to_i,
-              score: temp_scores[i].strip.to_f)
-        end
-      end
-      unless row[12].blank? # relative humidity ranges
-        min_rhs = row[12].split(',')
-        max_rhs = row[13].split(',')
-        rh_scores = row[14].split(',')
-        min_rhs.each_with_index do |min_rh, i|
-          format.humidity_ranges << HumidityRange.create!(
-              min_rh: min_rh.strip.to_i,
-              max_rh: max_rhs[i].strip.to_i,
-              score: rh_scores[i].strip.to_f)
-        end
-      end
-      format.save!
-    end
-  end
-end
-
-# Format Vector Groups & Ink/Media Types
-xls.sheet('InkMedia Scores').each_with_index do |row, i|
-  FormatInkMediaType.create!(name: row[0], score: row[4]) if i > 0 # skip header row
-end
-
-# Format Support Types
-xls.sheet('Support Scores').each_with_index do |row, i|
-  FormatSupportType.create!(name: row[0], score: row[4]) if i > 0 # skip header row
 end
 
 # Assessments
@@ -158,135 +88,18 @@ sections[:institution_disaster_recovery] = AssessmentSection.create!(
     'the event of a disaster.',
     assessment: assessments[:institution])
 
-# Resource assessment questions
-puts 'Seeding resource assessment questions...'
-aq_sheets = %w(Resource-Paper-Unbound Resource-Photo Resource-AV Resource-Paper-Bound)
-aq_sheets.each do |sheet|
-  xls.sheet(sheet).each_with_index do |row, index|
-    if index > 0 and !row[7].blank? # skip header & trailing rows
-      params = {
-          qid: row[6].to_i,
-          name: row[7].strip,
-          question_type: (!row[14].blank? and row[14].downcase == 'checkboxes') ?
-              AssessmentQuestion::Type::CHECKBOX : AssessmentQuestion::Type::RADIO,
-          index: index,
-          weight: row[11].to_f,
-          help_text: row[8].strip,
-          advanced_help_page: row[9] ? row[9].strip.gsub('.html', '') : nil,
-          advanced_help_anchor: row[10] ? row[10].strip : nil
-      }
-      case row[5][0..2].strip.downcase
-        when 'use'
-          params[:assessment_section] = sections[:use_access]
-        when 'sto'
-          params[:assessment_section] = sections[:storage_container]
-        else
-          params[:assessment_section] = sections[:condition]
-      end
+qi = AssessmentQuestionImporter.new(
+    File.join(Rails.root, 'db', 'seed_data', 'questionDependencies.xlsx'))
 
-      unless row[12].blank? or row[12].to_s.include?('TBD') or row[13].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[12].to_i)
-        params[:enabling_assessment_question_options] = []
-        row[13].split(';').map{ |x| x.strip }.each do |dep|
-          eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
-          if eaqo
-            params[:enabling_assessment_question_options] << eaqo
-          else
-            puts 'AQO error: QID ' + row[10].to_s + ': ' + dep
-          end
-        end
-      end
+# Formats & assessment questions
+puts 'Seeding formats & assessment questions...'
+qi.import_all
 
-      params[:formats] = Format.where('fid IN (?)',
-                                      row[4].to_s.split(';').map{ |f| f.strip.to_i })
-
-      question = AssessmentQuestion.create!(params)
-
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 0, value: row[16]) if row[15] and row[16]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 1, value: row[18]) if row[17] and row[18]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[19], index: 2, value: row[20]) if row[19] and row[20]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[21], index: 3, value: row[22]) if row[21] and row[22]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[23], index: 4, value: row[24]) if row[23] and row[24]
-      question.save!
-    end
-  end
-end
-
-# Location & Institution assessment questions
-puts 'Seeding location & institution assessment questions...'
-aq_sheets = %w(Location Institution)
-aq_sheets.each do |sheet|
-  xls.sheet(sheet).each_with_index do |row, index|
-    if index > 0 and !row[2].blank? # skip header & trailing rows
-      params = {
-          qid: row[1].to_i,
-          name: row[2].strip,
-          question_type: AssessmentQuestion::Type::RADIO,
-          index: index,
-          weight: row[6].to_f,
-          help_text: row[3].strip,
-          advanced_help_page: row[4] ? row[4].strip.gsub('.html', '') : nil,
-          advanced_help_anchor: row[5] ? row[5].strip : nil
-      }
-      case row[0][0..2].strip.downcase
-        when 'col'
-          params[:assessment_section] = sections[:institution_collection_planning]
-        when 'dis'
-          params[:assessment_section] = sections[:institution_disaster_recovery]
-        when 'env'
-          params[:assessment_section] = sections[:location_environment]
-        when 'eme'
-          params[:assessment_section] = sections[:location_emergency_preparedness]
-        when 'mat'
-          params[:assessment_section] = sections[:institution_material_inspection]
-        when 'pla'
-          params[:assessment_section] = sections[:institution_playback_equipment]
-        when 'sec'
-          params[:assessment_section] = sections[:institution_security]
-        when 'use'
-          params[:assessment_section] = sections[:institution_use_access]
-      end
-
-      unless row[9].blank? or row[8].blank?
-        params[:parent] = AssessmentQuestion.find_by_qid(row[7].to_i)
-        params[:enabling_assessment_question_options] = []
-        row[8].split(';').map{ |x| x.strip }.each do |dep|
-          eaqo = params[:parent].assessment_question_options.where(name: dep)[0]
-          if eaqo
-            params[:enabling_assessment_question_options] << eaqo
-          else
-            puts 'AQO error: QID ' + row[7].to_s + ': ' + dep
-          end
-        end
-      end
-
-      question = AssessmentQuestion.create!(params)
-
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[9], index: 0, value: row[10]) if row[9]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[11], index: 1, value: row[12]) if row[11]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[13], index: 2, value: row[14]) if row[13]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[15], index: 3, value: row[16]) if row[15]
-      question.assessment_question_options << AssessmentQuestionOption.new(
-          name: row[17], index: 4, value: row[18]) if row[17]
-      question.save!
-    end
-  end
-end
-
-# Format ID Guide HTML pages
-puts 'Ingesting Format ID Guide content...'
+# Collection ID Guide HTML pages
+puts 'Ingesting Collection ID Guide content...'
 p = StaticPageImporter.new(
-    File.join(Rails.root, 'db', 'seed_data', 'FormatIDGuide-HTML'),
-    File.join(Rails.root, 'app', 'assets', 'format_id_guide'))
+    File.join(Rails.root, 'db', 'seed_data', 'CollectionIDGuide-HTML'),
+    File.join(Rails.root, 'app', 'assets', 'collection_id_guide'))
 p.reseed
 
 # Advanced Help HTML pages
@@ -316,7 +129,7 @@ command = CreateUserCommand.new(
     { username: 'admin', email: 'admin@example.org',
       first_name: 'Admin', last_name: 'Admin',
       password: 'password', password_confirmation: 'password',
-      confirmed: true, enabled: true }, '127.0.0.1', false)
+      confirmed: true, enabled: true, about: 'admin' }, '127.0.0.1', false)
 command.execute
 admin_user = command.object
 admin_user.role = admin_role
@@ -393,7 +206,7 @@ case Rails.env
           first_name: 'Norm', last_name: 'McNormal',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'normal' }, '127.0.0.1', false)
     command.execute
     normal_user = command.object
 
@@ -403,7 +216,7 @@ case Rails.env
           first_name: 'Clara', last_name: 'NoInstitution',
           password: 'password', password_confirmation: 'password',
           institution: nil, role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'unaffiliated' }, '127.0.0.1', false)
     command.execute
     unaffiliated_user = command.object
 
@@ -413,7 +226,7 @@ case Rails.env
           first_name: 'Sally', last_name: 'NoConfirmy',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: false, enabled: false }, '127.0.0.1', false)
+          confirmed: false, enabled: false, about: 'unconfirmed' }, '127.0.0.1', false)
     command.execute
     unconfirmed_user = command.object
 
@@ -423,7 +236,7 @@ case Rails.env
           first_name: 'Johnny', last_name: 'CantDoNothin',
           password: 'password', password_confirmation: 'password',
           institution: uiuc_institution, role: normal_role,
-          confirmed: true, enabled: false }, '127.0.0.1', false)
+          confirmed: true, enabled: false, about: 'disabled' }, '127.0.0.1', false)
     command.execute
     disabled_user = command.object
 
@@ -435,7 +248,7 @@ case Rails.env
           institution: hogwarts_institution,
           desired_institution: Institution.find_by_city('Hogsmeade'),
           role: normal_role,
-          confirmed: true, enabled: true }, '127.0.0.1', false)
+          confirmed: true, enabled: true, about: 'about' }, '127.0.0.1', false)
     command.execute
 
     # Repositories

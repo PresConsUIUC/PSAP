@@ -68,11 +68,9 @@ module Assessable
   # @return AssessmentQuestionResponse or nil
   #
   def response_to_question(assessment_question)
-    if assessment_question
-      self.assessment_question_responses.
-          where(assessment_question_id: assessment_question.id).first
-    end
-    nil
+    assessment_question ?
+        self.assessment_question_responses.
+            where(assessment_question_id: assessment_question.id).first : nil
   end
 
   def update_assessment_complete

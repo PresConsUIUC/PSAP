@@ -182,8 +182,9 @@ var AssessmentForm = function(entity) {
             });
             if (data.length) {
                 var onOptionChanged = function() {
-                    $(this).closest('.assessment_question').
-                        nextUntil('[data-depth=0]', '[data-depth=1]').remove();
+                    if ($(this).closest('.assessment_question').data('depth') == '0') {
+                        $(this).closest('.assessment_question').nextAll('[data-depth=1]').remove();
+                    }
 
                     // check for dependent (child) questions
                     var selected_option_id = $(this).filter(':checked').val();
