@@ -4,8 +4,11 @@
   <% response = entity.assessment_question_responses.
         where(assessment_question_id: question.id).first %>
   <% if response %>
-    <dt class="depth-<%= depth %>"><%= question.name %>
-      <small>(<%= question.weight %>)</small></dt>
+    <dt class="depth-<%= depth %>" data-qid="<%= question.qid %>"><%= question.name %>
+      <% if depth == 0 %>
+        <small>(weight: <%= question.weight %>)</small>
+      <% end %>
+    </dt>
     <dd class="depth-<%= depth %>">
       <ul>
         <% question.assessment_question_options.each do |option| %>
