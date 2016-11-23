@@ -200,7 +200,7 @@ class ResourceTest < ActiveSupport::TestCase
 
   # assessment_score
   test 'assessment_score should calculate properly' do
-    assert_equal 0.025, @resource.assessment_score
+    assert_equal 0.01, @resource.assessment_score.to_f
   end
 
   # dup

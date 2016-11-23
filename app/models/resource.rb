@@ -456,6 +456,30 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # Returns the total score for the given top-level question, taking child
+  # question responses into account.
+  #
+  # @param top_level_q [AssessmentQuestion]
+  # @return [Float] between 0 and 1
+  #
+  def assessment_question_score(top_level_q)
+    score = 0.0
+    response = self.assessment_question_responses.
+        select{ |r| r.assessment_question == top_level_q }.first
+    if response
+      score = response.assessment_question_option.value
+      top_level_q.children.each do |child_q|
+        child_response = self.assessment_question_responses.
+            select{ |r| r.assessment_question == child_q }.first
+        if child_response
+          score *= child_response.assessment_question_option.value
+        end
+      end
+    end
+    score * response.assessment_question.weight
+  end
+
+  ##
   # @return [Enumerable<AssessmentQuestion>] All assessment questions that have
   #                                          been answered for this resource.
   # @see top_level_assessment_questions()
@@ -465,13 +489,16 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return [float] between 0 and 1
+  # Returns the score of all assessment question responses, excluding location,
+  # temperature, etc.
+  #
+  # @return [float] between 0 and 1.
   #
   def assessment_score
     question_score = 0.0
-    self.assessment_question_responses.each do |response|
-      question_score += response.assessment_question_option.value *
-          response.assessment_question.weight
+    assessment_question_responses.map(&:assessment_question).
+        select{ |r| r.parent_id.nil? }.uniq.each do |top_q|
+      question_score += assessment_question_score(top_q)
     end
     # scores are pre-weighted; max is 50 so have to multiply by 2
     (question_score / 100) * 2
