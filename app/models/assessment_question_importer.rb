@@ -42,16 +42,20 @@ class AssessmentQuestionImporter
               advanced_help_page: row[9] ? row[9].strip.gsub('.html', '') : nil,
               advanced_help_anchor: row[10] ? row[10].strip : nil
           }
+          resource_assessment = Assessment.find_by_key('resource')
           case row[5][0..2].strip.downcase
             when 'use'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Use | Access')
+                  AssessmentSection.find_by(name: 'Use | Access',
+                                            assessment: resource_assessment)
             when 'sto'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Storage | Container')
+                  AssessmentSection.find_by(name: 'Storage | Container',
+                                            assessment: resource_assessment)
             else
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Condition')
+                  AssessmentSection.find_by(name: 'Condition',
+                                            assessment: resource_assessment)
           end
 
           unless row[12].blank? or row[12].to_s.include?('TBD') or row[13].blank?
@@ -109,31 +113,41 @@ class AssessmentQuestionImporter
               advanced_help_page: row[4] ? row[4].strip.gsub('.html', '') : nil,
               advanced_help_anchor: row[5] ? row[5].strip : nil
           }
+          institution_assessment = Assessment.find_by_key('institution')
+          location_assessment = Assessment.find_by_key('location')
           case row[0][0..2].strip.downcase
             when 'col'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Collection Planning')
+                  AssessmentSection.find_by(name: 'Collection Planning',
+                                            assessment: institution_assessment)
             when 'dis'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Disaster Recovery')
+                  AssessmentSection.find_by(name: 'Disaster Recovery',
+                                            assessment: institution_assessment)
             when 'env'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Environment')
+                  AssessmentSection.find_by(name: 'Environment',
+                                            assessment: location_assessment)
             when 'eme'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Emergency Preparedness')
+                  AssessmentSection.find_by(name: 'Emergency Preparedness',
+                                            assessment: location_assessment)
             when 'mat'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Material Inspection')
+                  AssessmentSection.find_by(name: 'Material Inspection',
+                                            assessment: institution_assessment)
             when 'pla'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Playback Equipment')
+                  AssessmentSection.find_by(name: 'Playback Equipment',
+                                            assessment: institution_assessment)
             when 'sec'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Security')
+                  AssessmentSection.find_by(name: 'Security',
+                                            assessment: institution_assessment)
             when 'use'
               properties[:assessment_section] =
-                  AssessmentSection.find_by_name('Use | Access')
+                  AssessmentSection.find_by(name: 'Use | Access',
+                                            assessment: institution_assessment)
           end
 
           unless row[9].blank? or row[8].blank?
