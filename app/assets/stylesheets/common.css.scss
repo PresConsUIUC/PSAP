@@ -198,6 +198,7 @@ div table {
 
 nav.navbar {
   background-color:rgba(0, 0, 0, 0.75);
+  z-index: 9999;
 
   a.nav-link {
     font-family: Calibri, sans-serif;
