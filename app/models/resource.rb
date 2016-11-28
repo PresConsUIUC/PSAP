@@ -463,17 +463,24 @@ class Resource < ActiveRecord::Base
   # @return [Float] between 0 and 1
   #
   def assessment_question_score(top_level_q)
+    return nil if top_level_q.parent_id.present?
     score = 0.0
     response = self.assessment_question_responses.
         select{ |r| r.assessment_question == top_level_q }.first
     if response
       score = response.assessment_question_option.value
-      top_level_q.children.each do |child_q|
-        child_response = self.assessment_question_responses.
-            select{ |r| r.assessment_question == child_q }.first
-        if child_response
-          score *= child_response.assessment_question_option.value
+      if top_level_q.children.any?
+        child_score = 0.0
+        any_child_responses = false
+        top_level_q.children.each do |child_q|
+          child_response = self.assessment_question_responses.
+              select{ |r| r.assessment_question == child_q }.first
+          if child_response
+            child_score += child_response.assessment_question_option.value
+            any_child_responses = true
+          end
         end
+        score *= child_score if any_child_responses
       end
     end
     score * response.assessment_question.weight
