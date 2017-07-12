@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014141243) do
+ActiveRecord::Schema.define(version: 20170712174331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
   end
 
   add_index "assessment_question_options", ["assessment_question_id"], name: "index_assessment_question_options_on_assessment_question_id", using: :btree
+  add_index "assessment_question_options", ["index"], name: "index_assessment_question_options_on_index", using: :btree
 
   create_table "assessment_question_options_questions", force: :cascade do |t|
     t.integer "assessment_question_id"
@@ -68,6 +69,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
   end
 
   add_index "assessment_questions", ["assessment_section_id"], name: "index_assessment_questions_on_assessment_section_id", using: :btree
+  add_index "assessment_questions", ["index"], name: "index_assessment_questions_on_index", using: :btree
   add_index "assessment_questions", ["parent_id"], name: "index_assessment_questions_on_parent_id", using: :btree
   add_index "assessment_questions", ["qid"], name: "index_assessment_questions_on_qid", using: :btree
   add_index "assessment_questions", ["selected_option_id"], name: "index_assessment_questions_on_selected_option_id", using: :btree
@@ -106,6 +108,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
   end
 
   add_index "assessment_sections", ["assessment_id"], name: "index_assessment_sections_on_assessment_id", using: :btree
+  add_index "assessment_sections", ["index"], name: "index_assessment_sections_on_index", using: :btree
 
   create_table "assessments", force: :cascade do |t|
     t.datetime "created_at"
@@ -113,6 +116,8 @@ ActiveRecord::Schema.define(version: 20161014141243) do
     t.string   "name",       null: false
     t.string   "key",        null: false
   end
+
+  add_index "assessments", ["key"], name: "index_assessments_on_key", using: :btree
 
   create_table "creators", force: :cascade do |t|
     t.string   "name",                     null: false
@@ -133,6 +138,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
   end
 
   add_index "events", ["created_at"], name: "index_events_on_created_at", using: :btree
+  add_index "events", ["event_level"], name: "index_events_on_event_level", using: :btree
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "events_assessment_questions", id: false, force: :cascade do |t|
@@ -242,6 +248,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
   end
 
   add_index "formats", ["fid"], name: "index_formats_on_fid", using: :btree
+  add_index "formats", ["format_class"], name: "index_formats_on_format_class", using: :btree
   add_index "formats", ["parent_id"], name: "index_formats_on_parent_id", using: :btree
 
   create_table "humidity_ranges", force: :cascade do |t|
@@ -376,6 +383,7 @@ ActiveRecord::Schema.define(version: 20161014141243) do
     t.boolean  "assessment_complete"
   end
 
+  add_index "resources", ["assessment_complete"], name: "index_resources_on_assessment_complete", using: :btree
   add_index "resources", ["assessment_id"], name: "index_resources_on_assessment_id", using: :btree
   add_index "resources", ["format_id"], name: "index_resources_on_format_id", using: :btree
   add_index "resources", ["format_ink_media_type_id"], name: "index_resources_on_format_ink_media_type_id", using: :btree
