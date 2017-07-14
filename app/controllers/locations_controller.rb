@@ -103,10 +103,7 @@ class LocationsController < ApplicationController
 
   def prepare_show_view
     @location = Location.find(params[:id])
-    # show only top-level resources
-    @resources = @location.resources.where(parent_id: nil).order(:name).
-        paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+    @resources = @location.resources_as_tree
     @events = Event.joins('LEFT JOIN events_locations ON events_locations.event_id = events.id').
         joins('LEFT JOIN events_resources ON events_resources.event_id = events.id').
         where('events_locations.location_id IN (?) '\

@@ -44,6 +44,70 @@ module ResourcesHelper
     date += " (#{resource_date.readable_date_type.downcase})"
   end
 
+  ##
+  # @param resources [Enumerable<Resource>] Return value of
+  #                                         Resource.children_as_tree().
+  # @param options [Hash]
+  # @option options [Boolean] :show_checkboxes
+  # @option options [Boolean] :show_top_level
+  # @return [String] HTML <tr> elements
+  #
+  def resources_as_tree_rows(resources, options = {})
+    resources = [] unless resources
+    html = ''
+    resources.each_with_index do |row, row_index|
+      levels = 0
+      Resource::MAX_TREE_LEVELS.times do |i|
+        if row["lv#{i}_id"]
+          levels += 1
+        else
+          break
+        end
+      end
+
+      if row_index == 0
+        start = options[:show_top_level] ? 0 : 1
+      else
+        start = levels - 1
+      end
+
+      (start..(levels - 1)).each do |level|
+        # N.B. We aren't loading this from the database because it would be
+        # too slow. Be careful with it.
+        resource = Resource.new(id: row["lv#{level}_id"],
+                                name: row["lv#{level}_name"],
+                                assessment_complete: row["lv#{level}_assessment_complete"],
+                                resource_type: row["lv#{level}_resource_type"])
+
+        html += '<tr>'
+        # column 1
+        if options[:show_checkboxes]
+          html += '<td>'
+          html += "<input type=\"checkbox\" name=\"resources[]\" value=\"#{resource.id}\">"
+          html += '</td>'
+        end
+
+        # column 2
+        html += "<td class=\"depth-#{level}\">"
+        if level > 0
+          html += '&#8627; '
+        end
+        html += entity_icon(resource)
+        html += link_to(truncate(resource.name, length: 150),
+                        resource_path(resource.id))
+        html += '</td>'
+
+        # column 3
+        html += '<td>'
+        html += '&check;' if resource.assessment_complete
+        html += '</td>'
+
+        html += '</tr>'
+      end
+    end
+    raw(html)
+  end
+
   def score_formula
     html = '<span class="label label-primary">ASSESSMENT &times; 0.5</span> + '\
     '<span class="label label-primary">FORMAT &times; 0.4</span> + '\
