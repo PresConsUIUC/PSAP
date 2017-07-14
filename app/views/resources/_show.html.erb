@@ -152,7 +152,8 @@
           <% if @resource.children.any? %>
             <%= render partial: 'resources/resources',
                        locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
-                                 show_checkboxes: false, show_hierarchy: true } %>
+                                 show_checkboxes: false,
+                                 show_top_level: false } %>
           <% else %>
             <p>This collection does not contain any sub-resources.</p>
           <% end %>

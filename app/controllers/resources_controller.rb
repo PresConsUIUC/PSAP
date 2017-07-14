@@ -326,6 +326,7 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
     add_dependent_entities
     @events = @resource.events.order(created_at: :desc).limit(20)
+    @resources = @resource.children_as_tree
   end
 
   def user_of_same_institution_or_admin

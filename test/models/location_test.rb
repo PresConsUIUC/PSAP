@@ -58,7 +58,11 @@ class LocationTest < ActiveSupport::TestCase
 
   ############################# method tests #################################
 
-  # none
+  # resources_as_tree()
+  test 'resource_as_tree' do
+    # TODO: test this
+    puts @location.resources_as_tree
+  end
 
   ########################### association tests ##############################
 

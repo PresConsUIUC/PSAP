@@ -36,6 +36,38 @@ class Location < ActiveRecord::Base
     nil
   end
 
+  ##
+  # Returns an Enumerable of children using an SQL self-join. Faster than
+  # navigating the adjacency list in Ruby, but produces output that is harder
+  # to work with.
+  #
+  # @return [Enumerable<Hash<String,String>]
+  # @see Resource.children_as_tree()
+  #
+  def resources_as_tree
+    sql = "SELECT\n"
+    Resource::MAX_TREE_LEVELS.times do |i|
+      sql += "  t#{i}.id AS lv#{i}_id,
+    t#{i}.name AS lv#{i}_name,
+    t#{i}.assessment_complete AS lv#{i}_assessment_complete,
+    t#{i}.resource_type AS lv#{i}_resource_type"
+      sql += "," if i < Resource::MAX_TREE_LEVELS - 1
+      sql += "\n"
+    end
+    sql += "FROM resources AS t0\n"
+    Resource::MAX_TREE_LEVELS.times do |i|
+      sql += "LEFT JOIN resources AS t#{i + 1} ON t#{i + 1}.parent_id = t#{i}.id\n"
+    end
+    sql += "LEFT JOIN locations ON locations.id = t0.location_id\n"
+    sql += "WHERE locations.id = $1\n"
+    sql += "ORDER BY "
+    sql += (0..Resource::MAX_TREE_LEVELS - 1).map{ |lv| "lv#{lv}_name" }.join(', ')
+
+    values = [[ nil, self.id ]]
+
+    ActiveRecord::Base.connection.exec_query(sql, 'SQL', values)
+  end
+
   def temperature_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1022))
     if response
