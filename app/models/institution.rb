@@ -119,30 +119,4 @@ class Institution < ActiveRecord::Base
         items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0
   end
 
-  ##
-  # Returns a list of the "most active" users in the institution, based on the
-  # number of resources they've created/updated.
-  #
-  # @return Array of hashes containing :count and :user keys
-  #
-  def most_active_users(limit = 5)
-    sql = "SELECT COUNT(description) AS count, users.id AS user_id "\
-          "FROM users "\
-          "LEFT JOIN events_users ON users.id = events_users.user_id "\
-          "LEFT JOIN events ON ("\
-            "events_users.event_id = events.id "\
-            "AND events.description LIKE 'Created resource%' "\
-              "OR events.description LIKE 'Updated resource%' "\
-              "OR events.description LIKE 'Moved resource%') "\
-          "WHERE users.institution_id = #{self.id} "\
-          "GROUP BY users.id "\
-          "ORDER BY count DESC "\
-          "LIMIT #{limit}"
-    connection = ActiveRecord::Base.connection
-    counts = connection.execute(sql)
-
-    counts.map{ |row| { count: row['count'].to_i,
-                        user: User.find(row['user_id']) } }
-  end
-
 end

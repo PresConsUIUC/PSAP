@@ -21,7 +21,6 @@ class DashboardControllerTest < ActionController::TestCase
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:institution_events)
     assert_not_nil assigns(:institution_users)
-    assert_not_nil assigns(:most_active_institution_users)
     assert_not_nil assigns(:recent_updated_resources)
   end
 
