@@ -25,30 +25,6 @@
     <div class="col-sm-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Most active users in my institution</h3>
-        </div>
-        <div class="panel-body">
-          <% if @most_active_institution_users.any? %>
-            <ol class="psap-user-list">
-              <% @most_active_institution_users.each do |row| %>
-                <li>
-                  <%= link_to row[:user] do %>
-                    <%= gravatar_for row[:user], size: 52 %>
-                    <%= link_to row[:user].full_name, row[:user] %>
-                  <% end %>
-                </li>
-              <% end %>
-            </ol>
-          <% else %>
-            <p>Nothing to show right now.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
           <h3 class="panel-title">Recently updated resources</h3>
         </div>
         <div class="panel-body">

@@ -125,14 +125,6 @@ class InstitutionTest < ActiveSupport::TestCase
     skip # TODO: write this
   end
 
-  test 'most_active_users works' do
-    @institution.id = 1
-    most_active = @institution.most_active_users
-    assert_equal 1, most_active.length
-    assert_equal 4, most_active[0][:count]
-    assert_kind_of User, most_active[0][:user]
-  end
-
   ########################### association tests ##############################
 
   test 'assessment question responses should be destroyed on destroy' do
