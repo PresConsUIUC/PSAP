@@ -546,6 +546,13 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # @return [ActiveRecord::Relation<Resource>]
+  #
+  def collections
+    self.children.where(resource_type: Resource::Type::COLLECTION)
+  end
+
+  ##
   # Overrides parent to intelligently clone a resource. This implementation
   # does NOT clone child resources or events.
   #

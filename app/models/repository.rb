@@ -17,4 +17,11 @@ class Repository < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :institution_id
 
+  ##
+  # @return [ActiveRecord::Relation<Resource>]
+  #
+  def collections
+    self.resources.where(resource_type: Resource::Type::COLLECTION)
+  end
+
 end
