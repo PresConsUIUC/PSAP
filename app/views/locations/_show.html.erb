@@ -107,7 +107,7 @@
             <div id="resources">
               <%= render partial: 'resources/resources',
                          locals: { resources: @resources.paginate(page: params[:page],
-                                                                  per_page: Psap::Application.config.results_per_page),
+                                                                  per_page: Configuration.instance.results_per_page),
                                    show_checkboxes: true,
                                    show_hierarchy: false } %>
             </div>

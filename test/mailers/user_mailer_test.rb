@@ -11,7 +11,7 @@ class UserMailerTest < ActionMailer::TestCase
                                     'new@example.org').deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal ['old@example.org'], email.to
     assert_equal 'Your PSAP email has changed', email.subject
     assert_equal read_fixture('change_email.txt').join,
@@ -25,7 +25,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.changed_feed_key_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [users(:normal_user).email], email.to
     assert_equal 'Your PSAP feed key has been changed', email.subject
     assert_equal read_fixture('changed_feed_key_email.txt').join,
@@ -39,7 +39,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [users(:normal_user).email], email.to
     assert_equal 'Welcome to PSAP!', email.subject
     assert_equal read_fixture('confirm_account_email.txt').join,
@@ -53,7 +53,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.institution_change_approved_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [users(:normal_user).email], email.to
     assert_equal 'Your new PSAP institution has been approved', email.subject
     assert_equal read_fixture('institution_change_approved_email.txt').join,
@@ -67,7 +67,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.institution_change_refused_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [users(:normal_user).email], email.to
     assert_equal 'Your request to change your PSAP institution has been denied',
                  email.subject
@@ -82,7 +82,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.password_reset_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [users(:normal_user).email], email.to
     assert_equal 'Your request to reset your PSAP password', email.subject
     assert_equal read_fixture('password_reset_email.txt').join,

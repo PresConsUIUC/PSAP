@@ -9,7 +9,7 @@ class EventsController < ApplicationController
     @event_level = EventLevel::NOTICE if @event_level.nil?
     @events = Event.matching_params(params).
         paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+                 per_page: ::Configuration.instance.results_per_page)
     @user = current_user unless @user
   end
 

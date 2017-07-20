@@ -152,7 +152,7 @@
           <% if @resource.children.count > 0 %>
             <%= render partial: 'resources/resources',
                        locals: { resources: @resource.children.paginate(page: params[:page],
-                                                                        per_page: Psap::Application.config.results_per_page),
+                                                                        per_page: Configuration.instance.results_per_page),
                                  show_checkboxes: false,
                                  show_hierarchy: false } %>
           <% else %>

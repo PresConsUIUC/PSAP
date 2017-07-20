@@ -54,8 +54,8 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     email = AdminMailer.institution_change_review_request_email(@user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
-    assert_equal [Psap::Application.config.psap_email_address], email.to
+    assert_equal [Configuration.instance.mail_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.to
     assert_equal 'PSAP user requests to change institutions', email.subject
   end
 

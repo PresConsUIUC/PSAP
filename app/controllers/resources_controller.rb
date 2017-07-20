@@ -212,7 +212,7 @@ class ResourcesController < ApplicationController
     if request.xhr?
       @resources = @resources.
           paginate(page: params[:page],
-                   per_page: Psap::Application.config.results_per_page)
+                   per_page: ::Configuration.instance.results_per_page)
       render 'search'
     else
       respond_to do |format|
@@ -225,7 +225,7 @@ class ResourcesController < ApplicationController
         format.html do
           @resources = @resources.
               paginate(page: params[:page],
-                       per_page: Psap::Application.config.results_per_page)
+                       per_page: ::Configuration.instance.results_per_page)
         end
       end
     end

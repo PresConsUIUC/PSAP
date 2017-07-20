@@ -122,7 +122,7 @@ class InstitutionsController < ApplicationController
   def prepare_index_view
     @institutions = Institution.order(:name).paginate(
         page: params[:page],
-        per_page: Psap::Application.config.results_per_page)
+        per_page: ::Configuration.instance.results_per_page)
   end
 
   def prepare_show_view
@@ -131,7 +131,7 @@ class InstitutionsController < ApplicationController
     # data for repositories tab
     @repositories = @institution.repositories.order(:name).
         paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+                 per_page: ::Configuration.instance.results_per_page)
 
     # data for users tab
     @institution_users = @institution.users.where(confirmed: true).order(:last_name)

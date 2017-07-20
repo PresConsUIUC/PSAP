@@ -99,7 +99,7 @@ class UsersController < ApplicationController
 
     # Gather institutions for the institution select menu. Put the test
     # institution at the top per GitHub issue #336.
-    test_institution_id = Psap::Application.psap_config[:test_institution_id]
+    test_institution_id = ::Configuration.instance.test_institution_id
     @institutions = Institution.where('id != ?', test_institution_id).
         order(:name)
     @institutions.unshift(Institution.find(test_institution_id))
@@ -162,7 +162,7 @@ class UsersController < ApplicationController
               q.downcase, q.downcase, q.downcase).
         order("#{sort_column} #{sort_direction}").
         paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+                 per_page: ::Configuration.instance.results_per_page)
     @emailable_addresses = User.where(confirmed: true).map(&:email)
   end
 
@@ -240,7 +240,7 @@ class UsersController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @user
 
     @resources = @user.resources.paginate(page: params[:page],
-                 per_page: Psap::Application.config.results_per_page)
+                 per_page: ::Configuration.instance.results_per_page)
     @events = Event.where(user: @user).order(created_at: :desc).limit(20)
   end
 

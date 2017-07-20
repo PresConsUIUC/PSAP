@@ -47,7 +47,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
     email = UserMailer.password_reset_email(@user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal [@user.email], email.to
     assert_equal 'Your request to reset your PSAP password', email.subject
   end

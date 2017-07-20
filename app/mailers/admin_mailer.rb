@@ -7,7 +7,7 @@ class AdminMailer < ActionMailer::Base
   def account_approval_request_email(user)
     @user = user
     @user_url = url_for(user)
-    mail(to: Psap::Application.config.psap_email_address,
+    mail(to: ::Configuration.instance.mail_address,
          subject: 'New PSAP user requests account approval')
   end
 
@@ -18,7 +18,7 @@ class AdminMailer < ActionMailer::Base
   def institution_change_review_request_email(user)
     @user = user
     @user_url = url_for(user)
-    mail(to: Psap::Application.config.psap_email_address,
+    mail(to: ::Configuration.instance.mail_address,
          subject: 'PSAP user requests to change institutions')
   end
 
