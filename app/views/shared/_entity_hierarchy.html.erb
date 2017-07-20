@@ -46,11 +46,10 @@ selected_entity ||= nil
 
     <li <%= active ? 'class=active' : '' %>>
       <div>
-        <% if (entity.kind_of?(Resource) and !child_collections.any?) or
-            (entity.kind_of?(Repository) and entity.collections.count < 1) %>
-        <% else %>
-          <a class="psap-expand fa fa-chevron-right"></a>
-        <% end %>
+        <% show_chevron = !((entity.kind_of?(Resource) and !child_collections.any?) or
+            (entity.kind_of?(Repository) and entity.collections.count < 1)) %>
+        <a class="psap-expand fa fa-chevron-right"
+           style="<%= show_chevron ? '' : 'visibility: hidden' %>"></a>
         <%= entity_icon(entity) %>
         <%= link_to entity.name, entity %>
       </div>
