@@ -149,10 +149,12 @@
                                   'data-target' => '#psap-create-panel' }) %>
             </div>
           </div>
-          <% if @resource.children.any? %>
+          <% if @resource.children.count > 0 %>
             <%= render partial: 'resources/resources',
-                       locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
-                                 show_checkboxes: false, show_hierarchy: true } %>
+                       locals: { resources: @resource.children.paginate(page: params[:page],
+                                                                        per_page: Psap::Application.config.results_per_page),
+                                 show_checkboxes: false,
+                                 show_hierarchy: false } %>
           <% else %>
             <p>This collection does not contain any sub-resources.</p>
           <% end %>

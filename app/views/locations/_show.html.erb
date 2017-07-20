@@ -103,12 +103,13 @@
         </div>
 
         <%= form_tag(resource_move_path) do %>
-          <% if @resources.any? %>
+          <% if @resources.count > 0 %>
             <div id="resources">
               <%= render partial: 'resources/resources',
-                         locals: { resources: @resources,
+                         locals: { resources: @resources.paginate(page: params[:page],
+                                                                  per_page: Psap::Application.config.results_per_page),
                                    show_checkboxes: true,
-                                   show_hierarchy: true } %>
+                                   show_hierarchy: false } %>
             </div>
             <!-- Move Checked panel -->
             <div class="modal fade psap-inner-scrolling" id="moveModal" tabindex="-1" role="dialog"
