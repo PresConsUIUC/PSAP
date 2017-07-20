@@ -1,9 +1,3 @@
-<%
-  # Accepts the following locals:
-  # [Boolean] show_top_level
-  # [Boolean] show_checkboxes
-%>
-
 <% if resources.respond_to?(:total_entries) %>
   <% # Will be read by PSAP.updateResultsCount() in JS %>
   <input type="hidden" name="results_count" value="<%= resources.total_entries %>">
@@ -11,17 +5,26 @@
 
 <table class="table table-striped psap-entity-list">
   <thead>
-    <tr>
-      <% if show_checkboxes %>
-        <th></th>
-      <% end %>
-      <th>Title</th>
-      <th>Assessed</th>
-    </tr>
+  <tr>
+    <% if show_checkboxes %>
+      <th></th>
+    <% end %>
+    <th>Title</th>
+    <th>Assessed</th>
+    <th>Score</th>
+  </tr>
   </thead>
   <tbody>
-    <%= resources_as_tree_rows(@resources,
-                               show_checkboxes: show_checkboxes,
-                               show_top_level: show_top_level) %>
+  <%= render partial: 'resources/resource_tree_rows',
+             locals: { resources: resources.order(:name),
+                       depth: 0,
+                       show_checkboxes: show_checkboxes,
+                       show_hierarchy: show_hierarchy } if resources.any? %>
   </tbody>
 </table>
+
+<% if resources.respond_to?(:total_entries) %>
+  <div class="text-center">
+    <%= will_paginate resources, renderer: BootstrapPagination::Rails %>
+  </div>
+<% end %>

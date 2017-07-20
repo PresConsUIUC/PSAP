@@ -107,8 +107,8 @@
             <div id="resources">
               <%= render partial: 'resources/resources',
                          locals: { resources: @resources,
-                                   show_top_level: true,
-                                   show_checkboxes: true } %>
+                                   show_checkboxes: true,
+                                   show_hierarchy: true } %>
             </div>
             <!-- Move Checked panel -->
             <div class="modal fade psap-inner-scrolling" id="moveModal" tabindex="-1" role="dialog"

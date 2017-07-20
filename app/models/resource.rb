@@ -85,8 +85,6 @@ class Resource < ActiveRecord::Base
 
   before_save :update_assessment_score, :update_assessment_complete
 
-  MAX_TREE_LEVELS = 10
-
   def self.all_matching_query(institution, params, starting_set = nil)
     starting_set = Resource.all unless starting_set
     resources = starting_set
@@ -514,38 +512,6 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Returns an Enumerable of children using an SQL self-join. Faster than
-  # navigating the adjacency list in Ruby, but produces output that is harder
-  # to work with.
-  #
-  # @return [Enumerable<Hash<String,String>]
-  # @see Location.resources_as_tree()
-  #
-  def children_as_tree
-    sql = "SELECT\n"
-    MAX_TREE_LEVELS.times do |i|
-      sql += "  t#{i}.id AS lv#{i}_id,
-    t#{i}.parent_id AS lv#{i}_parent_id,
-    t#{i}.name AS lv#{i}_name,
-    t#{i}.assessment_complete AS lv#{i}_assessment_complete,
-    t#{i}.resource_type AS lv#{i}_resource_type"
-      sql += "," if i < MAX_TREE_LEVELS - 1
-      sql += "\n"
-    end
-    sql += "FROM resources AS t0\n"
-    MAX_TREE_LEVELS.times do |i|
-      sql += "LEFT JOIN resources AS t#{i + 1} ON t#{i + 1}.parent_id = t#{i}.id\n"
-    end
-    sql += "WHERE t0.id = $1\n"
-    sql += "ORDER BY "
-    sql += (0..MAX_TREE_LEVELS - 1).map{ |lv| "lv#{lv}_name" }.join(', ')
-
-    values = [[ nil, self.id ]]
-
-    ActiveRecord::Base.connection.exec_query(sql, 'SQL', values)
-  end
-
-  ##
   # @return [ActiveRecord::Relation<Resource>]
   #
   def collections
@@ -553,6 +519,7 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+
   # Overrides parent to intelligently clone a resource. This implementation
   # does NOT clone child resources or events.
   #
