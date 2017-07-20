@@ -9,8 +9,8 @@ class AdminMailerTest < ActionMailer::TestCase
     email = AdminMailer.account_approval_request_email(users(:unconfirmed_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
-    assert_equal [Psap::Application.config.psap_email_address], email.to
+    assert_equal [Configuration.instance.mail_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.to
     assert_equal 'New PSAP user requests account approval', email.subject
     assert_equal read_fixture('account_approval_request_email.txt').join,
                  email.text_part.body.raw_source
@@ -25,8 +25,8 @@ class AdminMailerTest < ActionMailer::TestCase
     email = AdminMailer.institution_change_review_request_email(user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
-    assert_equal [Psap::Application.config.psap_email_address], email.to
+    assert_equal [Configuration.instance.mail_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.to
     assert_equal 'PSAP user requests to change institutions', email.subject
     assert_equal read_fixture('institution_change_review_request_email.txt').join,
                  email.text_part.body.raw_source

@@ -88,8 +88,4 @@ Psap::Application.configure do
       protocol: 'https://'
   }
 
-  # Paginated views will show this many results per page. (Some views, like
-  # events index, may show more.)
-  config.results_per_page = 50
-
 end

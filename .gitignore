@@ -26,7 +26,6 @@ Thumbs.db
 .chkbit
 
 database.yml
-mail.yml
 psap.yml
 .secret
 

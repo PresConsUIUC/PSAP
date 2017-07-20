@@ -31,36 +31,41 @@ selected_entity ||= nil
       </div>
     </li>
   <% end %>
+
   <% entities.each do |entity| %>
-    <li <%= selected_entity == entity ? 'class=active' : '' %>>
+    <% if entity.kind_of?(Resource) %>
+      <% child_collections = entity.children.where(resource_type: Resource::Type::COLLECTION) %>
+    <% else %>
+      <% child_collections = [] %>
+    <% end %>
+
+    <% active = (selected_entity == entity or
+        (selected_entity.kind_of?(Resource) and
+            selected_entity.resource_type == Resource::Type::ITEM and
+            selected_entity.parent == entity)) %>
+
+    <li <%= active ? 'class=active' : '' %>>
       <div>
-        <% if entity.kind_of?(Resource) and !entity.children.any? %>
-        <% else %>
-          <a class="psap-expand fa fa-chevron-right"></a>
-        <% end %>
+        <% show_chevron = !((entity.kind_of?(Resource) and !child_collections.any?) or
+            (entity.kind_of?(Repository) and entity.collections.count < 1)) %>
+        <a class="psap-expand fa fa-chevron-right"
+           style="<%= show_chevron ? '' : 'visibility: hidden' %>"></a>
         <%= entity_icon(entity) %>
         <%= link_to entity.name, entity %>
-        <% if entity.kind_of?(Resource) %>
-          <i class="fa fa-circle <%= bootstrap_fg_class_for_score(entity.effective_assessment_score) %>"></i>
-        <% end %>
       </div>
-      <% if entity.kind_of?(Resource) and entity.children.any? %>
-        <%= render partial: 'shared/entity_hierarchy',
-                   locals: { entities: entity.children,
-                             selected_entity: selected_entity } %>
+      <% entities = [] %>
+      <% if entity.kind_of?(Resource) and child_collections.any? %>
+        <% entities = child_collections %>
       <% elsif entity.kind_of?(Location) and entity.resources.any? %>
-        <%= render partial: 'shared/entity_hierarchy',
-                   locals: { entities: entity.resources.where(parent_id: nil),
-                             selected_entity: selected_entity } %>
+        <% entities = entity.resources.where(parent_id: nil) %>
       <% elsif entity.kind_of?(Repository) and entity.locations.any? %>
-        <%= render partial: 'shared/entity_hierarchy',
-                   locals: { entities: entity.locations,
-                             selected_entity: selected_entity } %>
+        <% entities = entity.locations %>
       <% elsif entity.kind_of?(Institution) and entity.repositories.any? %>
-        <%= render partial: 'shared/entity_hierarchy',
-                   locals: { entities: entity.repositories,
-                             selected_entity: selected_entity } %>
+        <% entities = entity.repositories %>
       <% end %>
+      <%= render partial: 'shared/entity_hierarchy',
+                 locals: { entities: entities,
+                           selected_entity: selected_entity } %>
     </li>
   <% end %>
 </ul>

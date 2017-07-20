@@ -149,11 +149,12 @@
                                   'data-target' => '#psap-create-panel' }) %>
             </div>
           </div>
-          <% if @resource.children.any? %>
+          <% if @resource.children.count > 0 %>
             <%= render partial: 'resources/resources',
-                       locals: { resources: @resource.children.paginate(page: 1, per_page: 9999999),
+                       locals: { resources: @resource.children.paginate(page: params[:page],
+                                                                        per_page: Configuration.instance.results_per_page),
                                  show_checkboxes: false,
-                                 show_top_level: false } %>
+                                 show_hierarchy: false } %>
           <% else %>
             <p>This collection does not contain any sub-resources.</p>
           <% end %>
@@ -173,7 +174,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% if !@resource.local_identifier.blank? %>
+              <% if @resource.local_identifier.present? %>
                 <dt>Local Identifier</dt>
                 <dd><%= @resource.local_identifier ? @resource.local_identifier : '(None)' %></dd>
               <% end %>
@@ -183,7 +184,7 @@
                   <%= Assessment::Type::name_for_type(@resource.assessment_type) %>
                 </dd>
               <% end %>
-              <% creators = @resource.creators.select{ |e| !e.name.blank? } %>
+              <% creators = @resource.creators.select{ |e| e.name.present? } %>
               <% if creators.any? %>
                 <dt><%= creators.length == 1 ? 'Creator' : 'Creators' %></dt>
                 <dd>
@@ -231,18 +232,18 @@
                 <dt>Language</dt>
                 <dd><%= @resource.language %></dd>
               <% end %>
-              <% if !@resource.description.blank? %>
+              <% if @resource.description.present? %>
                 <dt>Description</dt>
                 <dd><%= @resource.description %></dd>
               <% end %>
-              <% if @resource.resource_notes.select{ |e| !e.value.blank? }.any? %>
+              <% if @resource.resource_notes.select{ |e| e.value.present? }.any? %>
                 <dt>Notes</dt>
                 <dd>
                   <% if @resource.resource_notes.length == 1 %>
                     <%= @resource.resource_notes[0].value %>
                   <% else %>
                     <ul>
-                      <% @resource.resource_notes.select{ |e| !e.value.blank? }.each do |note| %>
+                      <% @resource.resource_notes.select{ |e| e.value.present? }.each do |note| %>
                         <li><%= note.value %></li>
                       <% end %>
                     </ul>
@@ -253,7 +254,7 @@
           </div>
           <div class="col-sm-6">
             <dl>
-              <% dates = @resource.resource_dates.select{ |e| !e.year.blank? or !e.begin_year.blank? } %>
+              <% dates = @resource.resource_dates.select{ |e| e.year.present? or e.begin_year.present? } %>
               <% if dates.any? %>
                 <dt><%= dates.length == 1 ? 'Date' : 'Dates' %></dt>
                 <dd>
@@ -268,7 +269,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% subjects = @resource.subjects.select{ |e| !e.name.blank? } %>
+              <% subjects = @resource.subjects.select{ |e| e.name.present? } %>
               <% if subjects.any? %>
                 <dt><%= subjects.length == 1 ? 'Subject' : 'Subjects' %></dt>
                 <dd>
@@ -283,7 +284,7 @@
                   <% end %>
                 </dd>
               <% end %>
-              <% extents = @resource.extents.select{ |e| !e.name.blank? } %>
+              <% extents = @resource.extents.select{ |e| e.name.present? } %>
               <% if extents.any? %>
                 <dt><%= extents.length == 1 ? 'Extent' : 'Extents' %></dt>
                 <dd>
@@ -302,7 +303,7 @@
                 <dt>Significance</dt>
                 <dd><%= @resource.readable_significance %></dd>
               <% end %>
-              <% if !@resource.rights.blank? %>
+              <% if @resource.rights.present? %>
                 <dt>Rights</dt>
                 <dd><%= @resource.rights %></dd>
               <% end %>

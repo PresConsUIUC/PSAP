@@ -103,12 +103,13 @@
         </div>
 
         <%= form_tag(resource_move_path) do %>
-          <% if @resources.any? %>
+          <% if @resources.count > 0 %>
             <div id="resources">
               <%= render partial: 'resources/resources',
-                         locals: { resources: @resources,
-                                   show_top_level: true,
-                                   show_checkboxes: true } %>
+                         locals: { resources: @resources.paginate(page: params[:page],
+                                                                  per_page: Configuration.instance.results_per_page),
+                                   show_checkboxes: true,
+                                   show_hierarchy: false } %>
             </div>
             <!-- Move Checked panel -->
             <div class="modal fade psap-inner-scrolling" id="moveModal" tabindex="-1" role="dialog"
@@ -123,7 +124,7 @@
                   <div class="modal-body">
                     <p>Select a location to move the checked resources into. If any
                       collections are checked, any resources they contain will be
-                      moved along with them, even if they are not checked.</p>
+                      moved along with them.</p>
                     <ul>
                       <% @location.repository.institution.repositories.order(:name).each do |repo| %>
                         <% if repo.locations.any? %>

@@ -34,7 +34,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
     email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.from
     assert_equal ['normal@example.org'], email.to
     assert_equal 'Welcome to PSAP!', email.subject
   end
@@ -66,8 +66,8 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
     email = AdminMailer.account_approval_request_email(users(:normal_user)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
-    assert_equal [Psap::Application.config.psap_email_address], email.from
-    assert_equal [Psap::Application.config.psap_email_address], email.to
+    assert_equal [Configuration.instance.mail_address], email.from
+    assert_equal [Configuration.instance.mail_address], email.to
     assert_equal 'New PSAP user requests account approval', email.subject
   end
 

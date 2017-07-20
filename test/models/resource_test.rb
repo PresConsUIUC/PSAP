@@ -203,11 +203,6 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal 0.01, @resource.assessment_score.to_f
   end
 
-  # children_as_tree
-  test 'children_as_tree' do
-    # TODO: write this
-  end
-
   # dup
   test 'dup should produce a correct clone' do
     clone = @resource.dup

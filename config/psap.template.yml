@@ -5,18 +5,45 @@
 
 development:
   :test_institution_id: 1
-  :recaptcha:
-    :public_key: ''
-    :secret_key: ''
+  :results_per_page: 50
+  :mail_address: psap@example.org
+  :mail_from: 'Preservation Self-Assessment Program <psap@example.org>'
+  :mail_delivery_method: smtp
+  :mail_smtp_host:
+  :mail_smtp_port:
+  :mail_username:
+  :mail_password:
+  :mail_authentication: plain
+  :mail_enable_starttls_auto: true
+  :recaptcha_public_key:
+  :recaptcha_secret_key:
 
 test:
   :test_institution_id: 1
-  :recaptcha:
-    :public_key: ''
-    :secret_key: ''
+  :results_per_page: 50
+  :mail_address: psap@example.org
+  :mail_from: 'Preservation Self-Assessment Program <psap@example.org>'
+  :mail_delivery_method: smtp
+  :mail_smtp_host:
+  :mail_smtp_port:
+  :mail_username:
+  :mail_password:
+  :mail_authentication: plain
+  :mail_enable_starttls_auto: false
+  :recaptcha_public_key:
+  :recaptcha_secret_key:
 
 production:
   :test_institution_id: 1
-  :recaptcha:
-    :public_key: ''
-    :secret_key: ''
+  :results_per_page: 50
+  :mail_address: psap@example.org
+  :mail_from: 'Preservation Self-Assessment Program <psap@example.orgu>'
+  :mail_delivery_method: smtp
+  :mail_smtp_host:
+  :mail_smtp_port:
+  :mail_username:
+  :mail_password:
+  :mail_authentication: plain
+  :mail_enable_starttls_auto:
+  :recaptcha_public_key:
+  :recaptcha_secret_key:

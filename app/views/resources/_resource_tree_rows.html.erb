@@ -1,0 +1,24 @@
+<% resources.each do |resource| %>
+  <tr>
+    <% if show_checkboxes %>
+      <td>
+        <input type="checkbox" name="resources[]" value="<%= resource.id %>">
+      </td>
+    <% end %>
+    <td class="depth-<%= depth %>">
+      <%= depth > 0 ? raw('&#8627; ') : '' %>
+      <%= entity_icon(resource) %>
+      <%= link_to truncate(resource.name, length: 150), resource %>
+    </td>
+    <td><%= resource.assessment_complete ? raw('&check;') : '' %></td>
+    <td><%= resource.resource_type == Resource::Type::ITEM ?
+                    number_to_human(resource.assessment_score * 100) : '' %></td>
+  </tr>
+  <% if show_hierarchy %>
+    <%= render partial: 'resources/resource_tree_rows',
+               locals: { resources: resource.children.order(:name),
+                         depth: depth + 1,
+                         show_checkboxes: show_checkboxes,
+                         show_hierarchy: show_hierarchy } if resource.children.count > 0 %>
+  <% end %>
+<% end %>

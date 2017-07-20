@@ -83,9 +83,8 @@ class Resource < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :parent_id
 
+  after_initialize :init
   before_save :update_assessment_score, :update_assessment_complete
-
-  MAX_TREE_LEVELS = 10
 
   def self.all_matching_query(institution, params, starting_set = nil)
     starting_set = Resource.all unless starting_set
@@ -514,38 +513,14 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Returns an Enumerable of children using an SQL self-join. Faster than
-  # navigating the adjacency list in Ruby, but produces output that is harder
-  # to work with.
+  # @return [ActiveRecord::Relation<Resource>]
   #
-  # @return [Enumerable<Hash<String,String>]
-  # @see Location.resources_as_tree()
-  #
-  def children_as_tree
-    sql = "SELECT\n"
-    MAX_TREE_LEVELS.times do |i|
-      sql += "  t#{i}.id AS lv#{i}_id,
-    t#{i}.parent_id AS lv#{i}_parent_id,
-    t#{i}.name AS lv#{i}_name,
-    t#{i}.assessment_complete AS lv#{i}_assessment_complete,
-    t#{i}.resource_type AS lv#{i}_resource_type"
-      sql += "," if i < MAX_TREE_LEVELS - 1
-      sql += "\n"
-    end
-    sql += "FROM resources AS t0\n"
-    MAX_TREE_LEVELS.times do |i|
-      sql += "LEFT JOIN resources AS t#{i + 1} ON t#{i + 1}.parent_id = t#{i}.id\n"
-    end
-    sql += "WHERE t0.id = $1\n"
-    sql += "ORDER BY "
-    sql += (0..MAX_TREE_LEVELS - 1).map{ |lv| "lv#{lv}_name" }.join(', ')
-
-    values = [[ nil, self.id ]]
-
-    ActiveRecord::Base.connection.exec_query(sql, 'SQL', values)
+  def collections
+    self.children.where(resource_type: Resource::Type::COLLECTION)
   end
 
   ##
+
   # Overrides parent to intelligently clone a resource. This implementation
   # does NOT clone child resources or events.
   #
@@ -579,18 +554,23 @@ class Resource < ActiveRecord::Base
   #
   # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
-  # @return [float] between 0 and 1
+  # @return [Float] Float between 0 and 1. The result is cached.
   #
   def effective_assessment_score
-    if self.resource_type == Resource::Type::COLLECTION
-      items = self.all_assessed_items
-      return items.any? ?
-          items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
+    if @effective_assessment_score < 0
+      if self.resource_type == Resource::Type::COLLECTION
+        items = self.all_assessed_items
+        @effective_assessment_score = items.count > 0 ?
+            items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
+      else
+        @effective_assessment_score = self.assessment_score * 0.5 +
+            self.effective_format_score * 0.4 +
+            self.location.assessment_score * 0.05 +
+            self.effective_temperature_score * 0.025 +
+            self.effective_humidity_score * 0.025
+      end
     end
-    self.assessment_score * 0.5 + self.effective_format_score * 0.4 +
-        self.location.assessment_score * 0.05 +
-        self.effective_temperature_score * 0.025 +
-        self.effective_humidity_score * 0.025
+    @effective_assessment_score
   end
 
   ##
@@ -716,6 +696,7 @@ class Resource < ActiveRecord::Base
   #
   def update_assessment_score
     self.assessment_score = self.effective_assessment_score
+    @effective_assessment_score = -1
   end
 
   private
@@ -727,6 +708,10 @@ class Resource < ActiveRecord::Base
     parts[:month] = date[1].to_i if date.length > 1
     parts[:year] = date[0].to_i
     parts
+  end
+
+  def init
+    @effective_assessment_score = -1
   end
 
   def validates_item_children

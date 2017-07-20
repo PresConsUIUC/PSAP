@@ -212,7 +212,7 @@ class ResourcesController < ApplicationController
     if request.xhr?
       @resources = @resources.
           paginate(page: params[:page],
-                   per_page: Psap::Application.config.results_per_page)
+                   per_page: ::Configuration.instance.results_per_page)
       render 'search'
     else
       respond_to do |format|
@@ -225,7 +225,7 @@ class ResourcesController < ApplicationController
         format.html do
           @resources = @resources.
               paginate(page: params[:page],
-                       per_page: Psap::Application.config.results_per_page)
+                       per_page: ::Configuration.instance.results_per_page)
         end
       end
     end
@@ -326,7 +326,6 @@ class ResourcesController < ApplicationController
         assessment_sections.order(:index)
     add_dependent_entities
     @events = @resource.events.order(created_at: :desc).limit(20)
-    @resources = @resource.children_as_tree
   end
 
   def user_of_same_institution_or_admin

@@ -9,7 +9,9 @@ Bundler.require(:default, Rails.env)
 module Psap
   class Application < Rails::Application
 
-    attr_accessor :psap_config
+    config.after_initialize do
+      ActiveRecord::Base.logger = nil
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -32,29 +34,24 @@ module Psap
     config.i18n.enforce_available_locales = true
 
     # Set up ActionMailer
-    mail_config_path = "#{Rails.root}/config/mail.yml"
-    if File.exist?(mail_config_path)
-      mail_config = YAML.load_file(mail_config_path)[Rails.env]
-
-      config.action_mailer.default_options = { from: mail_config['from'] }
-      config.action_mailer.delivery_method = mail_config['delivery_method'].to_sym
-      config.action_mailer.smtp_settings = {
-          openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
-      }
-      config.action_mailer.smtp_settings[:address] = mail_config['smtp_host'] if
-          mail_config['smtp_host']
-      config.action_mailer.smtp_settings[:port] = mail_config['smtp_port'] if
-          mail_config['smtp_port']
-      config.action_mailer.smtp_settings[:user_name] = mail_config['username'] if
-          mail_config['username']
-      config.action_mailer.smtp_settings[:password] = mail_config['password'] if
-          mail_config['password']
-      config.action_mailer.smtp_settings[:authentication] = mail_config['authentication'] if
-          mail_config['authentication']
-      config.action_mailer.smtp_settings[:enable_starttls_auto] = mail_config['enable_starttls_auto'] if
-          mail_config['enable_starttls_auto']
-
-      config.psap_email_address = mail_config['address']
-    end
+    require File.expand_path('app/models/configuration.rb')
+    yml = ::Configuration.instance
+    config.action_mailer.default_options = { from: yml.mail_from }
+    config.action_mailer.delivery_method = yml.mail_delivery_method.to_sym
+    config.action_mailer.smtp_settings = {
+        openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
+    }
+    config.action_mailer.smtp_settings[:address] = yml.mail_smtp_host if
+        yml.mail_smtp_host
+    config.action_mailer.smtp_settings[:port] = yml.mail_smtp_port if
+        yml.mail_smtp_port
+    config.action_mailer.smtp_settings[:user_name] = yml.mail_username if
+        yml.mail_username
+    config.action_mailer.smtp_settings[:password] = yml.mail_password if
+        yml.mail_password
+    config.action_mailer.smtp_settings[:authentication] = yml.mail_authentication if
+        yml.mail_authentication
+    config.action_mailer.smtp_settings[:enable_starttls_auto] = yml.mail_enable_starttls_auto if
+        yml.mail_enable_starttls_auto
   end
 end
