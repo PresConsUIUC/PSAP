@@ -83,6 +83,7 @@ class Resource < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :parent_id
 
+  after_initialize :init
   before_save :update_assessment_score, :update_assessment_complete
 
   def self.all_matching_query(institution, params, starting_set = nil)
@@ -553,18 +554,23 @@ class Resource < ActiveRecord::Base
   #
   # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
-  # @return [float] between 0 and 1
+  # @return [Float] Float between 0 and 1. The result is cached.
   #
   def effective_assessment_score
-    if self.resource_type == Resource::Type::COLLECTION
-      items = self.all_assessed_items
-      return items.any? ?
-          items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
+    if @effective_assessment_score < 0
+      if self.resource_type == Resource::Type::COLLECTION
+        items = self.all_assessed_items
+        @effective_assessment_score = items.count > 0 ?
+            items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
+      else
+        @effective_assessment_score = self.assessment_score * 0.5 +
+            self.effective_format_score * 0.4 +
+            self.location.assessment_score * 0.05 +
+            self.effective_temperature_score * 0.025 +
+            self.effective_humidity_score * 0.025
+      end
     end
-    self.assessment_score * 0.5 + self.effective_format_score * 0.4 +
-        self.location.assessment_score * 0.05 +
-        self.effective_temperature_score * 0.025 +
-        self.effective_humidity_score * 0.025
+    @effective_assessment_score
   end
 
   ##
@@ -690,6 +696,7 @@ class Resource < ActiveRecord::Base
   #
   def update_assessment_score
     self.assessment_score = self.effective_assessment_score
+    @effective_assessment_score = -1
   end
 
   private
@@ -701,6 +708,10 @@ class Resource < ActiveRecord::Base
     parts[:month] = date[1].to_i if date.length > 1
     parts[:year] = date[0].to_i
     parts
+  end
+
+  def init
+    @effective_assessment_score = -1
   end
 
   def validates_item_children
