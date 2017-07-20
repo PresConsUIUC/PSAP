@@ -19,6 +19,6 @@
                locals: { resources: resource.children.order(:name),
                          depth: depth + 1,
                          show_checkboxes: show_checkboxes,
-                         show_hierarchy: show_hierarchy } if resource.children.any? %>
+                         show_hierarchy: show_hierarchy } if resource.children.count > 0 %>
   <% end %>
 <% end %>

@@ -19,7 +19,7 @@
              locals: { resources: resources.order(:name),
                        depth: 0,
                        show_checkboxes: show_checkboxes,
-                       show_hierarchy: show_hierarchy } if resources.any? %>
+                       show_hierarchy: show_hierarchy } if resources.count > 0 %>
   </tbody>
 </table>
 
