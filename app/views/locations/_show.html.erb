@@ -124,7 +124,7 @@
                   <div class="modal-body">
                     <p>Select a location to move the checked resources into. If any
                       collections are checked, any resources they contain will be
-                      moved along with them, even if they are not checked.</p>
+                      moved along with them.</p>
                     <ul>
                       <% @location.repository.institution.repositories.order(:name).each do |repo| %>
                         <% if repo.locations.any? %>
