@@ -72,7 +72,7 @@ module EventsHelper
         string = entity.name
       when 'User'
         entity = event.users.first
-        string = entity.full_name
+        string = entity.username
 
     end
     url = url_for(entity) rescue nil
