@@ -36,7 +36,7 @@ module EventsHelper
       css_class.concat (current_level.to_i == level) ?
                           'btn-info active' : 'btn-default'
 
-      links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge pull-right\">#{level_count}</span>"),
+      links << link_to(raw("#{EventLevel::name_for_level(level)}<span class=\"badge\">#{level_count}</span>"),
                        link_params, class: css_class, remote: true,
                        'data-level' => level)
     end
