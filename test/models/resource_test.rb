@@ -213,6 +213,20 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal @resource.resource_dates.length, clone.resource_dates.length
     assert_equal @resource.resource_notes.length, clone.resource_notes.length
     assert_equal @resource.subjects.length, clone.subjects.length
+    assert_equal 'Clone of ' + @resource.name, clone.name
+  end
+
+  test 'dup truncates long names' do
+    @resource.name = 'a' * Resource::MAX_NAME_LENGTH
+    clone = @resource.dup
+
+    assert_equal "Clone of #{'a' * (Resource::MAX_NAME_LENGTH - 9)}", clone.name
+    assert clone.name.length <= Resource::MAX_NAME_LENGTH
+
+    clone2 = clone.dup
+    assert_equal "Clone of Clone of #{'a' * (Resource::MAX_NAME_LENGTH - 18)}",
+                 clone2.name
+    assert clone2.name.length <= Resource::MAX_NAME_LENGTH
   end
 
   # effective_assessment_score

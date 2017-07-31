@@ -10,7 +10,7 @@ class CloneResourceCommandTest < ActiveSupport::TestCase
     @resource = resources(:resource_one)
     @doing_user = users(:admin_user)
     @remote_ip = '10.0.0.1'
-    @command = CloneResourceCommand.new(@resource, @doing_user, @remote_ip)
+    @command = CloneResourceCommand.new(@resource, false, @doing_user, @remote_ip)
   end
 
   # execute
@@ -21,7 +21,7 @@ class CloneResourceCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
+    assert_difference 'Event.count', 2 do
       @command.execute
     end
     event = Event.order(:created_at).last
@@ -38,13 +38,6 @@ class CloneResourceCommandTest < ActiveSupport::TestCase
     @command.execute
     assert_equal 1, @resource.events.length
     assert_equal 1, @command.object.events.length
-  end
-
-  test 'execute method should truncate long names on cloned resource to max length' do
-    @resource.name = 'a' * 1000
-    @command = CloneResourceCommand.new(@resource, @doing_user, @remote_ip)
-    @command.execute
-    assert_equal 255, @command.object.name.length
   end
 
   # object

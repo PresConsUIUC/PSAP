@@ -28,6 +28,8 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  MAX_NAME_LENGTH = 255
+
   # When adding/removing properties or associations, update both .as_csv and
   # ::as_csv.
 
@@ -69,7 +71,7 @@ class Resource < ActiveRecord::Base
             inclusion: { in: Assessment::Type.all,
                          message: 'must be a valid assessment type' }
   validates :location, presence: true
-  validates :name, presence: true, length: { maximum: 255 }
+  validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
   validates :resource_type, inclusion: { in: Resource::Type.all,
                          message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
@@ -544,6 +546,16 @@ class Resource < ActiveRecord::Base
     self.resource_dates.each { |c| clone.resource_dates << c.dup }
     self.resource_notes.each { |c| clone.resource_notes << c.dup }
     self.subjects.each { |c| clone.subjects << c.dup }
+
+    prefix = 'Clone of '
+    (1..999).each do |i|
+      proposed_name = prefix + self.name[0..(MAX_NAME_LENGTH - 1 - prefix.length * i)]
+      unless Resource.find_by_name(proposed_name)
+        clone.name = proposed_name
+        break
+      end
+    end
+
     clone
   end
 
