@@ -9,12 +9,13 @@ class CreateUserCommandTest < ActiveSupport::TestCase
         'last_name' => 'Bob',
         'email' => 'newuser@example.org',
         'password' => 'catscatscats',
-        'password_confirmation' => 'catscatscats'
+        'password_confirmation' => 'catscatscats',
+        'about' => 'about me'
     }
     @remote_ip = '10.0.0.1'
     @valid_command = CreateUserCommand.new(@valid_user_params, @remote_ip)
 
-    @invalid_user_params = @valid_user_params.dup.except('username')
+    @invalid_user_params = @valid_user_params.except('username')
     @invalid_command = CreateUserCommand.new(@invalid_user_params, @remote_ip)
   end
 
@@ -39,9 +40,8 @@ class CreateUserCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Attempted to create a user account, but failed: Username "\
-    "can't be blank",
-                 event.description
+    assert event.description.start_with?(
+        'Attempted to create a user account, but failed:')
     assert_nil event.user
     assert_equal @remote_ip, event.address
   end

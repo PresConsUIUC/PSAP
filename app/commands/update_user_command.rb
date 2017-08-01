@@ -10,7 +10,7 @@ class UpdateUserCommand < Command
   def execute
     begin
       old_email = @user.email
-      new_email = @user_params[:email]
+      new_email = @user_params['email']
 
       # non-admin users are not allowed to update other users
       if !@doing_user.is_admin? and @doing_user != @user
@@ -18,15 +18,15 @@ class UpdateUserCommand < Command
       end
 
       # non-admin users are not allowed to change roles
-      if !@doing_user.is_admin? and @user_params[:role_id] and
-          @user_params[:role_id] != @user.role_id
+      if !@doing_user.is_admin? and @user_params['role_id'] and
+          @user_params['role_id'] != @user.role_id
         raise 'Insufficient privileges to change roles.'
       end
 
       # non-admin users are not allowed to change usernames (though they are
       # allowed to set them for the first time, in CreateUserCommand)
       if !@doing_user.is_admin? and @user.username and
-          @user_params[:username] and @user.username != @user_params[:username]
+          @user_params['username'] and @user.username != @user_params['username']
         raise 'Insufficient privileges to change usernames.'
       end
 
@@ -35,7 +35,8 @@ class UpdateUserCommand < Command
       @user.events << Event.create(
           description: "Attempted to update user #{@user.username}, "\
           "but failed: #{@user.errors.full_messages.first}",
-          user: @doing_user, address: @remote_ip,
+          user: @doing_user,
+          address: @remote_ip,
           event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise ValidationError,
@@ -48,14 +49,14 @@ class UpdateUserCommand < Command
       end
     rescue => e
       @user.events << Event.create(
-          description: "Attempted to update user #{@user.username}, "\
-          "but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
+          description: "Attempted to update user #{@user.username}, but failed: #{e}",
+          user: @doing_user,
+          address: @remote_ip,
           event_level: EventLevel::ERROR)
       if @user == @doing_user
-        raise "Failed to update your account: #{e.message}"
+        raise "Failed to update your account: #{e}"
       else
-        raise "Failed to update user #{@user.username}: #{e.message}"
+        raise "Failed to update user #{@user.username}: #{e}"
       end
     else
       @user.events << Event.create(

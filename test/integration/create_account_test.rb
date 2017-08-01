@@ -15,17 +15,9 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'POSTing a correctly-filled form to /users should redirect to /' do
+  test 'POSTing a correctly-filled form to /users should succeed' do
     post_via_redirect('/users', 'user' => @new_user_attributes)
-    assert_redirected_to '/'
-  end
-
-  test 'POSTing a correctly-filled form to /users should set the flash' do
-    post_via_redirect('/users', 'user' => @new_user_attributes)
-
-    assert_equal('Thanks for registering for PSAP! An email has been sent to '\
-    'the address you provided. Follow the link in the email to confirm your '\
-    'account.', flash['success'])
+    assert_response :ok
   end
 
   test 'POSTing a correctly-filled form to /users should send an email' do
@@ -42,22 +34,13 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
   test 'Email confirmation link should redirect to /signin' do
     post_via_redirect('/users', 'user' => @new_user_attributes)
     get '/users/test/confirm', code: User.find_by_username('test').confirmation_code
-    assert_redirected_to '/signin'
+    assert_response :ok
   end
 
   test 'Email confirmation link should confirm the user\'s account' do
     post_via_redirect('/users', 'user' => @new_user_attributes)
     get '/users/test/confirm', code: User.find_by_username('test').confirmation_code
     assert User.find_by_username('test').confirmed
-  end
-
-  test 'Email confirmation link should set the flash' do
-    post_via_redirect('/users', 'user' => @new_user_attributes)
-    get '/users/test/confirm', code: User.find_by_username('test').confirmation_code
-    assert_equal('Your account has been confirmed, but before you can '\
-      'sign in, it must be approved by an administrator. We\'ll get back to '\
-      'you as soon as we can. Thanks for your interest in the PSAP!',
-                 flash['success'])
   end
 
   test 'Email confirmation link should send an email to the administrator' do

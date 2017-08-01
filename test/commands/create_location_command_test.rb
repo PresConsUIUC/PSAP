@@ -17,6 +17,8 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
                                                  @invalid_location_params,
                                                  @user,
                                                  @remote_ip)
+
+    Location.destroy_all
   end
 
   # execute

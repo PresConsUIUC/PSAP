@@ -18,7 +18,8 @@ class JoinInstitutionCommandTest < ActiveSupport::TestCase
       end
     end
     event = Event.order(:created_at).last
-    assert_equal "Joined institution \"#{@command.object.name}\"",
+    assert_equal "User #{@user.username} desires to change institution to "\
+    "#{@command.object.name}",
                  event.description
     assert_equal @user, event.user
     assert_equal @remote_ip, event.address

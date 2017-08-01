@@ -3,13 +3,13 @@ require 'test_helper'
 class StaticPageTest < ActiveSupport::TestCase
 
   def setup
-    @page = static_pages(:page_one)
+    @page = static_pages(:help_page)
   end
 
   ######################### class method tests ##############################
 
   test 'full_text_search should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   ############################ object tests #################################

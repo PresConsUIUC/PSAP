@@ -2,10 +2,10 @@ require 'test_helper'
 
 class HelpControllerTest < ActionController::TestCase
 
-  #### show ####
+  #### index ####
 
   test 'should get show page' do
-    get :show, category: 'help'
+    get :index, category: 'help'
     assert_response :success
   end
 

@@ -13,6 +13,7 @@ normal_user:
   feed_key: sdfjasdfsdfsdf
   institution_id: 1
   role_id: 2
+  about: about me
 
 admin_user:
   id: 2
@@ -26,6 +27,7 @@ admin_user:
   feed_key: sdfjasdfsdfsdf
   institution_id: 1
   role_id: 1
+  about: about me
 
 non_uiuc_admin_user:
   id: 6
@@ -39,6 +41,7 @@ non_uiuc_admin_user:
   feed_key: sdfjasdfsdfsdf
   institution_id: 2
   role_id: 1
+  about: about me
 
 unaffiliated_user:
   id: 3
@@ -51,6 +54,7 @@ unaffiliated_user:
   role_id: 2
   confirmed: true
   enabled: true
+  about: about me
 
 unconfirmed_user:
   id: 4
@@ -64,7 +68,7 @@ unconfirmed_user:
   role_id: 2
   confirmed: false
   enabled: false
-  about: hi
+  about: about me
 
 disabled_user:
   id: 5
@@ -78,3 +82,4 @@ disabled_user:
   role_id: 2
   confirmed: true
   enabled: false
+  about: about me

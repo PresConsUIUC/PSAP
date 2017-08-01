@@ -7,4 +7,4 @@ Program. Your username is: normal.
 Before you can sign in, you will need to confirm your account. Follow
 this link:
 
-http://localhost:3000/users/normal/confirm
+http://test.host/users/normal/confirm

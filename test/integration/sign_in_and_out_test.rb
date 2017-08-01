@@ -9,13 +9,13 @@ class SignInAndOutTest < ActionDispatch::IntegrationTest
 
   test 'signin with invalid credentials should fail' do
     signin('adfasdf', 'asdfasfafd')
-    assert_equal '/signin', path
+    assert_equal '/', path
     assert_equal('Sign-in failed.', flash['error'])
   end
 
   test 'signin should redirect to dashboard' do
     get '/signin'
-    assert_response :success
+    assert_response 302
     signin(@valid_username, @valid_password)
     assert_equal('/dashboard', path)
   end

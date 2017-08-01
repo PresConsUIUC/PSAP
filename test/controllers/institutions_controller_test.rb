@@ -20,9 +20,9 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst = institutions(:institution_three).attributes
       inst[:id] = nil
       inst[:name] = 'New Institution'
-      post :create, institution: inst
+      post :create, institution: inst, format: :xhr
     end
-    assert_redirected_to dashboard_url
+    assert_response :success
   end
 
   test 'admin users can create institutions' do
@@ -31,9 +31,9 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst = institutions(:institution_three).attributes
       inst[:id] = nil
       inst[:name] = 'New Institution'
-      post :create, institution: inst
+      post :create, institution: inst, format: :xhr
     end
-    assert_redirected_to institution_url(assigns(:institution))
+    assert_response :success
   end
 
   test 'creating an institution should write to the event log' do
@@ -42,7 +42,7 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst = institutions(:institution_three).attributes
       inst[:id] = nil
       inst[:name] = 'New Institution'
-      post :create, institution: inst
+      post :create, institution: inst, format: :xhr
     end
   end
 
@@ -52,9 +52,9 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst = institutions(:institution_three).attributes
       inst[:id] = nil
       inst[:name] = ''
-      post :create, institution: inst
+      post :create, institution: inst, format: :xhr
     end
-    assert_template :new
+    assert_template :'shared/_error_messages'
   end
 
   #### destroy ####
@@ -118,16 +118,14 @@ class InstitutionsControllerTest < ActionController::TestCase
 
   test 'signed-in users can view their own institutions\' edit pages' do
     signin_as(users(:normal_user))
-    get :edit, id: 1
+    xhr :get, :edit, id: 1
     assert_response :success
-    assert_not_nil assigns(:institution)
   end
 
   test 'admin users can view any institution\'s edit page' do
     signin_as(users(:admin_user))
-    get :edit, id: 5
+    xhr :get, :edit, id: 5
     assert_response :success
-    assert_not_nil assigns(:institution)
   end
 
   test 'attempting to view a nonexistent institution\'s edit page returns 404' do
@@ -147,18 +145,16 @@ class InstitutionsControllerTest < ActionController::TestCase
 
   test 'signed-in users can view new-institution page' do
     signin_as(users(:normal_user))
-    get :new
+    xhr :get, :new
     assert :success
-    assert_not_nil assigns(:institution)
-    assert_template :new
+    assert_template :'institutions/_edit_form'
   end
 
   test 'admin users can view new-institution page' do
     signin_as(users(:admin_user))
-    get :new
+    xhr :get, :new
     assert :success
-    assert_not_nil assigns(:institution)
-    assert_template :new
+    assert_template :'institutions/_edit_form'
   end
 
   #### show ####
@@ -172,8 +168,6 @@ class InstitutionsControllerTest < ActionController::TestCase
     signin_as(users(:normal_user))
     get :show, id: 1
     assert_response :success
-    assert_not_nil assigns(:institution)
-    assert_not_nil assigns(:repositories)
   end
 
   test 'signed-in users cannot view other institutions' do
@@ -186,8 +180,6 @@ class InstitutionsControllerTest < ActionController::TestCase
     signin_as(users(:admin_user))
     get :show, id: 5
     assert_response :success
-    assert_not_nil assigns(:institution)
-    assert_not_nil assigns(:repositories)
   end
 
   test 'attempting to view a nonexistent institution returns 404' do
@@ -224,9 +216,9 @@ class InstitutionsControllerTest < ActionController::TestCase
     inst = institutions(:institution_three).attributes
     inst[:id] = nil
     inst[:name] = 'New Name'
-    patch :update, institution: inst, id: 1
+    patch :update, institution: inst, id: 1, format: :xhr
     assert_equal 'New Name', Institution.find(1).name
-    assert_redirected_to institution_url(assigns(:institution))
+    assert_response :success
   end
 
   test 'admin users can update any institution' do
@@ -234,9 +226,9 @@ class InstitutionsControllerTest < ActionController::TestCase
     inst = institutions(:institution_three).attributes
     inst[:id] = nil
     inst[:name] = 'New Name'
-    patch :update, institution: inst, id: 3
+    patch :update, institution: inst, id: 3, format: :xhr
     assert_equal 'New Name', Institution.find(3).name
-    assert_redirected_to institution_url(assigns(:institution))
+    assert_response :success
   end
 
   test 'updating an institution should write to the event log' do
@@ -245,7 +237,7 @@ class InstitutionsControllerTest < ActionController::TestCase
       inst = institutions(:institution_three).attributes
       inst[:id] = nil
       inst[:name] = 'New Name'
-      patch :update, institution: inst, id: 3
+      patch :update, institution: inst, id: 3, format: :xhr
     end
   end
 

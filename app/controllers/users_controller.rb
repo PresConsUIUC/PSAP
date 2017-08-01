@@ -97,12 +97,8 @@ class UsersController < ApplicationController
     @roles = Role.all.order(:name)
     @user_role = Role.find_by_name('User')
 
-    # Gather institutions for the institution select menu. Put the test
-    # institution at the top per GitHub issue #336.
-    test_institution_id = ::Configuration.instance.test_institution_id
-    @institutions = Institution.where('id != ?', test_institution_id).
-        order(:name)
-    @institutions.unshift(Institution.find(test_institution_id))
+    # Gather institutions for the institution select menu.
+    set_institutions_ivar
   end
 
   ##
@@ -287,13 +283,8 @@ class UsersController < ApplicationController
         render 'edit'
       else
         if @user.institution == new_institution # already joined, which means an admin did it
-          if @user == current_user
-            flash['success'] = "Your institution has been changed to "\
-            "#{new_institution.name}."
-          else
-            flash['success'] = "#{@user.username}'s institution has been "\
-            "changed to #{new_institution.name}."
-          end
+          flash['success'] = "#{@user.username} is already a member of "\
+          "#{new_institution.name}."
         else
           flash['success'] = "An administrator has been notified and will "\
           "review your request to join #{new_institution.name} momentarily,"
@@ -307,9 +298,14 @@ class UsersController < ApplicationController
       begin
         command.execute
       rescue ValidationError
+        # Gather institutions for the institution select menu.
+        set_institutions_ivar
         render 'edit'
       rescue => e
         flash['error'] = "#{e}"
+
+        # Gather institutions for the institution select menu.
+        set_institutions_ivar
         render 'edit'
       else
         flash['success'] = @user == current_user ?
@@ -344,6 +340,14 @@ class UsersController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @user
     redirect_to(root_url) unless
         @user.institution == current_user.institution || current_user.is_admin?
+  end
+
+  def set_institutions_ivar
+    # Put the test institution at the top per GitHub issue #336.
+    test_institution_id = ::Configuration.instance.test_institution_id
+    @institutions = Institution.where('id != ?', test_institution_id).
+        order(:name)
+    @institutions.unshift(Institution.find(test_institution_id))
   end
 
   def sort_column

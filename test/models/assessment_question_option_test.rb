@@ -36,12 +36,6 @@ class AssessmentQuestionOptionTest < ActiveSupport::TestCase
     assert !@option.save
   end
 
-  # value
-  test 'value is required' do
-    @option.value = nil
-    assert !@option.save
-  end
-
   ############################ method tests #################################
 
   # none

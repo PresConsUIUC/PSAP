@@ -12,10 +12,6 @@ class InstitutionTest < ActiveSupport::TestCase
     assert @institution.save
   end
 
-  test 'assessment score is updated before save' do
-    flunk # TODO: write this
-  end
-
   ########################### property tests ################################
 
   # address1

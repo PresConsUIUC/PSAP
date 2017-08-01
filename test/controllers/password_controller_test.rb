@@ -22,9 +22,13 @@ class PasswordControllerTest < ActionController::TestCase
   end
 
   test 'send_email should do what it\'s supposed to' do
-    post :send_email, user: { username: 'normal' }
+    user = users(:normal_user)
+    key1 = user.password_reset_key
 
-    assert_not_nil users(:normal_user).password_reset_key
+    post :send_email, email: users(:normal_user).email
+
+    user.reload
+    assert_not_equal key1, user.password_reset_key
     assert_equal 'An email has been sent containing a link to reset your password.',
                  flash[:notice]
     assert_redirected_to root_url

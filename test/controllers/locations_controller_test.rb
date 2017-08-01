@@ -28,10 +28,11 @@ class LocationsControllerTest < ActionController::TestCase
     assert_difference 'Location.count' do
       post :create, location: { name: 'Test Location',
                                 description: 'Test Description' },
+           format: :xhr,
            repository_id: 1
     end
     assert_equal 'Location "Test Location" created.', flash['success']
-    assert_redirected_to location_url(assigns(:location))
+    assert_response :success
   end
 
   test 'admin users can create locations in any institutions\' repositories' do
@@ -39,10 +40,11 @@ class LocationsControllerTest < ActionController::TestCase
     assert_difference 'Location.count' do
       post :create, location: { name: 'Test Location',
                                 description: 'Test Description' },
+           format: :xhr,
            repository_id: 5
     end
     assert_equal 'Location "Test Location" created.', flash['success']
-    assert_redirected_to location_url(assigns(:location))
+    assert_response :success
   end
 
   test 'creating a location should write to the event log' do
@@ -50,18 +52,17 @@ class LocationsControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       post :create, location: { name: 'Test Location',
                                 description: 'Test Description' },
-           repository_id: 5
+           repository_id: 5, format: :xhr
     end
   end
 
   test 'creating an invalid location should render new template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Location.count' do
-      post :create, location: { name: '',
-                                description: '' },
-           repository_id: 1
+      post :create, location: { name: '', description: '' },
+           repository_id: 1, format: :xhr
     end
-    assert_template :new
+    assert_template :'shared/_error_messages'
   end
 
   #### destroy ####
@@ -121,14 +122,14 @@ class LocationsControllerTest < ActionController::TestCase
 
   test 'signed-in users can view their own locations\' edit pages' do
     signin_as(users(:normal_user))
-    get :edit, id: 1
+    xhr :get, :edit, id: 1
     assert_response :success
     assert_not_nil assigns(:location)
   end
 
   test 'admin users can view any location\'s edit page' do
     signin_as(users(:admin_user))
-    get :edit, id: 5
+    xhr :get, :edit, id: 5
     assert_response :success
     assert_not_nil assigns(:location)
   end
@@ -156,20 +157,16 @@ class LocationsControllerTest < ActionController::TestCase
 
   test 'signed-in users can view new-location page for their own repositories' do
     signin_as(users(:normal_user))
-    get :new, repository_id: 1
+    xhr :get, :new, repository_id: 1
     assert :success
-    assert_not_nil assigns(:repository)
-    assert_not_nil assigns(:location)
-    assert_template :new
+    assert_template :'locations/_edit_form'
   end
 
   test 'admin users can view new-location page for any repository' do
     signin_as(users(:admin_user))
-    get :new, repository_id: 5
+    xhr :get, :new, repository_id: 5
     assert :success
-    assert_not_nil assigns(:repository)
-    assert_not_nil assigns(:location)
-    assert_template :new
+    assert_template :'locations/_edit_form'
   end
 
   #### show ####
@@ -183,8 +180,6 @@ class LocationsControllerTest < ActionController::TestCase
     signin_as(users(:normal_user))
     get :show, id: 1
     assert_response :success
-    assert_not_nil assigns(:location)
-    assert_not_nil assigns(:resources)
   end
 
   test 'signed-in users cannot view other institutions\' locations' do
@@ -197,8 +192,6 @@ class LocationsControllerTest < ActionController::TestCase
     signin_as(users(:admin_user))
     get :show, id: 5
     assert_response :success
-    assert_not_nil assigns(:location)
-    assert_not_nil assigns(:resources)
   end
 
   test 'attempting to view a nonexistent location returns 404' do
@@ -231,7 +224,7 @@ class LocationsControllerTest < ActionController::TestCase
     patch :update, location: { name: 'New Name',
                                description: 'New Description' }, id: 1
     assert_equal 'New Name', Location.find(1).name
-    assert_redirected_to location_url(assigns(:location))
+    assert_response :success
   end
 
   test 'admin users can update locations in any institutions\' repositories' do
@@ -239,7 +232,7 @@ class LocationsControllerTest < ActionController::TestCase
     patch :update, location: { name: 'New Name',
                                description: 'New Description' }, id: 5
     assert_equal 'New Name', Location.find(5).name
-    assert_redirected_to location_url(assigns(:location))
+    assert_response :success
   end
 
   test 'updating a location should write to the event log' do

@@ -143,12 +143,13 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @param ead EAD XML string
-  # @param user User
-  # @return Resource
+  # @param ead [String] EAD XML string
+  # @param user [User]
+  # @return [Resource]
+  # @raises [Nokogiri::XML::SyntaxError]
   #
   def self.from_ead(ead, user)
-    doc = Nokogiri::XML(ead)
+    doc = Nokogiri::XML(ead) { |config| config.strict }
     ead_ns = { 'ead' => 'urn:isbn:1-931666-22-9' }
     params = {}
 

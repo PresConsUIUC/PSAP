@@ -3,6 +3,7 @@
 cidg_page:
   id: 1
   category: avmedia
+  component: <%= StaticPage::Component::COLLECTION_ID_GUIDE %>
   html: <html><body><p>cats</p></body></html>
   name: A/V Media
   searchable_html: cats
@@ -11,6 +12,7 @@ cidg_page:
 help_page:
   id: 2
   category: help
+  component: <%= StaticPage::Component::HELP %>
   html: <html><body><p>cats</p></body></html>
   name: Help
   searchable_html: cats
