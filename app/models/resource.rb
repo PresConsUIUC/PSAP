@@ -88,9 +88,14 @@ class Resource < ActiveRecord::Base
   after_initialize :init
   before_save :update_assessment_score, :update_assessment_complete
 
-  def self.all_matching_query(institution, params, starting_set = nil)
-    starting_set = Resource.all unless starting_set
-    resources = starting_set
+  ##
+  # @param institution [Institution]
+  # @param params [Hash<Symbol,Object>]
+  # @return [ActiveRecord::Relation<Resource>]
+  #
+  def self.all_matching_query(institution, params)
+    params = params.symbolize_keys
+    resources = institution.resources
 
     # assessed
     if params[:assessed] == '1'
@@ -117,7 +122,9 @@ class Resource < ActiveRecord::Base
     # q
     if params[:q].present?
       q = "%#{params[:q].strip.downcase}%"
-      resources = resources.joins(:resource_notes, :subjects).
+      resources = resources.
+          joins('LEFT JOIN resource_notes ON resource_notes.resource_id = resources.id').
+          joins('LEFT JOIN subjects ON subjects.resource_id = resources.id').
           where('LOWER(resources.description) LIKE ? '\
           'OR LOWER(resources.local_identifier) LIKE ? '\
           'OR LOWER(resources.name) LIKE ? '\

@@ -201,11 +201,11 @@ class ResourcesController < ApplicationController
     query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
                   :resource_type, :score, :score_direction, :user_id]
     if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
-      # no search query input present; show only top-level resources
+      # no search query input present; show all resources
       @resource_count = @resources.count
-      @resources = @resources.where(parent_id: nil).order(:name)
+      @resources = @resources.order(:name)
     else
-      @resources = Resource.all_matching_query(@institution, params, @resources)
+      @resources = Resource.all_matching_query(@institution, params.to_hash)
       @resource_count = @resources.count
     end
 
