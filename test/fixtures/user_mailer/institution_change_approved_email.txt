@@ -12,4 +12,4 @@ contact us at psap@library.illinois.edu.
 
 The PSAP is available at:
 
-http://localhost:3000/
+http://test.host/

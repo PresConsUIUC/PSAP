@@ -76,9 +76,9 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
     assert_equal '/', path
   end
 
-  test 'following confirmation link should redirect to /signin and set the flash' do
+  test 'following confirmation link should redirect to / and set the flash' do
     post_via_redirect('/new-password', user: @user.attributes)
-    assert_equal '/signin', path
+    assert_equal '/', path
     assert_equal('Password reset successfully.', flash['success'])
   end
 

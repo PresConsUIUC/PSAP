@@ -28,6 +28,8 @@ class Resource < ActiveRecord::Base
     end
   end
 
+  MAX_NAME_LENGTH = 255
+
   # When adding/removing properties or associations, update both .as_csv and
   # ::as_csv.
 
@@ -69,7 +71,7 @@ class Resource < ActiveRecord::Base
             inclusion: { in: Assessment::Type.all,
                          message: 'must be a valid assessment type' }
   validates :location, presence: true
-  validates :name, presence: true, length: { maximum: 255 }
+  validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
   validates :resource_type, inclusion: { in: Resource::Type.all,
                          message: 'must be a valid resource type' }
   validates :significance, allow_blank: true,
@@ -86,9 +88,14 @@ class Resource < ActiveRecord::Base
   after_initialize :init
   before_save :update_assessment_score, :update_assessment_complete
 
-  def self.all_matching_query(institution, params, starting_set = nil)
-    starting_set = Resource.all unless starting_set
-    resources = starting_set
+  ##
+  # @param institution [Institution]
+  # @param params [Hash<Symbol,Object>]
+  # @return [ActiveRecord::Relation<Resource>]
+  #
+  def self.all_matching_query(institution, params)
+    params = params.symbolize_keys
+    resources = institution.resources
 
     # assessed
     if params[:assessed] == '1'
@@ -115,7 +122,9 @@ class Resource < ActiveRecord::Base
     # q
     if params[:q].present?
       q = "%#{params[:q].strip.downcase}%"
-      resources = resources.joins(:resource_notes, :subjects).
+      resources = resources.
+          joins('LEFT JOIN resource_notes ON resource_notes.resource_id = resources.id').
+          joins('LEFT JOIN subjects ON subjects.resource_id = resources.id').
           where('LOWER(resources.description) LIKE ? '\
           'OR LOWER(resources.local_identifier) LIKE ? '\
           'OR LOWER(resources.name) LIKE ? '\
@@ -141,12 +150,13 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @param ead EAD XML string
-  # @param user User
-  # @return Resource
+  # @param ead [String] EAD XML string
+  # @param user [User]
+  # @return [Resource]
+  # @raises [Nokogiri::XML::SyntaxError]
   #
   def self.from_ead(ead, user)
-    doc = Nokogiri::XML(ead)
+    doc = Nokogiri::XML(ead) { |config| config.strict }
     ead_ns = { 'ead' => 'urn:isbn:1-931666-22-9' }
     params = {}
 
@@ -544,6 +554,16 @@ class Resource < ActiveRecord::Base
     self.resource_dates.each { |c| clone.resource_dates << c.dup }
     self.resource_notes.each { |c| clone.resource_notes << c.dup }
     self.subjects.each { |c| clone.subjects << c.dup }
+
+    prefix = 'Clone of '
+    (1..999).each do |i|
+      proposed_name = prefix + self.name[0..(MAX_NAME_LENGTH - 1 - prefix.length * i)]
+      unless Resource.find_by_name(proposed_name)
+        clone.name = proposed_name
+        break
+      end
+    end
+
     clone
   end
 

@@ -12,8 +12,8 @@ class ResourceTest < ActiveSupport::TestCase
   ######################### class method tests ##############################
 
   test 'from_ead should raise an exception if given invalid XML' do
-    assert_raises REXML::ParseException do
-      Resource.from_ead('<cats></cat', users(:normal_user).id)
+    assert_raises Nokogiri::XML::SyntaxError do
+      Resource.from_ead('<cats></oops', users(:normal_user).id)
     end
   end
 
@@ -60,6 +60,7 @@ class ResourceTest < ActiveSupport::TestCase
   test 'resource should have a unique name scoped to its parent' do
     # same name and parent should fail
     resource2 = @resource.dup
+    resource2.name = @resource.name
     assert !resource2.save
     # same name, different parent should succeed
     resource2.parent = resources(:uiuc_collection)
@@ -213,10 +214,38 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal @resource.resource_dates.length, clone.resource_dates.length
     assert_equal @resource.resource_notes.length, clone.resource_notes.length
     assert_equal @resource.subjects.length, clone.subjects.length
+    assert_equal 'Clone of ' + @resource.name, clone.name
+  end
+
+  test 'dup truncates long names' do
+    @resource.name = 'a' * Resource::MAX_NAME_LENGTH
+    clone = @resource.dup
+
+    assert_equal "Clone of #{'a' * (Resource::MAX_NAME_LENGTH - 9)}", clone.name
+    assert clone.name.length <= Resource::MAX_NAME_LENGTH
+
+    clone2 = clone.dup
+    assert_equal "Clone of Clone of #{'a' * (Resource::MAX_NAME_LENGTH - 18)}",
+                 clone2.name
+    assert clone2.name.length <= Resource::MAX_NAME_LENGTH
   end
 
   # effective_assessment_score
   test 'effective_assessment_score should work' do
+    skip # TODO: write this
+  end
+
+  # effective_format_score
+  test 'effective_format_score should set 0 if no format' do
+    @resource.format = nil
+    assert_equal 0, @resource.effective_format_score
+  end
+
+  test 'effective_format_score should work for bound paper and original documents' do
+    skip # TODO: write this
+  end
+
+  test 'effective_format_score should work for non-bound paper and non-original documents' do
     skip # TODO: write this
   end
 
@@ -265,21 +294,6 @@ class ResourceTest < ActiveSupport::TestCase
   test 'update_assessment_complete should work when a format with assessment questions is set and a response exists' do
     @resource.update_assessment_complete
     assert @resource.assessment_complete
-  end
-
-  # update_assessment_score
-  test 'update_assessment_score should set 0 if no format' do
-    @resource.format = nil
-    @resource.update_assessment_score
-    assert_equal 0, @resource.assessment_score
-  end
-
-  test 'update_assessment_score should work for bound paper and original documents' do
-    skip # TODO: write this
-  end
-
-  test 'update_assessment_score should work for non-bound paper and non-original documents' do
-    skip # TODO: write this
   end
 
   ########################### association tests ##############################
@@ -337,14 +351,6 @@ class ResourceTest < ActiveSupport::TestCase
     resource2 = resources(:resource_two)
     resource2.parent = @resource
     assert !resource2.save
-  end
-
-  test 'resource cannot have more than one response to the same assessment question' do
-    @resource.assessment_question_responses <<
-        assessment_question_responses(:assessment_question_response_one)
-    @resource.assessment_question_responses <<
-        assessment_question_responses(:assessment_question_response_one_point_five)
-    assert !@resource.save
   end
 
   test 'resource\'s owning user must be of the same institution unless an admin' do

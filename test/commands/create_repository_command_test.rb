@@ -16,6 +16,8 @@ class CreateRepositoryCommandTest < ActiveSupport::TestCase
     @invalid_command = CreateRepositoryCommand.new(@institution,
                                                    @invalid_repository_params,
                                                    @user, @remote_ip)
+
+    Repository.destroy_all
   end
 
   # execute

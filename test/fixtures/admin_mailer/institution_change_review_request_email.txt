@@ -4,7 +4,7 @@ First Name: Norm
 Last Name: McNormal
 Username: normal
 Email: normal@example.org
-About: All about me
+About: about me
 
 The user's current institution is: University of Illinois at Urbana-Champaign.
 
@@ -16,7 +16,7 @@ admin@example.net, unconfirmed@example.org
 1) If this request seems legitimate, please sign in to the PSAP and approve
    the user's request at your earliest convenience:
 
-http://localhost:3000/users/normal
+http://test.host/users/normal
 
 2) If you are not sure, please send the user an email requesting more
    information.

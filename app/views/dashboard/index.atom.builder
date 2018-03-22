@@ -14,7 +14,7 @@ xml.feed(
   end
   xml.author {
     xml.name('Preservation Self-Assessment Program (PSAP)')
-    xml.email(Configuration.instance.results_per_page)
+    xml.email(Configuration.instance.mail_address)
     xml.uri(root_url)
   }
   xml.generator('uri' => root_url) {

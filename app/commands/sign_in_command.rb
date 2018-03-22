@@ -1,12 +1,6 @@
 class SignInFailure < RuntimeError
 
-  def public_message
-    @public_message
-  end
-
-  def public_message=(msg)
-    @public_message = msg
-  end
+  attr_accessor :public_message
 
 end
 
@@ -25,27 +19,40 @@ class SignInCommand < Command
       public_message = nil
       log_message = nil
 
-      if !@username.empty?
+      if @username.present?
         if @password
           @user = User.find_by_username(@username)
-          if @user and !@user.enabled and !@user.last_signin
-            @user = nil # could be an impostor
-            public_message = 'Your account has been confirmed, but it has not '\
-            'yet been enabled by PSAP staff. We try to do this as quickly as '\
-            'possible, but if you have been waiting a while, please feel free '\
-            'to contact us.'
-            log_message = "Sign-in failed for #{@username}: account not "\
-            "enabled."
-          elsif @user and @user.enabled and @user.confirmed and
-              @user.authenticate(@password)
-            @user.events << Event.create(
-                description: "User #{@user.username} signed in",
-                user: @user, address: @remote_ip)
-            @first_signin = @user.last_signin.blank?
-            @user.last_signin = Time.now
-            @user.save!
+          if @user
+            if @user.enabled and @user.confirmed and
+                @user.authenticate(@password)
+              @user.events << Event.create(
+                  description: "User #{@user.username} signed in",
+                  user: @user, address: @remote_ip)
+              @first_signin = @user.last_signin.blank?
+              @user.last_signin = Time.now
+              @user.save!
+            elsif !@user.confirmed
+              @user = nil # could be an impostor
+              public_message = 'Your account has not yet been confirmed. '\
+              'Please check your mailbox for an email from the PSAP and '\
+              'click the confirmation link contained within. '
+              log_message = "Sign-in failed for #{@username}: account not "\
+              "confirmed."
+            elsif !@user.enabled and !@user.last_signin
+              @user = nil # could be an impostor
+              public_message = 'Your account has been confirmed, but it has not '\
+              'yet been enabled by PSAP staff. We try to do this as quickly as '\
+              'possible, but if you have been waiting a while, please feel free '\
+              'to contact us.'
+              log_message = "Sign-in failed for #{@username}: account not "\
+              "enabled."
+            else
+              @user = nil # could be an impostor
+              public_message = 'Sign-in failed.'
+              log_message = "Sign-in failed for #{@username}: invalid username "\
+              "or password."
+            end
           else
-            @user = nil # could be an impostor
             public_message = 'Sign-in failed.'
             log_message = "Sign-in failed for #{@username}: invalid username "\
             "or password."

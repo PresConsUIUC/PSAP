@@ -62,6 +62,11 @@ class JoinInstitutionCommand < Command
             description: "Changed institution of user #{@user.username} to "\
             "#{@user.institution.name}",
             user: @doing_user, address: @remote_ip)
+      else
+        @user.events << Event.create(
+            description: "User #{@user.username} desires to change "\
+            "institution to #{@user.desired_institution.name}",
+            user: @doing_user, address: @remote_ip)
       end
     end
   end

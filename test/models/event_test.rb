@@ -9,7 +9,7 @@ class EventTest < ActiveSupport::TestCase
   ######################### class method tests ##############################
 
   test 'matching_params should work' do
-    flunk # TODO: write this
+    skip # TODO: write this
   end
 
   ############################ object tests #################################

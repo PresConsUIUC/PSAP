@@ -36,12 +36,6 @@ class TemperatureRangeTest < ActiveSupport::TestCase
     assert !@range.save
   end
 
-  # score
-  test 'score is required' do
-    @range.score = nil
-    assert !@range.save
-  end
-
   test 'score should be between 0 and 1' do
     @range.score = 1.1
     assert !@range.save

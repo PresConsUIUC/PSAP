@@ -34,11 +34,6 @@ class SignInCommandTest < ActiveSupport::TestCase
         @command.execute
       end
     end
-    event = Event.order(:created_at).last
-    assert_equal "Sign-in failed for #{@username}: invalid username or "\
-            "password.", event.description
-    assert_nil event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should write failure to event log if no username provided' do
@@ -48,10 +43,6 @@ class SignInCommandTest < ActiveSupport::TestCase
         @command.execute
       end
     end
-    event = Event.order(:created_at).last
-    assert_equal 'Sign-in failed: no username provided.', event.description
-    assert_nil event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

@@ -31,10 +31,10 @@ class ResourcesControllerTest < ActionController::TestCase
       res = resources(:resource_three).attributes
       res[:id] = nil
       res[:name] = 'New Resource'
-      post :create, resource: res, location_id: 1
+      post :create, resource: res, location_id: 1, format: :xhr
     end
     assert_equal 'Resource "New Resource" created.', flash['success']
-    assert_redirected_to resource_url(assigns(:resource))
+    assert_response :success
   end
 
   test 'admin users can create resources in any institution' do
@@ -43,10 +43,10 @@ class ResourcesControllerTest < ActionController::TestCase
       res = resources(:resource_three).attributes
       res[:id] = nil
       res[:name] = 'New Resource'
-      post :create, resource: res, location_id: 3
+      post :create, resource: res, location_id: 3, format: :xhr
     end
     assert_equal 'Resource "New Resource" created.', flash['success']
-    assert_redirected_to resource_url(assigns(:resource))
+    assert_response :success
   end
 
   test 'creating resources should write to the event log' do
@@ -55,19 +55,19 @@ class ResourcesControllerTest < ActionController::TestCase
       res = resources(:resource_three).attributes
       res[:id] = nil
       res[:name] = 'New Resource'
-      post :create, resource: res, location_id: 3
+      post :create, resource: res, location_id: 3, format: :xhr
     end
   end
 
-  test 'creating an invalid resource should render new template' do
+  test 'creating an invalid resource should render error template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Resource.count' do
       res = resources(:resource_three).attributes
       res[:id] = nil
       res[:name] = ''
-      post :create, resource: res, location_id: 1
+      post :create, resource: res, location_id: 1, format: :xhr
     end
-    assert_template :new
+    assert_template :'shared/_error_messages'
   end
 
   #### destroy ####
@@ -127,14 +127,14 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test 'signed-in users can view their own institution\'s resource edit pages' do
     signin_as(users(:normal_user))
-    get :edit, id: 1
+    xhr :get, :edit, id: 1
     assert_response :success
     assert_not_nil assigns(:resource)
   end
 
   test 'admin users can view any resource\'s edit page' do
     signin_as(users(:admin_user))
-    get :edit, id: 8
+    xhr :get, :edit, id: 8
     assert_response :success
     assert_not_nil assigns(:resource)
   end
@@ -162,20 +162,16 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test 'signed-in users can view new-resource page for their own institution' do
     signin_as(users(:normal_user))
-    get :new, location_id: 1
+    xhr :get, :new, location_id: 1
     assert :success
-    assert_not_nil assigns(:location)
-    assert_not_nil assigns(:resource)
-    assert_template :new
+    assert_template :'resources/_edit_form'
   end
 
   test 'admin users can view new-resource page for any institution' do
     signin_as(users(:admin_user))
-    get :new, location_id: 5
+    xhr :get, :new, location_id: 5
     assert :success
-    assert_not_nil assigns(:location)
-    assert_not_nil assigns(:resource)
-    assert_template :new
+    assert_template :'resources/_edit_form'
   end
 
   #### show ####
@@ -269,21 +265,13 @@ class ResourcesControllerTest < ActionController::TestCase
     patch :update, resource: { name: 'New Name' }, id: 1
     resource = Resource.find(1)
     assert_equal 'New Name', resource.name
-    assert_redirected_to resource_url(resource)
-  end
-
-  test 'admin users can update resources in any institution' do
-    signin_as(users(:admin_user))
-    patch :update, resource: { name: 'New Name' }, id: 5
-    resource = Resource.find(5)
-    assert_equal 'New Name', resource.name
-    assert_redirected_to resource_url(resource)
+    assert_response :success
   end
 
   test 'updating resources should write to the event log' do
     signin_as(users(:admin_user))
     assert_difference 'Event.count' do
-      patch :update, resource: { name: 'New Name' }, id: 5
+      patch :update, resource: { name: 'New Name' }, id: 5, format: :xhr
     end
   end
 

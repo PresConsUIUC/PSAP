@@ -27,10 +27,6 @@ class User < ActiveRecord::Base
   after_initialize :setup, if: :new_record?
   before_save { self.email = email.downcase }
 
-  def to_param
-    username
-  end
-
   def setup
     # generate a confirmation code
     require 'securerandom'
@@ -57,6 +53,14 @@ class User < ActiveRecord::Base
 
   def reset_password_reset_key
     self.password_reset_key = SecureRandom.urlsafe_base64(nil, false)
+  end
+
+  def to_param
+    username
+  end
+
+  def to_s
+    username
   end
 
   def validate_password?

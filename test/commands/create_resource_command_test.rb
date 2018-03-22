@@ -16,6 +16,8 @@ class CreateResourceCommandTest < ActiveSupport::TestCase
     @invalid_command = CreateResourceCommand.new(@location,
                                                  @invalid_resource_params,
                                                  @user, @remote_ip)
+
+    Resource.destroy_all
   end
 
   # execute
