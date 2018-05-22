@@ -641,15 +641,27 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # Returns the local identifier, or if that is not available, the database ID.
+  # Returns a filename in the following order of precedence:
+  #
+  # 1. The local identifier
+  # 2. The string "resource-" + database ID
+  # 3. The string "resource"
+  #
   # This is just a base name, with no extension, and may contain filesystem-
   # incompatible characters. Mostly it's intended to be used in a
   # Content-Disposition HTTP response header.
   #
-  # @return string
+  # @return [String]
   #
   def filename
-    self.local_identifier ? self.local_identifier : self.id.to_s
+    class_name = self.class.to_s.downcase
+    if self.local_identifier.present?
+      self.local_identifier
+    elsif self.id.present?
+      "#{class_name}-#{self.id.to_s}"
+    else
+      class_name
+    end
   end
 
   ##

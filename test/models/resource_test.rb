@@ -115,7 +115,13 @@ class ResourceTest < ActiveSupport::TestCase
 
   test 'filename should return object id if local identifier is not available' do
     @resource.local_identifier = nil
-    assert_equal '1', @resource.filename
+    assert_equal 'resource-1', @resource.filename
+  end
+
+  test 'filename should return class name if object id is not available' do
+    @resource.local_identifier = nil
+    @resource.id = nil
+    assert_equal 'resource', @resource.filename
   end
 
   # location
