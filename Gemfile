@@ -30,7 +30,6 @@ end
 
 gem 'bootstrap-sass', '3.2.0.2'
 gem 'font-awesome-sass', '~> 4.2.0'
-gem 'will_paginate', '3.0.4'
 gem 'will_paginate-bootstrap'
 gem 'bcrypt', '~> 3.1.9' # Use ActiveModel has_secure_password
 gem 'local_time'
@@ -46,12 +45,18 @@ gem 'roo' # used to import seed data from xlsx
 gem 'prawn' # used to generate a PDF version of the assessment report
 gem 'prawn-table'
 
+# Manual updates to patch security issues reported by GitHub
+gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'rubyzip', '~> 1.2.1'
+gem 'sprockets', '~> 2.12.5'
+gem 'will_paginate', '3.0.5'
+
 group :development do
   gem 'capistrano', '~> 3.2.1'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'thin' # faster web server than WEBrick.
+  gem 'thin'
 end
 
 group :production do
