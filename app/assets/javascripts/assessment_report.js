@@ -30,8 +30,7 @@ var AssessmentChart = {
             // get y domain max
             var y_max = yRange.domain().slice(-1)[0];
             var yAxis = d3.svg.axis().scale(yRange).tickSize(5).orient('left')
-                .tickSubdivide(true).tickValues(d3.range(y_max + 1))
-                .tickFormat(d3.format(',.0f'));
+                .ticks(8);
 
             vis.append('svg:g').attr('class', 'x axis')
                 .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
