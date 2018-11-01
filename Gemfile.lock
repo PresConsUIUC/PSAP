@@ -91,7 +91,7 @@ GEM
     libv8 (3.16.14.11)
     local_time (1.0.3)
       coffee-rails
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     magnific-popup-rails (0.9.9.1)
