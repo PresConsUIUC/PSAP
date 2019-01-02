@@ -76,6 +76,27 @@ class Institution < ActiveRecord::Base
   end
 
   ##
+  # Exports all of an instance's associated content, except users, to enable
+  # recovery of user-deleted data. To do this:
+  #
+  # 1. Stand up a second instance of the application
+  # 2. Load its database with backup data
+  # 3. Invoke this method and capture the return value (typically via a rake
+  #    task)
+  # 4. Pass the returned JSON to `import_content_as_json()` (typically via a
+  #    rake task) on the production application instance
+  #
+  # @return [Hash] Hash that can be passed to JSON.generate()
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:repositories] = self.repositories.map { |repo| repo.full_export_as_json }
+    struct
+  end
+
+  ##
   # @param section AssessmentSection
   # @return float
   #

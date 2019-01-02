@@ -24,6 +24,20 @@ class Location < ActiveRecord::Base
 
   after_save :update_resource_assessment_scores
 
+  ##
+  # Exports all of an instance's associated content.
+  #
+  # @see `Institution.full_export_as_json()`
+  # @return [Hash]
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:resources] = self.resources.map { |res| res.full_export_as_json }
+    struct
+  end
+
   def humidity_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1024))
     if response

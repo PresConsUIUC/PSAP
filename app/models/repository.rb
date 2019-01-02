@@ -24,4 +24,16 @@ class Repository < ActiveRecord::Base
     self.resources.where(resource_type: Resource::Type::COLLECTION)
   end
 
+  ##
+  # Exports all of an instance's associated content.
+  #
+  # @see `Institution.full_export_as_json()`
+  # @return [Hash]
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:locations] = self.locations.map { |loc| loc.full_export_as_json }
+    struct
+  end
+
 end

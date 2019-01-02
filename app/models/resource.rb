@@ -665,6 +665,24 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # Exports all of an instance's associated content.
+  #
+  # @see `Institution.full_export_as_json()`
+  # @return [Hash]
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:creators]       = self.creators.map { |r| r.as_json }
+    struct[:extents]        = self.extents.map { |r| r.as_json }
+    struct[:resource_dates] = self.resource_dates.map { |r| r.as_json }
+    struct[:resource_notes] = self.resource_notes.map { |r| r.as_json }
+    struct[:subjects]       = self.subjects.map { |r| r.as_json }
+    struct
+  end
+
+  ##
   # Submitted edit forms will include empty submodels such as creator, extent,
   # etc. This method will remove them.
   #
