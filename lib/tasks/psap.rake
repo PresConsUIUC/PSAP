@@ -14,6 +14,12 @@ namespace :psap do
     puts JSON.pretty_generate(inst.full_export_as_json)
   end
 
+  desc 'Import all of an institution\'s data from JSON'
+  task :import_institution, [:pathname] => [:environment] do |task, args|
+    struct = JSON.parse(File.read(File.expand_path(args[:pathname])))
+    Institution.import(struct)
+  end
+
   ##
   # Should be run before psap:seed_html_bundles whenever any images or videos
   # change in any of the db/seed_data subfolders. The resulting images should
