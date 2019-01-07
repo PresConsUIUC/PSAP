@@ -24,6 +24,49 @@ class Location < ActiveRecord::Base
 
   after_save :update_resource_assessment_scores
 
+  ##
+  # Used by `Repository.import()`.
+  #
+  # @param struct [Hash]
+  # @param location_id [Integer]
+  # @return [Location]
+  #
+  def self.import(struct, repository_id)
+    loc = Location.create!(name: struct['name'],
+                           description: struct['description'],
+                           assessment_score: struct['assessment_score'],
+                           assessment_complete: struct['assessment_complete'],
+                           repository_id: repository_id,
+                           created_at: struct['created_at'],
+                           updated_at: struct['updated_at'])
+    struct['assessment_question_responses'].each do |response|
+      loc.assessment_question_responses.build(
+          assessment_question_option_id: response['assessment_question_option_id'],
+          assessment_question_id: response['assessment_question_id'],
+          created_at: response['created_at'],
+          updated_at: response['updated_at'])
+    end
+    struct['resources'].each do |resource|
+      Resource.import(resource, loc.id)
+    end
+    loc.save!
+    loc
+  end
+
+  ##
+  # Exports all of an instance's associated content.
+  #
+  # @see `Institution.full_export_as_json()`
+  # @return [Hash]
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:resources] = self.resources.map { |res| res.full_export_as_json }
+    struct
+  end
+
   def humidity_range
     response = self.response_to_question(AssessmentQuestion.find_by_qid(1024))
     if response

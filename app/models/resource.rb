@@ -81,7 +81,6 @@ class Resource < ActiveRecord::Base
 
   validate :validates_item_children
   validate :validates_not_child_of_item
-  validate :validates_same_institution_as_user
 
   validates_uniqueness_of :name, scope: :parent_id
 
@@ -339,6 +338,80 @@ class Resource < ActiveRecord::Base
             [resource.updated_at.iso8601]
       end
     end
+  end
+
+  ##
+  # Used by `Location.import()`.
+  #
+  # @param struct [Hash]
+  # @param location_id [Integer]
+  # @return [Resource]
+  #
+  def self.import(struct, location_id)
+    res = Resource.create!(name: struct['name'],
+                           description: struct['description'],
+                           location_id: location_id,
+                           parent_id: struct['parent_id'],
+                           resource_type: struct['resource_type'],
+                           format_id: struct['format_id'],
+                           user_id: struct['user_id'],
+                           local_identifier: struct['local_identifier'],
+                           date_type: struct['date_type'],
+                           assessment_id: struct['assessment_id'],
+                           rights: struct['rights'],
+                           language_id: struct['language_id'],
+                           assessment_score: struct['assessment_score'],
+                           assessment_complete: struct['assessment_complete'],
+                           significance: struct['significance'],
+                           format_ink_media_type_id: struct['format_ink_media_type_id'],
+                           format_support_type_id: struct['format_support_type_id'],
+                           assessment_type: struct['assessment_type'],
+                           created_at: struct['created_at'],
+                           updated_at: struct['updated_at'])
+
+    struct['assessment_question_responses'].each do |response|
+      res.assessment_question_responses.build(
+          assessment_question_option_id: response['assessment_question_option_id'],
+          assessment_question_id: response['assessment_question_id'],
+          created_at: response['created_at'],
+          updated_at: response['updated_at'])
+    end
+    struct['creators'].each do |creator|
+      res.creators.build(name: creator['name'],
+                         resource_id: res.id,
+                         creator_type: creator['creator_type'],
+                         created_at: creator['created_at'],
+                         updated_at: creator['updated_at'])
+    end
+    struct['extents'].each do |extent|
+      res.extents.build(name: extent['name'],
+                        resource_id: extent['resource_id'])
+    end
+    struct['resource_dates'].each do |date|
+      res.resource_dates.build(resource_id: res.id,
+                               date_type: date['date_type'],
+                               begin_year: date['begin_year'],
+                               begin_month: date['begin_month'],
+                               begin_day: date['begin_day'],
+                               end_year: date['end_year'],
+                               end_month: date['end_month'],
+                               end_day: date['end_day'],
+                               year: date['year'],
+                               month: date['month'],
+                               day: date['day'])
+    end
+    struct['resource_notes'].each do |note|
+      res.resource_notes.build(value: note['value'],
+                               created_at: note['created_at'],
+                               updated_at: note['updated_at'])
+    end
+    struct['subjects'].each do |subject|
+      res.subjects.build(name: subject['name'],
+                         created_at: subject['created_at'],
+                         updated_at: subject['updated_at'])
+    end
+    res.save!
+    res
   end
 
   ##
@@ -665,6 +738,24 @@ class Resource < ActiveRecord::Base
   end
 
   ##
+  # Exports all of an instance's associated content.
+  #
+  # @see `Institution.full_export_as_json()`
+  # @return [Hash]
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:creators]       = self.creators.map { |r| r.as_json }
+    struct[:extents]        = self.extents.map { |r| r.as_json }
+    struct[:resource_dates] = self.resource_dates.map { |r| r.as_json }
+    struct[:resource_notes] = self.resource_notes.map { |r| r.as_json }
+    struct[:subjects]       = self.subjects.map { |r| r.as_json }
+    struct
+  end
+
+  ##
   # Submitted edit forms will include empty submodels such as creator, extent,
   # etc. This method will remove them.
   #
@@ -678,16 +769,16 @@ class Resource < ActiveRecord::Base
 
   def prune_irrelevant_models
     if self.resource_type == Resource::Type::COLLECTION
-      self.format = nil
+      self.format                = nil
       self.format_ink_media_type = nil
-      self.format_support_type = nil
+      self.format_support_type   = nil
       self.assessment_question_responses.destroy_all
-      self.assessment_complete = nil
-      self.assessment_type = nil
+      self.assessment_complete   = nil
+      self.assessment_type       = nil
     end
     if self.format and !self.format.requires_type_vectors?
       self.format_ink_media_type = nil
-      self.format_support_type = nil
+      self.format_support_type   = nil
     end
   end
 
@@ -736,9 +827,9 @@ class Resource < ActiveRecord::Base
   def self.ead_date_to_ymd_hash(date)
     date = date.split('-')
     parts = {}
-    parts[:day] = date[2].to_i if date.length > 2
+    parts[:day]   = date[2].to_i if date.length > 2
     parts[:month] = date[1].to_i if date.length > 1
-    parts[:year] = date[0].to_i
+    parts[:year]  = date[0].to_i
     parts
   end
 
@@ -755,13 +846,6 @@ class Resource < ActiveRecord::Base
   def validates_not_child_of_item
     if parent and parent.resource_type != Resource::Type::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
-    end
-  end
-
-  def validates_same_institution_as_user
-    if user and !user.is_admin? and self.location and
-        user.institution != self.location.repository.institution
-      errors[:base] << 'Owning user must be of the same institution.'
     end
   end
 

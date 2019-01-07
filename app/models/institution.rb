@@ -36,6 +36,36 @@ class Institution < ActiveRecord::Base
   validates :url, allow_blank: true, format: URI::regexp(%w(http https))
 
   ##
+  # Imports data exported from `full_export_as_json()`. All existing associated
+  # data (except users and events) is deleted first.
+  #
+  # @param struct [Hash]
+  # @return [void]
+  #
+  def self.import(struct)
+    ActiveRecord::Base.transaction do
+      # Destroy most of the institution's content (except users & events) in
+      # order to make way for the imported content.
+      inst = Institution.find(struct['id'].to_i)
+      inst.assessment_question_responses.destroy_all
+      inst.repositories.destroy_all
+
+      struct['assessment_question_responses'].each do |response|
+        inst.assessment_question_responses.build(
+            assessment_question_option_id: response['assessment_question_option_id'],
+            assessment_question_id: response['assessment_question_id'],
+            created_at: response['created_at'],
+            updated_at: response['updated_at'])
+      end
+      struct['repositories'].each do |repo|
+        Repository.import(repo, inst.id)
+      end
+      inst.save!
+      inst
+    end
+  end
+
+  ##
   # @return Array of all assessed items in an institution, regardless of depth
   # in the hierarchy.
   #
@@ -73,6 +103,27 @@ class Institution < ActiveRecord::Base
   #
   def assessed_locations
     self.locations.where(assessment_complete: true)
+  end
+
+  ##
+  # Exports all of an instance's associated content, except users, to enable
+  # recovery of user-deleted data. To do this:
+  #
+  # 1. Stand up a second instance of the application
+  # 2. Load its database with backup data
+  # 3. Invoke this method and capture the return value (typically via a rake
+  #    task)
+  # 4. Pass the returned JSON to `import()` (typically via a rake task) on the
+  #    production application instance
+  #
+  # @return [Hash] Hash that can be passed to JSON.generate()
+  #
+  def full_export_as_json
+    struct = self.as_json
+    struct[:assessment_question_responses] =
+        self.assessment_question_responses.map { |r| r.as_json }
+    struct[:repositories] = self.repositories.map { |repo| repo.full_export_as_json }
+    struct
   end
 
   ##
@@ -117,6 +168,10 @@ class Institution < ActiveRecord::Base
                             assessment_complete: true)
     items.any? ?
         items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0
+  end
+
+  def to_s
+    "#{self.name}"
   end
 
 end
