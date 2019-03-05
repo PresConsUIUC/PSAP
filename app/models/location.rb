@@ -63,7 +63,8 @@ class Location < ActiveRecord::Base
     struct = self.as_json
     struct[:assessment_question_responses] =
         self.assessment_question_responses.map { |r| r.as_json }
-    struct[:resources] = self.resources.map { |res| res.full_export_as_json }
+    struct[:resources] = self.resources.
+        where(parent_id: nil).map { |res| res.full_export_as_json }
     struct
   end
 

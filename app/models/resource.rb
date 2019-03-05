@@ -347,11 +347,11 @@ class Resource < ActiveRecord::Base
   # @param location_id [Integer]
   # @return [Resource]
   #
-  def self.import(struct, location_id)
+  def self.import(struct, location_id, parent_id = nil)
     res = Resource.create!(name: struct['name'],
                            description: struct['description'],
                            location_id: location_id,
-                           parent_id: struct['parent_id'],
+                           parent_id: parent_id,
                            resource_type: struct['resource_type'],
                            format_id: struct['format_id'],
                            user_id: struct['user_id'],
@@ -411,6 +411,11 @@ class Resource < ActiveRecord::Base
                          updated_at: subject['updated_at'])
     end
     res.save!
+
+    struct['resources'].each do |subresource|
+      Resource.import(subresource, location_id, res.id)
+    end
+
     res
   end
 
@@ -752,6 +757,7 @@ class Resource < ActiveRecord::Base
     struct[:resource_dates] = self.resource_dates.map { |r| r.as_json }
     struct[:resource_notes] = self.resource_notes.map { |r| r.as_json }
     struct[:subjects]       = self.subjects.map { |r| r.as_json }
+    struct[:resources]      = self.children.map { |r| r.full_export_as_json }
     struct
   end
 
