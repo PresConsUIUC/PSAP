@@ -138,7 +138,6 @@ var AssessmentForm = function(entity) {
                 }
                 // all locations have the same set of assessment questions
                 return root_url + 'locations/1/assessment-questions';
-                break;
             case 'institution':
                 if (parent_qid) {
                     return root_url +
@@ -147,7 +146,6 @@ var AssessmentForm = function(entity) {
                 }
                 // all institutions have the same set of assessment questions
                 return root_url + 'institutions/1/assessment-questions';
-                break;
             case 'resource':
                 var format_id = $('input[name="format_id"]').val();
                 if (parent_qid) {
@@ -157,7 +155,6 @@ var AssessmentForm = function(entity) {
                 }
                 return root_url + 'formats/' + format_id +
                     '/assessment-questions';
-                break;
         }
     };
 
@@ -201,16 +198,14 @@ var AssessmentForm = function(entity) {
                                     add = true;
                                 }
                             });
-                            if (add) {
-                                if (child_question_elem.length < 1) {
-                                    var depth = 0;
-                                    if (question_elem) {
-                                        depth = question_elem.data('depth') + 1;
-                                    }
-                                    insertQuestionAfter(
-                                        nodeForQuestion(object, depth),
-                                        question_elem);
+                            if (add && child_question_elem.length < 1) {
+                                var depth = 0;
+                                if (question_elem) {
+                                    depth = question_elem.data('depth') + 1;
                                 }
+                                insertQuestionAfter(
+                                    nodeForQuestion(object, depth),
+                                    question_elem);
                             }
                         });
                         $('.assessment_question [data-type="option"]').
