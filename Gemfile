@@ -25,7 +25,7 @@ gem 'recaptcha' # used in new-user signup form
 gem 'responders', '~> 2.0'
 gem 'roo' # used to import seed data from xlsx
 gem 'sass-rails', '~> 4.0.5'
-#gem 'therubyracer', '0.12.2', :platforms => :ruby
+gem 'therubyrhino'
 gem 'uglifier', '>= 1.3.0'
 gem 'will_paginate', '3.0.5'
 gem 'will_paginate-bootstrap'
