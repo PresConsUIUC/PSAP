@@ -180,7 +180,7 @@ var AssessmentForm = function(entity) {
             if (data.length) {
                 var onOptionChanged = function() {
                     if ($(this).closest('.assessment_question').data('depth') == '0') {
-                        $(this).closest('.assessment_question').nextAll('[data-depth=1]').remove();
+                        $(this).closest('.assessment_question').next('[data-depth=1]').remove();
                     }
 
                     // check for dependent (child) questions
