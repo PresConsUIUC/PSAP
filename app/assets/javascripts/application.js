@@ -13,10 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require jquery.cookie
+//= require js.cookie
 //= require bootstrap-typeahead-rails
 //= require d3
 //= require magnific-popup
-//= require local_time
+//= require local-time
 //= require_tree .
 //= require_tree ../../../vendor/assets/javascripts
