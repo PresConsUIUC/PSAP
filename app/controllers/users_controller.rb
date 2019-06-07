@@ -346,7 +346,7 @@ class UsersController < ApplicationController
     # Put the test institution at the top per GitHub issue #336.
     test_institution_id = ::Configuration.instance.test_institution_id
     @institutions = Institution.where('id != ?', test_institution_id).
-        order(:name)
+        order(:name).to_a
     @institutions.unshift(Institution.find(test_institution_id))
   end
 

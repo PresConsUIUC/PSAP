@@ -99,10 +99,10 @@ var PSAP = {
                     failValidation(elem);
                 }
             }
-            if (type == PSAP.Form.TYPE_URL) {
+            if (type === PSAP.Form.TYPE_URL) {
                 // very crude checks here, but good enough
-                if (value.substring(0, 7) == 'http://' && value.length > 7
-                    || value.substring(0, 8) == 'https://' && value.length > 8) {
+                if (value.substring(0, 7) === 'http://' && value.length > 7
+                    || value.substring(0, 8) === 'https://' && value.length > 8) {
                     passValidation(elem);
                 } else {
                     failValidation(elem);
@@ -190,8 +190,8 @@ var PSAP = {
          * Refreshes "check/uncheck all" checkboxes.
          */
         function refreshCheckboxUI() {
-            var all_checked = checkboxes.filter(':checked').length == checkboxes.length;
-            var none_checked = checkboxes.filter(':checked').length == 0;
+            var all_checked = checkboxes.filter(':checked').length === checkboxes.length;
+            var none_checked = checkboxes.filter(':checked').length === 0;
 
             $('button.psap-move-checked').prop('disabled', none_checked);
             if (all_checked) {
@@ -381,8 +381,8 @@ var PSAP = {
         var anchors = $('a[href^="#"]');
         anchors.off('click').on('click', function(e) {
             // avoid interfering with other Bootstrap components
-            if ($(this).data('toggle') == 'collapse' ||
-                $(this).data('toggle') == 'tab') {
+            if ($(this).data('toggle') === 'collapse' ||
+                $(this).data('toggle') === 'tab') {
                 return;
             }
             e.preventDefault();

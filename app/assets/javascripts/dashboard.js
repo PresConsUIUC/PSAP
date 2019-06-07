@@ -5,9 +5,9 @@ var ready = function() {
     if ($('body#dashboard_welcome').length) {
         // This cookie is set in SessionsController when the user has signed
         // in for the first time.
-        if ($.cookie('first_signin')) {
+        if (Cookies.get('first_signin')) {
             $('#psap-welcome-panel').modal('show');
-            $.removeCookie('first_signin'); // prevent it from being shown again
+            Cookies.remove('first_signin'); // prevent it from being shown again
         }
 
         $('#psap-welcome-panel').on('hide.bs.modal', function(e) {

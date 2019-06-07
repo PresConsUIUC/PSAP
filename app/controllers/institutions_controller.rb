@@ -147,10 +147,10 @@ class InstitutionsController < ApplicationController
         'OR events_locations.location_id IN (?)'\
         'OR events_resources.resource_id IN (?)',
               @institution.id,
-              @institution.repositories.map { |repo| repo.id },
-              @institution.repositories.map { |repo| repo.locations.map { |loc| loc.id } }.flatten.compact,
+              @institution.repositories.pluck(:id),
+              @institution.repositories.map { |repo| repo.locations.pluck(:id) }.flatten.compact,
               @institution.repositories.map { |repo| repo.locations.map {
-                  |loc| loc.resources.map { |res| res.id } } }.flatten.compact).
+                  |loc| loc.resources.pluck(:id) } }.flatten.compact).
         order(created_at: :desc).
         limit(20)
   end
@@ -158,11 +158,7 @@ class InstitutionsController < ApplicationController
   def same_institution_user
     # Normal users can only edit their own institution. Administrators can edit
     # any institution.
-    if params[:id]
-      institution = Institution.find(params[:id])
-    else
-      institution = Institution.find(params[:institution_id])
-    end
+    institution = Institution.find(params[:id] || params[:institution_id])
     redirect_to(root_url) unless
         institution.users.include?(current_user) or current_user.is_admin?
   end

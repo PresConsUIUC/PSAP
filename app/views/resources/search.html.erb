@@ -140,10 +140,10 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to('CSV', params.merge(format: 'csv'),
+            <li><%= link_to('CSV', @sanitized_params.merge(format: 'csv'),
                             class: 'psap-export',
                             data: { format: 'CSV', filename: 'resources.csv' }) %></li>
-            <li><%= link_to('JSON', params.merge(format: 'json')) %></li>
+            <li><%= link_to('JSON', @sanitized_params.merge(format: 'json')) %></li>
           </ul>
         </div>
       </div>

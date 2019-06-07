@@ -194,18 +194,20 @@ class ResourcesController < ApplicationController
   # Responds to GET /resources/search
   #
   def search
-    @institution = current_user.institution
-    @resources = @institution.resources
-
     # all available URL query parameters
     query_keys = [:assessed, :format_id, :language_id, :q, :repository_id,
                   :resource_type, :score, :score_direction, :user_id]
-    if query_keys.select{ |k| !params.key?(k) }.length == query_keys.length
+    @sanitized_params = params.permit(query_keys)
+
+    @institution = current_user.institution
+    @resources = @institution.resources
+
+    if @sanitized_params.select{ |k| !params.key?(k) }.length == @sanitized_params.length
       # no search query input present; show all resources
       @resource_count = @resources.count
       @resources = @resources.order(:name)
     else
-      @resources = Resource.all_matching_query(@institution, params.to_hash)
+      @resources = Resource.all_matching_query(@institution, @sanitized_params.to_hash)
       @resource_count = @resources.count
     end
 

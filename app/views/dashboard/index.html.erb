@@ -2,7 +2,7 @@
 <% provide(:body_id, 'dashboard') %>
 
 <div class="pull-right">
-  <%= link_to params.merge(format: :atom, key: @user.feed_key),
+  <%= link_to dashboard_path(format: :atom, key: @user.feed_key),
               class: 'psap-feed-link',
               title: 'Subscribe to your personal activity feed' do
     image_tag('feed.svg', height: 24, alt: 'Atom feed')
