@@ -33,32 +33,16 @@ selected_entity ||= nil
   <% end %>
 
   <% entities.each do |entity| %>
-    <% if entity.kind_of?(Resource) %>
-      <% child_collections = entity.children.where(resource_type: Resource::Type::COLLECTION) %>
-    <% else %>
-      <% child_collections = [] %>
-    <% end %>
-
-    <% active = (selected_entity == entity or
-        (selected_entity.kind_of?(Resource) and
-            selected_entity.resource_type == Resource::Type::ITEM and
-            selected_entity.parent == entity)) %>
-
+    <% active = (selected_entity == entity) %>
     <li <%= active ? 'class=active' : '' %>>
       <div>
-        <% show_chevron = !((entity.kind_of?(Resource) and !child_collections.any?) or
-            (entity.kind_of?(Repository) and entity.collections.count < 1)) %>
         <a class="psap-expand fa fa-chevron-right"
-           style="<%= show_chevron ? '' : 'visibility: hidden' %>"></a>
+           style="<%= entity.kind_of?(Location) ? 'visibility: hidden' : '' %>"></a>
         <%= entity_icon(entity) %>
         <%= link_to entity.name, entity %>
       </div>
       <% entities = [] %>
-      <% if entity.kind_of?(Resource) and child_collections.any? %>
-        <% entities = child_collections %>
-      <% elsif entity.kind_of?(Location) and entity.resources.any? %>
-        <% entities = entity.resources.where(parent_id: nil) %>
-      <% elsif entity.kind_of?(Repository) and entity.locations.any? %>
+      <% if entity.kind_of?(Repository) and entity.locations.any? %>
         <% entities = entity.locations %>
       <% elsif entity.kind_of?(Institution) and entity.repositories.any? %>
         <% entities = entity.repositories %>
