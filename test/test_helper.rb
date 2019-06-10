@@ -34,9 +34,10 @@ end
 class ActionDispatch::IntegrationTest
 
   def signin(username, password)
-    post_via_redirect('/sessions',
-                      'session[username]' => username,
-                      'session[password]' => password)
+    post('/sessions', params: {
+        'session[username]' => username,
+        'session[password]' => password })
+    follow_redirect!
   end
 
 end

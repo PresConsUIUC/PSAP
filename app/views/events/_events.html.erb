@@ -2,8 +2,8 @@
 <input type="hidden" name="results_count" value="<%= @events.total_entries %>">
 
 <div class="center">
-  <%= raw(event_level_buttons(@event_level, params)) %>
-  <%= link_to params.merge(format: :atom, key: @user.feed_key),
+  <%= raw(event_level_buttons(@event_level, @sanitized_params)) %>
+  <%= link_to @sanitized_params.merge(format: :atom, key: @user.feed_key),
               class: 'psap-feed-link',
               title: 'Subscribe to a feed of events of this or greater severity' do
     image_tag('feed.svg', height: 24, alt: 'Atom feed')

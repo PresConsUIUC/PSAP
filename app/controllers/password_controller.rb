@@ -51,7 +51,7 @@ class PasswordController < ApplicationController
   # Responds to POST /new-password. Resets the password.
   #
   def reset_password
-    if params[:user].kind_of?(Hash)
+    if params[:user]
       @user = User.find_by_username params[:user][:username]
       if @user and
           params[:user][:password_reset_key] == @user.password_reset_key

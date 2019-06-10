@@ -79,8 +79,9 @@ class Resource < ActiveRecord::Base
                          message: 'must be a valid resource significance' }
   validates :user, presence: true
 
-  validate :validates_item_children
-  validate :validates_not_child_of_item
+  validate :validate_item_children
+  validate :validate_not_child_of_item
+  validate :validate_user
 
   validates_uniqueness_of :name, scope: :parent_id
 
@@ -843,15 +844,25 @@ class Resource < ActiveRecord::Base
     @effective_assessment_score = -1
   end
 
-  def validates_item_children
+  def validate_item_children
     if self.resource_type == Resource::Type::ITEM and self.children.any?
       errors[:base] << 'Non-empty collections cannot be changed into items.'
     end
   end
 
-  def validates_not_child_of_item
+  def validate_not_child_of_item
     if parent and parent.resource_type != Resource::Type::COLLECTION
       errors[:base] << 'Only collection resources can have sub-resources.'
+    end
+  end
+
+  def validate_user
+    this_inst = self.location&.repository&.institution
+    if this_inst
+      if !self.user&.is_admin? and this_inst != self.user&.institution
+        errors[:base] << 'Owning user must belong to the same institution as '\
+          'the resource\'s location\'s repository.'
+      end
     end
   end
 

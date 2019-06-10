@@ -1,8 +1,11 @@
 class EventsController < ApplicationController
 
+  PERMITTED_PARAMS = [:begin_date, :end_date, :level, :page]
+
   before_action :signed_in_user, unless: :format_atom?
   before_action :admin_user, unless: :format_atom?
   before_action :admin_user_with_key, if: :format_atom?
+  before_action :set_sanitized_params
 
   def index
     @event_level = params[:level]
@@ -27,6 +30,10 @@ class EventsController < ApplicationController
 
   def format_atom?
     request.format.atom?
+  end
+
+  def set_sanitized_params
+    @sanitized_params = params.permit(PERMITTED_PARAMS)
   end
 
 end

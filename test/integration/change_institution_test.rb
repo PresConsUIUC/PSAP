@@ -16,8 +16,9 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     original_institution = admin_user.institution
     admin_user.desired_institution = @new_institution
     admin_user.save
-    patch_via_redirect("/users/#{admin_user.username}",
-                       'user' => admin_user.attributes)
+    patch("/users/#{admin_user.username}", params: {
+        user: admin_user.attributes })
+    follow_redirect!
 
     admin_user.reload
     assert_equal(admin_user.institution, original_institution)
@@ -27,8 +28,9 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     signin(@valid_username, @valid_password)
     @user.desired_institution = @user.institution
     @user.save
-    patch_via_redirect("/users/#{@user.username}",
-                       'user' => @user.attributes)
+    patch("/users/#{@user.username}", params: {
+        user: @user.attributes })
+    follow_redirect!
     assert flash['success'].include?('is already a member')
   end
 
@@ -39,8 +41,8 @@ class ChangeInstitutionTest < ActionDispatch::IntegrationTest
     signin(@valid_username, @valid_password)
     @user.desired_institution = @new_institution
     @user.save
-    patch_via_redirect("/users/#{@user.username}",
-                       'user' => @user.attributes)
+    patch("/users/#{@user.username}", params: { user: @user.attributes })
+    follow_redirect!
 
     @user.reload
     assert_equal(@new_institution, @user.desired_institution)

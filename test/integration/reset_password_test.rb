@@ -16,33 +16,41 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
   # POST /forgot-password
 
   test 'POSTing nothing to /forgot-password should redirect to /' do
-    post_via_redirect('/forgot-password')
+    post '/forgot-password'
+    follow_redirect!
     assert_equal '/', path
   end
 
   test 'POSTing an invalid email to /forgot-password should redirect to /forgot-password' do
-    post_via_redirect('/forgot-password', email: 'adlfkjasdjk@example.org')
+    post '/forgot-password', params: { email: 'adlfkjasdjk@example.org' }
+    follow_redirect!
     assert_equal '/forgot-password', path
   end
 
   test 'POSTing an invalid email to /forgot-password should set the flash' do
-    post_via_redirect('/forgot-password', email: 'asdlfjkljk@example.org')
-    assert_equal('No user found with the given email address.', flash['error'])
+    get '/forgot-password'
+    sleep 5 # sleep past invisible_captcha's timestamp_threshold
+    post '/forgot-password', params: { email: 'asdlfjkljk@example.org' }
+    follow_redirect!
+    assert_equal 'No user found with the given email address.', flash['error']
   end
 
   test 'POSTing a valid password to /forgot-password should redirect to /' do
-    post_via_redirect('/forgot-password', email: @user.email)
+    post '/forgot-password', params: { email: @user.email }
+    follow_redirect!
     assert_equal '/', path
   end
 
   test 'POSTing a valid password to /forgot-password should set the flash' do
-    post_via_redirect('/forgot-password', email: @user.email)
-    assert_equal('An email has been sent containing a link to reset your '\
-    'password.', flash[:notice])
+    post '/forgot-password', params: { email: @user.email }
+    follow_redirect!
+    assert_equal 'An email has been sent containing a link to reset your password.',
+                 flash[:notice]
   end
 
   test 'POSTing a valid password to /forgot-password should send an email' do
-    post_via_redirect('/forgot-password', email: @user.email)
+    post '/forgot-password', params: { email: @user.email }
+    follow_redirect!
 
     email = UserMailer.password_reset_email(@user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
@@ -69,16 +77,19 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
   # POST /new-password
 
   test 'POSTing to /new-password with an invalid username should redirect to /' do
-    post_via_redirect('/new-password')
+    post '/new-password'
+    follow_redirect!
     assert_equal '/', path
 
-    post_via_redirect('/new-password', user: { 'username' => 'sfdasdf' })
+    post '/new-password', params: { user: { username: 'sfdasdf' } }
+    follow_redirect!
     assert_equal '/', path
   end
 
-  test 'following confirmation link should redirect to / and set the flash' do
-    post_via_redirect('/new-password', user: @user.attributes)
-    assert_equal '/', path
+  test 'following confirmation link should redirect to /signin and set the flash' do
+    post '/new-password', params: { user: @user.attributes }
+    follow_redirect!
+    assert_equal '/signin', path
     assert_equal('Password reset successfully.', flash['success'])
   end
 

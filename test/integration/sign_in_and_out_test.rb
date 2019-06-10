@@ -9,7 +9,7 @@ class SignInAndOutTest < ActionDispatch::IntegrationTest
 
   test 'signin with invalid credentials should fail' do
     signin('adfasdf', 'asdfasfafd')
-    assert_equal '/', path
+    assert_equal '/signin', path
     assert_equal('Sign-in failed.', flash['error'])
   end
 
