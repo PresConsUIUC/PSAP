@@ -15,19 +15,19 @@ json.resources @resources do |resource|
   json.rights resource.rights
   json.description resource.description
   json.creators do
-    json.array! resource.creators.map{ |c| c.name }
+    json.array! resource.creators.pluck(:name)
   end
   json.dates do
-    json.array! resource.resource_dates.map{ |d| d.as_dublin_core_string }
+    json.array! resource.resource_dates.map(&:as_dublin_core_string)
   end
   json.subjects do
-    json.array! resource.subjects.map{ |s| s.name }
+    json.array! resource.subjects.pluck(:name)
   end
   json.extents do
-    json.array! resource.extents.map{ |e| e.name }
+    json.array! resource.extents.pluck(:name)
   end
   json.notes do
-    json.array! resource.resource_notes.map{ |n| n.value }
+    json.array! resource.resource_notes.pluck(:value)
   end
   json.created resource.created_at.iso8601
   json.updated resource.updated_at.iso8601
