@@ -57,8 +57,8 @@ class AssessmentReportController < ApplicationController
     # Resources section
     if [nil, 'resources'].include?(params[:section])
       @institution_formats = @institution.resources
-                                 .pluck(:format_id)
-                                 .select{ |f| f }
+                                 .map(&:format)
+                                 .select(&:present?)
                                  .uniq
       @resource_chart_data = []
       10.times do |i|
