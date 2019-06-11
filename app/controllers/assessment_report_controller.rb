@@ -13,11 +13,24 @@ class AssessmentReportController < ApplicationController
   def index
     @institution = current_user.institution
 
+    # Storage section
     if [nil, 'storage'].include?(params[:section])
       @location_assessment_sections = Assessment.find_by_key('location').
           assessment_sections.order(:index)
     end
+
+    # Collections section
     if [nil, 'collections'].include?(params[:section])
+      # Compile a map with the following structure:
+      # {
+      #     (collection ID): [
+      #         # of resources scored 0-10
+      #         # of resources scored 10-20
+      #         # of resources scored 20-30
+      #         ...
+      #         # of resources scored 90-100
+      #     ]
+      # }
       @collections = @institution.resources.
           where(resource_type: Resource::Type::COLLECTION)
       @collection_chart_datas = {}
@@ -25,28 +38,30 @@ class AssessmentReportController < ApplicationController
         sub_collections = collection.all_children.select{ |r|
           r.resource_type == Resource::Type::COLLECTION }
         sub_collections << collection
-        parent_ids = sub_collections.map{ |r| r.id }.join(', ')
+        parent_ids = sub_collections.map(&:id).join(', ')
         data = []
-        (0..9).each do |i|
+        10.times do |i|
           sql = "SELECT COUNT(resources.id) AS count "\
           "FROM resources "\
           "WHERE resources.parent_id IN (#{parent_ids}) "\
           "AND resources.assessment_score >= #{i * 0.1} "\
           "AND resources.assessment_score < #{(i + 1) * 0.1} "\
-          "AND resources.assessment_score > 0.00001 " # virtually all of these will be non-assessed
+          "AND resources.assessment_score > 0.00001 " # virtually all of the 0s will be non-assessed
           data << ActiveRecord::Base.connection.execute(sql).
               map{ |r| r['count'].to_i }.first
         end
         @collection_chart_datas[collection.id] = data
       end
     end
+
+    # Resources section
     if [nil, 'resources'].include?(params[:section])
       @institution_formats = @institution.resources
                                  .pluck(:format_id)
                                  .select{ |f| f }
                                  .uniq
       @resource_chart_data = []
-      (0..9).each do |i|
+      10.times do |i|
         sql = "SELECT COUNT(resources.id) AS count "\
             "FROM resources "\
             "LEFT JOIN locations ON locations.id = resources.location_id "\
@@ -54,7 +69,7 @@ class AssessmentReportController < ApplicationController
             "WHERE repositories.institution_id = #{@institution.id} "\
             "AND resources.assessment_score >= #{i * 0.1} "\
             "AND resources.assessment_score < #{(i + 1) * 0.1} "\
-            "AND resources.assessment_score > 0.00001 " # virtually all of these will be non-assessed
+            "AND resources.assessment_score > 0.00001 " # virtually all of the 0s will be non-assessed
         @resource_chart_data << ActiveRecord::Base.connection.execute(sql).
             map{ |r| r['count'].to_i }.first
       end
@@ -79,11 +94,13 @@ class AssessmentReportController < ApplicationController
                 nil, @institution, current_user, @collections,
                 @collection_chart_datas)
           else
-            pdf = pdf_assessment_report(@institution, current_user,
+            pdf = pdf_assessment_report(@institution,
+                                        current_user,
                                         @resource_chart_data,
                                         @collection_chart_datas,
                                         @location_assessment_sections,
-                                        @institution_formats, @collections)
+                                        @institution_formats,
+                                        @collections)
         end
         send_data pdf.render, filename: 'assessment_report.pdf',
                   type: 'application/pdf', disposition: 'inline'
