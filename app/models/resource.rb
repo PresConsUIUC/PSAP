@@ -163,7 +163,7 @@ class Resource < ActiveRecord::Base
     # creators
     params[:creators_attributes] = []
     doc.xpath('//ead:archdesc/ead:did/ead:origination[@label = \'creator\']', ead_ns).each do |element|
-      element.children.each do |child|
+      element.children&.each do |child|
         name = child.text.squish.strip
         params[:creators_attributes] << { name: name } if name.present?
       end
