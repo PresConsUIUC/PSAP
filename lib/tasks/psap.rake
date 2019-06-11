@@ -55,4 +55,18 @@ namespace :psap do
     StaticPageImporter.new(MANUAL_SOURCE_PATH, MANUAL_DEST_PATH).reseed
   end
 
+  desc 'Recalculate and cache resource assessment scores'
+  task update_assessment_scores: :environment do
+    start = Time.now
+    count = Resource.count
+    Resource.find_each.with_index do |r, index|
+      # This is also done in a before_save callback, but validation happens
+      # before callbacks, so if a resource somehow currently has an invalid
+      # score, calling save() alone won't work.
+      r.update_assessment_score
+      r.save
+      StringUtils.print_progress(start, index, count, 'Updating assessment scores')
+    end
+  end
+
 end
