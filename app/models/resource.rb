@@ -327,14 +327,14 @@ class Resource < ActiveRecord::Base
             [resource.format_ink_media_type ? resource.format_ink_media_type.name : nil] +
             [resource.format_support_type ? resource.format_support_type.name : nil] +
             [resource.readable_significance] +
-            resource.creators.map(&:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
+            resource.creators.pluck(:name) + [nil] * (num_columns[:creator] - resource.creators.length) +
             resource.resource_dates.map(&:as_dublin_core_string) + [nil] * (num_columns[:date] - resource.resource_dates.length) +
             [language_name] +
-            resource.subjects.map(&:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
-            resource.extents.map(&:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
+            resource.subjects.pluck(:name) + [nil] * (num_columns[:subject] - resource.subjects.length) +
+            resource.extents.pluck(:name) + [nil] * (num_columns[:extent] - resource.extents.length) +
             [resource.rights] +
             [resource.description] +
-            resource.resource_notes.map(&:value) + [nil] * (num_columns[:note] - resource.resource_notes.length) +
+            resource.resource_notes.pluck(:value) + [nil] * (num_columns[:note] - resource.resource_notes.length) +
             [resource.created_at.iso8601] +
             [resource.updated_at.iso8601]
       end
@@ -490,14 +490,14 @@ class Resource < ActiveRecord::Base
           [self.format_ink_media_type ? self.format_ink_media_type.name : nil] +
           [self.format_support_type ? self.format_support_type.name : nil] +
           [self.readable_significance] +
-          self.creators.map { |r| r.name } +
+          self.creators.pluck(:name) +
           self.resource_dates.map { |r| r.as_dublin_core_string } +
           [self.language ? self.language.english_name : nil] +
-          self.subjects.map { |s| s.name } +
-          self.extents.map { |e| e.name } +
+          self.subjects.pluck(:name) +
+          self.extents.pluck(:name) +
           [self.rights] +
           [self.description] +
-          self.resource_notes.map { |n| n.value } +
+          self.resource_notes.pluck(:value) +
           [self.created_at.iso8601] +
           [self.updated_at.iso8601] +
           responses

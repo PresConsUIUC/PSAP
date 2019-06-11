@@ -41,8 +41,10 @@ class AssessmentReportController < ApplicationController
       end
     end
     if [nil, 'resources'].include?(params[:section])
-      @institution_formats = @institution.resources.collect{ |r| r.format }.
-          select{ |f| f }.uniq{ |f| f.id }
+      @institution_formats = @institution.resources
+                                 .pluck(:format_id)
+                                 .select{ |f| f }
+                                 .uniq
       @resource_chart_data = []
       (0..9).each do |i|
         sql = "SELECT COUNT(resources.id) AS count "\
