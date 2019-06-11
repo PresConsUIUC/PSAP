@@ -185,6 +185,10 @@ class ResourceTest < ActiveSupport::TestCase
   ############################# method tests #################################
 
   # all_assessed_items
+  test 'all_assessed_items doesn\'t error out' do
+    resources(:uiuc_collection).all_assessed_items
+  end
+
   test 'all_assessed_items should work' do
     skip # TODO: write this
   end

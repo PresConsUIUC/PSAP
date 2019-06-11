@@ -421,28 +421,56 @@ class Resource < ActiveRecord::Base
   end
 
   ##
-  # @return [Array] of all assessed items in a collection, regardless of depth
-  # in the hierarchy.
+  # @return [Enumerable<Resource>] All assessed items in a collection,
+  #         regardless of depth in the tree.
   #
   def all_assessed_items
-    all_children.select{ |x| x.resource_type == Resource::Type::ITEM and
-        x.assessment_complete }
+    sql = 'WITH RECURSIVE q AS (
+        SELECT h, 1 AS level, ARRAY[id] AS breadcrumb
+        FROM resources h
+        WHERE id = $1
+        UNION ALL
+        SELECT hi, q.level + 1 AS level, breadcrumb || id
+        FROM q
+        JOIN resources hi
+          ON hi.parent_id = (q.h).id
+      )
+      SELECT (q.h).id
+      FROM q
+      WHERE (q.h).resource_type = $2 AND (q.h).assessment_complete = $3
+      ORDER BY breadcrumb'
+    values = [[ nil, self.id ], [ nil, Resource::Type::ITEM ], [ nil, true ]]
+
+    results = ActiveRecord::Base.connection.exec_query(sql, 'SQL', values)
+    Resource.where('id IN (?)', results
+                                    .reject{ |row| row['id'] == self.id }
+                                    .map{ |row| row['id'] })
   end
 
   ##
-  # @return [Array] of all children of a resource, regardless of depth in the
-  # hierarchy.
+  # @return [Enumerable<Resource>] All resources that are children of the
+  #         instance at any level in the tree.
   #
   def all_children
-    def accumulate_children(resource, resource_bucket)
-      resource.children.each do |child|
-        resource_bucket << child
-        accumulate_children(child, resource_bucket)
-      end
-    end
-    resources = []
-    accumulate_children(self, resources)
-    resources
+    sql = 'WITH RECURSIVE q AS (
+        SELECT h, 1 AS level, ARRAY[id] AS breadcrumb
+        FROM resources h
+        WHERE id = $1
+        UNION ALL
+        SELECT hi, q.level + 1 AS level, breadcrumb || id
+        FROM q
+        JOIN resources hi
+          ON hi.parent_id = (q.h).id
+      )
+      SELECT (q.h).id
+      FROM q
+      ORDER BY breadcrumb'
+    values = [[ nil, self.id ]]
+
+    results = ActiveRecord::Base.connection.exec_query(sql, 'SQL', values)
+    Resource.where('id IN (?)', results
+                                    .reject{ |row| row['id'] == self.id }
+                                    .map{ |row| row['id'] })
   end
 
   def as_csv
@@ -454,7 +482,7 @@ class Resource < ActiveRecord::Base
     end
 
     require 'csv'
-    # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
+    # The CSV format is defined in G:\AcqCatPres\PSAP\Design\CSV
     # When updating this, update Resource::as_csv as well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
