@@ -6,7 +6,7 @@ group :doc do
 end
 
 gem 'bcrypt' # Use ActiveModel has_secure_password
-gem 'bootstrap-sass', '3.2.0.2'
+gem 'bootstrap-sass', '~> 3.4'
 gem 'bootstrap-typeahead-rails'
 gem 'd3-rails' # used for charts in assessment report
 gem 'font-awesome-sass', '~> 4.2.0'
