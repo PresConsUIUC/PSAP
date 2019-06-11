@@ -199,6 +199,15 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal 5, resources(:resource_six).all_children.length
   end
 
+  # all_parents
+  test 'all_parents returns an empty array for resources with no parents' do
+    assert_equal 0, @resource.all_parents.length
+  end
+
+  test 'all_parents returns all parents of resources with parents' do
+    assert_equal 1, resources(:resource_ten).all_parents.length
+  end
+
   # as_csv
   test 'as_csv should work' do
     skip # TODO: write this

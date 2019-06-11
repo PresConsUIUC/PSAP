@@ -1,11 +1,15 @@
-<% breadcrumbs = []
-   breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
-   breadcrumbs << { @resource.location.repository.institution.name =>
-                            @resource.location.repository.institution }
-   breadcrumbs << { @resource.location.repository.name =>
-                            @resource.location.repository }
-   breadcrumbs << { @resource.location.name => @resource.location }
-   breadcrumbs << @resource.name
+<%
+breadcrumbs = []
+breadcrumbs << { 'Institutions' => institutions_path } if current_user.is_admin?
+breadcrumbs << { @resource.location.repository.institution.name =>
+                         @resource.location.repository.institution }
+breadcrumbs << { @resource.location.repository.name =>
+                         @resource.location.repository }
+breadcrumbs << { @resource.location.name => @resource.location }
+@resource.all_parents.reverse.each do |parent|
+  breadcrumbs << { parent.name => parent }
+end
+breadcrumbs << @resource.name
 %>
 <%= breadcrumbs(breadcrumbs) %>
 

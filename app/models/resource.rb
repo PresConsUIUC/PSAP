@@ -90,7 +90,7 @@ class Resource < ActiveRecord::Base
 
   ##
   # @param institution [Institution]
-  # @param params [Hash<Symbol,Object>]
+  # @param params [ActionController::Parameters]
   # @return [ActiveRecord::Relation<Resource>]
   #
   def self.all_matching_query(institution, params)
@@ -471,6 +471,20 @@ class Resource < ActiveRecord::Base
     Resource.where('id IN (?)', results
                                     .reject{ |row| row['id'] == self.id }
                                     .map{ |row| row['id'] })
+  end
+
+  ##
+  # @return [Enumerable<Resource>] All parents in order from closest to
+  #                                farthest.
+  #
+  def all_parents
+    parents = []
+    p = self.parent
+    while p
+      parents << p
+      p = p.parent
+    end
+    parents
   end
 
   def as_csv
