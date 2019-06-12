@@ -20,7 +20,7 @@ gem 'nokogiri'
 gem 'pg'
 gem 'prawn'                # used to generate a PDF version of the assessment report
 gem 'prawn-table'
-gem 'rails', '5.1.7'
+gem 'rails', '5.2.3'
 gem 'recaptcha'            # used in new-user signup form
 gem 'roo'                  # used to import seed data from xlsx
 gem 'sass-rails'

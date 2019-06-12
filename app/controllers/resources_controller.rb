@@ -202,7 +202,7 @@ class ResourcesController < ApplicationController
     @institution = current_user.institution
     @resources = @institution.resources
 
-    if @sanitized_params.select{ |k| !params.key?(k) }.length == @sanitized_params.length
+    if @sanitized_params.select{ |k| !@sanitized_params.key?(k) }.to_h.length == query_keys.length
       # no search query input present; show all resources
       @resource_count = @resources.count
       @resources = @resources.order(:name)
