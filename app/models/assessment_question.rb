@@ -10,7 +10,8 @@ class AssessmentQuestion < ApplicationRecord
   end
 
   belongs_to :assessment_section, inverse_of: :assessment_questions
-  belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children
+  belongs_to :parent, class_name: 'AssessmentQuestion', inverse_of: :children,
+             optional: true
   has_and_belongs_to_many :enabling_assessment_question_options,
                           class_name: 'AssessmentQuestionOption'
   has_and_belongs_to_many :events, join_table: 'events_assessment_questions'

@@ -19,7 +19,7 @@ class Institution < ApplicationRecord
   has_many :repositories, -> { order(:name) }, inverse_of: :institution,
            dependent: :destroy
   has_and_belongs_to_many :events
-  belongs_to :language, inverse_of: :institutions
+  belongs_to :language, inverse_of: :institutions, optional: true
   has_many :locations, -> { order(:name) }, through: :repositories
   has_many :resources, -> { order(:name) }, through: :locations
 

@@ -48,13 +48,13 @@ class Resource < ApplicationRecord
   has_many :resource_notes, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
   has_and_belongs_to_many :events
-  belongs_to :format, inverse_of: :resources
-  belongs_to :format_ink_media_type, inverse_of: :resources
-  belongs_to :format_support_type, inverse_of: :resources
-  belongs_to :language, inverse_of: :resources
+  belongs_to :format, inverse_of: :resources, optional: true
+  belongs_to :format_ink_media_type, inverse_of: :resources, optional: true
+  belongs_to :format_support_type, inverse_of: :resources, optional: true
+  belongs_to :language, inverse_of: :resources, optional: true
   belongs_to :location, inverse_of: :resources
-  belongs_to :parent, class_name: 'Resource', inverse_of: :children
-  belongs_to :user, inverse_of: :resources
+  belongs_to :parent, class_name: 'Resource', inverse_of: :children, optional: true
+  belongs_to :user, inverse_of: :resources, optional: true
 
   accepts_nested_attributes_for :assessment_question_responses
   accepts_nested_attributes_for :creators, allow_destroy: true

@@ -3,9 +3,12 @@ class AssessmentQuestionResponse < ApplicationRecord
              inverse_of: :assessment_question_responses
   belongs_to :assessment_question_option,
              inverse_of: :assessment_question_responses
-  belongs_to :location, inverse_of: :assessment_question_responses
-  belongs_to :institution, inverse_of: :assessment_question_responses
-  belongs_to :resource, inverse_of: :assessment_question_responses
+  belongs_to :location, inverse_of: :assessment_question_responses,
+             optional: true
+  belongs_to :institution, inverse_of: :assessment_question_responses,
+             optional: true
+  belongs_to :resource, inverse_of: :assessment_question_responses,
+             optional: true
 
   validates :assessment_question, presence: true
 

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   belongs_to :desired_institution, class_name: 'Institution',
-             foreign_key: 'desired_institution_id'
+             foreign_key: 'desired_institution_id', optional: true
   has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :users
   has_many :resources, -> { order(:name) }, inverse_of: :user
