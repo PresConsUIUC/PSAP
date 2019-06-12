@@ -5,7 +5,7 @@ class HelpControllerTest < ActionController::TestCase
   #### index ####
 
   test 'should get show page' do
-    get :index, category: 'help'
+    get :index, params: { category: 'help' }
     assert_response :success
   end
 

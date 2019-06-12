@@ -22,7 +22,8 @@ class SignInAndOutTest < ActionDispatch::IntegrationTest
 
   test 'signout should redirect to landing page' do
     signin(@valid_username, @valid_password)
-    delete_via_redirect '/signout'
+    delete '/signout'
+    follow_redirect!
     assert_equal('/', path)
   end
 

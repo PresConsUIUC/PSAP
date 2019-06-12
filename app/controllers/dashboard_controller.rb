@@ -28,7 +28,7 @@ class DashboardController < ApplicationController
         if @user
           @events = @user.institution ? events_for_institution(@user, limit) : []
         else
-          render status: :forbidden, text: 'Access denied.'
+          render status: :forbidden, plain: 'Access denied.'
         end
       end
     end

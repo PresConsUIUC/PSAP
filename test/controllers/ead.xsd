@@ -1640,6 +1640,7 @@
 				<xs:restriction base="xs:token">
 					<xs:enumeration value="bulk"/>
 					<xs:enumeration value="inclusive"/>
+					<xs:enumeration value="span"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>

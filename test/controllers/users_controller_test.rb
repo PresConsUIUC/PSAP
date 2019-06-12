@@ -11,10 +11,16 @@ class UsersControllerTest < ActionController::TestCase
   test 'users can be created' do
     skip # TODO: recaptcha
     assert_difference 'User.count' do
-      post :create, user: { username: 'newuser', email: 'newuser@example.org',
-                            first_name: 'New', last_name: 'User',
-                            password: 'password',
-                            password_confirmation: 'password' }
+      post :create, params: {
+          user: {
+              username: 'newuser',
+              email: 'newuser@example.org',
+              first_name: 'New',
+              last_name: 'User',
+              password: 'password',
+              password_confirmation: 'password'
+          }
+      }
     end
     assert_equal 'Thanks for registering for PSAP! An email has been '\
         'sent to the address you provided. Follow the link in the email to '\
@@ -23,21 +29,18 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
-  test 'creating a user should write to the event log' do
-    assert_difference 'Event.count' do
-      post :create, user: { username: 'newuser', email: 'newuser@example.org',
-                            first_name: 'New', last_name: 'User',
-                            password: 'password',
-                            password_confirmation: 'password' }
-    end
-  end
-
   test 'creating an invalid user should render new template' do
     assert_no_difference 'User.count' do
-      post :create, user: { first_name: 'New', email: '',
-                            last_name: 'User', password: 'password',
-                            password_confirmation: '',
-                            username: 'newuser' }
+      post :create, params: {
+          user: {
+              first_name: 'New',
+              email: '',
+              last_name: 'User',
+              password: 'password',
+              password_confirmation: '',
+              username: 'newuser'
+          }
+      }
     end
     assert_template :new
   end
@@ -46,27 +49,27 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'attempting to confirm a nonexistent user should return 404' do
     assert_raises(ActiveRecord::RecordNotFound) do
-      get :confirm, username: 'adsfasdfasfd'
+      get :confirm, params: { username: 'adsfasdfasfd' }
       assert_response :missing
     end
   end
 
   test 'attempting to confirm a confirmed user should redirect to signin page' do
-    get :confirm, username: 'normal'
+    get :confirm, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'attempting to confirm a user with no confirmation code should redirect to signin page' do
     users(:normal_user).confirmation_code = nil
     users(:normal_user).save!
-    get :confirm, username: 'normal'
+    get :confirm, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'attempting to confirm a user with incorrect confirmation code provided should redirect to signin page' do
     users(:normal_user).confirmation_code = 'cats'
     users(:normal_user).save!
-    get :confirm, { username: 'normal', code: 'adfsfasf' }
+    get :confirm, params: { username: 'normal', code: 'adfsfasf' }
     assert_redirected_to signin_url
   end
 
@@ -74,7 +77,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_difference 'Event.count' do
       users(:normal_user).confirmation_code = 'cats'
       users(:normal_user).save!
-      get :confirm, { username: 'normal', code: 'adfsfasf' }
+      get :confirm, params: { username: 'normal', code: 'adfsfasf' }
     end
   end
 
@@ -84,7 +87,7 @@ class UsersControllerTest < ActionController::TestCase
     user.confirmed = false
     user.enabled = false
     user.save!
-    get :confirm, { username: 'normal', code: 'cats' }
+    get :confirm, params: { username: 'normal', code: 'cats' }
 
     user = User.find_by_username 'normal'
     assert user.confirmed
@@ -100,7 +103,7 @@ class UsersControllerTest < ActionController::TestCase
       user.confirmed = false
       user.enabled = false
       user.save!
-      get :confirm, { username: 'normal', code: 'cats' }
+      get :confirm, params: { username: 'normal', code: 'cats' }
     end
   end
 
@@ -108,7 +111,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'signed-out users cannot destroy users' do
     assert_no_difference 'User.count' do
-      delete :destroy, username: 'normal'
+      delete :destroy, params: { username: 'normal' }
     end
     assert_redirected_to signin_url
   end
@@ -116,7 +119,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'signed-in users cannot destroy users' do
     signin_as(users(:normal_user))
     assert_no_difference 'User.count' do
-      delete :destroy, username: 'normal'
+      delete :destroy, params: { username: 'normal' }
     end
     assert_redirected_to root_url
   end
@@ -124,7 +127,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'admin users can destroy users' do
     signin_as(users(:admin_user))
     assert_difference 'User.count', -1 do
-      delete :destroy, username: users(:normal_user).username
+      delete :destroy, params: { username: users(:normal_user).username }
     end
     assert_equal "User #{users(:normal_user).username} deleted.",
                  flash['success']
@@ -134,7 +137,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'admin users are redirected to root URL when they destroy themselves' do
     signin_as(users(:admin_user))
     assert_difference 'User.count', -1 do
-      delete :destroy, username: users(:admin_user).username
+      delete :destroy, params: { username: users(:admin_user).username }
     end
     assert_equal 'Your account has been deleted.', flash['success']
     assert_redirected_to root_url
@@ -143,32 +146,32 @@ class UsersControllerTest < ActionController::TestCase
   #### edit ####
 
   test 'signed-out users cannot edit any users' do
-    get :edit, username: 'normal'
+    get :edit, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'signed-in users can edit themselves' do
     signin_as(users(:normal_user))
-    get :edit, username: 'normal'
+    get :edit, params: { username: 'normal' }
     assert_response :success
   end
 
   test 'signed-in users can\'t edit other users' do
     signin_as(users(:normal_user))
-    get :edit, username: 'disabled'
+    get :edit, params: { username: 'disabled' }
     assert_redirected_to root_url
   end
 
   test 'admin users can edit anyone' do
     signin_as(users(:admin_user))
-    get :edit, username: 'disabled'
+    get :edit, params: { username: 'disabled' }
     assert_response :success
   end
 
   test 'attempting to edit a nonexistent user should return 404' do
     signin_as(users(:admin_user))
     assert_raises(ActiveRecord::RecordNotFound) do
-      get :edit, username: 'adsfasdfasfd'
+      get :edit, params: { username: 'adsfasdfasfd' }
       assert_response :missing
     end
   end
@@ -176,13 +179,13 @@ class UsersControllerTest < ActionController::TestCase
   #### enable ####
 
   test 'signed-out users cannot enable any users' do
-    patch :enable, username: 'normal'
+    patch :enable, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot enable any users' do
     signin_as(users(:normal_user))
-    patch :enable, username: 'normal'
+    patch :enable, params: { username: 'normal' }
     assert_redirected_to root_url
   end
 
@@ -191,7 +194,7 @@ class UsersControllerTest < ActionController::TestCase
     users(:normal_user).save!
 
     signin_as(users(:admin_user))
-    patch :enable, username: 'normal'
+    patch :enable, params: { username: 'normal' }
 
     assert User.find_by_username('normal').enabled
     assert_equal 'User normal enabled.', flash['success']
@@ -201,13 +204,13 @@ class UsersControllerTest < ActionController::TestCase
   #### disable ####
 
   test 'signed-out users cannot disable any users' do
-    patch :enable, username: 'normal'
+    patch :enable, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot disable any users' do
     signin_as(users(:normal_user))
-    patch :enable, username: 'normal'
+    patch :enable, params: { username: 'normal' }
     assert_redirected_to root_url
   end
 
@@ -216,7 +219,7 @@ class UsersControllerTest < ActionController::TestCase
     users(:normal_user).save!
 
     signin_as(users(:admin_user))
-    patch :disable, username: 'normal'
+    patch :disable, params: { username: 'normal' }
 
     assert !User.find_by_username('normal').enabled
     assert_equal 'User normal disabled.', flash['success']
@@ -226,12 +229,12 @@ class UsersControllerTest < ActionController::TestCase
   #### exists ####
 
   test 'exists returns 200 for existing user' do
-    get :exists, username: 'normal'
+    get :exists, params: { username: 'normal' }
     assert_response :success
   end
 
   test 'exists returns 404 for nonexisting user' do
-    get :exists, username: 'adsfasdfasfd'
+    get :exists, params: { username: 'adsfasdfasfd' }
     assert_response :missing
   end
 
@@ -261,10 +264,10 @@ class UsersControllerTest < ActionController::TestCase
     get :index
     assert_operator assigns(:users).length, :>, 3
 
-    get :index, { q: 'norm' }
+    get :index, params: { q: 'norm' }
     assert_equal 1, assigns(:users).length
 
-    get :index, { q: 'dsfasdfasdfasdfasfd' }
+    get :index, params: { q: 'dsfasdfasdfasdfasfd' }
     assert_equal 0, assigns(:users).length
   end
 
@@ -279,13 +282,13 @@ class UsersControllerTest < ActionController::TestCase
   #### show ####
 
   test 'signed-out users cannot view any users' do
-    get :show, username: 'normal'
+    get :show, params: { username: 'normal' }
     assert_redirected_to signin_url
   end
 
   test 'signed-in users can view their own institutions\' users' do
     signin_as(users(:normal_user))
-    get :show, username: 'admin'
+    get :show, params: { username: 'admin' }
     assert_response :success
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:resources)
@@ -293,13 +296,13 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'signed-in users cannot view other institutions\' users' do
     signin_as(users(:normal_user))
-    get :show, username: 'disabled'
+    get :show, params: { username: 'disabled' }
     assert_redirected_to root_url
   end
 
   test 'admin users can view other institutions\' users' do
     signin_as(users(:admin_user))
-    get :show, username: 'disabled'
+    get :show, params: { username: 'disabled' }
     assert_response :success
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:resources)
@@ -308,7 +311,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'attempting to view a nonexistent user returns 404' do
     signin_as(users(:normal_user))
     assert_raises(ActiveRecord::RecordNotFound) do
-      get :show, username: 'adsfasdfasfd'
+      get :show, params: { username: 'adsfasdfasfd' }
       assert_response :missing
     end
   end
@@ -316,33 +319,51 @@ class UsersControllerTest < ActionController::TestCase
   #### update ####
 
   test 'signed-out users cannot update users' do
-    patch :update, user: { username: 'newuser', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'normal'
+    patch :update, params: {
+        user: {
+            username: 'newuser',
+            email: 'newuser@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'normal'
+    }
     assert_not_equal 'newuser', User.find(1).username
     assert_redirected_to signin_url
   end
 
   test 'normal users cannot update other users' do
     signin_as(users(:normal_user))
-    patch :update, user: { username: 'newuser', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'unaffiliated'
+    patch :update, params: {
+        user: {
+            username: 'newuser',
+            email: 'newuser@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'unaffiliated'
+    }
     assert_not_equal 'newuser', User.find(1).username
     assert_redirected_to root_url
   end
 
   test 'normal users can update themselves' do
     signin_as(users(:normal_user))
-    patch :update, user: { username: 'normal', email: 'normal@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'normal'
+    patch :update, params: {
+        user: {
+            username: 'normal',
+            email: 'normal@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'normal'
+    }
     assert_equal 'New', User.find(1).first_name
     assert_equal 'Your profile has been updated.', flash['success']
     assert_redirected_to edit_user_url(assigns(:user))
@@ -350,21 +371,32 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'updating users with invalid data renders edit template' do
     signin_as(users(:normal_user))
-    patch :update, user: { first_name: '', last_name: '',
-                           password: 'asfdasfdasfd',
-                           password_confirmation: 'zcvxcvzvx' },
-          username: 'normal'
+    patch :update, params: {
+        user: {
+            first_name: '',
+            last_name: '',
+            password: 'asfdasfdasfd',
+            password_confirmation: 'zcvxcvzvx'
+        },
+        username: 'normal'
+    }
     assert_equal 'Norm', users(:normal_user).first_name
     assert_template :edit
   end
 
   test 'users cannot change their username' do
     signin_as(users(:normal_user))
-    patch :update, user: { username: 'newuser', email: 'normal@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'normal'
+    patch :update, params: {
+        user: {
+            username: 'newuser',
+            email: 'normal@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'normal'
+    }
     assert_nil User.find_by_username 'newuser'
     assert_template :edit
   end
@@ -372,21 +404,33 @@ class UsersControllerTest < ActionController::TestCase
   test 'changing email address sends an email confirmation' do
     signin_as(users(:normal_user))
     assert_difference('ActionMailer::Base.deliveries.size', 1) do
-      patch :update, user: { username: 'normal', email: 'newemail@example.org',
-                             first_name: 'New', last_name: 'User',
-                             password: 'password',
-                             password_confirmation: 'password' },
-            username: 'normal'
+      patch :update, params: {
+          user: {
+              username: 'normal',
+              email: 'newemail@example.org',
+              first_name: 'New',
+              last_name: 'User',
+              password: 'password',
+              password_confirmation: 'password'
+          },
+          username: 'normal'
+      }
     end
   end
 
   test 'admin users can update other users' do
     signin_as(users(:admin_user))
-    patch :update, user: { username: 'unaffiliated', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'unaffiliated'
+    patch :update, params: {
+        user: {
+            username: 'unaffiliated',
+            email: 'newuser@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'unaffiliated'
+    }
     assert_equal 'New', User.find_by_username('unaffiliated').first_name
     assert_equal 'unaffiliated\'s profile has been updated.', flash['success']
     assert_redirected_to edit_user_url(assigns(:user))
@@ -394,28 +438,44 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'admin users can change other users\' username' do
     signin_as(users(:admin_user))
-    patch :update, user: { username: 'newusername', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User' },
-          username: 'unaffiliated'
+    patch :update, params: {
+        user: {
+            username: 'newusername',
+            email: 'newuser@example.org',
+            first_name: 'New',
+            last_name: 'User'
+        },
+        username: 'unaffiliated'
+    }
     assert_not_nil User.find_by_username 'newusername'
     assert_redirected_to edit_user_url(assigns(:user))
   end
 
   test 'admin users can change their own username' do
     signin_as(users(:admin_user))
-    patch :update, user: { username: 'newusername', email: 'newuser@example.org',
-                           first_name: 'New', last_name: 'User',
-                           password: 'password',
-                           password_confirmation: 'password' },
-          username: 'admin'
+    patch :update, params: {
+        user: {
+            username: 'newusername',
+            email: 'newuser@example.org',
+            first_name: 'New',
+            last_name: 'User',
+            password: 'password',
+            password_confirmation: 'password'
+        },
+        username: 'admin'
+    }
     assert_not_nil User.find_by_username 'newusername'
     assert_redirected_to edit_user_url(assigns(:user))
   end
 
   test 'joining an institution for the first time should work' do
     signin_as(users(:unaffiliated_user))
-    patch :update, user: { institution_id: 3 },
-          username: 'unaffiliated'
+    patch :update, params: {
+        user: {
+            institution_id: 3
+        },
+        username: 'unaffiliated'
+    }
     assert_equal 'Your profile has been updated.', flash['success']
     assert_redirected_to edit_user_url(users(:unaffiliated_user))
   end

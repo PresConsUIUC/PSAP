@@ -23,7 +23,7 @@ class EventsController < ApplicationController
         where(feed_key: params[:key]).
         where('roles.is_admin' => true).limit(1).first
     unless @user
-      render status: :forbidden, text: 'Access denied.'
+      render status: :forbidden, plain: 'Access denied.'
       return
     end
   end

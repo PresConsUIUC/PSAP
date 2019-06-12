@@ -13,7 +13,7 @@ class InstitutionsController < ApplicationController
           assessment_sections.order(:index)
       render partial: 'assess_form', locals: { action: :assess }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -74,7 +74,7 @@ class InstitutionsController < ApplicationController
       @institution = Institution.find(params[:id])
       render partial: 'edit_form', locals: { action: :edit }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -87,7 +87,7 @@ class InstitutionsController < ApplicationController
       @institution = Institution.new
       render partial: 'edit_form', locals: { action: :create }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 

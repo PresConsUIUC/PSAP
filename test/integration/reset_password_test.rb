@@ -45,7 +45,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
     post '/forgot-password', params: { email: @user.email }
     follow_redirect!
     assert_equal 'An email has been sent containing a link to reset your password.',
-                 flash[:notice]
+                 flash['notice']
   end
 
   test 'POSTing a valid password to /forgot-password should send an email' do
@@ -70,7 +70,7 @@ class ResetPasswordTest < ActionDispatch::IntegrationTest
   test 'GETting /new-password satisfying conditions should work' do
     @user.password_reset_key = 'cats'
     @user.save!
-    get '/new-password', username: @user.username, key: 'cats'
+    get '/new-password', params: { username: @user.username, key: 'cats' }
     assert_response :success
   end
 

@@ -11,7 +11,7 @@ class LocationsController < ApplicationController
           assessment_sections.order(:index)
       render partial: 'assess_form', locals: { action: :assess }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -59,7 +59,7 @@ class LocationsController < ApplicationController
       @location = Location.find(params[:id])
       render partial: 'edit_form', locals: { action: :edit }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -69,7 +69,7 @@ class LocationsController < ApplicationController
       @location = @repository.locations.build
       render partial: 'edit_form', locals: { action: :create }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 

@@ -12,7 +12,7 @@ class CollectionIdGuideControllerTest < ActionController::TestCase
   #### show ####
 
   test 'should get show page' do
-    get :show, category: 'avmedia'
+    get :show, params: { category: 'avmedia' }
     assert_response :success
   end
 

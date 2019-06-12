@@ -19,7 +19,7 @@ class FormatsControllerTest < ActionController::TestCase
 
   test 'signed-in users can get the format list via JSON' do
     signin_as(users(:normal_user))
-    get :index, format: :json
+    get :index, params: { format: :json }
     assert_response :success
   end
 
@@ -33,19 +33,19 @@ class FormatsControllerTest < ActionController::TestCase
   #### show ####
 
   test 'signed-out users cannot view any formats' do
-    get :show, id: 1
+    get :show, params: { id: 1 }
     assert_redirected_to signin_url
   end
 
   test 'signed-in users cannot view any formats' do
     signin_as(users(:normal_user))
-    get :show, id: 1
+    get :show, params: { id: 1 }
     assert_redirected_to root_url
   end
 
   test 'admin users can view formats' do
     signin_as(users(:admin_user))
-    get :show, id: 1
+    get :show, params: { id: 1 }
     assert_response :success
     assert_not_nil assigns :format
     assert_template :show
@@ -54,7 +54,7 @@ class FormatsControllerTest < ActionController::TestCase
   test 'attempting to view a nonexistent format returns 404' do
     signin_as(users(:admin_user))
     assert_raises(ActiveRecord::RecordNotFound) do
-      get :show, id: 999999
+      get :show, params: { id: 999999 }
       assert_response :missing
     end
   end

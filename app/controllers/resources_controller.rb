@@ -17,7 +17,7 @@ class ResourcesController < ApplicationController
           assessment_sections.order(:index)
       render partial: 'assess_form', locals: { action: :assess }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -34,7 +34,7 @@ class ResourcesController < ApplicationController
       command.execute
     rescue => e
       flash['error'] = "#{e}"
-      redirect_to :back
+      redirect_back fallback_location: resource_url(@resource)
     else
       flash['success'] = "Cloned #{@resource.name} as "\
       "\"#{command.object.name}\"."
@@ -90,7 +90,7 @@ class ResourcesController < ApplicationController
       add_dependent_entities
       render partial: 'edit_form', locals: { action: :edit }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -112,15 +112,15 @@ class ResourcesController < ApplicationController
       command.execute
     rescue => e
       flash['error'] = "#{e}"
-      redirect_to :back
+      redirect_back fallback_location: location_url(@location)
     else
       if command.object.length > 0
         flash['success'] = "Imported #{command.object.length} resource(s)."
       else
-        flash[:notice] = 'Unable to detect an ArchivesSpace EAD XML file in '\
+        flash['notice'] = 'Unable to detect an ArchivesSpace EAD XML file in '\
         'any of the uploaded files.'
       end
-      redirect_to :back
+      redirect_back fallback_location: location_url(@location)
     end
   end
 
@@ -142,10 +142,11 @@ class ResourcesController < ApplicationController
         flash['success'] = "Moved #{resources.length} resources to "\
         "\"#{command.object.name}\"."
       end
+      redirect_back fallback_location: location_url(location)
     else
       flash['error'] = 'No location selected.'
+      redirect_back fallback_location: root_url
     end
-    redirect_to :back
   end
 
   ##
@@ -186,7 +187,7 @@ class ResourcesController < ApplicationController
 
       render partial: 'edit_form', locals: { action: :create }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -221,7 +222,7 @@ class ResourcesController < ApplicationController
         format.csv do
           response.headers['Content-Disposition'] =
               'attachment; filename="resources.csv"'
-          render text: Resource.as_csv(@resources)
+          render plain: Resource.as_csv(@resources)
         end
         format.json
         format.html do
@@ -239,7 +240,7 @@ class ResourcesController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] =
             "attachment; filename=\"#{@resource.filename}.csv\""
-        render text: @resource.as_csv
+        render plain: @resource.as_csv
       end
       format.html do
         prepare_show_view

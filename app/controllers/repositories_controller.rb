@@ -48,7 +48,7 @@ class RepositoriesController < ApplicationController
       @repository = Repository.find(params[:id])
       render partial: 'edit_form', locals: { action: :edit }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 
@@ -58,7 +58,7 @@ class RepositoriesController < ApplicationController
       @repository = @institution.repositories.build
       render partial: 'edit_form', locals: { action: :create }
     else
-      render status: 406, text: 'Not Acceptable'
+      render status: 406, plain: 'Not Acceptable'
     end
   end
 

@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     else
       flash['success'] = "Institution change approved for user #{user.username}."
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 
@@ -116,7 +116,7 @@ class UsersController < ApplicationController
     else
       flash['success'] = "User #{user.username} enabled."
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 
@@ -135,7 +135,7 @@ class UsersController < ApplicationController
     else
       flash['success'] = "User #{user.username} disabled."
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 
@@ -146,7 +146,7 @@ class UsersController < ApplicationController
   # requires being signed in.)
   #
   def exists
-    render text: nil,
+    render plain: nil,
            status: User.find_by_username(params[:username]) ? 200: 404
   end
 
@@ -183,7 +183,7 @@ class UsersController < ApplicationController
     else
       flash['success'] = "Institution change refused for user #{user.username}."
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 
@@ -207,7 +207,7 @@ class UsersController < ApplicationController
         flash['success'] = "Reset feed key for user #{user.username}."
       end
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 
@@ -227,7 +227,7 @@ class UsersController < ApplicationController
     else
       flash['success'] = 'Confirmation email sent.'
     ensure
-      redirect_to :back
+      redirect_back fallback_location: user_url(user)
     end
   end
 

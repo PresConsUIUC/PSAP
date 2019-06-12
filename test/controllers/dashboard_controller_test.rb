@@ -32,13 +32,13 @@ class DashboardControllerTest < ActionController::TestCase
   end
 
   test 'users cannot view a dashboard feed without a key' do
-    get :index, format: :atom
+    get :index, params: { format: :atom }
     assert_response :forbidden
   end
 
   test 'signed-in users can view the dashboard feed' do
     feed_key = users(:normal_user).feed_key
-    get :index, format: :atom, key: feed_key
+    get :index, params: { format: :atom, key: feed_key }
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:events)
   end
@@ -49,7 +49,7 @@ class DashboardControllerTest < ActionController::TestCase
     require 'nokogiri'
     xsd = Nokogiri::XML::Schema(File.read('test/controllers/atom.xsd'))
 
-    get :index, format: :atom, key: feed_key
+    get :index, params: { format: :atom, key: feed_key }
 
     doc = Nokogiri::XML(@response.body)
     xsd.validate(doc).each do |error|

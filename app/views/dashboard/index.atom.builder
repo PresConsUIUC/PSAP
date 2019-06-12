@@ -9,7 +9,7 @@ xml.feed(
 ) {
   xml.title('PSAP Activity')
   xml.link('href' => events_url)
-  if @events.any?
+  if @events&.any?
     xml.updated(@events[0].created_at.iso8601)
   end
   xml.author {
