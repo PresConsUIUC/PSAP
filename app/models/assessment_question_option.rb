@@ -1,4 +1,4 @@
-class AssessmentQuestionOption < ActiveRecord::Base
+class AssessmentQuestionOption < ApplicationRecord
   belongs_to :assessment_question, inverse_of: :assessment_question_options
   has_many :assessment_question_responses,
            inverse_of: :assessment_question_option, dependent: :destroy

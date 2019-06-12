@@ -1,4 +1,4 @@
-class ResourceNote < ActiveRecord::Base
+class ResourceNote < ApplicationRecord
   belongs_to :resource, inverse_of: :resource_notes
 
   validates :resource, presence: true

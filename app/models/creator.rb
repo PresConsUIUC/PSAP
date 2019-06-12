@@ -1,4 +1,4 @@
-class Creator < ActiveRecord::Base
+class Creator < ApplicationRecord
 
   class Type
     PERSON = 0

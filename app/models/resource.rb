@@ -7,7 +7,7 @@
 # Items are assessable, but collections are not. A collection's assessment
 # score is the mean of the item scores contained within.
 #
-class Resource < ActiveRecord::Base
+class Resource < ApplicationRecord
 
   class Significance
     LOW = 0

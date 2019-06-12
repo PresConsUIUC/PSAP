@@ -5,7 +5,7 @@
 #
 # Institutions are assessable.
 #
-class Institution < ActiveRecord::Base
+class Institution < ApplicationRecord
 
   include Assessable
 

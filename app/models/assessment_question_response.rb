@@ -1,4 +1,4 @@
-class AssessmentQuestionResponse < ActiveRecord::Base
+class AssessmentQuestionResponse < ApplicationRecord
   belongs_to :assessment_question,
              inverse_of: :assessment_question_responses
   belongs_to :assessment_question_option,

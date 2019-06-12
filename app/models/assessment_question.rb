@@ -1,4 +1,4 @@
-class AssessmentQuestion < ActiveRecord::Base
+class AssessmentQuestion < ApplicationRecord
 
   class Type
     RADIO = 0

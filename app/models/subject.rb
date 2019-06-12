@@ -1,4 +1,4 @@
-class Subject < ActiveRecord::Base
+class Subject < ApplicationRecord
   belongs_to :resource, inverse_of: :subjects
 
   validates :name, presence: true, length: { maximum: 255 }

@@ -1,4 +1,4 @@
-class StaticPage < ActiveRecord::Base
+class StaticPage < ApplicationRecord
 
   class Component
     HELP = 'help'

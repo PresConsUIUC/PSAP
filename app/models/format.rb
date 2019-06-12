@@ -1,4 +1,4 @@
-class Format < ActiveRecord::Base
+class Format < ApplicationRecord
   has_many :children, class_name: 'Format', foreign_key: 'parent_id',
            inverse_of: :parent, dependent: :destroy
   has_many :format_ink_media_types, inverse_of: :format

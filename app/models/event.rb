@@ -1,4 +1,5 @@
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
+
   belongs_to :user
   has_and_belongs_to_many :assessment_questions,
                           join_table: 'events_assessment_questions'

@@ -3,7 +3,7 @@
 # seeded in the database, corresponding to the institution, location, and
 # resource assessments, identifiable by the "key" property.
 #
-class Assessment < ActiveRecord::Base
+class Assessment < ApplicationRecord
 
   class Type
     ITEM_LEVEL = 0

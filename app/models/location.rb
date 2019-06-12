@@ -3,7 +3,7 @@
 #
 # Locations are assessable.
 #
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
 
   include Assessable
 

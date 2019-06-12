@@ -32,7 +32,7 @@ class DateRangeValidator < ActiveModel::Validator
 
 end
 
-class ResourceDate < ActiveRecord::Base
+class ResourceDate < ApplicationRecord
   belongs_to :resource, inverse_of: :resource_dates
 
   validates :year, allow_blank: true,

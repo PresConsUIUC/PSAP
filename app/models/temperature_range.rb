@@ -1,4 +1,4 @@
-class TemperatureRange < ActiveRecord::Base
+class TemperatureRange < ApplicationRecord
   belongs_to :format, inverse_of: :temperature_ranges
 
   validates_numericality_of :score, greater_than_or_equal_to: 0,

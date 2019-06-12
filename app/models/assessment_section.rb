@@ -3,7 +3,8 @@
 # etc. An assessment section contains zero or more assessment questions and an
 # "index" property to establish its order of appearance in the assessment form.
 #
-class AssessmentSection < ActiveRecord::Base
+class AssessmentSection < ApplicationRecord
+
   belongs_to :assessment, inverse_of: :assessment_sections
   has_many :assessment_questions, inverse_of: :assessment_section,
            dependent: :destroy

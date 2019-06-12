@@ -2,7 +2,7 @@
 # One of the "vectors" of a Bound or Unbound Paper format, alongside
 # FormatInkMediaType.
 #
-class FormatSupportType < ActiveRecord::Base
+class FormatSupportType < ApplicationRecord
   has_many :resources, inverse_of: :format_ink_media_type,
            dependent: :restrict_with_exception
 

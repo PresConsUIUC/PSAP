@@ -4,7 +4,7 @@
 #
 # Repositories are not assessable.
 #
-class Repository < ActiveRecord::Base
+class Repository < ApplicationRecord
 
   has_and_belongs_to_many :events
   belongs_to :institution, inverse_of: :repositories

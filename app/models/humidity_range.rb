@@ -1,4 +1,4 @@
-class HumidityRange < ActiveRecord::Base
+class HumidityRange < ApplicationRecord
   belongs_to :format, inverse_of: :humidity_ranges
 
   validates :max_rh, presence: true

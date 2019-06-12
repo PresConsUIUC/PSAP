@@ -1,4 +1,4 @@
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
   has_many :institutions, inverse_of: :language
   has_many :resources, inverse_of: :language
 
