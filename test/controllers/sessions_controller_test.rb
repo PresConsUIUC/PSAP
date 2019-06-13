@@ -57,15 +57,12 @@ class SessionsControllerTest < ActionController::TestCase
   end
 
   test 'attempting to create a session for an enabled, confirmed user succeeds' do
-    assert_difference 'Event.count' do
-      post :create, params: {
-          session: {
-              username: 'normal',
-              password: 'password'
-          }
-      }
-    end
-    assert_equal 'User normal signed in', Event.last.description
+    post :create, params: {
+        session: {
+            username: 'normal',
+            password: 'password'
+        }
+    }
     assert Time.now - User.find_by_username('normal').last_signin < 0.05
     assert_redirected_to dashboard_url
   end
@@ -75,7 +72,6 @@ class SessionsControllerTest < ActionController::TestCase
   test 'destroying a session works when signed in' do
     signin_as(users(:normal_user))
     delete :destroy
-    assert_equal 'User normal signed out', Event.last.description
     assert_redirected_to root_url
   end
 

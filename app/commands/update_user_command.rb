@@ -32,12 +32,6 @@ class UpdateUserCommand < Command
 
       @user.update!(@user_params)
     rescue ActiveRecord::RecordInvalid
-      @user.events << Event.create(
-          description: "Attempted to update user #{@user.username}, "\
-          "but failed: #{@user.errors.full_messages.first}",
-          user: @doing_user,
-          address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise ValidationError,
               "Failed to update your account: "\
@@ -48,21 +42,12 @@ class UpdateUserCommand < Command
               "#{@user.errors.full_messages.first}"
       end
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to update user #{@user.username}, but failed: #{e}",
-          user: @doing_user,
-          address: @remote_ip,
-          event_level: EventLevel::ERROR)
       if @user == @doing_user
         raise "Failed to update your account: #{e}"
       else
         raise "Failed to update user #{@user.username}: #{e}"
       end
     else
-      @user.events << Event.create(
-          description: "Updated user #{@user.username}",
-          user: @doing_user, address: @remote_ip)
-
       # If the user is changing their email address, we should notify the
       # previous address, in case their account was hijacked.
       if new_email and old_email != new_email

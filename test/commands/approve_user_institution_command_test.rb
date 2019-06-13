@@ -19,24 +19,6 @@ class ApproveUserInstitutionCommandTest < ActiveSupport::TestCase
     end
   end
 
-  test 'execute method should write success to event log if successful' do
-    desired_institution = @user.desired_institution
-
-    assert_difference 'Event.count' do
-      @command.execute
-    end
-    assert_equal @user.institution, desired_institution
-    event = Event.order(:created_at).last
-    assert_equal "Approved institution of user #{@user.username}",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
-  end
-
-  test 'execute method should write failure to event log if unsuccessful' do
-    skip 'Need to get this to happen'
-  end
-
   test 'non-admin users should not be able to approve institution change requests' do
     @doing_user = users(:normal_user)
     @user = users(:admin_user)
@@ -48,14 +30,6 @@ class ApproveUserInstitutionCommandTest < ActiveSupport::TestCase
       @command.execute
     end
     assert_equal initial_institution, @user.institution
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to approve the institution of user "\
-    "#{@user.username}, but failed: "\
-    "#{@doing_user.username} has insufficient privileges to approve user "\
-    "institution change requests.",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

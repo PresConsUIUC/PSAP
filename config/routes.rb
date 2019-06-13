@@ -14,7 +14,6 @@ Rails.application.routes.draw do
         via: :get
   match '/bibliography', to: 'static#bibliography', via: :get
   match '/dashboard', to: 'dashboard#index', via: :get
-  match '/events', to: 'events#index', via: :get
   match '/getting-started', to: 'static#getting_started', via: :get
   match '/glossary', to: 'static#glossary', via: :get
 
@@ -72,8 +71,6 @@ Rails.application.routes.draw do
         via: :patch, as: 'disable_user'
   match '/users/:username/exists', to: 'users#exists',
         via: :get, as: 'user_exists'
-  match '/users/:username/reset_feed_key', to: 'users#reset_feed_key',
-        via: :patch, as: 'reset_user_feed_key'
   match '/users/:username/approve-institution', to: 'users#approve_institution',
         via: :patch, as: 'approve_user_institution'
   match '/users/:username/refuse-institution', to: 'users#refuse_institution',

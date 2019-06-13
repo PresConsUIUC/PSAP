@@ -12,30 +12,17 @@ class ImportArchivesspaceEadCommand < Command
   end
 
   def execute
-    begin
-      ActiveRecord::Base.transaction do
-        @files.each do |io|
-          if (io.respond_to?('original_filename') and
-              File.extname(io.original_filename) == '.xml') or
-              !io.respond_to?('original_filename')
-            resource = Resource.from_ead(io.read, @user)
-            resource.location = @location
-            resource.parent = @parent_resource
-            resource.save!
-            @resources << resource
-          end
+    ActiveRecord::Base.transaction do
+      @files.each do |io|
+        if (io.respond_to?('original_filename') and
+            File.extname(io.original_filename) == '.xml') or
+            !io.respond_to?('original_filename')
+          resource = Resource.from_ead(io.read, @user)
+          resource.location = @location
+          resource.parent = @parent_resource
+          resource.save!
+          @resources << resource
         end
-      end
-    rescue => e
-      Event.create(
-          description: "Failed to import ArchivesSpace resources: #{e.message}",
-          user: @user, address: @remote_ip, event_level: EventLevel::ERROR)
-      raise e
-    else
-      @resources.each do |resource|
-        resource.events << Event.create(
-          description: "Imported resource \"#{resource.name}\" from ArchivesSpace",
-          user: @user, address: @remote_ip)
       end
     end
   end

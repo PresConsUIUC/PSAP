@@ -30,11 +30,6 @@ class JoinInstitutionCommand < Command
         @institution.reload
       end
     rescue ActiveRecord::RecordInvalid
-      @user.events << Event.create(
-          description: "Attempted to change institution of user "\
-          "#{@user.username}, but failed: #{@user.errors.full_messages[0]}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       if @user == @doing_user
         raise ValidationError,
               "Failed to change your institution: "\
@@ -45,28 +40,11 @@ class JoinInstitutionCommand < Command
               "#{@user.errors.full_messages[0]}"
       end
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to change institution of user "\
-          "#{@user.username}, but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       if @user == @doing_user
         raise "Failed to change your institution: #{e.message}"
       else
         raise "Failed to change institution of user #{@user.username}: "\
         "#{e.message}"
-      end
-    else
-      if @user.institution
-        @user.events << Event.create(
-            description: "Changed institution of user #{@user.username} to "\
-            "#{@user.institution.name}",
-            user: @doing_user, address: @remote_ip)
-      else
-        @user.events << Event.create(
-            description: "User #{@user.username} desires to change "\
-            "institution to #{@user.desired_institution.name}",
-            user: @doing_user, address: @remote_ip)
       end
     end
   end

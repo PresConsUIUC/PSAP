@@ -24,15 +24,8 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should save location if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Created location \"#{@valid_command.object.name}\" in "\
-      "repository \"#{@repository.name}\"", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if user attempts to create a location in another institution' do
@@ -41,29 +34,14 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
                                                @valid_location_params, @user,
                                                @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to create location, but failed: Insufficient "\
-    "privileges", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if validation failed' do
     assert_raises ValidationError do
-      assert_difference 'Event.count' do
-        @invalid_command.execute
-      end
+      @invalid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to create location, but failed: Name can't be "\
-    "blank",
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

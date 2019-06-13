@@ -30,26 +30,11 @@ class UpdateInstitutionCommand < Command
 
       @institution.update!(@institution_params.except(:assessment_question_responses))
     rescue ActiveRecord::RecordInvalid
-      @institution.events << Event.create(
-          description: "Attempted to update institution "\
-          "\"#{@institution.name},\" but failed: "\
-          "#{@institution.errors.full_messages[0]}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       raise ValidationError,
             "Failed to update institution \"#{@institution.name}\": "\
             "#{@institution.errors.full_messages[0]}"
     rescue => e
-      @institution.events << Event.create(
-          description: "Attempted to update institution "\
-          "\"#{@institution.name},\" but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to update institution \"#{@institution.name}\": #{e.message}"
-    else
-      @institution.events << Event.create(
-          description: "Updated institution \"#{@institution.name}\"",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

@@ -19,17 +19,10 @@ class DeleteRepositoryCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      assert_difference 'Repository.count', -1 do
-        @command.execute
-      end
+    assert_difference 'Repository.count', -1 do
+      @command.execute
     end
     assert @repository.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Deleted repository \"#{@repository.name}\" from "\
-      "institution \"#{@repository.institution.name}\"", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do

@@ -188,30 +188,6 @@ class UsersController < ApplicationController
   end
 
   ##
-  # Responds to PATCH /users/:id/reset_feed_key
-  #
-  def reset_feed_key
-    user = User.find_by_username params[:username]
-    raise ActiveRecord::RecordNotFound unless user
-
-    command = ResetUserFeedKeyCommand.new(user, current_user, request.remote_ip)
-    begin
-      command.execute
-    rescue => e
-      flash['error'] = "#{e}"
-    else
-      if user == current_user
-        flash['success'] = 'Your feed key has been reset. Click on a feed '\
-        'icon within the application to re-subscribe.'
-      else
-        flash['success'] = "Reset feed key for user #{user.username}."
-      end
-    ensure
-      redirect_back fallback_location: user_url(user)
-    end
-  end
-
-  ##
   # Responds to PATCH /users/:id/send-confirmation-email
   #
   def send_confirmation_email
@@ -237,7 +213,6 @@ class UsersController < ApplicationController
 
     @resources = @user.resources.paginate(page: params[:page],
                  per_page: ::Configuration.instance.results_per_page)
-    @events = Event.where(user: @user).order(created_at: :desc).limit(20)
   end
 
   ##

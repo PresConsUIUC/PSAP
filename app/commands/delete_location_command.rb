@@ -12,17 +12,7 @@ class DeleteLocationCommand < Command
     rescue ActiveRecord::DeleteRestrictionError => e
       raise e # this should never happen
     rescue => e
-      @location.events << Event.create(
-          description: "Attempted to delete location "\
-          "\"#{@location.name},\" but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to delete location: #{e.message}"
-    else
-      @location.repository.events << Event.create(
-          description: "Deleted location \"#{@location.name}\" from "\
-          "repository \"#{@location.repository.name}\"",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

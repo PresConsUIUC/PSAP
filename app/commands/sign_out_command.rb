@@ -6,9 +6,6 @@ class SignOutCommand < Command
   end
 
   def execute
-    @user.events << Event.create(
-        description: "User #{@user.username} signed out",
-        user: @user, address: @remote_ip) if @user
   end
 
   def object

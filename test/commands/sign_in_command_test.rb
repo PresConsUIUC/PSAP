@@ -17,31 +17,21 @@ class SignInCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should work if username and password are valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "User #{@username} signed in", event.description
-    assert_equal @username, event.user.username
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should write failure to event log if username or password are incorrect' do
     @command = SignInCommand.new(@username, 'dogs', @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
   end
 
   test 'execute method should write failure to event log if no username provided' do
     @command = SignInCommand.new('', @password, @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
   end
 

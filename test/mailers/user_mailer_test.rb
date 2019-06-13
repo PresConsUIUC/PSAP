@@ -20,20 +20,6 @@ class UserMailerTest < ActionMailer::TestCase
                  email.html_part.body.raw_source
   end
 
-  test 'changed_feed_key_email' do
-    # Send the email, then test that it got queued
-    email = UserMailer.changed_feed_key_email(users(:normal_user)).deliver_now
-    assert !ActionMailer::Base.deliveries.empty?
-
-    assert_equal [Configuration.instance.mail_address], email.from
-    assert_equal [users(:normal_user).email], email.to
-    assert_equal 'Your PSAP feed key has been changed', email.subject
-    assert_equal read_fixture('changed_feed_key_email.txt').join,
-                 email.text_part.body.raw_source
-    assert_equal read_fixture('changed_feed_key_email.html').join,
-                 email.html_part.body.raw_source
-  end
-
   test 'confirm_account_email' do
     # Send the email, then test that it got queued
     email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now

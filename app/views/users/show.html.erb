@@ -37,29 +37,6 @@
                           method: :patch %>
             </li>
           <% end %>
-          <li>
-            <% if current_user == @user %>
-              <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
-                          method: :patch, data: { confirm: 'Resetting '\
-                          'your feed key will break any links to '\
-                          'application feeds that you may have. This '\
-                          'should typically only be done when your '\
-                          'feed key has been, or is suspected of having '\
-                          'been, compromised. Are you sure you want to '\
-                          'do this?' } %>
-            <% elsif current_user.is_admin? %>
-              <%= link_to 'Reset Feed Key', reset_user_feed_key_path,
-                          method: :patch, data: { confirm: 'Resetting '\
-                          'the feed key will break any links to '\
-                          'application feeds that this user may have. '\
-                          'This should typically only be done when a '\
-                          'feed key has been, or is suspected of having '\
-                          'been, compromised. The user will receive an '\
-                          'email notifying them that they need to '\
-                          're-subscribe to their feeds. Are you sure '\
-                          'you want to do this?' } %>
-            <% end %>
-          </li>
         </ul>
       </div>
       <!-- Edit -->
@@ -154,33 +131,18 @@
       </div>
     <% end %>
 
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#resources" data-toggle="tab">Resources</a>
-      </li>
-      <li><a href="#activity" data-toggle="tab">Activity</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div id="resources" class="tab-pane active">
-        <% if @resources.any? %>
-          <%= render partial: 'resources/resources',
-                     locals: { resources: @resources,
-                               show_checkboxes: false,
-                               show_hierarchy: false } %>
-        <% else %>
-          <% if @user == current_user %>
-            <p>You have not created any resources.</p>
-          <% else %>
-            <p>This user has not created any resources.</p>
-          <% end %>
-        <% end %>
-      </div>
-      <div id="activity" class="tab-pane">
-        <%= render partial: 'shared/events', locals: { events: @events } %>
-      </div>
-    </div>
-
+    <% if @resources.any? %>
+      <%= render partial: 'resources/resources',
+                 locals: { resources: @resources,
+                           show_checkboxes: false,
+                           show_hierarchy: false } %>
+    <% else %>
+      <% if @user == current_user %>
+        <p>You have not created any resources.</p>
+      <% else %>
+        <p>This user has not created any resources.</p>
+      <% end %>
+    <% end %>
   </div>
 
 </div>

@@ -11,13 +11,7 @@ class SignOutCommandTest < ActiveSupport::TestCase
 
   # execute
   test 'execute method should work' do
-    assert_difference 'Event.count' do
-      @command.execute
-    end
-    event = Event.order(:created_at).last
-    assert_equal "User #{@user.username} signed out", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
+    @command.execute
   end
 
   # object

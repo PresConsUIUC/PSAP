@@ -19,14 +19,8 @@ class DisableUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      @command.execute
-    end
+    @command.execute
     assert !@user.enabled
-    event = Event.order(:created_at).last
-    assert_equal "Disabled user #{@user.username}", event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should write failure to event log if unsuccessful' do
@@ -41,12 +35,6 @@ class DisableUserCommandTest < ActiveSupport::TestCase
       @command.execute
     end
     assert @user.enabled
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to disable user #{@user.username}, but failed: "\
-    "#{@doing_user.username} has insufficient privileges to disable users.",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

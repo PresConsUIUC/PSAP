@@ -47,7 +47,6 @@ class Resource < ApplicationRecord
   has_many :resource_dates, inverse_of: :resource, dependent: :destroy
   has_many :resource_notes, inverse_of: :resource, dependent: :destroy
   has_many :subjects, inverse_of: :resource, dependent: :destroy
-  has_and_belongs_to_many :events
   belongs_to :format, inverse_of: :resources, optional: true
   belongs_to :format_ink_media_type, inverse_of: :resources, optional: true
   belongs_to :format_support_type, inverse_of: :resources, optional: true
@@ -638,7 +637,7 @@ class Resource < ApplicationRecord
   ##
 
   # Overrides parent to intelligently clone a resource. This implementation
-  # does NOT clone child resources or events.
+  # does NOT clone child resources.
   #
   # @param omit_assessment_questions [Boolean]
   #

@@ -61,19 +61,6 @@ class LocationsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'creating a location should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      post :create, params: {
-          location: {
-              name: 'Test Location',
-              description: 'Test Description'
-          },
-          repository_id: 5
-      }, xhr: true
-    end
-  end
-
   test 'creating an invalid location should render new template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Location.count' do
@@ -121,13 +108,6 @@ class LocationsControllerTest < ActionController::TestCase
     assert_equal "Location \"#{locations(:location_two).name}\" deleted.",
                  flash['success']
     assert_redirected_to repository_url(locations(:location_two).repository_id)
-  end
-
-  test 'destroying a location should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      delete :destroy, params: { id: locations(:location_two).id }
-    end
   end
 
   #### edit ####
@@ -276,19 +256,6 @@ class LocationsControllerTest < ActionController::TestCase
     }
     assert_equal 'New Name', Location.find(5).name
     assert_response :success
-  end
-
-  test 'updating a location should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      patch :update, params: {
-          location: {
-              name: 'New Name',
-              description: 'New Description'
-          },
-          id: 5
-      }
-    end
   end
 
 end

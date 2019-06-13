@@ -19,16 +19,9 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
   test 'execute method should allow admin user to change password if valid' do
     old_digest = @user.password_digest
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
     assert_not_equal old_digest, @user.password_digest
-    event = Event.order(:created_at).last
-    assert_equal "Changed password for user #{@command.object.username}",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should allow normal user to change own password if valid' do
@@ -38,16 +31,9 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
                                          @doing_user, @remote_ip)
     old_digest = @user.password_digest
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
     assert_not_equal old_digest.inspect, @user.password_digest.inspect
-    event = Event.order(:created_at).last
-    assert_equal "Changed password for user #{@command.object.username}",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if non-admin user attempts to change another user\'s password' do
@@ -57,16 +43,8 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
                                          @new_password, @password_confirmation,
                                          @doing_user, @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to change the password for user "\
-      "#{@user.username}, but failed: Insufficient privileges",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if current and new passwords are equal' do
@@ -74,17 +52,9 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
                                          @doing_user, @remote_ip)
     old_digest = @user.password_digest
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
     assert_equal old_digest.inspect, @user.password_digest.inspect
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to change the password for user "\
-      "#{@user.username}, but failed: Old and new passwords are the same",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if current password is incorrect' do
@@ -93,16 +63,8 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
                                          @new_password, @password_confirmation,
                                          @doing_user, @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to change the password for user "\
-      "#{@user.username}, but failed: Current password is incorrect",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if confirmation does not match' do
@@ -111,16 +73,8 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
                                          @new_password, @password_confirmation,
                                          @doing_user, @remote_ip)
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to change the password for user "\
-      "#{@user.username}, but failed: Password confirmation doesn't match Password",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

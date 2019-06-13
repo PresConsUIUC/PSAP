@@ -22,28 +22,14 @@ class CreateUserCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should save user if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Created account for user #{@valid_command.object.username}",
-                 event.description
-    assert_equal @valid_command.object, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if validation failed' do
     assert_raises ValidationError do
-      assert_difference 'Event.count' do
-        @invalid_command.execute
-      end
+      @invalid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert event.description.start_with?(
-        'Attempted to create a user account, but failed:')
-    assert_nil event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

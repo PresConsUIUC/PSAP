@@ -13,11 +13,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.confirmation_code
   end
 
-  test 'setup sets the feed key' do
-    user = User.new(users(:normal_user).attributes)
-    assert_not_nil user.feed_key
-  end
-
   test 'valid user saves' do
     assert @user.save
   end
@@ -42,17 +37,6 @@ class UserTest < ActiveSupport::TestCase
     @user.email = 'TEST@EXAMPLE.ORG'
     @user.save
     assert_equal 'test@example.org', @user.email
-  end
-
-  # feed_key
-  test 'feed_key is required' do
-    @user.feed_key = nil
-    assert !@user.save
-  end
-
-  test 'feed_key should be 255 characters or less' do
-    @user.feed_key = 'a' * 256
-    assert !@user.save
   end
 
   # first_name
@@ -124,13 +108,6 @@ class UserTest < ActiveSupport::TestCase
   # is_admin?
   test 'is_admin? should work' do
     assert_equal @user.role.is_admin?, @user.is_admin?
-  end
-
-  # reset_feed_key
-  test 'reset_feed_key should work' do
-    initial = @user.feed_key
-    @user.reset_feed_key
-    assert_not_equal @user.feed_key, initial
   end
 
   # reset_password_reset_key

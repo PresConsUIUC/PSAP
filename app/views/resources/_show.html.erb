@@ -137,7 +137,6 @@ breadcrumbs << @resource.name
           <span class="badge"><%= number_to_human(@resource.assessment_score * 100) %></span>
         </a>
       </li>
-      <li><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
@@ -397,10 +396,6 @@ breadcrumbs << @resource.name
             (Collections themselves cannot be assessed.)</p>
         <% end %>
       </div> <!-- #score_summary_tab -->
-
-      <div id="activity_tab" class="tab-pane">
-        <%= render partial: 'shared/events', locals: { events: @events } %>
-      </div>
 
     </div> <!-- .tab-content -->
   </div>

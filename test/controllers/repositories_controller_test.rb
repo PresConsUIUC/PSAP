@@ -57,18 +57,6 @@ class RepositoriesControllerTest < ActionController::TestCase
     assert_equal 'Repository "Test Repository" created.', flash['success']
   end
 
-  test 'creating a repository should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      post :create, params: {
-          repository: {
-              name: 'Test Repository'
-          },
-          institution_id: 5
-      }, xhr: true
-    end
-  end
-
   test 'creating an invalid repository should render error template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Repository.count' do
@@ -115,13 +103,6 @@ class RepositoriesControllerTest < ActionController::TestCase
     assert_equal "Repository \"#{repositories(:repository_two).name}\" deleted.",
                  flash['success']
     assert_redirected_to institution_url(institutions(:institution_two).id)
-  end
-
-  test 'destoying a repository should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      delete :destroy, params: { id: repositories(:repository_two).id }
-    end
   end
 
   #### edit ####
@@ -268,18 +249,6 @@ class RepositoriesControllerTest < ActionController::TestCase
     }
     assert_equal 'New Name', Repository.find(5).name
     assert_template 'show'
-  end
-
-  test 'updating a repository should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      patch :update, params: {
-          repository: {
-              name: 'New Name'
-          },
-          id: 5
-      }
-    end
   end
 
 end

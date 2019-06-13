@@ -19,15 +19,8 @@ class ImportArchivesspaceEadCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should create resources if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count', 2 do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Imported resource \"Another Collection\" from ArchivesSpace",
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   # object

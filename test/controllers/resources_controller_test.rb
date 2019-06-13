@@ -49,16 +49,6 @@ class ResourcesControllerTest < ActionController::TestCase
     end
   end
 
-  test 'creating resources should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      res = resources(:resource_three).attributes
-      res['id'] = nil
-      res['name'] = 'New Resource'
-      post :create, params: { resource: res, location_id: 3 }, xhr: true
-    end
-  end
-
   test 'creating an invalid resource should render error template' do
     signin_as(users(:normal_user))
     assert_no_difference 'Resource.count' do
@@ -103,13 +93,6 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_equal "Resource \"#{resources(:resource_two).name}\" deleted.",
                  flash['success']
     assert_redirected_to location_url(resources(:resource_two).location_id)
-  end
-
-  test 'destroying resources should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      delete :destroy, params: { id: resources(:resource_two).id }
-    end
   end
 
   #### edit ####
@@ -280,18 +263,6 @@ class ResourcesControllerTest < ActionController::TestCase
     resource = Resource.find(1)
     assert_equal 'New Name', resource.name
     assert_response :success
-  end
-
-  test 'updating resources should write to the event log' do
-    signin_as(users(:admin_user))
-    assert_difference 'Event.count' do
-      patch :update, params: {
-          resource: {
-              name: 'New Name'
-          },
-          id: 5
-      }, xhr: true
-    end
   end
 
 end

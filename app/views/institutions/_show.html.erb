@@ -58,9 +58,6 @@
       <li role="presentation">
         <a href="#users_tab" data-toggle="tab">Users</a>
       </li>
-      <li role="presentation">
-        <a href="#events_tab" data-toggle="tab">Activity</a>
-      </li>
     </ul>
 
     <div class="tab-content">
@@ -151,10 +148,6 @@
         <% else %>
             <p>There are no users affiliated with this institution.</p>
         <% end %>
-      </div>
-
-      <div class="tab-pane" id="events_tab">
-        <%= render 'shared/events', events: @events %>
       </div>
 
     </div>

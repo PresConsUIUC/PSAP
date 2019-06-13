@@ -72,7 +72,6 @@
           <span class="badge"><%= number_to_human(@location.assessment_score * 100) %></span>
         </a>
       </li>
-      <li role="presentation"><a href="#activity_tab" data-toggle="tab">Activity</a></li>
     </ul>
 
     <div class="tab-content">
@@ -156,10 +155,6 @@
       <div class="tab-pane" id="score_summary_tab">
         <%= render partial: 'shared/assessable_report',
                    locals: { assessable: @location } %>
-      </div>
-
-      <div class="tab-pane" id="activity_tab">
-        <%= render 'shared/events', events: @events %>
       </div>
 
     </div> <!-- .tab-content -->

@@ -19,17 +19,10 @@ class DeleteLocationCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      assert_difference 'Location.count', -1 do
-        @command.execute
-      end
+    assert_difference 'Location.count', -1 do
+      @command.execute
     end
     assert @location.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Deleted location \"#{@location.name}\" from "\
-      "repository \"#{@location.repository.name}\"", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do

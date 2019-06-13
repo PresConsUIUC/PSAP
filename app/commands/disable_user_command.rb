@@ -14,16 +14,7 @@ class DisableUserCommand < Command
       @user.enabled = false
       @user.save!
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to disable user #{@user.username}, "\
-          "but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ALERT)
       raise "Failed to disable user #{@user.username}: #{e.message}"
-    else
-      @user.events << Event.create(
-          description: "Disabled user #{@user.username}",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

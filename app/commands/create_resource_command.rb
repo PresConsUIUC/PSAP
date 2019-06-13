@@ -16,28 +16,12 @@ class CreateResourceCommand < Command
           @doing_user.institution != @resource.location.repository.institution
         raise 'Insufficient privileges'
       end
-
       @resource.save!
     rescue ActiveRecord::RecordInvalid
-      @resource.events << Event.create(
-          description: "Attempted to create resource, but failed: "\
-          "#{@resource.errors.full_messages[0]}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       raise ValidationError,
             "Failed to create resource: #{@resource.errors.full_messages[0]}"
     rescue => e
-      @resource.events << Event.create(
-          description: "Attempted to create resource, but failed: "\
-          "#{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to create resource: #{e.message}"
-    else
-      @resource.events << Event.create(
-          description: "Created resource \"#{@resource.name}\" in "\
-          "location \"#{@resource.location.name}\"",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

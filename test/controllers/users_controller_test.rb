@@ -73,14 +73,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to signin_url
   end
 
-  test 'attempting to confirm a user with incorrect confirmation code provided should write to the event log' do
-    assert_difference 'Event.count' do
-      users(:normal_user).confirmation_code = 'cats'
-      users(:normal_user).save!
-      get :confirm, params: { username: 'normal', code: 'adfsfasf' }
-    end
-  end
-
   test 'attempting to confirm a user should work' do
     user = users(:normal_user)
     user.confirmation_code = 'cats'
@@ -94,17 +86,6 @@ class UsersControllerTest < ActionController::TestCase
     assert !user.enabled
     assert_nil user.confirmation_code
     assert_response :success
-  end
-
-  test 'confirming a user should write to the event log' do
-    assert_difference 'Event.count' do
-      user = users(:normal_user)
-      user.confirmation_code = 'cats'
-      user.confirmed = false
-      user.enabled = false
-      user.save!
-      get :confirm, params: { username: 'normal', code: 'cats' }
-    end
   end
 
   #### destroy ####

@@ -18,25 +18,10 @@ class CreateRepositoryCommand < Command
 
       @repository.save!
     rescue ActiveRecord::RecordInvalid
-      @repository.events << Event.create(
-          description: "Attempted to create repository, but failed: "\
-          "#{@repository.errors.full_messages[0]}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       raise ValidationError, "Failed to create repository: "\
       "#{@repository.errors.full_messages[0]}"
     rescue => e
-      @repository.events << Event.create(
-          description: "Attempted to create repository, but failed: "\
-          "#{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to create repository: #{e.message}"
-    else
-      @repository.events << Event.create(
-          description: "Created repository \"#{@repository.name}\" "\
-          "in institution \"#{@repository.institution.name}\"",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

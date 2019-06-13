@@ -30,26 +30,11 @@ class UpdateResourceCommand < Command
 
       @resource.update!(@resource_params.except(:assessment_question_responses))
     rescue ActiveRecord::RecordInvalid
-      @resource.events << Event.create(
-          description: "Attempted to update resource \"#{@resource.name},\" "\
-          "but failed: #{@resource.errors.full_messages[0]}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::DEBUG)
       raise ValidationError,
             "Failed to update resource \"#{@resource.name}\": "\
             "#{@resource.errors.full_messages[0]}"
     rescue => e
-      @resource.events << Event.create(
-          description: "Failed to update resource "\
-          "\"#{@resource.name},\" but failed:: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to update resource \"#{@resource.name}\": #{e.message}"
-    else
-      @resource.events << Event.create(
-          description: "Updated resource \"#{@resource.name}\" in "\
-          "location \"#{@resource.location.name}\"",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

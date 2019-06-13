@@ -19,16 +19,10 @@ class DeleteInstitutionCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      assert_difference 'Institution.count', -1 do
-        @command.execute
-      end
+    assert_difference 'Institution.count', -1 do
+      @command.execute
     end
     assert @institution.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Deleted institution \"#{@institution.name}\"", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do
@@ -36,18 +30,9 @@ class DeleteInstitutionCommandTest < ActiveSupport::TestCase
     @command = DeleteInstitutionCommand.new(@institution, @user, @remote_ip)
 
     assert_raises RuntimeError do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
     assert !@institution.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal 'Attempted to delete institution "University of Illinois '\
-    'at Urbana-Champaign," but failed as there are one or more users '\
-    'affiliated with it.',
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should write failure to event log if unsuccessful' do

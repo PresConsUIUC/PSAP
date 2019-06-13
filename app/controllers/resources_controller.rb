@@ -338,7 +338,6 @@ class ResourcesController < ApplicationController
     @assessment_sections = Assessment.find_by_key('resource').
         assessment_sections.order(:index)
     add_dependent_entities
-    @events = @resource.events.order(created_at: :desc).limit(20)
   end
 
   def user_of_same_institution_or_admin

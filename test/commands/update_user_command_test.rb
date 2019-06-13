@@ -22,16 +22,9 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should save user if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
     assert !@valid_command.object.changed?
-    event = Event.order(:created_at).last
-    assert_equal "Updated user #{@valid_command.object.username}",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'non-admin users should not be allowed to update other users' do
@@ -77,9 +70,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
 
   test 'execute method should fail if validation failed' do
     assert_raises ValidationError do
-      assert_difference 'Event.count' do
-        @invalid_command.execute
-      end
+      @invalid_command.execute
     end
   end
 
@@ -91,17 +82,10 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
 
     # user updating other user
-    e = assert_raises ValidationError do
+    assert_raises ValidationError do
       @invalid_command.execute
       assert_equal "Failed to update user #{@user.username}: ", e.message
     end
-
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to update user #{@user.username}, "\
-      "but failed: Username can't be blank",
-                 event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'should notify previous email if user is changing their email' do

@@ -13,35 +13,24 @@ class DeleteUserCommandTest < ActiveSupport::TestCase
 
   # execute
   test 'execute method should delete user' do
-    assert_difference 'Event.count' do
-      assert_difference 'User.count', -1 do
-        assert_nothing_raised do
-          @command.execute
-        end
+    assert_difference 'User.count', -1 do
+      assert_nothing_raised do
+        @command.execute
       end
     end
     assert @user.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Deleted user #{@user.username}", event.description
-    assert_equal @doing_user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if executed by a non-admin user' do
     @command = DeleteUserCommand.new(@user, @user, @remote_ip)
-    assert_difference 'Event.count' do
-      assert_no_difference 'User.count' do
-        assert_raises RuntimeError do
-          @command.execute
-        end
+
+    assert_no_difference 'User.count' do
+      assert_raises RuntimeError do
+        @command.execute
       end
     end
+
     assert !@user.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to delete user #{@user.username}, but failed: "\
-    "Insufficient privileges", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should write failure to event log if unsuccessful' do

@@ -21,30 +21,14 @@ class UpdateResourceCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should save resource if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @valid_command.execute
-      end
+      @valid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Updated resource \"#{@valid_command.object.name}\" in "\
-    "location \"#{@valid_command.object.location.name}\"",
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should fail if validation failed' do
     assert_raises ValidationError do
-      assert_difference 'Event.count' do
-        @invalid_command.execute
-      end
+      @invalid_command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "Attempted to update resource \"#{@resource.name},\" "\
-    "but failed: Name can't be blank",
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should update existing AQRs instead of creating new ones' do

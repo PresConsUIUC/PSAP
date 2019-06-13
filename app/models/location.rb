@@ -10,7 +10,6 @@ class Location < ApplicationRecord
   has_and_belongs_to_many :assessment_questions
   has_many :assessment_question_responses, inverse_of: :location,
            dependent: :destroy
-  has_and_belongs_to_many :events
   belongs_to :repository, inverse_of: :locations
   has_many :resources, -> { order(:name) }, inverse_of: :location,
            dependent: :destroy

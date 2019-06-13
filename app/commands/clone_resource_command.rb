@@ -11,19 +11,7 @@ class CloneResourceCommand < Command
     begin
       @cloned_resource.save!
     rescue => e
-      @resource.events << Event.create(
-          description: "Attempted to clone resource #{@resource.name}, "\
-          "but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to clone resource #{@resource.name}: #{e.message}"
-    else
-      @resource.events << Event.create(
-          description: "Cloned resource #{@resource.name}",
-          user: @doing_user, address: @remote_ip)
-      @cloned_resource.events << Event.create(
-          description: "Cloned resource #{@resource.name}",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

@@ -40,19 +40,7 @@ class MoveResourcesCommand < Command
         end
       end
     rescue => e
-      Event.create(
-          description: "Attempted to move resources, but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to move resource(s): #{e.message}"
-    else
-      @resources.each do |resource|
-        event = Event.create(
-            description: "Moved resource to #{@location.name}",
-            user: @doing_user, address: @remote_ip)
-        resource.events << event
-        @location.events << event
-      end
     end
   end
 

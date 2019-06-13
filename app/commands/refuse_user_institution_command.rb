@@ -20,18 +20,8 @@ class RefuseUserInstitutionCommand < Command
         UserMailer.institution_change_refused_email(@user).deliver_now
       end
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to refuse the institution change request of "\
-          "user #{@user.username}, but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to refuse the institution change request of user "\
       "#{@user.username}: #{e.message}"
-    else
-      @user.events << Event.create(
-          description: "Refused institution change request of user "\
-          "#{@user.username}",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

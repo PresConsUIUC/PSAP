@@ -11,15 +11,6 @@ class UserMailer < ActionMailer::Base
   end
 
   ##
-  # Sent to the user when their feed key has changed.
-  #
-  def changed_feed_key_email(user)
-    @user = user
-    @psap_url = root_url
-    mail(to: @user.email, subject: 'Your PSAP feed key has been changed')
-  end
-
-  ##
   # Sent to the user after s/he has initially signed up. Contains a
   # confirmation URL that must be followed.
   #

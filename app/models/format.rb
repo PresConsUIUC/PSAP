@@ -7,7 +7,6 @@ class Format < ApplicationRecord
   has_many :resources, inverse_of: :format, dependent: :nullify
   has_many :temperature_ranges, inverse_of: :format, dependent: :destroy
   has_and_belongs_to_many :assessment_questions
-  has_and_belongs_to_many :events
   belongs_to :parent, class_name: 'Format', inverse_of: :children,
              optional: true
 

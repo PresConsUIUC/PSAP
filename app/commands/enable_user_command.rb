@@ -17,16 +17,7 @@ class EnableUserCommand < Command
         UserMailer.welcome_email(@user).deliver_now unless @user.last_signin
       end
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to enable user #{@user.username}, "\
-          "but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to enable user #{@user.username}: #{e.message}"
-    else
-      @user.events << Event.create(
-          description: "Enabled user #{@user.username}",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

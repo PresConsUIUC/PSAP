@@ -21,17 +21,8 @@ class ApproveUserInstitutionCommand < Command
         UserMailer.institution_change_approved_email(@user).deliver_now
       end
     rescue => e
-      @user.events << Event.create(
-          description: "Attempted to approve the institution of user "\
-          "#{@user.username}, but failed: #{e.message}",
-          user: @doing_user, address: @remote_ip,
-          event_level: EventLevel::ERROR)
       raise "Failed to approve the institution of user #{@user.username}: "\
       "#{e.message}"
-    else
-      @user.events << Event.create(
-          description: "Approved institution of user #{@user.username}",
-          user: @doing_user, address: @remote_ip)
     end
   end
 

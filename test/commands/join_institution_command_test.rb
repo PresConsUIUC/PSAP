@@ -13,16 +13,8 @@ class JoinInstitutionCommandTest < ActiveSupport::TestCase
   # execute
   test 'execute method should not raise errors if valid' do
     assert_nothing_raised do
-      assert_difference 'Event.count' do
-        @command.execute
-      end
+      @command.execute
     end
-    event = Event.order(:created_at).last
-    assert_equal "User #{@user.username} desires to change institution to "\
-    "#{@command.object.name}",
-                 event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute command should do nothing if the user is already a member of the institution' do

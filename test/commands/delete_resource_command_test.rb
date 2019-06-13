@@ -19,17 +19,10 @@ class DeleteResourceCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should write success to event log if successful' do
-    assert_difference 'Event.count' do
-      assert_difference 'Resource.count', -1 do
-        @command.execute
-      end
+    assert_difference 'Resource.count', -1 do
+      @command.execute
     end
     assert @resource.destroyed?
-    event = Event.order(:created_at).last
-    assert_equal "Deleted resource \"#{@resource.name}\" from "\
-      "location \"#{@resource.location.name}\"", event.description
-    assert_equal @user, event.user
-    assert_equal @remote_ip, event.address
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do

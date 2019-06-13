@@ -453,53 +453,6 @@ case Rails.env
                                   resource: resources[i])
     end
 
-    # Events
-    Event.create!(description: 'This event was just created',
-                  event_level: EventLevel::DEBUG,
-                  user: normal_user,
-                  address: '127.0.0.1',
-                  created_at: Time.mktime(2014, 4, 12))
-    Event.create!(description: 'Made queso dip, but ran out of chips before '\
-    'the queso was consumed, so had to buy more chips, but then didn\'t have '\
-    'enough queso',
-                  event_level: EventLevel::INFO,
-                  user: admin_user,
-                  address: '10.252.52.5',
-                  created_at: Time.mktime(2014, 2, 6))
-    Event.create!(description: 'Gazed into the abyss',
-                  event_level: EventLevel::NOTICE,
-                  user: disabled_user,
-                  address: '10.252.52.5',
-                  created_at: Time.mktime(2013, 11, 10, 2, 5, 10))
-    Event.create!(description: 'Abyss gazed back',
-                  event_level: EventLevel::NOTICE,
-                  user: disabled_user,
-                  address: '10.252.52.5',
-                  created_at: Time.mktime(2013, 11, 10, 2, 5, 11))
-    Event.create!(description: 'Meta-Ambulation has pulled ahead in Pedometer Challenge',
-                  event_level: EventLevel::WARNING,
-                  address: '127.0.0.1',
-                  created_at: Time.mktime(2014, 3, 26))
-    Event.create!(description: 'Godzilla has appeared in Tokyo Harbor',
-                  event_level: EventLevel::ERROR,
-                  user: admin_user,
-                  address: '10.5.2.6',
-                  created_at: Time.mktime(2014, 5, 8))
-    Event.create!(description: 'Skynet has become self-aware',
-                  event_level: EventLevel::CRITICAL,
-                  address: '127.0.0.1',
-                  created_at: Time.mktime(1997, 8, 12))
-    Event.create!(description: 'Ran out of toilet paper',
-                  event_level: EventLevel::ALERT,
-                  address: '127.0.0.1',
-                  created_at: Time.mktime(2013, 6, 19))
-    (0..250).each do
-      Event.create!(description: 'Sample event',
-                    event_level: EventLevel::DEBUG,
-                    address: '127.0.0.1',
-                    created_at: Time.mktime(2012, 12, 12))
-    end
-
 end
 
 puts 'Done'

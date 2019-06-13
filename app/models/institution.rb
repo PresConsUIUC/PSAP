@@ -18,7 +18,6 @@ class Institution < ApplicationRecord
            dependent: :restrict_with_exception
   has_many :repositories, -> { order(:name) }, inverse_of: :institution,
            dependent: :destroy
-  has_and_belongs_to_many :events
   belongs_to :language, inverse_of: :institutions, optional: true
   has_many :locations, -> { order(:name) }, through: :repositories
   has_many :resources, -> { order(:name) }, through: :locations
@@ -37,14 +36,14 @@ class Institution < ApplicationRecord
 
   ##
   # Imports data exported from `full_export_as_json()`. All existing associated
-  # data (except users and events) is deleted first.
+  # data (except users) is deleted first.
   #
   # @param struct [Hash]
   # @return [void]
   #
   def self.import(struct)
     ActiveRecord::Base.transaction do
-      # Destroy most of the institution's content (except users & events) in
+      # Destroy most of the institution's content (except users) in
       # order to make way for the imported content.
       inst = Institution.find(struct['id'].to_i)
       inst.assessment_question_responses.destroy_all
