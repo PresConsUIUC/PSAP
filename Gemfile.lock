@@ -66,7 +66,7 @@ GEM
       sshkit (~> 1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
-    d3-rails (5.9.2)
+    d3-rails (3.5.17)
       railties (>= 3.1)
     erubi (1.8.0)
     execjs (2.7.0)
@@ -223,7 +223,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails
   capistrano-rvm
-  d3-rails
+  d3-rails (~> 3.5)
   font-awesome-sass (~> 4.2.0)
   invisible_captcha
   jbuilder

@@ -8,7 +8,7 @@ end
 gem 'bcrypt'               # Use ActiveModel has_secure_password
 gem 'bootstrap-sass', '~> 3.4'
 gem 'bootstrap-typeahead-rails'
-gem 'd3-rails'             # used for charts in assessment report
+gem 'd3-rails', '~> 3.5'   # used for charts in assessment report
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'invisible_captcha'    # used in forgot-password form
 gem 'jbuilder'
