@@ -827,7 +827,7 @@ class Resource < ApplicationRecord
   end
 
   def sync_location_with_parent
-    self.location = self.parent&.location
+    self.location = self.parent.location if self.parent
   end
 
   ##
