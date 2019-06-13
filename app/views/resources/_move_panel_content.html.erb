@@ -1,0 +1,26 @@
+<%= form_for(@resource) do %>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="moveModalLabel">Move Resource</h4>
+  </div>
+  <div class="modal-body">
+    <p>Select a containing collection, or location if moving to the top level.
+      The resource will be moved intact with all of its children, if any.</p>
+    <% # updated via js %>
+    <input type="hidden" name="resource[location_id]" value="">
+    <table class="table psap-entity-list">
+      <tbody>
+      <%= render partial: 'move_tree_rows',
+                 locals: { entities: @resource.location.repository.institution.repositories,
+                           exclude_resource: @resource,
+                           depth: 0 } %>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <input type="submit" class="btn btn-primary" value="Move Resource">
+  </div>
+<% end %>

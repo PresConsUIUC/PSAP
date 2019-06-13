@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     match '/assess', to: 'resources#assess', via: :get
     match '/clone', to: 'resources#clone', via: :patch, as: 'resource_clone'
     match '/import', to: 'resources#import', via: :post, as: 'import_post'
+    match '/move-tree', to: 'resources#move_tree', via: :get
     resources :resources, only: [:new, :create]
   end
   resources :sessions, only: [:new, :create, :destroy]

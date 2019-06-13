@@ -491,7 +491,7 @@ var ready = function() {
     if ($('body#resource_search').length) {
         ResourceSearchForm.init();
     } else if ($('body#show_resource').length) {
-        // initialize resource-edit panel
+        // initialize the edit-resource panel
         PSAP.Panel.initRemote(
             '#psap-edit-panel',
             $('input[name="resource_url"]').val() + '/edit',
@@ -500,7 +500,7 @@ var ready = function() {
             }
         );
 
-        // initialize resource-assess panel
+        // initialize the assess-resource panel
         PSAP.Panel.initRemote(
             '#psap-assess-panel',
             $('input[name="resource_url"]').val() + '/assess',
@@ -509,7 +509,7 @@ var ready = function() {
             }
         );
 
-        // initialize resource-create panel
+        // initialize the create-resource panel
         PSAP.Panel.initRemote(
             '#psap-create-panel',
             $('input[name="new_resource_url"]').val(),
@@ -518,10 +518,19 @@ var ready = function() {
             }
         );
 
-        // initialize resource-move panel
+        // initialize move-resource panel
         $('input[name="resource[parent_id]"]').on('change', function() {
             $('input[name="resource[location_id]"]').val(
                 $(this).data('location-id'));
+        });
+        $('#psap-move-panel').on('shown.bs.modal', function() {
+            var panel = $(this);
+            $.ajax({
+                url: $('input[name="resource_url"]').val() + '/move-tree',
+                success: function(html) {
+                    panel.find('.modal-content').html(html);
+                }
+            });
         });
     }
 };

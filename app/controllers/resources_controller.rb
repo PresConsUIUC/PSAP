@@ -150,6 +150,16 @@ class ResourcesController < ApplicationController
   end
 
   ##
+  # Returns HTML content for the move-resource panel.
+  #
+  # Responds to GET /resources/:id/move-tree via XHR.
+  #
+  def move_tree
+    @resource = Resource.find(params[:resource_id])
+    render partial: 'resources/move_panel_content'
+  end
+
+  ##
   # Responds to GET /institutions/:id/resources/names
   #
   def names
