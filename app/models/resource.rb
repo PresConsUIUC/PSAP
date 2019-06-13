@@ -85,7 +85,6 @@ class Resource < ApplicationRecord
 
   validates_uniqueness_of :name, scope: :parent_id
 
-  after_initialize :init
   before_save :update_assessment_score, :update_assessment_complete
 
   ##
@@ -274,11 +273,11 @@ class Resource < ApplicationRecord
     # find the max number of one-to-many columns needed
     num_columns = { creator: 0, date: 0, subject: 0, extent: 0, note: 0 }
     resources.each do |resource|
-      num_columns[:creator] = [resource.creators.length, num_columns[:creator]].max
-      num_columns[:date] = [resource.resource_dates.length, num_columns[:date]].max
-      num_columns[:subject] = [resource.subjects.length, num_columns[:subject]].max
-      num_columns[:extent] = [resource.extents.length, num_columns[:extent]].max
-      num_columns[:note] = [resource.resource_notes.length, num_columns[:note]].max
+      num_columns[:creator] = [resource.creators.count, num_columns[:creator]].max
+      num_columns[:date]    = [resource.resource_dates.count, num_columns[:date]].max
+      num_columns[:subject] = [resource.subjects.count, num_columns[:subject]].max
+      num_columns[:extent]  = [resource.extents.count, num_columns[:extent]].max
+      num_columns[:note]    = [resource.resource_notes.count, num_columns[:note]].max
     end
 
     require 'csv'
@@ -318,7 +317,7 @@ class Resource < ApplicationRecord
         end
         csv << [resource.local_identifier] +
             [resource.name] +
-            [(resource.effective_assessment_score * 100).round(2)] +
+            [(resource.assessment_score * 100).round(2)] +
             [Assessment::Type::name_for_type(resource.assessment_type)] +
             [resource.location.name] +
             [resource.readable_resource_type] +
@@ -523,7 +522,7 @@ class Resource < ApplicationRecord
           questions
       csv << [self.local_identifier] +
           [self.name] +
-          [(self.effective_assessment_score * 100).round(2)] +
+          [(self.assessment_score * 100).round(2)] +
           [Assessment::Type::name_for_type(self.assessment_type)] +
           [self.location.name] +
           [self.readable_resource_type] +
@@ -533,7 +532,7 @@ class Resource < ApplicationRecord
           [self.format_support_type ? self.format_support_type.name : nil] +
           [self.readable_significance] +
           self.creators.pluck(:name) +
-          self.resource_dates.map { |r| r.as_dublin_core_string } +
+          self.resource_dates.map(&:as_dublin_core_string) +
           [self.language ? self.language.english_name : nil] +
           self.subjects.pluck(:name) +
           self.extents.pluck(:name) +
@@ -553,20 +552,22 @@ class Resource < ApplicationRecord
   # @return [Hash] with :mean, :median, :low, and :high keys
   #
   def assessed_item_statistics
-    stats = { mean: 0, median: 0, low: nil, high: 0 }
-    all_items = all_assessed_items
-    if all_items.length < 1
+    stats           = { mean: 0, median: 0, low: nil, high: 0 }
+    all_items       = all_assessed_items
+    all_items_count = all_items.count
+    if all_items_count < 1
       return nil
     end
 
     all_items.each do |item|
-      stats[:high] = item.effective_assessment_score if item.effective_assessment_score > stats[:high]
-      stats[:low] = item.effective_assessment_score if
-          stats[:low].nil? or item.effective_assessment_score < stats[:low]
+      stats[:high] = item.assessment_score if item.assessment_score > stats[:high]
+      stats[:low]  = item.assessment_score if
+          stats[:low].nil? or item.assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.effective_assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.effective_assessment_score }.sort
-    len = sorted.length
+    all_scores     = all_items.pluck(:assessment_score)
+    stats[:mean]   = all_scores.sum.to_f / all_items_count.to_f
+    sorted         = all_scores.sort
+    len            = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
   end
@@ -628,22 +629,6 @@ class Resource < ApplicationRecord
   end
 
   ##
-  # Returns the score of all assessment question responses, excluding location,
-  # temperature, etc.
-  #
-  # @return [float] between 0 and 1.
-  #
-  def assessment_score
-    question_score = 0.0
-    assessment_question_responses.map(&:assessment_question).
-        select{ |r| r.parent_id.nil? }.uniq.each do |top_q|
-      question_score += assessment_question_score(top_q)
-    end
-    # scores are pre-weighted; max is 50 so have to multiply by 2
-    (question_score / 100) * 2
-  end
-
-  ##
   # @return [ActiveRecord::Relation<Resource>]
   #
   def collections
@@ -686,32 +671,6 @@ class Resource < ApplicationRecord
     end
 
     clone
-  end
-
-  ##
-  # Returns the canonical assessment score of the resource, factoring in the
-  # location, temperature, and RH scores as well. If a collection, returns the
-  # average score of all resources.
-  #
-  # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
-  #
-  # @return [Float] Float between 0 and 1. The result is cached.
-  #
-  def effective_assessment_score
-    if @effective_assessment_score < 0
-      if self.resource_type == Resource::Type::COLLECTION
-        items = self.all_assessed_items
-        @effective_assessment_score = items.count > 0 ?
-            items.map(&:assessment_score).reduce(:+) / items.length.to_f : 0.0
-      else
-        @effective_assessment_score = self.assessment_score * 0.5 +
-            self.effective_format_score * 0.4 +
-            self.location.assessment_score * 0.05 +
-            self.effective_temperature_score * 0.025 +
-            self.effective_humidity_score * 0.025
-      end
-    end
-    @effective_assessment_score
   end
 
   ##
@@ -794,14 +753,31 @@ class Resource < ApplicationRecord
   def full_export_as_json
     struct = self.as_json
     struct[:assessment_question_responses] =
-        self.assessment_question_responses.map { |r| r.as_json }
-    struct[:creators]       = self.creators.map { |r| r.as_json }
-    struct[:extents]        = self.extents.map { |r| r.as_json }
-    struct[:resource_dates] = self.resource_dates.map { |r| r.as_json }
-    struct[:resource_notes] = self.resource_notes.map { |r| r.as_json }
-    struct[:subjects]       = self.subjects.map { |r| r.as_json }
-    struct[:resources]      = self.children.map { |r| r.full_export_as_json }
+        self.assessment_question_responses.map(&:as_json)
+    struct[:creators]       = self.creators.map(&:as_json)
+    struct[:extents]        = self.extents.map(&:as_json)
+    struct[:resource_dates] = self.resource_dates.map(&:as_json)
+    struct[:resource_notes] = self.resource_notes.map(&:as_json)
+    struct[:subjects]       = self.subjects.map(&:as_json)
+    struct[:resources]      = self.children.map(&:full_export_as_json)
     struct
+  end
+
+  ##
+  # @return [Float] Assessment score of the instance itself, excluding location,
+  #                 format, etc.
+  #
+  def isolated_assessment_score
+    question_score = 0.0
+    assessment_question_responses
+        .map(&:assessment_question)
+        .select{ |r| r.parent_id.nil? }
+        .uniq
+        .each do |top_q|
+      question_score += assessment_question_score(top_q)
+    end
+    # scores are pre-weighted; max is 50 so have to multiply by 2
+    (question_score / 100) * 2
   end
 
   ##
@@ -852,7 +828,7 @@ class Resource < ApplicationRecord
   end
 
   def sync_location_with_parent
-    self.location = self.parent.location if self.parent
+    self.location = self.parent&.location
   end
 
   ##
@@ -864,11 +840,24 @@ class Resource < ApplicationRecord
   end
 
   ##
-  # Overrides Assessable mixin
+  # Overrides the Assessable mixin to assign the effective assessment score
+  # (taking into account location, format, etc.) to `assessment_score`. For
+  # collections, assigns the average score of all child resources.
+  #
+  # See https://github.com/PresConsUIUC/PSAP/wiki/Scoring
   #
   def update_assessment_score
-    self.assessment_score = self.effective_assessment_score
-    @effective_assessment_score = -1
+    if self.resource_type == Resource::Type::COLLECTION
+      scores = self.all_assessed_items.pluck(:assessment_score).select(&:present?)
+      self.assessment_score = scores.length > 0 ?
+                                  scores.sum / scores.length.to_f : 0.0
+    else
+      self.assessment_score = isolated_assessment_score * 0.5 +
+          self.effective_format_score * 0.4 +
+          self.location.assessment_score * 0.05 +
+          self.effective_temperature_score * 0.025 +
+          self.effective_humidity_score * 0.025
+    end
   end
 
   private
@@ -882,12 +871,8 @@ class Resource < ApplicationRecord
     parts
   end
 
-  def init
-    @effective_assessment_score = -1
-  end
-
   def validate_item_children
-    if self.resource_type == Resource::Type::ITEM and self.children.any?
+    if self.resource_type == Resource::Type::ITEM and self.children.count > 0
       errors[:base] << 'Non-empty collections cannot be changed into items.'
     end
   end

@@ -54,7 +54,7 @@ module ResourcesHelper
   end
 
   def score_help(resource)
-    assessment_score = (resource.assessment_score * 100).round(1)
+    assessment_score = (resource.isolated_assessment_score * 100).round(1)
     format_score = (resource.effective_format_score * 100).round(1)
     location_score = (resource.location.assessment_score * 100).round(1)
     temp_score = (resource.effective_temperature_score * 100).round(1)

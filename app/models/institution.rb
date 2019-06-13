@@ -77,23 +77,25 @@ class Institution < ApplicationRecord
   # Returns a hash containing statistics of all assessed items in the
   # institution.
   #
-  # @return hash with mean, median, low, and high keys
+  # @return [Hash] Hash with mean, median, low, and high keys
   #
   def assessed_item_statistics
     stats = { mean: 0, median: 0, low: 0, high: 0 }
     all_items = all_assessed_items
-    if all_items.length < 1
+    all_items_count = all_items.count
+    if all_items_count < 1
       return stats
     end
 
     all_items.each do |item|
-      stats[:high] = item.effective_assessment_score if item.effective_assessment_score > stats[:high]
-      stats[:low] = item.effective_assessment_score if
-          stats[:low].nil? or item.effective_assessment_score < stats[:low]
+      stats[:high] = item.assessment_score if item.assessment_score > stats[:high]
+      stats[:low]  = item.assessment_score if
+          stats[:low].nil? or item.assessment_score < stats[:low]
     end
-    stats[:mean] = all_items.map{ |r| r.effective_assessment_score }.sum.to_f / all_items.length.to_f
-    sorted = all_items.map{ |r| r.effective_assessment_score }.sort
-    len = sorted.length
+    all_scores     = all_items.pluck(:assessment_score)
+    stats[:mean]   = all_scores.sum.to_f / all_items_count.to_f
+    sorted         = all_scores.sort
+    len            = sorted.length
     stats[:median] = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     stats
   end
@@ -121,8 +123,8 @@ class Institution < ApplicationRecord
   def full_export_as_json
     struct = self.as_json
     struct[:assessment_question_responses] =
-        self.assessment_question_responses.map { |r| r.as_json }
-    struct[:repositories] = self.repositories.map { |repo| repo.full_export_as_json }
+        self.assessment_question_responses.map(&:as_json)
+    struct[:repositories] = self.repositories.map(&:full_export_as_json)
     struct
   end
 
@@ -158,16 +160,15 @@ class Institution < ApplicationRecord
 
   def mean_location_score
     locations_ = locations.where(assessment_complete: true)
-    locations_.any? ?
-        locations_.map(&:assessment_score).reduce(:+).to_f / locations_.length.to_f :
-        0.0
+    count = locations_.count
+    count > 0 ? locations_.pluck(:assessment_score).sum.to_f / count.to_f : 0.0
   end
 
   def mean_resource_score
     items = resources.where(resource_type: Resource::Type::ITEM,
                             assessment_complete: true)
-    items.any? ?
-        items.map(&:assessment_score).reduce(:+).to_f / items.length.to_f : 0.0
+    count = items.count
+    count > 0 ? items.pluck(:assessment_score).sum.to_f / count.to_f : 0.0
   end
 
   def to_s

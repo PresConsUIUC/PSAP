@@ -210,17 +210,13 @@ class ResourceTest < ActiveSupport::TestCase
 
   # as_csv
   test 'as_csv should work' do
-    skip # TODO: write this
+    csv = @resource.as_csv
+    assert csv.end_with?("\n")
   end
 
   # assessed_item_statistics
   test 'assessed_item_statistics should work' do
     skip # TODO: write this
-  end
-
-  # assessment_score
-  test 'assessment_score should calculate properly' do
-    assert_equal 0.01, @resource.assessment_score.to_f
   end
 
   # dup
@@ -247,11 +243,6 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal "Clone of Clone of #{'a' * (Resource::MAX_NAME_LENGTH - 18)}",
                  clone2.name
     assert clone2.name.length <= Resource::MAX_NAME_LENGTH
-  end
-
-  # effective_assessment_score
-  test 'effective_assessment_score should work' do
-    skip # TODO: write this
   end
 
   # effective_format_score
@@ -313,6 +304,12 @@ class ResourceTest < ActiveSupport::TestCase
   test 'update_assessment_complete should work when a format with assessment questions is set and a response exists' do
     @resource.update_assessment_complete
     assert @resource.assessment_complete
+  end
+
+  # update_assessment_score
+  test 'update_assessment_score should calculate properly' do
+    @resource.update_assessment_score
+    assert_equal 0.005, @resource.assessment_score.to_f
   end
 
   ########################### association tests ##############################
