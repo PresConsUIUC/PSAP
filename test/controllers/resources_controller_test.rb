@@ -259,7 +259,7 @@ class ResourcesControllerTest < ActionController::TestCase
             name: 'New Name'
         },
         id: 1
-    }
+    }, xhr: true
     resource = Resource.find(1)
     assert_equal 'New Name', resource.name
     assert_response :success

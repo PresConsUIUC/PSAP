@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_13_183949) do
+ActiveRecord::Schema.define(version: 2019_06_13_184010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,7 +262,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_183949) do
     t.integer "resource_type", null: false
     t.string "name", limit: 255, null: false
     t.integer "format_id"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.text "description"
     t.string "local_identifier", limit: 255
     t.integer "date_type"
@@ -367,29 +367,29 @@ ActiveRecord::Schema.define(version: 2019_06_13_183949) do
   add_foreign_key "assessment_questions_locations", "assessment_questions"
   add_foreign_key "assessment_questions_locations", "locations"
   add_foreign_key "assessment_sections", "assessments"
-  add_foreign_key "creators", "resources"
-  add_foreign_key "extents", "resources"
-  add_foreign_key "formats", "formats", column: "parent_id"
-  add_foreign_key "humidity_ranges", "formats"
-  add_foreign_key "institutions", "languages"
-  add_foreign_key "locations", "humidity_ranges"
-  add_foreign_key "locations", "repositories"
-  add_foreign_key "locations", "temperature_ranges"
-  add_foreign_key "permissions_roles", "permissions"
-  add_foreign_key "permissions_roles", "roles"
-  add_foreign_key "repositories", "institutions"
-  add_foreign_key "resource_dates", "resources"
-  add_foreign_key "resource_notes", "resources"
-  add_foreign_key "resources", "assessments"
-  add_foreign_key "resources", "format_ink_media_types"
-  add_foreign_key "resources", "format_support_types"
-  add_foreign_key "resources", "formats"
-  add_foreign_key "resources", "languages"
-  add_foreign_key "resources", "locations"
-  add_foreign_key "resources", "resources", column: "parent_id"
-  add_foreign_key "resources", "users"
-  add_foreign_key "subjects", "resources"
-  add_foreign_key "temperature_ranges", "formats"
-  add_foreign_key "users", "institutions"
-  add_foreign_key "users", "institutions", column: "desired_institution_id"
+  add_foreign_key "creators", "resources", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "extents", "resources", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "formats", "formats", column: "parent_id", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "humidity_ranges", "formats", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "institutions", "languages", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "locations", "humidity_ranges", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "locations", "repositories", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "locations", "temperature_ranges", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "permissions_roles", "permissions", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "permissions_roles", "roles", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "repositories", "institutions", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "resource_dates", "resources", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "resource_notes", "resources", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "resources", "assessments", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "resources", "format_ink_media_types", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "resources", "format_support_types", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "resources", "formats", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "resources", "languages", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "resources", "locations", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "resources", "resources", column: "parent_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "resources", "users", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "subjects", "resources", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "temperature_ranges", "formats", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "users", "institutions", column: "desired_institution_id", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "users", "institutions", on_update: :cascade, on_delete: :restrict
 end
