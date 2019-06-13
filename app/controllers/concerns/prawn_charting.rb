@@ -232,7 +232,7 @@ module PrawnCharting
         end
       end
     end
-    pdf.move_down 20
+    (institution_formats.length < 18) ? pdf.move_down(20) : pdf.start_new_page
     bar_chart(pdf, institution_data, pdf.bounds.right, CHART_HEIGHT)
 
     add_page_numbers(pdf) if page_numbers
