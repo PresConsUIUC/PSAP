@@ -295,9 +295,6 @@ module PrawnCharting
   # @return void
   #
   def bar_chart(pdf, data, width, height)
-    # horrible hack to compensate for using step_size with a too-small number
-    # of items (better to show an empty chart than an error page)
-    return if data.length <= 10
     x_margin = 30
     axis_label_size = 10
     axis_label_height = pdf.height_of('bla', size: axis_label_size)
