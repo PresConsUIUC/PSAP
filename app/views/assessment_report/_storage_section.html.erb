@@ -1,0 +1,38 @@
+<%= render partial: 'export_assessment_report_pdf',
+           locals: { section: 'storage' } %>
+<h2>Storage Environments</h2>
+<% if @institution.locations.any? %>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Location</th>
+      <% @location_assessment_sections.each do |section| %>
+        <th><%= section.name %></th>
+      <% end %>
+      <th>Overall</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @institution.locations.order(:name).each do |location| %>
+      <% if location.assessment_question_responses.any? %>
+        <tr>
+          <td>
+            <%= entity_icon(location) %>
+            <%= link_to(location.name, location) %>
+          </td>
+          <% location.assessment_section_scores.each do |section_id, score| %>
+            <td class="<%= bootstrap_bg_class_for_score(score) %>">
+              <%= (score * 100).round %>
+            </td>
+          <% end %>
+          <td class="<%= bootstrap_bg_class_for_score(location.assessment_score) %>">
+            <%= (location.assessment_score * 100).round %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This institution has no locations.</p>
+<% end %>

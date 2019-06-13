@@ -1,7 +1,7 @@
 var AssessmentChart = {
 
     init: function() {
-        $('.psap-chart').each(function () {
+        $('.psap-chart').each(function() {
             // transform the json source data for D3
             var sourceData = $.parseJSON($(this).prev('input[name="chart_data"]').val());
             var barData = [];
@@ -63,9 +63,26 @@ var AssessmentChart = {
 
 };
 
+var AssessmentReportView = function() {
+
+    AssessmentChart.init();
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        var url        = $(e.target).data("url");
+        var section_id = $(e.target).attr('href');
+        $.ajax({
+            url: url,
+            success: function(html) {
+                $(section_id).html(html);
+            }
+        });
+    });
+
+};
+
 var ready = function() {
     if ($('body#assessment_report').length) {
-        AssessmentChart.init();
+        new AssessmentReportView();
     }
 };
 

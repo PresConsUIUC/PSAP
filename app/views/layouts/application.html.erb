@@ -30,6 +30,8 @@
 <body <%= !yield(:body_id).empty? ? raw("id=\"#{yield(:body_id)}\"") : nil %>
       data-spy="scroll" lang="en-US">
 
+  <%= hidden_field_tag 'root_url', root_url %>
+
   <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 
     <div class="navbar-header">

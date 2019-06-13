@@ -1,0 +1,12 @@
+<%= render partial: 'export_assessment_report_pdf',
+           locals: { section: 'collections' } %>
+<h2>Collections</h2>
+<% if @collections.any? %>
+  <% @collections.each do |resource| %>
+    <%= render partial: 'collection_report',
+               locals: { resource: resource,
+                         chart_data: @collection_chart_datas[resource.id] } %>
+  <% end %>
+<% else %>
+  <p>This institution has no collections.</p>
+<% end %>

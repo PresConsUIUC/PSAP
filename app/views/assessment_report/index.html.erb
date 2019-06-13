@@ -13,97 +13,48 @@
   <div class="col-sm-8">
     <ul class="nav nav-tabs">
       <li role="presentation" class="active">
-        <a href="#preservation_infrastructure_tab" data-toggle="tab">Preservation Infrastructure</a>
+        <a href="#preservation_infrastructure_section"
+           id="preservation_infrastructure_tab"
+           data-toggle="tab"
+           data-url="<%= root_url + '/assessment-report/preservation' %>">Preservation Infrastructure</a>
       </li>
       <li role="presentation">
-        <a href="#storage_environments_tab" data-toggle="tab">Storage Environments</a>
+        <a href="#storage_environments_section"
+           id="storage_environments_tab"
+           data-toggle="tab"
+           data-url="<%= root_url + '/assessment-report/storage' %>">Storage Environments</a>
       </li>
       <li role="presentation">
-        <a href="#resources_tab" data-toggle="tab">Resources</a>
+        <a href="#resources_section"
+           id="resources_tab"
+           data-toggle="tab"
+           data-url="<%= root_url + '/assessment-report/resources' %>">Resources</a>
       </li>
       <li role="presentation">
-        <a href="#collections_tab" data-toggle="tab">Collections</a>
+        <a href="#collections_section"
+           id="collections_tab"
+           data-toggle="tab"
+           data-url="<%= root_url + '/assessment-report/collections' %>">Collections</a>
       </li>
     </ul>
 
     <div class="tab-content">
-
-      <div class="tab-pane active" id="preservation_infrastructure_tab">
-        <%= render partial: 'export_assessment_report_pdf',
-                   locals: { section: 'preservation' } %>
-        <h2>Preservation Infrastructure</h2>
-        <% if @institution.assessment_question_responses.any? %>
-          <%= render partial: 'assessable_section_scores',
-                     locals: { assessable: @institution, show_title: false } %>
-        <% else %>
-          <p>This institution has not been assessed yet.</p>
-        <% end %>
+      <div class="tab-pane active" id="preservation_infrastructure_section">
+        <%= render partial: 'preservation_section' %>
       </div>
 
-      <div class="tab-pane" id="storage_environments_tab">
-        <%= render partial: 'export_assessment_report_pdf',
-                   locals: { section: 'storage' } %>
-        <h2>Storage Environments</h2>
-        <% if @institution.locations.any? %>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Location</th>
-                <% @location_assessment_sections.each do |section| %>
-                  <th><%= section.name %></th>
-                <% end %>
-                <th>Overall</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @institution.locations.order(:name).each do |location| %>
-                <% if location.assessment_question_responses.any? %>
-                  <tr>
-                    <td>
-                      <%= entity_icon(location) %>
-                      <%= link_to(location.name, location) %>
-                    </td>
-                    <% location.assessment_section_scores.each do |section_id, score| %>
-                      <td class="<%= bootstrap_bg_class_for_score(score) %>">
-                        <%= (score * 100).round %>
-                      </td>
-                    <% end %>
-                    <td class="<%= bootstrap_bg_class_for_score(location.assessment_score) %>">
-                      <%= (location.assessment_score * 100).round %>
-                    </td>
-                  </tr>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <p>This institution has no locations.</p>
-        <% end %>
+      <div class="tab-pane" id="storage_environments_section">
+        <p>Loading&hellip;</p>
       </div>
 
-      <div class="tab-pane" id="resources_tab">
-        <%= render partial: 'export_assessment_report_pdf',
-                   locals: { section: 'resources' } %>
-        <h2>Resources</h2>
-        <%= render partial: 'resource_report',
-                   locals: { institution: @institution, stats: @stats,
-                             chart_data: @resource_chart_data,
-                             institution_formats: @institution_formats } %>
+      <div class="tab-pane" id="resources_section">
+        <p>Loading&hellip;</p>
+        <p>(This may take a while for large numbers of resources.)</p>
       </div>
 
-      <div class="tab-pane" id="collections_tab">
-        <%= render partial: 'export_assessment_report_pdf',
-                   locals: { section: 'collections' } %>
-        <h2>Collections</h2>
-        <% if @collections.any? %>
-          <% @collections.each do |resource| %>
-              <%= render partial: 'collection_report',
-                         locals: { resource: resource,
-                                   chart_data: @collection_chart_datas[resource.id] } %>
-          <% end %>
-        <% else %>
-          <p>This institution has no collections.</p>
-        <% end %>
+      <div class="tab-pane" id="collections_section">
+        <p>Loading&hellip;</p>
+        <p>(This may take a while for large numbers of collections.)</p>
       </div>
     </div>
   </div>

@@ -1,0 +1,9 @@
+<%= render partial: 'export_assessment_report_pdf',
+           locals: { section: 'preservation' } %>
+<h2>Preservation Infrastructure</h2>
+<% if @institution.assessment_question_responses.any? %>
+  <%= render partial: 'assessable_section_scores',
+             locals: { assessable: @institution, show_title: false } %>
+<% else %>
+  <p>This institution has not been assessed yet.</p>
+<% end %>
