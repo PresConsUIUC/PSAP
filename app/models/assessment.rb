@@ -25,9 +25,9 @@ class Assessment < ApplicationRecord
     end
   end
 
-  has_many :assessment_questions, through: :assessment_sections
   has_many :assessment_sections, -> { order(:index) },
            inverse_of: :assessment, dependent: :destroy
+  has_many :assessment_questions, through: :assessment_sections
 
   validates :key, presence: true, length: { maximum: 30 }
   validates :name, presence: true, length: { maximum: 255 } # TODO: this is never used

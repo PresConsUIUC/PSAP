@@ -90,11 +90,12 @@ class LocationsController < ApplicationController
     rescue => e
       response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
+      prepare_show_view
       render 'show'
     else
-      prepare_show_view
       response.headers['X-Psap-Result'] = 'success'
       flash['success'] = "Location \"#{@location.name}\" updated."
+      prepare_show_view
       render 'show'
     end
   end
