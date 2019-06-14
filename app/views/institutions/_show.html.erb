@@ -53,7 +53,9 @@
         <a href="#info_tab" data-toggle="tab">Info</a>
       </li>
       <li role="presentation">
-        <a href="#score_summary_tab" data-toggle="tab">Score Summary</a>
+        <a href="#score_summary_tab" data-toggle="tab">Score Summary
+          <span class="badge"><%= number_to_human(@institution.assessment_score * 100) %></span>
+        </a>
       </li>
       <li role="presentation">
         <a href="#users_tab" data-toggle="tab">Users</a>
