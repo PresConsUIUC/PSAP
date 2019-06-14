@@ -1,0 +1,17 @@
+<div class="psap-error-messages">
+  <% # populated via ajax %>
+</div>
+
+<p>Select a containing collection, or location if moving to the top level.
+  The resource will be moved intact with all of its children, if any.</p>
+
+<% # updated via js %>
+<input type="hidden" name="resource[location_id]" value="">
+<table class="table psap-entity-list">
+  <tbody>
+  <%= render partial: 'move_tree_rows',
+             locals: { entities: @resource.location.repository.institution.repositories,
+                       exclude_resource: @resource,
+                       depth: 0 } %>
+  </tbody>
+</table>

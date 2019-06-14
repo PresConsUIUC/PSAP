@@ -519,16 +519,16 @@ var ready = function() {
         );
 
         // initialize move-resource panel
-        $('input[name="resource[parent_id]"]').on('change', function() {
-            $('input[name="resource[location_id]"]').val(
-                $(this).data('location-id'));
-        });
         $('#psap-move-panel').on('shown.bs.modal', function() {
             var panel = $(this);
             $.ajax({
                 url: $('input[name="resource_url"]').val() + '/move-tree',
                 success: function(html) {
-                    panel.find('.modal-content').html(html);
+                    panel.find('.modal-body').html(html);
+                    panel.find('[name="resource[parent_id]"]').on('change', function() {
+                        $('input[name="resource[location_id]"]').val(
+                            $(this).data('location-id'));
+                    });
                 }
             });
         });

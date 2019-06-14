@@ -4,7 +4,23 @@
      aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <% # Populated via XHR %>
+      <%= form_for(@resource, remote: true) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="moveModalLabel">Move Resource</h4>
+        </div>
+        <div class="modal-body">
+          <% # Populated via XHR %>
+          <p>Loading&hellip;</p>
+          <p>(This may take a moment if you have a lot of resources.)</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <input type="submit" class="btn btn-primary" value="Move Resource">
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

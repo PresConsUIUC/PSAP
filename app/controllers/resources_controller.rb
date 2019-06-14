@@ -156,7 +156,7 @@ class ResourcesController < ApplicationController
   #
   def move_tree
     @resource = Resource.find(params[:resource_id])
-    render partial: 'resources/move_panel_content'
+    render partial: 'resources/move_panel_body'
   end
 
   ##
@@ -297,7 +297,8 @@ class ResourcesController < ApplicationController
     rescue ValidationError
       response.headers['X-Psap-Result'] = 'error'
       render partial: 'shared/validation_messages',
-             locals: { entity: @resource }
+             locals: { entity: @resource },
+             formats: [:js]
     rescue => e
       response.headers['X-Psap-Result'] = 'error'
       flash['error'] = "#{e}"
