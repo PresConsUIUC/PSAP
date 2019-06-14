@@ -47,11 +47,6 @@ var PSAP = {
             } else {
                 $('div.container header, div.container-fluid header').after(flash);
             }
-
-            // make it disappear after a delay
-            setTimeout(function() {
-                flash.fadeOut();
-            }, PSAP.Flash.FADE_OUT_DELAY);
         }
 
     },
