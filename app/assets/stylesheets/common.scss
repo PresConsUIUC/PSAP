@@ -151,6 +151,10 @@ button.hovertip-fire {
   z-index:8999; /* fixes popovers in modal panels */
 }
 
+.modal-content {
+  margin-top: 5em;
+}
+
 div#psap-ajax-shade {
   background:rgba(0, 0, 0, 0.4);
   display:none;
