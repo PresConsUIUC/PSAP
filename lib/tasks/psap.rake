@@ -64,7 +64,7 @@ namespace :psap do
       # before callbacks, so if a resource somehow currently has an invalid
       # score, calling save() alone won't work.
       r.update_assessment_score
-      r.save
+      r.save(touch: false)
       StringUtils.print_progress(start, index, count, 'Updating assessment scores')
     end
   end
