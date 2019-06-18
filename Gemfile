@@ -30,7 +30,7 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
 group :development do
-  gem 'capistrano', '~> 3.2.1'
+  gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'

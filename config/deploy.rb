@@ -1,5 +1,4 @@
-# config valid only for Capistrano 3.1
-lock '3.2.1'
+lock '3.11.0'
 
 set :application, 'psap'
 set :repo_url, 'git@github.com:PresConsUIUC/PSAP.git'
