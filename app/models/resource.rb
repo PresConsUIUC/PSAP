@@ -93,7 +93,8 @@ class Resource < ApplicationRecord
   #
   def self.all_matching_query(institution, params)
     params = params.symbolize_keys
-    resources = institution.resources
+    resources = Resource.all.distinct
+                    .joins('INNER JOIN locations ON resources.location_id = locations.id')
 
     # assessed
     if params[:assessed] == '1'
@@ -114,9 +115,14 @@ class Resource < ApplicationRecord
       end
     end
     # repository_id
-    resources = resources.
-        where('locations.repository_id = ?', params[:repository_id]) if
-        params[:repository_id].present?
+    if params[:repository_id].present?
+      resources = resources.joins("INNER JOIN repositories ON locations.repository_id = repositories.id "\
+                                  "AND repositories.id = #{params[:repository_id]}")
+    else
+      resources = resources.joins('INNER JOIN repositories ON locations.repository_id = repositories.id')
+    end
+    resources = resources.joins("INNER JOIN institutions ON repositories.institution_id = institutions.id "\
+                                "AND institutions.id = #{institution.id}")
     # q
     if params[:q].present?
       q = "%#{params[:q].strip.downcase}%"
