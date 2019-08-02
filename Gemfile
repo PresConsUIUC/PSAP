@@ -32,7 +32,7 @@ gem 'will_paginate-bootstrap'
 group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
-  gem 'capistrano-rvm'
+  gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'listen'
   gem 'puma'
