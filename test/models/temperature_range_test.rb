@@ -3,7 +3,7 @@ require 'test_helper'
 class TemperatureRangeTest < ActiveSupport::TestCase
 
   def setup
-    @range = temperature_ranges(:temp_range_two)
+    @range = temperature_ranges(:two)
   end
 
   ######################### class method tests ##############################

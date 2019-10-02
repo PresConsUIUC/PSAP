@@ -3,8 +3,8 @@ require 'test_helper'
 class LanguageTest < ActiveSupport::TestCase
 
   def setup
-    @language = languages(:english_language)
-    @default_values = languages(:english_language).attributes
+    @language = languages(:english)
+    @default_values = languages(:english).attributes
   end
 
   ######################### class method tests ##############################

@@ -3,7 +3,7 @@ require 'test_helper'
 class ExtentTest < ActiveSupport::TestCase
 
   def setup
-    @extent = extents(:extent_one)
+    @extent = extents(:one)
   end
 
   ######################### class method tests ##############################

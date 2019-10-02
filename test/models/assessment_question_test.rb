@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentQuestionTest < ActiveSupport::TestCase
 
   def setup
-    @question = assessment_questions(:assessment_question_one)
+    @question = assessment_questions(:one)
   end
 
   ######################### class method tests ##############################
@@ -76,21 +76,21 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
   ########################### association tests ##############################
 
   test 'dependent assessment question options should be destroyed on destroy' do
-    option = assessment_question_options(:assessment_question_option_one)
+    option = assessment_question_options(:one)
     @question.assessment_question_options << option
     @question.destroy
     assert option.destroyed?
   end
 
   test 'dependent assessment question responses should be destroyed on destroy' do
-    response = assessment_question_responses(:assessment_question_response_one)
+    response = assessment_question_responses(:one)
     @question.assessment_question_responses << response
     @question.destroy
     assert response.destroyed?
   end
 
   test 'children should be destroyed on destroy' do
-    child = assessment_questions(:assessment_question_two)
+    child = assessment_questions(:two)
     @question.children << child
     @question.destroy
     assert child.destroyed?

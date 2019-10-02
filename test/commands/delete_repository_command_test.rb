@@ -3,9 +3,9 @@ require 'test_helper'
 class DeleteRepositoryCommandTest < ActiveSupport::TestCase
 
   def setup
-    @repository = repositories(:repository_one)
+    @repository = repositories(:one)
 
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @command = DeleteRepositoryCommand.new(@repository, @user, @remote_ip)

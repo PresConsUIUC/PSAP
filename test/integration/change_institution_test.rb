@@ -3,16 +3,16 @@ require 'test_helper'
 class ChangeInstitutionTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = users(:normal_user)
-    @new_institution = institutions(:institution_two)
+    @user            = users(:normal)
+    @new_institution = institutions(:two)
 
-    @valid_username = @user.username
-    @valid_password = 'password'
+    @valid_username  = @user.username
+    @valid_password  = 'password'
   end
 
   test 'non-admin users should not be allowed to change other users\' institution' do
     signin(@valid_username, @valid_password)
-    admin_user = users(:admin_user)
+    admin_user = users(:admin)
     original_institution = admin_user.institution
     admin_user.desired_institution = @new_institution
     admin_user.save

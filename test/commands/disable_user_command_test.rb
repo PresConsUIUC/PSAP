@@ -3,9 +3,9 @@ require 'test_helper'
 class DisableUserCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
+    @user = users(:normal)
 
-    @doing_user = users(:admin_user)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
 
     @command = DisableUserCommand.new(@user, @doing_user, @remote_ip)
@@ -28,8 +28,8 @@ class DisableUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'non-admin users should not be able to disable users' do
-    @doing_user = users(:normal_user)
-    @user = users(:admin_user)
+    @doing_user = users(:normal)
+    @user = users(:admin)
     @command = DisableUserCommand.new(@user, @doing_user, @remote_ip)
     assert_raises RuntimeError do
       @command.execute

@@ -3,10 +3,10 @@ require 'test_helper'
 class CreateLocationCommandTest < ActiveSupport::TestCase
 
   def setup
-    @repository = repositories(:repository_one)
-    @valid_location_params = locations(:location_one).attributes.except(
+    @repository = repositories(:one)
+    @valid_location_params = locations(:secret).attributes.except(
         'id', 'repository_id')
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = CreateLocationCommand.new(@repository,
                                                @valid_location_params, @user,
@@ -29,7 +29,7 @@ class CreateLocationCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should fail if user attempts to create a location in another institution' do
-    @repository = repositories(:repository_five)
+    @repository = repositories(:five)
     @valid_command = CreateLocationCommand.new(@repository,
                                                @valid_location_params, @user,
                                                @remote_ip)

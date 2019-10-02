@@ -1,5 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-subject_one:
+one:
   name: Test Subject
-  resource_id: 1
+  resource: magna_carta

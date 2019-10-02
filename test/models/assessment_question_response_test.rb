@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentQuestionResponseTest < ActiveSupport::TestCase
 
   def setup
-    @response = assessment_question_responses(:assessment_question_response_one)
+    @response = assessment_question_responses(:one)
   end
 
   ######################### class method tests ##############################
@@ -13,7 +13,7 @@ class AssessmentQuestionResponseTest < ActiveSupport::TestCase
   ############################ object tests #################################
 
   test 'valid response saves' do
-    @response.resource = resources(:resource_one)
+    @response.resource = resources(:magna_carta)
     assert @response.save
   end
 
@@ -37,17 +37,17 @@ class AssessmentQuestionResponseTest < ActiveSupport::TestCase
   end
 
   test 'can belong to an institution' do
-    @response.institution = institutions(:institution_one)
+    @response.institution = institutions(:one)
     assert @response.save
   end
 
   test 'can belong to a location' do
-    @response.location = locations(:location_one)
+    @response.location = locations(:secret)
     assert @response.save
   end
 
   test 'can belong to a resource' do
-    @response.resource = resources(:resource_one)
+    @response.resource = resources(:magna_carta)
     assert @response.save
   end
 

@@ -3,12 +3,12 @@ require 'test_helper'
 class UpdateUserCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
-    @valid_params = users(:normal_user).attributes
+    @user = users(:normal)
+    @valid_params = @user.attributes
     @valid_params.delete('id')
     @valid_params['username'] = 'asdfjkjhasfd'
 
-    @doing_user = users(:admin_user)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateUserCommand.new(@user, @valid_params,
                                            @doing_user, @remote_ip)
@@ -28,11 +28,11 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'non-admin users should not be allowed to update other users' do
-    @user = users(:disabled_user)
-    @valid_params = users(:disabled_user).attributes
+    @user = users(:disabled)
+    @valid_params = @user.attributes
     @valid_params.delete('id')
     @valid_params['username'] = 'asdfjkjhasfd'
-    @doing_user = users(:normal_user)
+    @doing_user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateUserCommand.new(@user, @valid_params,
                                            @doing_user, @remote_ip)
@@ -43,9 +43,9 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'non-admin users should not be able to change usernames once set' do
-    @user = users(:normal_user)
+    @user = users(:normal)
     @valid_params = { 'username' => 'dfasdfsaf' }
-    @doing_user = users(:normal_user)
+    @doing_user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateUserCommand.new(@user, @valid_params,
                                            @doing_user, @remote_ip)
@@ -56,9 +56,9 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'non-admin users should not be able to change roles' do
-    @user = users(:normal_user)
-    @valid_params = { 'role_id' => roles(:admin_role).id }
-    @doing_user = users(:normal_user)
+    @user = users(:normal)
+    @valid_params = { 'role_id' => roles(:admin).id }
+    @doing_user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateUserCommand.new(@user, @valid_params,
                                            @doing_user, @remote_ip)
@@ -89,7 +89,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'should notify previous email if user is changing their email' do
-    old_email = users(:normal_user).email
+    old_email = users(:normal).email
     @valid_params['email'] = 'newemail@example.org'
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       @valid_command.execute

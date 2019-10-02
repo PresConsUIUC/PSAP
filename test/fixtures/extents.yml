@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-extent_one:
+one:
   name: Test extent 1
-  resource_id: 1
+  resource: magna_carta
 
-extent_two:
+two:
   name: Test extent 2
-  resource_id: 1
+  resource: magna_carta

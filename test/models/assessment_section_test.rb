@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentSectionTest < ActiveSupport::TestCase
 
   def setup
-    @section = assessment_sections(:assessment_section_one)
+    @section = assessment_sections(:one)
   end
 
   ######################### class method tests ##############################
@@ -44,7 +44,7 @@ class AssessmentSectionTest < ActiveSupport::TestCase
   test 'name must be unique within the same assessment' do
     @section.name = 'cats'
     @section.save
-    section2 = assessment_sections(:assessment_section_two)
+    section2 = assessment_sections(:two)
     section2.name = 'cats'
     assert !section2.save
   end
@@ -52,7 +52,7 @@ class AssessmentSectionTest < ActiveSupport::TestCase
   test 'name does not have to be unique across assessments' do
     @section.name = 'cats'
     @section.save
-    section2 = assessment_sections(:assessment_section_three)
+    section2 = assessment_sections(:three)
     section2.name = 'cats'
     assert section2.save
   end
@@ -72,13 +72,13 @@ class AssessmentSectionTest < ActiveSupport::TestCase
   end
 
   test 'max_score should work properly with a resource supplied' do
-    assert_equal 1, @section.max_score(resources(:resource_one))
+    assert_equal 1, @section.max_score(resources(:magna_carta))
   end
 
   ########################### association tests ##############################
 
   test 'dependent assessment questions should be destroyed on destroy' do
-    question = assessment_questions(:assessment_question_one)
+    question = assessment_questions(:one)
     @section.assessment_questions << question
     @section.destroy
     assert question.destroyed?

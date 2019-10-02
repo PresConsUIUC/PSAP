@@ -8,8 +8,8 @@ class ImportArchivesspaceEadCommandTest < ActiveSupport::TestCase
         File.open('test/commands/ead2.xml', 'r')
     ]
     @parent_resource = resources(:uiuc_collection)
-    @location = locations(:location_one)
-    @user = users(:normal_user)
+    @location = locations(:secret)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @valid_command = ImportArchivesspaceEadCommand.new(

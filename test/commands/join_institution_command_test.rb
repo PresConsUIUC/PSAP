@@ -3,8 +3,8 @@ require 'test_helper'
 class JoinInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
-    @institution = institutions(:institution_one)
-    @user = users(:unaffiliated_user)
+    @institution = institutions(:one)
+    @user = users(:unaffiliated)
     @remote_ip = '10.0.0.1'
     @command = JoinInstitutionCommand.new(@user, @institution, @user,
                                           @remote_ip)

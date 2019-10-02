@@ -6,7 +6,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
   test 'account_approval_request_email' do
     # Send the email, then test that it got queued
-    email = AdminMailer.account_approval_request_email(users(:unconfirmed_user)).deliver_now
+    email = AdminMailer.account_approval_request_email(users(:unconfirmed)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
@@ -20,8 +20,8 @@ class AdminMailerTest < ActionMailer::TestCase
 
   test 'institution_change_review_request_email' do
     # Send the email, then test that it got queued
-    user = users(:normal_user)
-    user.desired_institution = institutions(:institution_two)
+    user = users(:normal)
+    user.desired_institution = institutions(:two)
     email = AdminMailer.institution_change_review_request_email(user).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 

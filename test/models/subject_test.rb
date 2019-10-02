@@ -3,7 +3,7 @@ require 'test_helper'
 class SubjectTest < ActiveSupport::TestCase
 
   def setup
-    @subject = subjects(:subject_one)
+    @subject = subjects(:one)
   end
 
   ######################### class method tests ##############################

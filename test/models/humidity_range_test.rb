@@ -3,7 +3,7 @@ require 'test_helper'
 class HumidityRangeTest < ActiveSupport::TestCase
 
   def setup
-    @range = humidity_ranges(:rh_range_two)
+    @range = humidity_ranges(:two)
   end
 
   ######################### class method tests ##############################

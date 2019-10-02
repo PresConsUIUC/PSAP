@@ -4,7 +4,6 @@
 # DO NOT COMMIT PSAP.YML TO VERSION CONTROL.
 
 development:
-  :test_institution_id: 1
   :results_per_page: 50
   :mail_address: psap@example.org
   :mail_from: 'Preservation Self-Assessment Program <psap@example.org>'
@@ -19,7 +18,6 @@ development:
   :recaptcha_secret_key:
 
 test:
-  :test_institution_id: 1
   :results_per_page: 50
   :mail_address: psap@example.org
   :mail_from: 'Preservation Self-Assessment Program <psap@example.org>'
@@ -34,7 +32,6 @@ test:
   :recaptcha_secret_key:
 
 production:
-  :test_institution_id: 1
   :results_per_page: 50
   :mail_address: psap@example.org
   :mail_from: 'Preservation Self-Assessment Program <psap@example.orgu>'

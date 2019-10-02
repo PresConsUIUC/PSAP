@@ -6,20 +6,20 @@ class ResourceTest < ActiveSupport::TestCase
   # TODO: add tests for Assessable methods
 
   def setup
-    @resource = resources(:resource_one)
+    @resource = resources(:magna_carta)
   end
 
   ######################### class method tests ##############################
 
   test 'from_ead should raise an exception if given invalid XML' do
     assert_raises Nokogiri::XML::SyntaxError do
-      Resource.from_ead('<cats></oops', users(:normal_user).id)
+      Resource.from_ead('<cats></oops', users(:normal).id)
     end
   end
 
   test 'from_ead should return correct resource attributes' do
     xml = File.read('test/models/archivesspace_ead_export.xml')
-    resource = Resource.from_ead(xml, users(:normal_user))
+    resource = Resource.from_ead(xml, users(:normal))
 
     assert_equal 'Here is a brief', resource.description[0..14]
     assert_nil resource.format
@@ -28,7 +28,7 @@ class ResourceTest < ActiveSupport::TestCase
     assert_equal 'Mandeville Collection', resource.name
     assert_equal 0, resource.resource_notes.length
     assert_equal 0, resource.resource_type
-    assert_equal users(:normal_user).username, resource.user.username
+    assert_equal users(:normal).username, resource.user.username
     assert_equal 'Davis, Michael J., 1942-', resource.creators.first.name
     assert_equal '229 Photographic Prints', resource.extents.first.name
     assert_equal '5 boxes, 2 oversized boxes, 8 oversized folders',
@@ -50,7 +50,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'setting a resource to a collection should prune its AQRs' do
-    response = assessment_question_responses(:assessment_question_response_one)
+    response = assessment_question_responses(:one)
     @resource.assessment_question_responses << response
     @resource.resource_type = Resource::Type::COLLECTION
     @resource.save
@@ -69,9 +69,9 @@ class ResourceTest < ActiveSupport::TestCase
 
   test 'location should be synched with parent location' do
     @resource.parent = resources(:uiuc_collection)
-    @resource.location = locations(:location_three)
+    @resource.location = locations(:back_room)
     @resource.save!
-    assert_equal locations(:location_one), @resource.location
+    assert_equal locations(:secret), @resource.location
   end
 
   ########################### property tests ################################
@@ -115,7 +115,7 @@ class ResourceTest < ActiveSupport::TestCase
 
   test 'filename should return object id if local identifier is not available' do
     @resource.local_identifier = nil
-    assert_equal 'resource-1', @resource.filename
+    assert_match /resource-\d+/, @resource.filename
   end
 
   test 'filename should return class name if object id is not available' do
@@ -196,7 +196,7 @@ class ResourceTest < ActiveSupport::TestCase
   # all_children
   test 'all_children should work' do
     assert_equal 0, resources(:uiuc_collection).all_children.length
-    assert_equal 5, resources(:resource_six).all_children.length
+    assert_equal 5, resources(:cat_fancy_collection).all_children.length
   end
 
   # all_parents
@@ -205,7 +205,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'all_parents returns all parents of resources with parents' do
-    assert_equal 1, resources(:resource_ten).all_parents.length
+    assert_equal 2, resources(:cat_fancy_special_issue).all_parents.length
   end
 
   # as_csv
@@ -269,7 +269,7 @@ class ResourceTest < ActiveSupport::TestCase
 
   # prune_empty_submodels
   test 'prune_empty_submodels works' do
-    resource = resources(:resource_twelve)
+    resource = resources(:cat_fancy_issue_3)
     resource.creators << Creator.new(name: 'bla')
     resource.creators << Creator.new(name: '')
     resource.prune_empty_submodels
@@ -323,28 +323,28 @@ class ResourceTest < ActiveSupport::TestCase
   ########################### association tests ##############################
 
   test 'assessment question responses should be destroyed on destroy' do
-    response = assessment_question_responses(:assessment_question_response_one)
+    response = assessment_question_responses(:one)
     @resource.assessment_question_responses << response
     @resource.destroy
     assert response.destroyed?
   end
 
   test 'children should be destroyed on destroy' do
-    child = resources(:resource_two)
+    child = resources(:dead_sea_scrolls)
     @resource.children << child
     @resource.destroy
     assert child.destroyed?
   end
 
   test 'dependent creators should be destroyed on destroy' do
-    creator = creators(:creator_one)
+    creator = creators(:one)
     @resource.creators << creator
     @resource.destroy
     assert creator.destroyed?
   end
 
   test 'dependent extents should be destroyed on destroy' do
-    extent = extents(:extent_one)
+    extent = extents(:one)
     @resource.extents << extent
     @resource.destroy
     assert extent.destroyed?
@@ -358,30 +358,30 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'dependent resource notes should be destroyed on destroy' do
-    note = resource_notes(:resource_note_one)
+    note = resource_notes(:one)
     @resource.resource_notes << note
     @resource.destroy
     assert note.destroyed?
   end
 
   test 'dependent subjects should be destroyed on destroy' do
-    subject = subjects(:subject_one)
+    subject = subjects(:one)
     @resource.subjects << subject
     @resource.destroy
     assert subject.destroyed?
   end
 
   test 'resource cannot be a child of an item' do
-    resource2 = resources(:resource_two)
+    resource2 = resources(:dead_sea_scrolls)
     resource2.parent = @resource
     assert !resource2.save
   end
 
   test 'resource\'s owning user must be of the same institution unless an admin' do
-    @resource.user = users(:disabled_user)
+    @resource.user = users(:disabled)
     assert !@resource.save
 
-    @resource.user = users(:non_uiuc_admin_user)
+    @resource.user = users(:non_uiuc_admin)
     assert @resource.save
   end
 

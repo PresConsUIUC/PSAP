@@ -1,16 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-resource_assessment:
-  id: 1
+resource:
   name: Resource assessment
   key: resource
 
-institution_assessment:
-  id: 2
+institution:
   name: Institution assessment
   key: institution
 
-location_assessment:
-  id: 3
+location:
   name: Location assessment
   key: location

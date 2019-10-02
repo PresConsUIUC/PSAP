@@ -3,7 +3,7 @@ require 'test_helper'
 class CreateAccountTest < ActionDispatch::IntegrationTest
 
   setup do
-    @new_user_attributes                         = users(:normal_user).attributes
+    @new_user_attributes                         = users(:normal).attributes
     @new_user_attributes[:username]              = 'test'
     @new_user_attributes[:email]                 = 'test@example.org'
     @new_user_attributes[:password]              = 'catscatscats'
@@ -23,7 +23,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
   test 'POSTing a correctly-filled form to /users should send an email' do
     post '/users', params: { user: @new_user_attributes }
 
-    email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
+    email = UserMailer.confirm_account_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
@@ -48,7 +48,7 @@ class CreateAccountTest < ActionDispatch::IntegrationTest
   test 'Email confirmation link should send an email to the administrator' do
     post '/users', params: { user: @new_user_attributes }
 
-    email = AdminMailer.account_approval_request_email(users(:normal_user)).deliver_now
+    email = AdminMailer.account_approval_request_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from

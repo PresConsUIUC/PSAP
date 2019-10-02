@@ -22,7 +22,7 @@ class SessionsControllerTest < ActionController::TestCase
   end
 
   test 'attempting to create a session for a disabled user fails' do
-    users(:disabled_user).update(last_signin: Time.now)
+    users(:disabled).update(last_signin: Time.now)
     post :create, params: {
         session: {
             username: 'disabled',
@@ -70,7 +70,7 @@ class SessionsControllerTest < ActionController::TestCase
   #### destroy ####
 
   test 'destroying a session works when signed in' do
-    signin_as(users(:normal_user))
+    signin_as(users(:normal))
     delete :destroy
     assert_redirected_to root_url
   end

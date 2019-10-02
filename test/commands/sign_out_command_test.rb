@@ -3,7 +3,7 @@ require 'test_helper'
 class SignOutCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @command = SignOutCommand.new(@user, @remote_ip)

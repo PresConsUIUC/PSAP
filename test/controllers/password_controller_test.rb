@@ -22,10 +22,10 @@ class PasswordControllerTest < ActionController::TestCase
   end
 
   test 'send_email should work' do
-    user = users(:normal_user)
+    user = users(:normal)
     key1 = user.password_reset_key
 
-    post :send_email, params: { email: users(:normal_user).email }
+    post :send_email, params: { email: users(:normal).email }
 
     user.reload
     assert_not_equal key1, user.password_reset_key
@@ -52,22 +52,22 @@ class PasswordControllerTest < ActionController::TestCase
   end
 
   test 'new-password page should redirect to root url if invalid password reset key provided' do
-    users(:normal_user).password_reset_key = 'cats'
-    users(:normal_user).save!
+    users(:normal).password_reset_key = 'cats'
+    users(:normal).save!
     get :new_password, params: { username: 'normal', key: 'adlfkjasdflkjasdf' }
     assert_redirected_to root_url
   end
 
   test 'new-password page should redirect to root url if password reset key not provided' do
-    users(:normal_user).password_reset_key = 'cats'
-    users(:normal_user).save!
+    users(:normal).password_reset_key = 'cats'
+    users(:normal).save!
     get :new_password, params: { username: 'normal' }
     assert_redirected_to root_url
   end
 
   test 'new-password page should display if valid user and key provided' do
-    users(:normal_user).password_reset_key = 'cats'
-    users(:normal_user).save!
+    users(:normal).password_reset_key = 'cats'
+    users(:normal).save!
     get :new_password, params: { username: 'normal', key: 'cats' }
     assert_response :success
   end
@@ -85,8 +85,8 @@ class PasswordControllerTest < ActionController::TestCase
   end
 
   test 'reset-password page should redirect to root url if invalid password reset key provided' do
-    users(:normal_user).password_reset_key = 'cats'
-    users(:normal_user).save!
+    users(:normal).password_reset_key = 'cats'
+    users(:normal).save!
     post :reset_password, params: {
         user: {
             username: 'dsfasdffd',
@@ -109,7 +109,7 @@ class PasswordControllerTest < ActionController::TestCase
   test 'reset_password should do what it\'s supposed to' do
     post :reset_password, params: { user: { username: 'normal' } }
 
-    assert_nil users(:normal_user).password_reset_key
+    assert_nil users(:normal).password_reset_key
     assert_equal 'Password reset successfully.', flash['success']
     assert_redirected_to signin_url
   end

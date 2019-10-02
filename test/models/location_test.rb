@@ -3,7 +3,7 @@ require 'test_helper'
 class LocationTest < ActiveSupport::TestCase
 
   def setup
-    @location = locations(:location_one)
+    @location = locations(:secret)
   end
 
   ######################### class method tests ##############################
@@ -25,7 +25,7 @@ class LocationTest < ActiveSupport::TestCase
     location2 = @location.dup
     assert !location2.save
     # same name, different institution should succeed
-    location2.repository = repositories(:repository_four)
+    location2.repository = repositories(:four)
     assert location2.save
   end
 
@@ -63,14 +63,14 @@ class LocationTest < ActiveSupport::TestCase
   ########################### association tests ##############################
 
   test 'dependent assessment question responses should be destroyed on destroy' do
-    response = assessment_question_responses(:assessment_question_response_one)
+    response = assessment_question_responses(:one)
     @location.assessment_question_responses << response
     @location.destroy
     assert response.destroyed?
   end
 
   test 'dependent resources should be destroyed on destroy' do
-    resource = resources(:resource_two)
+    resource = resources(:dead_sea_scrolls)
     @location.resources << resource
     @location.destroy
     assert resource.destroyed?

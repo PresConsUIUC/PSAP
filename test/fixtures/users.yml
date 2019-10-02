@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-normal_user:
-  id: 1
+normal:
   first_name: Norm
   email: normal@example.org
   last_name: McNormal
@@ -10,12 +9,11 @@ normal_user:
   confirmed: true
   enabled: true
   about: All about me
-  institution_id: 1
-  role_id: 2
+  institution: one
+  role: normal
   about: about me
 
-admin_user:
-  id: 2
+admin:
   first_name: Adam
   email: admin@example.org
   last_name: McAdmin
@@ -23,12 +21,11 @@ admin_user:
   username: admin
   confirmed: true
   enabled: true
-  institution_id: 1
-  role_id: 1
+  institution: one
+  role: admin
   about: about me
 
-non_uiuc_admin_user:
-  id: 6
+non_uiuc_admin:
   first_name: Pip
   email: admin@example.net
   last_name: McAdmin
@@ -36,44 +33,41 @@ non_uiuc_admin_user:
   username: admin2
   confirmed: true
   enabled: true
-  institution_id: 2
-  role_id: 1
+  institution: two
+  role: admin
   about: about me
 
-unaffiliated_user:
-  id: 3
+unaffiliated:
   username: 'unaffiliated'
   email: 'unaffiliated@example.org'
   first_name: 'Clara'
   last_name: 'NoInstitution'
   password_digest: <%= BCrypt::Password.create('password') %>
-  role_id: 2
+  role: normal
   confirmed: true
   enabled: true
   about: about me
 
-unconfirmed_user:
-  id: 4
+unconfirmed:
   username: 'unconfirmed'
   email: 'unconfirmed@example.org'
   first_name: 'Sally'
   last_name: 'NoConfirmy'
   password_digest: <%= BCrypt::Password.create('password') %>
-  institution_id: 2
-  role_id: 2
+  institution: two
+  role: normal
   confirmed: false
   enabled: false
   about: about me
 
-disabled_user:
-  id: 5
+disabled:
   username: 'disabled'
   email: 'disabled@example.org'
   first_name: 'Johnny'
   last_name: 'CantDoNothin'
   password_digest: <%= BCrypt::Password.create('password') %>
-  institution_id: 3
-  role_id: 2
+  institution: three
+  role: normal
   confirmed: true
   enabled: false
   about: about me

@@ -1,50 +1,42 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-format_one:
-  id: 1
+used_napkin:
   name: 'Used Napkin'
   score: 0
   collection_id_guide_page: 'napkin'
 
-format_two:
-  id: 2
+soiled_handkerchief:
   name: 'Soiled Handkerchief'
   score: 0.375
   collection_id_guide_page: 'handkerchief'
 
-format_three:
-  id: 3
+dirty_bed_sheet:
   name: 'Dirty Bed Sheet'
   score: 0.875
   collection_id_guide_page: 'sheet'
 
 wet_bath_towel:
-  id: 4
   name: 'Wet Bath Towel'
   score: 0.375
   collection_id_guide_page: 'towel'
 
 wetter_bath_towel:
-  id: 8
   name: 'Wetter Bath Towel'
   score: 0.375
-  parent_id: 4
+  parent: wet_bath_towel
   collection_id_guide_page: 'towel'
 
-format_five:
-  id: 5
+manila_envelope:
   name: 'Manila Envelope'
   score: 0.875
   collection_id_guide_page: 'envelope'
 
-format_six:
-  id: 6
+post_it_note:
   name: 'Post-It Note'
   score: 0.375
   collection_id_guide_page: 'note'
 
-unused_format:
-  id: 7
+unused:
   name: 'Unused Format'
   score: 0.375
   collection_id_guide_page: 'unused'

@@ -3,11 +3,11 @@ require 'test_helper'
 class UpdateLocationCommandTest < ActiveSupport::TestCase
 
   def setup
-    @location = locations(:location_one)
-    @valid_params = locations(:location_one).attributes
+    @location = locations(:secret)
+    @valid_params = @location.attributes
     @valid_params.delete('id')
     @valid_params['name'] = 'asdfjkjhasfd'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateLocationCommand.new(@location, @valid_params,
                                                @user, @remote_ip)

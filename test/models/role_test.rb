@@ -3,7 +3,7 @@ require 'test_helper'
 class RoleTest < ActiveSupport::TestCase
 
   def setup
-    @role = roles(:normal_role)
+    @role = roles(:normal)
   end
 
   ######################### class method tests ##############################

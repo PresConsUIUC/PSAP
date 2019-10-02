@@ -1,23 +1,22 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
---- !omap
-assessment_question_one:
-  id: 1
+one:
   index: 0
   name: Sample question name
   qid: 1
   question_type: 1
   weight: 0.5
-  assessment_section_id: 1
+  assessment_section: one
   help_text: Sample help text
+  formats: used_napkin
 
-assessment_question_two:
-  id: 2
-  parent_id: 1
+two:
+  parent: one
   index: 1
   name: Sample question name
   qid: 2
   question_type: 1
   weight: 0.5
-  assessment_section_id: 1
+  assessment_section: one
   help_text: Sample help text
+  formats: used_napkin

@@ -1,37 +1,31 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-location_one:
-  id: 1
+secret:
   name: 'Secret Location'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 1
+  repository: one
 
-location_two:
-  id: 2
+by_file_cabinet:
   name: 'Over there by the file cabinet'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 2
+  repository: two
 
-location_three:
-  id: 3
+back_room:
   name: 'Back Room'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 3
+  repository: three
 
-location_four:
-  id: 4
+front_room:
   name: 'Front Room'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 4
+  repository: four
 
-location_five:
-  id: 5
+side_room:
   name: 'Side Room'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 5
+  repository: five
 
-location_six:
-  id: 6
+hidden_vault:
   name: 'Hidden Vault'
   description: 'Lorem ipsum dolor sit amet'
-  repository_id: 6
+  repository: six

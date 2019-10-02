@@ -1,13 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-permission_one:
-  id: 1
+one:
   key: permission_one
 
-permission_two:
-  id: 2
+two:
   key: permission_two
 
-permission_three:
-  id: 3
+three:
   key: normal_user_permission

@@ -3,9 +3,9 @@ require 'test_helper'
 class DeleteLocationCommandTest < ActiveSupport::TestCase
 
   def setup
-    @location = locations(:location_one)
+    @location = locations(:secret)
 
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @command = DeleteLocationCommand.new(@location, @user, @remote_ip)

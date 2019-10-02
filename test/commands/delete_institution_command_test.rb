@@ -3,9 +3,9 @@ require 'test_helper'
 class DeleteInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
-    @institution = institutions(:institution_four)
+    @institution = institutions(:four)
 
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @command = DeleteInstitutionCommand.new(@institution, @user, @remote_ip)
@@ -26,7 +26,7 @@ class DeleteInstitutionCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should raise DeleteRestrictionError if a constraint prevents delete' do
-    @institution = institutions(:institution_one)
+    @institution = institutions(:one)
     @command = DeleteInstitutionCommand.new(@institution, @user, @remote_ip)
 
     assert_raises RuntimeError do

@@ -3,7 +3,7 @@ require 'test_helper'
 class StaticPageTest < ActiveSupport::TestCase
 
   def setup
-    @page = static_pages(:help_page)
+    @page = static_pages(:help)
   end
 
   ######################### class method tests ##############################

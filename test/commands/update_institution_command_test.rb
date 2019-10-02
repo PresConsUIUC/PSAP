@@ -3,11 +3,11 @@ require 'test_helper'
 class UpdateInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
-    @institution = institutions(:institution_one)
-    @valid_params = institutions(:institution_one).attributes
+    @institution = institutions(:one)
+    @valid_params = institutions(:one).attributes
     @valid_params.delete('id')
     @valid_params['name'] = 'asdfjkjhasfd'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateInstitutionCommand.new(@institution, @valid_params,
                                                   @user, @remote_ip)

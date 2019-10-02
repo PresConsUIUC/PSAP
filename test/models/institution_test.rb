@@ -3,7 +3,7 @@ require 'test_helper'
 class InstitutionTest < ActiveSupport::TestCase
 
   def setup
-    @institution = institutions(:institution_one)
+    @institution = institutions(:one)
   end
 
   ############################ object tests #################################
@@ -125,7 +125,7 @@ class InstitutionTest < ActiveSupport::TestCase
 
   test 'assessment question responses should be destroyed on destroy' do
     @institution.users.destroy_all
-    response = assessment_question_responses(:assessment_question_response_one)
+    response = assessment_question_responses(:one)
     @institution.assessment_question_responses << response
     @institution.destroy
     assert response.destroyed?
@@ -133,21 +133,21 @@ class InstitutionTest < ActiveSupport::TestCase
 
   test 'repositories should be destroyed on destroy' do
     @institution.users.destroy_all
-    repo = repositories(:repository_two)
+    repo = repositories(:two)
     @institution.repositories << repo
     @institution.destroy
     assert repo.destroyed?
   end
 
   test 'attempting to destroy an institution with users in it should raise an exception' do
-    @institution = institutions(:institution_one)
+    @institution = institutions(:one)
     assert_raises ActiveRecord::DeleteRestrictionError do
       @institution.destroy
     end
   end
 
   test 'attempting to destroy an institution without users in it should work' do
-    @institution = institutions(:institution_four)
+    @institution = institutions(:four)
     assert @institution.destroy
   end
 

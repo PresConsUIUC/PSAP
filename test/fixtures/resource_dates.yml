@@ -8,7 +8,7 @@ bulk_date:
   end_year: 1960
   end_month: 1
   end_day: 1
-  resource_id: 1
+  resource: magna_carta
 
 span_date:
   date_type: <%= DateType::SPAN %>
@@ -18,11 +18,11 @@ span_date:
   end_year: 1960
   end_month: 1
   end_day: 1
-  resource_id: 2
+  resource: dead_sea_scrolls
 
 single_date:
   date_type: <%= DateType::SINGLE %>
   year: 1950
   month: 1
   day: 1
-  resource_id: 3
+  resource: sears_catalog_collection

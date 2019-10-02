@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-cidg_page:
-  id: 1
+cidg:
   category: avmedia
   component: <%= StaticPage::Component::COLLECTION_ID_GUIDE %>
   html: <html><body><p>cats</p></body></html>
@@ -9,8 +8,7 @@ cidg_page:
   searchable_html: cats
   uri_fragment: avmedia
 
-help_page:
-  id: 2
+help:
   category: help
   component: <%= StaticPage::Component::HELP %>
   html: <html><body><p>cats</p></body></html>

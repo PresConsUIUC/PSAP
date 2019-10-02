@@ -1,137 +1,123 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-resource_one:
-  id: 1
+magna_carta:
   name: 'Magna Carta'
   resource_type: <%= Resource::Type::ITEM %>
-  format_id: 1
-  location_id: 1
-  user_id: 1
+  format: used_napkin
+  location: secret
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
 uiuc_collection:
-  id: 14
   name: 'Silly Nonsense Collection'
   resource_type: <%= Resource::Type::COLLECTION %>
-  format_id: 1
-  location_id: 1
-  user_id: 1
+  format: used_napkin
+  location: secret
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_two:
-  id: 2
+dead_sea_scrolls:
   name: 'Dead Sea Scrolls'
   resource_type: <%= Resource::Type::ITEM %>
-  format_id: 2
-  location_id: 2
-  user_id: 1
+  format: soiled_handkerchief
+  location: secret
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_three:
-  id: 3
+sears_catalog_collection:
   name: 'Sears Catalog Collection'
   resource_type: <%= Resource::Type::COLLECTION %>
-  location_id: 3
-  user_id: 2
+  location: back_room
+  user: admin
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_four:
-  id: 4
+baseball_cards:
   name: 'My Old Baseball Card Collection'
   resource_type: <%= Resource::Type::COLLECTION %>
-  location_id: 4
-  user_id: 2
+  location: front_room
+  user: admin
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_five:
-  id: 5
+treaty_of_verdun:
   name: 'Treaty of Verdun'
   resource_type: <%= Resource::Type::ITEM %>
-  format_id: 5
-  location_id: 3
-  user_id: 1
+  format_id: manila_envelope
+  location: back_room
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_six:
-  id: 6
+declaration_of_paris:
   name: 'Declaration of Paris'
   resource_type: <%= Resource::Type::COLLECTION %>
-  format_id: 6
-  location_id: 3
-  user_id: 5
+  format: post_it_note
+  location: front_room
+  user: disabled
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_seven:
-  id: 7
+cat_fancy_collection:
   name: 'Cat Fancy Collection'
   resource_type: <%= Resource::Type::COLLECTION %>
-  location_id: 4
-  user_id: 1
+  location: back_room
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_eight:
-  id: 8
+cat_fancy_issue_1:
   name: 'Issue 1'
   resource_type: <%= Resource::Type::ITEM %>
-  location_id: 3
-  parent_id: 6
-  user_id: 2
+  location: front_room
+  parent: cat_fancy_collection
+  user: admin
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_nine:
-  id: 9
+cat_fancy_issue_2:
   name: 'Issue 2'
   resource_type: <%= Resource::Type::ITEM %>
-  location_id: 3
-  parent_id: 6
-  user_id: 5
+  location: back_room
+  parent: cat_fancy_collection
+  user: disabled
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_ten:
-  id: 10
+cat_fancy_special_editions:
   name: 'Special Editions'
   resource_type: <%= Resource::Type::COLLECTION %>
-  location_id: 3
-  parent_id: 6
-  user_id: 2
+  location: back_room
+  parent: cat_fancy_collection
+  user: admin
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_eleven:
-  id: 11
+cat_fancy_special_issue:
   name: '1972 Presidential Election Special Issue'
   resource_type: <%= Resource::Type::ITEM %>
-  location_id: 3
-  parent_id: 9
-  user_id: 1
+  location: back_room
+  parent: cat_fancy_special_editions
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_twelve:
-  id: 12
+cat_fancy_issue_3:
   name: 'Issue 3'
   resource_type: <%= Resource::Type::ITEM %>
-  location_id: 3
-  parent_id: 6
-  user_id: 1
+  location: back_room
+  parent: cat_fancy_collection
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'
 
-resource_thirteen:
-  id: 13
+readers_digest_collection:
   name: 'Reader''s Digest Collection'
   resource_type: <%= Resource::Type::COLLECTION %>
-  location_id: 5
-  user_id: 1
+  location: side_room
+  user: normal
   description: 'Lorem ipsum dolor sit amet'
   local_identifier: 'qwertyuiop'

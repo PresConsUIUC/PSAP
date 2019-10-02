@@ -6,7 +6,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'change_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.change_email(users(:normal_user),
+    email = UserMailer.change_email(users(:normal),
                                     'old@example.org',
                                     'new@example.org').deliver_now
     assert !ActionMailer::Base.deliveries.empty?
@@ -22,11 +22,11 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'confirm_account_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.confirm_account_email(users(:normal_user)).deliver_now
+    email = UserMailer.confirm_account_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
-    assert_equal [users(:normal_user).email], email.to
+    assert_equal [users(:normal).email], email.to
     assert_equal 'Welcome to PSAP!', email.subject
     assert_equal read_fixture('confirm_account_email.txt').join,
                  email.text_part.body.raw_source
@@ -36,11 +36,11 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'institution_change_approved_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.institution_change_approved_email(users(:normal_user)).deliver_now
+    email = UserMailer.institution_change_approved_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
-    assert_equal [users(:normal_user).email], email.to
+    assert_equal [users(:normal).email], email.to
     assert_equal 'Your new PSAP institution has been approved', email.subject
     assert_equal read_fixture('institution_change_approved_email.txt').join,
                  email.text_part.body.raw_source
@@ -50,11 +50,11 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'institution_change_refused_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.institution_change_refused_email(users(:normal_user)).deliver_now
+    email = UserMailer.institution_change_refused_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
-    assert_equal [users(:normal_user).email], email.to
+    assert_equal [users(:normal).email], email.to
     assert_equal 'Your request to change your PSAP institution has been denied',
                  email.subject
     assert_equal read_fixture('institution_change_refused_email.txt').join,
@@ -65,11 +65,11 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'password_reset_email' do
     # Send the email, then test that it got queued
-    email = UserMailer.password_reset_email(users(:normal_user)).deliver_now
+    email = UserMailer.password_reset_email(users(:normal)).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
 
     assert_equal [Configuration.instance.mail_address], email.from
-    assert_equal [users(:normal_user).email], email.to
+    assert_equal [users(:normal).email], email.to
     assert_equal 'Your request to reset your PSAP password', email.subject
     assert_equal read_fixture('password_reset_email.txt').join,
                  email.text_part.body.raw_source

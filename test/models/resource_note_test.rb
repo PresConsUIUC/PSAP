@@ -5,7 +5,7 @@ class ResourceNoteTest < ActiveSupport::TestCase
   def setup
     @default_values = {value: 'Test'}
     @note = ResourceNote.new(@default_values)
-    @note.resource = resources(:resource_one)
+    @note.resource = resources(:magna_carta)
   end
 
   ######################### class method tests ##############################

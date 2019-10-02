@@ -3,13 +3,13 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
+    @user = users(:normal)
   end
 
   ############################ object tests #################################
 
   test 'setup generates a confirmation code' do
-    user = User.new(users(:normal_user).attributes)
+    user = User.new(users(:normal).attributes)
     assert_not_nil user.confirmation_code
   end
 
@@ -28,7 +28,7 @@ class UserTest < ActiveSupport::TestCase
   test 'email must be case-insensitively unique' do
     @user.save
 
-    user2 = users(:unaffiliated_user)
+    user2 = users(:unaffiliated)
     user2.email = @user.email.upcase
     assert !user2.save
   end
@@ -77,7 +77,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'username is case-insensitively unique' do
     @user.save
-    user2 = users(:unaffiliated_user)
+    user2 = users(:unaffiliated)
     user2.username = @user.username.upcase
     assert !user2.save
   end

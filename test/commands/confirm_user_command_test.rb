@@ -3,7 +3,7 @@ require 'test_helper'
 class ConfirmUserCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:unconfirmed_user)
+    @user = users(:unconfirmed)
     @confirmation_code = 'supplied code'
     @remote_ip = '10.0.0.1'
     @command = ConfirmUserCommand.new(@user, @confirmation_code, @remote_ip)
@@ -25,7 +25,7 @@ class ConfirmUserCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should fail if user is already confirmed' do
-    @user = users(:normal_user)
+    @user = users(:normal)
     @user.confirmation_code = 'cats'
     @confirmation_code = 'cats'
     @remote_ip = '10.0.0.1'

@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-institution_one:
-  id: 1
+one:
   name: 'University of Illinois at Urbana-Champaign'
   address1: '1408 W. Gregory Dr.'
   city: 'Urbana'
@@ -9,11 +8,10 @@ institution_one:
   postal_code: 61801
   country: 'United States of America'
   url: 'http://www.library.illinois.edu/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'
 
-institution_two:
-  id: 2
+two:
   name: 'West Southeast Directional State University'
   address1: '1 Directional Drive'
   city: 'Podunk'
@@ -21,11 +19,10 @@ institution_two:
   postal_code: 12345
   country: 'United States of America'
   url: 'http://example.org/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'
 
-institution_three:
-  id: 3
+three:
   name: 'Hamburger University'
   address1: '21 Hamburger Place'
   city: 'Des Moines'
@@ -33,11 +30,10 @@ institution_three:
   postal_code: 12345
   country: 'United States of America'
   url: 'http://example.org/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'
 
-institution_four:
-  id: 4
+four:
   name: 'San Quentin Prison University'
   address1: '5435 Prison Ct.'
   city: 'San Quentin'
@@ -45,11 +41,10 @@ institution_four:
   postal_code: 90210
   country: 'United States of America'
   url: 'http://example.org/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'
 
-institution_five:
-  id: 5
+five:
   name: 'Barnum & Bailey Clown College'
   address1: 'Circus Tent C'
   address2: '53 Trapeze Road'
@@ -58,11 +53,10 @@ institution_five:
   postal_code: 99999
   country: 'United States of America'
   url: 'http://example.org/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'
 
-institution_six:
-  id: 6
+six:
   name: 'Hogwarts School of Witchcraft & Wizardry'
   address1: '123 Magical St.'
   city: 'Hogsmeade'
@@ -70,5 +64,5 @@ institution_six:
   postal_code: 99999
   country: 'Hogsmeade'
   url: 'http://example.org/'
-  language_id: 1
+  language: english
   description: 'Lorem ipsum dolor sit amet'

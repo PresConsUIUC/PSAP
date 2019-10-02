@@ -3,7 +3,7 @@ require 'test_helper'
 class PermissionTest < ActiveSupport::TestCase
 
   def setup
-    @permission = permissions(:permission_one)
+    @permission = permissions(:one)
   end
 
   ######################### class method tests ##############################

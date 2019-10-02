@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-assessment_questions_formats_one:
-  assessment_question_id: 1
-  format_id: 1
-
-assessment_questions_formats_two:
-  assessment_question_id: 2
-  format_id: 1

@@ -3,11 +3,11 @@ require 'test_helper'
 class UpdateResourceCommandTest < ActiveSupport::TestCase
 
   def setup
-    @resource = resources(:resource_one)
-    @valid_params = resources(:resource_one).attributes
+    @resource = resources(:magna_carta)
+    @valid_params = @resource.attributes
     @valid_params.delete('id')
     @valid_params['name'] = 'asdfjkjhasfd'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateResourceCommand.new(@resource, @valid_params,
                                                @user, @remote_ip)

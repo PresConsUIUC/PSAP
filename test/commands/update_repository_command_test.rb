@@ -3,11 +3,11 @@ require 'test_helper'
 class UpdateRepositoryCommandTest < ActiveSupport::TestCase
 
   def setup
-    @repository = repositories(:repository_one)
-    @valid_params = repositories(:repository_one).attributes
+    @repository = repositories(:one)
+    @valid_params = @repository.attributes
     @valid_params.delete('id')
     @valid_params['name'] = 'asdfjkjhasfd'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = UpdateRepositoryCommand.new(@repository, @valid_params,
                                                  @user, @remote_ip)

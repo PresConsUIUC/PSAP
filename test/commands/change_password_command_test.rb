@@ -6,9 +6,9 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
     @current_password = 'cats11'
     @new_password = 'dogs11'
     @password_confirmation = 'dogs11'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @user.password = @current_password
-    @doing_user = users(:admin_user)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
     @command = ChangePasswordCommand.new(@user, @current_password,
                                          @new_password, @password_confirmation,
@@ -25,7 +25,7 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should allow normal user to change own password if valid' do
-    @doing_user = users(:normal_user)
+    @doing_user = users(:normal)
     @command = ChangePasswordCommand.new(@user, @current_password,
                                          @new_password, @password_confirmation,
                                          @doing_user, @remote_ip)
@@ -37,8 +37,8 @@ class ChangePasswordCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should fail if non-admin user attempts to change another user\'s password' do
-    @doing_user = users(:normal_user)
-    @user = users(:unconfirmed_user)
+    @doing_user = users(:normal)
+    @user = users(:unconfirmed)
     @command = ChangePasswordCommand.new(@user, @current_password,
                                          @new_password, @password_confirmation,
                                          @doing_user, @remote_ip)

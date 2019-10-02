@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-english_language:
-  id: 1
+english:
   english_name: 'English'
   native_name: 'anglais'
   iso639_2_code: 'eng'

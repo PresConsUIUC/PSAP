@@ -3,9 +3,9 @@ require 'test_helper'
 class DeleteResourceCommandTest < ActiveSupport::TestCase
 
   def setup
-    @resource = resources(:resource_one)
+    @resource = resources(:magna_carta)
 
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
 
     @command = DeleteResourceCommand.new(@resource, @user, @remote_ip)

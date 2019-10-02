@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-creator_one:
+one:
   name: Test Creator 1
   creator_type: <%= Creator::Type::PERSON %>
-  resource_id: 1
+  resource: magna_carta
 
-creator_two:
+two:
   name: Test Creator 2
   creator_type: <%= Creator::Type::COMPANY %>
-  resource_id: 2
+  resource: dead_sea_scrolls

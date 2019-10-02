@@ -3,7 +3,7 @@ require 'test_helper'
 class RepositoryTest < ActiveSupport::TestCase
 
   def setup
-    @repository = repositories(:repository_one)
+    @repository = repositories(:one)
   end
 
   ######################### class method tests ##############################
@@ -22,7 +22,7 @@ class RepositoryTest < ActiveSupport::TestCase
                                  institution: @repository.institution)
     assert !repository2.save
     # same name, different institution should succeed
-    repository2.institution = institutions(:institution_two)
+    repository2.institution = institutions(:two)
     assert repository2.save
   end
 
@@ -52,7 +52,7 @@ class RepositoryTest < ActiveSupport::TestCase
   ########################### association tests ##############################
 
   test 'dependent locations should be destroyed on destroy' do
-    location = locations(:location_one)
+    location = locations(:secret)
     @repository.locations << location
     @repository.destroy
     assert location.destroyed?

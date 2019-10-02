@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentTest < ActiveSupport::TestCase
 
   def setup
-    @assessment = assessments(:resource_assessment)
+    @assessment = assessments(:resource)
   end
 
   ######################### class method tests ##############################
@@ -58,7 +58,7 @@ class AssessmentTest < ActiveSupport::TestCase
   ########################## association tests ##############################
 
   test 'dependent assessment sections should be destroyed on destroy' do
-    section = assessment_sections(:assessment_section_one)
+    section = assessment_sections(:one)
     # have to use a new one because existing ones are read-only
     @assessment = Assessment.new
     @assessment.assessment_sections << section

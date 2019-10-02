@@ -3,7 +3,7 @@ require 'test_helper'
 class ResetPasswordTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = users(:normal_user)
+    @user = users(:normal)
   end
 
   # GET /forgot-password

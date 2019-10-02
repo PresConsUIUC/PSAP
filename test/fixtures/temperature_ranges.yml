@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-temp_range_one:
+one:
   max_temp_f: 30
   score: 0.2
-  format_id: 1
+  format: used_napkin
 
-temp_range_two:
+two:
   min_temp_f: 31
   max_temp_f: 50
   score: 0.4
-  format_id: 1
+  format: used_napkin
 
-temp_range_three:
+three:
   min_temp_f: 51
   score: 0.6
-  format_id: 1
+  format: used_napkin

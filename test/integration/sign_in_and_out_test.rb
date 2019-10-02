@@ -3,7 +3,7 @@ require 'test_helper'
 class SignInAndOutTest < ActionDispatch::IntegrationTest
 
   setup do
-    @valid_username = users(:normal_user).username
+    @valid_username = users(:normal).username
     @valid_password = 'password'
   end
 

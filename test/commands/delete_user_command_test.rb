@@ -3,9 +3,9 @@ require 'test_helper'
 class DeleteUserCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
+    @user = users(:normal)
 
-    @doing_user = users(:admin_user)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
 
     @command = DeleteUserCommand.new(@user, @doing_user, @remote_ip)

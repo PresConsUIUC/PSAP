@@ -3,7 +3,7 @@ require 'test_helper'
 class CreatorTest < ActiveSupport::TestCase
 
   def setup
-    @creator = creators(:creator_one)
+    @creator = creators(:one)
   end
 
   ######################### class method tests ##############################

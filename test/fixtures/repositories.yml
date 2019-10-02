@@ -1,31 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-repository_one:
-  id: 1
-  institution_id: 1
-  name: 'Sample Repository 1'
+one:
+  institution: one
+  name: Sample Repository 1
 
-repository_two:
-  id: 2
-  institution_id: 2
-  name: 'Sample Repository 2'
+two:
+  institution: two
+  name: Sample Repository 2
 
-repository_three:
-  id: 3
-  institution_id: 3
-  name: 'Sample Repository 3'
+three:
+  institution: three
+  name: Sample Repository 3
 
-repository_four:
-  id: 4
-  institution_id: 4
-  name: 'Sample Repository 4'
+four:
+  institution: four
+  name: Sample Repository 4
 
-repository_five:
-  id: 5
-  institution_id: 5
-  name: 'Sample Repository 5'
+five:
+  institution: five
+  name: Sample Repository 5
 
-repository_six:
-  id: 6
-  institution_id: 6
-  name: 'Sample Repository 6'
+six:
+  institution: six
+  name: Sample Repository 6

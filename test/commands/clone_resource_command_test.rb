@@ -7,8 +7,8 @@ require 'test_helper'
 class CloneResourceCommandTest < ActiveSupport::TestCase
 
   def setup
-    @resource = resources(:resource_one)
-    @doing_user = users(:admin_user)
+    @resource = resources(:magna_carta)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
     @command = CloneResourceCommand.new(@resource, false, @doing_user, @remote_ip)
   end

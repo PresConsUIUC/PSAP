@@ -3,10 +3,10 @@ require 'test_helper'
 class CreateResourceCommandTest < ActiveSupport::TestCase
 
   def setup
-    @location = locations(:location_one)
-    @valid_resource_params = resources(:resource_one).attributes.except(
+    @location = locations(:secret)
+    @valid_resource_params = resources(:magna_carta).attributes.except(
         'id', 'location_id')
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = CreateResourceCommand.new(@location,
                                                @valid_resource_params,
@@ -28,7 +28,7 @@ class CreateResourceCommandTest < ActiveSupport::TestCase
   end
 
   test 'execute method should fail if user attempts to create a resource in another institution' do
-    @valid_command = CreateResourceCommand.new(locations(:location_two),
+    @valid_command = CreateResourceCommand.new(locations(:by_file_cabinet),
                                                @valid_resource_params,
                                                @user, @remote_ip)
     assert_raises RuntimeError do

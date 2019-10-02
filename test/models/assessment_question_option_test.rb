@@ -3,7 +3,7 @@ require 'test_helper'
 class AssessmentQuestionOptionTest < ActiveSupport::TestCase
 
   def setup
-    @option = assessment_question_options(:assessment_question_option_one)
+    @option = assessment_question_options(:one)
   end
 
   ######################### class method tests ##############################
@@ -44,7 +44,7 @@ class AssessmentQuestionOptionTest < ActiveSupport::TestCase
 
   # assessment_question_responses
   test 'assessment question responses are destroyed on delete' do
-    aqr = assessment_question_responses(:assessment_question_response_one)
+    aqr = assessment_question_responses(:one)
     @option.assessment_question_responses << aqr
     @option.destroy!
     assert aqr.destroyed?

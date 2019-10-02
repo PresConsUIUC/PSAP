@@ -3,9 +3,9 @@ require 'test_helper'
 class SignInCommandTest < ActiveSupport::TestCase
 
   def setup
-    users(:normal_user).password = 'catscatscats'
-    users(:normal_user).password_confirmation = 'catscatscats'
-    users(:normal_user).save!
+    users(:normal).password = 'catscatscats'
+    users(:normal).password_confirmation = 'catscatscats'
+    users(:normal).save!
 
     @username = 'normal'
     @password = 'catscatscats'

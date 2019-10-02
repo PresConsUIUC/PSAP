@@ -3,7 +3,7 @@ require 'test_helper'
 class FormatTest < ActiveSupport::TestCase
 
   def setup
-    @format = formats(:format_one)
+    @format = formats(:used_napkin)
   end
 
   ######################### class method tests ##############################
@@ -42,19 +42,19 @@ class FormatTest < ActiveSupport::TestCase
 
   # temperature_ranges
   test 'temperature ranges should be sequential' do
-    @format.temperature_ranges << temperature_ranges(:temp_range_one)
-    @format.temperature_ranges << temperature_ranges(:temp_range_two)
-    @format.temperature_ranges << temperature_ranges(:temp_range_three)
+    @format.temperature_ranges << temperature_ranges(:one)
+    @format.temperature_ranges << temperature_ranges(:two)
+    @format.temperature_ranges << temperature_ranges(:three)
     assert @format.save
 
-    temperature_ranges(:temp_range_one).max_temp_f = 53
+    temperature_ranges(:one).max_temp_f = 53
     assert !@format.save
   end
 
   ############################ method tests #################################
 
   test 'all_assessment_questions should work' do
-    assert_equal assessment_questions(:assessment_question_one),
+    assert_equal assessment_questions(:one),
                  @format.all_assessment_questions[0]
   end
 
@@ -79,7 +79,7 @@ class FormatTest < ActiveSupport::TestCase
 
   test 'children should be destroyed on destroy' do
     @format.resources.destroy_all
-    child = formats(:format_three)
+    child = formats(:dirty_bed_sheet)
     @format.children << child
     @format.destroy
     assert child.destroyed?
@@ -87,7 +87,7 @@ class FormatTest < ActiveSupport::TestCase
 
   test 'dependent humidity ranges should be destroyed on destroy' do
     @format.resources.destroy_all
-    range = humidity_ranges(:rh_range_one)
+    range = humidity_ranges(:one)
     @format.humidity_ranges << range
     @format.destroy
     assert range.destroyed?
@@ -95,7 +95,7 @@ class FormatTest < ActiveSupport::TestCase
 
   test 'dependent temperature ranges should be destroyed on destroy' do
     @format.resources.destroy_all
-    range = temperature_ranges(:temp_range_one)
+    range = temperature_ranges(:one)
     @format.temperature_ranges << range
     @format.destroy
     assert range.destroyed?

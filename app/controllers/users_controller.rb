@@ -319,10 +319,13 @@ class UsersController < ApplicationController
 
   def set_institutions_ivar
     # Put the test institution at the top per GitHub issue #336.
-    test_institution_id = ::Configuration.instance.test_institution_id
-    @institutions = Institution.where('id != ?', test_institution_id).
-        order(:name).to_a
-    @institutions.unshift(Institution.find(test_institution_id))
+    test_institution = Institution.find_by_name('Test Institution')
+    if test_institution
+      @institutions = Institution.where('id != ?', test_institution.id).order(:name).to_a
+      @institutions.unshift(test_institution)
+    else
+      @institutions = Institution.all.order(:name).to_a
+    end
   end
 
   def sort_column

@@ -3,10 +3,10 @@ require 'test_helper'
 class CreateInstitutionCommandTest < ActiveSupport::TestCase
 
   def setup
-    @valid_institution_params = institutions(:institution_one).attributes
+    @valid_institution_params = institutions(:one).attributes
     @valid_institution_params['id'] = nil
     @valid_institution_params['name'] = 'asdfasfd'
-    @user = users(:normal_user)
+    @user = users(:normal)
     @remote_ip = '10.0.0.1'
     @valid_command = CreateInstitutionCommand.new(
         @valid_institution_params, @user, @remote_ip)

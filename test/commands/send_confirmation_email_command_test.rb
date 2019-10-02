@@ -3,8 +3,8 @@ require 'test_helper'
 class SendConfirmationEmailCommandTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:normal_user)
-    @doing_user = users(:admin_user)
+    @user = users(:normal)
+    @doing_user = users(:admin)
     @remote_ip = '10.0.0.1'
 
     @command = SendConfirmationEmailCommand.new(@user, @doing_user, @remote_ip)
@@ -25,8 +25,8 @@ class SendConfirmationEmailCommandTest < ActiveSupport::TestCase
   end
 
   test 'non-admin users should not be able to send confirmation emails' do
-    @doing_user = users(:normal_user)
-    @user = users(:admin_user)
+    @doing_user = users(:normal)
+    @user = users(:admin)
 
     @command = SendConfirmationEmailCommand.new(@user, @doing_user, @remote_ip)
     assert_raises RuntimeError do
