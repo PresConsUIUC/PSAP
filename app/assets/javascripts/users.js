@@ -86,8 +86,7 @@ var UserForm = {
             return;
         }
 
-        // window.pageURL is set in users/new.html.erb
-        var url = window.pageURL + 'users/' + username + '/exists';
+        var url = $('[name="root_url"]').val() + '/users/' + username + '/exists';
 
         $.ajax(url, {
             type: 'GET',
