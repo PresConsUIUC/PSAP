@@ -7,7 +7,7 @@ json.resources @resources do |resource|
   json.location resource.location.name
   json.resource_type resource.readable_resource_type
   json.parent_psap_id resource.parent.id if resource.parent
-  json.format resource.format.name if resource.format
+  json.format resource.format_tree.map(&:name).join(' > ') if resource.format
   json.format_ink_media_type resource.format_ink_media_type.name if resource.format_ink_media_type
   json.format_support_type resource.format_support_type.name if resource.format_support_type
   json.significance resource.readable_significance

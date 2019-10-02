@@ -209,7 +209,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   # as_csv
-  test 'as_csv should work' do
+  test 'as_csv works' do
     csv = @resource.as_csv
     assert csv.end_with?("\n")
   end
@@ -259,8 +259,16 @@ class ResourceTest < ActiveSupport::TestCase
     skip # TODO: write this
   end
 
+  # format_tree
+  test 'format_tree works' do
+    @resource.format = formats(:wetter_bath_towel)
+    @resource.save!
+    assert_equal [formats(:wet_bath_towel), formats(:wetter_bath_towel)],
+                 @resource.format_tree
+  end
+
   # prune_empty_submodels
-  test 'prune_empty_submodels should work' do
+  test 'prune_empty_submodels works' do
     resource = resources(:resource_twelve)
     resource.creators << Creator.new(name: 'bla')
     resource.creators << Creator.new(name: '')
@@ -296,7 +304,7 @@ class ResourceTest < ActiveSupport::TestCase
   end
 
   test 'update_assessment_complete should set false if format has no assessment questions' do
-    @resource.format = formats(:format_four)
+    @resource.format = formats(:wet_bath_towel)
     @resource.update_assessment_complete
     assert !@resource.assessment_complete
   end

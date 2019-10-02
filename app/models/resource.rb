@@ -270,9 +270,9 @@ class Resource < ApplicationRecord
 
   ##
   # Returns a CSV representation of the given resources. Assessment questions
-  # are excluded for performance reasons.
+  # are excluded.
   #
-  # @param resource Array of Resources
+  # @param resources [Enumerable<Resource>]
   #
   def self.as_csv(resources)
     # find the max number of one-to-many columns needed
@@ -285,11 +285,10 @@ class Resource < ApplicationRecord
       num_columns[:note]    = [resource.resource_notes.count, num_columns[:note]].max
     end
 
-    require 'csv'
     # CSV format is defined in G:|AcqCatPres\PSAP\Design\CSV
     # Can't use Resource.as_csv here because we need to pad the one-to-many
-    # properties with blanks. So, when updating this, update Resource.as_csv as
-    # well.
+    # properties with blanks. So, when updating this, Resource.as_csv must be
+    # updated as well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
@@ -327,7 +326,7 @@ class Resource < ApplicationRecord
             [resource.location.name] +
             [resource.readable_resource_type] +
             [resource.parent ? resource.parent.name : nil] +
-            [resource.format ? resource.format.name : nil] +
+            [resource.format ? resource.format_tree.map(&:name).join(' > ') : nil] +
             [resource.format_ink_media_type ? resource.format_ink_media_type.name : nil] +
             [resource.format_support_type ? resource.format_support_type.name : nil] +
             [resource.readable_significance] +
@@ -499,9 +498,8 @@ class Resource < ApplicationRecord
       responses << response.assessment_question_option.name
     end
 
-    require 'csv'
     # The CSV format is defined in G:\AcqCatPres\PSAP\Design\CSV
-    # When updating this, update Resource::as_csv as well.
+    # When updating this, Resource::as_csv must be updated as well.
     CSV.generate do |csv|
       csv << ['Local Identifier'] +
           ['Title/Name'] +
@@ -532,7 +530,7 @@ class Resource < ApplicationRecord
           [self.location.name] +
           [self.readable_resource_type] +
           [self.parent ? self.parent.name : nil] +
-          [self.format ? self.format.name : nil] +
+          [self.format ? self.format_tree.map(&:name).join(' > ') : nil] +
           [self.format_ink_media_type ? self.format_ink_media_type.name : nil] +
           [self.format_support_type ? self.format_support_type.name : nil] +
           [self.readable_significance] +
@@ -747,6 +745,24 @@ class Resource < ApplicationRecord
     else
       class_name
     end
+  end
+
+  ##
+  # @return [Enumerable<Format>] The assigned format and all of its parents in
+  #                              order of most distant to closest. Or, if no
+  #                              format is assigned, an empty array.
+  #
+  def format_tree
+    tree = []
+    if self.format
+      tree << self.format
+      p = self.format.parent
+      while p
+        tree << p
+        p = p.parent
+      end
+    end
+    tree.reverse
   end
 
   ##
