@@ -29,5 +29,7 @@ module Psap
     config.action_mailer.smtp_settings[:password]             = yml.mail_password if yml.mail_password
     config.action_mailer.smtp_settings[:authentication]       = yml.mail_authentication if yml.mail_authentication
     config.action_mailer.smtp_settings[:enable_starttls_auto] = yml.mail_enable_starttls_auto if yml.mail_enable_starttls_auto
+
+    config.active_support.escape_html_entities_in_json = false
   end
 end
