@@ -20,14 +20,15 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   # execute
-  test 'execute method should save user if valid' do
+
+  test 'execute saves the user if valid' do
     assert_nothing_raised do
       @valid_command.execute
     end
     assert !@valid_command.object.changed?
   end
 
-  test 'non-admin users should not be allowed to update other users' do
+  test 'non-admin users are not be allowed to update other users' do
     @user = users(:disabled)
     @valid_params = @user.attributes
     @valid_params.delete('id')
@@ -42,7 +43,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
   end
 
-  test 'non-admin users should not be able to change usernames once set' do
+  test 'non-admin users are not able to change usernames once set' do
     @user = users(:normal)
     @valid_params = { 'username' => 'dfasdfsaf' }
     @doing_user = users(:normal)
@@ -55,7 +56,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
   end
 
-  test 'non-admin users should not be able to change roles' do
+  test 'non-admin users are not able to change roles' do
     @user = users(:normal)
     @valid_params = { 'role_id' => roles(:admin).id }
     @doing_user = users(:normal)
@@ -68,13 +69,13 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
   end
 
-  test 'execute method should fail if validation failed' do
+  test 'execute fails if validation failed' do
     assert_raises ValidationError do
       @invalid_command.execute
     end
   end
 
-  test 'execute method failure message should be tailored to the doing user' do
+  test 'execute failure message is tailored to the doing user' do
     # user updating self
     e = assert_raises ValidationError do
       @invalid_command.execute
@@ -88,7 +89,7 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should notify previous email if user is changing their email' do
+  test 'execute notifies previous email if user is changing their email' do
     old_email = users(:normal).email
     @valid_params['email'] = 'newemail@example.org'
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
@@ -100,7 +101,8 @@ class UpdateUserCommandTest < ActiveSupport::TestCase
   end
 
   # object
-  test 'object method should return the User object' do
+
+  test 'object method returns the User object' do
     assert_kind_of User, @valid_command.object
   end
 
