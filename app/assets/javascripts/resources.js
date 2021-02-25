@@ -298,7 +298,18 @@ var ResourceEditForm = function() {
         // fix bugs/incompatibilities with bootstrap
         $('.typeahead').parent().css('display', '');
         $('.tt-hint').addClass('form-control');
-        $('input.form-control.typeahead').css('background-color', 'white'); // fix text fields in wells
+        // fix text fields in wells
+        $('input.form-control.typeahead').css('background-color', 'white');
+        // Different browsers want to lay out the suggestion dropdown
+        // differently. This is especially problematic because the TT library
+        // computes positioning internally. A newer version might fix this, but
+        // since this project is in hibernation, we will simply apply some
+        // manual fudge. -- adolski 2021-02-25
+        var tt_menu = $('.tt-dropdown-menu');
+        tt_menu.css('top', '355%'); // safari ignores this
+        if (navigator.userAgent.match(/chrome/i)) {
+            tt_menu.css('left', '-108px');
+        }
     };
 
     /**
