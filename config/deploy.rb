@@ -46,7 +46,8 @@ namespace :deploy do
 
   task :stop_passenger do
     on roles(:app), in: :sequence, wait: 5 do
-      execute "#{fetch(:bin)}/stop-rails"
+      puts "Use `sudo systemd stop psap` to stop the application."
+      #execute "#{fetch(:bin)}/stop-rails"
     end
   end
 
@@ -55,7 +56,8 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       #execute :touch, release_path.join('tmp/restart.txt')
-      execute "#{fetch(:bin)}/start-rails"
+      #execute "#{fetch(:bin)}/start-rails"
+      puts "Use `sudo systemd start psap` to stop the application."
     end
   end
 
