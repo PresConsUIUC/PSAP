@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     match '/assess', to: 'institutions#assess', via: :get
     resources :repositories, except: :index
     match '/assessment-questions', to: 'assessment_questions#index', via: :get
+    match '/export', to: 'institutions#export', via: :get
     # these are used for form autocompletion
     match '/resources/names', to: 'resources#names', via: :get
     match '/resources/subjects', to: 'resources#subjects', via: :get

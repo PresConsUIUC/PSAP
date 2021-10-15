@@ -60,6 +60,9 @@
       <li role="presentation">
         <a href="#users_tab" data-toggle="tab">Users</a>
       </li>
+      <li role="presentation">
+        <a href="#tools_tab" data-toggle="tab">Tools</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -150,6 +153,18 @@
         <% else %>
             <p>There are no users affiliated with this institution.</p>
         <% end %>
+      </div>
+
+      <div class="tab-pane" id="tools_tab">
+        <div class="text-center">
+          <%= link_to institution_export_path(@institution),
+                      class: 'btn btn-primary btn-lg' do %>
+            <%= content_tag(:span, '', class: 'glyphicon glyphicon-export') %>
+            Full Export
+          <% end %>
+          <p class="help-block">A full export includes all information associated
+            with this institution, except users, in JSON format.</p>
+        </div>
       </div>
 
     </div>

@@ -118,7 +118,40 @@ class InstitutionsControllerTest < ActionController::TestCase
       assert_response :missing
     end
   end
+=begin TODO: subclass ActionDispatch::IntegrationTest and uncomment
+  #### export ####
 
+  test 'signed-out users cannot export any institutions' do
+    get institution_export_path(institutions(:three))
+    assert_response :redirect
+  end
+
+  test 'signed-in users can export their own institution' do
+    signin_as(users(:normal))
+    get :export, params: { id: institutions(:one).id }
+    assert_response :success
+  end
+
+  test 'signed-in users cannot export other institutions' do
+    signin_as(users(:normal))
+    get :export, params: { id: institutions(:three).id }
+    assert_redirected_to root_url
+  end
+
+  test 'admin users can export any institution' do
+    signin_as(users(:admin))
+    get :export, params: { id: institutions(:five).id }
+    assert_response :success
+  end
+
+  test 'attempting to export a nonexistent institution returns 404' do
+    signin_as(users(:normal))
+    assert_raises(ActiveRecord::RecordNotFound) do
+      get :export, params: { id: 999999 }
+      assert_response :missing
+    end
+  end
+=end
   #### new ####
 
   test 'signed-out users cannot view new-institution page' do

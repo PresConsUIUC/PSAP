@@ -2,9 +2,8 @@ class InstitutionsController < ApplicationController
 
   before_action :signed_in_user
   before_action :admin_user, only: [:index, :destroy]
-  before_action :same_institution_user,
-                only: [:assess, :assessment_report, :edit, :events, :info,
-                       :repositories, :resources, :show, :update, :users]
+  before_action :same_institution_user, except: [:create, :destroy, :index,
+                                                 :new]
 
   def assess
     if request.xhr?
@@ -76,6 +75,14 @@ class InstitutionsController < ApplicationController
     else
       render status: 406, plain: 'Not Acceptable'
     end
+  end
+
+  def export
+    institution = Institution.find(params[:institution_id])
+    send_data JSON.pretty_generate(institution.full_export_as_json),
+              type:        'application/json',
+              filename:    'full_export.json',
+              disposition: 'attachment'
   end
 
   def index
